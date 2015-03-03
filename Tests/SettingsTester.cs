@@ -24,52 +24,165 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsTester : SetupHelper
+    class SettingsTester : Cube.Development.ResourceInitializer
     {
         /* ----------------------------------------------------------------- */
         ///
         /// SettingsTester
+        /// 
+        /// <summary>
+        /// Settings のテスト用クラスです。
+        /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsTester() : base() { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TestLoad
+        /// TestLoadFile
+        /// 
+        /// <summary>
+        /// ファイルから設定を読み込むテストを行います。
+        /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("Settings.json", Cube.Settings.FileType.Json)]
-        public void TestLoad(string path, Cube.Settings.FileType type)
+        public void TestLoadFile(string filename, Cube.Settings.FileType type)
         {
             Assert.DoesNotThrow(() => {
-                var data = new TestData();
-                Cube.Settings.Load<TestData>(path, data, type);
+                var path = System.IO.Path.Combine(Examples, filename);
+                var data = new Person();
+                Cube.Settings.Load(path, data, type);
                 Assert.That(data.Name, Is.EqualTo("Mike Davis"));
                 Assert.That(data.Age, Is.EqualTo(20));
+                Assert.That(data.Secret, Is.Null);
             });
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TestLoad
+        /// TestLoadRegistry
+        /// 
+        /// <summary>
+        /// レジストリから設定を読み込むテストを行います。
+        /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestLoad()
+        public void TestLoadRegistry()
         {
-
+            Assert.DoesNotThrow(() => {
+                using (var registrar = new Registrar())
+                {
+                    System.Diagnostics.Debug.WriteLine("testtest");
+                    var data = new Person();
+                    Cube.Settings.Load(registrar.TargetKey, data);
+                    Assert.That(data.Name, Is.EqualTo("Harry Potter"));
+                    Assert.That(data.Age, Is.EqualTo(11));
+                    Assert.That(data.Secret, Is.Null);
+                }
+            });
         }
 
         #region Internal resources
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Person
+        /// 
+        /// <summary>
+        /// テスト用のデータクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [DataContract]
-        internal class TestData
+        internal class Person
         {
             [DataMember]
             public string Name { get; set; }
 
             [DataMember]
             public int Age { get; set; }
+
+            public string Secret { get; set; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Person
+        /// 
+        /// <summary>
+        /// レジストリにテスト用のデータを登録・削除するためのクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        internal class Registrar : IDisposable
+        {
+            #region Constructors
+
+            public Registrar() { Register(); }
+
+            #endregion
+
+            #region Properties
+
+            public Microsoft.Win32.RegistryKey TargetKey
+            {
+                get { return _target; }
+            }
+
+            #endregion
+
+            #region IDisposable
+
+            ~Registrar() { Dispose(false); }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool diposing)
+            {
+                lock (this)
+                {
+                    if (_disposed) return;
+                    _disposed = true;
+                    if (diposing) Delete();
+                }
+            }
+
+            #endregion
+
+            #region Implementations
+
+            private void Register()
+            {
+                var name = @"Software\CubeSoft";
+                _parent = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name);
+                _target = _parent.CreateSubKey(_subkey);
+                _target.SetValue("Name", "Harry Potter");
+                _target.SetValue("Age", 11);
+            }
+
+            private void Delete()
+            {
+                _target.Close();
+                _parent.DeleteSubKeyTree(_subkey);
+                _parent.Close();
+            }
+
+            #endregion
+
+            #region Fields
+
+            private Microsoft.Win32.RegistryKey _parent = null;
+            private Microsoft.Win32.RegistryKey _target = null;
+            private string _subkey = "SettingsTester";
+            private bool _disposed = false;
+
+            #endregion
         }
 
         #endregion
