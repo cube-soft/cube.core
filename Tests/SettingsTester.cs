@@ -73,7 +73,6 @@ namespace Cube.Tests
             Assert.DoesNotThrow(() => {
                 using (var registrar = new Registrar())
                 {
-                    System.Diagnostics.Debug.WriteLine("testtest");
                     var data = Cube.Settings.Load<Person>(registrar.TargetKey);
                     Assert.That(data.Name, Is.EqualTo("Harry Potter"));
                     Assert.That(data.Age, Is.EqualTo(11));
