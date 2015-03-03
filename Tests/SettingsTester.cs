@@ -51,8 +51,7 @@ namespace Cube.Tests
         {
             Assert.DoesNotThrow(() => {
                 var path = System.IO.Path.Combine(Examples, filename);
-                var data = new Person();
-                Cube.Settings.Load(path, data, type);
+                var data = Cube.Settings.Load<Person>(path, type);
                 Assert.That(data.Name, Is.EqualTo("Mike Davis"));
                 Assert.That(data.Age, Is.EqualTo(20));
                 Assert.That(data.Secret, Is.Null);
@@ -75,8 +74,7 @@ namespace Cube.Tests
                 using (var registrar = new Registrar())
                 {
                     System.Diagnostics.Debug.WriteLine("testtest");
-                    var data = new Person();
-                    Cube.Settings.Load(registrar.TargetKey, data);
+                    var data = Cube.Settings.Load<Person>(registrar.TargetKey);
                     Assert.That(data.Name, Is.EqualTo("Harry Potter"));
                     Assert.That(data.Age, Is.EqualTo(11));
                     Assert.That(data.Secret, Is.Null);

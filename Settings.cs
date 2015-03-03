@@ -9,6 +9,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Text;
+using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 
 namespace Cube
@@ -41,6 +43,8 @@ namespace Cube
             Unknown = -1
         }
 
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Load
@@ -51,7 +55,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Load<T>(RegistryKey root, T dest) { }
+        public static T Load<T>(RegistryKey root) { return default(T); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -62,7 +66,22 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Load<T>(string path, T dest, FileType type = FileType.Xml) { }
+        public static T Load<T>(string path, FileType type = FileType.Xml)
+        {
+            using (var reader = new System.IO.StreamReader(path))
+            {
+                switch (type)
+                {
+                    case FileType.Json:
+                        return LoadJson<T>(reader.BaseStream);
+                    case FileType.Xml:
+                    case FileType.Unknown:
+                        return default(T);
+                    default:
+                        return default(T);
+                }
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -73,7 +92,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(RegistryKey root, T src) { }
+        public static void Save<T>(T src, RegistryKey root) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -84,6 +103,28 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(string path, T dest, FileType type = FileType.Xml) { }
+        public static void Save<T>(T src, string path, FileType type = FileType.Xml) { }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadJson
+        /// 
+        /// <summary>
+        /// JSON 形式のストリームから値を読み込み、オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static T LoadJson<T>(System.IO.Stream src)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            var dest = (T)serializer.ReadObject(src);
+            return dest;
+        }
+
+        #endregion
     }
 }
