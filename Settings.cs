@@ -56,7 +56,19 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(RegistryKey root) { return default(T); }
+        public static T Load<T>(RegistryKey root)
+        {
+            // TODO:
+            // 1. T に定義されている [DataMember] の名前一覧を取得する
+            //    例えば、SettingsTester.LoadRegistry() を実行した場合、
+            //    "Name, Age" と Debug.WriteLine で表示できるようにしてみる。
+            //    ※ 順序や出力フォーマットは必ずしも上記でなくても良い
+            // 2. 1. で取得した各名前に対応する値を root サブキー下から
+            //    探す処理を実装
+            // 3. 2. で探した値を T の各メンバに代入する。
+            //    各メンバの型へ適切に変換する方法を探す。
+            return default(T);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
