@@ -46,14 +46,14 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Settings.json", Cube.Settings.FileType.Json)]
-        public void TestLoadFile(string filename, Cube.Settings.FileType type)
+        [TestCase(Cube.Settings.FileType.Json, "Settings.json",         "Mike Davis")]
+        [TestCase(Cube.Settings.FileType.Json, "SettingsJapanese.json", "山田太郎")]
+        public void TestLoadFile(Cube.Settings.FileType type, string filename, string expected)
         {
             Assert.DoesNotThrow(() => {
                 var path = System.IO.Path.Combine(Examples, filename);
                 var data = Cube.Settings.Load<Person>(path, type);
-                Assert.That(data.Name, Is.EqualTo("Mike Davis"));
-                Assert.That(data.Age, Is.EqualTo(20));
+                Assert.That(data.Name, Is.EqualTo(expected));
                 Assert.That(data.Secret, Is.Null);
             });
         }
