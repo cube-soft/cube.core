@@ -64,6 +64,20 @@ namespace Cube.Forms
             private set { _view = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Appearance
+        /// 
+        /// <summary>
+        /// 外観を定義したオブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ButtonAppearance Appearance
+        {
+            get { return _appearance; }
+        }
+
         #endregion
 
         #region Implementations
@@ -151,6 +165,7 @@ namespace Cube.Forms
 
         #region Fields
         private ButtonBase _view = null;
+        private ButtonAppearance _appearance = new ButtonAppearance();
         #endregion
     }
 }
