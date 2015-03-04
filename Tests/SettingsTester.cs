@@ -46,7 +46,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Cube.Settings.FileType.Json, "Settings.json",         "Mike Davis")]
+        [TestCase(Cube.Settings.FileType.Xml,  "Settings.xml",  "John Lennon")]
+        [TestCase(Cube.Settings.FileType.Json, "Settings.json", "Mike Davis")]
+        [TestCase(Cube.Settings.FileType.Xml,  "SettingsJapanese.xml",  "鈴木一朗")]
         [TestCase(Cube.Settings.FileType.Json, "SettingsJapanese.json", "山田太郎")]
         public void TestLoadFile(Cube.Settings.FileType type, string filename, string expected)
         {

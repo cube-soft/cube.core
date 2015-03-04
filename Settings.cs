@@ -10,6 +10,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Text;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 
@@ -72,9 +73,10 @@ namespace Cube
             {
                 switch (type)
                 {
+                    case FileType.Xml:
+                        return LoadXml<T>(reader.BaseStream);
                     case FileType.Json:
                         return LoadJson<T>(reader.BaseStream);
-                    case FileType.Xml:
                     case FileType.Unknown:
                         return default(T);
                     default:
@@ -108,6 +110,22 @@ namespace Cube
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadXml
+        /// 
+        /// <summary>
+        /// XML 形式のストリームから値を読み込み、オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static T LoadXml<T>(System.IO.Stream src)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            var dest = (T)serializer.ReadObject(src);
+            return dest;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
