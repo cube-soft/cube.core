@@ -13,6 +13,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
+using System.Linq;
 
 namespace Cube
 {
@@ -67,6 +68,16 @@ namespace Cube
             //    探す処理を実装
             // 3. 2. で探した値を T の各メンバに代入する。
             //    各メンバの型へ適切に変換する方法を探す。
+
+            var dataMembers = typeof(T).GetMembers()
+                                       .Where(member => Attribute.IsDefined(member, typeof(DataMemberAttribute)));
+
+            foreach (var member in dataMembers)
+            {
+
+                System.Diagnostics.Trace.WriteLine(member.Name);
+            }
+
             return default(T);
         }
 
