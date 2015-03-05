@@ -9,6 +9,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Cube.Forms
@@ -38,11 +39,11 @@ namespace Cube.Forms
         public ButtonPainter(ButtonBase view)
         {
             View = view;
-            View.MouseEnter += MouseEnterHandler;
-            View.MouseLeave += MouseLeaveHandler;
-            View.MouseDown  += MouseDownHandler;
-            View.MouseUp    += MouseUpHandler;
-            View.Paint      += PaintHandler;
+            View.Paint      += (s, e) => OnPaint(e);
+            View.MouseEnter += (s, e) => OnMouseEnter(e);
+            View.MouseLeave += (s, e) => OnMouseLeave(e);
+            View.MouseDown  += (s, e) => OnMouseDown(e);
+            View.MouseUp    += (s, e) => OnMouseUp(e);
         }
 
         #endregion
@@ -78,94 +79,166 @@ namespace Cube.Forms
             get { return _appearance; }
         }
 
-        #endregion
-
-        #region Implementations
-
-        #region Event handlers
-
         /* ----------------------------------------------------------------- */
         ///
-        /// PaintHandler
+        /// BorderColor
         /// 
         /// <summary>
-        /// 描画対象となるボタンの Paint イベントが発生した時に実行される
-        /// イベントハンドラです。
+        /// ボタンを囲む境界線の色を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void PaintHandler(object sender, PaintEventArgs e)
+        public Color BorderColor
         {
-
+            get { return _borderColor; }
+            set { _borderColor = value; }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseDownHandler
+        /// BorderSize
         /// 
         /// <summary>
-        /// 描画対象となるボタンの MouseDown イベントが発生した時に実行される
-        /// イベントハンドラです。
+        /// ボタンを囲む境界線のサイズをピクセル単位で指定する値を
+        /// 取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void MouseDownHandler(object sender, MouseEventArgs e)
+        public int BorderSize
         {
-
+            get { return _borderSize; }
+            set { _borderSize = value; }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseUpHandler
+        /// IsChecked
         /// 
         /// <summary>
-        /// 描画対象となるボタンの MouseUp イベントが発生した時に実行される
-        /// イベントハンドラです。
+        /// ボタンがチェック状態かどうかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void MouseUpHandler(object sender, MouseEventArgs e)
+        public bool IsChecked
         {
-
+            get { return _checked; }
+            protected set { _checked = value; }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseEnterHandler
+        /// IsMouseDown
         /// 
         /// <summary>
-        /// 描画対象となるボタンの MouseEnter イベントが発生した時に
-        /// 実行されるイベントハンドラです。
+        /// マウスがクリック状態かどうかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void MouseEnterHandler(object sender, EventArgs e)
+        public bool IsMouseDown
         {
-
+            get { return _mouseDown; }
+            protected set { _mouseDown = value; }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseLeaveHandler
+        /// IsMouseOver
         /// 
         /// <summary>
-        /// 描画対象となるボタンの MouseLeave イベントが発生した時に
-        /// 実行されるイベントハンドラです。
+        /// マウスポインタがボタンの境界範囲内に存在するかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void MouseLeaveHandler(object sender, EventArgs e)
+        public bool IsMouseOver
         {
-
+            get { return _mouseOver; }
+            protected set { _mouseOver = value; }
         }
 
         #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPaint
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの Paint イベントを捕捉するハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPaint(PaintEventArgs e)
+        {
+
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMouseEnter
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの MouseEnter イベントを捕捉するハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnMouseEnter(EventArgs e)
+        {
+            IsMouseOver = true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMouseLeave
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの MouseLeave イベントを捕捉するハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnMouseLeave(EventArgs e)
+        {
+            IsMouseOver = false;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMouseDown
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの MouseDown イベントを捕捉するハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnMouseDown(MouseEventArgs e)
+        {
+            IsMouseDown = (e.Button == MouseButtons.Left);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMouseUp
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの MouseUp イベントを捕捉するハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnMouseUp(MouseEventArgs e)
+        {
+            IsMouseDown = false;
+        }
 
         #endregion
 
         #region Fields
         private ButtonBase _view = null;
         private ButtonAppearance _appearance = new ButtonAppearance();
+        private Color _borderColor = Color.Empty;
+        private int _borderSize = 0;
+        private bool _checked = false;
+        private bool _mouseOver = false;
+        private bool _mouseDown = false;
         #endregion
     }
 }
