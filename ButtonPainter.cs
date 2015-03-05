@@ -231,6 +231,78 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetBorderColor
+        /// 
+        /// <summary>
+        /// 現在の境界線の色を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Color GetBorderColor()
+        {
+            return IsChecked   ? Appearance.CheckedBorderColor   :
+                   IsMouseDown ? Appearance.MouseDownBorderColor :
+                   IsMouseOver ? Appearance.MouseOverBorderColor :
+                   BorderColor;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetBackColor
+        /// 
+        /// <summary>
+        /// 現在の背景色を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Color GetBackColor()
+        {
+            return IsChecked   ? Appearance.CheckedBackColor   :
+                   IsMouseDown ? Appearance.MouseDownBackColor :
+                   IsMouseOver ? Appearance.MouseOverBackColor :
+                   View.BackColor;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetImage
+        /// 
+        /// <summary>
+        /// 現在のイメージを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Image GetImage()
+        {
+            return IsChecked   ? Appearance.CheckedImage   :
+                   IsMouseDown ? Appearance.MouseDownImage :
+                   IsMouseOver ? Appearance.MouseOverImage :
+                   View.Image;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetBackgroundImage
+        /// 
+        /// <summary>
+        /// 現在の背景イメージを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Image GetBackgroundImage()
+        {
+            return IsChecked   ? Appearance.CheckedBackgroundImage   :
+                   IsMouseDown ? Appearance.MouseDownBackgroundImage :
+                   IsMouseOver ? Appearance.MouseOverBackgroundImage :
+                   View.BackgroundImage;
+        }
+
+        #endregion
+
         #region Fields
         private ButtonBase _view = null;
         private ButtonAppearance _appearance = new ButtonAppearance();
