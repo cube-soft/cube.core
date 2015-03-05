@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ButtonAppearance.cs" />
     <Compile Include="ButtonPainter.cs" />
+    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="NullExpandableObjectConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

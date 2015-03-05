@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Cube.Extensions.Forms;
 
 namespace Cube.Forms
 {
@@ -166,11 +167,25 @@ namespace Cube.Forms
         /// <summary>
         /// 描画対象となるボタンの Paint イベントを捕捉するハンドラです。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO:
+        ///   - テキストの描画処理を実装する
+        ///   - 背景イメージの描画の内、ImageLayout が Stretch, Zoom, Tile
+        ///     が未実装なので実装する
+        ///     ※ 実装場所は Cube.Extensions.Forms.GraphicsExtensions
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnPaint(PaintEventArgs e)
         {
+            if (e == null || e.Graphics == null) return;
 
+            var gs = e.Graphics;
+            gs.FillBackground(GetBackColor());
+            gs.DrawImage(GetBackgroundImage(), View.BackgroundImageLayout);
+            gs.DrawImage(GetImage(), View.ImageAlign);
+            gs.DrawBorder(GetBorderColor(), BorderSize);
         }
 
         /* ----------------------------------------------------------------- */
