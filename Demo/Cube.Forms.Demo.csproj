@@ -103,6 +103,12 @@
   <ItemGroup>
     <Content Include="app.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cube.Forms.csproj">
+      <Project>{C305E44A-3F6C-4662-A111-0F146A7E2842}</Project>
+      <Name>Cube.Forms</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
