@@ -95,6 +95,30 @@ namespace Cube.Forms
             set { _painter.BorderSize = value; }
         }
 
+        #region Hiding properties
+
+        [Browsable(false)]
+        public new System.Windows.Forms.FlatButtonAppearance FlatAppearance
+        {
+            get { return base.FlatAppearance; }
+        }
+
+        [Browsable(false)]
+        public new System.Windows.Forms.FlatStyle FlatStyle
+        {
+            get { return base.FlatStyle; }
+            set { base.FlatStyle = value; }
+        }
+
+        [Browsable(false)]
+        public new bool UseVisualStyleBackColor
+        {
+            get { return base.UseVisualStyleBackColor; }
+            set { base.UseVisualStyleBackColor = value; }
+        }
+
+        #endregion
+
         #endregion
 
         #region Methods

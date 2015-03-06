@@ -56,7 +56,7 @@
             this.FlatButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FlatButton.Location = new System.Drawing.Point(78, 12);
             this.FlatButton.Name = "FlatButton";
-            this.FlatButton.Size = new System.Drawing.Size(194, 50);
+            this.FlatButton.Size = new System.Drawing.Size(204, 50);
             this.FlatButton.TabIndex = 1;
             this.FlatButton.Text = "SampleText";
             this.FlatButton.UseVisualStyleBackColor = false;
@@ -92,10 +92,11 @@
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(284, 74);
+            this.ClientSize = new System.Drawing.Size(294, 74);
             this.Controls.Add(this.FlatButton);
             this.Controls.Add(this.ImageButton);
             this.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(128)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Cube.Forms Demo";
