@@ -60,7 +60,7 @@ namespace Cube.Forms
             var control = View as System.Windows.Forms.RadioButton;
             if (control == null) return;
             IsChecked = control.Checked;
-            View.Refresh();
+            control.Refresh();
         }
 
         #endregion
