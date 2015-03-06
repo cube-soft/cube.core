@@ -53,6 +53,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RadioButtonPainter.cs" />
+    <Compile Include="ToggleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToggleButtonPainter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
