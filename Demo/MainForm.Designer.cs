@@ -51,8 +51,6 @@
             this.FlatButton.Appearance.MouseOverForeColor = System.Drawing.Color.Empty;
             this.FlatButton.Appearance.MouseOverImage = null;
             this.FlatButton.BackColor = System.Drawing.Color.White;
-            this.FlatButton.BorderColor = System.Drawing.Color.Black;
-            this.FlatButton.BorderSize = 1;
             this.FlatButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FlatButton.Location = new System.Drawing.Point(78, 12);
             this.FlatButton.Name = "FlatButton";
@@ -79,8 +77,6 @@
             this.ImageButton.Appearance.MouseOverForeColor = System.Drawing.Color.Empty;
             this.ImageButton.Appearance.MouseOverImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
             this.ImageButton.BackColor = System.Drawing.Color.White;
-            this.ImageButton.BorderColor = System.Drawing.Color.Black;
-            this.ImageButton.BorderSize = 1;
             this.ImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ImageButton.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
             this.ImageButton.Location = new System.Drawing.Point(12, 12);

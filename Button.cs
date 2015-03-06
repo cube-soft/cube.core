@@ -72,6 +72,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [DefaultValue(typeof(System.Drawing.Color), "0x000000")]
         public System.Drawing.Color BorderColor
         {
             get { return _painter.BorderColor; }
@@ -89,6 +90,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [DefaultValue(1)]
         public int BorderSize
         {
             get { return _painter.BorderSize; }
@@ -134,6 +136,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Reset()
         {
+            BorderColor = System.Drawing.Color.Black;
+            BorderSize = 1;
             base.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             base.UseVisualStyleBackColor = false;
         }
