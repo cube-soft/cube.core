@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\LogoCubePdf.png" />
     <None Include="Resources\LogoCubeIce.png" />
     <None Include="Resources\LogoCube.png" />
   </ItemGroup>

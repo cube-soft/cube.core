@@ -79,5 +79,15 @@ namespace Cube.Forms.Demo.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap LogoCubePdf {
+            get {
+                object obj = ResourceManager.GetObject("LogoCubePdf", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
