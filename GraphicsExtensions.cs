@@ -53,17 +53,23 @@ namespace Cube.Extensions.Forms
         /// <summary>
         /// 指定した色、幅で枠線を描画します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: ClipBounds の幅、高さで枠線を描画すると一部が切れてしまう。
+        /// 暫定的に margin を設定しているが、適切な描画方法について要調査。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static void DrawBorder(this Graphics gs, Color color, int width)
         {
             if (color == Color.Empty || width <= 0) return;
 
+            const float margin = 0.5f;
             using (var pen = new Pen(color, width))
             {
                 pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
                 var rect = gs.ClipBounds;
-                gs.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+                gs.DrawRectangle(pen, rect.X, rect.Y, rect.Width - margin, rect.Height - margin);
             }
         }
 
