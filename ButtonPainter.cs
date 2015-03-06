@@ -331,6 +331,23 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// GetForeColor
+        /// 
+        /// <summary>
+        /// 現在のテキスト色を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Color GetForeColor()
+        {
+            return Select(View.ForeColor,
+                          Appearance.CheckedForeColor,
+                          Appearance.MouseOverForeColor,
+                          Appearance.MouseDownForeColor);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetImage
         /// 
         /// <summary>
