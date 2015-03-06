@@ -287,13 +287,12 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private T Select<T>(T normal, T check, T over, T down)
         {
-            var x0 = IsChecked && !EqualityComparer<T>.Default.Equals(check, default(T)) ? check : normal;
-            var x1 = !EqualityComparer<T>.Default.Equals(over, default(T)) ? over : default(T);
-            var x2 = !EqualityComparer<T>.Default.Equals(down, default(T)) ? down : over;
+            var x0 = !EqualityComparer<T>.Default.Equals(check, default(T)) && IsChecked ? check : normal;
+            var x1 = !EqualityComparer<T>.Default.Equals(over, default(T)) ? over : x0;
+            var x2 = !EqualityComparer<T>.Default.Equals(down, default(T)) ? down : x1;
 
-            var dest = IsMouseDown ? x2 :
-                       IsMouseOver ? x1 : x0;
-            return !EqualityComparer<T>.Default.Equals(dest, default(T)) ? dest : normal;
+            return IsMouseDown ? x2 :
+                   IsMouseOver ? x1 : x0;
         }
 
         /* ----------------------------------------------------------------- */
