@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using Cube.Extensions.Forms;
 
 namespace Cube.Forms
@@ -251,6 +252,51 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Select
+        /// 
+        /// <summary>
+        /// 描画に使用するオブジェクトを選択して返します。
+        /// </summary>
+        /// 
+        /// <param name="normal">通常時のオブジェクト</param>
+        /// <param name="check">ボタンがチェック状態のオブジェクト</param>
+        /// <param name="over">マウスオーバ時のオブジェクト</param>
+        /// <param name="down">マウスクリック時のオブジェクト</param>
+        /// 
+        /// <remarks>
+        /// オブジェクトを使用する優先順位は以下の通りです。
+        ///
+        ///   1. マウスクリック時のオブジェクト (down)
+        ///   2. マウスオーバ時のオブジェクト (over)
+        ///   3. ボタンがチェック状態のオブジェクト (check)
+        ///   4. 通常時のオブジェクト (normal)
+        /// 
+        /// 例えば、マウスクリック時 (IsMouseDown == true) の選択方法は、
+        /// down が有効なオブジェクトであれば down を使用し、down が無効で
+        /// over が有効なオブジェクトであれば over を使用します。
+        /// そして、両方とも無効なオブジェクトであれば check と normal の
+        /// 内、より適切なオブジェクトを使用します。
+        /// 
+        /// check と normal どちらのオブジェクトを使用するかについては、
+        /// ボタンがチェック状態 (IsChecked == true) であり、かつ、check が
+        /// 有効なオブジェクトであれば check を、それ以外の場合は normal を
+        /// 使用します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private T Select<T>(T normal, T check, T over, T down)
+        {
+            var x0 = IsChecked && !EqualityComparer<T>.Default.Equals(check, default(T)) ? check : normal;
+            var x1 = !EqualityComparer<T>.Default.Equals(over, default(T)) ? over : default(T);
+            var x2 = !EqualityComparer<T>.Default.Equals(down, default(T)) ? down : over;
+
+            var dest = IsMouseDown ? x2 :
+                       IsMouseOver ? x1 : x0;
+            return !EqualityComparer<T>.Default.Equals(dest, default(T)) ? dest : normal;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetBorderColor
         /// 
         /// <summary>
@@ -260,10 +306,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Color GetBorderColor()
         {
-            var dest = IsChecked   ? Appearance.CheckedBorderColor   :
-                       IsMouseDown ? Appearance.MouseDownBorderColor :
-                       IsMouseOver ? Appearance.MouseOverBorderColor : Color.Empty;
-            return (dest != Color.Empty) ? dest : BorderColor;
+            return Select(BorderColor,
+                          Appearance.CheckedBorderColor,
+                          Appearance.MouseOverBorderColor,
+                          Appearance.MouseDownBorderColor);
         }
 
         /* ----------------------------------------------------------------- */
@@ -277,10 +323,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Color GetBackColor()
         {
-            var dest = IsChecked   ? Appearance.CheckedBackColor   :
-                       IsMouseDown ? Appearance.MouseDownBackColor :
-                       IsMouseOver ? Appearance.MouseOverBackColor : Color.Empty;
-            return (dest != Color.Empty) ? dest : View.BackColor;
+            return Select(View.BackColor,
+                          Appearance.CheckedBackColor,
+                          Appearance.MouseOverBackColor,
+                          Appearance.MouseDownBackColor);
         }
 
         /* ----------------------------------------------------------------- */
@@ -294,10 +340,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Image GetImage()
         {
-            var dest = IsChecked   ? Appearance.CheckedImage   :
-                       IsMouseDown ? Appearance.MouseDownImage :
-                       IsMouseOver ? Appearance.MouseOverImage : null;
-            return (dest != null) ? dest : View.Image;
+            return Select(View.Image,
+                          Appearance.CheckedImage,
+                          Appearance.MouseOverImage,
+                          Appearance.MouseDownImage);
         }
 
         /* ----------------------------------------------------------------- */
@@ -311,10 +357,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Image GetBackgroundImage()
         {
-            var dest = IsChecked   ? Appearance.CheckedBackgroundImage   :
-                       IsMouseDown ? Appearance.MouseDownBackgroundImage :
-                       IsMouseOver ? Appearance.MouseOverBackgroundImage : null;
-            return (dest != null) ? dest : View.BackgroundImage;
+            return Select(View.BackgroundImage,
+                          Appearance.CheckedBackgroundImage,
+                          Appearance.MouseOverBackgroundImage,
+                          Appearance.MouseDownBackgroundImage);
         }
 
         #endregion

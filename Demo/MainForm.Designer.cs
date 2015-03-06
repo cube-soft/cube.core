@@ -29,34 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.ImageButton = new Cube.Forms.Button();
             this.FlatButton = new Cube.Forms.Button();
+            this.ImageButton = new Cube.Forms.Button();
             this.SuspendLayout();
-            // 
-            // ImageButton
-            // 
-            this.ImageButton.Appearance.CheckedBackColor = System.Drawing.Color.Empty;
-            this.ImageButton.Appearance.CheckedBackgroundImage = null;
-            this.ImageButton.Appearance.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.ImageButton.Appearance.CheckedImage = null;
-            this.ImageButton.Appearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
-            this.ImageButton.Appearance.MouseDownBackgroundImage = null;
-            this.ImageButton.Appearance.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.ImageButton.Appearance.MouseDownImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageButton.Appearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
-            this.ImageButton.Appearance.MouseOverBackgroundImage = null;
-            this.ImageButton.Appearance.MouseOverBorderColor = System.Drawing.Color.Empty;
-            this.ImageButton.Appearance.MouseOverImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageButton.BackColor = System.Drawing.Color.White;
-            this.ImageButton.BorderColor = System.Drawing.Color.Black;
-            this.ImageButton.BorderSize = 1;
-            this.ImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ImageButton.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageButton.Location = new System.Drawing.Point(212, 12);
-            this.ImageButton.Name = "ImageButton";
-            this.ImageButton.Size = new System.Drawing.Size(60, 50);
-            this.ImageButton.TabIndex = 0;
-            this.ImageButton.UseVisualStyleBackColor = false;
             // 
             // FlatButton
             // 
@@ -82,6 +57,31 @@
             this.FlatButton.TabIndex = 1;
             this.FlatButton.Text = "SampleText";
             this.FlatButton.UseVisualStyleBackColor = false;
+            // 
+            // ImageButton
+            // 
+            this.ImageButton.Appearance.CheckedBackColor = System.Drawing.Color.Empty;
+            this.ImageButton.Appearance.CheckedBackgroundImage = null;
+            this.ImageButton.Appearance.CheckedBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton.Appearance.CheckedImage = null;
+            this.ImageButton.Appearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageButton.Appearance.MouseDownBackgroundImage = null;
+            this.ImageButton.Appearance.MouseDownBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton.Appearance.MouseDownImage = null;
+            this.ImageButton.Appearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageButton.Appearance.MouseOverBackgroundImage = null;
+            this.ImageButton.Appearance.MouseOverBorderColor = System.Drawing.Color.RoyalBlue;
+            this.ImageButton.Appearance.MouseOverImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
+            this.ImageButton.BackColor = System.Drawing.Color.White;
+            this.ImageButton.BorderColor = System.Drawing.Color.Black;
+            this.ImageButton.BorderSize = 1;
+            this.ImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageButton.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageButton.Location = new System.Drawing.Point(212, 12);
+            this.ImageButton.Name = "ImageButton";
+            this.ImageButton.Size = new System.Drawing.Size(60, 50);
+            this.ImageButton.TabIndex = 0;
+            this.ImageButton.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
