@@ -259,10 +259,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Color GetBorderColor()
         {
-            return IsChecked   ? Appearance.CheckedBorderColor   :
-                   IsMouseDown ? Appearance.MouseDownBorderColor :
-                   IsMouseOver ? Appearance.MouseOverBorderColor :
-                   BorderColor;
+            var dest = IsChecked   ? Appearance.CheckedBorderColor   :
+                       IsMouseDown ? Appearance.MouseDownBorderColor :
+                       IsMouseOver ? Appearance.MouseOverBorderColor : Color.Empty;
+            return (dest != Color.Empty) ? dest : BorderColor;
         }
 
         /* ----------------------------------------------------------------- */
@@ -276,10 +276,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Color GetBackColor()
         {
-            return IsChecked   ? Appearance.CheckedBackColor   :
-                   IsMouseDown ? Appearance.MouseDownBackColor :
-                   IsMouseOver ? Appearance.MouseOverBackColor :
-                   View.BackColor;
+            var dest = IsChecked   ? Appearance.CheckedBackColor   :
+                       IsMouseDown ? Appearance.MouseDownBackColor :
+                       IsMouseOver ? Appearance.MouseOverBackColor : Color.Empty;
+            return (dest != Color.Empty) ? dest : View.BackColor;
         }
 
         /* ----------------------------------------------------------------- */
@@ -293,10 +293,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Image GetImage()
         {
-            return IsChecked   ? Appearance.CheckedImage   :
-                   IsMouseDown ? Appearance.MouseDownImage :
-                   IsMouseOver ? Appearance.MouseOverImage :
-                   View.Image;
+            var dest = IsChecked   ? Appearance.CheckedImage   :
+                       IsMouseDown ? Appearance.MouseDownImage :
+                       IsMouseOver ? Appearance.MouseOverImage : null;
+            return (dest != null) ? dest : View.Image;
         }
 
         /* ----------------------------------------------------------------- */
@@ -310,10 +310,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Image GetBackgroundImage()
         {
-            return IsChecked   ? Appearance.CheckedBackgroundImage   :
-                   IsMouseDown ? Appearance.MouseDownBackgroundImage :
-                   IsMouseOver ? Appearance.MouseOverBackgroundImage :
-                   View.BackgroundImage;
+            var dest = IsChecked   ? Appearance.CheckedBackgroundImage   :
+                       IsMouseDown ? Appearance.MouseDownBackgroundImage :
+                       IsMouseOver ? Appearance.MouseOverBackgroundImage : null;
+            return (dest != null) ? dest : View.BackgroundImage;
         }
 
         #endregion

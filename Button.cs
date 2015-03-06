@@ -56,6 +56,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonAppearance Appearance
         {
             get { return _painter.Appearance; }
