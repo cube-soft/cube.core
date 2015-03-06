@@ -242,6 +242,7 @@ namespace Cube.Forms
         protected virtual void OnMouseUp(MouseEventArgs e)
         {
             IsMouseDown = false;
+            View.Refresh();
         }
 
         #endregion
