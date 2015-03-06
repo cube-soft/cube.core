@@ -75,6 +75,20 @@ namespace Cube.Extensions.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// DrawText
+        /// 
+        /// <summary>
+        /// 指定したフォント、色で指定された位置にテキストを描画します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void DrawText(this Graphics gs, string text, Font font, Color color, ContentAlignment align)
+        {
+            // TODO: implementation
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// DrawImage
         /// 
         /// <summary>

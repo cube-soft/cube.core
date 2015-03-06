@@ -186,6 +186,7 @@ namespace Cube.Forms
             gs.FillBackground(GetBackColor());
             gs.DrawImage(GetBackgroundImage(), View.BackgroundImageLayout);
             gs.DrawImage(GetImage(), View.ImageAlign);
+            gs.DrawText(View.Text, View.Font, GetForeColor(), View.TextAlign);
             gs.DrawBorder(GetBorderColor(), BorderSize);
         }
 
