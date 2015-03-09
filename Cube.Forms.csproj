@@ -44,7 +44,7 @@
     <Compile Include="Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ButtonAppearance.cs" />
+    <Compile Include="Surface.cs" />
     <Compile Include="ButtonPainter.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="NullExpandableObjectConverter.cs" />

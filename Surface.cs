@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ButtonAppearance.cs
+/// Surface.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -16,21 +16,15 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.ButtonAppearance
+    /// Cube.Forms.Surface
     /// 
     /// <summary>
-    /// ボタンの外観を定義するためのクラスです。
+    /// コンポーネントの外観を定義するためのクラスです。
     /// </summary>
-    /// 
-    /// <remarks>
-    /// 通常時の外観は、それぞれ ButtonBase クラスの BackColor, Image,
-    /// BackgroundImage を参照する事とします。また、通常時の BorderColor に
-    /// ついては、ButtonBase を継承したクラスで定義されているものとします。
-    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(NullExpandableObjectConverter))]
-    public class ButtonAppearance
+    public class Surface
     {
         /* ----------------------------------------------------------------- */
         ///

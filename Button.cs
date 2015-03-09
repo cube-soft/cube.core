@@ -48,7 +48,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Appearance
+        /// Surface
         ///
         /// <summary>
         /// ボタンの外観を取得または設定します。
@@ -57,9 +57,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonAppearance Appearance
+        public Surface Surface
         {
-            get { return _painter.Appearance; }
+            get { return _painter.Surface; }
         }
 
         /* ----------------------------------------------------------------- */

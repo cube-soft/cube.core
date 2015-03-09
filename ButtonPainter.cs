@@ -69,16 +69,16 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Appearance
+        /// Surface
         /// 
         /// <summary>
         /// 外観を定義したオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonAppearance Appearance
+        public Surface Surface
         {
-            get { return _appearance; }
+            get { return _surface; }
         }
 
         /* ----------------------------------------------------------------- */
@@ -307,9 +307,9 @@ namespace Cube.Forms
         private Color GetBorderColor()
         {
             return Select(BorderColor,
-                          Appearance.CheckedBorderColor,
-                          Appearance.MouseOverBorderColor,
-                          Appearance.MouseDownBorderColor);
+                          Surface.CheckedBorderColor,
+                          Surface.MouseOverBorderColor,
+                          Surface.MouseDownBorderColor);
         }
 
         /* ----------------------------------------------------------------- */
@@ -324,9 +324,9 @@ namespace Cube.Forms
         private Color GetBackColor()
         {
             return Select(View.BackColor,
-                          Appearance.CheckedBackColor,
-                          Appearance.MouseOverBackColor,
-                          Appearance.MouseDownBackColor);
+                          Surface.CheckedBackColor,
+                          Surface.MouseOverBackColor,
+                          Surface.MouseDownBackColor);
         }
 
         /* ----------------------------------------------------------------- */
@@ -341,9 +341,9 @@ namespace Cube.Forms
         private Color GetForeColor()
         {
             return Select(View.ForeColor,
-                          Appearance.CheckedForeColor,
-                          Appearance.MouseOverForeColor,
-                          Appearance.MouseDownForeColor);
+                          Surface.CheckedForeColor,
+                          Surface.MouseOverForeColor,
+                          Surface.MouseDownForeColor);
         }
 
         /* ----------------------------------------------------------------- */
@@ -358,9 +358,9 @@ namespace Cube.Forms
         private Image GetImage()
         {
             return Select(View.Image,
-                          Appearance.CheckedImage,
-                          Appearance.MouseOverImage,
-                          Appearance.MouseDownImage);
+                          Surface.CheckedImage,
+                          Surface.MouseOverImage,
+                          Surface.MouseDownImage);
         }
 
         /* ----------------------------------------------------------------- */
@@ -375,16 +375,16 @@ namespace Cube.Forms
         private Image GetBackgroundImage()
         {
             return Select(View.BackgroundImage,
-                          Appearance.CheckedBackgroundImage,
-                          Appearance.MouseOverBackgroundImage,
-                          Appearance.MouseDownBackgroundImage);
+                          Surface.CheckedBackgroundImage,
+                          Surface.MouseOverBackgroundImage,
+                          Surface.MouseDownBackgroundImage);
         }
 
         #endregion
 
         #region Fields
         private ButtonBase _view = null;
-        private ButtonAppearance _appearance = new ButtonAppearance();
+        private Surface _surface = new Surface();
         private Color _borderColor = Color.Empty;
         private int _borderSize = 0;
         private bool _checked = false;
