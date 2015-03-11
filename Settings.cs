@@ -60,33 +60,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static T Load<T>(RegistryKey root)
         {
-            var dataMembers = typeof(T).GetProperties()
-                                       .Where(member => Attribute.IsDefined(member, typeof(DataMemberAttribute)));
-
-            var type = typeof(T);
-            var ret = System.Activator.CreateInstance<T>();
-            foreach (var member in dataMembers)
-            {                
-                try
-                {
-                    var regValue = root.GetValue(member.Name, null);
-                    if (regValue == null) return default(T);
-
-                    var propInfo = type.GetProperty(member.Name);
-                    var propType = propInfo.PropertyType;
-
-                    var value = Convert.ChangeType(regValue, propType);
-                    propInfo.SetValue(ret, value, null);
-
-                    System.Diagnostics.Trace.WriteLine(value.ToString());
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Trace.WriteLine(e.ToString());
-                }
-            }
-
-            return ret;
+            return (T)LoadRegistry(root, typeof(T));
         }
 
         /* ----------------------------------------------------------------- */
@@ -172,6 +146,55 @@ namespace Cube
             var serializer = new DataContractJsonSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
             return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadRegistry
+        /// 
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
+        /// オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static object LoadRegistry(RegistryKey root, Type type)
+        {
+            var dataMembers = type.GetProperties()
+                                  .Where(member => Attribute.IsDefined(member, typeof(DataMemberAttribute)));
+
+            try
+            {
+                var ret = System.Activator.CreateInstance(type);
+                foreach (var member in dataMembers)
+                {
+                    var propInfo = type.GetProperty(member.Name);
+                    var propType = propInfo.PropertyType;
+
+                    if (Type.GetTypeCode(propType) != TypeCode.Object)
+                    {
+                        var regValue = root.GetValue(member.Name, null);
+                        if (regValue == null) return null;
+
+                        var value = Convert.ChangeType(regValue, propType);
+                        propInfo.SetValue(ret, value, null);
+                    }
+                    else
+                    {
+                        using (var subkey = root.OpenSubKey(member.Name))
+                        {
+                            var obj = LoadRegistry(subkey, propType);
+                            propInfo.SetValue(ret, obj, null);
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.WriteLine(e.ToString());
+                return null;
+            }
         }
 
         #endregion
