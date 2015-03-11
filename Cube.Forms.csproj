@@ -44,19 +44,19 @@
     <Compile Include="Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Surface.cs" />
-    <Compile Include="ButtonPainter.cs" />
-    <Compile Include="GraphicsExtensions.cs" />
-    <Compile Include="NullExpandableObjectConverter.cs" />
+    <Compile Include="Detail\Surface.cs" />
+    <Compile Include="Detail\ButtonPainter.cs" />
+    <Compile Include="Detail\GraphicsExtensions.cs" />
+    <Compile Include="Detail\NullExpandableObjectConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RadioButtonPainter.cs" />
+    <Compile Include="Detail\RadioButtonPainter.cs" />
     <Compile Include="ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToggleButtonPainter.cs" />
+    <Compile Include="Detail\ToggleButtonPainter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
