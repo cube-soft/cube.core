@@ -78,6 +78,8 @@ namespace Cube.Tests
                     var data = Cube.Settings.Load<Person>(registrar.TargetKey);
                     Assert.That(data.Name, Is.EqualTo("Harry Potter"));
                     Assert.That(data.Age, Is.EqualTo(11));
+                    Assert.That(data.Phone.Type, Is.EqualTo("Mobile"));
+                    Assert.That(data.Phone.Number, Is.EqualTo("090-1234-5678"));
                     Assert.That(data.Secret, Is.Null);
                 }
             });
@@ -103,8 +105,31 @@ namespace Cube.Tests
             [DataMember]
             public int Age { get; set; }
 
+            [DataMember]
+            public Phone Phone { get; set; }
+
             public string Secret { get; set; }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Phone
+        /// 
+        /// <summary>
+        /// テスト用のデータクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataContract]
+        internal class Phone
+        {
+            [DataMember]
+            public string Type { get; set; }
+
+            [DataMember]
+            public string Number { get; set; }
+        }
+
 
         /* ----------------------------------------------------------------- */
         ///
@@ -160,15 +185,19 @@ namespace Cube.Tests
             {
                 var name = @"Software\CubeSoft";
                 _parent = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name);
-                _target = _parent.CreateSubKey(_subkey);
+                _target = _parent.CreateSubKey(_root);
                 _target.SetValue("Name", "Harry Potter");
                 _target.SetValue("Age", 11);
+
+                _child = _target.CreateSubKey(_subkey);
+                _child.SetValue("Type", "Mobile");
+                _child.SetValue("Number", "090-1234-5678");
             }
 
             private void Delete()
             {
                 _target.Close();
-                _parent.DeleteSubKeyTree(_subkey);
+                _parent.DeleteSubKeyTree(_root);
                 _parent.Close();
             }
 
@@ -178,7 +207,9 @@ namespace Cube.Tests
 
             private Microsoft.Win32.RegistryKey _parent = null;
             private Microsoft.Win32.RegistryKey _target = null;
-            private string _subkey = "SettingsTester";
+            private Microsoft.Win32.RegistryKey _child = null;
+            private string _root = "SettingsTester";
+            private string _subkey = "Phone";
             private bool _disposed = false;
 
             #endregion
