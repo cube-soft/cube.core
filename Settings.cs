@@ -9,11 +9,12 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Text;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Text;
 using Microsoft.Win32;
-using System.Linq;
 
 namespace Cube
 {
@@ -59,26 +60,33 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static T Load<T>(RegistryKey root)
         {
-            // TODO:
-            // 1. T に定義されている [DataMember] の名前一覧を取得する
-            //    例えば、SettingsTester.LoadRegistry() を実行した場合、
-            //    "Name, Age" と Debug.WriteLine で表示できるようにしてみる。
-            //    ※ 順序や出力フォーマットは必ずしも上記でなくても良い
-            // 2. 1. で取得した各名前に対応する値を root サブキー下から
-            //    探す処理を実装
-            // 3. 2. で探した値を T の各メンバに代入する。
-            //    各メンバの型へ適切に変換する方法を探す。
-
-            var dataMembers = typeof(T).GetMembers()
+            var dataMembers = typeof(T).GetProperties()
                                        .Where(member => Attribute.IsDefined(member, typeof(DataMemberAttribute)));
 
+            var type = typeof(T);
+            var ret = System.Activator.CreateInstance<T>();
             foreach (var member in dataMembers)
-            {
+            {                
+                try
+                {
+                    var regValue = root.GetValue(member.Name, null);
+                    if (regValue == null) return default(T);
 
-                System.Diagnostics.Trace.WriteLine(member.Name);
+                    var propInfo = type.GetProperty(member.Name);
+                    var propType = propInfo.PropertyType;
+
+                    var value = Convert.ChangeType(regValue, propType);
+                    propInfo.SetValue(ret, value, null);
+
+                    System.Diagnostics.Trace.WriteLine(value.ToString());
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Trace.WriteLine(e.ToString());
+                }
             }
 
-            return default(T);
+            return ret;
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,7 +118,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Load
+        /// Save
         /// 
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
