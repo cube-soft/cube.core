@@ -39,7 +39,11 @@ namespace Cube.Forms
             : base()
         {
             _painter = new ButtonPainter(this);
-            Reset();
+
+            BorderColor = System.Drawing.Color.Black;
+            BorderSize = 1;
+            base.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            base.UseVisualStyleBackColor = false;
         }
 
         #endregion
@@ -120,27 +124,6 @@ namespace Cube.Forms
         }
 
         #endregion
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reset
-        ///
-        /// <summary>
-        /// 初期状態に再設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Reset()
-        {
-            BorderColor = System.Drawing.Color.Black;
-            BorderSize = 1;
-            base.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            base.UseVisualStyleBackColor = false;
-        }
 
         #endregion
 
