@@ -183,11 +183,12 @@ namespace Cube.Forms
             if (e == null || e.Graphics == null) return;
 
             var gs = e.Graphics;
-            gs.FillBackground(GetBackColor());
-            gs.DrawImage(GetBackgroundImage(), View.BackgroundImageLayout);
-            gs.DrawImage(GetImage(), View.ImageAlign);
-            gs.DrawText(View.Text, View.Font, GetForeColor(), View.TextAlign);
-            gs.DrawBorder(GetBorderColor(), BorderSize);
+            var rect = _view.ClientRectangle;
+            gs.FillBackground(rect, GetBackColor());
+            gs.DrawImage(rect, GetBackgroundImage(), View.BackgroundImageLayout);
+            gs.DrawImage(rect, GetImage(), View.ImageAlign);
+            gs.DrawText(rect, View.Text, View.Font, GetForeColor(), View.TextAlign);
+            gs.DrawBorder(rect, GetBorderColor(), BorderSize);
         }
 
         /* ----------------------------------------------------------------- */

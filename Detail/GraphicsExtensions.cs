@@ -36,13 +36,13 @@ namespace Cube.Extensions.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void FillBackground(this Graphics gs, Color color)
+        public static void FillBackground(this Graphics gs, Rectangle rect, Color color)
         {
             if (color == Color.Empty) return;
 
             using (var brush = new SolidBrush(color))
             {
-                gs.FillRectangle(brush, gs.ClipBounds);
+                gs.FillRectangle(brush, rect);
             }
         }
 
@@ -60,17 +60,17 @@ namespace Cube.Extensions.Forms
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawBorder(this Graphics gs, Color color, int width)
+        public static void DrawBorder(this Graphics gs, Rectangle rect, Color color, int width)
         {
             if (color == Color.Empty || width <= 0) return;
 
-            const float margin = 0.5f;
-            using (var pen = new Pen(color, width))
-            {
-                pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
-                var rect = gs.ClipBounds;
-                gs.DrawRectangle(pen, rect.X, rect.Y, rect.Width - margin, rect.Height - margin);
-            }
+            //var rectF = rect;
+            //var rect = new Rectangle((int)rectF.X, (int)rectF.Y, (int)rectF.Width, (int)rectF.Height);
+            ControlPaint.DrawBorder(gs, rect,
+                color, width, ButtonBorderStyle.Solid,
+                color, width, ButtonBorderStyle.Solid,
+                color, width, ButtonBorderStyle.Solid,
+                color, width, ButtonBorderStyle.Solid);
         }
 
         /* ----------------------------------------------------------------- */
@@ -82,9 +82,52 @@ namespace Cube.Extensions.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawText(this Graphics gs, string text, Font font, Color color, ContentAlignment align)
+        public static void DrawText(this Graphics gs, Rectangle rect, string text, Font font, Color color, ContentAlignment align)
         {
-            // TODO: implementation
+            using (var brush = new System.Drawing.SolidBrush(color))
+            {
+                var format = new StringFormat();
+                switch (align)
+                {
+                    case ContentAlignment.TopRight:
+                        format.Alignment = StringAlignment.Far;
+                        format.LineAlignment = StringAlignment.Near;
+                        break;
+                    case ContentAlignment.TopLeft:
+                        format.Alignment = StringAlignment.Near;
+                        format.LineAlignment = StringAlignment.Near;
+                        break;
+                    case ContentAlignment.TopCenter:
+                        format.Alignment = StringAlignment.Center;
+                        format.LineAlignment = StringAlignment.Near;
+                        break;
+                    case ContentAlignment.MiddleRight:
+                        format.Alignment = StringAlignment.Far;
+                        format.LineAlignment = StringAlignment.Center;
+                        break;
+                    case ContentAlignment.MiddleLeft:
+                        format.Alignment = StringAlignment.Near;
+                        format.LineAlignment = StringAlignment.Center;
+                        break;
+                    case ContentAlignment.MiddleCenter:
+                        format.Alignment = StringAlignment.Center;
+                        format.LineAlignment = StringAlignment.Center;
+                        break;
+                    case ContentAlignment.BottomRight:
+                        format.Alignment = StringAlignment.Far;
+                        format.LineAlignment = StringAlignment.Far;
+                        break;
+                    case ContentAlignment.BottomLeft:
+                        format.Alignment = StringAlignment.Near;
+                        format.LineAlignment = StringAlignment.Far;
+                        break;
+                    case ContentAlignment.BottomCenter:
+                        format.Alignment = StringAlignment.Center;
+                        format.LineAlignment = StringAlignment.Far;
+                        break;
+                }
+                gs.DrawString(text, font, brush, rect, format);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -96,11 +139,11 @@ namespace Cube.Extensions.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawImage(this Graphics gs, Image image, ContentAlignment align)
+        public static void DrawImage(this Graphics gs, Rectangle rect, Image image, ContentAlignment align)
         {
             if (image == null) return;
-            var rect = GetClipBounds(gs.ClipBounds, image, align);
-            gs.DrawImage(image, rect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
+            var rectangle = GetClipBounds(rect, image, align);
+            gs.DrawImage(image, rectangle, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,29 +153,52 @@ namespace Cube.Extensions.Forms
         /// <summary>
         /// 指定した位置に画像を描画します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: ImageLayout が Stretch, Zoom, Tile の場合の実装
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawImage(this Graphics gs, Image image, ImageLayout layout)
+        public static void DrawImage(this Graphics gs, Rectangle rect, Image image, ImageLayout layout)
         {
             if (image == null) return;
 
             switch (layout)
             {
                 case ImageLayout.None:
-                    gs.DrawImage(image, ContentAlignment.TopLeft);
+                    gs.DrawImage(rect, image, ContentAlignment.TopLeft);
                     break;
                 case ImageLayout.Center:
-                    gs.DrawImage(image, ContentAlignment.MiddleCenter);
+                    gs.DrawImage(rect, image, ContentAlignment.MiddleCenter);
                     break;
                 case ImageLayout.Stretch:
+                    gs.DrawImage(image, rect, new RectangleF(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
                     break;
                 case ImageLayout.Zoom:
+                    int height = 0;
+                    int width = 0;
+                    var hrate = (double)(rect.Height / image.Height);
+                    var wrate = (double)(rect.Width / image.Width);
+                    if (hrate < wrate)
+                    {
+                        width = (int)Math.Floor(image.Width * hrate);
+                        height = rect.Height;
+                    }
+                    else
+                    {
+                        width = rect.Width;
+                        height = (int)Math.Floor(image.Height * wrate);
+                    }
+                    var resizeImage = new Bitmap(width, height);
+                    using (var g = Graphics.FromImage(resizeImage))
+                    {
+                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        g.DrawImage(image, 0, 0, width, height);
+                    }
+                    gs.DrawImage(rect, resizeImage, ContentAlignment.MiddleCenter);
                     break;
                 case ImageLayout.Tile:
+                    using (var brush = new TextureBrush(image))
+                    {
+                        brush.WrapMode = System.Drawing.Drawing2D.WrapMode.Tile;
+                        gs.FillRectangle(brush, rect);
+                    }
                     break;
                 default:
                     break;
