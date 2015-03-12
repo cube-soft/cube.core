@@ -41,8 +41,8 @@
             this.ImageRadioButton2 = new Cube.Forms.RadioButton();
             this.ImageRadioButton1 = new Cube.Forms.RadioButton();
             this.FlatButton = new Cube.Forms.Button();
-            this.ImageButton = new Cube.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ImageButton1 = new Cube.Forms.Button();
+            this.ImageButton2 = new Cube.Forms.Button();
             this.ButtonGroupBox.SuspendLayout();
             this.RadioButtonGroupBox.SuspendLayout();
             this.ToggleButtonGroupBox.SuspendLayout();
@@ -50,8 +50,9 @@
             // 
             // ButtonGroupBox
             // 
+            this.ButtonGroupBox.Controls.Add(this.ImageButton2);
             this.ButtonGroupBox.Controls.Add(this.FlatButton);
-            this.ButtonGroupBox.Controls.Add(this.ImageButton);
+            this.ButtonGroupBox.Controls.Add(this.ImageButton1);
             this.ButtonGroupBox.Location = new System.Drawing.Point(12, 12);
             this.ButtonGroupBox.Name = "ButtonGroupBox";
             this.ButtonGroupBox.Size = new System.Drawing.Size(285, 88);
@@ -308,71 +309,88 @@
             // FlatButton
             // 
             this.FlatButton.BackColor = System.Drawing.Color.White;
-            this.FlatButton.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
             this.FlatButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FlatButton.Location = new System.Drawing.Point(78, 20);
+            this.FlatButton.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.FlatButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.FlatButton.Location = new System.Drawing.Point(144, 20);
             this.FlatButton.Name = "FlatButton";
-            this.FlatButton.Size = new System.Drawing.Size(195, 50);
+            this.FlatButton.Size = new System.Drawing.Size(129, 50);
             this.FlatButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
             this.FlatButton.Surface.CheckedBackgroundImage = null;
             this.FlatButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
             this.FlatButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
             this.FlatButton.Surface.CheckedImage = null;
-            this.FlatButton.Surface.MouseDownBackColor = System.Drawing.Color.Empty;
+            this.FlatButton.Surface.MouseDownBackColor = System.Drawing.Color.Turquoise;
             this.FlatButton.Surface.MouseDownBackgroundImage = null;
             this.FlatButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.FlatButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
+            this.FlatButton.Surface.MouseDownForeColor = System.Drawing.Color.Red;
             this.FlatButton.Surface.MouseDownImage = null;
-            this.FlatButton.Surface.MouseOverBackColor = System.Drawing.Color.Empty;
+            this.FlatButton.Surface.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
             this.FlatButton.Surface.MouseOverBackgroundImage = null;
-            this.FlatButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
+            this.FlatButton.Surface.MouseOverBorderColor = System.Drawing.Color.RoyalBlue;
             this.FlatButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.FlatButton.Surface.MouseOverImage = null;
+            this.FlatButton.Surface.MouseOverImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
             this.FlatButton.TabIndex = 3;
-            this.FlatButton.Text = "SampleText";
+            this.FlatButton.Text = "FreeText";
             this.FlatButton.UseVisualStyleBackColor = false;
             // 
-            // ImageButton
+            // ImageButton1
             // 
-            this.ImageButton.BackColor = System.Drawing.Color.White;
-            this.ImageButton.BorderSize = 10;
-            this.ImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ImageButton.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageButton.Location = new System.Drawing.Point(12, 20);
-            this.ImageButton.Name = "ImageButton";
-            this.ImageButton.Size = new System.Drawing.Size(60, 50);
-            this.ImageButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
-            this.ImageButton.Surface.CheckedBackgroundImage = null;
-            this.ImageButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.ImageButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
-            this.ImageButton.Surface.CheckedImage = null;
-            this.ImageButton.Surface.MouseDownBackColor = System.Drawing.Color.Turquoise;
-            this.ImageButton.Surface.MouseDownBackgroundImage = null;
-            this.ImageButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.ImageButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
-            this.ImageButton.Surface.MouseDownImage = null;
-            this.ImageButton.Surface.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
-            this.ImageButton.Surface.MouseOverBackgroundImage = null;
-            this.ImageButton.Surface.MouseOverBorderColor = System.Drawing.Color.RoyalBlue;
-            this.ImageButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.ImageButton.Surface.MouseOverImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageButton.TabIndex = 2;
-            this.ImageButton.UseVisualStyleBackColor = false;
+            this.ImageButton1.BackColor = System.Drawing.Color.White;
+            this.ImageButton1.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ImageButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageButton1.Location = new System.Drawing.Point(12, 20);
+            this.ImageButton1.Name = "ImageButton1";
+            this.ImageButton1.Size = new System.Drawing.Size(60, 50);
+            this.ImageButton1.Surface.CheckedBackColor = System.Drawing.Color.Empty;
+            this.ImageButton1.Surface.CheckedBackgroundImage = null;
+            this.ImageButton1.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton1.Surface.CheckedForeColor = System.Drawing.Color.Empty;
+            this.ImageButton1.Surface.CheckedImage = null;
+            this.ImageButton1.Surface.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageButton1.Surface.MouseDownBackgroundImage = null;
+            this.ImageButton1.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton1.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
+            this.ImageButton1.Surface.MouseDownImage = null;
+            this.ImageButton1.Surface.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageButton1.Surface.MouseOverBackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
+            this.ImageButton1.Surface.MouseOverBorderColor = System.Drawing.Color.RoyalBlue;
+            this.ImageButton1.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
+            this.ImageButton1.Surface.MouseOverImage = null;
+            this.ImageButton1.TabIndex = 2;
+            this.ImageButton1.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // ImageButton2
             // 
-            this.button1.Location = new System.Drawing.Point(111, 294);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ImageButton2.BackColor = System.Drawing.Color.White;
+            this.ImageButton2.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageButton2.Location = new System.Drawing.Point(78, 20);
+            this.ImageButton2.Name = "ImageButton2";
+            this.ImageButton2.Size = new System.Drawing.Size(60, 50);
+            this.ImageButton2.Surface.CheckedBackColor = System.Drawing.Color.Empty;
+            this.ImageButton2.Surface.CheckedBackgroundImage = null;
+            this.ImageButton2.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton2.Surface.CheckedForeColor = System.Drawing.Color.Empty;
+            this.ImageButton2.Surface.CheckedImage = null;
+            this.ImageButton2.Surface.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageButton2.Surface.MouseDownBackgroundImage = null;
+            this.ImageButton2.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton2.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
+            this.ImageButton2.Surface.MouseDownImage = null;
+            this.ImageButton2.Surface.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageButton2.Surface.MouseOverBackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
+            this.ImageButton2.Surface.MouseOverBorderColor = System.Drawing.Color.RoyalBlue;
+            this.ImageButton2.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
+            this.ImageButton2.Surface.MouseOverImage = null;
+            this.ImageButton2.TabIndex = 4;
+            this.ImageButton2.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(309, 322);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(314, 322);
             this.Controls.Add(this.ToggleButtonGroupBox);
             this.Controls.Add(this.RadioButtonGroupBox);
             this.Controls.Add(this.ButtonGroupBox);
@@ -392,7 +410,7 @@
 
         private System.Windows.Forms.GroupBox ButtonGroupBox;
         private Button FlatButton;
-        private Button ImageButton;
+        private Button ImageButton1;
         private System.Windows.Forms.GroupBox RadioButtonGroupBox;
         private RadioButton ImageRadioButton1;
         private RadioButton ImageRadioButton2;
@@ -403,7 +421,7 @@
         private ToggleButton ImageToggleButton2;
         private ToggleButton ImageToggleButton4;
         private ToggleButton ImageToggleButton3;
-        private System.Windows.Forms.Button button1;
+        private Button ImageButton2;
 
 
 
