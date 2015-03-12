@@ -61,6 +61,7 @@
             // FlatButton
             // 
             this.FlatButton.BackColor = System.Drawing.Color.White;
+            this.FlatButton.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
             this.FlatButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FlatButton.Location = new System.Drawing.Point(78, 20);
             this.FlatButton.Name = "FlatButton";
