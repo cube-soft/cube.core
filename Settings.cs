@@ -118,6 +118,55 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// LoadRegistry
+        /// 
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
+        /// オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static object LoadRegistry(RegistryKey root, Type type)
+        {
+            try
+            {
+                var dest = System.Activator.CreateInstance(type);
+                var items = type.GetProperties().Where(item =>
+                {
+                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
+                });
+
+                foreach (var item in items)
+                {
+                    var info = type.GetProperty(item.Name);
+                    if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
+                    {
+                        var value = root.GetValue(item.Name, null);
+                        if (value == null) return null;
+
+                        var changed = Convert.ChangeType(value, info.PropertyType);
+                        info.SetValue(dest, changed, null);
+                    }
+                    else
+                    {
+                        using (var subkey = root.OpenSubKey(item.Name))
+                        {
+                            var obj = LoadRegistry(subkey, info.PropertyType);
+                            info.SetValue(obj, obj, null);
+                        }
+                    }
+                }
+                return dest;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceError(e.ToString());
+                return null;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// LoadXml
         /// 
         /// <summary>
@@ -146,55 +195,6 @@ namespace Cube
             var serializer = new DataContractJsonSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
             return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadRegistry
-        /// 
-        /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
-        /// オブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static object LoadRegistry(RegistryKey root, Type type)
-        {
-            var dataMembers = type.GetProperties()
-                                  .Where(member => Attribute.IsDefined(member, typeof(DataMemberAttribute)));
-
-            try
-            {
-                var ret = System.Activator.CreateInstance(type);
-                foreach (var member in dataMembers)
-                {
-                    var propInfo = type.GetProperty(member.Name);
-                    var propType = propInfo.PropertyType;
-
-                    if (Type.GetTypeCode(propType) != TypeCode.Object)
-                    {
-                        var regValue = root.GetValue(member.Name, null);
-                        if (regValue == null) return null;
-
-                        var value = Convert.ChangeType(regValue, propType);
-                        propInfo.SetValue(ret, value, null);
-                    }
-                    else
-                    {
-                        using (var subkey = root.OpenSubKey(member.Name))
-                        {
-                            var obj = LoadRegistry(subkey, propType);
-                            propInfo.SetValue(ret, obj, null);
-                        }
-                    }
-                }
-                return ret;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Trace.WriteLine(e.ToString());
-                return null;
-            }
         }
 
         #endregion
