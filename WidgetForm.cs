@@ -95,7 +95,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /// <remarks>
-        /// ドラッグ中のマウス移動にフォームが追随するようにカスタマイズ
+        /// ドラッグ中のマウス移動にフォームを追随させるうにカスタマイズ
         /// します。
         /// </remarks>
         ///
@@ -121,17 +121,65 @@ namespace Cube.Forms
         /// 
         /// <remarks>
         /// 追加されたコントロールに対しても、ドラッグ中のマウス移動に
-        /// フォームが追随するようにイベントハンドラを設定します。
+        /// フォームを追随させるためのイベントハンドラを設定します。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected override void OnControlAdded(ControlEventArgs e)
         {
-            e.Control.MouseDown += (s, ev) => OnMouseDown(ev);
+            AddMouseDown(e.Control);
             base.OnControlAdded(e);
         }
 
+
         #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AddMouseDown
+        /// 
+        /// <summary>
+        /// コントロールに対して、ドラッグ中のマウス移動に
+        /// フォームを追随させるためのイベントハンドラを設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void AddMouseDown(Control control)
+        {
+            foreach (Control child in control.Controls) AddMouseDown(child);
+            if (MouseDownAvailable(control))
+            {
+                control.MouseDown += (s, e) => OnMouseDown(e);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MouseDownAvailable
+        /// 
+        /// <summary>
+        /// MouseDown イベントに対して、ドラッグ中のマウス移動にフォームを
+        /// 追随させるためのハンドラを追加して良いかどうかを判別します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: MouseEnter, MouseHover, MouseLeave, MouseDown, MouseUp,
+        ///       MouseClick, MouseDoubleclick イベントに対して、
+        ///       既にハンドラが設定されている場合には false を返す。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool MouseDownAvailable(Control control)
+        {
+            if (control is ContainerControl ||
+                control is Panel ||
+                control is GroupBox ||
+                control is Label ||
+                control is PictureBox) return true;
+            return false;
+        }
 
         #region Win32 APIs
 
@@ -146,6 +194,8 @@ namespace Cube.Forms
             [DllImport("user32.dll", CharSet = CharSet.Auto)]
             public static extern bool ReleaseCapture();
         }
+
+        #endregion
 
         #endregion
     }
