@@ -152,7 +152,7 @@ namespace Cube
                         using (var subkey = root.OpenSubKey(item.Name))
                         {
                             var obj = LoadRegistry(subkey, info.PropertyType);
-                            info.SetValue(obj, obj, null);
+                            info.SetValue(dest, obj, null);
                         }
                     }
                 }

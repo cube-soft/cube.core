@@ -76,6 +76,7 @@ namespace Cube.Tests
                 using (var registrar = new Registrar())
                 {
                     var data = Cube.Settings.Load<Person>(registrar.TargetKey);
+                    Assert.That(data, Is.Not.Null);
                     Assert.That(data.Name, Is.EqualTo("Harry Potter"));
                     Assert.That(data.Age, Is.EqualTo(11));
                     Assert.That(data.Phone.Type, Is.EqualTo("Mobile"));
@@ -104,6 +105,12 @@ namespace Cube.Tests
 
             [DataMember]
             public int Age { get; set; }
+
+            [DataMember]
+            public bool Activation { get; set; }
+
+            [DataMember]
+            public DateTime Creation { get; set; }
 
             [DataMember]
             public Phone Phone { get; set; }
