@@ -142,7 +142,7 @@ namespace Cube
                     if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
                     {
                         var value = root.GetValue(item.Name, null);
-                        if (value == null) return null;
+                        if (value == null) continue;
 
                         var changed = Convert.ChangeType(value, info.PropertyType);
                         info.SetValue(dest, changed, null);
