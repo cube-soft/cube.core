@@ -13,7 +13,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Reflection;
+using Cube.Extensions.Forms;
 
 namespace Cube.Forms
 {
@@ -164,25 +164,18 @@ namespace Cube.Forms
         /// MouseDown イベントに対して、ドラッグ中のマウス移動にフォームを
         /// 追随させるためのハンドラを追加して良いかどうかを判別します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: MouseEnter, MouseHover, MouseLeave, MouseDown, MouseUp,
-        ///       MouseClick, MouseDoubleclick イベントに対して、
-        ///       既にハンドラが設定されている場合には false を返す。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private bool MouseDownAvailable(Control control)
         {
-            var has =
-                HasEventHandler(control, "MouseEnter") ||
-                HasEventHandler(control, "MouseHover") ||
-                HasEventHandler(control, "MouseLeave") ||
-                HasEventHandler(control, "MouseDown") ||
-                HasEventHandler(control, "MouseUp") ||
-                HasEventHandler(control, "MouseClick") ||
-                HasEventHandler(control, "MouseDoubleclick");
-            return !has;
+            var reserved = control.HasEventHandler("MouseEnter") ||
+                           control.HasEventHandler("MouseHover") ||
+                           control.HasEventHandler("MouseLeave") ||
+                           control.HasEventHandler("MouseDown") ||
+                           control.HasEventHandler("MouseUp") ||
+                           control.HasEventHandler("MouseClick") ||
+                           control.HasEventHandler("MouseDoubleclick");
+            return !reserved;
         }
 
         #region Win32 APIs
@@ -197,66 +190,6 @@ namespace Cube.Forms
 
             [DllImport("user32.dll", CharSet = CharSet.Auto)]
             public static extern bool ReleaseCapture();
-        }
-
-        #endregion
-
-        #region HasEventHandler
-
-        public static bool HasEventHandler(object obj, string eventName)
-        {
-            EventHandlerList ehl = GetEvents(obj);
-            if (ehl == null) return false;
-
-            object key = GetEventKey(obj, eventName);
-            if (key == null) return false;
-
-            return ehl[key] != null;
-        }
-
-        private delegate MethodInfo delGetEventsMethod(Type objType, delGetEventsMethod callback);
-        private static EventHandlerList GetEvents(object obj)
-        {
-            delGetEventsMethod GetEventsMethod = delegate(Type objtype, delGetEventsMethod callback)
-            {
-                MethodInfo mi = objtype.GetMethod("get_Events", All);
-                if ((mi == null) & (objtype.BaseType != null))
-                    mi = callback(objtype.BaseType, callback);
-                return mi;
-            };
-
-            MethodInfo methodInfo = GetEventsMethod(obj.GetType(), GetEventsMethod);
-            if (methodInfo == null) return null;
-            return (EventHandlerList)methodInfo.Invoke(obj, new object[] { });
-        }
-
-        private delegate FieldInfo delGetKeyField(Type objType, string eventName, delGetKeyField callback);
-        private static object GetEventKey(object obj, string eventName)
-        {
-            delGetKeyField GetKeyField = delegate(Type objtype, string eventname, delGetKeyField callback)
-            {
-                FieldInfo fi = objtype.GetField("Event" + eventName, All);
-                if ((fi == null) & (objtype.BaseType != null))
-                    fi = callback(objtype.BaseType, eventName, callback);
-                return fi;
-            };
-
-            FieldInfo fieldInfo = GetKeyField(obj.GetType(), eventName, GetKeyField);
-            if (fieldInfo == null) return null;
-            return fieldInfo.GetValue(obj);
-        }
-
-        private static BindingFlags All
-        {
-            get
-            {
-                return
-                    BindingFlags.Public |
-                    BindingFlags.NonPublic |
-                    BindingFlags.Instance |
-                    BindingFlags.IgnoreCase |
-                    BindingFlags.Static;
-            }
         }
 
         #endregion
