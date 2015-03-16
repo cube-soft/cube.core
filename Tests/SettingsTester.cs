@@ -161,6 +161,46 @@ namespace Cube.Tests
             });
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveRegistry
+        /// 
+        /// <summary>
+        /// ファイルから設定を読み込むテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveRegistry()
+        {
+            
+            var person = new Person
+            { 
+                Identification = 123,
+                Name = "山田太郎",
+                Age = 20,
+                Activation = true,
+                Creation = new DateTime(2015, 3, 16, 18, 35, 30),
+                Phone = new Phone { Type = "Mobile", Number = "080-9876-5432" },
+                Secret = "hoge"
+            };
+            var name = @"Software\CubeSoft\SettingsTester";
+            using(var root = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name))
+            {
+                Cube.Settings.Save<Person>(person, root);
+                Assert.That(root.GetValue("Activation"), Is.EqualTo("True"));
+                Assert.That(root.GetValue("ID"), Is.EqualTo(123));
+                Assert.That(root.GetValue("Name"), Is.EqualTo("山田太郎"));
+                Assert.That(root.GetValue("Age"), Is.EqualTo(20));
+                Assert.That(root.GetValue("Creation"), Is.EqualTo(1426498530));
+                using (var subkey = root.OpenSubKey("Phone"))
+                {
+                    Assert.That(subkey.GetValue("Type"), Is.EqualTo("Mobile"));
+                    Assert.That(subkey.GetValue("Number"), Is.EqualTo("080-9876-5432"));
+                }
+            }
+        }
+
         #region Internal resources
 
         /* ----------------------------------------------------------------- */

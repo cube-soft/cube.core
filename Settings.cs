@@ -10,12 +10,10 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Text;
 using Microsoft.Win32;
-using System.Collections.Generic;
+using System.Reflection;
 
 namespace Cube
 {
@@ -100,7 +98,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(T src, RegistryKey root) { }
+        public static void Save<T>(T src, RegistryKey root)
+        {
+            SaveRegistry(src, typeof(T), root);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,10 +133,7 @@ namespace Cube
             try
             {
                 var dest = System.Activator.CreateInstance(type);
-                var items = type.GetProperties().Where(item =>
-                {
-                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
-                });
+                var items = GetDataMembers(type);
 
                 foreach (var item in items)
                 {
@@ -143,10 +141,12 @@ namespace Cube
                     if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
                     {
                         var attribute = (DataMemberAttribute)item.GetCustomAttributes(typeof(DataMemberAttribute), false)[0];
-                        var value = root.GetValue(attribute.Name, null);
+                        var name = string.IsNullOrEmpty(attribute.Name) ? item.Name : attribute.Name;
+
+                        var value = root.GetValue(name, null);
                         if (value == null) continue;
 
-                        var changed = Convert.ChangeType(value, info.PropertyType);
+                        var changed = ChangeType(value, info.PropertyType);
                         info.SetValue(dest, changed, null);
                     }
                     else
@@ -198,6 +198,89 @@ namespace Cube
             var dest = (T)serializer.ReadObject(src);
             return dest;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveRegistry
+        /// 
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SaveRegistry(object src, Type type, RegistryKey root)
+        {
+            var items = GetDataMembers(type);
+            foreach (var item in items)
+            {
+                var attribute = (DataMemberAttribute)item.GetCustomAttributes(typeof(DataMemberAttribute), false)[0];
+                var name = string.IsNullOrEmpty(attribute.Name) ? item.Name : attribute.Name;
+                var value = item.GetValue(src, null);
+                var typecode = Type.GetTypeCode(item.PropertyType);
+
+                if (typecode == TypeCode.DateTime) root.SetValue(name, ToUnixTime((DateTime)value));
+                else if (typecode != TypeCode.Object) root.SetValue(name, value);
+                else using (var subkey = root.CreateSubKey(name)) { SaveRegistry(value, item.PropertyType, subkey); }
+            }
+        }
+
+        public static System.Collections.Generic.IEnumerable<PropertyInfo> GetDataMembers(Type type)
+        {
+            return type.GetProperties().Where(item =>
+                {
+                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
+                });
+        }
+
+        #region Converting methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ChangeType
+        /// 
+        /// <summary>
+        /// 指定した型で、指定したオブジェクトと等しい値を持つ object を返します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static object ChangeType(object value, Type type)
+        {            
+            if (Type.GetTypeCode(type) == TypeCode.DateTime) return ToDateTime((int)value);
+            return Convert.ChangeType(value, type);            
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToDateTime
+        /// 
+        /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static DateTime ToDateTime(int unix)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unix).ToLocalTime();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToUnixTime
+        /// 
+        /// <summary>
+        /// DateTime オブジェクトから UNIX 時刻へ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static int ToUnixTime(DateTime time)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var utc = time.ToUniversalTime();
+            return (int)utc.Subtract(epoch).TotalSeconds;
+        }
+
+        #endregion
 
         #endregion
     }
