@@ -46,7 +46,8 @@
     </Compile>
     <Compile Include="Detail\Surface.cs" />
     <Compile Include="Detail\ButtonPainter.cs" />
-    <Compile Include="Detail\GraphicsExtensions.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\GraphicsExtensions.cs" />
     <Compile Include="Detail\NullExpandableObjectConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RadioButton.cs">

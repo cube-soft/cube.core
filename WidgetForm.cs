@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Cube.Extensions.Forms;
 
 namespace Cube.Forms
 {
@@ -163,22 +164,18 @@ namespace Cube.Forms
         /// MouseDown イベントに対して、ドラッグ中のマウス移動にフォームを
         /// 追随させるためのハンドラを追加して良いかどうかを判別します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: MouseEnter, MouseHover, MouseLeave, MouseDown, MouseUp,
-        ///       MouseClick, MouseDoubleclick イベントに対して、
-        ///       既にハンドラが設定されている場合には false を返す。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private bool MouseDownAvailable(Control control)
         {
-            if (control is ContainerControl ||
-                control is Panel ||
-                control is GroupBox ||
-                control is Label ||
-                control is PictureBox) return true;
-            return false;
+            var reserved = control.HasEventHandler("MouseEnter") ||
+                           control.HasEventHandler("MouseHover") ||
+                           control.HasEventHandler("MouseLeave") ||
+                           control.HasEventHandler("MouseDown") ||
+                           control.HasEventHandler("MouseUp") ||
+                           control.HasEventHandler("MouseClick") ||
+                           control.HasEventHandler("MouseDoubleclick");
+            return !reserved;
         }
 
         #region Win32 APIs
