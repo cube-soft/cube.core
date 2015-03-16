@@ -36,13 +36,13 @@ namespace Cube.Extensions.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void FillBackground(this Graphics gs, Rectangle rect, Color color)
+        public static void FillBackground(this Graphics gs, Rectangle bounds, Color color)
         {
             if (color == Color.Empty) return;
 
             using (var brush = new SolidBrush(color))
             {
-                gs.FillRectangle(brush, rect);
+                gs.FillRectangle(brush, bounds);
             }
         }
 
@@ -53,11 +53,6 @@ namespace Cube.Extensions.Forms
         /// <summary>
         /// 指定した色、幅で枠線を描画します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: ClipBounds の幅、高さで枠線を描画すると一部が切れてしまう。
-        /// 暫定的に margin を設定しているが、適切な描画方法について要調査。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static void DrawBorder(this Graphics gs, Rectangle bounds, Color color, int width)
@@ -212,12 +207,12 @@ namespace Cube.Extensions.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Rectangle GetDrawBounds(Rectangle rect, Image image, ContentAlignment align)
+        private static Rectangle GetDrawBounds(Rectangle bounds, Image image, ContentAlignment align)
         {
-            var dest = new Rectangle(0, 0, image.Width, image.Height);
+            var dest = new Rectangle(bounds.X, bounds.Y, image.Width, image.Height);
 
-            var width  = (int)rect.Width;
-            var height = (int)rect.Height;
+            var width  = (int)bounds.Width;
+            var height = (int)bounds.Height;
             var offset = Point.Empty;
 
             switch (align)

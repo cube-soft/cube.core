@@ -168,14 +168,6 @@ namespace Cube.Forms
         /// <summary>
         /// 描画対象となるボタンの Paint イベントを捕捉するハンドラです。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO:
-        ///   - テキストの描画処理を実装する
-        ///   - 背景イメージの描画の内、ImageLayout が Stretch, Zoom, Tile
-        ///     が未実装なので実装する
-        ///     ※ 実装場所は Cube.Extensions.Forms.GraphicsExtensions
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnPaint(PaintEventArgs e)
@@ -183,12 +175,13 @@ namespace Cube.Forms
             if (e == null || e.Graphics == null) return;
 
             var gs = e.Graphics;
-            var rect = _view.ClientRectangle;
-            gs.FillBackground(rect, GetBackColor());
-            gs.DrawImage(rect, GetBackgroundImage(), View.BackgroundImageLayout);
-            gs.DrawImage(rect, GetImage(), View.ImageAlign);
-            gs.DrawText(rect, View.Text, View.Font, GetForeColor(), View.TextAlign);
-            gs.DrawBorder(rect, GetBorderColor(), BorderSize);
+            var client = _view.ClientRectangle;
+            var bounds = GetDrawBounds(client, _view.Padding);
+            gs.FillBackground(client, GetBackColor());
+            gs.DrawImage(client, GetBackgroundImage(), View.BackgroundImageLayout);
+            gs.DrawImage(bounds, GetImage(), View.ImageAlign);
+            gs.DrawText(bounds, View.Text, View.Font, GetForeColor(), View.TextAlign);
+            gs.DrawBorder(client, GetBorderColor(), BorderSize);
         }
 
         /* ----------------------------------------------------------------- */
@@ -379,6 +372,25 @@ namespace Cube.Forms
                           Surface.CheckedBackgroundImage,
                           Surface.MouseOverBackgroundImage,
                           Surface.MouseDownBackgroundImage);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDrawBounds
+        /// 
+        /// <summary>
+        /// 描画領域を表すオブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Rectangle GetDrawBounds(Rectangle client, Padding padding)
+        {
+            var x = client.Left + padding.Left;
+            var y = client.Top + padding.Top;
+            var width  = client.Right - padding.Right - x;
+            var height = client.Bottom - padding.Bottom - y;
+
+            return new Rectangle(x, y, width, height);
         }
 
         #endregion
