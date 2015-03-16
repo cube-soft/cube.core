@@ -44,6 +44,8 @@
     <Compile Include="Button.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Detail\NavigatingErrorEventArgs.cs" />
+    <Compile Include="Detail\NavigatingEventArgs.cs" />
     <Compile Include="Detail\Surface.cs" />
     <Compile Include="Detail\ButtonPainter.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
@@ -60,6 +62,9 @@
     <Compile Include="Detail\ToggleButtonPainter.cs" />
     <Compile Include="WidgetForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebBrowser.cs">
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
