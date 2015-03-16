@@ -175,7 +175,27 @@ namespace Cube.Forms
                            control.HasEventHandler("MouseUp") ||
                            control.HasEventHandler("MouseClick") ||
                            control.HasEventHandler("MouseDoubleclick");
-            return !reserved;
+            return IsContainerControl(control) && !reserved;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsContainerControl
+        /// 
+        /// <summary>
+        /// MouseDown イベントを奪っても良いコントロールかどうかを
+        /// 判別します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool IsContainerControl(Control control)
+        {
+            if (control is ContainerControl ||
+                control is Panel ||
+                control is GroupBox ||
+                control is Label ||
+                control is PictureBox) return true;
+            return false;
         }
 
         #region Win32 APIs
