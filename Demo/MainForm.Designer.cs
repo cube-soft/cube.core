@@ -47,12 +47,29 @@
             this.CloseButton = new Cube.Forms.Button();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
+            this.OriginalButtonGroupBox = new System.Windows.Forms.GroupBox();
+            this.OriginalRadioButtonGroupBox = new System.Windows.Forms.GroupBox();
+            this.OriginalCheckBoxGroupBox = new System.Windows.Forms.GroupBox();
+            this.ImageOriginalButton1 = new System.Windows.Forms.Button();
+            this.ImageOriginalButton2 = new System.Windows.Forms.Button();
+            this.OriginalFlatButton = new System.Windows.Forms.Button();
+            this.ImageOriginalRadioButton1 = new System.Windows.Forms.RadioButton();
+            this.ImageOriginalRadioButton2 = new System.Windows.Forms.RadioButton();
+            this.ImageOriginalRadioButton3 = new System.Windows.Forms.RadioButton();
+            this.ImageOriginalRadioButton4 = new System.Windows.Forms.RadioButton();
+            this.ImageOriginalCheckBox1 = new System.Windows.Forms.CheckBox();
+            this.ImageOriginalCheckBox2 = new System.Windows.Forms.CheckBox();
+            this.ImageOriginalCheckBox3 = new System.Windows.Forms.CheckBox();
+            this.ImageOriginalCheckBox4 = new System.Windows.Forms.CheckBox();
             this.ButtonGroupBox.SuspendLayout();
             this.RadioButtonGroupBox.SuspendLayout();
             this.ToggleButtonGroupBox.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
+            this.OriginalButtonGroupBox.SuspendLayout();
+            this.OriginalRadioButtonGroupBox.SuspendLayout();
+            this.OriginalCheckBoxGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonGroupBox
@@ -101,6 +118,7 @@
             this.FlatButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FlatButton.Location = new System.Drawing.Point(144, 20);
             this.FlatButton.Name = "FlatButton";
+            this.FlatButton.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.FlatButton.Size = new System.Drawing.Size(129, 50);
             this.FlatButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
             this.FlatButton.Surface.CheckedBackgroundImage = null;
@@ -401,10 +419,11 @@
             this.HeaderPanel.Controls.Add(this.CloseButton);
             this.HeaderPanel.Controls.Add(this.TitlePictureBox);
             this.HeaderPanel.Controls.Add(this.LogoPictureBox);
+            this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
             this.HeaderPanel.Margin = new System.Windows.Forms.Padding(0);
             this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Size = new System.Drawing.Size(310, 25);
+            this.HeaderPanel.Size = new System.Drawing.Size(600, 25);
             this.HeaderPanel.TabIndex = 5;
             // 
             // CloseButton
@@ -412,9 +431,10 @@
             this.CloseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.CloseButton.BorderColor = System.Drawing.Color.Transparent;
             this.CloseButton.BorderSize = 0;
+            this.CloseButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseButton.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonClose;
-            this.CloseButton.Location = new System.Drawing.Point(285, 0);
+            this.CloseButton.Location = new System.Drawing.Point(575, 0);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(25, 25);
             this.CloseButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
@@ -427,7 +447,7 @@
             this.CloseButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
             this.CloseButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
             this.CloseButton.Surface.MouseDownImage = null;
-            this.CloseButton.Surface.MouseOverBackColor = System.Drawing.Color.LightGray;
+            this.CloseButton.Surface.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.CloseButton.Surface.MouseOverBackgroundImage = null;
             this.CloseButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
             this.CloseButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
@@ -455,10 +475,206 @@
             this.LogoPictureBox.TabIndex = 0;
             this.LogoPictureBox.TabStop = false;
             // 
+            // OriginalButtonGroupBox
+            // 
+            this.OriginalButtonGroupBox.Controls.Add(this.OriginalFlatButton);
+            this.OriginalButtonGroupBox.Controls.Add(this.ImageOriginalButton2);
+            this.OriginalButtonGroupBox.Controls.Add(this.ImageOriginalButton1);
+            this.OriginalButtonGroupBox.Location = new System.Drawing.Point(303, 47);
+            this.OriginalButtonGroupBox.Name = "OriginalButtonGroupBox";
+            this.OriginalButtonGroupBox.Size = new System.Drawing.Size(285, 88);
+            this.OriginalButtonGroupBox.TabIndex = 6;
+            this.OriginalButtonGroupBox.TabStop = false;
+            this.OriginalButtonGroupBox.Text = "System.Windows.Forms.Button";
+            // 
+            // OriginalRadioButtonGroupBox
+            // 
+            this.OriginalRadioButtonGroupBox.Controls.Add(this.ImageOriginalRadioButton4);
+            this.OriginalRadioButtonGroupBox.Controls.Add(this.ImageOriginalRadioButton3);
+            this.OriginalRadioButtonGroupBox.Controls.Add(this.ImageOriginalRadioButton2);
+            this.OriginalRadioButtonGroupBox.Controls.Add(this.ImageOriginalRadioButton1);
+            this.OriginalRadioButtonGroupBox.Location = new System.Drawing.Point(303, 141);
+            this.OriginalRadioButtonGroupBox.Name = "OriginalRadioButtonGroupBox";
+            this.OriginalRadioButtonGroupBox.Size = new System.Drawing.Size(285, 88);
+            this.OriginalRadioButtonGroupBox.TabIndex = 7;
+            this.OriginalRadioButtonGroupBox.TabStop = false;
+            this.OriginalRadioButtonGroupBox.Text = "System.Windows.Forms.RadioButton";
+            // 
+            // OriginalCheckBoxGroupBox
+            // 
+            this.OriginalCheckBoxGroupBox.Controls.Add(this.ImageOriginalCheckBox4);
+            this.OriginalCheckBoxGroupBox.Controls.Add(this.ImageOriginalCheckBox3);
+            this.OriginalCheckBoxGroupBox.Controls.Add(this.ImageOriginalCheckBox2);
+            this.OriginalCheckBoxGroupBox.Controls.Add(this.ImageOriginalCheckBox1);
+            this.OriginalCheckBoxGroupBox.Location = new System.Drawing.Point(303, 235);
+            this.OriginalCheckBoxGroupBox.Name = "OriginalCheckBoxGroupBox";
+            this.OriginalCheckBoxGroupBox.Size = new System.Drawing.Size(285, 88);
+            this.OriginalCheckBoxGroupBox.TabIndex = 7;
+            this.OriginalCheckBoxGroupBox.TabStop = false;
+            this.OriginalCheckBoxGroupBox.Text = "System.Windows.Forms.CheckBox";
+            // 
+            // ImageOriginalButton1
+            // 
+            this.ImageOriginalButton1.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ImageOriginalButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalButton1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalButton1.Location = new System.Drawing.Point(12, 20);
+            this.ImageOriginalButton1.Name = "ImageOriginalButton1";
+            this.ImageOriginalButton1.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalButton1.TabIndex = 0;
+            this.ImageOriginalButton1.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalButton2
+            // 
+            this.ImageOriginalButton2.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalButton2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalButton2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalButton2.Location = new System.Drawing.Point(78, 20);
+            this.ImageOriginalButton2.Name = "ImageOriginalButton2";
+            this.ImageOriginalButton2.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalButton2.TabIndex = 1;
+            this.ImageOriginalButton2.UseVisualStyleBackColor = false;
+            // 
+            // OriginalFlatButton
+            // 
+            this.OriginalFlatButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.OriginalFlatButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.OriginalFlatButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OriginalFlatButton.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.OriginalFlatButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.OriginalFlatButton.Location = new System.Drawing.Point(144, 20);
+            this.OriginalFlatButton.Name = "OriginalFlatButton";
+            this.OriginalFlatButton.Size = new System.Drawing.Size(129, 50);
+            this.OriginalFlatButton.TabIndex = 2;
+            this.OriginalFlatButton.Text = "FreeText";
+            this.OriginalFlatButton.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalRadioButton1
+            // 
+            this.ImageOriginalRadioButton1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalRadioButton1.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalRadioButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalRadioButton1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalRadioButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalRadioButton1.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalRadioButton1.Location = new System.Drawing.Point(12, 20);
+            this.ImageOriginalRadioButton1.Name = "ImageOriginalRadioButton1";
+            this.ImageOriginalRadioButton1.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalRadioButton1.TabIndex = 0;
+            this.ImageOriginalRadioButton1.TabStop = true;
+            this.ImageOriginalRadioButton1.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalRadioButton2
+            // 
+            this.ImageOriginalRadioButton2.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalRadioButton2.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalRadioButton2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalRadioButton2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalRadioButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalRadioButton2.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalRadioButton2.Location = new System.Drawing.Point(78, 20);
+            this.ImageOriginalRadioButton2.Name = "ImageOriginalRadioButton2";
+            this.ImageOriginalRadioButton2.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalRadioButton2.TabIndex = 1;
+            this.ImageOriginalRadioButton2.TabStop = true;
+            this.ImageOriginalRadioButton2.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalRadioButton3
+            // 
+            this.ImageOriginalRadioButton3.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalRadioButton3.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalRadioButton3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalRadioButton3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalRadioButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalRadioButton3.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalRadioButton3.Location = new System.Drawing.Point(144, 20);
+            this.ImageOriginalRadioButton3.Name = "ImageOriginalRadioButton3";
+            this.ImageOriginalRadioButton3.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalRadioButton3.TabIndex = 2;
+            this.ImageOriginalRadioButton3.TabStop = true;
+            this.ImageOriginalRadioButton3.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalRadioButton4
+            // 
+            this.ImageOriginalRadioButton4.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalRadioButton4.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalRadioButton4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalRadioButton4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalRadioButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalRadioButton4.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalRadioButton4.Location = new System.Drawing.Point(210, 20);
+            this.ImageOriginalRadioButton4.Name = "ImageOriginalRadioButton4";
+            this.ImageOriginalRadioButton4.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalRadioButton4.TabIndex = 3;
+            this.ImageOriginalRadioButton4.TabStop = true;
+            this.ImageOriginalRadioButton4.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalCheckBox1
+            // 
+            this.ImageOriginalCheckBox1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalCheckBox1.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalCheckBox1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalCheckBox1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalCheckBox1.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalCheckBox1.Location = new System.Drawing.Point(12, 20);
+            this.ImageOriginalCheckBox1.Name = "ImageOriginalCheckBox1";
+            this.ImageOriginalCheckBox1.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalCheckBox1.TabIndex = 0;
+            this.ImageOriginalCheckBox1.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalCheckBox2
+            // 
+            this.ImageOriginalCheckBox2.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalCheckBox2.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalCheckBox2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalCheckBox2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalCheckBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalCheckBox2.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalCheckBox2.Location = new System.Drawing.Point(78, 20);
+            this.ImageOriginalCheckBox2.Name = "ImageOriginalCheckBox2";
+            this.ImageOriginalCheckBox2.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalCheckBox2.TabIndex = 1;
+            this.ImageOriginalCheckBox2.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalCheckBox3
+            // 
+            this.ImageOriginalCheckBox3.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalCheckBox3.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalCheckBox3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalCheckBox3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalCheckBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalCheckBox3.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalCheckBox3.Location = new System.Drawing.Point(144, 20);
+            this.ImageOriginalCheckBox3.Name = "ImageOriginalCheckBox3";
+            this.ImageOriginalCheckBox3.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalCheckBox3.TabIndex = 2;
+            this.ImageOriginalCheckBox3.UseVisualStyleBackColor = false;
+            // 
+            // ImageOriginalCheckBox4
+            // 
+            this.ImageOriginalCheckBox4.Appearance = System.Windows.Forms.Appearance.Button;
+            this.ImageOriginalCheckBox4.FlatAppearance.CheckedBackColor = System.Drawing.Color.MistyRose;
+            this.ImageOriginalCheckBox4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.ImageOriginalCheckBox4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.PaleTurquoise;
+            this.ImageOriginalCheckBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageOriginalCheckBox4.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
+            this.ImageOriginalCheckBox4.Location = new System.Drawing.Point(210, 20);
+            this.ImageOriginalCheckBox4.Name = "ImageOriginalCheckBox4";
+            this.ImageOriginalCheckBox4.Size = new System.Drawing.Size(60, 50);
+            this.ImageOriginalCheckBox4.TabIndex = 3;
+            this.ImageOriginalCheckBox4.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(310, 350);
+            this.ClientSize = new System.Drawing.Size(600, 350);
+            this.Controls.Add(this.OriginalCheckBoxGroupBox);
+            this.Controls.Add(this.OriginalRadioButtonGroupBox);
+            this.Controls.Add(this.OriginalButtonGroupBox);
             this.Controls.Add(this.HeaderPanel);
             this.Controls.Add(this.ToggleButtonGroupBox);
             this.Controls.Add(this.RadioButtonGroupBox);
@@ -472,6 +688,9 @@
             this.HeaderPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).EndInit();
+            this.OriginalButtonGroupBox.ResumeLayout(false);
+            this.OriginalRadioButtonGroupBox.ResumeLayout(false);
+            this.OriginalCheckBoxGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -496,6 +715,20 @@
         private System.Windows.Forms.PictureBox LogoPictureBox;
         private System.Windows.Forms.PictureBox TitlePictureBox;
         private Button CloseButton;
+        private System.Windows.Forms.GroupBox OriginalButtonGroupBox;
+        private System.Windows.Forms.GroupBox OriginalRadioButtonGroupBox;
+        private System.Windows.Forms.GroupBox OriginalCheckBoxGroupBox;
+        private System.Windows.Forms.Button OriginalFlatButton;
+        private System.Windows.Forms.Button ImageOriginalButton2;
+        private System.Windows.Forms.Button ImageOriginalButton1;
+        private System.Windows.Forms.RadioButton ImageOriginalRadioButton4;
+        private System.Windows.Forms.RadioButton ImageOriginalRadioButton3;
+        private System.Windows.Forms.RadioButton ImageOriginalRadioButton2;
+        private System.Windows.Forms.RadioButton ImageOriginalRadioButton1;
+        private System.Windows.Forms.CheckBox ImageOriginalCheckBox4;
+        private System.Windows.Forms.CheckBox ImageOriginalCheckBox3;
+        private System.Windows.Forms.CheckBox ImageOriginalCheckBox2;
+        private System.Windows.Forms.CheckBox ImageOriginalCheckBox1;
 
 
 
