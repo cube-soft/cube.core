@@ -15,6 +15,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace Cube
 {
@@ -141,7 +142,8 @@ namespace Cube
                     var info = type.GetProperty(item.Name);
                     if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
                     {
-                        var value = root.GetValue(item.Name, null);
+                        var attribute = (DataMemberAttribute)item.GetCustomAttributes(typeof(DataMemberAttribute), false)[0];
+                        var value = root.GetValue(attribute.Name, null);
                         if (value == null) continue;
 
                         var changed = Convert.ChangeType(value, info.PropertyType);

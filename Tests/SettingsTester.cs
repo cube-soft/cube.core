@@ -99,6 +99,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void TestLoadRegistryAlias()
         {
             Assert.DoesNotThrow(() => {
