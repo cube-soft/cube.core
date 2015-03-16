@@ -9,11 +9,12 @@ using System.Windows.Forms;
 
 namespace Cube.Forms.Demo
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Cube.Forms.WidgetForm
     {
         public MainForm()
         {
             InitializeComponent();
+            CloseButton.Click += (s, e) => Close();
         }
     }
 }

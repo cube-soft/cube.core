@@ -102,6 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <None Include="Resources\LogoTitle.png" />
+    <None Include="Resources\Title.png" />
+    <None Include="Resources\LogoSmall.png" />
+    <None Include="Resources\ButtonClose.png" />
     <None Include="Resources\LogoCubePdf.png" />
     <None Include="Resources\LogoCubeIce.png" />
     <None Include="Resources\LogoCube.png" />
