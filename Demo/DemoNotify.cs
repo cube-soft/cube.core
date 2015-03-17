@@ -56,7 +56,27 @@ namespace Cube.Forms.Demo
         {
             var dialog = new Cube.Forms.NotifyForm();
             dialog.Title = TitleTextBox.Text;
+            dialog.TitleClick += NotifyTitle_Click;
+            dialog.ImageClick += NotifyImage_Click;
             dialog.Show();
+        }
+
+        private void NotifyTitle_Click(object sender, NotifyEventArgs e)
+        {
+            AddLog(string.Format("{0} TitleClick: {1}", DateTime.Now, e.Title));
+        }
+
+        private void NotifyImage_Click(object sender, NotifyEventArgs e)
+        {
+            AddLog(string.Format("{0} ImageClick: {1}", DateTime.Now, e.Title));
+        }
+
+        private void AddLog(string message)
+        {
+            var builder = new System.Text.StringBuilder();
+            builder.AppendLine(LogTextBox.Text);
+            builder.Append(message);
+            LogTextBox.Text = builder.ToString();
         }
 
         #endregion

@@ -38,7 +38,10 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
+            SetLocation();
             CloseButton.Click += (s, e) => Close();
+            TitleButton.Click += (s, e) => RaiseTitleClickEvent();
+            ImageButton.Click += (s, e) => RaiseImageClickEvent();
         }
 
         #endregion
@@ -81,9 +84,122 @@ namespace Cube.Forms
             set { ImageButton.Image = value; }
         }
 
-        #region Hiding properties
+        /* --------------------------------------------------------------------- */
+        ///
+        /// InitialDelay
+        /// 
+        /// <summary>
+        /// 表示する際の遅延時間 (ミリ秒) を取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        public int InitialDelay { get; set; }
 
         #endregion
+
+        #region Events
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// TitleClick
+        /// 
+        /// <summary>
+        /// タイトル部分がクリックされた時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event Action<object, NotifyEventArgs> TitleClick;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ImageClick
+        /// 
+        /// <summary>
+        /// イメージ部分がクリックされた時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event Action<object, NotifyEventArgs> ImageClick;
+
+        #endregion
+
+        #region Vritual methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnTitleClick
+        /// 
+        /// <summary>
+        /// タイトル部分がクリックされた時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnTitleClick(NotifyEventArgs e)
+        {
+            if (TitleClick != null) TitleClick(this, e);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnImageClick
+        /// 
+        /// <summary>
+        /// イメージ部分がクリックされた時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnImageClick(NotifyEventArgs e)
+        {
+            if (ImageClick != null) ImageClick(this, e);
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SetLocation
+        /// 
+        /// <summary>
+        /// 表示位置を設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void SetLocation()
+        {
+            var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
+            SetDesktopLocation(screen.Width - Width - 10, screen.Height - Height - 10);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// RaiseTitleClickEvent
+        /// 
+        /// <summary>
+        /// TitleClick イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void RaiseTitleClickEvent()
+        {
+            OnTitleClick(new NotifyEventArgs(Title, Image));
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// RaiseImageClickEvent
+        /// 
+        /// <summary>
+        /// ImageClick イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void RaiseImageClickEvent()
+        {
+            OnImageClick(new NotifyEventArgs(Title, Image));
+        }
 
         #endregion
     }

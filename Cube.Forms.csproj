@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="Detail\NavigatingErrorEventArgs.cs" />
     <Compile Include="Detail\NavigatingEventArgs.cs" />
+    <Compile Include="Detail\NotifyEventArgs.cs" />
     <Compile Include="Detail\Surface.cs" />
     <Compile Include="Detail\ButtonPainter.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />

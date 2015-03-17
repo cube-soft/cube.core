@@ -184,7 +184,7 @@
             this.ShowButton.UseVisualStyleBackColor = false;
             this.ShowButton.Click += new System.EventHandler(this.ShowButton_Click);
             // 
-            // NotifyTestForm
+            // DemoNotify
             // 
             this.ClientSize = new System.Drawing.Size(450, 400);
             this.Controls.Add(this.ShowButton);
@@ -198,7 +198,9 @@
             this.Controls.Add(this.TitleTextBox);
             this.Controls.Add(this.DisplayLabel);
             this.Controls.Add(this.TitleLabel);
-            this.Name = "NotifyTestForm";
+            this.Name = "DemoNotify";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Cube.Forms.NotifyForm";
             this.Controls.SetChildIndex(this.TitleLabel, 0);
             this.Controls.SetChildIndex(this.DisplayLabel, 0);
