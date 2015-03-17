@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Program.cs
+/// FormBase.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -14,30 +14,33 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.Program
+    /// Cube.Forms.Demo.FormBase
     /// 
     /// <summary>
-    /// デモプロジェクトのメインプログラムです。
+    /// デモ用プロジェクトで使用する各種フォームの基底となるクラスです。
     /// </summary>
+    /// 
+    /// <remarks>
+    /// 新たなフォームが必要になった場合、FormBase クラスを継承した
+    /// フォームクラスを作成します。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    static class Program
+    public partial class FormBase : Cube.Forms.WidgetForm
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Main
-        /// 
+        /// FormBase
+        ///
         /// <summary>
-        /// アプリケーションのメイン エントリ ポイントです。
+        /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        [STAThread]
-        static void Main()
+        public FormBase()
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new MainForm());
+            InitializeComponent();
+            CloseButton.Click += (s, e) => Close();
         }
     }
 }

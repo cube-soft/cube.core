@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// MainForm.cs
+/// WebForm.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -14,29 +14,31 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.MainForm
+    /// Cube.Forms.Demo.WebForm
     /// 
     /// <summary>
-    /// デモ用プロジェクトのメインフォームです。
+    /// Web ブラウザのデモ用フォームです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainForm : FormBase
+    public partial class WebForm : FormBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MainForm
+        /// WebForm
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public MainForm()
+        public WebForm()
         {
             InitializeComponent();
+            var url = WebBrowser.Url;
+            if (url != null) UrlTextBox.Text = url.ToString();
         }
 
         #endregion
@@ -45,32 +47,42 @@ namespace Cube.Forms.Demo
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ButtonsButton_Click
+        /// UpdateButton_Click
         ///
         /// <summary>
-        /// 各種ボタンのデモ用フォームを表示します。
+        /// テキストボックスに入力された URL を設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ButtonsButton_Click(object sender, EventArgs e)
+        private void UpdateButton_Click(object sender, EventArgs e)
         {
-            var dialog = new ButtonsForm();
-            dialog.ShowDialog();
+            try
+            {
+                if (string.IsNullOrEmpty(UrlTextBox.Text)) return;
+                WebBrowser.Url = new Uri(UrlTextBox.Text);
+            }
+            catch (Exception err) { ShowError(err); }
         }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WebBrowserButton_Click
+        /// ShowError
         ///
         /// <summary>
-        /// Web ブラウザのデモ用フォームを表示します。
+        /// 例外の内容をメッセージボックスに表示します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WebBrowserButton_Click(object sender, EventArgs e)
+        private void ShowError(Exception err)
         {
-            var dialog = new WebForm();
-            dialog.ShowDialog();
+            System.Windows.Forms.MessageBox.Show(err.ToString(), "Cube.Forms.Demo",
+                System.Windows.Forms.MessageBoxButtons.OK,
+                System.Windows.Forms.MessageBoxIcon.Error
+            );
         }
 
         #endregion
