@@ -21,7 +21,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class ButtonsForm : Cube.Forms.WidgetForm
+    public partial class ButtonsForm : FormBase
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -35,7 +35,6 @@ namespace Cube.Forms.Demo
         public ButtonsForm()
         {
             InitializeComponent();
-            CloseButton.Click += (s, e) => Close();
         }
     }
 }

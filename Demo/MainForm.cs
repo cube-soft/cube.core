@@ -21,7 +21,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainForm : Cube.Forms.WidgetForm
+    public partial class MainForm : FormBase
     {
         #region Constructors
 
@@ -37,7 +37,6 @@ namespace Cube.Forms.Demo
         public MainForm()
         {
             InitializeComponent();
-            CloseButton.Click += (s, e) => Close();
         }
 
         #endregion
@@ -56,6 +55,21 @@ namespace Cube.Forms.Demo
         private void ButtonsButton_Click(object sender, EventArgs e)
         {
             var dialog = new ButtonsForm();
+            dialog.ShowDialog();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WebBrowserButton_Click
+        ///
+        /// <summary>
+        /// Web ブラウザのデモ用フォームを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void WebBrowserButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new WebForm();
             dialog.ShowDialog();
         }
 

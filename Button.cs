@@ -43,6 +43,11 @@ namespace Cube.Forms
             BorderColor = System.Drawing.Color.Black;
             BorderSize = 1;
             base.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            base.FlatAppearance.BorderColor = System.Drawing.Color.Empty;
+            base.FlatAppearance.BorderSize = 0;
+            base.FlatAppearance.CheckedBackColor = System.Drawing.Color.Empty;
+            base.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Empty;
+            base.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Empty;
             base.UseVisualStyleBackColor = false;
         }
 
