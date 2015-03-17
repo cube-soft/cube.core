@@ -37,6 +37,11 @@
             // 
             this.NotifyFormButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.NotifyFormButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
+            this.NotifyFormButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.NotifyFormButton.FlatAppearance.BorderSize = 0;
+            this.NotifyFormButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.NotifyFormButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.NotifyFormButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.NotifyFormButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.NotifyFormButton.ForeColor = System.Drawing.Color.Black;
             this.NotifyFormButton.Location = new System.Drawing.Point(12, 98);
@@ -60,11 +65,17 @@
             this.NotifyFormButton.TabIndex = 3;
             this.NotifyFormButton.Text = "NotifyForm";
             this.NotifyFormButton.UseVisualStyleBackColor = false;
+            this.NotifyFormButton.Click += new System.EventHandler(this.NotifyFormButton_Click);
             // 
             // WebBrowserButton
             // 
             this.WebBrowserButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.WebBrowserButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
+            this.WebBrowserButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.WebBrowserButton.FlatAppearance.BorderSize = 0;
+            this.WebBrowserButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.WebBrowserButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.WebBrowserButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.WebBrowserButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.WebBrowserButton.ForeColor = System.Drawing.Color.Black;
             this.WebBrowserButton.Location = new System.Drawing.Point(12, 69);
@@ -94,6 +105,11 @@
             // 
             this.ButtonsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.ButtonsButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
+            this.ButtonsButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ButtonsButton.FlatAppearance.BorderSize = 0;
+            this.ButtonsButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ButtonsButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ButtonsButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ButtonsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonsButton.ForeColor = System.Drawing.Color.Black;
             this.ButtonsButton.Location = new System.Drawing.Point(12, 40);

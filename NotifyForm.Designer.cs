@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.LayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.ImageButton = new Cube.Forms.Button();
             this.TitleButton = new Cube.Forms.Button();
             this.CloseButton = new Cube.Forms.Button();
-            this.IconButton = new Cube.Forms.Button();
             this.LayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +41,7 @@
             this.LayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.LayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.LayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.LayoutPanel.Controls.Add(this.IconButton, 0, 0);
+            this.LayoutPanel.Controls.Add(this.ImageButton, 0, 0);
             this.LayoutPanel.Controls.Add(this.TitleButton, 1, 0);
             this.LayoutPanel.Controls.Add(this.CloseButton, 2, 0);
             this.LayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -51,6 +51,39 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.LayoutPanel.Size = new System.Drawing.Size(340, 60);
             this.LayoutPanel.TabIndex = 0;
+            // 
+            // ImageButton
+            // 
+            this.ImageButton.BorderColor = System.Drawing.Color.Transparent;
+            this.ImageButton.BorderSize = 0;
+            this.ImageButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ImageButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ImageButton.FlatAppearance.BorderSize = 0;
+            this.ImageButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ImageButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ImageButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageButton.Image = global::Cube.Forms.Properties.Resources.LogoLarge;
+            this.ImageButton.Location = new System.Drawing.Point(3, 3);
+            this.ImageButton.Name = "ImageButton";
+            this.ImageButton.Size = new System.Drawing.Size(54, 54);
+            this.ImageButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.CheckedBackgroundImage = null;
+            this.ImageButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.CheckedImage = null;
+            this.ImageButton.Surface.MouseDownBackColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.MouseDownBackgroundImage = null;
+            this.ImageButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.MouseDownImage = null;
+            this.ImageButton.Surface.MouseOverBackColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.MouseOverBackgroundImage = null;
+            this.ImageButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.MouseOverImage = null;
+            this.ImageButton.TabIndex = 0;
+            this.ImageButton.UseVisualStyleBackColor = false;
             // 
             // TitleButton
             // 
@@ -120,46 +153,15 @@
             this.CloseButton.TabIndex = 0;
             this.CloseButton.UseVisualStyleBackColor = false;
             // 
-            // IconButton
-            // 
-            this.IconButton.BorderColor = System.Drawing.Color.Transparent;
-            this.IconButton.BorderSize = 0;
-            this.IconButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IconButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.IconButton.FlatAppearance.BorderSize = 0;
-            this.IconButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.IconButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.IconButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.IconButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.IconButton.Image = global::Cube.Forms.Properties.Resources.LogoLarge;
-            this.IconButton.Location = new System.Drawing.Point(3, 3);
-            this.IconButton.Name = "IconButton";
-            this.IconButton.Size = new System.Drawing.Size(54, 54);
-            this.IconButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.CheckedBackgroundImage = null;
-            this.IconButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.CheckedImage = null;
-            this.IconButton.Surface.MouseDownBackColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.MouseDownBackgroundImage = null;
-            this.IconButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.MouseDownImage = null;
-            this.IconButton.Surface.MouseOverBackColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.MouseOverBackgroundImage = null;
-            this.IconButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.IconButton.Surface.MouseOverImage = null;
-            this.IconButton.TabIndex = 0;
-            this.IconButton.UseVisualStyleBackColor = false;
-            // 
             // NotifyForm
             // 
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(340, 60);
             this.Controls.Add(this.LayoutPanel);
             this.Name = "NotifyForm";
-            this.Text = "NotifyForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.LayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -168,7 +170,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel LayoutPanel;
-        private Button IconButton;
+        private Button ImageButton;
         private Button TitleButton;
         private Button CloseButton;
     }

@@ -1,6 +1,6 @@
 ﻿namespace Cube.Forms.Demo
 {
-    partial class WebForm
+    partial class DemoWeb
     {
         /// <summary>
         /// 必要なデザイナー変数です。

@@ -9,6 +9,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 
 namespace Cube.Forms
 {
@@ -39,6 +40,50 @@ namespace Cube.Forms
             InitializeComponent();
             CloseButton.Click += (s, e) => Close();
         }
+
+        #endregion
+
+        #region Properties
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Title
+        /// 
+        /// <summary>
+        /// タイトルを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        public string Title
+        {
+            get { return TitleButton.Text; }
+            set
+            {
+                TitleButton.Text = value;
+                base.Text = value;
+            }
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Image
+        /// 
+        /// <summary>
+        /// イメージを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        public System.Drawing.Image Image
+        {
+            get { return ImageButton.Image; }
+            set { ImageButton.Image = value; }
+        }
+
+        #region Hiding properties
+
+        #endregion
 
         #endregion
     }

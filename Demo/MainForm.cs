@@ -54,7 +54,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void ButtonsButton_Click(object sender, EventArgs e)
         {
-            var dialog = new ButtonsForm();
+            var dialog = new DemoButtons();
             dialog.ShowDialog();
         }
 
@@ -69,10 +69,16 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void WebBrowserButton_Click(object sender, EventArgs e)
         {
-            var dialog = new WebForm();
+            var dialog = new DemoWeb();
             dialog.ShowDialog();
         }
 
         #endregion
+
+        private void NotifyFormButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new DemoNotify();
+            dialog.ShowDialog();
+        }
     }
 }

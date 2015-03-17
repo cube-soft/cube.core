@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ButtonsForm.cs
+/// DemoNotify.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -14,27 +14,51 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.ButtonsForm
+    /// Cube.Forms.Demo.DemoNotify
     /// 
     /// <summary>
-    /// 各種ボタンのデモ用フォームです。
+    /// 通知フォームのデモ用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class ButtonsForm : FormBase
+    public partial class DemoNotify : FormBase
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
-        /// ButtonsForm
+        /// DemoNotify
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonsForm()
+        public DemoNotify()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Event handlers
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowButton_Click
+        ///
+        /// <summary>
+        /// Show ボタンが押下された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ShowButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new Cube.Forms.NotifyForm();
+            dialog.Title = TitleTextBox.Text;
+            dialog.Show();
+        }
+
+        #endregion
     }
 }
