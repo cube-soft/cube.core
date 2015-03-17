@@ -137,24 +137,23 @@ namespace Cube
 
                 foreach (var item in items)
                 {
-                    var info = type.GetProperty(item.Name);
-                    if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
-                    {
-                        var attribute = (DataMemberAttribute)item.GetCustomAttributes(typeof(DataMemberAttribute), false)[0];
-                        var name = string.IsNullOrEmpty(attribute.Name) ? item.Name : attribute.Name;
+                    var attribute = (DataMemberAttribute)item.GetCustomAttributes(typeof(DataMemberAttribute), false)[0];
+                    var name = string.IsNullOrEmpty(attribute.Name) ? item.Name : attribute.Name;
 
+                    if (Type.GetTypeCode(item.PropertyType) != TypeCode.Object)
+                    {
                         var value = root.GetValue(name, null);
                         if (value == null) continue;
 
-                        var changed = ChangeType(value, info.PropertyType);
-                        info.SetValue(dest, changed, null);
+                        var changed = ChangeType(value, item.PropertyType);
+                        item.SetValue(dest, changed, null);
                     }
                     else
                     {
-                        using (var subkey = root.OpenSubKey(item.Name))
+                        using (var subkey = root.OpenSubKey(name))
                         {
-                            var obj = LoadRegistry(subkey, info.PropertyType);
-                            info.SetValue(dest, obj, null);
+                            var obj = LoadRegistry(subkey, item.PropertyType);
+                            item.SetValue(dest, obj, null);
                         }
                     }
                 }
