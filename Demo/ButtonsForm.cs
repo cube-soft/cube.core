@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Program.cs
+/// ButtonsForm.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -14,30 +14,28 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.Program
+    /// Cube.Forms.Demo.ButtonsForm
     /// 
     /// <summary>
-    /// デモプロジェクトのメインプログラムです。
+    /// 各種ボタンのデモ用フォームです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class Program
+    public partial class ButtonsForm : Cube.Forms.WidgetForm
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Main
-        /// 
+        /// ButtonsForm
+        ///
         /// <summary>
-        /// アプリケーションのメイン エントリ ポイントです。
+        /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        [STAThread]
-        static void Main()
+        public ButtonsForm()
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new MainForm());
+            InitializeComponent();
+            CloseButton.Click += (s, e) => Close();
         }
     }
 }
