@@ -106,6 +106,7 @@
             this.ImageBrowseButton.TabIndex = 2;
             this.ImageBrowseButton.Text = "...";
             this.ImageBrowseButton.UseVisualStyleBackColor = false;
+            this.ImageBrowseButton.Click += new System.EventHandler(this.ImageBrowseButton_Click);
             // 
             // label2
             // 
@@ -142,10 +143,10 @@
             // 
             // LogTextBox
             // 
-            this.LogTextBox.Enabled = false;
             this.LogTextBox.Location = new System.Drawing.Point(12, 210);
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
+            this.LogTextBox.ReadOnly = true;
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.LogTextBox.Size = new System.Drawing.Size(426, 170);
             this.LogTextBox.TabIndex = 999;

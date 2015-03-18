@@ -56,26 +56,51 @@ namespace Cube.Forms.Demo
         {
             var dialog = new Cube.Forms.NotifyForm();
             dialog.Title = TitleTextBox.Text;
-            dialog.TitleClick += NotifyTitle_Click;
-            dialog.ImageClick += NotifyImage_Click;
-            dialog.Show();
+            dialog.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
+            dialog.InitialDelay = (int)DelayMilliseconds.Value;
+            dialog.Shown += (s, ev) => Log("Shown");
+            dialog.TitleClick += (s, ev) => Log("TitleClick");
+            dialog.ImageClick += (s, ev) => Log("ImageClick");
+            dialog.FormClosed += (s, ev) => Log("FormClosed");
+            dialog.Show((int)DisplayMilliseconds.Value);
         }
 
-        private void NotifyTitle_Click(object sender, NotifyEventArgs e)
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ImageBrowseButton_Click
+        ///
+        /// <summary>
+        /// 画像ファイルを選択させるためのブラウザを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ImageBrowseButton_Click(object sender, EventArgs e)
         {
-            AddLog(string.Format("{0} TitleClick: {1}", DateTime.Now, e.Title));
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            ImageTextBox.Text = dialog.FileName;
         }
 
-        private void NotifyImage_Click(object sender, NotifyEventArgs e)
-        {
-            AddLog(string.Format("{0} ImageClick: {1}", DateTime.Now, e.Title));
-        }
+        #endregion
 
-        private void AddLog(string message)
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Log
+        ///
+        /// <summary>
+        /// ログ用のテキストボックスにメッセージを追加します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Log(string message)
         {
             var builder = new System.Text.StringBuilder();
+            var newline = string.Format("{0} {1}", DateTime.Now, message);
             builder.AppendLine(LogTextBox.Text);
-            builder.Append(message);
+            builder.Append(newline);
             LogTextBox.Text = builder.ToString();
         }
 
