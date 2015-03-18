@@ -41,6 +41,12 @@ namespace Cube.Forms
             CloseButton.Click += (s, e) => Close();
             TitleButton.Click += (s, e) => RaiseTitleClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
+
+            Load += (s, e) =>
+            {
+                System.Threading.Thread.Sleep(InitialDelay);
+                SetLocation();
+            };
         }
 
         #endregion
@@ -146,7 +152,22 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Show(int msec)
         {
+            var worker = new System.ComponentModel.BackgroundWorker();
+            worker.DoWork += (s, e) => { System.Threading.Thread.Sleep(msec); };
+            worker.RunWorkerCompleted += (s, e) =>
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke((System.Windows.Forms.MethodInvoker)delegate() { Close(); });
+                }
+                else
+                {
+                    Close();
+                }
+            };
+
             base.Show();
+            worker.RunWorkerAsync();
         }
 
         #endregion

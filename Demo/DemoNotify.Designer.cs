@@ -120,6 +120,11 @@
             // DisplayMilliseconds
             // 
             this.DisplayMilliseconds.Location = new System.Drawing.Point(80, 103);
+            this.DisplayMilliseconds.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.DisplayMilliseconds.Name = "DisplayMilliseconds";
             this.DisplayMilliseconds.Size = new System.Drawing.Size(358, 23);
             this.DisplayMilliseconds.TabIndex = 3;
@@ -128,6 +133,11 @@
             // DelayMilliseconds
             // 
             this.DelayMilliseconds.Location = new System.Drawing.Point(80, 132);
+            this.DelayMilliseconds.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.DelayMilliseconds.Name = "DelayMilliseconds";
             this.DelayMilliseconds.Size = new System.Drawing.Size(358, 23);
             this.DelayMilliseconds.TabIndex = 4;
