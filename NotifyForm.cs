@@ -38,7 +38,6 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
-            SetLocation();
             CloseButton.Click += (s, e) => Close();
             TitleButton.Click += (s, e) => RaiseTitleClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
@@ -121,6 +120,34 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public event Action<object, NotifyEventArgs> ImageClick;
+
+        #endregion
+
+        #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Show
+        /// 
+        /// <summary>
+        /// 指定された時間だけフォームを表示します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: 以下の処理を実装
+        ///       1. InitialDelay だけ表示するのを遅延させる
+        ///       2. NotifyForm を 右下に表示 (SetLocation で位置は調整可能)
+        ///       3. msec (ミリ秒)後、フォームを閉じる。
+        ///       
+        /// TODO: また、Show() メソッド（引数無し）についても、1, 2 の処理を
+        ///       適用できないか検討する。
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Show(int msec)
+        {
+            base.Show();
+        }
 
         #endregion
 
