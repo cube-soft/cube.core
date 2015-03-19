@@ -38,7 +38,7 @@
             // 
             // ToolPanel
             // 
-            this.ToolPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.ToolPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.ToolPanel.ColumnCount = 3;
             this.ToolPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.ToolPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
@@ -76,8 +76,13 @@
             // 
             this.UpdateButton.BackColor = System.Drawing.Color.Transparent;
             this.UpdateButton.BorderColor = System.Drawing.Color.Transparent;
+            this.UpdateButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.UpdateButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UpdateButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.UpdateButton.FlatAppearance.BorderSize = 0;
+            this.UpdateButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.UpdateButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.UpdateButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UpdateButton.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonUpdate;
             this.UpdateButton.Location = new System.Drawing.Point(563, 3);
@@ -88,14 +93,14 @@
             this.UpdateButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.CheckedImage = null;
-            this.UpdateButton.Surface.MouseDownBackColor = System.Drawing.Color.Moccasin;
+            this.UpdateButton.Surface.MouseDownBackColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.MouseDownBackgroundImage = null;
             this.UpdateButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.MouseDownImage = null;
-            this.UpdateButton.Surface.MouseOverBackColor = System.Drawing.Color.PapayaWhip;
+            this.UpdateButton.Surface.MouseOverBackColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.MouseOverBackgroundImage = null;
-            this.UpdateButton.Surface.MouseOverBorderColor = System.Drawing.Color.Orange;
+            this.UpdateButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
             this.UpdateButton.Surface.MouseOverImage = null;
             this.UpdateButton.TabIndex = 1;
@@ -112,7 +117,7 @@
             this.WebBrowser.TabIndex = 2;
             this.WebBrowser.Url = new System.Uri("about:blank", System.UriKind.Absolute);
             // 
-            // WebForm
+            // DemoWeb
             // 
             this.AcceptButton = this.UpdateButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -120,7 +125,7 @@
             this.ClientSize = new System.Drawing.Size(600, 400);
             this.Controls.Add(this.WebBrowser);
             this.Controls.Add(this.ToolPanel);
-            this.Name = "WebForm";
+            this.Name = "DemoWeb";
             this.Text = "WebForm";
             this.Controls.SetChildIndex(this.ToolPanel, 0);
             this.Controls.SetChildIndex(this.WebBrowser, 0);
