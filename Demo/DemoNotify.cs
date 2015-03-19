@@ -37,6 +37,10 @@ namespace Cube.Forms.Demo
         public DemoNotify()
         {
             InitializeComponent();
+            _component.Shown += (s, ev) => Log("Shown");
+            _component.TitleClick += (s, ev) => Log("TitleClick");
+            _component.ImageClick += (s, ev) => Log("ImageClick");
+            _component.FormClosed += (s, ev) => Log("FormClosed");
         }
 
         #endregion
@@ -54,17 +58,12 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void ShowButton_Click(object sender, EventArgs e)
         {
-            var dialog = new Cube.Forms.NotifyForm();
-            dialog.Title = TitleTextBox.Text;
-            dialog.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
-            dialog.InitialDelay = (int)DelayMilliseconds.Value;
-            dialog.Shown += (s, ev) => Log("Shown");
-            dialog.TitleClick += (s, ev) => Log("TitleClick");
-            dialog.ImageClick += (s, ev) => Log("ImageClick");
-            dialog.FormClosed += (s, ev) => Log("FormClosed");
-            dialog.Show((int)DisplayMilliseconds.Value);
+            Log("ShowButton.Click");
+            _component.Title = TitleTextBox.Text;
+            _component.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
+            _component.InitialDelay = (int)DelayMilliseconds.Value;
+            _component.Show((int)DisplayMilliseconds.Value);
         }
-
 
         /* ----------------------------------------------------------------- */
         ///
@@ -99,11 +98,16 @@ namespace Cube.Forms.Demo
         {
             var builder = new System.Text.StringBuilder();
             var newline = string.Format("{0} {1}", DateTime.Now, message);
-            builder.AppendLine(LogTextBox.Text);
+            builder.Append(LogTextBox.Text);
+            if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine();
             builder.Append(newline);
             LogTextBox.Text = builder.ToString();
         }
 
+        #endregion
+
+        #region Fields
+        private NotifyForm _component = new NotifyForm();
         #endregion
     }
 }
