@@ -312,7 +312,7 @@ namespace Cube.Forms
         private void RaiseChangingVisibleEvent(bool current, bool ahead, CancelEventArgs e)
         {
             if (!current && ahead) OnShowing(e);
-            else if (current && !ahead) OnHidden(e);
+            else if (current && !ahead) OnHiding(e);
         }
 
         /* ----------------------------------------------------------------- */
