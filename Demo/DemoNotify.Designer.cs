@@ -67,6 +67,7 @@
             this.TitleTextBox.Name = "TitleTextBox";
             this.TitleTextBox.Size = new System.Drawing.Size(358, 23);
             this.TitleTextBox.TabIndex = 0;
+            this.TitleTextBox.Text = "NotifyForm Demo";
             // 
             // ImageTextBox
             // 
@@ -129,6 +130,11 @@
             this.DisplayMilliseconds.Size = new System.Drawing.Size(358, 23);
             this.DisplayMilliseconds.TabIndex = 3;
             this.DisplayMilliseconds.ThousandsSeparator = true;
+            this.DisplayMilliseconds.Value = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             // 
             // DelayMilliseconds
             // 
@@ -141,6 +147,12 @@
             this.DelayMilliseconds.Name = "DelayMilliseconds";
             this.DelayMilliseconds.Size = new System.Drawing.Size(358, 23);
             this.DelayMilliseconds.TabIndex = 4;
+            this.DelayMilliseconds.ThousandsSeparator = true;
+            this.DelayMilliseconds.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             // 
             // DelayLabel
             // 

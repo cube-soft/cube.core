@@ -37,10 +37,13 @@ namespace Cube.Forms.Demo
         public DemoNotify()
         {
             InitializeComponent();
+            _component.Showing += (s, ev) => Log(string.Format("Showing, Pending = {0}", _component.ShowPending));
             _component.Shown += (s, ev) => Log("Shown");
             _component.TitleClick += (s, ev) => Log("TitleClick");
             _component.ImageClick += (s, ev) => Log("ImageClick");
-            _component.FormClosed += (s, ev) => Log("FormClosed");
+            _component.Hiding += (s, ev) => Log("Hiding");
+            _component.Hidden += (s, ev) => Log("Hidden");
+            FormClosing += (s, ev) => { _component.Close(); };
         }
 
         #endregion
@@ -59,8 +62,12 @@ namespace Cube.Forms.Demo
         private void ShowButton_Click(object sender, EventArgs e)
         {
             Log("ShowButton.Click");
+            if (!string.IsNullOrEmpty(ImageTextBox.Text) &&
+                System.IO.File.Exists(ImageTextBox.Text))
+            {
+                _component.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
+            }
             _component.Title = TitleTextBox.Text;
-            _component.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
             _component.InitialDelay = (int)DelayMilliseconds.Value;
             _component.Show((int)DisplayMilliseconds.Value);
         }

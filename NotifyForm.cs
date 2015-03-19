@@ -10,6 +10,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
+using System.Threading;
 
 namespace Cube.Forms
 {
@@ -38,15 +39,9 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
-            CloseButton.Click += (s, e) => Close();
+            CloseButton.Click += (s, e) => Hide();
             TitleButton.Click += (s, e) => RaiseTitleClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
-
-            Load += (s, e) =>
-            {
-                System.Threading.Thread.Sleep(InitialDelay);
-                SetLocation();
-            };
         }
 
         #endregion
@@ -101,6 +96,17 @@ namespace Cube.Forms
         [Browsable(true)]
         public int InitialDelay { get; set; }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ShowPending
+        /// 
+        /// <summary>
+        /// 表示処理が遅延されているかどうかを取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public bool ShowPending { get; private set; }
+
         #endregion
 
         #region Events
@@ -138,36 +144,12 @@ namespace Cube.Forms
         /// <summary>
         /// 指定された時間だけフォームを表示します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: 以下の処理を実装
-        ///       1. InitialDelay だけ表示するのを遅延させる
-        ///       2. NotifyForm を 右下に表示 (SetLocation で位置は調整可能)
-        ///       3. msec (ミリ秒)後、フォームを閉じる。
-        ///       
-        /// TODO: また、Show() メソッド（引数無し）についても、1, 2 の処理を
-        ///       適用できないか検討する。
-        /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
         public void Show(int msec)
         {
-            var worker = new System.ComponentModel.BackgroundWorker();
-            worker.DoWork += (s, e) => { System.Threading.Thread.Sleep(msec); };
-            worker.RunWorkerCompleted += (s, e) =>
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke((System.Windows.Forms.MethodInvoker)delegate() { Close(); });
-                }
-                else
-                {
-                    Close();
-                }
-            };
-
-            base.Show();
-            worker.RunWorkerAsync();
+            Show();
+            DelayInvoke(InitialDelay + msec, () => Hide());
         }
 
         #endregion
@@ -204,7 +186,58 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Override methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnShowing
+        /// 
+        /// <summary>
+        /// フォームが表示される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected override void OnShowing(CancelEventArgs e)
+        {
+            if (InitialDelay > 0 && !_pending)
+            {
+                ShowPending = true;
+                _pending = true;
+                e.Cancel = true;
+
+                DelayInvoke(InitialDelay, () => {
+                    SetLocation();
+                    ShowPending = false;
+                    Show();
+                    _pending = false;
+                });
+            }
+            base.OnShowing(e);
+        }
+
+        #endregion
+
         #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// DelayInvoke
+        /// 
+        /// <summary>
+        /// 指定された時間 (ミリ秒) だけ処理を遅延させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void DelayInvoke(int msec, Action action)
+        {
+            var worker = new System.ComponentModel.BackgroundWorker();
+            worker.DoWork += (s, e) => Thread.Sleep(msec);
+            worker.RunWorkerCompleted += (s, e) => {
+                if (InvokeRequired) Invoke(action);
+                else action();
+            };
+            worker.RunWorkerAsync();
+        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -249,6 +282,10 @@ namespace Cube.Forms
             OnImageClick(new NotifyEventArgs(Title, Image));
         }
 
+        #endregion
+
+        #region Fields
+        private bool _pending = false;
         #endregion
     }
 }
