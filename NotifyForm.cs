@@ -199,17 +199,17 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         protected override void OnShowing(CancelEventArgs e)
         {
-            if (InitialDelay > 0 && !_pending)
+            if (InitialDelay > 0 && !_pend4impl)
             {
                 ShowPending = true;
-                _pending = true;
+                _pend4impl = true;
                 e.Cancel = true;
 
                 DelayInvoke(InitialDelay, () => {
                     SetLocation();
                     ShowPending = false;
                     Show();
-                    _pending = false;
+                    _pend4impl = false;
                 });
             }
             base.OnShowing(e);
@@ -285,7 +285,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private bool _pending = false;
+        private bool _pend4impl = false;
         #endregion
     }
 }

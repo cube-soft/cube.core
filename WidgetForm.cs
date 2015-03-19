@@ -90,6 +90,26 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DragMoveEnabled
+        /// 
+        /// <summary>
+        /// マウスのドラッグ操作でフォームを移動可能にするかどうかを取得
+        /// または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool DragMoveEnabled
+        {
+            get { return _dragMove; }
+            set { _dragMove = value; }
+        }
+
         #region Hiding properties
 
         [Browsable(false)]
@@ -98,6 +118,8 @@ namespace Cube.Forms
             get { return base.AutoScaleMode; }
             set { base.AutoScaleMode = value; }
         }
+
+        #endregion
 
         #endregion
 
@@ -186,7 +208,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (DragMoveEnabled && e.Button == MouseButtons.Left)
             {
                 Win32Api.ReleaseCapture();
                 Win32Api.SendMessage(Handle, Win32Api.WM_NCLBUTTONDOWN,
@@ -345,6 +367,10 @@ namespace Cube.Forms
 
         #endregion
 
+        #endregion
+
+        #region Fields
+        private bool _dragMove = true;
         #endregion
     }
 }

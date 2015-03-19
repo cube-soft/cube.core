@@ -48,7 +48,7 @@
             this.TitleLabel.AutoSize = true;
             this.TitleLabel.Location = new System.Drawing.Point(12, 48);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(42, 15);
+            this.TitleLabel.Size = new System.Drawing.Size(46, 17);
             this.TitleLabel.TabIndex = 999;
             this.TitleLabel.Text = "タイトル";
             // 
@@ -57,7 +57,7 @@
             this.DisplayLabel.AutoSize = true;
             this.DisplayLabel.Location = new System.Drawing.Point(12, 105);
             this.DisplayLabel.Name = "DisplayLabel";
-            this.DisplayLabel.Size = new System.Drawing.Size(55, 15);
+            this.DisplayLabel.Size = new System.Drawing.Size(60, 17);
             this.DisplayLabel.TabIndex = 999;
             this.DisplayLabel.Text = "表示時間";
             // 
@@ -114,7 +114,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 77);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 15);
+            this.label2.Size = new System.Drawing.Size(48, 17);
             this.label2.TabIndex = 999;
             this.label2.Text = "イメージ";
             // 
@@ -159,7 +159,7 @@
             this.DelayLabel.AutoSize = true;
             this.DelayLabel.Location = new System.Drawing.Point(12, 134);
             this.DelayLabel.Name = "DelayLabel";
-            this.DelayLabel.Size = new System.Drawing.Size(55, 15);
+            this.DelayLabel.Size = new System.Drawing.Size(60, 17);
             this.DelayLabel.TabIndex = 999;
             this.DelayLabel.Text = "遅延時間";
             // 
