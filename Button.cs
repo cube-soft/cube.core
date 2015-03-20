@@ -51,6 +51,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public Surface Surface
         {
@@ -67,6 +68,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public Surface MouseDownSurface
         {
@@ -84,6 +86,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public Surface MouseOverSurface
         {
@@ -161,6 +164,14 @@ namespace Cube.Forms
         {
             get { return base.ImageList; }
             set { base.ImageList = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Windows.Forms.TextImageRelation TextImageRelation
+        {
+            get { return base.TextImageRelation; }
+            set { base.TextImageRelation = value; }
         }
 
         [Browsable(false)]

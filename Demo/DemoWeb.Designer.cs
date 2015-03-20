@@ -94,6 +94,7 @@
             this.UpdateButton.MouseOverSurface.BackColor = System.Drawing.Color.Gainsboro;
             this.UpdateButton.MouseOverSurface.BackgroundImage = null;
             this.UpdateButton.MouseOverSurface.BorderColor = System.Drawing.Color.Gray;
+            this.UpdateButton.MouseOverSurface.BorderSize = 1;
             this.UpdateButton.MouseOverSurface.Image = null;
             this.UpdateButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.UpdateButton.Name = "UpdateButton";
