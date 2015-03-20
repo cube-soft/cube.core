@@ -70,13 +70,11 @@
             this.CloseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.CloseButton.MouseDownSurface.BackgroundImage = null;
             this.CloseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.MouseDownSurface.BorderSize = 0;
             this.CloseButton.MouseDownSurface.Image = null;
             this.CloseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
             this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.CloseButton.MouseOverSurface.BackgroundImage = null;
             this.CloseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.MouseOverSurface.BorderSize = 0;
             this.CloseButton.MouseOverSurface.Image = null;
             this.CloseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.CloseButton.Name = "CloseButton";

@@ -91,13 +91,11 @@
             this.ImageBrowseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.ImageBrowseButton.MouseDownSurface.BackgroundImage = null;
             this.ImageBrowseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.MouseDownSurface.BorderSize = 0;
             this.ImageBrowseButton.MouseDownSurface.Image = null;
             this.ImageBrowseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
             this.ImageBrowseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.ImageBrowseButton.MouseOverSurface.BackgroundImage = null;
             this.ImageBrowseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.MouseOverSurface.BorderSize = 0;
             this.ImageBrowseButton.MouseOverSurface.Image = null;
             this.ImageBrowseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.ImageBrowseButton.Name = "ImageBrowseButton";
@@ -193,13 +191,11 @@
             this.ShowButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.ShowButton.MouseDownSurface.BackgroundImage = null;
             this.ShowButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.MouseDownSurface.BorderSize = 0;
             this.ShowButton.MouseDownSurface.Image = null;
             this.ShowButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
             this.ShowButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.ShowButton.MouseOverSurface.BackgroundImage = null;
             this.ShowButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.MouseOverSurface.BorderSize = 0;
             this.ShowButton.MouseOverSurface.Image = null;
             this.ShowButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.ShowButton.Name = "ShowButton";

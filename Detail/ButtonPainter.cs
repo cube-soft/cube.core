@@ -322,11 +322,11 @@ namespace Cube.Forms
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private T Select<T>(T normal, T check, T over, T down)
+        private T Select<T>(T normal, T check, T over, T down, T ignore = default(T))
         {
-            var x0 = !EqualityComparer<T>.Default.Equals(check, default(T)) && IsChecked ? check : normal;
-            var x1 = !EqualityComparer<T>.Default.Equals(over, default(T)) ? over : x0;
-            var x2 = !EqualityComparer<T>.Default.Equals(down, default(T)) ? down : x1;
+            var x0 = !EqualityComparer<T>.Default.Equals(check, ignore) && IsChecked ? check : normal;
+            var x1 = !EqualityComparer<T>.Default.Equals(over,  ignore) ? over : x0;
+            var x2 = !EqualityComparer<T>.Default.Equals(down,  ignore) ? down : x1;
 
             return IsMouseDown ? x2 :
                    IsMouseOver ? x1 : x0;
@@ -363,7 +363,8 @@ namespace Cube.Forms
             return Select(Surface.BorderSize,
                           CheckedSurface.BorderSize,
                           MouseOverSurface.BorderSize,
-                          MouseDownSurface.BorderSize);
+                          MouseDownSurface.BorderSize,
+                          -1);
         }
 
         /* ----------------------------------------------------------------- */

@@ -27,6 +27,26 @@ namespace Cube.Forms
     [TypeConverter(typeof(NullExpandableObjectConverter))]
     public class Surface
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Surface
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Surface()
+        {
+            BorderSize = -1;
+        }
+
+        #endregion
+
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
         /// BackColor
@@ -74,6 +94,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [DefaultValue(-1)]
         public int BorderSize { get; set; }
 
         /* ----------------------------------------------------------------- */
@@ -99,5 +120,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         public Color TextColor { get; set; }
+
+        #endregion
     }
 }

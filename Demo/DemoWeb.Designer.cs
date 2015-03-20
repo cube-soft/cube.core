@@ -89,13 +89,11 @@
             this.UpdateButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
             this.UpdateButton.MouseDownSurface.BackgroundImage = null;
             this.UpdateButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
-            this.UpdateButton.MouseDownSurface.BorderSize = 0;
             this.UpdateButton.MouseDownSurface.Image = null;
             this.UpdateButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
             this.UpdateButton.MouseOverSurface.BackColor = System.Drawing.Color.Gainsboro;
             this.UpdateButton.MouseOverSurface.BackgroundImage = null;
             this.UpdateButton.MouseOverSurface.BorderColor = System.Drawing.Color.Gray;
-            this.UpdateButton.MouseOverSurface.BorderSize = 1;
             this.UpdateButton.MouseOverSurface.Image = null;
             this.UpdateButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.UpdateButton.Name = "UpdateButton";
