@@ -53,6 +53,63 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Showing
+        /// 
+        /// <summary>
+        /// フォームが表示される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event Action<object, CancelEventArgs> Showing;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Hiding
+        /// 
+        /// <summary>
+        /// フォームが非表示になる直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event Action<object, CancelEventArgs> Hiding;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Hidden
+        /// 
+        /// <summary>
+        /// フォームが非表示なった直後に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event Action<object, EventArgs> Hidden;
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DragMoveEnabled
+        /// 
+        /// <summary>
+        /// マウスのドラッグ操作でフォームを移動可能にするかどうかを取得
+        /// または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool DragMoveEnabled
+        {
+            get { return _dragMove; }
+            set { _dragMove = value; }
+        }
+
         #region Hiding properties
 
         [Browsable(false)]
@@ -60,6 +117,54 @@ namespace Cube.Forms
         {
             get { return base.AutoScaleMode; }
             set { base.AutoScaleMode = value; }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnShowing
+        /// 
+        /// <summary>
+        /// フォームが表示される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnShowing(CancelEventArgs e)
+        {
+            if (Showing != null) Showing(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnHiding
+        /// 
+        /// <summary>
+        /// フォームが非表示になる直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnHiding(CancelEventArgs e)
+        {
+            if (Hiding != null) Hiding(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnHidden
+        /// 
+        /// <summary>
+        /// フォームが非表示なった直後に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnHidden(EventArgs e)
+        {
+            if (Hidden != null) Hidden(this, e);
         }
 
         #endregion
@@ -103,7 +208,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (DragMoveEnabled && e.Button == MouseButtons.Left)
             {
                 Win32Api.ReleaseCapture();
                 Win32Api.SendMessage(Handle, Win32Api.WM_NCLBUTTONDOWN,
@@ -132,6 +237,24 @@ namespace Cube.Forms
             base.OnControlAdded(e);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetVisibleCore
+        /// 
+        /// <summary>
+        /// コントロールを指定した表示状態に設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void SetVisibleCore(bool value)
+        {
+            var prev = Visible;
+            var ev = new CancelEventArgs();
+            RaiseChangingVisibleEvent(prev, value, ev);
+            base.SetVisibleCore(ev.Cancel ? prev : value);
+            if (prev == value || ev.Cancel) return;
+            RaiseVisibleChangedEvent(value, prev, new EventArgs());
+        }
 
         #endregion
 
@@ -175,27 +298,57 @@ namespace Cube.Forms
                            control.HasEventHandler("MouseUp") ||
                            control.HasEventHandler("MouseClick") ||
                            control.HasEventHandler("MouseDoubleclick");
-            return IsContainerControl(control) && !reserved;
+            return IsContainerComponent(control) && !reserved;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsContainerControl
+        /// IsContainerComponent
         /// 
         /// <summary>
-        /// MouseDown イベントを奪っても良いコントロールかどうかを
+        /// MouseDown イベントを奪っても良いコンポーネントかどうかを
         /// 判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool IsContainerControl(Control control)
+        private bool IsContainerComponent(Control control)
         {
-            if (control is ContainerControl ||
+            if (control is SplitContainer ||
                 control is Panel ||
                 control is GroupBox ||
+                control is TabControl ||
                 control is Label ||
                 control is PictureBox) return true;
             return false;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseChangingVisibleEvent
+        /// 
+        /// <summary>
+        /// 表示状態の変更に関するイベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RaiseChangingVisibleEvent(bool current, bool ahead, CancelEventArgs e)
+        {
+            if (!current && ahead) OnShowing(e);
+            else if (current && !ahead) OnHiding(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseVisibleChangedEvent
+        /// 
+        /// <summary>
+        /// 表示状態が変更された事を通知するイベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RaiseVisibleChangedEvent(bool current, bool behind, EventArgs e)
+        {
+            if (!current && behind) OnHidden(e);
         }
 
         #region Win32 APIs
@@ -214,6 +367,10 @@ namespace Cube.Forms
 
         #endregion
 
+        #endregion
+
+        #region Fields
+        private bool _dragMove = true;
         #endregion
     }
 }

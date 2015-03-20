@@ -1,6 +1,6 @@
 ﻿namespace Cube.Forms.Demo
 {
-    partial class ButtonsForm
+    partial class DemoButtons
     {
         /// <summary>
         /// 必要なデザイナー変数です。

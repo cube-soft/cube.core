@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// MainForm.cs
+/// NavigatingEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -9,76 +9,65 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Drawing;
 
-namespace Cube.Forms.Demo
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.MainForm
+    /// NotifyEventArgs
     /// 
     /// <summary>
-    /// デモ用プロジェクトのメインフォームです。
+    /// 通知フォームで表示された内容を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainForm : FormBase
+    public class NotifyEventArgs : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MainForm
-        ///
+        /// NotifyEventArgs
+        /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public MainForm()
+        public NotifyEventArgs(string title, Image image)
+            : base()
         {
-            InitializeComponent();
+            Title = title;
+            Image = image;
         }
 
         #endregion
 
-        #region Event handlers
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ButtonsButton_Click
-        ///
+        /// Title
+        /// 
         /// <summary>
-        /// 各種ボタンのデモ用フォームを表示します。
+        /// タイトルを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ButtonsButton_Click(object sender, EventArgs e)
-        {
-            var dialog = new DemoButtons();
-            dialog.ShowDialog();
-        }
+        public string Title { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WebBrowserButton_Click
-        ///
+        /// Image
+        /// 
         /// <summary>
-        /// Web ブラウザのデモ用フォームを表示します。
+        /// イメージを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WebBrowserButton_Click(object sender, EventArgs e)
-        {
-            var dialog = new DemoWeb();
-            dialog.ShowDialog();
-        }
+        public Image Image { get; private set; }
 
         #endregion
-
-        private void NotifyFormButton_Click(object sender, EventArgs e)
-        {
-            var dialog = new DemoNotify();
-            dialog.ShowDialog();
-        }
     }
 }

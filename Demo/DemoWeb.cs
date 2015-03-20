@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// WebForm.cs
+/// DemoWeb.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -14,27 +14,27 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.WebForm
+    /// Cube.Forms.Demo.DemoWeb
     /// 
     /// <summary>
-    /// Web ブラウザのデモ用フォームです。
+    /// Web ブラウザのデモ用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class WebForm : FormBase
+    public partial class DemoWeb : FormBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WebForm
+        /// DemoWeb
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public WebForm()
+        public DemoWeb()
         {
             InitializeComponent();
             var url = WebBrowser.Url;

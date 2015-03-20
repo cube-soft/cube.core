@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ButtonsForm.cs
+/// DemoButtons.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -14,25 +14,25 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.ButtonsForm
+    /// Cube.Forms.Demo.DemoButtons
     /// 
     /// <summary>
-    /// 各種ボタンのデモ用フォームです。
+    /// 各種ボタンのデモ用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class ButtonsForm : FormBase
+    public partial class DemoButtons : FormBase
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ButtonsForm
+        /// DemoButtons
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonsForm()
+        public DemoButtons()
         {
             InitializeComponent();
         }
