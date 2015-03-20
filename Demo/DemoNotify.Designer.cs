@@ -48,7 +48,7 @@
             this.TitleLabel.AutoSize = true;
             this.TitleLabel.Location = new System.Drawing.Point(12, 48);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(46, 17);
+            this.TitleLabel.Size = new System.Drawing.Size(42, 15);
             this.TitleLabel.TabIndex = 999;
             this.TitleLabel.Text = "タイトル";
             // 
@@ -57,7 +57,7 @@
             this.DisplayLabel.AutoSize = true;
             this.DisplayLabel.Location = new System.Drawing.Point(12, 105);
             this.DisplayLabel.Name = "DisplayLabel";
-            this.DisplayLabel.Size = new System.Drawing.Size(60, 17);
+            this.DisplayLabel.Size = new System.Drawing.Size(55, 15);
             this.DisplayLabel.TabIndex = 999;
             this.DisplayLabel.Text = "表示時間";
             // 
@@ -78,32 +78,36 @@
             // 
             // ImageBrowseButton
             // 
-            this.ImageBrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.ImageBrowseButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
+            this.ImageBrowseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageBrowseButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageBrowseButton.FlatAppearance.BorderSize = 0;
             this.ImageBrowseButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageBrowseButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageBrowseButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ImageBrowseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ImageBrowseButton.Image = null;
             this.ImageBrowseButton.Location = new System.Drawing.Point(388, 74);
+            this.ImageBrowseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.ImageBrowseButton.MouseDownSurface.BackgroundImage = null;
+            this.ImageBrowseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.ImageBrowseButton.MouseDownSurface.BorderSize = 0;
+            this.ImageBrowseButton.MouseDownSurface.Image = null;
+            this.ImageBrowseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageBrowseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.ImageBrowseButton.MouseOverSurface.BackgroundImage = null;
+            this.ImageBrowseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.ImageBrowseButton.MouseOverSurface.BorderSize = 0;
+            this.ImageBrowseButton.MouseOverSurface.Image = null;
+            this.ImageBrowseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.ImageBrowseButton.Name = "ImageBrowseButton";
             this.ImageBrowseButton.Size = new System.Drawing.Size(50, 23);
-            this.ImageBrowseButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.CheckedBackgroundImage = null;
-            this.ImageBrowseButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.CheckedImage = null;
-            this.ImageBrowseButton.Surface.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.ImageBrowseButton.Surface.MouseDownBackgroundImage = null;
-            this.ImageBrowseButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.MouseDownImage = null;
-            this.ImageBrowseButton.Surface.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.ImageBrowseButton.Surface.MouseOverBackgroundImage = null;
-            this.ImageBrowseButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.ImageBrowseButton.Surface.MouseOverImage = null;
+            this.ImageBrowseButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.ImageBrowseButton.Surface.BackgroundImage = null;
+            this.ImageBrowseButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.ImageBrowseButton.Surface.BorderSize = 1;
+            this.ImageBrowseButton.Surface.Image = null;
+            this.ImageBrowseButton.Surface.TextColor = System.Drawing.Color.Black;
             this.ImageBrowseButton.TabIndex = 2;
             this.ImageBrowseButton.Text = "...";
             this.ImageBrowseButton.UseVisualStyleBackColor = false;
@@ -114,7 +118,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 77);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 17);
+            this.label2.Size = new System.Drawing.Size(44, 15);
             this.label2.TabIndex = 999;
             this.label2.Text = "イメージ";
             // 
@@ -159,7 +163,7 @@
             this.DelayLabel.AutoSize = true;
             this.DelayLabel.Location = new System.Drawing.Point(12, 134);
             this.DelayLabel.Name = "DelayLabel";
-            this.DelayLabel.Size = new System.Drawing.Size(60, 17);
+            this.DelayLabel.Size = new System.Drawing.Size(55, 15);
             this.DelayLabel.TabIndex = 999;
             this.DelayLabel.Text = "遅延時間";
             // 
@@ -176,32 +180,36 @@
             // 
             // ShowButton
             // 
-            this.ShowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.ShowButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
+            this.ShowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ShowButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ShowButton.FlatAppearance.BorderSize = 0;
             this.ShowButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ShowButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ShowButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ShowButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ShowButton.Image = null;
             this.ShowButton.Location = new System.Drawing.Point(363, 170);
+            this.ShowButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.ShowButton.MouseDownSurface.BackgroundImage = null;
+            this.ShowButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.ShowButton.MouseDownSurface.BorderSize = 0;
+            this.ShowButton.MouseDownSurface.Image = null;
+            this.ShowButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ShowButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.ShowButton.MouseOverSurface.BackgroundImage = null;
+            this.ShowButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.ShowButton.MouseOverSurface.BorderSize = 0;
+            this.ShowButton.MouseOverSurface.Image = null;
+            this.ShowButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.ShowButton.Name = "ShowButton";
             this.ShowButton.Size = new System.Drawing.Size(75, 23);
-            this.ShowButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.CheckedBackgroundImage = null;
-            this.ShowButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.CheckedImage = null;
-            this.ShowButton.Surface.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.ShowButton.Surface.MouseDownBackgroundImage = null;
-            this.ShowButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.MouseDownImage = null;
-            this.ShowButton.Surface.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.ShowButton.Surface.MouseOverBackgroundImage = null;
-            this.ShowButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.ShowButton.Surface.MouseOverImage = null;
+            this.ShowButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.ShowButton.Surface.BackgroundImage = null;
+            this.ShowButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.ShowButton.Surface.BorderSize = 1;
+            this.ShowButton.Surface.Image = null;
+            this.ShowButton.Surface.TextColor = System.Drawing.Color.Black;
             this.ShowButton.TabIndex = 19;
             this.ShowButton.Text = "Show";
             this.ShowButton.UseVisualStyleBackColor = false;

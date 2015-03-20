@@ -22,7 +22,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ToggleButtonPainter : ButtonPainter
+    internal class ToggleButtonPainter : ButtonPainter
     {
         #region Constructors
 
@@ -60,6 +60,30 @@ namespace Cube.Forms
             var control = View as System.Windows.Forms.CheckBox;
             if (control == null) return;
             IsChecked = control.Checked;
+        }
+
+        #endregion
+
+        #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InvalidateViewSurface
+        /// 
+        /// <summary>
+        /// 外観の描画に関して CheckBox オブジェクトと競合するプロパティを
+        /// 無効にします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void InvalidateViewSurface()
+        {
+            var radio = View as System.Windows.Forms.CheckBox;
+            if (radio != null)
+            {
+                radio.Appearance = System.Windows.Forms.Appearance.Button;
+            }
+            base.InvalidateViewSurface();
         }
 
         #endregion

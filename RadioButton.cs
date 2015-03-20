@@ -35,22 +35,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public RadioButton()
-            : base()
-        {
-            _painter = new RadioButtonPainter(this);
-
-            BorderColor = System.Drawing.Color.Black;
-            BorderSize = 1;
-            base.Appearance = System.Windows.Forms.Appearance.Button;
-            base.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            base.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(0, 255, 255, 255);
-            base.FlatAppearance.BorderSize = 0;
-            base.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(0, 255, 255, 255);
-            base.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(0, 255, 255, 255);
-            base.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(0, 255, 255, 255);
-            base.UseVisualStyleBackColor = false;
-        }
+        public RadioButton() : base() { _painter = new RadioButtonPainter(this); }
 
         #endregion
 
@@ -61,7 +46,7 @@ namespace Cube.Forms
         /// Surface
         ///
         /// <summary>
-        /// ボタンの外観を取得または設定します。
+        /// ボタンの基本となる外観を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -74,55 +59,80 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BorderColor
-        /// 
+        /// CheckedSurface
+        ///
         /// <summary>
-        /// ボタンを囲む境界線の色を取得または設定します。
+        /// ボタンがチェック状態時の外観を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(typeof(System.Drawing.Color), "0x000000")]
-        public System.Drawing.Color BorderColor
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public Surface CheckedSurface
         {
-            get { return _painter.BorderColor; }
-            set { _painter.BorderColor = value; }
+            get { return _painter.CheckedSurface; }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BorderSize
+        /// MouseDownSurface
         /// 
         /// <summary>
-        /// ボタンを囲む境界線のサイズをピクセル単位で指定する値を
-        /// 取得または設定します。
+        /// マウスがクリック状態時の外観を定義したオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(1)]
-        public int BorderSize
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public Surface MouseDownSurface
         {
-            get { return _painter.BorderSize; }
-            set { _painter.BorderSize = value; }
+            get { return _painter.MouseDownSurface; }
         }
 
-        #region Hiding properties
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MouseOverSurface
+        /// 
+        /// <summary>
+        /// マウスポインタがボタンの境界範囲内に存在する時の外観を定義した
+        /// オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public Surface MouseOverSurface
+        {
+            get { return _painter.MouseOverSurface; }
+        }
+
+        #region Hiding properties for ButtonBase
 
         [Browsable(false)]
-        public new System.Windows.Forms.Appearance Appearance
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Drawing.Color BackColor
         {
-            get { return base.Appearance; }
-            set { base.Appearance = value; }
+            get { return base.BackColor; }
+            set { base.BackColor = value; }
         }
 
         [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Drawing.Image BackgroundImage
+        {
+            get { return base.BackgroundImage; }
+            set { base.BackgroundImage = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FlatButtonAppearance FlatAppearance
         {
             get { return base.FlatAppearance; }
         }
 
         [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FlatStyle FlatStyle
         {
             get { return base.FlatStyle; }
@@ -130,10 +140,62 @@ namespace Cube.Forms
         }
 
         [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Drawing.Color ForeColor
+        {
+            get { return base.ForeColor; }
+            set { base.ForeColor = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Drawing.Image Image
+        {
+            get { return base.Image; }
+            set { base.Image = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new int ImageIndex
+        {
+            get { return base.ImageIndex; }
+            set { base.ImageIndex = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new string ImageKey
+        {
+            get { return base.ImageKey; }
+            set { base.ImageKey = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Windows.Forms.ImageList ImageList
+        {
+            get { return base.ImageList; }
+            set { base.ImageList = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new bool UseVisualStyleBackColor
         {
             get { return base.UseVisualStyleBackColor; }
             set { base.UseVisualStyleBackColor = value; }
+        }
+
+        #endregion
+
+        #region Hiding properties for RadioButton
+
+        [Browsable(false)]
+        public new System.Windows.Forms.Appearance Appearance
+        {
+            get { return base.Appearance; }
+            set { base.Appearance = value; }
         }
 
         [Browsable(false)]

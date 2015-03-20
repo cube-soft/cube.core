@@ -56,30 +56,37 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.CloseButton.BorderColor = System.Drawing.Color.Transparent;
-            this.CloseButton.BorderSize = 0;
+            this.CloseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.CloseButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.CloseButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatAppearance.BorderSize = 0;
+            this.CloseButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonClose;
+            this.CloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.Image = null;
             this.CloseButton.Location = new System.Drawing.Point(275, 0);
+            this.CloseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.CloseButton.MouseDownSurface.BackgroundImage = null;
+            this.CloseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseDownSurface.BorderSize = 0;
+            this.CloseButton.MouseDownSurface.Image = null;
+            this.CloseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.CloseButton.MouseOverSurface.BackgroundImage = null;
+            this.CloseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseOverSurface.BorderSize = 0;
+            this.CloseButton.MouseOverSurface.Image = null;
+            this.CloseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(25, 25);
-            this.CloseButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.CheckedBackgroundImage = null;
-            this.CloseButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.CheckedImage = null;
-            this.CloseButton.Surface.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.CloseButton.Surface.MouseDownBackgroundImage = null;
-            this.CloseButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.MouseDownImage = null;
-            this.CloseButton.Surface.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.CloseButton.Surface.MouseOverBackgroundImage = null;
-            this.CloseButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.MouseOverImage = null;
+            this.CloseButton.Surface.BackColor = System.Drawing.Color.Empty;
+            this.CloseButton.Surface.BackgroundImage = null;
+            this.CloseButton.Surface.BorderColor = System.Drawing.Color.Empty;
+            this.CloseButton.Surface.BorderSize = 0;
+            this.CloseButton.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonClose;
+            this.CloseButton.Surface.TextColor = System.Drawing.Color.Empty;
             this.CloseButton.TabIndex = 0;
             this.CloseButton.UseVisualStyleBackColor = false;
             // 

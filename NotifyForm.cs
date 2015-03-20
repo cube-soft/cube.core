@@ -80,8 +80,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public System.Drawing.Image Image
         {
-            get { return ImageButton.Image; }
-            set { ImageButton.Image = value; }
+            get { return ImageButton.Surface.Image; }
+            set { ImageButton.Surface.Image = value; }
         }
 
         /* --------------------------------------------------------------------- */

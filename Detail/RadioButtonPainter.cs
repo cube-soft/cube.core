@@ -22,7 +22,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class RadioButtonPainter : ButtonPainter
+    internal class RadioButtonPainter : ButtonPainter
     {
         #region Constructors
 
@@ -61,6 +61,30 @@ namespace Cube.Forms
             if (control == null) return;
             IsChecked = control.Checked;
             control.Invalidate();
+        }
+
+        #endregion
+
+        #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InvalidateViewSurface
+        /// 
+        /// <summary>
+        /// 外観の描画に関して RadioButton オブジェクトと競合するプロパティを
+        /// 無効にします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void InvalidateViewSurface()
+        {
+            var radio = View as System.Windows.Forms.RadioButton;
+            if (radio != null)
+            {
+                radio.Appearance = System.Windows.Forms.Appearance.Button;
+            }
+            base.InvalidateViewSurface();
         }
 
         #endregion

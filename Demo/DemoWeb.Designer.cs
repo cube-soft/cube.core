@@ -74,8 +74,7 @@
             // 
             // UpdateButton
             // 
-            this.UpdateButton.BackColor = System.Drawing.Color.Transparent;
-            this.UpdateButton.BorderColor = System.Drawing.Color.Transparent;
+            this.UpdateButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.UpdateButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.UpdateButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UpdateButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -84,25 +83,29 @@
             this.UpdateButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.UpdateButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UpdateButton.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonUpdate;
+            this.UpdateButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.UpdateButton.Image = null;
             this.UpdateButton.Location = new System.Drawing.Point(563, 3);
+            this.UpdateButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.UpdateButton.MouseDownSurface.BackgroundImage = null;
+            this.UpdateButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.UpdateButton.MouseDownSurface.BorderSize = 0;
+            this.UpdateButton.MouseDownSurface.Image = null;
+            this.UpdateButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.UpdateButton.MouseOverSurface.BackColor = System.Drawing.Color.Gainsboro;
+            this.UpdateButton.MouseOverSurface.BackgroundImage = null;
+            this.UpdateButton.MouseOverSurface.BorderColor = System.Drawing.Color.Gray;
+            this.UpdateButton.MouseOverSurface.BorderSize = 1;
+            this.UpdateButton.MouseOverSurface.Image = null;
+            this.UpdateButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.UpdateButton.Name = "UpdateButton";
             this.UpdateButton.Size = new System.Drawing.Size(34, 24);
-            this.UpdateButton.Surface.CheckedBackColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.CheckedBackgroundImage = null;
-            this.UpdateButton.Surface.CheckedBorderColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.CheckedForeColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.CheckedImage = null;
-            this.UpdateButton.Surface.MouseDownBackColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.MouseDownBackgroundImage = null;
-            this.UpdateButton.Surface.MouseDownBorderColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.MouseDownForeColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.MouseDownImage = null;
-            this.UpdateButton.Surface.MouseOverBackColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.MouseOverBackgroundImage = null;
-            this.UpdateButton.Surface.MouseOverBorderColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.MouseOverForeColor = System.Drawing.Color.Empty;
-            this.UpdateButton.Surface.MouseOverImage = null;
+            this.UpdateButton.Surface.BackColor = System.Drawing.Color.Empty;
+            this.UpdateButton.Surface.BackgroundImage = null;
+            this.UpdateButton.Surface.BorderColor = System.Drawing.Color.Empty;
+            this.UpdateButton.Surface.BorderSize = 0;
+            this.UpdateButton.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonUpdate;
+            this.UpdateButton.Surface.TextColor = System.Drawing.Color.Empty;
             this.UpdateButton.TabIndex = 1;
             this.UpdateButton.UseVisualStyleBackColor = false;
             this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
