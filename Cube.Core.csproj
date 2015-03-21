@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="Development\ResourceInitializer.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
+    <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="PropertyEventArgs.cs" />
     <Compile Include="PropertyNotifier.cs" />
     <Compile Include="Settings.cs" />
