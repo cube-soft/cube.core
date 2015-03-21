@@ -11,7 +11,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<UserSettings> where UserSettings : class
+    public class SettingsFolder<UserSettings> where UserSettings : new()
     {
         #region Properties
 
@@ -134,7 +134,7 @@ namespace Cube
             var root = Microsoft.Win32.Registry.LocalMachine;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                User = Settings.Load<UserSettings>(subkey);
+                Application = Settings.Load<ApplicationSettings>(subkey);
             }
         }
 
@@ -159,8 +159,8 @@ namespace Cube
         #endregion
 
         #region Fields
-        private ApplicationSettings _app = null;
-        private UserSettings _user = null;
+        private ApplicationSettings _app = new ApplicationSettings();
+        private UserSettings _user = new UserSettings();
         private string _publisher = string.Empty;
         private string _product = string.Empty;
         #endregion
