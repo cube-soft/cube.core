@@ -13,6 +13,25 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class SettingsFolder<UserSettings> where UserSettings : new()
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder(string publisher, string product)
+        {
+            Publisher = publisher;
+            Product   = product;
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
