@@ -145,12 +145,12 @@ namespace Cube
                         if (value == null) continue;
 
                         var changed = ChangeType(value, item.PropertyType);
-                        item.SetValue(dest, changed, null);
+                        if (changed != null) item.SetValue(dest, changed, null);
                     }
                     else using (var subkey = root.OpenSubKey(name))
                     {
                         var obj = LoadRegistry(subkey, item.PropertyType);
-                        item.SetValue(dest, obj, null);
+                        if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
                 return dest;
