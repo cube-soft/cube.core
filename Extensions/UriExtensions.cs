@@ -36,11 +36,14 @@ namespace Cube.Extensions
         public static Uri With(this Uri uri, IDictionary<string, string> query)
         {
             var builder = new UriBuilder(uri);
-            foreach (var item in query)
+            if (query != null && query.Count > 0)
             {
-                var s = string.Format("{0}={1}", item.Key, item.Value);
-                builder.Query = (builder.Query != null && builder.Query.Length > 1) ?
-                    builder.Query.Substring(1) + "&" + s : s;
+                foreach (var item in query)
+                {
+                    var s = string.Format("{0}={1}", item.Key, item.Value);
+                    builder.Query = (builder.Query != null && builder.Query.Length > 1) ?
+                        builder.Query.Substring(1) + "&" + s : s;
+                }
             }
             return builder.Uri;
         }

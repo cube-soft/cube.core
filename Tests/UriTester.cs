@@ -94,5 +94,24 @@ namespace Cube.Tests
                 Assert.That(actual.ToString(), Is.EqualTo(expected));
             });
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestWithNull
+        /// 
+        /// <summary>
+        /// 引数に null を指定した時のテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestWithNull()
+        {
+            Assert.DoesNotThrow(() => {
+                var uri = new Uri("http://www.cube-soft.jp/index.html");
+                var actual = uri.With(null);
+                Assert.That(actual.ToString(), Is.EqualTo(uri.ToString()));
+            });
+        }
     }
 }
