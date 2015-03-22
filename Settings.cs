@@ -220,7 +220,8 @@ namespace Cube
                     var value = item.GetValue(src, null);
                     var code = Type.GetTypeCode(item.PropertyType);
 
-                    if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
+                    if (item.PropertyType.IsEnum) root.SetValue(name, (int)value);
+                    else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
                     else if (code == TypeCode.DateTime) root.SetValue(name, ((DateTime)value).ToUnixTime());
                     else if (code != TypeCode.Object) root.SetValue(name, value);
                     else using (var subkey = root.CreateSubKey(name))
@@ -285,6 +286,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static object ChangeType(object value, Type type)
         {
+            if (type.IsEnum) return (int)value;
             if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
             return Convert.ChangeType(value, type);            
         }
