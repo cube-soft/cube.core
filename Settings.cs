@@ -132,12 +132,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static object LoadRegistry(RegistryKey root, Type type)
         {
-            try
+            var dest = System.Activator.CreateInstance(type);
+            if (root == null || dest == null) return null;
+
+            foreach (var item in GetDataMembers(type))
             {
-                var dest = System.Activator.CreateInstance(type);
-                foreach (var item in GetDataMembers(type))
+                try
                 {
                     var name = GetDataMemberName(item);
+                    if (string.IsNullOrEmpty(name)) continue;
 
                     if (Type.GetTypeCode(item.PropertyType) != TypeCode.Object)
                     {
@@ -153,13 +156,13 @@ namespace Cube
                         if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
-                return dest;
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                    continue;
+                }
             }
-            catch (Exception e)
-            {
-                System.Diagnostics.Trace.TraceError(e.ToString());
-                return null;
-            }
+            return dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -205,11 +208,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void SaveRegistry(object src, Type type, RegistryKey root)
         {
-            try
+            if (src == null || root == null) return;
+
+            foreach (var item in GetDataMembers(type))
             {
-                foreach (var item in GetDataMembers(type))
+                try
                 {
                     var name = GetDataMemberName(item);
+                    if (name == null) continue;
+
                     var value = item.GetValue(src, null);
                     var code = Type.GetTypeCode(item.PropertyType);
 
@@ -220,8 +227,12 @@ namespace Cube
                         SaveRegistry(value, item.PropertyType, subkey);
                     }
                 }
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                    continue;
+                }
             }
-            catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -235,9 +246,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static IEnumerable<PropertyInfo> GetDataMembers(Type type)
         {
-            return type.GetProperties().Where(item => {
-                return Attribute.IsDefined(item, typeof(DataMemberAttribute));
-            });
+            try
+            {
+                return type.GetProperties().Where(item => {
+                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
+                });
+            }
+            catch (Exception /* err */) { return null; }
         }
 
         /* ----------------------------------------------------------------- */

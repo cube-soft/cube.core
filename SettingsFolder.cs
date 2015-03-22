@@ -121,7 +121,14 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() { }
+        public void Save()
+        {
+            var root = Microsoft.Win32.Registry.CurrentUser;
+            using (var subkey = root.CreateSubKey(SubKeyName))
+            {
+                Settings.Save<UserSettings>(User, subkey);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -153,7 +160,8 @@ namespace Cube
             var root = Microsoft.Win32.Registry.LocalMachine;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                Application = Settings.Load<ApplicationSettings>(subkey);
+                var result = Settings.Load<ApplicationSettings>(subkey);
+                if (result != null) Application = result;
             }
         }
 
@@ -171,7 +179,8 @@ namespace Cube
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                User = Settings.Load<UserSettings>(subkey);
+                var result = Settings.Load<UserSettings>(subkey);
+                if (result != null) User = result;
             }
         }
 
