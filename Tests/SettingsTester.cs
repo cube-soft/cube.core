@@ -77,15 +77,9 @@ namespace Cube.Tests
                 {
                     var data = Cube.Settings.Load<Person>(registrar.TargetKey);
                     Assert.That(data, Is.Not.Null);
-                    Assert.That(data.Activation, Is.True);
                     Assert.That(data.Name, Is.EqualTo("Harry Potter"));
                     Assert.That(data.Age, Is.EqualTo(11));
-                    Assert.That(data.Creation.Year, Is.EqualTo(2015));
-                    Assert.That(data.Creation.Month, Is.EqualTo(3));
-                    Assert.That(data.Creation.Day, Is.EqualTo(16));
-                    Assert.That(data.Phone.Type, Is.EqualTo("Mobile"));
-                    Assert.That(data.Phone.Number, Is.EqualTo("090-1234-5678"));
-                    Assert.That(data.Secret, Is.Null);
+                    Assert.That(data.Secret, Is.EqualTo("secret message"));
                 }
             });
         }
@@ -129,7 +123,7 @@ namespace Cube.Tests
                 {
                     var data = Cube.Settings.Load<Person>(registrar.TargetKey);
                     Assert.That(data, Is.Not.Null);
-                    Assert.That(data.Activation, Is.True);
+                    Assert.That(data.Reserved, Is.True);
                 }
             });
         }
@@ -163,6 +157,31 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// TestLoadRegistryClass
+        /// 
+        /// <summary>
+        /// レジストリからクラスオブジェクトの値を読み込むテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestLoadRegistryClass()
+        {
+            Assert.DoesNotThrow(() => {
+                using (var registrar = new Registrar())
+                {
+                    var data = Cube.Settings.Load<Person>(registrar.TargetKey);
+                    Assert.That(data, Is.Not.Null);
+                    Assert.That(data.Phone.Type, Is.EqualTo("Mobile"));
+                    Assert.That(data.Phone.Data, Is.EqualTo("090-1234-5678"));
+                    Assert.That(data.Email.Type, Is.EqualTo("Unknown"));
+                    Assert.That(data.Email.Data, Is.EqualTo("Unknown data"));
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// TestSaveRegistry
         /// 
         /// <summary>
@@ -173,30 +192,38 @@ namespace Cube.Tests
         [Test]
         public void TestSaveRegistry()
         {
-            
             var person = new Person
             { 
                 Identification = 123,
-                Name = "山田太郎",
-                Age = 20,
-                Activation = true,
-                Creation = new DateTime(2015, 3, 16, 18, 35, 30),
-                Phone = new Phone { Type = "Mobile", Number = "080-9876-5432" },
-                Secret = "hoge"
+                Name           = "山田太郎",
+                Age            = 20,
+                Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
+                Phone          = new Address { Type = "Mobile", Data = "080-9876-5432" },
+                Reserved       = true,
+                Secret         = "dummy data"
             };
+
             var name = @"Software\CubeSoft\SettingsTester";
             using(var root = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name))
             {
                 Cube.Settings.Save<Person>(person, root);
-                Assert.That(root.GetValue("Activation"), Is.EqualTo("True"));
+
                 Assert.That(root.GetValue("ID"), Is.EqualTo(123));
                 Assert.That(root.GetValue("Name"), Is.EqualTo("山田太郎"));
                 Assert.That(root.GetValue("Age"), Is.EqualTo(20));
-                Assert.That(root.GetValue("Creation"), Is.EqualTo(1426498530));
+                Assert.That(root.GetValue("Creation"), Is.EqualTo(1420035930));
+                Assert.That(root.GetValue("Reserved"), Is.EqualTo("True"));
+
                 using (var subkey = root.OpenSubKey("Phone"))
                 {
                     Assert.That(subkey.GetValue("Type"), Is.EqualTo("Mobile"));
-                    Assert.That(subkey.GetValue("Number"), Is.EqualTo("080-9876-5432"));
+                    Assert.That(subkey.GetValue("Data"), Is.EqualTo("080-9876-5432"));
+                }
+
+                using (var subkey = root.OpenSubKey("Email"))
+                {
+                    Assert.That(subkey.GetValue("Type"), Is.EqualTo("Unknown"));
+                    Assert.That(subkey.GetValue("Data"), Is.EqualTo("Unknown data"));
                 }
             }
         }
@@ -215,30 +242,80 @@ namespace Cube.Tests
         [DataContract]
         internal class Person
         {
+            #region Properties
+
             [DataMember(Name = "ID")]
-            public int Identification { get; set; }
+            public int Identification
+            {
+                get { return _id; }
+                set { _id = value; }
+            }
 
             [DataMember]
-            public string Name { get; set; }
+            public string Name
+            {
+                get { return _name; }
+                set { _name = value; }
+            }
 
             [DataMember]
-            public int Age { get; set; }
+            public int Age
+            {
+                get { return _age; }
+                set { _age = value; }
+            }
 
             [DataMember]
-            public bool Activation { get; set; }
+            public DateTime Creation
+            {
+                get { return _creation; }
+                set { _creation = value; }
+            }
 
             [DataMember]
-            public DateTime Creation { get; set; }
+            public Address Phone
+            {
+                get { return _phone; }
+                set { _phone = value; }
+            }
 
             [DataMember]
-            public Phone Phone { get; set; }
+            public Address Email
+            {
+                get { return _email; }
+                set { _email = value; }
+            }
 
-            public string Secret { get; set; }
+            [DataMember]
+            public bool Reserved
+            {
+                get { return _reserved; }
+                set { _reserved = value; }
+            }
+
+            public string Secret
+            {
+                get { return _secret; }
+                set { _secret = value; }
+            }
+
+            #endregion
+
+            #region Fields
+            private int _id = -1;
+            private string _name = "Personal name";
+            private int _age = -1;
+            private DateTime _creation = DateTime.MinValue;
+            private Address _phone = new Address();
+            private Address _email = new Address();
+            private bool _reserved = false;
+            private string _secret = "secret message";
+            #endregion
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Phone
+        /// Address
         /// 
         /// <summary>
         /// テスト用のデータクラスです。
@@ -246,15 +323,31 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataContract]
-        internal class Phone
+        internal class Address
         {
-            [DataMember]
-            public string Type { get; set; }
+            #region Properties
 
             [DataMember]
-            public string Number { get; set; }
+            public string Type
+            {
+                get { return _type; }
+                set { _type = value; }
+            }
+
+            [DataMember]
+            public string Data
+            {
+                get { return _data; }
+                set { _data = value; }
+            }
+
+            #endregion
+
+            #region Fields
+            private string _type = "Unknown";
+            private string _data = "Unknown data";
+            #endregion
         }
-
 
         /* ----------------------------------------------------------------- */
         ///
@@ -312,15 +405,15 @@ namespace Cube.Tests
                 _parent = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name);
                 _target = _parent.CreateSubKey(_root);
                 _target.SetValue("ID", 1357);
-                _target.SetValue("Activation", true);
                 _target.SetValue("Name", "Harry Potter");
                 _target.SetValue("Age", 11);
                 _target.SetValue("Creation", 0x550640ba);
+                _target.SetValue("Reserved", true);
 
                 using (var child = _target.CreateSubKey("Phone"))
                 {
                     child.SetValue("Type", "Mobile");
-                    child.SetValue("Number", "090-1234-5678");
+                    child.SetValue("Data", "090-1234-5678");
                 }
             }
 
