@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// PropertyEventArgs.cs
+/// NotifyPropertyChanged.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -9,64 +9,51 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.PropertyEventArgs
+    /// Cube.NotifyPropertyChanged
     /// 
     /// <summary>
-    /// プロパティに関連するイベントが発生した時の情報を保持するための
-    /// クラスです。
+    /// INotifyPropertyChanged の実装クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PropertyEventArgs : EventArgs
+    public class NotifyPropertyChanged : INotifyPropertyChanged
     {
-        #region Constructors
+        #region Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PropertyEventArgs
+        /// PropertyChanged
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// プロパティが変更された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public PropertyEventArgs(string name, object value)
-            : base()
-        {
-            Name = name;
-            Value = value;
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
-        #region Properties
+        #region Virtual methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Name
+        /// OnPropertyChanged
         /// 
         /// <summary>
-        /// プロパティの名前を取得します。
+        /// プロパティが変更された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        /// 
-        /// <summary>
-        /// プロパティの値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Value { get; private set; }
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, e);
+        }
 
         #endregion
     }
