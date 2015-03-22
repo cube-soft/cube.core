@@ -24,8 +24,8 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     internal enum Sex : int
     {
-        Man = 0,
-        Woman = 1
+        Male   = 0,
+        Female = 1
     }
 
     /* ----------------------------------------------------------------- */
@@ -245,7 +245,7 @@ namespace Cube.Tests
         private int _id = -1;
         private string _name = "Personal name";
         private int _age = -1;
-        private Sex _sex = Sex.Woman;
+        private Sex _sex = Sex.Female;
         private DateTime _creation = DateTime.MinValue;
         private Address _phone = new Address();
         private Address _email = new Address();

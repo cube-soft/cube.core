@@ -27,6 +27,8 @@ namespace Cube.Tests
     [TestFixture]
     class RegistryTester
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// SettingsTester
@@ -37,6 +39,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         public RegistryTester() { }
+
+        #endregion
+
+        #region TestLoad methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,29 +106,7 @@ namespace Cube.Tests
                 {
                     var data = Cube.Settings.Load<Person>(registrar.TargetKey);
                     Assert.That(data, Is.Not.Null);
-                    Assert.That(data.Sex, Is.EqualTo(Sex.Man));
-                }
-            });
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TestLoadAlias
-        /// 
-        /// <summary>
-        /// レジストリから別名が設定されている値を読み込むテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void TestLoadAlias()
-        {
-            Assert.DoesNotThrow(() => {
-                using (var registrar = new Registrar())
-                {
-                    var data = Cube.Settings.Load<Person>(registrar.TargetKey);
-                    Assert.That(data, Is.Not.Null);
-                    Assert.That(data.Identification, Is.EqualTo(1357));
+                    Assert.That(data.Sex, Is.EqualTo(Sex.Male));
                 }
             });
         }
@@ -203,50 +187,239 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TestSave
+        /// TestLoadAlias
         /// 
         /// <summary>
-        /// ファイルから設定を読み込むテストを行います。
+        /// レジストリから別名が設定されている値を読み込むテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestSave()
+        public void TestLoadAlias()
         {
-            var person = new Person {
-                Identification = 123,
-                Name = "山田太郎",
-                Age = 20,
-                Creation = new DateTime(2014, 12, 31, 23, 25, 30),
-                Phone = new Address { Type = "Mobile", Data = "080-9876-5432" },
-                Reserved = true,
-                Secret = "dummy data"
-            };
-
-            var name = @"Software\CubeSoft\SettingsTester";
-            using (var root = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name))
-            {
-                Cube.Settings.Save<Person>(person, root);
-
-                Assert.That(root.GetValue("ID"), Is.EqualTo(123));
-                Assert.That(root.GetValue("Name"), Is.EqualTo("山田太郎"));
-                Assert.That(root.GetValue("Age"), Is.EqualTo(20));
-                Assert.That(root.GetValue("Creation"), Is.EqualTo(1420035930));
-                Assert.That(root.GetValue("Reserved"), Is.EqualTo("True"));
-
-                using (var subkey = root.OpenSubKey("Phone"))
+            Assert.DoesNotThrow(() => {
+                using (var registrar = new Registrar())
                 {
-                    Assert.That(subkey.GetValue("Type"), Is.EqualTo("Mobile"));
-                    Assert.That(subkey.GetValue("Data"), Is.EqualTo("080-9876-5432"));
+                    var data = Cube.Settings.Load<Person>(registrar.TargetKey);
+                    Assert.That(data, Is.Not.Null);
+                    Assert.That(data.Identification, Is.EqualTo(1357));
                 }
-
-                using (var subkey = root.OpenSubKey("Email"))
-                {
-                    Assert.That(subkey.GetValue("Type"), Is.EqualTo("Unknown"));
-                    Assert.That(subkey.GetValue("Data"), Is.EqualTo("Unknown data"));
-                }
-            }
+            });
         }
+
+        #endregion
+
+        #region TestSave methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveString
+        /// 
+        /// <summary>
+        /// レジストリから文字列を保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveString()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+                    Assert.That(root.GetValue("Name"), Is.EqualTo("山田花子"));
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveInteger
+        /// 
+        /// <summary>
+        /// レジストリから数値を保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveInteger()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+                    Assert.That(root.GetValue("Age"), Is.EqualTo(15));
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveEnum
+        /// 
+        /// <summary>
+        /// レジストリから列挙体を保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveEnum()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+                    Assert.That(root.GetValue("Sex"), Is.EqualTo(1));
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveBool
+        /// 
+        /// <summary>
+        /// レジストリから真偽値を保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveBool()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+                    Assert.That(root.GetValue("Reserved"), Is.EqualTo("True"));
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveDateTime
+        /// 
+        /// <summary>
+        /// レジストリからDateTime オブジェクトを保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveDateTime()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+                    Assert.That(root.GetValue("Creation"), Is.EqualTo(1420035930));
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveClass
+        /// 
+        /// <summary>
+        /// レジストリからクラスオブジェクトを保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveClass()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+
+                    using (var subkey = root.OpenSubKey("Phone"))
+                    {
+                        Assert.That(subkey.GetValue("Type"), Is.EqualTo("Mobile"));
+                        Assert.That(subkey.GetValue("Data"), Is.EqualTo("080-9876-5432"));
+                    }
+
+                    using (var subkey = root.OpenSubKey("Email"))
+                    {
+                        Assert.That(subkey.GetValue("Type"), Is.EqualTo("PC"));
+                        Assert.That(subkey.GetValue("Data"), Is.EqualTo("dummy@example.com"));
+                    }
+                }
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestSaveAlias
+        /// 
+        /// <summary>
+        /// レジストリから別名が設定されている値を保存するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestSaveAlias()
+        {
+            Assert.DoesNotThrow(() => {
+                var person = CreatePerson();
+                using (var root = CreateSubKey())
+                {
+                    Cube.Settings.Save<Person>(person, root);
+                    Assert.That(root.GetValue("ID"), Is.EqualTo(123));
+                }
+            });
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreatePerson
+        /// 
+        /// <summary>
+        /// Person オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Person CreatePerson()
+        {
+            return new Person {
+                Identification = 123,
+                Name           = "山田花子",
+                Sex            = Tests.Sex.Female,
+                Age            = 15,
+                Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
+                Phone          = new Address { Type = "Mobile", Data = "080-9876-5432" },
+                Email          = new Address { Type = "PC", Data = "dummy@example.com" },
+                Reserved       = true,
+                Secret         = "dummy data"
+            };
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateSubKey
+        /// 
+        /// <summary>
+        /// レジストリのサブキーを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Microsoft.Win32.RegistryKey CreateSubKey()
+        {
+            var name = @"Software\CubeSoft\SettingsTester";
+            return Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name);
+        }
+
+        #endregion
 
         #region Internal resources
 
