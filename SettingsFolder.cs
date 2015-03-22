@@ -11,7 +11,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<UserSettings> where UserSettings : new()
+    public class SettingsFolder<UserSettings> : PropertyNotifier where UserSettings : new()
     {
         #region Constructors
 
