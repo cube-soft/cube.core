@@ -132,12 +132,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static object LoadRegistry(RegistryKey root, Type type)
         {
-            try
+            var dest = System.Activator.CreateInstance(type);
+            if (root == null || dest == null) return null;
+
+            foreach (var item in GetDataMembers(type))
             {
-                var dest = System.Activator.CreateInstance(type);
-                foreach (var item in GetDataMembers(type))
+                try
                 {
                     var name = GetDataMemberName(item);
+                    if (string.IsNullOrEmpty(name)) continue;
 
                     if (Type.GetTypeCode(item.PropertyType) != TypeCode.Object)
                     {
@@ -153,13 +156,13 @@ namespace Cube
                         if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
-                return dest;
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                    continue;
+                }
             }
-            catch (Exception e)
-            {
-                System.Diagnostics.Trace.TraceError(e.ToString());
-                return null;
-            }
+            return dest;
         }
 
         /* ----------------------------------------------------------------- */
