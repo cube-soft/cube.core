@@ -41,6 +41,8 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Detail\Person.cs" />
+    <Compile Include="RegistryTester.cs" />
     <Compile Include="SettingsTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UriTester.cs" />
