@@ -294,7 +294,7 @@ namespace Cube.Tests
                 using (var root = CreateSubKey())
                 {
                     Cube.Settings.Save<Person>(person, root);
-                    Assert.That(root.GetValue("Reserved"), Is.EqualTo("True"));
+                    Assert.That(root.GetValue("Reserved"), Is.EqualTo(1));
                 }
             });
         }
@@ -483,7 +483,7 @@ namespace Cube.Tests
                 _target.SetValue("Sex", 0);
                 _target.SetValue("Age", 11);
                 _target.SetValue("Creation", 0x550640ba);
-                _target.SetValue("Reserved", true);
+                _target.SetValue("Reserved", 1);
 
                 using (var child = _target.CreateSubKey("Phone"))
                 {
