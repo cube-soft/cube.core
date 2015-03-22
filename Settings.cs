@@ -208,11 +208,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void SaveRegistry(object src, Type type, RegistryKey root)
         {
-            try
+            if (src == null || root == null) return;
+
+            foreach (var item in GetDataMembers(type))
             {
-                foreach (var item in GetDataMembers(type))
+                try
                 {
                     var name = GetDataMemberName(item);
+                    if (name == null) continue;
+
                     var value = item.GetValue(src, null);
                     var code = Type.GetTypeCode(item.PropertyType);
 
@@ -223,8 +227,12 @@ namespace Cube
                         SaveRegistry(value, item.PropertyType, subkey);
                     }
                 }
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                    continue;
+                }
             }
-            catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -238,9 +246,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static IEnumerable<PropertyInfo> GetDataMembers(Type type)
         {
-            return type.GetProperties().Where(item => {
-                return Attribute.IsDefined(item, typeof(DataMemberAttribute));
-            });
+            try
+            {
+                return type.GetProperties().Where(item => {
+                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
+                });
+            }
+            catch (Exception /* err */) { return null; }
         }
 
         /* ----------------------------------------------------------------- */
