@@ -121,7 +121,14 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() { }
+        public void Save()
+        {
+            var root = Microsoft.Win32.Registry.CurrentUser;
+            using (var subkey = root.CreateSubKey(SubKeyName))
+            {
+                Settings.Save<UserSettings>(User, subkey);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
