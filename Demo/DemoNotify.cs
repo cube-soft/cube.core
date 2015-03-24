@@ -48,11 +48,9 @@ namespace Cube.Forms.Demo
 
             _model.Queued += Model_Queued;
 
-            _view.Showing    += (s, ev) => Log("Showing");
             _view.Shown      += (s, ev) => Log("Shown");
             _view.TitleClick += (s, ev) => Log("TitleClick");
             _view.ImageClick += (s, ev) => Log("ImageClick");
-            _view.Hiding     += (s, ev) => Log("Hiding");
             _view.Hidden     += View_Hidden;
 
             FormClosing += (s, ev) => { _view.Close(); };
@@ -73,7 +71,8 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void Model_Queued(object sender, EventArgs e)
         {
-            if (_model.Count <= 0) return;
+            Log(string.Format("Queued: Count = {0}", _model.Count));
+            if (_model.Count <= 0 || _view.IsBusy) return;
             Notify(_model.Dequeue());
         }
 
@@ -88,7 +87,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void View_Hidden(object sender, EventArgs e)
         {
-            Log("Hidden");
+            Log(string.Format("Hidden: Rest = {0}", _model.Count));
             if (_model.Count <= 0) return;
             Notify(_model.Dequeue());
         }
@@ -108,8 +107,6 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void EnqueueButton_Click(object sender, EventArgs e)
         {
-            Log("EnqueueButton.Click");
-
             var item = new NotifyItem();
             if (!string.IsNullOrEmpty(ImageTextBox.Text) &&
                 System.IO.File.Exists(ImageTextBox.Text))
@@ -136,6 +133,7 @@ namespace Cube.Forms.Demo
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Log("ClearButton.Click");
+            _model.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -169,6 +167,8 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void Notify(NotifyItem item)
         {
+            Log(string.Format("Notify: Level = {0} ({1}s -> {2}s)",
+                item.Level, item.InitialDelay.TotalSeconds, item.DisplayTime.TotalSeconds));
             if (item.Image != null) _view.Image = item.Image;
             _view.Level = item.Level;
             _view.Title = item.Title;
