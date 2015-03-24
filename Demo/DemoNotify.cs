@@ -120,6 +120,9 @@ namespace Cube.Forms.Demo
             if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine();
             builder.Append(newline);
             LogTextBox.Text = builder.ToString();
+            LogTextBox.SelectionStart = LogTextBox.TextLength;
+            LogTextBox.Focus();
+            LogTextBox.ScrollToCaret();
         }
 
         #endregion
