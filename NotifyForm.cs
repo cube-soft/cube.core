@@ -39,6 +39,7 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
+            base.Text = string.Empty;
             CloseButton.Click += (s, e) => Hide();
             TitleButton.Click += (s, e) => RaiseTitleClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
@@ -95,6 +96,19 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(true)]
         public int InitialDelay { get; set; }
+
+        #region Hiding properties
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Don't use this property, use Title")]
+        public new string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
+        #endregion
 
         #endregion
 
