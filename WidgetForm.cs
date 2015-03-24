@@ -53,6 +53,40 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AllowDragMove
+        /// 
+        /// <summary>
+        /// マウスのドラッグ操作でフォームを移動可能にするかどうかを取得
+        /// または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool AllowDragMove
+        {
+            get { return _dragMove; }
+            set { _dragMove = value; }
+        }
+
+        #region Hiding properties
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new AutoScaleMode AutoScaleMode
+        {
+            get { return base.AutoScaleMode; }
+            set { base.AutoScaleMode = value; }
+        }
+
+        #endregion
+
+        #endregion
+
         #region Events
 
         /* ----------------------------------------------------------------- */
@@ -87,39 +121,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public event Action<object, EventArgs> Hidden;
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DragMoveEnabled
-        /// 
-        /// <summary>
-        /// マウスのドラッグ操作でフォームを移動可能にするかどうかを取得
-        /// または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DefaultValue(true)]
-        public bool DragMoveEnabled
-        {
-            get { return _dragMove; }
-            set { _dragMove = value; }
-        }
-
-        #region Hiding properties
-
-        [Browsable(false)]
-        public new AutoScaleMode AutoScaleMode
-        {
-            get { return base.AutoScaleMode; }
-            set { base.AutoScaleMode = value; }
-        }
-
-        #endregion
 
         #endregion
 
@@ -208,7 +209,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (DragMoveEnabled && e.Button == MouseButtons.Left)
+            if (AllowDragMove && e.Button == MouseButtons.Left)
             {
                 Win32Api.ReleaseCapture();
                 Win32Api.SendMessage(Handle, Win32Api.WM_NCLBUTTONDOWN,
@@ -258,7 +259,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Implementations
+        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -351,6 +352,8 @@ namespace Cube.Forms
             if (!current && behind) OnHidden(e);
         }
 
+        #endregion
+
         #region Win32 APIs
 
         internal class Win32Api
@@ -364,8 +367,6 @@ namespace Cube.Forms
             [DllImport("user32.dll", CharSet = CharSet.Auto)]
             public static extern bool ReleaseCapture();
         }
-
-        #endregion
 
         #endregion
 

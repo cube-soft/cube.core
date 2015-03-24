@@ -96,17 +96,6 @@ namespace Cube.Forms
         [Browsable(true)]
         public int InitialDelay { get; set; }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// ShowPending
-        /// 
-        /// <summary>
-        /// 表示処理が遅延されているかどうかを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public bool ShowPending { get; private set; }
-
         #endregion
 
         #region Events
@@ -188,7 +177,27 @@ namespace Cube.Forms
 
         #region Override methods
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetVisibleCore
+        /// 
+        /// <summary>
+        /// コントロールを指定した表示状態に設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void SetVisibleCore(bool value)
+        {
+            var prev = Visible;
+            if (value && !prev && InitialDelay > 0)
+            {
+                DelayInvoke(InitialDelay, () => base.SetVisibleCore(value));
+                base.SetVisibleCore(prev);
+            }
+            else base.SetVisibleCore(value);
+        }
+
+        /* ----------------------------------------------------------------- */
         ///
         /// OnShowing
         /// 
@@ -196,22 +205,10 @@ namespace Cube.Forms
         /// フォームが表示される直前に発生するイベントです。
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         protected override void OnShowing(CancelEventArgs e)
         {
-            if (InitialDelay > 0 && !_pend4impl)
-            {
-                ShowPending = true;
-                _pend4impl = true;
-                e.Cancel = true;
-
-                DelayInvoke(InitialDelay, () => {
-                    SetLocation();
-                    ShowPending = false;
-                    Show();
-                    _pend4impl = false;
-                });
-            }
+            SetLocation();
             base.OnShowing(e);
         }
 
@@ -254,6 +251,35 @@ namespace Cube.Forms
             SetDesktopLocation(screen.Width - Width - 10, screen.Height - Height - 10);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseChangingVisibleEvent
+        /// 
+        /// <summary>
+        /// 表示状態の変更に関するイベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RaiseChangingVisibleEvent(bool current, bool ahead, CancelEventArgs e)
+        {
+            if (!current && ahead) OnShowing(e);
+            else if (current && !ahead) OnHiding(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseVisibleChangedEvent
+        /// 
+        /// <summary>
+        /// 表示状態が変更された事を通知するイベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RaiseVisibleChangedEvent(bool current, bool behind, EventArgs e)
+        {
+            if (!current && behind) OnHidden(e);
+        }
+
         /* --------------------------------------------------------------------- */
         ///
         /// RaiseTitleClickEvent
@@ -282,10 +308,6 @@ namespace Cube.Forms
             OnImageClick(new NotifyEventArgs(Title, Image));
         }
 
-        #endregion
-
-        #region Fields
-        private bool _pend4impl = false;
         #endregion
     }
 }
