@@ -255,11 +255,29 @@ namespace Cube.Forms
         private void DelayInvoke(int msec, Action action)
         {
             var worker = new System.ComponentModel.BackgroundWorker();
-            worker.DoWork += (s, e) => Thread.Sleep(msec);
+            worker.WorkerSupportsCancellation = true;
+            EventHandler method = (s, e) => worker.CancelAsync();
+
+            worker.DoWork += (s, e) => {
+                var unit = 100; // 100 msec
+                for (var i = 0; i < msec / unit; ++i)
+                {
+                    if (worker.CancellationPending) break;
+                    Thread.Sleep(unit);
+                }
+                if (worker.CancellationPending) e.Cancel = true;
+                else if (msec % unit > 0) Thread.Sleep(msec % unit);
+                if (worker.CancellationPending) e.Cancel = true;
+            };
+
             worker.RunWorkerCompleted += (s, e) => {
+                Hidden -= method;
+                if (e.Cancelled) return;
                 if (InvokeRequired) Invoke(action);
                 else action();
             };
+
+            Hidden += method;
             worker.RunWorkerAsync();
         }
 

@@ -90,6 +90,7 @@
             // TitleButton
             // 
             this.TitleButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.TitleButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TitleButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TitleButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.FlatAppearance.BorderSize = 0;
@@ -99,7 +100,8 @@
             this.TitleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TitleButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.Image = null;
-            this.TitleButton.Location = new System.Drawing.Point(63, 3);
+            this.TitleButton.Location = new System.Drawing.Point(60, 0);
+            this.TitleButton.Margin = new System.Windows.Forms.Padding(0);
             this.TitleButton.MouseDownSurface.BackColor = System.Drawing.Color.Empty;
             this.TitleButton.MouseDownSurface.BackgroundImage = null;
             this.TitleButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
@@ -112,7 +114,7 @@
             this.TitleButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.TitleButton.Name = "TitleButton";
             this.TitleButton.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.TitleButton.Size = new System.Drawing.Size(249, 54);
+            this.TitleButton.Size = new System.Drawing.Size(255, 60);
             this.TitleButton.Surface.BackColor = System.Drawing.Color.Empty;
             this.TitleButton.Surface.BackgroundImage = null;
             this.TitleButton.Surface.BorderColor = System.Drawing.Color.Empty;
@@ -136,19 +138,20 @@
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.CloseButton.Image = null;
-            this.CloseButton.Location = new System.Drawing.Point(318, 3);
-            this.CloseButton.MouseDownSurface.BackColor = System.Drawing.Color.Empty;
+            this.CloseButton.Location = new System.Drawing.Point(315, 0);
+            this.CloseButton.Margin = new System.Windows.Forms.Padding(0);
+            this.CloseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.CloseButton.MouseDownSurface.BackgroundImage = null;
             this.CloseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.CloseButton.MouseDownSurface.Image = null;
             this.CloseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
-            this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.CloseButton.MouseOverSurface.BackgroundImage = null;
             this.CloseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.CloseButton.MouseOverSurface.Image = null;
             this.CloseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(19, 19);
+            this.CloseButton.Size = new System.Drawing.Size(25, 25);
             this.CloseButton.Surface.BackColor = System.Drawing.Color.Empty;
             this.CloseButton.Surface.BackgroundImage = null;
             this.CloseButton.Surface.BorderColor = System.Drawing.Color.Empty;
