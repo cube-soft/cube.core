@@ -68,7 +68,7 @@
             this.TitleTextBox.Location = new System.Drawing.Point(80, 66);
             this.TitleTextBox.Name = "TitleTextBox";
             this.TitleTextBox.Size = new System.Drawing.Size(358, 23);
-            this.TitleTextBox.TabIndex = 0;
+            this.TitleTextBox.TabIndex = 1;
             this.TitleTextBox.Text = "NotifyForm Demo";
             // 
             // ImageTextBox
@@ -76,7 +76,7 @@
             this.ImageTextBox.Location = new System.Drawing.Point(80, 95);
             this.ImageTextBox.Name = "ImageTextBox";
             this.ImageTextBox.Size = new System.Drawing.Size(302, 23);
-            this.ImageTextBox.TabIndex = 1;
+            this.ImageTextBox.TabIndex = 2;
             // 
             // ImageBrowseButton
             // 
@@ -108,7 +108,7 @@
             this.ImageBrowseButton.Surface.BorderSize = 1;
             this.ImageBrowseButton.Surface.Image = null;
             this.ImageBrowseButton.Surface.TextColor = System.Drawing.Color.Black;
-            this.ImageBrowseButton.TabIndex = 2;
+            this.ImageBrowseButton.TabIndex = 3;
             this.ImageBrowseButton.Text = "...";
             this.ImageBrowseButton.UseVisualStyleBackColor = false;
             this.ImageBrowseButton.Click += new System.EventHandler(this.ImageBrowseButton_Click);
@@ -132,7 +132,7 @@
             0});
             this.DisplayMilliseconds.Name = "DisplayMilliseconds";
             this.DisplayMilliseconds.Size = new System.Drawing.Size(358, 23);
-            this.DisplayMilliseconds.TabIndex = 3;
+            this.DisplayMilliseconds.TabIndex = 4;
             this.DisplayMilliseconds.ThousandsSeparator = true;
             this.DisplayMilliseconds.Value = new decimal(new int[] {
             10000,
@@ -150,7 +150,7 @@
             0});
             this.DelayMilliseconds.Name = "DelayMilliseconds";
             this.DelayMilliseconds.Size = new System.Drawing.Size(358, 23);
-            this.DelayMilliseconds.TabIndex = 4;
+            this.DelayMilliseconds.TabIndex = 5;
             this.DelayMilliseconds.ThousandsSeparator = true;
             this.DelayMilliseconds.Value = new decimal(new int[] {
             1000,
@@ -219,7 +219,7 @@
             this.LevelLabel.Location = new System.Drawing.Point(12, 40);
             this.LevelLabel.Name = "LevelLabel";
             this.LevelLabel.Size = new System.Drawing.Size(43, 15);
-            this.LevelLabel.TabIndex = 1000;
+            this.LevelLabel.TabIndex = 999;
             this.LevelLabel.Text = "重要度";
             // 
             // LevelComboBox
@@ -229,7 +229,7 @@
             this.LevelComboBox.Location = new System.Drawing.Point(80, 37);
             this.LevelComboBox.Name = "LevelComboBox";
             this.LevelComboBox.Size = new System.Drawing.Size(358, 23);
-            this.LevelComboBox.TabIndex = 1001;
+            this.LevelComboBox.TabIndex = 0;
             // 
             // DemoNotify
             // 
