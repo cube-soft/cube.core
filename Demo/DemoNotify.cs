@@ -46,50 +46,12 @@ namespace Cube.Forms.Demo
             LevelComboBox.Items.Add(NotifyLevel.Error);
             LevelComboBox.SelectedItem = NotifyLevel.Information;
 
-            _model.Queued += Model_Queued;
+            _notify.View.Showing    += (s, e) => Log("Showing");
+            _notify.View.TitleClick += (s, e) => Log("TitleClick");
+            _notify.View.ImageClick += (s, e) => Log("ImageClick");
+            _notify.View.Hidden     += (s, e) => Log("Hidden");
 
-            _view.Shown      += (s, ev) => Log("Shown");
-            _view.TitleClick += (s, ev) => Log("TitleClick");
-            _view.ImageClick += (s, ev) => Log("ImageClick");
-            _view.Hidden     += View_Hidden;
-
-            FormClosing += (s, ev) => { _view.Close(); };
-        }
-
-        #endregion
-
-        #region Event handlers for NotifyQueue/NotifyForm
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Model_Queued
-        ///
-        /// <summary>
-        /// Queue にデータが追加された時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Model_Queued(object sender, EventArgs e)
-        {
-            Log(string.Format("Queued: Count = {0}", _model.Count));
-            if (_model.Count <= 0 || _view.IsBusy) return;
-            Notify(_model.Dequeue());
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// View_Hidden
-        ///
-        /// <summary>
-        /// 通知フォームが非表示になった時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void View_Hidden(object sender, EventArgs e)
-        {
-            Log(string.Format("Hidden: Rest = {0}", _model.Count));
-            if (_model.Count <= 0) return;
-            Notify(_model.Dequeue());
+            FormClosing += (s, ev) => { _notify.View.Close(); };
         }
 
         #endregion
@@ -115,10 +77,11 @@ namespace Cube.Forms.Demo
             }
             item.Level = (NotifyLevel)LevelComboBox.SelectedItem;
             item.Title = TitleTextBox.Text;
-            item.DisplayTime = TimeSpan.FromMilliseconds((double)DisplayMilliseconds.Value);
-            item.InitialDelay = TimeSpan.FromMilliseconds((double)DelayMilliseconds.Value);
+            item.DisplayTime = TimeSpan.FromSeconds((double)DisplaySeconds.Value);
+            item.InitialDelay = TimeSpan.FromSeconds((double)DelaySeconds.Value);
 
-            _model.Enqueue(item);
+            Log(string.Format("Enqueue: Level = {0}", item.Level));
+            _notify.Queue.Enqueue(item);
         }
 
         /* ----------------------------------------------------------------- */
@@ -133,7 +96,7 @@ namespace Cube.Forms.Demo
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Log("ClearButton.Click");
-            _model.Clear();
+            _notify.Queue.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -155,26 +118,6 @@ namespace Cube.Forms.Demo
         #endregion
 
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Notify
-        ///
-        /// <summary>
-        /// 通知フォームを表示します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Notify(NotifyItem item)
-        {
-            Log(string.Format("Notify: Level = {0} ({1}s -> {2}s)",
-                item.Level, item.InitialDelay.TotalSeconds, item.DisplayTime.TotalSeconds));
-            if (item.Image != null) _view.Image = item.Image;
-            _view.Level = item.Level;
-            _view.Title = item.Title;
-            _view.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
-            _view.Show((int)item.DisplayTime.TotalMilliseconds);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -201,8 +144,7 @@ namespace Cube.Forms.Demo
         #endregion
 
         #region Fields
-        private NotifyQueue _model = new NotifyQueue();
-        private NotifyForm _view = new NotifyForm();
+        private NotifyPresenter _notify = new NotifyPresenter();
         #endregion
     }
 }
