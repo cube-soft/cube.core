@@ -59,7 +59,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         [Browsable(true)]
-        NotifyLevel Level { get; set; }
+        public NotifyLevel Level { get; set; }
 
         /* --------------------------------------------------------------------- */
         ///
