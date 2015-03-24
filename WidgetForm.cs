@@ -98,7 +98,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event Action<object, CancelEventArgs> Showing;
+        public event CancelEventHandler Showing;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,7 +109,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event Action<object, CancelEventArgs> Hiding;
+        public event CancelEventHandler Hiding;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -120,7 +120,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event Action<object, EventArgs> Hidden;
+        public event EventHandler Hidden;
 
         #endregion
 
