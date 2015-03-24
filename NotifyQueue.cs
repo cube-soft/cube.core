@@ -160,9 +160,23 @@ namespace Cube.Forms
         public NotifyItem Dequeue()
         {
             if (RawData.Count <= 0) return null;
-            var dest = _data[0];
-            _data.RemoveAt(0);
+            var dest = RawData[0];
+            RawData.RemoveAt(0);
             return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Peek
+        ///
+        /// <summary>
+        /// 先頭の要素を取り出さずに取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NotifyItem Peek()
+        {
+            return RawData.Count > 0 ? RawData[0] : null;
         }
 
         #endregion
