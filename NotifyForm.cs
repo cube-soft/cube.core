@@ -202,11 +202,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void SetVisibleCore(bool value)
         {
-            var prev = Visible;
-            if (value && !prev && InitialDelay > 0)
+            var current = Visible;
+            if (value && !current && InitialDelay > 0)
             {
                 DelayInvoke(InitialDelay, () => base.SetVisibleCore(value));
-                base.SetVisibleCore(prev);
+                base.SetVisibleCore(current);
             }
             else base.SetVisibleCore(value);
         }
