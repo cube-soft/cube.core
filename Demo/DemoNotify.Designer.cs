@@ -135,7 +135,7 @@
             this.DisplaySeconds.Size = new System.Drawing.Size(318, 23);
             this.DisplaySeconds.TabIndex = 4;
             this.DisplaySeconds.Value = new decimal(new int[] {
-            10,
+            15,
             0,
             0,
             0});
@@ -152,7 +152,7 @@
             this.DelaySeconds.Size = new System.Drawing.Size(318, 23);
             this.DelaySeconds.TabIndex = 5;
             this.DelaySeconds.Value = new decimal(new int[] {
-            1,
+            5,
             0,
             0,
             0});
