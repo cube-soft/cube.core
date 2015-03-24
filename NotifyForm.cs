@@ -288,14 +288,14 @@ namespace Cube.Forms
             EventHandler method = (s, e) => worker.CancelAsync();
             
             worker.DoWork += (s, e) => {
-                var unit = 100; // 100 msec
-                for (var i = 0; i < msec / unit; ++i)
+                var expired = DateTime.Now + TimeSpan.FromMilliseconds(msec);
+                while (DateTime.Now < expired)
                 {
                     if (worker.CancellationPending) break;
-                    Thread.Sleep(unit);
+                    var delta = expired - DateTime.Now;
+                    var sleep = (int)Math.Min(delta.TotalMilliseconds, 100);
+                    if (sleep > 0) Thread.Sleep(sleep);
                 }
-                if (worker.CancellationPending) e.Cancel = true;
-                else if (msec % unit > 0) Thread.Sleep(msec % unit);
                 if (worker.CancellationPending) e.Cancel = true;
             };
 
