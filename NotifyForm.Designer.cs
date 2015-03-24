@@ -162,7 +162,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(340, 60);
             this.Controls.Add(this.LayoutPanel);
-            this.DragMoveEnabled = false;
+            this.AllowDragMove = false;
             this.Name = "NotifyForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

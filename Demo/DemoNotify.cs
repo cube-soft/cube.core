@@ -37,7 +37,7 @@ namespace Cube.Forms.Demo
         public DemoNotify()
         {
             InitializeComponent();
-            _component.Showing += (s, ev) => Log(string.Format("Showing, Pending = {0}", _component.ShowPending));
+            _component.Showing += (s, ev) => Log("Showing");
             _component.Shown += (s, ev) => Log("Shown");
             _component.TitleClick += (s, ev) => Log("TitleClick");
             _component.ImageClick += (s, ev) => Log("ImageClick");
