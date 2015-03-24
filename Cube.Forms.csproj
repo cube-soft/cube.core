@@ -59,6 +59,7 @@
     <Compile Include="NotifyForm.Designer.cs">
       <DependentUpon>NotifyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NotifyQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -62,16 +62,16 @@ namespace Cube.Forms.Demo
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowButton_Click
+        /// EnqueueButton_Click
         ///
         /// <summary>
-        /// Show ボタンが押下された時に実行されるハンドラです。
+        /// Enqueue ボタンが押下された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ShowButton_Click(object sender, EventArgs e)
+        private void EnqueueButton_Click(object sender, EventArgs e)
         {
-            Log("ShowButton.Click");
+            Log("EnqueueButton.Click");
             if (!string.IsNullOrEmpty(ImageTextBox.Text) &&
                 System.IO.File.Exists(ImageTextBox.Text))
             {
@@ -81,6 +81,20 @@ namespace Cube.Forms.Demo
             _component.Title = TitleTextBox.Text;
             _component.InitialDelay = (int)DelayMilliseconds.Value;
             _component.Show((int)DisplayMilliseconds.Value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ClearButton_Click
+        ///
+        /// <summary>
+        /// Clear ボタンが押下された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Log("ClearButton.Click");
         }
 
         /* ----------------------------------------------------------------- */
