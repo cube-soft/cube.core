@@ -35,16 +35,29 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NotifyEventArgs(string title, Image image)
+        public NotifyEventArgs(NotifyLevel level, string title, Image image, object data = null)
             : base()
         {
+            Level = level;
             Title = title;
             Image = image;
+            Data  = data;
         }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Level
+        /// 
+        /// <summary>
+        /// 重要度を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NotifyLevel Level { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,6 +80,17 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public Image Image { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Data
+        /// 
+        /// <summary>
+        /// ユーザデータを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public object Data { get; private set; }
 
         #endregion
     }

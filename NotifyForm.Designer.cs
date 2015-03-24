@@ -64,7 +64,8 @@
             this.ImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageButton.Image = null;
-            this.ImageButton.Location = new System.Drawing.Point(3, 3);
+            this.ImageButton.Location = new System.Drawing.Point(0, 0);
+            this.ImageButton.Margin = new System.Windows.Forms.Padding(0);
             this.ImageButton.MouseDownSurface.BackColor = System.Drawing.Color.Empty;
             this.ImageButton.MouseDownSurface.BackgroundImage = null;
             this.ImageButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
@@ -76,7 +77,7 @@
             this.ImageButton.MouseOverSurface.Image = null;
             this.ImageButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.ImageButton.Name = "ImageButton";
-            this.ImageButton.Size = new System.Drawing.Size(54, 54);
+            this.ImageButton.Size = new System.Drawing.Size(60, 60);
             this.ImageButton.Surface.BackColor = System.Drawing.Color.White;
             this.ImageButton.Surface.BackgroundImage = null;
             this.ImageButton.Surface.BorderColor = System.Drawing.Color.Empty;
@@ -159,10 +160,10 @@
             // 
             // NotifyForm
             // 
+            this.AllowDragMove = false;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(340, 60);
             this.Controls.Add(this.LayoutPanel);
-            this.AllowDragMove = false;
             this.Name = "NotifyForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
