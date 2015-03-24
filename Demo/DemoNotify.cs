@@ -37,12 +37,22 @@ namespace Cube.Forms.Demo
         public DemoNotify()
         {
             InitializeComponent();
+
+            LevelComboBox.Items.Add(NotifyLevel.None);
+            LevelComboBox.Items.Add(NotifyLevel.Information);
+            LevelComboBox.Items.Add(NotifyLevel.Recommended);
+            LevelComboBox.Items.Add(NotifyLevel.Important);
+            LevelComboBox.Items.Add(NotifyLevel.Warning);
+            LevelComboBox.Items.Add(NotifyLevel.Error);
+            LevelComboBox.SelectedItem = NotifyLevel.Information;
+
             _component.Showing += (s, ev) => Log("Showing");
             _component.Shown += (s, ev) => Log("Shown");
             _component.TitleClick += (s, ev) => Log("TitleClick");
             _component.ImageClick += (s, ev) => Log("ImageClick");
             _component.Hiding += (s, ev) => Log("Hiding");
             _component.Hidden += (s, ev) => Log("Hidden");
+
             FormClosing += (s, ev) => { _component.Close(); };
         }
 
@@ -67,6 +77,7 @@ namespace Cube.Forms.Demo
             {
                 _component.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
             }
+            _component.Level = (NotifyLevel)LevelComboBox.SelectedItem;
             _component.Title = TitleTextBox.Text;
             _component.InitialDelay = (int)DelayMilliseconds.Value;
             _component.Show((int)DisplayMilliseconds.Value);

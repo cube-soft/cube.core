@@ -39,6 +39,8 @@
             this.DelayLabel = new System.Windows.Forms.Label();
             this.LogTextBox = new System.Windows.Forms.TextBox();
             this.ShowButton = new Cube.Forms.Button();
+            this.LevelLabel = new System.Windows.Forms.Label();
+            this.LevelComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisplayMilliseconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DelayMilliseconds)).BeginInit();
             this.SuspendLayout();
@@ -46,7 +48,7 @@
             // TitleLabel
             // 
             this.TitleLabel.AutoSize = true;
-            this.TitleLabel.Location = new System.Drawing.Point(12, 48);
+            this.TitleLabel.Location = new System.Drawing.Point(12, 69);
             this.TitleLabel.Name = "TitleLabel";
             this.TitleLabel.Size = new System.Drawing.Size(42, 15);
             this.TitleLabel.TabIndex = 999;
@@ -55,7 +57,7 @@
             // DisplayLabel
             // 
             this.DisplayLabel.AutoSize = true;
-            this.DisplayLabel.Location = new System.Drawing.Point(12, 105);
+            this.DisplayLabel.Location = new System.Drawing.Point(12, 126);
             this.DisplayLabel.Name = "DisplayLabel";
             this.DisplayLabel.Size = new System.Drawing.Size(55, 15);
             this.DisplayLabel.TabIndex = 999;
@@ -63,7 +65,7 @@
             // 
             // TitleTextBox
             // 
-            this.TitleTextBox.Location = new System.Drawing.Point(80, 45);
+            this.TitleTextBox.Location = new System.Drawing.Point(80, 66);
             this.TitleTextBox.Name = "TitleTextBox";
             this.TitleTextBox.Size = new System.Drawing.Size(358, 23);
             this.TitleTextBox.TabIndex = 0;
@@ -71,7 +73,7 @@
             // 
             // ImageTextBox
             // 
-            this.ImageTextBox.Location = new System.Drawing.Point(80, 74);
+            this.ImageTextBox.Location = new System.Drawing.Point(80, 95);
             this.ImageTextBox.Name = "ImageTextBox";
             this.ImageTextBox.Size = new System.Drawing.Size(302, 23);
             this.ImageTextBox.TabIndex = 1;
@@ -87,7 +89,7 @@
             this.ImageBrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ImageBrowseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageBrowseButton.Image = null;
-            this.ImageBrowseButton.Location = new System.Drawing.Point(388, 74);
+            this.ImageBrowseButton.Location = new System.Drawing.Point(388, 95);
             this.ImageBrowseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.ImageBrowseButton.MouseDownSurface.BackgroundImage = null;
             this.ImageBrowseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
@@ -114,7 +116,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 77);
+            this.label2.Location = new System.Drawing.Point(12, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 15);
             this.label2.TabIndex = 999;
@@ -122,7 +124,7 @@
             // 
             // DisplayMilliseconds
             // 
-            this.DisplayMilliseconds.Location = new System.Drawing.Point(80, 103);
+            this.DisplayMilliseconds.Location = new System.Drawing.Point(80, 124);
             this.DisplayMilliseconds.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -140,7 +142,7 @@
             // 
             // DelayMilliseconds
             // 
-            this.DelayMilliseconds.Location = new System.Drawing.Point(80, 132);
+            this.DelayMilliseconds.Location = new System.Drawing.Point(80, 153);
             this.DelayMilliseconds.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -159,7 +161,7 @@
             // DelayLabel
             // 
             this.DelayLabel.AutoSize = true;
-            this.DelayLabel.Location = new System.Drawing.Point(12, 134);
+            this.DelayLabel.Location = new System.Drawing.Point(12, 155);
             this.DelayLabel.Name = "DelayLabel";
             this.DelayLabel.Size = new System.Drawing.Size(55, 15);
             this.DelayLabel.TabIndex = 999;
@@ -167,12 +169,12 @@
             // 
             // LogTextBox
             // 
-            this.LogTextBox.Location = new System.Drawing.Point(12, 210);
+            this.LogTextBox.Location = new System.Drawing.Point(12, 230);
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
             this.LogTextBox.ReadOnly = true;
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextBox.Size = new System.Drawing.Size(426, 170);
+            this.LogTextBox.Size = new System.Drawing.Size(426, 150);
             this.LogTextBox.TabIndex = 999;
             this.LogTextBox.TabStop = false;
             // 
@@ -187,7 +189,7 @@
             this.ShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ShowButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ShowButton.Image = null;
-            this.ShowButton.Location = new System.Drawing.Point(363, 170);
+            this.ShowButton.Location = new System.Drawing.Point(363, 191);
             this.ShowButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.ShowButton.MouseDownSurface.BackgroundImage = null;
             this.ShowButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
@@ -211,9 +213,29 @@
             this.ShowButton.UseVisualStyleBackColor = false;
             this.ShowButton.Click += new System.EventHandler(this.ShowButton_Click);
             // 
+            // LevelLabel
+            // 
+            this.LevelLabel.AutoSize = true;
+            this.LevelLabel.Location = new System.Drawing.Point(12, 40);
+            this.LevelLabel.Name = "LevelLabel";
+            this.LevelLabel.Size = new System.Drawing.Size(43, 15);
+            this.LevelLabel.TabIndex = 1000;
+            this.LevelLabel.Text = "重要度";
+            // 
+            // LevelComboBox
+            // 
+            this.LevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LevelComboBox.FormattingEnabled = true;
+            this.LevelComboBox.Location = new System.Drawing.Point(80, 37);
+            this.LevelComboBox.Name = "LevelComboBox";
+            this.LevelComboBox.Size = new System.Drawing.Size(358, 23);
+            this.LevelComboBox.TabIndex = 1001;
+            // 
             // DemoNotify
             // 
             this.ClientSize = new System.Drawing.Size(450, 400);
+            this.Controls.Add(this.LevelComboBox);
+            this.Controls.Add(this.LevelLabel);
             this.Controls.Add(this.ShowButton);
             this.Controls.Add(this.LogTextBox);
             this.Controls.Add(this.DelayLabel);
@@ -240,6 +262,8 @@
             this.Controls.SetChildIndex(this.DelayLabel, 0);
             this.Controls.SetChildIndex(this.LogTextBox, 0);
             this.Controls.SetChildIndex(this.ShowButton, 0);
+            this.Controls.SetChildIndex(this.LevelLabel, 0);
+            this.Controls.SetChildIndex(this.LevelComboBox, 0);
             ((System.ComponentModel.ISupportInitialize)(this.DisplayMilliseconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DelayMilliseconds)).EndInit();
             this.ResumeLayout(false);
@@ -260,6 +284,8 @@
         private System.Windows.Forms.Label DelayLabel;
         private System.Windows.Forms.TextBox LogTextBox;
         private Button ShowButton;
+        private System.Windows.Forms.Label LevelLabel;
+        private System.Windows.Forms.ComboBox LevelComboBox;
 
     }
 }
