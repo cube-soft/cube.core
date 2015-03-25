@@ -21,7 +21,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WebBrowser : System.Windows.Forms.WebBrowser
+    public partial class WebBrowser : System.Windows.Forms.WebBrowser
     {
         #region Constructors
 
