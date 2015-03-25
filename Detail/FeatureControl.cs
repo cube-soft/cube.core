@@ -149,7 +149,25 @@ namespace Cube.Forms
             /* --------------------------------------------------------------------- */
             private static bool GetGpuRendering()
             {
-                return false; // TODO: 実装
+                try
+                {
+                    using(var root = OpenFeatureControl())
+                    using (var subkey = root.OpenSubKey(_RegRendering, false))
+                    {
+                        if (subkey == null) return false;
+
+                        var module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+                        var filename = System.IO.Path.GetFileName(module.FileName);
+                        var value = subkey.GetValue(filename);
+                        if (value == null) return false;
+                        return (int)value == 1 ? true : false;
+                    }
+                }
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                    return false;
+                }
             }
 
             /* --------------------------------------------------------------------- */
@@ -163,7 +181,21 @@ namespace Cube.Forms
             /* --------------------------------------------------------------------- */
             private static void SetGpuRendering(bool enabled)
             {
-                // TODO: 実装
+                try
+                {
+                    using (var root = OpenFeatureControl())
+                    using (var subkey = root.CreateSubKey(_RegRendering))
+                    {
+                        var module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+                        var filename = System.IO.Path.GetFileName(module.FileName);
+                        var value = enabled ? 1 : 0;
+                        subkey.SetValue(filename, value);
+                    }
+                }
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                }
             }
 
             #endregion
@@ -181,7 +213,25 @@ namespace Cube.Forms
             /* --------------------------------------------------------------------- */
             private static int GetMaxConnections()
             {
-                return 1; // TODO: 実装（設定されていない場合いくつになるのかも調査）
+                try
+                {
+                    using (var root = OpenFeatureControl())
+                    using (var subkey = root.OpenSubKey(_RegMaxConnections, false))
+                    {
+                        if (subkey == null) return 6;
+
+                        var module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+                        var filename = System.IO.Path.GetFileName(module.FileName);
+                        var value = subkey.GetValue(filename);
+                        if (value == null) return 6;
+                        return (int)value;
+                    }
+                }
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                    return 6;
+                }
             }
 
             /* --------------------------------------------------------------------- */
@@ -189,13 +239,29 @@ namespace Cube.Forms
             /// SetMaxConnections
             /// 
             /// <summary>
-            /// GPU レンダリングモードを有効にするかどうかを設定します。
+            /// 最大同時接続数を設定します。
             /// </summary>
             ///
             /* --------------------------------------------------------------------- */
             private static void SetMaxConnections(int number)
             {
-                // TODO: 実装
+                if (number < 2 || number > 128) return;
+                try
+                {
+                    using (var root = OpenFeatureControl())
+                    using (var subkey = root.CreateSubKey(_RegMaxConnections))
+                    using (var subkey10 = root.CreateSubKey(_RegMaxConnections10))
+                    {
+                        var module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
+                        var filename = System.IO.Path.GetFileName(module.FileName);
+                        subkey.SetValue(filename, number);
+                        subkey10.SetValue(filename, number);
+                    }
+                }
+                catch (Exception err)
+                {
+                    System.Diagnostics.Trace.TraceError(err.ToString());
+                }
             }
 
             #endregion
