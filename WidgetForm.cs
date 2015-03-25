@@ -345,6 +345,11 @@ namespace Cube.Forms
         /// <summary>
         /// 表示状態が変更された事を通知するイベントを発生させます。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: システムによる Shown イベントは最初の 1 度しか発生しない
+        ///       模様。Showing イベント等との整合性をどうするか検討する。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private void RaiseVisibleChangedEvent(bool current, bool behind, EventArgs e)

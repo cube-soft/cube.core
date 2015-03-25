@@ -46,41 +46,57 @@ namespace Cube.Forms.Demo
             LevelComboBox.Items.Add(NotifyLevel.Error);
             LevelComboBox.SelectedItem = NotifyLevel.Information;
 
-            _component.Showing += (s, ev) => Log("Showing");
-            _component.Shown += (s, ev) => Log("Shown");
-            _component.TitleClick += (s, ev) => Log("TitleClick");
-            _component.ImageClick += (s, ev) => Log("ImageClick");
-            _component.Hiding += (s, ev) => Log("Hiding");
-            _component.Hidden += (s, ev) => Log("Hidden");
+            _notify.View.Showing    += (s, e) => Log("Showing");
+            _notify.View.TitleClick += (s, e) => Log("TitleClick");
+            _notify.View.ImageClick += (s, e) => Log("ImageClick");
+            _notify.View.Hidden     += View_Hidden;
 
-            FormClosing += (s, ev) => { _component.Close(); };
+            FormClosing += (s, ev) => { _notify.View.Close(); };
         }
 
         #endregion
 
-        #region Event handlers
+        #region Event handlers for buttons
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowButton_Click
+        /// EnqueueButton_Click
         ///
         /// <summary>
-        /// Show ボタンが押下された時に実行されるハンドラです。
+        /// Enqueue ボタンが押下された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ShowButton_Click(object sender, EventArgs e)
+        private void EnqueueButton_Click(object sender, EventArgs e)
         {
-            Log("ShowButton.Click");
+            var item = new NotifyItem();
             if (!string.IsNullOrEmpty(ImageTextBox.Text) &&
                 System.IO.File.Exists(ImageTextBox.Text))
             {
-                _component.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
+                item.Image = System.Drawing.Bitmap.FromFile(ImageTextBox.Text);
             }
-            _component.Level = (NotifyLevel)LevelComboBox.SelectedItem;
-            _component.Title = TitleTextBox.Text;
-            _component.InitialDelay = (int)DelayMilliseconds.Value;
-            _component.Show((int)DisplayMilliseconds.Value);
+            item.Level = (NotifyLevel)LevelComboBox.SelectedItem;
+            item.Title = TitleTextBox.Text;
+            item.DisplayTime = TimeSpan.FromSeconds((double)DisplaySeconds.Value);
+            item.InitialDelay = TimeSpan.FromSeconds((double)DelaySeconds.Value);
+
+            Log(string.Format("Enqueue: Level = {0}", item.Level));
+            _notify.Queue.Enqueue(item);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ClearButton_Click
+        ///
+        /// <summary>
+        /// Clear ボタンが押下された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Log("ClearButton.Click");
+            _notify.Queue.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -97,6 +113,21 @@ namespace Cube.Forms.Demo
             var dialog = new System.Windows.Forms.OpenFileDialog();
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             ImageTextBox.Text = dialog.FileName;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// View_Hidden
+        ///
+        /// <summary>
+        /// 通知フォームが非表示になった直後に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void View_Hidden(object sender, EventArgs e)
+        {
+            if (!_notify.View.IsBusy && _notify.Queue.Count == 0) Log("Hidden: Queue is empty");
+            else Log("Hidden");
         }
 
         #endregion
@@ -128,7 +159,7 @@ namespace Cube.Forms.Demo
         #endregion
 
         #region Fields
-        private NotifyForm _component = new NotifyForm();
+        private NotifyPresenter _notify = new NotifyPresenter();
         #endregion
     }
 }

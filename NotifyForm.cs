@@ -39,6 +39,7 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
+            IsBusy = false;
             base.Text = string.Empty;
             CloseButton.Click += (s, e) => Hide();
             TitleButton.Click += (s, e) => RaiseTitleClickEvent();
@@ -108,6 +109,17 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(true)]
         public int InitialDelay { get; set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// IsBusy
+        /// 
+        /// <summary>
+        /// 実行中かどうかを取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public bool IsBusy { get; private set; }
 
         #region Hiding properties
 
@@ -215,7 +227,9 @@ namespace Cube.Forms
         protected override void SetVisibleCore(bool value)
         {
             var current = Visible;
-            if (value && !current && InitialDelay > 0)
+            var showing = value && !current;
+            if (showing) IsBusy = true;
+            if (showing && InitialDelay > 0)
             {
                 DelayInvoke(InitialDelay, () => base.SetVisibleCore(value));
                 base.SetVisibleCore(current);
@@ -239,6 +253,21 @@ namespace Cube.Forms
             base.OnShowing(e);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnHidden
+        /// 
+        /// <summary>
+        /// フォームが非表示になった直後に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnHidden(EventArgs e)
+        {
+            IsBusy = false;
+            base.OnHidden(e);
+        }
+
         #endregion
 
         #region Implementations
@@ -257,16 +286,16 @@ namespace Cube.Forms
             var worker = new System.ComponentModel.BackgroundWorker();
             worker.WorkerSupportsCancellation = true;
             EventHandler method = (s, e) => worker.CancelAsync();
-
+            
             worker.DoWork += (s, e) => {
-                var unit = 100; // 100 msec
-                for (var i = 0; i < msec / unit; ++i)
+                var expired = DateTime.Now + TimeSpan.FromMilliseconds(msec);
+                while (DateTime.Now < expired)
                 {
                     if (worker.CancellationPending) break;
-                    Thread.Sleep(unit);
+                    var delta = expired - DateTime.Now;
+                    var sleep = (int)Math.Min(delta.TotalMilliseconds, 100);
+                    if (sleep > 0) Thread.Sleep(sleep);
                 }
-                if (worker.CancellationPending) e.Cancel = true;
-                else if (msec % unit > 0) Thread.Sleep(msec % unit);
                 if (worker.CancellationPending) e.Cancel = true;
             };
 

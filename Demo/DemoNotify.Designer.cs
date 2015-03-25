@@ -34,15 +34,16 @@
             this.ImageTextBox = new System.Windows.Forms.TextBox();
             this.ImageBrowseButton = new Cube.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.DisplayMilliseconds = new System.Windows.Forms.NumericUpDown();
-            this.DelayMilliseconds = new System.Windows.Forms.NumericUpDown();
+            this.DisplaySeconds = new System.Windows.Forms.NumericUpDown();
+            this.DelaySeconds = new System.Windows.Forms.NumericUpDown();
             this.DelayLabel = new System.Windows.Forms.Label();
             this.LogTextBox = new System.Windows.Forms.TextBox();
-            this.ShowButton = new Cube.Forms.Button();
+            this.EnqueueButton = new Cube.Forms.Button();
             this.LevelLabel = new System.Windows.Forms.Label();
             this.LevelComboBox = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.DisplayMilliseconds)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DelayMilliseconds)).BeginInit();
+            this.ClearButton = new Cube.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.DisplaySeconds)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DelaySeconds)).BeginInit();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -50,7 +51,7 @@
             this.TitleLabel.AutoSize = true;
             this.TitleLabel.Location = new System.Drawing.Point(12, 69);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(42, 15);
+            this.TitleLabel.Size = new System.Drawing.Size(46, 17);
             this.TitleLabel.TabIndex = 999;
             this.TitleLabel.Text = "タイトル";
             // 
@@ -59,23 +60,23 @@
             this.DisplayLabel.AutoSize = true;
             this.DisplayLabel.Location = new System.Drawing.Point(12, 126);
             this.DisplayLabel.Name = "DisplayLabel";
-            this.DisplayLabel.Size = new System.Drawing.Size(55, 15);
+            this.DisplayLabel.Size = new System.Drawing.Size(99, 17);
             this.DisplayLabel.TabIndex = 999;
-            this.DisplayLabel.Text = "表示時間";
+            this.DisplayLabel.Text = "表示時間（秒）";
             // 
             // TitleTextBox
             // 
-            this.TitleTextBox.Location = new System.Drawing.Point(80, 66);
+            this.TitleTextBox.Location = new System.Drawing.Point(120, 66);
             this.TitleTextBox.Name = "TitleTextBox";
-            this.TitleTextBox.Size = new System.Drawing.Size(358, 23);
+            this.TitleTextBox.Size = new System.Drawing.Size(318, 23);
             this.TitleTextBox.TabIndex = 1;
             this.TitleTextBox.Text = "NotifyForm Demo";
             // 
             // ImageTextBox
             // 
-            this.ImageTextBox.Location = new System.Drawing.Point(80, 95);
+            this.ImageTextBox.Location = new System.Drawing.Point(120, 95);
             this.ImageTextBox.Name = "ImageTextBox";
-            this.ImageTextBox.Size = new System.Drawing.Size(302, 23);
+            this.ImageTextBox.Size = new System.Drawing.Size(262, 23);
             this.ImageTextBox.TabIndex = 2;
             // 
             // ImageBrowseButton
@@ -116,44 +117,42 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 98);
+            this.label2.Location = new System.Drawing.Point(12, 99);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 15);
+            this.label2.Size = new System.Drawing.Size(48, 17);
             this.label2.TabIndex = 999;
             this.label2.Text = "イメージ";
             // 
-            // DisplayMilliseconds
+            // DisplaySeconds
             // 
-            this.DisplayMilliseconds.Location = new System.Drawing.Point(80, 124);
-            this.DisplayMilliseconds.Maximum = new decimal(new int[] {
+            this.DisplaySeconds.Location = new System.Drawing.Point(120, 124);
+            this.DisplaySeconds.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.DisplayMilliseconds.Name = "DisplayMilliseconds";
-            this.DisplayMilliseconds.Size = new System.Drawing.Size(358, 23);
-            this.DisplayMilliseconds.TabIndex = 4;
-            this.DisplayMilliseconds.ThousandsSeparator = true;
-            this.DisplayMilliseconds.Value = new decimal(new int[] {
-            10000,
+            this.DisplaySeconds.Name = "DisplaySeconds";
+            this.DisplaySeconds.Size = new System.Drawing.Size(318, 23);
+            this.DisplaySeconds.TabIndex = 4;
+            this.DisplaySeconds.Value = new decimal(new int[] {
+            15,
             0,
             0,
             0});
             // 
-            // DelayMilliseconds
+            // DelaySeconds
             // 
-            this.DelayMilliseconds.Location = new System.Drawing.Point(80, 153);
-            this.DelayMilliseconds.Maximum = new decimal(new int[] {
+            this.DelaySeconds.Location = new System.Drawing.Point(120, 153);
+            this.DelaySeconds.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.DelayMilliseconds.Name = "DelayMilliseconds";
-            this.DelayMilliseconds.Size = new System.Drawing.Size(358, 23);
-            this.DelayMilliseconds.TabIndex = 5;
-            this.DelayMilliseconds.ThousandsSeparator = true;
-            this.DelayMilliseconds.Value = new decimal(new int[] {
-            1000,
+            this.DelaySeconds.Name = "DelaySeconds";
+            this.DelaySeconds.Size = new System.Drawing.Size(318, 23);
+            this.DelaySeconds.TabIndex = 5;
+            this.DelaySeconds.Value = new decimal(new int[] {
+            5,
             0,
             0,
             0});
@@ -163,9 +162,9 @@
             this.DelayLabel.AutoSize = true;
             this.DelayLabel.Location = new System.Drawing.Point(12, 155);
             this.DelayLabel.Name = "DelayLabel";
-            this.DelayLabel.Size = new System.Drawing.Size(55, 15);
+            this.DelayLabel.Size = new System.Drawing.Size(99, 17);
             this.DelayLabel.TabIndex = 999;
-            this.DelayLabel.Text = "遅延時間";
+            this.DelayLabel.Text = "遅延時間（秒）";
             // 
             // LogTextBox
             // 
@@ -178,47 +177,47 @@
             this.LogTextBox.TabIndex = 999;
             this.LogTextBox.TabStop = false;
             // 
-            // ShowButton
+            // EnqueueButton
             // 
-            this.ShowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ShowButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ShowButton.FlatAppearance.BorderSize = 0;
-            this.ShowButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ShowButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ShowButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ShowButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ShowButton.Image = null;
-            this.ShowButton.Location = new System.Drawing.Point(363, 191);
-            this.ShowButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.ShowButton.MouseDownSurface.BackgroundImage = null;
-            this.ShowButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.MouseDownSurface.Image = null;
-            this.ShowButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
-            this.ShowButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.ShowButton.MouseOverSurface.BackgroundImage = null;
-            this.ShowButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
-            this.ShowButton.MouseOverSurface.Image = null;
-            this.ShowButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
-            this.ShowButton.Name = "ShowButton";
-            this.ShowButton.Size = new System.Drawing.Size(75, 23);
-            this.ShowButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.ShowButton.Surface.BackgroundImage = null;
-            this.ShowButton.Surface.BorderColor = System.Drawing.Color.Gray;
-            this.ShowButton.Surface.BorderSize = 1;
-            this.ShowButton.Surface.Image = null;
-            this.ShowButton.Surface.TextColor = System.Drawing.Color.Black;
-            this.ShowButton.TabIndex = 19;
-            this.ShowButton.Text = "Show";
-            this.ShowButton.UseVisualStyleBackColor = false;
-            this.ShowButton.Click += new System.EventHandler(this.ShowButton_Click);
+            this.EnqueueButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.EnqueueButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.EnqueueButton.FlatAppearance.BorderSize = 0;
+            this.EnqueueButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.EnqueueButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.EnqueueButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.EnqueueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EnqueueButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.EnqueueButton.Image = null;
+            this.EnqueueButton.Location = new System.Drawing.Point(257, 190);
+            this.EnqueueButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.EnqueueButton.MouseDownSurface.BackgroundImage = null;
+            this.EnqueueButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.EnqueueButton.MouseDownSurface.Image = null;
+            this.EnqueueButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.EnqueueButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.EnqueueButton.MouseOverSurface.BackgroundImage = null;
+            this.EnqueueButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.EnqueueButton.MouseOverSurface.Image = null;
+            this.EnqueueButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.EnqueueButton.Name = "EnqueueButton";
+            this.EnqueueButton.Size = new System.Drawing.Size(100, 23);
+            this.EnqueueButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.EnqueueButton.Surface.BackgroundImage = null;
+            this.EnqueueButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.EnqueueButton.Surface.BorderSize = 1;
+            this.EnqueueButton.Surface.Image = null;
+            this.EnqueueButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.EnqueueButton.TabIndex = 6;
+            this.EnqueueButton.Text = "Enqueue";
+            this.EnqueueButton.UseVisualStyleBackColor = false;
+            this.EnqueueButton.Click += new System.EventHandler(this.EnqueueButton_Click);
             // 
             // LevelLabel
             // 
             this.LevelLabel.AutoSize = true;
             this.LevelLabel.Location = new System.Drawing.Point(12, 40);
             this.LevelLabel.Name = "LevelLabel";
-            this.LevelLabel.Size = new System.Drawing.Size(43, 15);
+            this.LevelLabel.Size = new System.Drawing.Size(47, 17);
             this.LevelLabel.TabIndex = 999;
             this.LevelLabel.Text = "重要度";
             // 
@@ -226,21 +225,57 @@
             // 
             this.LevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.LevelComboBox.FormattingEnabled = true;
-            this.LevelComboBox.Location = new System.Drawing.Point(80, 37);
+            this.LevelComboBox.Location = new System.Drawing.Point(120, 37);
             this.LevelComboBox.Name = "LevelComboBox";
-            this.LevelComboBox.Size = new System.Drawing.Size(358, 23);
+            this.LevelComboBox.Size = new System.Drawing.Size(318, 23);
             this.LevelComboBox.TabIndex = 0;
+            // 
+            // ClearButton
+            // 
+            this.ClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ClearButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ClearButton.FlatAppearance.BorderSize = 0;
+            this.ClearButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ClearButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ClearButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.ClearButton.Image = null;
+            this.ClearButton.Location = new System.Drawing.Point(363, 190);
+            this.ClearButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClearButton.MouseDownSurface.BackgroundImage = null;
+            this.ClearButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.ClearButton.MouseDownSurface.Image = null;
+            this.ClearButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ClearButton.MouseOverSurface.BackColor = System.Drawing.Color.MistyRose;
+            this.ClearButton.MouseOverSurface.BackgroundImage = null;
+            this.ClearButton.MouseOverSurface.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.ClearButton.MouseOverSurface.Image = null;
+            this.ClearButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ClearButton.Name = "ClearButton";
+            this.ClearButton.Size = new System.Drawing.Size(75, 23);
+            this.ClearButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.ClearButton.Surface.BackgroundImage = null;
+            this.ClearButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.ClearButton.Surface.BorderSize = 1;
+            this.ClearButton.Surface.Image = null;
+            this.ClearButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.ClearButton.TabIndex = 7;
+            this.ClearButton.Text = "Clear";
+            this.ClearButton.UseVisualStyleBackColor = false;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // DemoNotify
             // 
             this.ClientSize = new System.Drawing.Size(450, 400);
+            this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.LevelComboBox);
             this.Controls.Add(this.LevelLabel);
-            this.Controls.Add(this.ShowButton);
+            this.Controls.Add(this.EnqueueButton);
             this.Controls.Add(this.LogTextBox);
             this.Controls.Add(this.DelayLabel);
-            this.Controls.Add(this.DelayMilliseconds);
-            this.Controls.Add(this.DisplayMilliseconds);
+            this.Controls.Add(this.DelaySeconds);
+            this.Controls.Add(this.DisplaySeconds);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ImageBrowseButton);
             this.Controls.Add(this.ImageTextBox);
@@ -257,15 +292,16 @@
             this.Controls.SetChildIndex(this.ImageTextBox, 0);
             this.Controls.SetChildIndex(this.ImageBrowseButton, 0);
             this.Controls.SetChildIndex(this.label2, 0);
-            this.Controls.SetChildIndex(this.DisplayMilliseconds, 0);
-            this.Controls.SetChildIndex(this.DelayMilliseconds, 0);
+            this.Controls.SetChildIndex(this.DisplaySeconds, 0);
+            this.Controls.SetChildIndex(this.DelaySeconds, 0);
             this.Controls.SetChildIndex(this.DelayLabel, 0);
             this.Controls.SetChildIndex(this.LogTextBox, 0);
-            this.Controls.SetChildIndex(this.ShowButton, 0);
+            this.Controls.SetChildIndex(this.EnqueueButton, 0);
             this.Controls.SetChildIndex(this.LevelLabel, 0);
             this.Controls.SetChildIndex(this.LevelComboBox, 0);
-            ((System.ComponentModel.ISupportInitialize)(this.DisplayMilliseconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DelayMilliseconds)).EndInit();
+            this.Controls.SetChildIndex(this.ClearButton, 0);
+            ((System.ComponentModel.ISupportInitialize)(this.DisplaySeconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DelaySeconds)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,13 +315,14 @@
         private System.Windows.Forms.TextBox ImageTextBox;
         private Button ImageBrowseButton;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown DisplayMilliseconds;
-        private System.Windows.Forms.NumericUpDown DelayMilliseconds;
+        private System.Windows.Forms.NumericUpDown DisplaySeconds;
+        private System.Windows.Forms.NumericUpDown DelaySeconds;
         private System.Windows.Forms.Label DelayLabel;
         private System.Windows.Forms.TextBox LogTextBox;
-        private Button ShowButton;
+        private Button EnqueueButton;
         private System.Windows.Forms.Label LevelLabel;
         private System.Windows.Forms.ComboBox LevelComboBox;
+        private Button ClearButton;
 
     }
 }
