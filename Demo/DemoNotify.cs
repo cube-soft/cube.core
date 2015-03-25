@@ -49,7 +49,7 @@ namespace Cube.Forms.Demo
             _notify.View.Showing    += (s, e) => Log("Showing");
             _notify.View.TitleClick += (s, e) => Log("TitleClick");
             _notify.View.ImageClick += (s, e) => Log("ImageClick");
-            _notify.View.Hidden     += (s, e) => Log("Hidden");
+            _notify.View.Hidden     += View_Hidden;
 
             FormClosing += (s, ev) => { _notify.View.Close(); };
         }
@@ -113,6 +113,21 @@ namespace Cube.Forms.Demo
             var dialog = new System.Windows.Forms.OpenFileDialog();
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
             ImageTextBox.Text = dialog.FileName;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// View_Hidden
+        ///
+        /// <summary>
+        /// 通知フォームが非表示になった直後に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void View_Hidden(object sender, EventArgs e)
+        {
+            if (!_notify.View.IsBusy && _notify.Queue.Count == 0) Log("Hidden: Queue is empty");
+            else Log("Hidden");
         }
 
         #endregion
