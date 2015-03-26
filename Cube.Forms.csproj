@@ -49,6 +49,10 @@
     <Compile Include="Button.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Detail\BrowserVersion.cs" />
+    <Compile Include="Detail\FeatureControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Detail\NavigatingErrorEventArgs.cs" />
     <Compile Include="Detail\NavigatingEventArgs.cs" />
     <Compile Include="Detail\NotifyEventArgs.cs" />
