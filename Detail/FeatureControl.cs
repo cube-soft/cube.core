@@ -4,8 +4,17 @@
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
-/// This is distributed under the Microsoft Public License (Ms-PL).
-/// See http://www.opensource.org/licenses/ms-pl.html
+/// Licensed under the Apache License, Version 2.0 (the "License");
+/// you may not use this file except in compliance with the License.
+/// You may obtain a copy of the License at
+///
+///  http://www.apache.org/licenses/LICENSE-2.0
+///
+/// Unless required by applicable law or agreed to in writing, software
+/// distributed under the License is distributed on an "AS IS" BASIS,
+/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+/// See the License for the specific language governing permissions and
+/// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
 using System;
@@ -27,7 +36,7 @@ namespace Cube.Forms
         {
             #region Properties
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// Emulation
             /// 
@@ -35,14 +44,14 @@ namespace Cube.Forms
             /// エミュレートされている IE バージョンを取得または設定します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             public static BrowserVersion Emulation
             {
                 get { return GetEmulateVersion(); }
                 set { SetEmulateVersion(value); }
             }
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// GpuRendering
             /// 
@@ -50,14 +59,14 @@ namespace Cube.Forms
             /// GPU レンダリングモードが有効かどうかを取得または設定します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             public static bool GpuRendering
             {
                 get { return GetGpuRendering(); }
                 set { SetGpuRendering(value); }
             }
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// MaxConnections
             /// 
@@ -65,7 +74,7 @@ namespace Cube.Forms
             /// 最大同時接続数を取得または設定します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             public static int MaxConnections
             {
                 get { return GetMaxConnections(); }
@@ -78,7 +87,7 @@ namespace Cube.Forms
 
             #region Browser emulation
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// GetEmulateVersion
             /// 
@@ -86,7 +95,7 @@ namespace Cube.Forms
             /// エミュレートされている IE バージョンを取得します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static BrowserVersion GetEmulateVersion()
             {
                 try
@@ -109,7 +118,7 @@ namespace Cube.Forms
                 }
             }
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// SetEmulateVersion
             /// 
@@ -117,7 +126,7 @@ namespace Cube.Forms
             /// エミュレートする IE バージョンを設定します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static void SetEmulateVersion(BrowserVersion version)
             {
                 try
@@ -138,7 +147,7 @@ namespace Cube.Forms
 
             #region GPU rendering
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// GetGpuRendering
             /// 
@@ -146,12 +155,12 @@ namespace Cube.Forms
             /// GPU レンダリングモードが有効かどうかを取得します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static bool GetGpuRendering()
             {
                 try
                 {
-                    using(var root = OpenFeatureControl())
+                    using (var root = OpenFeatureControl())
                     using (var subkey = root.OpenSubKey(_RegRendering, false))
                     {
                         if (subkey == null) return false;
@@ -160,7 +169,7 @@ namespace Cube.Forms
                         var filename = System.IO.Path.GetFileName(module.FileName);
                         var value = subkey.GetValue(filename);
                         if (value == null) return false;
-                        return (int)value == 1 ? true : false;
+                        return (int)value == 1;
                     }
                 }
                 catch (Exception err)
@@ -170,7 +179,7 @@ namespace Cube.Forms
                 }
             }
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// SetGpuRendering
             /// 
@@ -178,7 +187,7 @@ namespace Cube.Forms
             /// GPU レンダリングモードを有効にするかどうかを設定します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static void SetGpuRendering(bool enabled)
             {
                 try
@@ -202,7 +211,7 @@ namespace Cube.Forms
 
             #region Max connections
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// GetMaxConnections
             /// 
@@ -210,31 +219,33 @@ namespace Cube.Forms
             /// 最大同時接続数を取得します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static int GetMaxConnections()
             {
+                const int default_max_connection = 6;
+
                 try
                 {
                     using (var root = OpenFeatureControl())
                     using (var subkey = root.OpenSubKey(_RegMaxConnections, false))
                     {
-                        if (subkey == null) return 6;
+                        if (subkey == null) return default_max_connection;
 
                         var module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
                         var filename = System.IO.Path.GetFileName(module.FileName);
                         var value = subkey.GetValue(filename);
-                        if (value == null) return 6;
+                        if (value == null) return default_max_connection;
                         return (int)value;
                     }
                 }
                 catch (Exception err)
                 {
                     System.Diagnostics.Trace.TraceError(err.ToString());
-                    return 6;
+                    return default_max_connection;
                 }
             }
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// SetMaxConnections
             /// 
@@ -242,7 +253,7 @@ namespace Cube.Forms
             /// 最大同時接続数を設定します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static void SetMaxConnections(int number)
             {
                 if (number < 2 || number > 128) return;
@@ -266,7 +277,7 @@ namespace Cube.Forms
 
             #endregion
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// OpenFeatureControl
             /// 
@@ -274,7 +285,7 @@ namespace Cube.Forms
             /// FeatureControl 直下のサブキーを取得します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static Microsoft.Win32.RegistryKey OpenFeatureControl(bool writable = false)
             {
                 var name = System.IO.Path.Combine(_RegRoot, @"Main\FeatureControl");
@@ -283,7 +294,7 @@ namespace Cube.Forms
                        Microsoft.Win32.Registry.CurrentUser.OpenSubKey(name, false);
             }
 
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             ///
             /// GetLatestVersion
             /// 
@@ -291,7 +302,7 @@ namespace Cube.Forms
             /// PC にインストールされた最新の IE バージョンを取得します。
             /// </summary>
             ///
-            /* --------------------------------------------------------------------- */
+            /* ------------------------------------------------------------- */
             private static BrowserVersion GetLatestVersion()
             {
                 try
