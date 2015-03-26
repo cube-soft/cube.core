@@ -44,6 +44,7 @@
     <Compile Include="ApplicationSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DelayAction.cs" />
     <Compile Include="Development\ResourceInitializer.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
