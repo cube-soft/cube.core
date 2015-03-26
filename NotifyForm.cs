@@ -185,7 +185,7 @@ namespace Cube.Forms
         public void Show(int msec)
         {
             Show();
-            DelayInvoke(InitialDelay + msec, () => Hide());
+            Invoke(InitialDelay + msec, () => Hide());
         }
 
         #endregion
@@ -240,7 +240,7 @@ namespace Cube.Forms
             if (showing) IsBusy = true;
             if (showing && InitialDelay > 0)
             {
-                DelayInvoke(InitialDelay, () => base.SetVisibleCore(value));
+                Invoke(InitialDelay, () => base.SetVisibleCore(value));
                 base.SetVisibleCore(current);
             }
             else base.SetVisibleCore(value);
@@ -283,40 +283,26 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// DelayInvoke
+        /// Invoke
         /// 
         /// <summary>
-        /// 指定された時間 (ミリ秒) だけ処理を遅延させます。
+        /// 指定された時間 (ミリ秒) だけ処理を遅延させて実行します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void DelayInvoke(int msec, Action action)
+        private void Invoke(int msec, Action action)
         {
-            var worker = new System.ComponentModel.BackgroundWorker();
-            worker.WorkerSupportsCancellation = true;
-            EventHandler method = (s, e) => worker.CancelAsync();
-            
-            worker.DoWork += (s, e) => {
-                var expired = DateTime.Now + TimeSpan.FromMilliseconds(msec);
-                while (DateTime.Now < expired)
-                {
-                    if (worker.CancellationPending) break;
-                    var delta = expired - DateTime.Now;
-                    var sleep = (int)Math.Min(delta.TotalMilliseconds, 100);
-                    if (sleep > 0) Thread.Sleep(sleep);
-                }
-                if (worker.CancellationPending) e.Cancel = true;
-            };
+            var worker = new Cube.DelayAction();
 
-            worker.RunWorkerCompleted += (s, e) => {
+            EventHandler method = (s, e) => worker.CancelAsync();
+            Hidden += method;
+
+            worker.RunAsync(msec, () =>
+            {
                 Hidden -= method;
-                if (e.Cancelled) return;
                 if (InvokeRequired) Invoke(action);
                 else action();
-            };
-
-            Hidden += method;
-            worker.RunWorkerAsync();
+            });
         }
 
         /* --------------------------------------------------------------------- */
