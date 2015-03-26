@@ -106,6 +106,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void Model_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.Action != NotifyCollectionChangedAction.Add) return;
             if (Items.Count <= 0 || View.IsBusy) return;
             Execute(Pop());
         }
