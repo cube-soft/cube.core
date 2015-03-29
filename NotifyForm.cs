@@ -19,7 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cube.Forms
 {
@@ -185,7 +185,7 @@ namespace Cube.Forms
         public void Show(int msec)
         {
             Show();
-            Invoke(InitialDelay + msec, () => Hide());
+            var _ = RunAsync(() => Hide(), InitialDelay + msec); // suppress warning
         }
 
         #endregion
@@ -240,7 +240,7 @@ namespace Cube.Forms
             if (showing) IsBusy = true;
             if (showing && InitialDelay > 0)
             {
-                Invoke(InitialDelay, () => base.SetVisibleCore(value));
+                var _ = RunAsync(() => base.SetVisibleCore(value), InitialDelay); // suppress warning
                 base.SetVisibleCore(current);
             }
             else base.SetVisibleCore(value);
@@ -283,26 +283,28 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// RunAsync
         /// 
         /// <summary>
         /// 指定された時間 (ミリ秒) だけ処理を遅延させて実行します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void Invoke(int msec, Action action)
+        private async Task RunAsync(Action action, int msec)
         {
-            var worker = new Cube.DelayAction();
+            var source = new System.Threading.CancellationTokenSource();
+            EventHandler m = (s, e) => source.Cancel();
+            Hidden += m;
 
-            EventHandler method = (s, e) => worker.CancelAsync();
-            Hidden += method;
-
-            worker.RunAsync(msec, () =>
+            try
             {
-                Hidden -= method;
-                if (InvokeRequired) Invoke(action);
-                else action();
-            });
+                await Cube.Tasks.Task.Delay(msec, source.Token);
+                action();
+            }
+            catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }
+            catch (OperationCanceledException /* err */) { /* ignore user's cancel */ }
+            catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
+            finally { Hidden -= m; }
         }
 
         /* --------------------------------------------------------------------- */
