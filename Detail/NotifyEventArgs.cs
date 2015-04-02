@@ -44,13 +44,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NotifyEventArgs(NotifyLevel level, string title, Image image, object data = null)
+        public NotifyEventArgs(NotifyLevel level, string title, string description, Image image, object data = null)
             : base()
         {
-            Level = level;
-            Title = title;
-            Image = image;
-            Data  = data;
+            Level       = level;
+            Title       = title;
+            Description = description;
+            Image       = image;
+            Data        = data;
         }
 
         #endregion
@@ -78,6 +79,17 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public string Title { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Description
+        /// 
+        /// <summary>
+        /// 本文を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Description { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///

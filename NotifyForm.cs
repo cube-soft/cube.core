@@ -377,7 +377,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void RaiseTitleClickEvent()
         {
-            OnTitleClick(new NotifyEventArgs(Level, Title, Image, Tag));
+            OnTitleClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
         /* --------------------------------------------------------------------- */
@@ -391,7 +391,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void RaiseImageClickEvent()
         {
-            OnImageClick(new NotifyEventArgs(Level, Title, Image, Tag));
+            OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
         #endregion

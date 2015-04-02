@@ -160,6 +160,7 @@ namespace Cube.Forms
         {
             View.Level = item.Level;
             View.Title = item.Title;
+            View.Description = item.Description;
             View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
             View.Tag = item.Data;
             if (item.Image != null) View.Image = item.Image;
