@@ -86,6 +86,7 @@ namespace Cube.Forms.Demo
             }
             item.Level = (NotifyLevel)LevelComboBox.SelectedItem;
             item.Title = TitleTextBox.Text;
+            item.Description = DescriptionTextBox.Text;
             item.DisplayTime = TimeSpan.FromSeconds((double)DisplaySeconds.Value);
             item.InitialDelay = TimeSpan.FromSeconds((double)DelaySeconds.Value);
 
