@@ -63,7 +63,7 @@
             this.ImageButton.MouseOverSurface.Image = null;
             this.ImageButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.ImageButton.Name = "ImageButton";
-            this.ImageButton.Size = new System.Drawing.Size(60, 60);
+            this.ImageButton.Size = new System.Drawing.Size(64, 64);
             this.ImageButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.ImageButton.Surface.BackgroundImage = null;
             this.ImageButton.Surface.BorderColor = System.Drawing.Color.Empty;
@@ -77,9 +77,9 @@
             // 
             this.Separator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.Separator.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Separator.Location = new System.Drawing.Point(60, 0);
+            this.Separator.Location = new System.Drawing.Point(64, 0);
             this.Separator.Name = "Separator";
-            this.Separator.Size = new System.Drawing.Size(1, 60);
+            this.Separator.Size = new System.Drawing.Size(1, 64);
             this.Separator.TabIndex = 7;
             this.Separator.TabStop = false;
             // 
@@ -87,10 +87,10 @@
             // 
             this.RightPanel.Controls.Add(this.CloseButton);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightPanel.Location = new System.Drawing.Point(315, 0);
+            this.RightPanel.Location = new System.Drawing.Point(325, 0);
             this.RightPanel.Margin = new System.Windows.Forms.Padding(0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(25, 60);
+            this.RightPanel.Size = new System.Drawing.Size(25, 64);
             this.RightPanel.TabIndex = 8;
             // 
             // CloseButton
@@ -130,6 +130,7 @@
             // 
             // DescriptionButton
             // 
+            this.DescriptionButton.AutoEllipsis = true;
             this.DescriptionButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DescriptionButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DescriptionButton.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -141,7 +142,7 @@
             this.DescriptionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DescriptionButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DescriptionButton.Image = null;
-            this.DescriptionButton.Location = new System.Drawing.Point(61, 23);
+            this.DescriptionButton.Location = new System.Drawing.Point(65, 26);
             this.DescriptionButton.Margin = new System.Windows.Forms.Padding(0);
             this.DescriptionButton.MouseDownSurface.BackColor = System.Drawing.Color.Empty;
             this.DescriptionButton.MouseDownSurface.BackgroundImage = null;
@@ -155,7 +156,7 @@
             this.DescriptionButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.DescriptionButton.Name = "DescriptionButton";
             this.DescriptionButton.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.DescriptionButton.Size = new System.Drawing.Size(254, 37);
+            this.DescriptionButton.Size = new System.Drawing.Size(260, 38);
             this.DescriptionButton.Surface.BackColor = System.Drawing.Color.Empty;
             this.DescriptionButton.Surface.BackgroundImage = null;
             this.DescriptionButton.Surface.BorderColor = System.Drawing.Color.Empty;
@@ -163,12 +164,13 @@
             this.DescriptionButton.Surface.Image = null;
             this.DescriptionButton.Surface.TextColor = System.Drawing.Color.Black;
             this.DescriptionButton.TabIndex = 3;
-            this.DescriptionButton.Text = "SampleText";
+            this.DescriptionButton.Text = "Descriptions about the notification.";
             this.DescriptionButton.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.DescriptionButton.UseVisualStyleBackColor = false;
             // 
             // TitleButton
             // 
+            this.TitleButton.AutoEllipsis = true;
             this.TitleButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TitleButton.Dock = System.Windows.Forms.DockStyle.Top;
@@ -178,10 +180,9 @@
             this.TitleButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TitleButton.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.TitleButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.Image = null;
-            this.TitleButton.Location = new System.Drawing.Point(61, 0);
+            this.TitleButton.Location = new System.Drawing.Point(65, 0);
             this.TitleButton.Margin = new System.Windows.Forms.Padding(0);
             this.TitleButton.MouseDownSurface.BackColor = System.Drawing.Color.Empty;
             this.TitleButton.MouseDownSurface.BackgroundImage = null;
@@ -195,7 +196,7 @@
             this.TitleButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
             this.TitleButton.Name = "TitleButton";
             this.TitleButton.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.TitleButton.Size = new System.Drawing.Size(254, 20);
+            this.TitleButton.Size = new System.Drawing.Size(260, 22);
             this.TitleButton.Surface.BackColor = System.Drawing.Color.Empty;
             this.TitleButton.Surface.BackgroundImage = null;
             this.TitleButton.Surface.BorderColor = System.Drawing.Color.Empty;
@@ -204,14 +205,14 @@
             this.TitleButton.Surface.TextColor = System.Drawing.Color.Black;
             this.TitleButton.TabIndex = 2;
             this.TitleButton.Text = "Title";
-            this.TitleButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TitleButton.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.TitleButton.UseVisualStyleBackColor = false;
             // 
             // NotifyForm
             // 
             this.AllowDragMove = false;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(340, 60);
+            this.ClientSize = new System.Drawing.Size(350, 64);
             this.Controls.Add(this.TitleButton);
             this.Controls.Add(this.DescriptionButton);
             this.Controls.Add(this.RightPanel);
