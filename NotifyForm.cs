@@ -51,7 +51,8 @@ namespace Cube.Forms
             IsBusy = false;
             base.Text = string.Empty;
             CloseButton.Click += (s, e) => Hide();
-            TitleButton.Click += (s, e) => RaiseTitleClickEvent();
+            TitleButton.Click += (s, e) => RaiseTextClickEvent();
+            DescriptionButton.Click += (s, e) => RaiseTextClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
         }
 
@@ -165,14 +166,15 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// TitleClick
+        /// TextClick
         /// 
         /// <summary>
-        /// タイトル部分がクリックされた時に発生するイベントです。
+        /// テキスト部分（タイトルおよび本文）がクリックされた時に発生する
+        /// イベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NotifyEventArgs> TitleClick;
+        public event Action<object, NotifyEventArgs> TextClick;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -210,16 +212,17 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnTitleClick
+        /// OnTextClick
         /// 
         /// <summary>
-        /// タイトル部分がクリックされた時に発生するイベントです。
+        /// テキスト部分（タイトルおよび本文）がクリックされた時に発生する
+        /// イベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnTitleClick(NotifyEventArgs e)
+        protected virtual void OnTextClick(NotifyEventArgs e)
         {
-            if (TitleClick != null) TitleClick(this, e);
+            if (TextClick != null) TextClick(this, e);
         }
 
         /* --------------------------------------------------------------------- */
@@ -368,16 +371,16 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// RaiseTitleClickEvent
+        /// RaiseTextClickEvent
         /// 
         /// <summary>
-        /// TitleClick イベントを発生させます。
+        /// TextClick イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void RaiseTitleClickEvent()
+        private void RaiseTextClickEvent()
         {
-            OnTitleClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
+            OnTextClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
         /* --------------------------------------------------------------------- */
