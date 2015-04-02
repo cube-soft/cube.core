@@ -93,6 +93,22 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// Description
+        /// 
+        /// <summary>
+        /// 本文を取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        public string Description
+        {
+            get { return DescriptionButton.Text; }
+            set { DescriptionButton.Text = value; }
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Image
         /// 
         /// <summary>
@@ -258,7 +274,6 @@ namespace Cube.Forms
         protected override void OnShowing(CancelEventArgs e)
         {
             SetLocation();
-            SetBackColor();
             base.OnShowing(e);
         }
 
@@ -320,43 +335,6 @@ namespace Cube.Forms
         {
             var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
             SetDesktopLocation(screen.Width - Width - 10, screen.Height - Height - 10);
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// SetBackColor
-        /// 
-        /// <summary>
-        /// 背景色を設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void SetBackColor()
-        {
-            var color = System.Drawing.Color.Empty;
-            switch (Level)
-            {
-                case NotifyLevel.None:
-                    break;
-                case NotifyLevel.Information:
-                    color = System.Drawing.Color.Cyan;
-                    break;
-                case NotifyLevel.Recommended:
-                    color = System.Drawing.Color.Lime;
-                    break;
-                case NotifyLevel.Important:
-                    color = System.Drawing.Color.Yellow;
-                    break;
-                case NotifyLevel.Warning:
-                    color = System.Drawing.Color.Orange;
-                    break;
-                case NotifyLevel.Error:
-                    color = System.Drawing.Color.Red;
-                    break;
-                default:
-                    break;
-            }
-            ImageButton.Surface.BackColor = color;
         }
 
         /* ----------------------------------------------------------------- */
