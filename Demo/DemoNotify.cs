@@ -56,7 +56,7 @@ namespace Cube.Forms.Demo
             LevelComboBox.SelectedItem = NotifyLevel.Information;
 
             _notify.View.Showing    += (s, e) => Log("Showing");
-            _notify.View.TitleClick += (s, e) => Log("TitleClick");
+            _notify.View.TextClick += (s, e) => Log("TextClick");
             _notify.View.ImageClick += (s, e) => Log("ImageClick");
             _notify.View.Hidden     += View_Hidden;
 
