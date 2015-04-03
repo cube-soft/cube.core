@@ -53,7 +53,7 @@ namespace Cube.Forms
         {
             AutoScaleMode = AutoScaleMode.None;
             DoubleBuffered = true;
-            Font = new Font(Font.Name, 12, Font.Style, GraphicsUnit.Pixel);
+            Font = new Font("Meiryo UI", 12, Font.Style, GraphicsUnit.Pixel);
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;

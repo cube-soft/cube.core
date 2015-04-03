@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -48,10 +49,12 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
+            InitializeStyles();
             IsBusy = false;
             base.Text = string.Empty;
             CloseButton.Click += (s, e) => Hide();
-            TitleButton.Click += (s, e) => RaiseTitleClickEvent();
+            TitleButton.Click += (s, e) => RaiseTextClickEvent();
+            DescriptionButton.Click += (s, e) => RaiseTextClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
         }
 
@@ -93,6 +96,35 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// Description
+        /// 
+        /// <summary>
+        /// 本文を取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        public string Description
+        {
+            get { return DescriptionButton.Text; }
+            set { DescriptionButton.Text = value; }
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// DefaultStyle
+        /// 
+        /// <summary>
+        /// 規定スタイルを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public NotifyStyle DefaultStyle { get; set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Image
         /// 
         /// <summary>
@@ -130,6 +162,25 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public bool IsBusy { get; private set; }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Styles
+        /// 
+        /// <summary>
+        /// 通知レベル毎のスタイルを取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Styles に存在しない通知レベルが指定された場合、DefaultStyle が
+        /// 適用されます。
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IDictionary<NotifyLevel, NotifyStyle> Styles
+        {
+            get { return _styles; }
+        }
+
         #region Hiding properties
 
         [Browsable(false)]
@@ -149,14 +200,15 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// TitleClick
+        /// TextClick
         /// 
         /// <summary>
-        /// タイトル部分がクリックされた時に発生するイベントです。
+        /// テキスト部分（タイトルおよび本文）がクリックされた時に発生する
+        /// イベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NotifyEventArgs> TitleClick;
+        public event Action<object, NotifyEventArgs> TextClick;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -194,16 +246,17 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnTitleClick
+        /// OnTextClick
         /// 
         /// <summary>
-        /// タイトル部分がクリックされた時に発生するイベントです。
+        /// テキスト部分（タイトルおよび本文）がクリックされた時に発生する
+        /// イベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnTitleClick(NotifyEventArgs e)
+        protected virtual void OnTextClick(NotifyEventArgs e)
         {
-            if (TitleClick != null) TitleClick(this, e);
+            if (TextClick != null) TextClick(this, e);
         }
 
         /* --------------------------------------------------------------------- */
@@ -258,7 +311,7 @@ namespace Cube.Forms
         protected override void OnShowing(CancelEventArgs e)
         {
             SetLocation();
-            SetBackColor();
+            SetStyle();
             base.OnShowing(e);
         }
 
@@ -275,6 +328,92 @@ namespace Cube.Forms
         {
             IsBusy = false;
             base.OnHidden(e);
+        }
+
+        #endregion
+
+        #region Style definitions
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// InitializeStyles
+        /// 
+        /// <summary>
+        /// スタイルを初期化します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void InitializeStyles()
+        {
+            DefaultStyle = new NotifyStyle
+            {
+                BackColor        = System.Drawing.Color.FromArgb(242, 242, 242),
+                BorderColor      = System.Drawing.Color.FromArgb(230, 230, 230),
+                Title            = new System.Drawing.Font(Font, System.Drawing.FontStyle.Bold),
+                TitleColor       = System.Drawing.Color.DimGray,
+                Description      = Font,
+                DescriptionColor = System.Drawing.SystemColors.ControlText
+            };
+
+            Styles.Add(NotifyLevel.None, new NotifyStyle
+            {
+                BackColor        = System.Drawing.Color.Empty,
+                BorderColor      = System.Drawing.Color.Empty,
+                Title            = Font,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = Font,
+                DescriptionColor = System.Drawing.SystemColors.ControlText
+            });
+
+            Styles.Add(NotifyLevel.Information, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = DefaultStyle.TitleColor,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = DefaultStyle.DescriptionColor
+            });
+
+            Styles.Add(NotifyLevel.Recommended, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = DefaultStyle.TitleColor,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
+            });
+
+            Styles.Add(NotifyLevel.Important, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = DefaultStyle.TitleColor,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
+            });
+
+            Styles.Add(NotifyLevel.Warning, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
+            });
+
+            Styles.Add(NotifyLevel.Error, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.Red
+            });
         }
 
         #endregion
@@ -324,39 +463,22 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SetBackColor
+        /// SetStyle
         /// 
         /// <summary>
-        /// 背景色を設定します。
+        /// スタイルを設定します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void SetBackColor()
+        private void SetStyle()
         {
-            var color = System.Drawing.Color.Empty;
-            switch (Level)
-            {
-                case NotifyLevel.None:
-                    break;
-                case NotifyLevel.Information:
-                    color = System.Drawing.Color.Cyan;
-                    break;
-                case NotifyLevel.Recommended:
-                    color = System.Drawing.Color.Lime;
-                    break;
-                case NotifyLevel.Important:
-                    color = System.Drawing.Color.Yellow;
-                    break;
-                case NotifyLevel.Warning:
-                    color = System.Drawing.Color.Orange;
-                    break;
-                case NotifyLevel.Error:
-                    color = System.Drawing.Color.Red;
-                    break;
-                default:
-                    break;
-            }
-            ImageButton.Surface.BackColor = color;
+            var style = Styles.ContainsKey(Level) ? Styles[Level] : DefaultStyle;
+            ImageButton.Surface.BackColor = style.BackColor;
+            Separator.BackColor = style.BorderColor;
+            TitleButton.Font = style.Title;
+            TitleButton.Surface.TextColor = style.TitleColor;
+            DescriptionButton.Font = style.Description;
+            DescriptionButton.Surface.TextColor = style.DescriptionColor;
         }
 
         /* ----------------------------------------------------------------- */
@@ -390,16 +512,16 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// RaiseTitleClickEvent
+        /// RaiseTextClickEvent
         /// 
         /// <summary>
-        /// TitleClick イベントを発生させます。
+        /// TextClick イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void RaiseTitleClickEvent()
+        private void RaiseTextClickEvent()
         {
-            OnTitleClick(new NotifyEventArgs(Level, Title, Image, Tag));
+            OnTextClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
         /* --------------------------------------------------------------------- */
@@ -413,9 +535,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void RaiseImageClickEvent()
         {
-            OnImageClick(new NotifyEventArgs(Level, Title, Image, Tag));
+            OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
+        #endregion
+
+        #region Fields
+        private NotifyStyle _defaultStyle = null;
+        private Dictionary<NotifyLevel, NotifyStyle> _styles = new Dictionary<NotifyLevel, NotifyStyle>();
         #endregion
     }
 }

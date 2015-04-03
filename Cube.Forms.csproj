@@ -65,6 +65,7 @@
     <Compile Include="Detail\ButtonPainter.cs" />
     <Compile Include="Detail\NotifyItem.cs" />
     <Compile Include="Detail\NotifyPresenter.cs" />
+    <Compile Include="Detail\NotifyStyle.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\GraphicsExtensions.cs" />
     <Compile Include="Detail\NullExpandableObjectConverter.cs" />
