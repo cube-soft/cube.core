@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -48,6 +49,7 @@ namespace Cube.Forms
         public NotifyForm()
         {
             InitializeComponent();
+            InitializeStyles();
             IsBusy = false;
             base.Text = string.Empty;
             CloseButton.Click += (s, e) => Hide();
@@ -110,6 +112,19 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// DefaultStyle
+        /// 
+        /// <summary>
+        /// 規定スタイルを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public NotifyStyle DefaultStyle { get; set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Image
         /// 
         /// <summary>
@@ -146,6 +161,25 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public bool IsBusy { get; private set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Styles
+        /// 
+        /// <summary>
+        /// 通知レベル毎のスタイルを取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Styles に存在しない通知レベルが指定された場合、DefaultStyle が
+        /// 適用されます。
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IDictionary<NotifyLevel, NotifyStyle> Styles
+        {
+            get { return _styles; }
+        }
 
         #region Hiding properties
 
@@ -277,6 +311,7 @@ namespace Cube.Forms
         protected override void OnShowing(CancelEventArgs e)
         {
             SetLocation();
+            SetStyle();
             base.OnShowing(e);
         }
 
@@ -293,6 +328,92 @@ namespace Cube.Forms
         {
             IsBusy = false;
             base.OnHidden(e);
+        }
+
+        #endregion
+
+        #region Style definitions
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// InitializeStyles
+        /// 
+        /// <summary>
+        /// スタイルを初期化します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void InitializeStyles()
+        {
+            DefaultStyle = new NotifyStyle
+            {
+                BackColor        = System.Drawing.Color.FromArgb(242, 242, 242),
+                BorderColor      = System.Drawing.Color.FromArgb(230, 230, 230),
+                Title            = new System.Drawing.Font(Font, System.Drawing.FontStyle.Bold),
+                TitleColor       = System.Drawing.Color.DimGray,
+                Description      = Font,
+                DescriptionColor = System.Drawing.SystemColors.ControlText
+            };
+
+            Styles.Add(NotifyLevel.None, new NotifyStyle
+            {
+                BackColor        = System.Drawing.Color.Empty,
+                BorderColor      = System.Drawing.Color.Empty,
+                Title            = Font,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = Font,
+                DescriptionColor = System.Drawing.SystemColors.ControlText
+            });
+
+            Styles.Add(NotifyLevel.Information, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = DefaultStyle.TitleColor,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = DefaultStyle.DescriptionColor
+            });
+
+            Styles.Add(NotifyLevel.Recommended, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = DefaultStyle.TitleColor,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
+            });
+
+            Styles.Add(NotifyLevel.Important, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = DefaultStyle.TitleColor,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
+            });
+
+            Styles.Add(NotifyLevel.Warning, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
+            });
+
+            Styles.Add(NotifyLevel.Error, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = DefaultStyle.Title,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = DefaultStyle.Description,
+                DescriptionColor = System.Drawing.Color.Red
+            });
         }
 
         #endregion
@@ -338,6 +459,26 @@ namespace Cube.Forms
         {
             var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
             SetDesktopLocation(screen.Width - Width - 10, screen.Height - Height - 10);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SetStyle
+        /// 
+        /// <summary>
+        /// スタイルを設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void SetStyle()
+        {
+            var style = Styles.ContainsKey(Level) ? Styles[Level] : DefaultStyle;
+            ImageButton.Surface.BackColor = style.BackColor;
+            Separator.BackColor = style.BorderColor;
+            TitleButton.Font = style.Title;
+            TitleButton.Surface.TextColor = style.TitleColor;
+            DescriptionButton.Font = style.Description;
+            DescriptionButton.Surface.TextColor = style.DescriptionColor;
         }
 
         /* ----------------------------------------------------------------- */
@@ -397,6 +538,11 @@ namespace Cube.Forms
             OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
+        #endregion
+
+        #region Fields
+        private NotifyStyle _defaultStyle = null;
+        private Dictionary<NotifyLevel, NotifyStyle> _styles = new Dictionary<NotifyLevel, NotifyStyle>();
         #endregion
     }
 }
