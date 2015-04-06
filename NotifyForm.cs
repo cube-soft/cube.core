@@ -541,7 +541,6 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private NotifyStyle _defaultStyle = null;
         private Dictionary<NotifyLevel, NotifyStyle> _styles = new Dictionary<NotifyLevel, NotifyStyle>();
         #endregion
     }
