@@ -119,6 +119,20 @@ namespace Cube.Forms
             get { return _painter.MouseOverSurface; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowFocusCues
+        /// 
+        /// <summary>
+        /// フォーカス時に枠線を描画するかどうかを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override bool ShowFocusCues
+        {
+            get { return false; }
+        }
+
         #region Hiding properties for ButtonBase
 
         [Browsable(false)]
