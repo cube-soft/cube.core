@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -236,6 +237,40 @@ namespace Cube
                 var mres = new ManualResetEventSlim();
                 mres.Wait(msec, token);
             }, token);
+        }
+
+        #endregion
+
+        #region WhenAny
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// WhenAny
+        /// 
+        /// <summary>
+        /// 指定されたいずれかのタスクが完了した時点で、続行するタスクを
+        /// 生成します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public static Task<Task> WhenAny(params Task[] tasks)
+        {
+            return Task<Task>.Factory.ContinueWhenAny(tasks, t => t);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// WhenAny
+        /// 
+        /// <summary>
+        /// 指定されたいずれかのタスクが完了した時点で、続行するタスクを
+        /// 生成します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public static Task<Task<TResult>> WhenAny<TResult>(params Task<TResult>[] tasks)
+        {
+            return Task<Task<TResult>>.Factory.ContinueWhenAny(tasks, t => t);
         }
 
         #endregion
