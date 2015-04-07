@@ -437,7 +437,7 @@ namespace Cube.Forms
 
             try
             {
-                await Cube.Tasks.Task.Delay(msec, source.Token);
+                await Cube.TaskEx.Delay(msec, source.Token);
                 action();
             }
             catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }
