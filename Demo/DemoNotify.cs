@@ -47,13 +47,13 @@ namespace Cube.Forms.Demo
         {
             InitializeComponent();
 
-            LevelComboBox.Items.Add(NotifyLevel.None);
-            LevelComboBox.Items.Add(NotifyLevel.Information);
-            LevelComboBox.Items.Add(NotifyLevel.Recommended);
-            LevelComboBox.Items.Add(NotifyLevel.Important);
-            LevelComboBox.Items.Add(NotifyLevel.Warning);
-            LevelComboBox.Items.Add(NotifyLevel.Error);
-            LevelComboBox.SelectedItem = NotifyLevel.Information;
+            LevelComboBox.Items.Add(Cube.NotifyLevel.None);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Information);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Recommended);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Important);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Warning);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Error);
+            LevelComboBox.SelectedItem = Cube.NotifyLevel.Information;
 
             _notify.View.Showing    += (s, e) => Log("Showing");
             _notify.View.TextClick += (s, e) => Log("TextClick");
