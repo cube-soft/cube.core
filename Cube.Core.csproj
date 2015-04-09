@@ -46,6 +46,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationSettings.cs">
@@ -57,6 +58,7 @@
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="NotifyItem.cs" />
     <Compile Include="NotifyLevel.cs" />
+    <Compile Include="NotifyQueue.cs" />
     <Compile Include="ObservableSettings.cs">
       <SubType>Code</SubType>
     </Compile>
