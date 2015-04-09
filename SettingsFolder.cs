@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 
 namespace Cube
 {
@@ -30,7 +31,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<UserSettings> : NotifyPropertyChanged where UserSettings : new()
+    public class SettingsFolder<UserSettings> : INotifyPropertyChanged where UserSettings : new()
     {
         #region Constructors
 
@@ -129,6 +130,21 @@ namespace Cube
 
         #endregion
 
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PropertyChanged
+        /// 
+        /// <summary>
+        /// プロパティが変更された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -201,6 +217,24 @@ namespace Cube
                 var result = Settings.Load<UserSettings>(subkey);
                 if (result != null) User = result;
             }
+        }
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        /// 
+        /// <summary>
+        /// プロパティが変更された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, e);
         }
 
         #endregion
