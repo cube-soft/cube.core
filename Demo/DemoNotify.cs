@@ -47,13 +47,13 @@ namespace Cube.Forms.Demo
         {
             InitializeComponent();
 
-            LevelComboBox.Items.Add(NotifyLevel.None);
-            LevelComboBox.Items.Add(NotifyLevel.Information);
-            LevelComboBox.Items.Add(NotifyLevel.Recommended);
-            LevelComboBox.Items.Add(NotifyLevel.Important);
-            LevelComboBox.Items.Add(NotifyLevel.Warning);
-            LevelComboBox.Items.Add(NotifyLevel.Error);
-            LevelComboBox.SelectedItem = NotifyLevel.Information;
+            LevelComboBox.Items.Add(Cube.NotifyLevel.None);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Information);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Recommended);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Important);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Warning);
+            LevelComboBox.Items.Add(Cube.NotifyLevel.Error);
+            LevelComboBox.SelectedItem = Cube.NotifyLevel.Information;
 
             _notify.View.Showing    += (s, e) => Log("Showing");
             _notify.View.TextClick += (s, e) => Log("TextClick");
@@ -91,7 +91,7 @@ namespace Cube.Forms.Demo
             item.InitialDelay = TimeSpan.FromSeconds((double)DelaySeconds.Value);
 
             Log(string.Format("Enqueue: Level = {0}", item.Level));
-            _notify.Items.Add(item);
+            _notify.Queue.Enqueue(item);
         }
 
         /* ----------------------------------------------------------------- */
@@ -106,7 +106,7 @@ namespace Cube.Forms.Demo
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Log("ClearButton.Click");
-            _notify.Items.Clear();
+            _notify.Queue.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -136,7 +136,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void View_Hidden(object sender, EventArgs e)
         {
-            if (!_notify.View.IsBusy && _notify.Items.Count == 0) Log("Hidden: Queue is empty");
+            if (!_notify.View.IsBusy && _notify.Queue.Count == 0) Log("Hidden: Queue is empty");
             else Log("Hidden");
         }
 

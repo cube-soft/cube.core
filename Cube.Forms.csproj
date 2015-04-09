@@ -63,7 +63,6 @@
     <Compile Include="Detail\NavigatingEventArgs.cs" />
     <Compile Include="Detail\NotifyEventArgs.cs" />
     <Compile Include="Detail\ButtonPainter.cs" />
-    <Compile Include="Detail\NotifyItem.cs" />
     <Compile Include="Detail\NotifyPresenter.cs" />
     <Compile Include="Detail\NotifyStyle.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
