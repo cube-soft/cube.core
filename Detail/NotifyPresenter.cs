@@ -45,8 +45,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyPresenter()
-            : this(new NotifyForm(), new ObservableCollection<NotifyItem>()) { }
+        public NotifyPresenter() : this(new NotifyForm(), new NotifyQueue()) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -57,8 +56,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyPresenter(NotifyForm view)
-            : this(view, new ObservableCollection<NotifyItem>()) { }
+        public NotifyPresenter(NotifyForm view) : this(view, new NotifyQueue()) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -69,13 +67,13 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyPresenter(NotifyForm view, ObservableCollection<NotifyItem> model)
+        public NotifyPresenter(NotifyForm view, NotifyQueue queue)
         {
             View = view;
             View.Hidden += View_Hidden;
 
-            Items = model;
-            Items.CollectionChanged += Model_CollectionChanged;
+            Queue = queue;
+            Queue.CollectionChanged += Model_CollectionChanged;
         }
 
         #endregion
@@ -95,14 +93,14 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Items
+        /// Queue
         /// 
         /// <summary>
         /// 未通知の項目一覧を取得します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public ObservableCollection<NotifyItem> Items { get; private set; }
+        public NotifyQueue Queue { get; private set; }
 
         #endregion
 
@@ -120,8 +118,8 @@ namespace Cube.Forms
         private void Model_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
-            if (Items.Count <= 0 || View.IsBusy) return;
-            Execute(Pop());
+            if (Queue.Count <= 0 || View.IsBusy) return;
+            Execute(Queue.Dequeue());
         }
 
         /* --------------------------------------------------------------------- */
@@ -135,30 +133,13 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void View_Hidden(object sender, EventArgs e)
         {
-            if (Items.Count <= 0) return;
-            Execute(Pop());
+            if (Queue.Count <= 0) return;
+            Execute(Queue.Dequeue());
         }
 
         #endregion
 
         #region Implementations
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Pop
-        /// 
-        /// <summary>
-        /// 未通知一覧から最初の項目を取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private NotifyItem Pop()
-        {
-            if (Items.Count <= 0) return null;
-            var dest = Items[0];
-            Items.RemoveAt(0);
-            return dest;
-        }
 
         /* --------------------------------------------------------------------- */
         ///
