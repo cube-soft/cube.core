@@ -45,14 +45,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyPresenter(NotifyForm view)
-        {
-            View = view;
-            View.Hidden += View_Hidden;
-
-            Items = new ObservableCollection<NotifyItem>();
-            Items.CollectionChanged += Model_CollectionChanged;
-        }
+        public NotifyPresenter()
+            : this(new NotifyForm(), new ObservableCollection<NotifyItem>()) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -63,7 +57,26 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyPresenter() : this(new NotifyForm()) { }
+        public NotifyPresenter(NotifyForm view)
+            : this(view, new ObservableCollection<NotifyItem>()) { }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// NotifyPresenter
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public NotifyPresenter(NotifyForm view, ObservableCollection<NotifyItem> model)
+        {
+            View = view;
+            View.Hidden += View_Hidden;
+
+            Items = model;
+            Items.CollectionChanged += Model_CollectionChanged;
+        }
 
         #endregion
 
