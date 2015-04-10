@@ -181,6 +181,20 @@ namespace Cube.Forms
             get { return _styles; }
         }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ShowWithoutActivation
+        /// 
+        /// <summary>
+        /// フォーカスを奪わずに表示させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected override bool ShowWithoutActivation
+        {
+            get { return true; }
+        }
+
         #region Hiding properties
 
         [Browsable(false)]
