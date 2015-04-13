@@ -192,7 +192,7 @@ namespace Cube.Forms
             {
                 try
                 {
-                    using (var root = OpenFeatureControl())
+                    using (var root = OpenFeatureControl(true))
                     using (var subkey = root.CreateSubKey(_RegRendering))
                     {
                         var module = System.Diagnostics.Process.GetCurrentProcess().MainModule;
@@ -259,7 +259,7 @@ namespace Cube.Forms
                 if (number < 2 || number > 128) return;
                 try
                 {
-                    using (var root = OpenFeatureControl())
+                    using (var root = OpenFeatureControl(true))
                     using (var subkey = root.CreateSubKey(_RegMaxConnections))
                     using (var subkey10 = root.CreateSubKey(_RegMaxConnections10))
                     {
