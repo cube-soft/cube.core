@@ -31,7 +31,7 @@
             this.ImageButton = new Cube.Forms.Button();
             this.Separator = new System.Windows.Forms.PictureBox();
             this.RightPanel = new System.Windows.Forms.Panel();
-            this.CloseButton = new Cube.Forms.Button();
+            this.HideButton = new Cube.Forms.Button();
             this.DescriptionButton = new Cube.Forms.Button();
             this.TitleButton = new Cube.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).BeginInit();
@@ -85,7 +85,7 @@
             // 
             // RightPanel
             // 
-            this.RightPanel.Controls.Add(this.CloseButton);
+            this.RightPanel.Controls.Add(this.HideButton);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.RightPanel.Location = new System.Drawing.Point(325, 0);
             this.RightPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -95,38 +95,38 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CloseButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CloseButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CloseButton.FlatAppearance.BorderSize = 0;
-            this.CloseButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CloseButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CloseButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.CloseButton.Image = null;
-            this.CloseButton.Location = new System.Drawing.Point(0, 0);
-            this.CloseButton.Margin = new System.Windows.Forms.Padding(0);
-            this.CloseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.CloseButton.MouseDownSurface.BackgroundImage = null;
-            this.CloseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.MouseDownSurface.Image = null;
-            this.CloseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
-            this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.CloseButton.MouseOverSurface.BackgroundImage = null;
-            this.CloseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.MouseOverSurface.Image = null;
-            this.CloseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(25, 25);
-            this.CloseButton.Surface.BackColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.BackgroundImage = null;
-            this.CloseButton.Surface.BorderColor = System.Drawing.Color.Empty;
-            this.CloseButton.Surface.BorderSize = 0;
-            this.CloseButton.Surface.Image = global::Cube.Forms.Properties.Resources.ButtonClose;
-            this.CloseButton.Surface.TextColor = System.Drawing.Color.Empty;
-            this.CloseButton.TabIndex = 0;
-            this.CloseButton.UseVisualStyleBackColor = false;
+            this.HideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.HideButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HideButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.HideButton.FlatAppearance.BorderSize = 0;
+            this.HideButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.HideButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.HideButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.HideButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.HideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.HideButton.Image = null;
+            this.HideButton.Location = new System.Drawing.Point(0, 0);
+            this.HideButton.Margin = new System.Windows.Forms.Padding(0);
+            this.HideButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.HideButton.MouseDownSurface.BackgroundImage = null;
+            this.HideButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.HideButton.MouseDownSurface.Image = null;
+            this.HideButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.HideButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.HideButton.MouseOverSurface.BackgroundImage = null;
+            this.HideButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.HideButton.MouseOverSurface.Image = null;
+            this.HideButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.HideButton.Name = "CloseButton";
+            this.HideButton.Size = new System.Drawing.Size(25, 25);
+            this.HideButton.Surface.BackColor = System.Drawing.Color.Empty;
+            this.HideButton.Surface.BackgroundImage = null;
+            this.HideButton.Surface.BorderColor = System.Drawing.Color.Empty;
+            this.HideButton.Surface.BorderSize = 0;
+            this.HideButton.Surface.Image = global::Cube.Forms.Properties.Resources.ButtonClose;
+            this.HideButton.Surface.TextColor = System.Drawing.Color.Empty;
+            this.HideButton.TabIndex = 0;
+            this.HideButton.UseVisualStyleBackColor = false;
             // 
             // DescriptionButton
             // 
@@ -234,7 +234,7 @@
         private Button ImageButton;
         private System.Windows.Forms.PictureBox Separator;
         private System.Windows.Forms.Panel RightPanel;
-        private Button CloseButton;
+        private Button HideButton;
         private Button DescriptionButton;
         private Button TitleButton;
 

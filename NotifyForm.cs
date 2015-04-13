@@ -52,7 +52,7 @@ namespace Cube.Forms
             InitializeStyles();
             IsBusy = false;
             base.Text = string.Empty;
-            CloseButton.Click += (s, e) => Hide();
+            HideButton.Click += (s, e) => OnHideClick(e);
             TitleButton.Click += (s, e) => RaiseTextClickEvent();
             DescriptionButton.Click += (s, e) => RaiseTextClickEvent();
             ImageButton.Click += (s, e) => RaiseImageClickEvent();
@@ -222,7 +222,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NotifyEventArgs> TextClick;
+        public event EventHandler<NotifyEventArgs> TextClick;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -233,7 +233,18 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NotifyEventArgs> ImageClick;
+        public event EventHandler<NotifyEventArgs> ImageClick;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// HideClick
+        /// 
+        /// <summary>
+        /// Hide ボタンがクリックされた時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler HideClick;
 
         #endregion
 
@@ -285,6 +296,21 @@ namespace Cube.Forms
         protected virtual void OnImageClick(NotifyEventArgs e)
         {
             if (ImageClick != null) ImageClick(this, e);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// HideClick
+        /// 
+        /// <summary>
+        /// Hide ボタンがクリックされた時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnHideClick(EventArgs e)
+        {
+            if (HideClick != null) HideClick(this, e);
+            Hide();
         }
 
         #endregion
