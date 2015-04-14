@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 
 namespace Cube
 {
@@ -30,7 +31,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<UserSettings> : NotifyPropertyChanged where UserSettings : new()
+    public class SettingsFolder<UserSettings> : ObservableSettings where UserSettings : new()
     {
         #region Constructors
 
