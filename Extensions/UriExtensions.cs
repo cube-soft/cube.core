@@ -91,5 +91,19 @@ namespace Cube.Extensions
         {
             return With(uri, "t", time.ToUnixTime());
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WithVersion
+        /// 
+        /// <summary>
+        /// Uri オブジェクトにバージョン情報を付与します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri WithVersion(this Uri uri, string version)
+        {
+            return With(uri, "appver", version);
+        }
     }
 }
