@@ -19,7 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Extensions
+namespace Cube.Extensions.Time
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -30,7 +30,7 @@ namespace Cube.Extensions
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class UnixTimeExtensions
+    public static class UnixTimeExtensions
     {
         /* ----------------------------------------------------------------- */
         ///

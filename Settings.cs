@@ -25,6 +25,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 using Cube.Extensions;
+using Cube.Extensions.Time;
 
 namespace Cube
 {

@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using Cube.Extensions.Time;
 
 namespace Cube.Extensions
 {
@@ -44,6 +45,8 @@ namespace Cube.Extensions
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, IDictionary<string, string> query)
         {
+            if (uri == null) return uri;
+
             var builder = new UriBuilder(uri);
             if (query != null && query.Count > 0)
             {
