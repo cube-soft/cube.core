@@ -58,7 +58,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NavigatingEventArgs> BeforeNavigating;
+        public event EventHandler<NavigatingEventArgs> BeforeNavigating;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -69,7 +69,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NavigatingEventArgs> BeforeNewWindow;
+        public event EventHandler<NavigatingEventArgs> BeforeNewWindow;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -80,7 +80,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event Action<object, NavigatingErrorEventArgs> NavigatingError;
+        public event EventHandler<NavigatingErrorEventArgs> NavigatingError;
 
         #endregion
 
