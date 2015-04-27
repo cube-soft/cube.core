@@ -141,14 +141,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save()
-        {
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.CreateSubKey(SubKeyName))
-            {
-                Settings.Save<UserSettings>(User, subkey);
-            }
-        }
+        public void Save() { ExecuteSave(); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -160,11 +153,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load()
-        {
-            LoadApplicationSettings();
-            LoadUserSettings();
-        }
+        public void Load() { ExecuteLoad(); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -202,6 +191,44 @@ namespace Cube
                 var result = Settings.Load<UserSettings>(subkey);
                 if (result != null) User = result;
             }
+        }
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ExecuteSave
+        ///
+        /// <summary>
+        /// ユーザ設定をレジストリへ保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void ExecuteSave()
+        {
+            var root = Microsoft.Win32.Registry.CurrentUser;
+            using (var subkey = root.CreateSubKey(SubKeyName))
+            {
+                Settings.Save<UserSettings>(User, subkey);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ExecuteLoad
+        ///
+        /// <summary>
+        /// アプリケーション設定、およびユーザ設定をレジストリから
+        /// 読み込みます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void ExecuteLoad()
+        {
+            LoadApplicationSettings();
+            LoadUserSettings();
         }
 
         #endregion
