@@ -112,6 +112,23 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// AutoEllipsis
+        /// 
+        /// <summary>
+        /// 枠に入りきらない本文を自動的に省略するかどうかを示す値を取得または
+        /// 設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Browsable(true)]
+        public bool AutoEllipsis
+        {
+            get { return DescriptionButton.AutoEllipsis; }
+            set { DescriptionButton.AutoEllipsis = value; }
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// DefaultStyle
         /// 
         /// <summary>

@@ -93,7 +93,7 @@
             this.RightPanel.Size = new System.Drawing.Size(25, 64);
             this.RightPanel.TabIndex = 8;
             // 
-            // CloseButton
+            // HideButton
             // 
             this.HideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.HideButton.Dock = System.Windows.Forms.DockStyle.Top;
@@ -117,7 +117,7 @@
             this.HideButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.HideButton.MouseOverSurface.Image = null;
             this.HideButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
-            this.HideButton.Name = "CloseButton";
+            this.HideButton.Name = "HideButton";
             this.HideButton.Size = new System.Drawing.Size(25, 25);
             this.HideButton.Surface.BackColor = System.Drawing.Color.Empty;
             this.HideButton.Surface.BackgroundImage = null;
@@ -130,7 +130,6 @@
             // 
             // DescriptionButton
             // 
-            this.DescriptionButton.AutoEllipsis = true;
             this.DescriptionButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DescriptionButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DescriptionButton.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -170,7 +169,6 @@
             // 
             // TitleButton
             // 
-            this.TitleButton.AutoEllipsis = true;
             this.TitleButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TitleButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TitleButton.Dock = System.Windows.Forms.DockStyle.Top;
