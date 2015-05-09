@@ -20,6 +20,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TaskEx = Cube.TaskEx;
 
 namespace Cube.Extensions
 {
@@ -45,8 +46,8 @@ namespace Cube.Extensions
         /* --------------------------------------------------------------------- */
         public static async Task Timeout(this Task task, TimeSpan timeout)
         {
-            var delay = Cube.TaskEx.Delay(timeout);
-            if (await Cube.TaskEx.WhenAny(task, delay) == delay)
+            var delay = TaskEx.Delay(timeout);
+            if (await TaskEx.WhenAny(task, delay) == delay)
             {
                 throw new TimeoutException();
             }
