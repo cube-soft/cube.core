@@ -52,6 +52,7 @@
     <Compile Include="ApplicationSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataCancelEventArgs.cs" />
     <Compile Include="DataEventArgs.cs" />
     <Compile Include="Development\ResourceInitializer.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
