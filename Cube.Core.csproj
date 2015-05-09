@@ -52,6 +52,7 @@
     <Compile Include="ApplicationSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataEventArgs.cs" />
     <Compile Include="Development\ResourceInitializer.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
