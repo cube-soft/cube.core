@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using TaskEx = Cube.TaskEx;
 
 namespace Cube.Forms
 {
@@ -494,7 +495,7 @@ namespace Cube.Forms
 
             try
             {
-                await Cube.TaskEx.Delay(msec, source.Token);
+                await TaskEx.Delay(msec, source.Token);
                 action();
             }
             catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }
