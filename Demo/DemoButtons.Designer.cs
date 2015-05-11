@@ -720,6 +720,7 @@
             this.Controls.Add(this.RadioButtonGroupBox);
             this.Controls.Add(this.ButtonGroupBox);
             this.Name = "DemoButtons";
+            this.ShowInTaskbar = false;
             this.Text = "Cube.Forms.Button";
             this.Controls.SetChildIndex(this.ButtonGroupBox, 0);
             this.Controls.SetChildIndex(this.RadioButtonGroupBox, 0);

@@ -128,6 +128,7 @@
             this.Controls.Add(this.WebBrowser);
             this.Controls.Add(this.ToolPanel);
             this.Name = "DemoWeb";
+            this.ShowInTaskbar = false;
             this.Text = "WebForm";
             this.Controls.SetChildIndex(this.ToolPanel, 0);
             this.Controls.SetChildIndex(this.WebBrowser, 0);
