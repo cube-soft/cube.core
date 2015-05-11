@@ -146,6 +146,20 @@ namespace Cube.FileSystem {
             return dest.ToArray();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Detach
+        ///
+        /// <summary>
+        /// ドライブを取り外します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool Detach(Drive drive)
+        {
+            return DriveDetacher.Run(drive.Letter);
+        }
+
         #endregion
 
         #region Implementations
