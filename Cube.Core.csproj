@@ -56,6 +56,7 @@
     <Compile Include="DataCancelEventArgs.cs" />
     <Compile Include="DataEventArgs.cs" />
     <Compile Include="Development\ResourceInitializer.cs" />
+    <Compile Include="Extensions\ByteFormatExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />

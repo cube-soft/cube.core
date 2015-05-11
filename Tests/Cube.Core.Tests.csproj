@@ -41,6 +41,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ByteFormatTester.cs" />
     <Compile Include="Detail\Person.cs" />
     <Compile Include="FileSystem\DriveTester.cs" />
     <Compile Include="RegistryTester.cs" />
