@@ -31,6 +31,7 @@
             this.NotifyFormButton = new Cube.Forms.Button();
             this.WebBrowserButton = new Cube.Forms.Button();
             this.ButtonsButton = new Cube.Forms.Button();
+            this.StockIconsButton = new Cube.Forms.Button();
             this.SuspendLayout();
             // 
             // NotifyFormButton
@@ -138,9 +139,45 @@
             this.ButtonsButton.UseVisualStyleBackColor = false;
             this.ButtonsButton.Click += new System.EventHandler(this.ButtonsButton_Click);
             // 
+            // StockIconsButton
+            // 
+            this.StockIconsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.StockIconsButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.StockIconsButton.FlatAppearance.BorderSize = 0;
+            this.StockIconsButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.StockIconsButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.StockIconsButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.StockIconsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StockIconsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.StockIconsButton.Image = null;
+            this.StockIconsButton.Location = new System.Drawing.Point(12, 127);
+            this.StockIconsButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.StockIconsButton.MouseDownSurface.BackgroundImage = null;
+            this.StockIconsButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.StockIconsButton.MouseDownSurface.Image = null;
+            this.StockIconsButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.StockIconsButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.StockIconsButton.MouseOverSurface.BackgroundImage = null;
+            this.StockIconsButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.StockIconsButton.MouseOverSurface.Image = null;
+            this.StockIconsButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.StockIconsButton.Name = "StockIconsButton";
+            this.StockIconsButton.Size = new System.Drawing.Size(226, 23);
+            this.StockIconsButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.StockIconsButton.Surface.BackgroundImage = null;
+            this.StockIconsButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.StockIconsButton.Surface.BorderSize = 1;
+            this.StockIconsButton.Surface.Image = null;
+            this.StockIconsButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.StockIconsButton.TabIndex = 4;
+            this.StockIconsButton.Text = "StockIcons";
+            this.StockIconsButton.UseVisualStyleBackColor = false;
+            this.StockIconsButton.Click += new System.EventHandler(this.StockIconsButton_Click);
+            // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(250, 150);
+            this.ClientSize = new System.Drawing.Size(250, 180);
+            this.Controls.Add(this.StockIconsButton);
             this.Controls.Add(this.NotifyFormButton);
             this.Controls.Add(this.WebBrowserButton);
             this.Controls.Add(this.ButtonsButton);
@@ -148,6 +185,7 @@
             this.Controls.SetChildIndex(this.ButtonsButton, 0);
             this.Controls.SetChildIndex(this.WebBrowserButton, 0);
             this.Controls.SetChildIndex(this.NotifyFormButton, 0);
+            this.Controls.SetChildIndex(this.StockIconsButton, 0);
             this.ResumeLayout(false);
 
         }
@@ -157,5 +195,6 @@
         private Button NotifyFormButton;
         private Button WebBrowserButton;
         private Button ButtonsButton;
+        private Button StockIconsButton;
     }
 }

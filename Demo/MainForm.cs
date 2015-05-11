@@ -82,12 +82,36 @@ namespace Cube.Forms.Demo
             dialog.ShowDialog();
         }
 
-        #endregion
-
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NotifyFormButton_Click
+        ///
+        /// <summary>
+        /// 通知フォームのデモ用フォームを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         private void NotifyFormButton_Click(object sender, EventArgs e)
         {
             var dialog = new DemoNotify();
             dialog.ShowDialog();
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StockIconsButton_Click
+        ///
+        /// <summary>
+        /// システムアイコン一覧を表示するためのデモ用フォームを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void StockIconsButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new DemoStockIcons();
+            dialog.ShowDialog();
+        }
+
+        #endregion
     }
 }
