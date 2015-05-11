@@ -32,7 +32,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class FontFactory
+    public abstract class FontFactory
     {
         /* ----------------------------------------------------------------- */
         ///
