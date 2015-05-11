@@ -35,7 +35,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WidgetForm : Form
+    public class WidgetForm : NtsForm
     {
         #region Constructors
 
@@ -51,9 +51,6 @@ namespace Cube.Forms
         public WidgetForm()
             : base()
         {
-            AutoScaleMode = AutoScaleMode.None;
-            DoubleBuffered = true;
-            Font = new Font("Meiryo UI", 12, Font.Style, GraphicsUnit.Pixel);
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
