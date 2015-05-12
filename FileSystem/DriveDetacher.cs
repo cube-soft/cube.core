@@ -80,7 +80,8 @@ namespace Cube.FileSystem
 
             for (int tries = 1; tries <= 3; tries++)  // sometimes we need some tries...
             {
-                int r = CM_Request_Device_Eject_NoUi(DevInstParent, IntPtr.Zero, null, 0, 0);
+                // CM_REMOVE_UI_NOT_OK (ulFlags = 1)
+                int r = CM_Request_Device_Eject_NoUi(DevInstParent, IntPtr.Zero, null, 0, 1);
                 if (r == 0) return true;
                 Thread.Sleep(500);
             }
