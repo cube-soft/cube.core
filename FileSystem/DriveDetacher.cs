@@ -84,7 +84,7 @@ namespace Cube.FileSystem
                 var name = new StringBuilder(1024);
                 int r = CM_Request_Device_Eject(DevInstParent, out veto, name, name.Capacity, 0);
                 if (r == 0) return true;
-                Thread.Sleep(500);
+                Thread.Sleep(100);
             }
             return false;
         }
