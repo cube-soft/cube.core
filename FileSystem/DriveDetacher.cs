@@ -80,8 +80,9 @@ namespace Cube.FileSystem
 
             for (int tries = 1; tries <= 3; tries++)  // sometimes we need some tries...
             {
-                // CM_REMOVE_UI_NOT_OK (ulFlags = 1)
-                int r = CM_Request_Device_Eject_NoUi(DevInstParent, IntPtr.Zero, null, 0, 1);
+                var veto = new PNP_VETO_TYPE();
+                var name = new StringBuilder(1024);
+                int r = CM_Request_Device_Eject(DevInstParent, out veto, name, name.Capacity, 0);
                 if (r == 0) return true;
                 Thread.Sleep(500);
             }
@@ -375,14 +376,6 @@ namespace Cube.FileSystem
         static extern int CM_Request_Device_Eject(
             int dnDevInst,
             out PNP_VETO_TYPE pVetoType,
-            StringBuilder pszVetoName,
-            int ulNameLength,
-            int ulFlags);
-
-        [DllImport("setupapi.dll", EntryPoint = "CM_Request_Device_Eject")]
-        static extern int CM_Request_Device_Eject_NoUi(
-            int dnDevInst,
-            IntPtr pVetoType,
             StringBuilder pszVetoName,
             int ulNameLength,
             int ulFlags);
