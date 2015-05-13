@@ -89,7 +89,6 @@
     </Compile>
     <Compile Include="Detail\RadioButtonPainter.cs" />
     <Compile Include="Detail\Surface.cs" />
-    <Compile Include="StockIcons.cs" />
     <Compile Include="ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
