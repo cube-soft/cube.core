@@ -50,11 +50,13 @@ namespace Cube.Forms.Demo
             InitializeComponent();
 
             IconListView.LargeImageList = new ImageList();
-            IconListView.LargeImageList.ImageSize = new Size(32, 32);
+            IconListView.LargeImageList.ImageSize = new Size(48, 48);
             IconListView.LargeImageList.ColorDepth = ColorDepth.Depth32Bit;
             foreach (Cube.StockIcons kind in Enum.GetValues(typeof(Cube.StockIcons)))
             {
-                var icon = Cube.IconFactory.Create(kind, Cube.IconSize.Large);
+                var icon = Cube.IconFactory.Create(kind, Cube.IconSize.ExtraLarge);
+                if (icon == null) continue;
+
                 var text = string.Format("{0}\n{1}", (int)kind, kind);
                 IconListView.LargeImageList.Images.Add(icon.ToBitmap());
                 IconListView.Items.Add(new ListViewItem(text, IconListView.LargeImageList.Images.Count - 1));
