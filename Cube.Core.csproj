@@ -62,6 +62,7 @@
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="FileSystem\Drive.cs" />
     <Compile Include="FileSystem\DriveDetacher.cs" />
+    <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="Icons\IconSize.cs" />
     <Compile Include="Icons\StockIcons.cs" />
     <Compile Include="NotifyItem.cs" />
