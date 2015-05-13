@@ -63,6 +63,7 @@
     <Compile Include="FileSystem\Drive.cs" />
     <Compile Include="FileSystem\DriveDetacher.cs" />
     <Compile Include="Icons\IconFactory.cs" />
+    <Compile Include="Icons\IconNativeApi.cs" />
     <Compile Include="Icons\IconSize.cs" />
     <Compile Include="Icons\StockIcons.cs" />
     <Compile Include="NotifyItem.cs" />

@@ -43,8 +43,10 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Small, 16)]
-        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Large, 32)]
+        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Small,       16)]
+        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Large,       32)]
+        [TestCase(Cube.StockIcons.Application, Cube.IconSize.ExtraLarge,  48)]
+        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Jumbo,      256)]
         public void TestCreateStockIcon(Cube.StockIcons id, Cube.IconSize size, int width)
         {
             Assert.DoesNotThrow(() =>

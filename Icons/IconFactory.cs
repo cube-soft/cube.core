@@ -45,34 +45,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static Icon Create(StockIcons id, IconSize size)
         {
-            var sii = new Win32Api.SHSTOCKICONINFO();
-            sii.cbSize = Marshal.SizeOf(sii);
-            Win32Api.SHGetStockIconInfo((UInt32)id, Win32Api.SHGSI_ICON | (UInt32)size, ref sii);
-            if (sii.hIcon != IntPtr.Zero) return Icon.FromHandle(sii.hIcon);
-            else return null;
+            var info = new IconNativeApi.SHSTOCKICONINFO();
+            info.cbSize = Marshal.SizeOf(info);
+            IconNativeApi.SHGetStockIconInfo((UInt32)id, IconNativeApi.SHGI_SYSICONINDEX, ref info);
+
+            IconNativeApi.IImageList images;
+            IconNativeApi.SHGetImageList((Int32)size, IconNativeApi.IID_IImageList, out images);
+            if (images == null) return null;
+
+            var handle = IntPtr.Zero;
+            images.GetIcon(info.iSysImageIndex, (int)IconNativeApi.ILD_TRANSPARENT, ref handle);
+            return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
-
-        #region Win32 APIs
-
-        internal class Win32Api
-        {
-            public const UInt32 SHGSI_ICON = 0x000000100;
-
-            [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-            public struct SHSTOCKICONINFO
-            {
-                public Int32 cbSize;
-                public IntPtr hIcon;
-                public Int32 iSysImageIndex;
-                public Int32 iIcon;
-                [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-                public string szPath;
-            }
-
-            [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-            public static extern void SHGetStockIconInfo(UInt32 siid, UInt32 uFlags, ref SHSTOCKICONINFO sii);
-        }
-
-        #endregion
     }
 }
