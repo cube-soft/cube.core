@@ -57,5 +57,19 @@ namespace Cube
             images.GetIcon(info.iSysImageIndex, (int)IconNativeApi.ILD_TRANSPARENT, ref handle);
             return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// 指定されたファイルからアイコンを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Icon Create(string path, IconSize size)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

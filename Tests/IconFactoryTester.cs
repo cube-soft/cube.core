@@ -56,5 +56,27 @@ namespace Cube.Tests
                 Assert.That(icon.Width, Is.EqualTo(width));
             });
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestCreateFileIcon
+        /// 
+        /// <summary>
+        /// ファイルからアイコンを抽出して生成するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Small, 16)]
+        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Large,      32)]
+        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.ExtraLarge, 48)]
+        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Jumbo,     256)]
+        public void TestCreateFileIcon(string path, Cube.IconSize size, int width)
+        {
+            Assert.DoesNotThrow(() => {
+                var icon = Cube.IconFactory.Create(path, size);
+                Assert.That(icon, Is.Not.Null);
+                Assert.That(icon.Width, Is.EqualTo(width));
+            });
+        }
     }
 }
