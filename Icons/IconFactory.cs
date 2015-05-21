@@ -69,7 +69,16 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static Icon Create(string path, IconSize size)
         {
-            throw new NotImplementedException();
+            var info = new IconNativeApi.SHFILEINFO();
+            IconNativeApi.SHGetFileInfo(path, 0, ref info, Marshal.SizeOf(info), IconNativeApi.SHGI_SYSICONINDEX);
+
+            IconNativeApi.IImageList images;
+            IconNativeApi.SHGetImageList((Int32)size, IconNativeApi.IID_IImageList, out images);
+            if (images == null) return null;
+
+            var handle = IntPtr.Zero;
+            images.GetIcon(info.iIcon, (int)IconNativeApi.ILD_TRANSPARENT, ref handle);
+            return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
     }
 }
