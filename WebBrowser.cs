@@ -18,6 +18,9 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -134,6 +137,34 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// WndProc
+        ///
+        /// <summary>
+        /// ウィンドウメッセージを受信します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// JavaScript の window.close() が実行された場合への対応。
+        /// TODO: WM_DESTROY をキャンセルする方法があるかどうか要調査
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x0210: /* WM_PARENTNOTIFY */
+                    /* WM_DESTROY (2) */
+                    if (m.WParam.ToInt32() == 2 && !DesignMode) CloseForm();
+                    break;
+                default:
+                    break;
+            }
+            base.WndProc(ref m);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// CreateSink
         ///
         /// <summary>
@@ -150,7 +181,7 @@ namespace Cube.Forms
         {
             base.CreateSink();
             _events = new ActiveXControlEvents(this);
-            _cookie = new System.Windows.Forms.AxHost.ConnectionPointCookie(ActiveXInstance, _events, typeof(DWebBrowserEvents2));
+            _cookie = new AxHost.ConnectionPointCookie(ActiveXInstance, _events, typeof(DWebBrowserEvents2));
         }
 
         /* --------------------------------------------------------------------- */
@@ -180,6 +211,21 @@ namespace Cube.Forms
         #endregion
 
         #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// CloseForm
+        /// 
+        /// <summary>
+        /// コンポーネントが関連付られているフォームを閉じます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void CloseForm()
+        {
+            var form = FindForm();
+            if (form != null && !form.IsDisposed) form.Close();
+        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -243,37 +289,90 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        internal class ActiveXControlEvents : System.Runtime.InteropServices.StandardOleMarshalObject, DWebBrowserEvents2
+        internal class ActiveXControlEvents
+            : StandardOleMarshalObject, DWebBrowserEvents2
         {
-            public ActiveXControlEvents(WebBrowser browser) { _browser = browser; }
+            /* ----------------------------------------------------------------- */
+            ///
+            /// ActiveXControlEvents
+            /// 
+            /// <summary>
+            /// オブジェクトを初期化します。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
+            public ActiveXControlEvents(WebBrowser target)
+            {
+                Target = target;
+            }
 
+            /* ----------------------------------------------------------------- */
+            ///
+            /// WebBrowser
+            /// 
+            /// <summary>
+            /// 関連付けられた WebBrowser オブジェクトを取得します。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
+            public WebBrowser Target { get; private set; }
+
+            /* ----------------------------------------------------------------- */
+            ///
+            /// BeforeNavigate2
+            /// 
+            /// <summary>
+            /// ページ遷移が発生する直前に実行されます。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
             public void BeforeNavigate2(object pDisp, ref object URL, ref object flags,
                 ref object targetFrameName, ref object postData, ref object headers, ref bool cancel)
             {
-                _browser.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
+                Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
             }
 
+            /* ----------------------------------------------------------------- */
+            ///
+            /// NewWindow3
+            /// 
+            /// <summary>
+            /// 新しいウィンドウが開く直前に実行されます。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
             public void NewWindow3(object pDisp, ref bool cancel, ref object flags,
                 ref object URLContext, ref object URL)
             {
-                _browser.RaiseBeforeNewWindow((string)URL, out cancel);
+                Target.RaiseBeforeNewWindow((string)URL, out cancel);
             }
 
+            /* ----------------------------------------------------------------- */
+            ///
+            /// NavigateError
+            /// 
+            /// <summary>
+            /// ページ遷移時にエラーが発生した時に実行されます。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
             public void NavigateError(object pDisp, ref object URL, ref object targetFrameName,
                 ref object statusCode, ref bool cancel)
             {
-                _browser.RaiseNavigatingError((string)URL, (string)targetFrameName, (int)statusCode, out cancel);
+                Target.RaiseNavigatingError((string)URL, (string)targetFrameName, (int)statusCode, out cancel);
             }
-
-            private WebBrowser _browser = null;
         }
+
+        #endregion
+
+        #region COM Interfaces and/or Win32 APIs
 
         /* --------------------------------------------------------------------- */
         ///
         /// DWebBrowserEvents2
         ///
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/aa768283%28v=vs.85%29.aspx
+        /// https://msdn.microsoft.com/en-us/library/aa768283.aspx
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
