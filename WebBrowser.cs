@@ -85,6 +85,17 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public event EventHandler<NavigatingErrorEventArgs> NavigatingError;
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// MessageShowing
+        /// 
+        /// <summary>
+        /// メッセージボックスが表示される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler<MessageEventArgs> MessageShowing;
+
         #endregion
 
         #region Virtual methods
@@ -131,6 +142,20 @@ namespace Cube.Forms
             if (NavigatingError != null) NavigatingError(this, e);
         }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnMessageShowing
+        /// 
+        /// <summary>
+        /// メッセージボックスが表示される直前に実行されます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnMessageShowing(MessageEventArgs e)
+        {
+            if (MessageShowing != null) MessageShowing(this, e);
+        }
+
         #endregion
 
         #region Override methods
@@ -161,6 +186,21 @@ namespace Cube.Forms
                     break;
             }
             base.WndProc(ref m);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateWebBrowserSiteBase
+        ///
+        /// <summary>
+        /// ActiveX コントロールを使用した機能拡張を行うためのオブジェクトを
+        /// 生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override WebBrowserSiteBase CreateWebBrowserSiteBase()
+        {
+            return new ShowUIWebBrowserSite(this);
         }
 
         /* --------------------------------------------------------------------- */
@@ -275,9 +315,25 @@ namespace Cube.Forms
             cancel = e.Cancel;
         }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// RaiseMessageShowing
+        /// 
+        /// <summary>
+        /// メッセージボックスが表示される直前に実行されます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void RaiseMessageShowing(string text, string caption, int type, string file, int context, out int result)
+        {
+            var e = new MessageEventArgs(text, caption, type, file, context);
+            OnMessageShowing(e);
+            result = e.Handled ? e.Result : 0;
+        }
+
         #endregion
 
-        #region Internal classes for events
+        #region Internal or protected classes for events
 
         /* --------------------------------------------------------------------- */
         ///
@@ -363,6 +419,78 @@ namespace Cube.Forms
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowUIWebBrowserSite
+        ///
+        /// <summary>
+        /// WebBrowser 上で表示されるメッセージダイアログ等を処理する
+        /// ためのクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected class ShowUIWebBrowserSite : WebBrowser.WebBrowserSite, IDocHostShowUI
+        {
+            /* ----------------------------------------------------------------- */
+            ///
+            /// ShowUIWebBrowserSite
+            /// 
+            /// <summary>
+            /// オブジェクトを初期化します。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
+            public ShowUIWebBrowserSite(WebBrowser host)
+                : base(host)
+            {
+                Host = host;
+            }
+
+            /* ----------------------------------------------------------------- */
+            ///
+            /// Host
+            /// 
+            /// <summary>
+            /// 関連付ける WebBrowser オブジェクトを取得します。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
+            public WebBrowser Host { get; private set; }
+
+            /* ----------------------------------------------------------------- */
+            ///
+            /// ShowMessage
+            /// 
+            /// <summary>
+            /// メッセージを表示します。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
+            public int ShowMessage(IntPtr hwnd, string text, string caption, int type, string file, int context, out int result)
+            {
+                Host.RaiseMessageShowing(text, caption, type, file, context, out result);
+                return (result != 0) ? 0 : 1;
+            }
+
+            /* ----------------------------------------------------------------- */
+            ///
+            /// ShowHelp
+            /// 
+            /// <summary>
+            /// ヘルプを表示します。
+            /// </summary>
+            /// 
+            /// <remarks>
+            /// 現在は常にキャンセルされます。
+            /// </remarks>
+            ///
+            /* ----------------------------------------------------------------- */
+            public int ShowHelp(IntPtr hwnd, string file, int command, int data, POINT mouse, object hit)
+            {
+                return 1;
+            }
+        }
+
         #endregion
 
         #region COM Interfaces and/or Win32 APIs
@@ -407,6 +535,57 @@ namespace Cube.Forms
                 [System.Runtime.InteropServices.In, System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IDispatch)] object pDisp,
                 [System.Runtime.InteropServices.In] ref object URL, [System.Runtime.InteropServices.In] ref object frame,
                 [System.Runtime.InteropServices.In] ref object statusCode, [System.Runtime.InteropServices.In, System.Runtime.InteropServices.Out] ref bool cancel);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IDocHostShowUI
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/aa753269.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [ComImport, Guid("C4D244B0-D43E-11CF-893B-00AA00BDCE1A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        protected interface IDocHostShowUI
+        {
+            [return: MarshalAs(UnmanagedType.U4)]
+            [PreserveSig]
+            int ShowMessage(IntPtr hwnd,
+                [MarshalAs(UnmanagedType.LPWStr)] string lpstrText,
+                [MarshalAs(UnmanagedType.LPWStr)] string lpstrCaption,
+                int dwType,
+                [MarshalAs(UnmanagedType.LPWStr)] string lpstrHelpFile,
+                int dwHelpContext,
+                out int lpResult
+            );
+
+            [return: MarshalAs(UnmanagedType.U4)]
+            [PreserveSig]
+            int ShowHelp(
+                IntPtr hwnd,
+                [MarshalAs(UnmanagedType.LPWStr)] string pszHelpFile,
+                int uCommand,
+                int dwData,
+                POINT ptMouse,
+                [MarshalAs(UnmanagedType.IDispatch)] object pDispatchObjectHit
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// POINT
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162805.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [StructLayout(LayoutKind.Sequential)]
+        protected struct POINT
+        {
+            public int x;
+            public int y;
         }
 
         #endregion
