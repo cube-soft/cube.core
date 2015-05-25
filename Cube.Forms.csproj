@@ -60,6 +60,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Detail\FontFactory.cs" />
+    <Compile Include="Detail\MessageEventArgs.cs" />
     <Compile Include="Detail\NavigatingErrorEventArgs.cs" />
     <Compile Include="Detail\NavigatingEventArgs.cs" />
     <Compile Include="Detail\NotifyEventArgs.cs" />
