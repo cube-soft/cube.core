@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Threading">
@@ -55,9 +56,16 @@
     <Compile Include="DataCancelEventArgs.cs" />
     <Compile Include="DataEventArgs.cs" />
     <Compile Include="Development\ResourceInitializer.cs" />
+    <Compile Include="Extensions\ByteFormatExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="FileSystem\Drive.cs" />
+    <Compile Include="FileSystem\DriveDetacher.cs" />
+    <Compile Include="Icons\IconFactory.cs" />
+    <Compile Include="Icons\IconNativeApi.cs" />
+    <Compile Include="Icons\IconSize.cs" />
+    <Compile Include="Icons\StockIcons.cs" />
     <Compile Include="NotifyItem.cs" />
     <Compile Include="NotifyLevel.cs" />
     <Compile Include="NotifyQueue.cs" />
