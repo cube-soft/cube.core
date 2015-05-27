@@ -61,7 +61,6 @@
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="FileSystem\Drive.cs" />
-    <Compile Include="FileSystem\DriveDetacher.cs" />
     <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="Icons\IconNativeApi.cs" />
     <Compile Include="Icons\IconSize.cs" />
