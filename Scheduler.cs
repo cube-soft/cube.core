@@ -131,6 +131,7 @@ namespace Cube
         {
             if (State != SchedulerState.Stop) return;
             System.Diagnostics.Debug.Assert(!_impl.Enabled);
+            State = SchedulerState.Run;
 
             var interval = Interval - (DateTime.Now - LastExecuted);
             if (interval > TimeSpan.Zero) _impl.Interval = interval.TotalMilliseconds;
@@ -141,7 +142,6 @@ namespace Cube
             }
 
             _impl.Start();
-            State = SchedulerState.Run;
         }
 
         /* ----------------------------------------------------------------- */
@@ -198,8 +198,8 @@ namespace Cube
             if (State != SchedulerState.Suspend) return;
 
             System.Diagnostics.Debug.Assert(!_impl.Enabled);
-            _impl.Start();
             State = SchedulerState.Run;
+            _impl.Start();
         }
 
         #endregion
