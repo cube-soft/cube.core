@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -74,6 +75,8 @@ namespace Cube.Forms
 
             Queue = queue;
             Queue.CollectionChanged += Model_CollectionChanged;
+
+            SynchronizationContext = System.Threading.SynchronizationContext.Current;
         }
 
         #endregion
@@ -101,6 +104,17 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public NotifyQueue Queue { get; private set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SynchronizationContext
+        /// 
+        /// <summary>
+        /// オブジェクト初期化時のコンテキストを取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public SynchronizationContext SynchronizationContext { get; private set; }
 
         #endregion
 
@@ -152,14 +166,17 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void Execute(NotifyItem item)
         {
-            View.Level = item.Level;
-            View.Title = item.Title;
-            View.Description = item.Description;
-            View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
-            View.Tag = item.Data;
-            if (item.Image != null) View.Image = item.Image;
+            SynchronizationContext.Post(_ =>
+            {
+                View.Level = item.Level;
+                View.Title = item.Title;
+                View.Description = item.Description;
+                View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
+                View.Tag = item.Data;
+                if (item.Image != null) View.Image = item.Image;
 
-            View.Show((int)item.DisplayTime.TotalMilliseconds);
+                View.Show((int)item.DisplayTime.TotalMilliseconds);
+            }, null);
         }
 
         #endregion
