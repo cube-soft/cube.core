@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using TaskEx = Cube.TaskEx;
 
@@ -51,6 +52,7 @@ namespace Cube.Forms
         {
             InitializeComponent();
             InitializeStyles();
+            SetTopMost();
             IsBusy = false;
             base.Text = string.Empty;
             HideButton.Click += (s, e) => OnHideClick(e);
@@ -222,6 +224,15 @@ namespace Cube.Forms
         {
             get { return base.Text; }
             set { base.Text = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Don't use this property")]
+        public new bool TopMost
+        {
+            get { return base.TopMost; }
+            set { base.TopMost = value; }
         }
 
         #endregion
@@ -521,6 +532,33 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// SetTopMost
+        /// 
+        /// <summary>
+        /// 最前面に表示するように設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void SetTopMost()
+        {
+            const uint SWP_NOSIZE         = 0x0001;
+            const uint SWP_NOMOVE         = 0x0002;
+            const uint SWP_NOACTIVATE     = 0x0010;
+            const uint SWP_NOSENDCHANGING = 0x0400;
+
+            SetWindowPos(
+                Handle,
+                (IntPtr)(-1), /* HWND_TOPMOST */
+                0,
+                0,
+                0,
+                0,
+                SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
+            );
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// SetStyle
         /// 
         /// <summary>
@@ -595,6 +633,14 @@ namespace Cube.Forms
         {
             OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
+
+        #endregion
+
+        #region Win32 APIs
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
+            int X, int Y, int cx, int cy, uint uFlags);
 
         #endregion
 
