@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.IO;
 using System.Management;
 using System.Collections.Generic;
 
@@ -61,6 +62,17 @@ namespace Cube.FileSystem {
         ///
         /* ----------------------------------------------------------------- */
         public string VolumeLabel { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DriveType
+        ///
+        /// <summary>
+        /// ドライブの種類を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DriveType DriveType { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -174,6 +186,17 @@ namespace Cube.FileSystem {
                 dest.Model = device["Model"] as string;
                 dest.MediaType = device["MediaType"] as string;
                 dest.InterfaceType = device["InterfaceType"] as string;
+
+                dest.DriveType = DriveType.Unknown;
+                var drivetype = (uint)mapping["DriveType"];
+                foreach (DriveType item in Enum.GetValues(typeof(DriveType)))
+                {
+                    if ((uint)item == drivetype)
+                    {
+                        dest.DriveType = item;
+                        break;
+                    }
+                }
 
                 return dest;
             }
