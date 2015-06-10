@@ -125,6 +125,10 @@ namespace Cube.FileSystem {
         /// <summary>
         /// インターフェースの種類を取得または設定します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// "SCSI", "HDC", "IDE", "USB", "1394" のいずれかの値が設定されます。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public string InterfaceType { get; set; }
