@@ -76,6 +76,17 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
+        /// DriveFormat
+        ///
+        /// <summary>
+        /// ドライブのフォーマットを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string DriveFormat { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Model
         ///
         /// <summary>
@@ -177,15 +188,16 @@ namespace Cube.FileSystem {
             {
                 var dest = new Drive();
 
+                dest.Model = device["Model"] as string;
+                dest.MediaType = device["MediaType"] as string;
+                dest.InterfaceType = device["InterfaceType"] as string;
+
                 dest.Letter = mapping["Name"] as string;
                 dest.VolumeLabel = mapping["VolumeName"] as string;
                 if (string.IsNullOrEmpty(dest.VolumeLabel)) dest.VolumeLabel = mapping["Description"] as string;
                 dest.Size = (UInt64)mapping["Size"];
                 dest.FreeSpace = (UInt64)mapping["FreeSpace"];
-
-                dest.Model = device["Model"] as string;
-                dest.MediaType = device["MediaType"] as string;
-                dest.InterfaceType = device["InterfaceType"] as string;
+                dest.DriveFormat = mapping["FileSystem"] as string;
 
                 dest.DriveType = DriveType.Unknown;
                 var drivetype = (uint)mapping["DriveType"];
@@ -197,7 +209,7 @@ namespace Cube.FileSystem {
                         break;
                     }
                 }
-
+                
                 return dest;
             }
             catch (Exception /* err */) { return null; }
