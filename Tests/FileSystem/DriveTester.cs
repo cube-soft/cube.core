@@ -56,7 +56,7 @@ namespace Cube.Tests.FileSystem
                 Assert.That(drives[0].Type, Is.EqualTo(System.IO.DriveType.Fixed));
                 Assert.That(drives[0].Format, Is.EqualTo("NTFS"));
                 Assert.That(drives[0].Model, Is.Not.Null.Or.Empty);
-                Assert.That(drives[0].MediaType, Is.Not.Null.Or.Empty);
+                Assert.That(drives[0].MediaType, Is.EqualTo(Cube.FileSystem.MediaType.HardDisk));
                 Assert.That(drives[0].InterfaceType, Is.Not.Null.Or.Empty);
                 Assert.That(drives[0].Size, Is.AtLeast(1024 * 1024 * 1024));
                 Assert.That(drives[0].FreeSpace, Is.AtLeast(1));
