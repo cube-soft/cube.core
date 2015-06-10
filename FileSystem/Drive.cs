@@ -109,7 +109,18 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Model
+        /// MediaIndex
+        ///
+        /// <summary>
+        /// ディスクの種類を示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public uint MediaIndex { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MediaType
         ///
         /// <summary>
         /// ディスクの種類を取得または設定します。
@@ -177,7 +188,7 @@ namespace Cube.FileSystem {
             foreach (ManagementObject partition in device.GetRelated("Win32_DiskPartition"))
             foreach (ManagementObject mapping in partition.GetRelated("Win32_LogicalDisk"))
             {
-                var item = GetDrive(device, partition, mapping);
+                var item = GetDriveInfo(device, partition, mapping);
                 if (item != null) dest.Add(item);
             }
 
@@ -197,7 +208,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Drive GetDrive(ManagementObject device, ManagementObject partition, ManagementObject mapping)
+        private static Drive GetDriveInfo(ManagementObject device, ManagementObject partition, ManagementObject mapping)
         {
             try
             {
@@ -209,26 +220,50 @@ namespace Cube.FileSystem {
                 dest.InterfaceType = device["InterfaceType"] as string;
 
                 dest.Letter = mapping["Name"] as string;
-                dest.VolumeLabel = mapping["VolumeName"] as string;
-                if (string.IsNullOrEmpty(dest.VolumeLabel)) dest.VolumeLabel = mapping["Description"] as string;
+                dest.VolumeLabel = ToVolumeLabel(mapping["VolumeName"], mapping["Description"]);
+                dest.Type = ToDriveType((uint)mapping["DriveType"]);
+                dest.Format = mapping["FileSystem"] as string;
                 dest.Size = (UInt64)mapping["Size"];
                 dest.FreeSpace = (UInt64)mapping["FreeSpace"];
-                dest.Format = mapping["FileSystem"] as string;
-
-                dest.Type = DriveType.Unknown;
-                var drivetype = (uint)mapping["DriveType"];
-                foreach (DriveType item in Enum.GetValues(typeof(DriveType)))
-                {
-                    if ((uint)item == drivetype)
-                    {
-                        dest.Type = item;
-                        break;
-                    }
-                }
+                dest.MediaIndex = (uint)mapping["MediaType"];
 
                 return dest;
             }
             catch (Exception /* err */) { return null; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToVolumeLabel
+        ///
+        /// <summary>
+        /// ボリュームラベルを表す文字列に変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string ToVolumeLabel(object name, object description)
+        {
+            var s1 = name as string;
+            var s2 = description as string;
+            return !string.IsNullOrEmpty(s1) ? s1 : s2;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToDriveType
+        ///
+        /// <summary>
+        /// DriveType 列挙型に変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static DriveType ToDriveType(uint index)
+        {
+            foreach (DriveType type in Enum.GetValues(typeof(DriveType)))
+            {
+                if ((uint)type == index) return type;
+            }
+            return DriveType.Unknown;
         }
 
         #endregion
