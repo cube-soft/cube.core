@@ -51,9 +51,10 @@ namespace Cube.Tests.FileSystem
             {
                 var drives = Cube.FileSystem.Drive.GetDrives();
                 Assert.That(drives.Length, Is.AtLeast(1));
+                Assert.That(drives[0].Index, Is.EqualTo(0));
                 Assert.That(drives[0].Letter, Is.EqualTo("C:"));
-                Assert.That(drives[0].DriveType, Is.EqualTo(System.IO.DriveType.Fixed));
-                Assert.That(drives[0].DriveFormat, Is.EqualTo("NTFS"));
+                Assert.That(drives[0].Type, Is.EqualTo(System.IO.DriveType.Fixed));
+                Assert.That(drives[0].Format, Is.EqualTo("NTFS"));
                 Assert.That(drives[0].Model, Is.Not.Null.Or.Empty);
                 Assert.That(drives[0].MediaType, Is.Not.Null.Or.Empty);
                 Assert.That(drives[0].InterfaceType, Is.Not.Null.Or.Empty);

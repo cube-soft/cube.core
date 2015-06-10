@@ -43,6 +43,17 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Index
+        ///
+        /// <summary>
+        /// ドライブ番号を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public uint Index { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Letter
         ///
         /// <summary>
@@ -65,25 +76,25 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DriveType
+        /// Type
         ///
         /// <summary>
         /// ドライブの種類を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DriveType DriveType { get; set; }
+        public DriveType Type { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DriveFormat
+        /// Format
         ///
         /// <summary>
         /// ドライブのフォーマットを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DriveFormat { get; set; }
+        public string Format { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,6 +199,7 @@ namespace Cube.FileSystem {
             {
                 var dest = new Drive();
 
+                dest.Index = (uint)device["Index"];
                 dest.Model = device["Model"] as string;
                 dest.MediaType = device["MediaType"] as string;
                 dest.InterfaceType = device["InterfaceType"] as string;
@@ -197,19 +209,19 @@ namespace Cube.FileSystem {
                 if (string.IsNullOrEmpty(dest.VolumeLabel)) dest.VolumeLabel = mapping["Description"] as string;
                 dest.Size = (UInt64)mapping["Size"];
                 dest.FreeSpace = (UInt64)mapping["FreeSpace"];
-                dest.DriveFormat = mapping["FileSystem"] as string;
+                dest.Format = mapping["FileSystem"] as string;
 
-                dest.DriveType = DriveType.Unknown;
+                dest.Type = DriveType.Unknown;
                 var drivetype = (uint)mapping["DriveType"];
                 foreach (DriveType item in Enum.GetValues(typeof(DriveType)))
                 {
                     if ((uint)item == drivetype)
                     {
-                        dest.DriveType = item;
+                        dest.Type = item;
                         break;
                     }
                 }
-                
+
                 return dest;
             }
             catch (Exception /* err */) { return null; }
