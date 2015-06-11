@@ -53,6 +53,8 @@
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\MediaType.cs" />
+    <Compile Include="FileSystem\VetoException.cs" />
+    <Compile Include="FileSystem\VetoType.cs" />
     <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettings.cs">
       <SubType>Code</SubType>

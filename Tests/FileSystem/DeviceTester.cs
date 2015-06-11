@@ -57,5 +57,31 @@ namespace Cube.Tests.FileSystem
                 Assert.That(device.Handle, Is.AtLeast(1));
             });
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestDetach
+        /// 
+        /// <summary>
+        /// デバイスを取り外すテストを行います。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// C: ドライブを取り外そうとして失敗するテストを行います。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestDetach()
+        {
+            Assert.Throws<Cube.FileSystem.VetoException>(() =>
+            {
+                var drives = Cube.FileSystem.Drive.GetDrives();
+                Assert.That(drives.Length, Is.AtLeast(1));
+
+                var device = new Cube.FileSystem.Device(drives[0]);
+                device.Detach();
+            });
+        }
     }
 }

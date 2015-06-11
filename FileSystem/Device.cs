@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Text;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -47,7 +48,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public Device(Drive drive)
         {
-            Initialize(drive);
+            InitializeProperties(drive);
         }
 
         #endregion
@@ -89,18 +90,47 @@ namespace Cube.FileSystem
 
         #endregion
 
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Detach
+        /// 
+        /// <summary>
+        /// デバイスを取り外します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: たまに（成功するはずなのに）失敗するので何度か試行すべき
+        /// と言う指摘があったので、その辺りの調査を行う。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Detach()
+        {
+            var parent = 0;
+            CM_Get_Parent(ref parent, (int)Handle, 0);
+
+            var veto = VetoType.Unknown;
+            var name = new StringBuilder(10 * 1024);
+            var status = CM_Request_Device_Eject(parent, out veto, name, (ulong)name.Capacity, 0);
+            if (status != 0) throw new VetoException(veto, name.ToString());
+        }
+
+        #endregion
+
         #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Initialize
+        /// InitializeProperties
         /// 
         /// <summary>
-        /// プロパティを初期化します。
+        /// 各種プロパティを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize(Drive drive)
+        private void InitializeProperties(Drive drive)
         {
             var guid = GetClassGuid(drive);
             if (guid == Guid.Empty) return;
@@ -109,7 +139,7 @@ namespace Cube.FileSystem
 
             try
             {
-                handle = GetDeviceInfo(guid);
+                handle = GetDeviceHandle(guid);
                 for (uint i = 0; true; ++i)
                 {
                     var data = new SP_DEVICE_INTERFACE_DATA();
@@ -133,27 +163,6 @@ namespace Cube.FileSystem
                 }
             }
             finally { if (handle != IntPtr.Zero) SetupDiDestroyDeviceInfoList(handle); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetDeviceInfo
-        /// 
-        /// <summary>
-        /// デバイス情報にアクセスするためのハンドルを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private IntPtr GetDeviceInfo(Guid guid)
-        {
-            const uint DIGCF_PRESENT         = 0x00000002;
-            const uint DIGCF_DEVICEINTERFACE = 0x00000010;
-
-            var dest = SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
-                DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            if (dest.ToInt32() == -1) throw new Win32Exception(Marshal.GetLastWin32Error());
-
-            return dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -184,6 +193,27 @@ namespace Cube.FileSystem
                 default:
                     return Guid.Empty;
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDeviceHandle
+        /// 
+        /// <summary>
+        /// デバイス情報にアクセスするためのハンドルを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IntPtr GetDeviceHandle(Guid guid)
+        {
+            const uint DIGCF_PRESENT = 0x00000002;
+            const uint DIGCF_DEVICEINTERFACE = 0x00000010;
+
+            var dest = SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
+                DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (dest.ToInt32() == -1) throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            return dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -298,6 +328,31 @@ namespace Cube.FileSystem
             SP_DEVICE_INTERFACE_DATA deviceInterfaceData,
             IntPtr deviceInterfaceDetailData, uint deviceInterfaceDetailDataSize,
             ref uint requiredSize, SP_DEVINFO_DATA deviceInfoData);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CM_Get_Parent
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff538610.aspx
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [DllImport("setupapi.dll")]
+        private static extern int CM_Get_Parent(ref int pdnDevInst, int dnDevInst, ulong ulFlags);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CM_Request_Device_Eject
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff539806.aspx
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [DllImport("setupapi.dll")]
+        static extern int CM_Request_Device_Eject(int dnDevInst, out VetoType pVetoType,
+            StringBuilder pszVetoName, ulong ulNameLength, ulong ulFlags);
 
         #endregion
 
