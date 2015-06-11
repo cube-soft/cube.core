@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DriveTester.cs
+/// DeviceTester.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,7 +24,7 @@ namespace Cube.Tests.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.DriveTester
+    /// Cube.Tests.DeviceTester
     /// 
     /// <summary>
     /// Drive クラスのテストを行うためのクラスです。
@@ -32,33 +32,29 @@ namespace Cube.Tests.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    public class DriveTester
+    public class DeviceTester
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// TestGetDrives
+        /// TestProperties
         /// 
         /// <summary>
-        /// ドライブ一覧を取得するテストを行います。
+        /// デバイスに関するプロパティを取得するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestGetDrives()
+        public void TestProperties()
         {
             Assert.DoesNotThrow(() =>
             {
                 var drives = Cube.FileSystem.Drive.GetDrives();
                 Assert.That(drives.Length, Is.AtLeast(1));
-                Assert.That(drives[0].Index, Is.EqualTo(0));
-                Assert.That(drives[0].Letter, Is.EqualTo("C:"));
-                Assert.That(drives[0].Type, Is.EqualTo(System.IO.DriveType.Fixed));
-                Assert.That(drives[0].Format, Is.EqualTo("NTFS"));
-                Assert.That(drives[0].Model, Is.Not.Null.Or.Empty);
-                Assert.That(drives[0].MediaType, Is.EqualTo(Cube.FileSystem.MediaType.HardDisk));
-                Assert.That(drives[0].InterfaceType, Is.Not.Null.Or.Empty);
-                Assert.That(drives[0].Size, Is.AtLeast(1024 * 1024 * 1024));
-                Assert.That(drives[0].FreeSpace, Is.AtLeast(1));
+
+                var device = new Cube.FileSystem.Device(drives[0]);
+                Assert.That(device.Index, Is.EqualTo(0));
+                Assert.That(device.Path, Is.Not.Null.Or.Empty);
+                Assert.That(device.Handle, Is.AtLeast(1));
             });
         }
     }
