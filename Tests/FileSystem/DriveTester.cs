@@ -36,6 +36,33 @@ namespace Cube.Tests.FileSystem
     {
         /* ----------------------------------------------------------------- */
         ///
+        /// TestGet
+        /// 
+        /// <summary>
+        /// ドライブの情報を取得するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("C:")]
+        public void TestGet(string letter)
+        {
+            Assert.DoesNotThrow(() =>
+            {
+                var drive = new Cube.FileSystem.Drive(letter);
+                Assert.That(drive.Index, Is.EqualTo(0));
+                Assert.That(drive.Letter, Is.EqualTo(letter));
+                Assert.That(drive.Type, Is.EqualTo(System.IO.DriveType.Fixed));
+                Assert.That(drive.Format, Is.EqualTo("NTFS"));
+                Assert.That(drive.Model, Is.Not.Null.Or.Empty);
+                Assert.That(drive.MediaType, Is.EqualTo(Cube.FileSystem.MediaType.HardDisk));
+                Assert.That(drive.InterfaceType, Is.Not.Null.Or.Empty);
+                Assert.That(drive.Size, Is.AtLeast(1024 * 1024 * 1024));
+                Assert.That(drive.FreeSpace, Is.AtLeast(1));
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// TestGetDrives
         /// 
         /// <summary>
@@ -50,15 +77,6 @@ namespace Cube.Tests.FileSystem
             {
                 var drives = Cube.FileSystem.Drive.GetDrives();
                 Assert.That(drives.Length, Is.AtLeast(1));
-                Assert.That(drives[0].Index, Is.EqualTo(0));
-                Assert.That(drives[0].Letter, Is.EqualTo("C:"));
-                Assert.That(drives[0].Type, Is.EqualTo(System.IO.DriveType.Fixed));
-                Assert.That(drives[0].Format, Is.EqualTo("NTFS"));
-                Assert.That(drives[0].Model, Is.Not.Null.Or.Empty);
-                Assert.That(drives[0].MediaType, Is.EqualTo(Cube.FileSystem.MediaType.HardDisk));
-                Assert.That(drives[0].InterfaceType, Is.Not.Null.Or.Empty);
-                Assert.That(drives[0].Size, Is.AtLeast(1024 * 1024 * 1024));
-                Assert.That(drives[0].FreeSpace, Is.AtLeast(1));
             });
         }
     }

@@ -39,6 +39,48 @@ namespace Cube.FileSystem {
     /* --------------------------------------------------------------------- */
     public class Drive
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 引数には、C: のようにコロン付ドライブレターを指定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Drive(string letter)
+        {
+            InitializeProperties(letter);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 引数には、Win32_LogicalDisk から取得したオブジェクトを指定
+        /// します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Drive(object obj)
+        {
+            var drive = obj as ManagementObject;
+            if (drive != null) InitializeProperties(drive);
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -61,7 +103,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Letter { get; set; }
+        public string Letter { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,7 +114,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string VolumeLabel { get; set; }
+        public string VolumeLabel { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -83,7 +125,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DriveType Type { get; set; }
+        public DriveType Type { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,7 +136,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Format { get; set; }
+        public string Format { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -105,7 +147,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Model { get; set; }
+        public string Model { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -116,7 +158,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public MediaType MediaType { get; set; }
+        public MediaType MediaType { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,7 +173,7 @@ namespace Cube.FileSystem {
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public string InterfaceType { get; set; }
+        public string InterfaceType { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -142,7 +184,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UInt64 FreeSpace { get; set; }
+        public UInt64 FreeSpace { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -153,7 +195,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UInt64 Size { get; set; }
+        public UInt64 Size { get; private set; }
 
         #endregion
 
@@ -185,19 +227,22 @@ namespace Cube.FileSystem {
         /// <summary>
         /// 現在のドライブ一覧を取得します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// NOTE: クエリを Select * From Win32_LogicalDisk Where DeviceID = 'C:'
+        /// のように指定すると C: ドライブに関する ManagementObject が
+        /// 取得できそう？
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static Drive[] GetDrives()
         {
             var dest = new List<Drive>();
 
-            using (var searcher = new ManagementObjectSearcher("Select * From Win32_DiskDrive"))
-            foreach (ManagementObject device in searcher.Get())
-            foreach (ManagementObject partition in device.GetRelated("Win32_DiskPartition"))
-            foreach (ManagementObject mapping in partition.GetRelated("Win32_LogicalDisk"))
+            using (var searcher = new ManagementObjectSearcher("Select * From Win32_LogicalDisk"))
+            foreach (ManagementObject drive in searcher.Get())
             {
-                var item = GetDriveInfo(device, partition, mapping);
-                if (item != null) dest.Add(item);
+                dest.Add(new Drive(drive));
             }
 
             return dest.ToArray();
@@ -205,39 +250,79 @@ namespace Cube.FileSystem {
 
         #endregion
 
-        #region Implementations
+        #region Initialize methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDrive
+        /// InitializeProperties
         ///
         /// <summary>
-        /// ドライブ情報を取得します。
+        /// プロパティを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Drive GetDriveInfo(ManagementObject device, ManagementObject partition, ManagementObject mapping)
+        private void InitializeProperties(string letter)
         {
-            try
+            var query = string.Format("Select * From Win32_LogicalDisk Where DeviceID = '{0}'", letter);
+            using (var searcher = new ManagementObjectSearcher(query))
+            foreach (ManagementObject drive in searcher.Get())
             {
-                var dest = new Drive();
-
-                dest.Index = (uint)device["Index"];
-                dest.Model = device["Model"] as string;
-                dest.InterfaceType = device["InterfaceType"] as string;
-
-                dest.Letter = mapping["Name"] as string;
-                dest.VolumeLabel = ToVolumeLabel(mapping["VolumeName"], mapping["Description"]);
-                dest.Type = ToDriveType((uint)mapping["DriveType"]);
-                dest.Format = mapping["FileSystem"] as string;
-                dest.MediaType = ToMediaType((uint)mapping["MediaType"]);
-                dest.Size = (UInt64)mapping["Size"];
-                dest.FreeSpace = (UInt64)mapping["FreeSpace"];
-
-                return dest;
+                InitializeProperties(drive);
+                break;
             }
-            catch (Exception /* err */) { return null; }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitializeProperties
+        ///
+        /// <summary>
+        /// プロパティを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void InitializeProperties(ManagementObject drive)
+        {
+            foreach (ManagementObject partition in drive.GetRelated("Win32_DiskPartition"))
+            foreach (ManagementObject device in partition.GetRelated("Win32_DiskDrive"))
+            {
+                InitializeProperties(drive, device);
+                break;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitializeProperties
+        ///
+        /// <summary>
+        /// プロパティを初期化します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// NOTE: 現状、ManagementObject の一部のプロパティのみをコピー
+        /// しているので、必要な情報があれば追加する。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void InitializeProperties(ManagementObject drive, ManagementObject device)
+        {
+            Letter        = drive["Name"] as string;
+            VolumeLabel   = ToVolumeLabel(drive["VolumeName"], drive["Description"]);
+            Type          = ToDriveType((uint)drive["DriveType"]);
+            Format        = drive["FileSystem"] as string;
+            MediaType     = ToMediaType((uint)drive["MediaType"]);
+            Size          = (UInt64)drive["Size"];
+            FreeSpace     = (UInt64)drive["FreeSpace"];
+
+            Index         = (uint)device["Index"];
+            Model         = device["Model"] as string;
+            InterfaceType = device["InterfaceType"] as string;
+        }
+
+        #endregion
+
+        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -248,7 +333,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static string ToVolumeLabel(object name, object description)
+        private string ToVolumeLabel(object name, object description)
         {
             var s1 = name as string;
             var s2 = description as string;
@@ -264,7 +349,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static DriveType ToDriveType(uint index)
+        private DriveType ToDriveType(uint index)
         {
             foreach (DriveType type in Enum.GetValues(typeof(DriveType)))
             {
@@ -282,7 +367,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static MediaType ToMediaType(uint index)
+        private MediaType ToMediaType(uint index)
         {
             switch (index)
             {
