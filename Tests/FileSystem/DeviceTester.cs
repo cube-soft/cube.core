@@ -36,7 +36,7 @@ namespace Cube.Tests.FileSystem
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// TestProperties
+        /// TestGet
         /// 
         /// <summary>
         /// デバイスに関するプロパティを取得するテストを行います。
@@ -44,14 +44,12 @@ namespace Cube.Tests.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestProperties()
+        public void TestGet()
         {
             Assert.DoesNotThrow(() =>
             {
-                var drives = Cube.FileSystem.Drive.GetDrives();
-                Assert.That(drives.Length, Is.AtLeast(1));
-
-                var device = new Cube.FileSystem.Device(drives[0]);
+                var drive = new Cube.FileSystem.Drive("C:");
+                var device = new Cube.FileSystem.Device(drive);
                 Assert.That(device.Index, Is.EqualTo(0));
                 Assert.That(device.Path, Is.Not.Null.Or.Empty);
                 Assert.That(device.Handle, Is.AtLeast(1));
@@ -76,10 +74,8 @@ namespace Cube.Tests.FileSystem
         {
             Assert.Throws<Cube.FileSystem.VetoException>(() =>
             {
-                var drives = Cube.FileSystem.Drive.GetDrives();
-                Assert.That(drives.Length, Is.AtLeast(1));
-
-                var device = new Cube.FileSystem.Device(drives[0]);
+                var drive = new Cube.FileSystem.Drive("C:");
+                var device = new Cube.FileSystem.Device(drive);
                 device.Detach();
             });
         }
