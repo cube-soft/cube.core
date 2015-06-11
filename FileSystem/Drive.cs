@@ -228,12 +228,6 @@ namespace Cube.FileSystem {
         /// <summary>
         /// 現在のドライブ一覧を取得します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// NOTE: クエリを Select * From Win32_LogicalDisk Where DeviceID = 'C:'
-        /// のように指定すると C: ドライブに関する ManagementObject が
-        /// 取得できそう？
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static Drive[] GetDrives()
@@ -241,9 +235,10 @@ namespace Cube.FileSystem {
             var dest = new List<Drive>();
 
             using (var searcher = new ManagementObjectSearcher("Select * From Win32_LogicalDisk"))
-            foreach (ManagementObject drive in searcher.Get())
+            foreach (ManagementObject obj in searcher.Get())
             {
-                dest.Add(new Drive(drive));
+                var drive = new Drive(obj);
+                if (!string.IsNullOrEmpty(drive.Letter) && !string.IsNullOrEmpty(drive.Model)) dest.Add(drive);
             }
 
             return dest.ToArray();
@@ -280,6 +275,11 @@ namespace Cube.FileSystem {
         /// <summary>
         /// プロパティを初期化します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: この形だと CD-ROM 等は無視されてしまうので修正方法を
+        /// 要調査。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private void InitializeProperties(ManagementObject drive)
