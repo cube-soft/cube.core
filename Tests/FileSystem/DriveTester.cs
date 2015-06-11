@@ -63,6 +63,25 @@ namespace Cube.Tests.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
+        /// TestGetError
+        /// 
+        /// <summary>
+        /// ドライブの情報を取得に失敗するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TestGetError()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var drive = new Cube.FileSystem.Drive(new object());
+                Assert.Fail("never reached");
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// TestGetDrives
         /// 
         /// <summary>

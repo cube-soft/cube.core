@@ -76,7 +76,8 @@ namespace Cube.FileSystem {
         public Drive(object obj)
         {
             var drive = obj as ManagementObject;
-            if (drive != null) InitializeProperties(drive);
+            if (drive == null) throw new ArgumentException("Invalid object");
+            InitializeProperties(drive);
         }
 
         #endregion
@@ -92,7 +93,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public uint Index { get; set; }
+        public uint Index { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
