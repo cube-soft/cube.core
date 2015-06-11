@@ -157,6 +157,25 @@ namespace Cube.FileSystem {
 
         #endregion
 
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Detach
+        ///
+        /// <summary>
+        /// ドライブを取り外します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Detach()
+        {
+            var device = new Device(this);
+            device.Detach();
+        }
+
+        #endregion
+
         #region Static methods
 
         /* ----------------------------------------------------------------- */
