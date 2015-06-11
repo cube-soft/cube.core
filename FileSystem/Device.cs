@@ -132,13 +132,13 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private void InitializeProperties(Drive drive)
         {
-            var guid = GetClassGuid(drive);
-            if (guid == Guid.Empty) return;
-
             var handle = IntPtr.Zero;
 
             try
             {
+                var guid = GetClassGuid(drive);
+                if (guid == Guid.Empty) return;
+
                 handle = GetDeviceHandle(guid);
                 for (uint i = 0; true; ++i)
                 {
