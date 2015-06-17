@@ -56,7 +56,7 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         public Drive(string letter)
         {
-            InitializeProperties(letter);
+            GetInfo(letter);
         }
 
         /* ----------------------------------------------------------------- */
@@ -77,7 +77,7 @@ namespace Cube.FileSystem {
         {
             var drive = obj as ManagementObject;
             if (drive == null) throw new ArgumentException("Invalid object");
-            InitializeProperties(drive);
+            GetInfo(drive);
         }
 
         #endregion
@@ -250,75 +250,111 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InitializeProperties
+        /// GetInfo
         ///
         /// <summary>
-        /// プロパティを初期化します。
+        /// 必要な情報を取得して、プロパティを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void InitializeProperties(string letter)
+        private void GetInfo(string letter)
         {
             var query = string.Format("Select * From Win32_LogicalDisk Where DeviceID = '{0}'", letter);
             using (var searcher = new ManagementObjectSearcher(query))
             foreach (ManagementObject drive in searcher.Get())
             {
-                InitializeProperties(drive);
+                GetInfo(drive);
                 break;
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InitializeProperties
+        /// GetInfo
         ///
         /// <summary>
-        /// プロパティを初期化します。
+        /// 必要な情報を取得して、プロパティを初期化します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void GetInfo(ManagementObject drive)
+        {
+            GetDriveInfo(drive);
+            GetDeviceInfo(drive);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDriveInfo
+        ///
+        /// <summary>
+        /// ドライブに関する情報を取得して、プロパティを初期化します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void GetDriveInfo(ManagementObject drive)
+        {
+            Letter      = drive["Name"] as string;
+            VolumeLabel = ToVolumeLabel(drive["VolumeName"], drive["Description"]);
+            Type        = ToDriveType(drive["DriveType"]);
+            Format      = drive["FileSystem"] as string;
+            MediaType   = ToMediaType(drive["MediaType"]);
+            Size        = TryCast<UInt64>(drive["Size"]);
+            FreeSpace   = TryCast<UInt64>(drive["FreeSpace"]);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDeviceInfo
+        ///
+        /// <summary>
+        /// デバイスに関する情報を取得して、プロパティを初期化します。
         /// </summary>
         /// 
         /// <remarks>
-        /// TODO: この形だと CD-ROM 等は無視されてしまうので修正方法を
-        /// 要調査。
+        /// TODO: HardDisk 以外のデバイス情報の取得方法を実装する。
         /// </remarks>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        private void InitializeProperties(ManagementObject drive)
+        private void GetDeviceInfo(ManagementObject drive)
+        {
+            switch (MediaType)
+            {
+                case FileSystem.MediaType.FloppyDisk:
+                    // GetFloppyDiskInfo(drive);
+                    break;
+                case FileSystem.MediaType.HardDisk:
+                    GetHardDiskInfo(drive);
+                    break;
+                case FileSystem.MediaType.RemovableMedia:
+                    // GetRemovableMediaInfo(drive);
+                    break;
+                case FileSystem.MediaType.Unknown:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDeviceInfo
+        ///
+        /// <summary>
+        /// HDD に関する情報を取得して、プロパティを初期化します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void GetHardDiskInfo(ManagementObject drive)
         {
             foreach (ManagementObject partition in drive.GetRelated("Win32_DiskPartition"))
             foreach (ManagementObject device in partition.GetRelated("Win32_DiskDrive"))
             {
-                InitializeProperties(drive, device);
+                Index         = TryCast<uint>(device["Index"], uint.MaxValue);
+                Model         = device["Model"] as string;
+                InterfaceType = device["InterfaceType"] as string;
                 break;
             }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InitializeProperties
-        ///
-        /// <summary>
-        /// プロパティを初期化します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// NOTE: 現状、ManagementObject の一部のプロパティのみをコピー
-        /// しているので、必要な情報があれば追加する。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void InitializeProperties(ManagementObject drive, ManagementObject device)
-        {
-            Letter        = drive["Name"] as string;
-            VolumeLabel   = ToVolumeLabel(drive["VolumeName"], drive["Description"]);
-            Type          = ToDriveType((uint)drive["DriveType"]);
-            Format        = drive["FileSystem"] as string;
-            MediaType     = ToMediaType((uint)drive["MediaType"]);
-            Size          = (UInt64)drive["Size"];
-            FreeSpace     = (UInt64)drive["FreeSpace"];
-
-            Index         = (uint)device["Index"];
-            Model         = device["Model"] as string;
-            InterfaceType = device["InterfaceType"] as string;
         }
 
         #endregion
@@ -350,8 +386,9 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private DriveType ToDriveType(uint index)
+        private DriveType ToDriveType(object obj)
         {
+            var index = TryCast<uint>(obj, 0);
             foreach (DriveType type in Enum.GetValues(typeof(DriveType)))
             {
                 if ((uint)type == index) return type;
@@ -368,8 +405,10 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private MediaType ToMediaType(uint index)
+        private MediaType ToMediaType(object obj)
         {
+            var index = TryCast<uint>(obj, 0);
+
             switch (index)
             {
                 case  0: // Unknown
@@ -403,6 +442,39 @@ namespace Cube.FileSystem {
                 default:
                     return MediaType.Unknown;
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast
+        ///
+        /// <summary>
+        /// オブジェクトを T 型にキャストします。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 失敗した場合、デフォルト値が返ります。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private T TryCast<T>(object src)
+        {
+            return TryCast<T>(src, default(T));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast
+        ///
+        /// <summary>
+        /// オブジェクトを T 型にキャストします。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private T TryCast<T>(object src, T alternative)
+        {
+            try { return (T)src; }
+            catch (Exception /* err */) { return alternative; }
         }
 
         #endregion
