@@ -238,7 +238,7 @@ namespace Cube.FileSystem {
             foreach (ManagementObject obj in searcher.Get())
             {
                 var drive = new Drive(obj);
-                if (!string.IsNullOrEmpty(drive.Letter) && !string.IsNullOrEmpty(drive.Model)) dest.Add(drive);
+                if (!string.IsNullOrEmpty(drive.Letter)) dest.Add(drive);
             }
 
             return dest.ToArray();
