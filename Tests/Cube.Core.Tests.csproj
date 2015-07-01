@@ -44,8 +44,6 @@
   <ItemGroup>
     <Compile Include="ByteFormatTester.cs" />
     <Compile Include="Detail\Person.cs" />
-    <Compile Include="FileSystem\DeviceTester.cs" />
-    <Compile Include="FileSystem\DriveTester.cs" />
     <Compile Include="IconFactoryTester.cs" />
     <Compile Include="RegistryTester.cs" />
     <Compile Include="ScheduleTester.cs" />

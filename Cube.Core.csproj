@@ -50,11 +50,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem\Device.cs" />
-    <Compile Include="FileSystem\DeviceNumber.cs" />
-    <Compile Include="FileSystem\MediaType.cs" />
-    <Compile Include="FileSystem\VetoException.cs" />
-    <Compile Include="FileSystem\VetoType.cs" />
     <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettings.cs">
       <SubType>Code</SubType>
@@ -66,7 +61,6 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
-    <Compile Include="FileSystem\Drive.cs" />
     <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="Icons\IconNativeApi.cs" />
     <Compile Include="Icons\IconSize.cs" />
