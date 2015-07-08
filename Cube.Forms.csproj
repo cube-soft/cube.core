@@ -60,6 +60,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Detail\FontFactory.cs" />
+    <Compile Include="DeviceAwareForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EventArgs\MessageEventArgs.cs" />
     <Compile Include="EventArgs\NavigatingErrorEventArgs.cs" />
     <Compile Include="EventArgs\NavigatingEventArgs.cs" />
