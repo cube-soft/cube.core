@@ -85,6 +85,12 @@
     <Compile Include="DemoStockIcons.Designer.cs">
       <DependentUpon>DemoStockIcons.cs</DependentUpon>
     </Compile>
+    <Compile Include="DemoDeviceAware.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DemoDeviceAware.Designer.cs">
+      <DependentUpon>DemoDeviceAware.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     </Compile>
     <EmbeddedResource Include="DemoButtons.resx">
       <DependentUpon>DemoButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DemoDeviceAware.resx">
+      <DependentUpon>DemoDeviceAware.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DemoStockIcons.resx">
       <DependentUpon>DemoStockIcons.cs</DependentUpon>

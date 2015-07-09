@@ -112,6 +112,22 @@ namespace Cube.Forms.Demo
             dialog.ShowDialog();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DeviceAwareButton_Click
+        ///
+        /// <summary>
+        /// デバイスの追加・削除に反応するフォームのためのデモ用フォームを
+        /// 表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void DeviceAwareButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new DemoDeviceAware();
+            dialog.ShowDialog();
+        }
+
         #endregion
     }
 }
