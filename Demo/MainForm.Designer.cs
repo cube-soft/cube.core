@@ -32,6 +32,7 @@
             this.WebBrowserButton = new Cube.Forms.Button();
             this.ButtonsButton = new Cube.Forms.Button();
             this.StockIconsButton = new Cube.Forms.Button();
+            this.DeviceAwareButton = new Cube.Forms.Button();
             this.SuspendLayout();
             // 
             // NotifyFormButton
@@ -174,9 +175,45 @@
             this.StockIconsButton.UseVisualStyleBackColor = false;
             this.StockIconsButton.Click += new System.EventHandler(this.StockIconsButton_Click);
             // 
+            // DeviceAwareButton
+            // 
+            this.DeviceAwareButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DeviceAwareButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DeviceAwareButton.FlatAppearance.BorderSize = 0;
+            this.DeviceAwareButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DeviceAwareButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DeviceAwareButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DeviceAwareButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeviceAwareButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.DeviceAwareButton.Image = null;
+            this.DeviceAwareButton.Location = new System.Drawing.Point(12, 156);
+            this.DeviceAwareButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.DeviceAwareButton.MouseDownSurface.BackgroundImage = null;
+            this.DeviceAwareButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.DeviceAwareButton.MouseDownSurface.Image = null;
+            this.DeviceAwareButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.DeviceAwareButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.DeviceAwareButton.MouseOverSurface.BackgroundImage = null;
+            this.DeviceAwareButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.DeviceAwareButton.MouseOverSurface.Image = null;
+            this.DeviceAwareButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.DeviceAwareButton.Name = "DeviceAwareButton";
+            this.DeviceAwareButton.Size = new System.Drawing.Size(226, 23);
+            this.DeviceAwareButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.DeviceAwareButton.Surface.BackgroundImage = null;
+            this.DeviceAwareButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.DeviceAwareButton.Surface.BorderSize = 1;
+            this.DeviceAwareButton.Surface.Image = null;
+            this.DeviceAwareButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.DeviceAwareButton.TabIndex = 9;
+            this.DeviceAwareButton.Text = "DeviceAwareForm";
+            this.DeviceAwareButton.UseVisualStyleBackColor = false;
+            this.DeviceAwareButton.Click += new System.EventHandler(this.DeviceAwareButton_Click);
+            // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(250, 180);
+            this.ClientSize = new System.Drawing.Size(250, 200);
+            this.Controls.Add(this.DeviceAwareButton);
             this.Controls.Add(this.StockIconsButton);
             this.Controls.Add(this.NotifyFormButton);
             this.Controls.Add(this.WebBrowserButton);
@@ -186,6 +223,7 @@
             this.Controls.SetChildIndex(this.WebBrowserButton, 0);
             this.Controls.SetChildIndex(this.NotifyFormButton, 0);
             this.Controls.SetChildIndex(this.StockIconsButton, 0);
+            this.Controls.SetChildIndex(this.DeviceAwareButton, 0);
             this.ResumeLayout(false);
 
         }
@@ -196,5 +234,6 @@
         private Button WebBrowserButton;
         private Button ButtonsButton;
         private Button StockIconsButton;
+        private Button DeviceAwareButton;
     }
 }
