@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Cube.Forms
 {
@@ -52,25 +53,25 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DeviceConnected
+        /// Attached
         ///
         /// <summary>
-        /// 新しいデバイスが接続された時に発生するイベントです。
+        /// ドライブまたはメディアが接続された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler DeviceConnected;
+        public event EventHandler<DeviceEventArgs> Attached;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DeviceRemoved
+        /// Detached
         ///
         /// <summary>
-        /// デバイスが取り外された時に発生するイベントです。
+        /// ドライブまたはメディアが取り外された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler DeviceRemoved;
+        public event EventHandler<DeviceEventArgs> Detached;
 
         #endregion
 
@@ -78,30 +79,30 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDeviceConnected
+        /// OnAttached
         ///
         /// <summary>
-        /// 新しいデバイスが接続された時に発生するイベントです。
+        /// ドライブまたはメディアが接続された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnDeviceConnected(EventArgs e)
+        protected virtual void OnAttached(DeviceEventArgs e)
         {
-            if (DeviceConnected != null) DeviceConnected(this, e);
+            if (Attached != null) Attached(this, e);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDeviceRemoved
+        /// OnDetached
         ///
         /// <summary>
-        /// デバイスが取り外された時に発生するイベントです。
+        /// ドライブまたはメディアが取り外された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnDeviceRemoved(EventArgs e)
+        protected virtual void OnDetached(DeviceEventArgs e)
         {
-            if (DeviceRemoved != null) DeviceRemoved(this, e);
+            if (Detached != null) Detached(this, e);
         }
 
         #endregion
@@ -122,14 +123,111 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0219: // WM_DEVICECHANGE
-                    var param = m.WParam.ToInt32();
-                    if (param == 0x8000 /* DBT_DEVICEARRIVAL */) OnDeviceConnected(new EventArgs());
-                    else if (param == 0x8004 /* DBT_DEVICEREMOVECOMPLETE */) OnDeviceRemoved(new EventArgs());
+                    RaiseDeviceChangeEvent(m);
                     break;
                 default:
                     break;
             }
             base.WndProc(ref m);
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseDeviceChangeEvent
+        ///
+        /// <summary>
+        /// デバイスの着脱を通知するためのイベントを発生させます。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: デバイスの着脱通知は、DBT_DEVTYP_VOLUME 以外にも
+        /// DBT_DEVTYP_OEM (0x0000), DBT_DEVTYP_DEVNODE (0x0001),
+        /// DBT_DEVTYP_PORT (0x0003), DBT_DEVTYP_NET (0x0004),
+        /// DBT_DEVTYP_DEVICEINTERFACE (0x0005), DBT_DEVTYP_HANDLE (0x0006)
+        /// の全 6 種類が存在する模様。これらの処理について検討する。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RaiseDeviceChangeEvent(Message m)
+        {
+            try
+            {
+                var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
+                if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
+
+                var device = (DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_VOLUME));
+                var letter = ToDriveLetter(device.dbcv_unitmask);
+                var type = (DeviceType)device.dbcv_flags;
+                var args = new DeviceEventArgs(letter, type);
+
+                var action = m.WParam.ToInt32();
+                if (action == 0x8000 /* DBT_DEVICEARRIVAL */) OnAttached(args);
+                else if (action == 0x8004 /* DBT_DEVICEREMOVECOMPLETE */) OnDetached(args);
+            }
+            catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToDriveLetter
+        ///
+        /// <summary>
+        /// ビットマスクをドライブレターに変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private char ToDriveLetter(uint unitmask)
+        {
+            for (char offset = (char)0; offset < 26; ++offset)
+            {
+                if ((unitmask & 0x1) != 0) return (char)('A' + offset);
+                unitmask = unitmask >> 1;
+            }
+            return 'A';
+        }
+
+        #endregion
+
+        #region Structures
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DEV_BROADCAST_HDR
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/aa363246.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct DEV_BROADCAST_HDR
+        {
+            public uint dbcv_size;
+            public uint dbcv_devicetype;
+            public uint dbcv_reserved;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DEV_BROADCAST_VOLUME
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/aa363249.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct DEV_BROADCAST_VOLUME
+        {
+            public uint dbcv_size;
+            public uint dbcv_devicetype;
+            public uint dbcv_reserved;
+            public uint dbcv_unitmask;
+            public char dbcv_flags;
         }
 
         #endregion

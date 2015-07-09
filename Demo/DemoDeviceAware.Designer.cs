@@ -40,9 +40,11 @@
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
             this.LogTextBox.ReadOnly = true;
+            this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.LogTextBox.Size = new System.Drawing.Size(384, 262);
             this.LogTextBox.TabIndex = 0;
-            this.LogTextBox.Text = "デバイスを挿入または取り外して下さい...";
+            this.LogTextBox.TabStop = false;
+            this.LogTextBox.Text = "ドライブまたはメディアの着脱履歴が記録されます。";
             // 
             // DemoDeviceAware
             // 
