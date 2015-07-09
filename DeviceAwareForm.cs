@@ -156,6 +156,7 @@ namespace Cube.Forms
         {
             try
             {
+                if (m.WParam != (IntPtr)0x8000/* DBT_DEVICEARRIVAL */ && m.WParam != (IntPtr)0x8004 /* DBT_DEVICEREMOVECOMPLETE */ ) return;
                 var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
                 if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
 
