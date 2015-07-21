@@ -162,7 +162,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public Image Logo
         {
             get { return LogoPictureBox.Image; }
@@ -278,7 +277,7 @@ namespace Cube.Forms
 
         #region Fields
         private string _version = "1.0.0";
-        private string _publisher = "CubeSoft, Inc.";
+        private string _publisher = "CubeSoft, Inc";
         private int _year = DateTime.Today.Year;
         #endregion
 
