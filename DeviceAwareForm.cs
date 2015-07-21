@@ -154,9 +154,14 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void RaiseDeviceChangeEvent(Message m)
         {
+            const int DBT_DEVICEARRIVAL        = 0x8000;
+            const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+
             try
             {
-                if (m.WParam != (IntPtr)0x8000/* DBT_DEVICEARRIVAL */ && m.WParam != (IntPtr)0x8004 /* DBT_DEVICEREMOVECOMPLETE */ ) return;
+                var action = m.WParam.ToInt32();
+                if (action != DBT_DEVICEARRIVAL && action != DBT_DEVICEREMOVECOMPLETE) return;
+
                 var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
                 if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
 
@@ -165,9 +170,8 @@ namespace Cube.Forms
                 var type = (DeviceType)device.dbcv_flags;
                 var args = new DeviceEventArgs(letter, type);
 
-                var action = m.WParam.ToInt32();
-                if (action == 0x8000 /* DBT_DEVICEARRIVAL */) OnAttached(args);
-                else if (action == 0x8004 /* DBT_DEVICEREMOVECOMPLETE */) OnDetached(args);
+                if (action == DBT_DEVICEARRIVAL) OnAttached(args);
+                else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
             }
             catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
         }

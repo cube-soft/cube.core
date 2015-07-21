@@ -33,6 +33,7 @@
             this.ButtonsButton = new Cube.Forms.Button();
             this.StockIconsButton = new Cube.Forms.Button();
             this.DeviceAwareButton = new Cube.Forms.Button();
+            this.VersionButton = new Cube.Forms.Button();
             this.SuspendLayout();
             // 
             // NotifyFormButton
@@ -210,9 +211,45 @@
             this.DeviceAwareButton.UseVisualStyleBackColor = false;
             this.DeviceAwareButton.Click += new System.EventHandler(this.DeviceAwareButton_Click);
             // 
+            // VersionButton
+            // 
+            this.VersionButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.VersionButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.VersionButton.FlatAppearance.BorderSize = 0;
+            this.VersionButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.VersionButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.VersionButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.VersionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VersionButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.VersionButton.Image = null;
+            this.VersionButton.Location = new System.Drawing.Point(12, 185);
+            this.VersionButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.VersionButton.MouseDownSurface.BackgroundImage = null;
+            this.VersionButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.VersionButton.MouseDownSurface.Image = null;
+            this.VersionButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.VersionButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.VersionButton.MouseOverSurface.BackgroundImage = null;
+            this.VersionButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.VersionButton.MouseOverSurface.Image = null;
+            this.VersionButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.VersionButton.Name = "VersionButton";
+            this.VersionButton.Size = new System.Drawing.Size(226, 23);
+            this.VersionButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.VersionButton.Surface.BackgroundImage = null;
+            this.VersionButton.Surface.BorderColor = System.Drawing.Color.Gray;
+            this.VersionButton.Surface.BorderSize = 1;
+            this.VersionButton.Surface.Image = null;
+            this.VersionButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.VersionButton.TabIndex = 10;
+            this.VersionButton.Text = "Version";
+            this.VersionButton.UseVisualStyleBackColor = false;
+            this.VersionButton.Click += new System.EventHandler(this.VersionButton_Click);
+            // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(250, 200);
+            this.ClientSize = new System.Drawing.Size(250, 230);
+            this.Controls.Add(this.VersionButton);
             this.Controls.Add(this.DeviceAwareButton);
             this.Controls.Add(this.StockIconsButton);
             this.Controls.Add(this.NotifyFormButton);
@@ -224,6 +261,7 @@
             this.Controls.SetChildIndex(this.NotifyFormButton, 0);
             this.Controls.SetChildIndex(this.StockIconsButton, 0);
             this.Controls.SetChildIndex(this.DeviceAwareButton, 0);
+            this.Controls.SetChildIndex(this.VersionButton, 0);
             this.ResumeLayout(false);
 
         }
@@ -235,5 +273,6 @@
         private Button ButtonsButton;
         private Button StockIconsButton;
         private Button DeviceAwareButton;
+        private Button VersionButton;
     }
 }

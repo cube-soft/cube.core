@@ -101,6 +101,12 @@
     <Compile Include="NtsUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="VersionView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VersionView.Designer.cs">
+      <DependentUpon>VersionView.cs</DependentUpon>
+    </Compile>
     <Compile Include="WidgetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VersionView.resx">
+      <DependentUpon>VersionView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

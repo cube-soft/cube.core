@@ -128,6 +128,21 @@ namespace Cube.Forms.Demo
             dialog.ShowDialog();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// VersionButton_Click
+        ///
+        /// <summary>
+        /// バージョン情報を確認するためのデモ用フォームを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void VersionButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new DemoVersion();
+            dialog.ShowDialog();
+        }
+
         #endregion
     }
 }
