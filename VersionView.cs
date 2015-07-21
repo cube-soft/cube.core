@@ -154,6 +154,29 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Url
+        ///
+        /// <summary>
+        /// Web ページの URL を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        public string Url
+        {
+            get { return WebLinkLabel.Text; }
+            set
+            {
+                if (WebLinkLabel.Text != value)
+                {
+                    WebLinkLabel.Text = value;
+                    ResetPosition();
+                }
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Logo
         ///
         /// <summary>
@@ -261,6 +284,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void ResetPosition()
         {
+            LayoutContainer.Panel1.Padding = new Padding(0, 0, 0, 0);
+            LayoutContainer.Panel2.Padding = new Padding(0, 0, 0, 0);
             var header = Math.Max((HeaderPanel.Height - _FixedHeaderHeight) / 2, 0);
             var footer = Math.Max((FooterPanel.Height - _FixedFooterHeight) / 2, 0);
             LayoutContainer.Panel1.Padding = new Padding(0, header, 0, 0);

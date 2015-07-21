@@ -58,12 +58,12 @@
             // LayoutContainer.Panel1
             // 
             this.LayoutContainer.Panel1.Controls.Add(this.HeaderPanel);
-            this.LayoutContainer.Panel1MinSize = 135;
+            this.LayoutContainer.Panel1MinSize = 160;
             // 
             // LayoutContainer.Panel2
             // 
             this.LayoutContainer.Panel2.Controls.Add(this.FooterPanel);
-            this.LayoutContainer.Panel2MinSize = 50;
+            this.LayoutContainer.Panel2MinSize = 70;
             this.LayoutContainer.Size = new System.Drawing.Size(400, 350);
             this.LayoutContainer.SplitterDistance = 250;
             this.LayoutContainer.SplitterWidth = 1;
