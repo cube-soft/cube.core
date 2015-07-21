@@ -58,12 +58,12 @@
             // LayoutContainer.Panel1
             // 
             this.LayoutContainer.Panel1.Controls.Add(this.HeaderPanel);
-            this.LayoutContainer.Panel1MinSize = 160;
+            this.LayoutContainer.Panel1MinSize = 140;
             // 
             // LayoutContainer.Panel2
             // 
             this.LayoutContainer.Panel2.Controls.Add(this.FooterPanel);
-            this.LayoutContainer.Panel2MinSize = 70;
+            this.LayoutContainer.Panel2MinSize = 60;
             this.LayoutContainer.Size = new System.Drawing.Size(400, 350);
             this.LayoutContainer.SplitterDistance = 250;
             this.LayoutContainer.SplitterWidth = 1;
@@ -87,9 +87,9 @@
             // 
             this.DotNetVersionLabel.BackColor = System.Drawing.Color.Transparent;
             this.DotNetVersionLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DotNetVersionLabel.Location = new System.Drawing.Point(0, 110);
+            this.DotNetVersionLabel.Location = new System.Drawing.Point(0, 100);
             this.DotNetVersionLabel.Name = "DotNetVersionLabel";
-            this.DotNetVersionLabel.Size = new System.Drawing.Size(400, 25);
+            this.DotNetVersionLabel.Size = new System.Drawing.Size(400, 20);
             this.DotNetVersionLabel.TabIndex = 5;
             this.DotNetVersionLabel.Text = ".NET Framework 4.0.30319.18408";
             this.DotNetVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -98,9 +98,9 @@
             // 
             this.OSVersionLabel.BackColor = System.Drawing.Color.Transparent;
             this.OSVersionLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.OSVersionLabel.Location = new System.Drawing.Point(0, 85);
+            this.OSVersionLabel.Location = new System.Drawing.Point(0, 80);
             this.OSVersionLabel.Name = "OSVersionLabel";
-            this.OSVersionLabel.Size = new System.Drawing.Size(400, 25);
+            this.OSVersionLabel.Size = new System.Drawing.Size(400, 20);
             this.OSVersionLabel.TabIndex = 4;
             this.OSVersionLabel.Text = "Microsoft Windows NT 6.1.7601 Service Pack 1";
             this.OSVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -111,7 +111,7 @@
             this.VersionLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.VersionLabel.Location = new System.Drawing.Point(0, 60);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(400, 25);
+            this.VersionLabel.Size = new System.Drawing.Size(400, 20);
             this.VersionLabel.TabIndex = 3;
             this.VersionLabel.Text = "Version 1.0.0 (x86)";
             this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -152,9 +152,9 @@
             // 
             this.WebLinkLabel.BackColor = System.Drawing.Color.Transparent;
             this.WebLinkLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.WebLinkLabel.Location = new System.Drawing.Point(0, 25);
+            this.WebLinkLabel.Location = new System.Drawing.Point(0, 20);
             this.WebLinkLabel.Name = "WebLinkLabel";
-            this.WebLinkLabel.Size = new System.Drawing.Size(400, 25);
+            this.WebLinkLabel.Size = new System.Drawing.Size(400, 20);
             this.WebLinkLabel.TabIndex = 1;
             this.WebLinkLabel.TabStop = true;
             this.WebLinkLabel.Text = "http://www.cube-soft.jp/";
@@ -166,7 +166,7 @@
             this.PublisherLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.PublisherLabel.Location = new System.Drawing.Point(0, 0);
             this.PublisherLabel.Name = "PublisherLabel";
-            this.PublisherLabel.Size = new System.Drawing.Size(400, 25);
+            this.PublisherLabel.Size = new System.Drawing.Size(400, 20);
             this.PublisherLabel.TabIndex = 0;
             this.PublisherLabel.Text = "Copyright (c) 2014 CubeSoft, Inc.";
             this.PublisherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

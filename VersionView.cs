@@ -307,8 +307,8 @@ namespace Cube.Forms
         #endregion
 
         #region Static fields
-        private int _FixedHeaderHeight = 135;
-        private int _FixedFooterHeight = 50;
+        private int _FixedHeaderHeight = 120;
+        private int _FixedFooterHeight = 40;
         #endregion
     }
 }
