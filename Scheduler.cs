@@ -43,21 +43,11 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Scheduler() : this(DateTime.Now) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Scheduler
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Scheduler(DateTime lastExecuted)
+        public Scheduler()
         {
             Interval = TimeSpan.FromSeconds(1);
-            LastExecuted = lastExecuted;
+            InitialDelay = TimeSpan.Zero;
+            LastExecuted = DateTime.Now;
             State = SchedulerState.Stop;
             _impl.Elapsed += (s, e) => OnExecute(e);
         }
@@ -76,6 +66,24 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public TimeSpan Interval { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitialDelay
+        /// 
+        /// <summary>
+        /// 最初の実行を遅延させる時間を取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// この値は、Start が実行されてから最初に操作が実行されるまでの
+        /// 時間に適用されます。したがってStop and Start 操作を行う度に
+        /// この値が適用されます。ただし、Suspend and Resume 操作では
+        /// この値は適用されません。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TimeSpan InitialDelay { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,8 +141,7 @@ namespace Cube
             System.Diagnostics.Debug.Assert(!_impl.Enabled);
             State = SchedulerState.Run;
 
-            var interval = Interval - (DateTime.Now - LastExecuted);
-            if (interval > TimeSpan.Zero) _impl.Interval = interval.TotalMilliseconds;
+            if (InitialDelay > TimeSpan.Zero) _impl.Interval = InitialDelay.TotalMilliseconds;
             else
             {
                 OnExecute(new EventArgs());
