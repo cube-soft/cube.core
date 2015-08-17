@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DriveTester.cs
+/// DeviceTester.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,7 +24,7 @@ namespace Cube.Tests.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.DriveTester
+    /// Cube.Tests.DeviceTester
     /// 
     /// <summary>
     /// Drive クラスのテストを行うためのクラスです。
@@ -32,70 +32,51 @@ namespace Cube.Tests.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    public class DriveTester
+    public class DeviceTester
     {
         /* ----------------------------------------------------------------- */
         ///
         /// TestGet
         /// 
         /// <summary>
-        /// ドライブの情報を取得するテストを行います。
+        /// デバイスに関するプロパティを取得するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("C:")]
-        public void TestGet(string letter)
+        [Test]
+        public void TestGet()
         {
             Assert.DoesNotThrow(() =>
             {
-                var drive = new Cube.FileSystem.Drive(letter);
-                Assert.That(drive.Index, Is.EqualTo(0));
-                Assert.That(drive.Letter, Is.EqualTo(letter));
-                Assert.That(drive.Type, Is.EqualTo(System.IO.DriveType.Fixed));
-                Assert.That(drive.Format, Is.EqualTo("NTFS"));
-                Assert.That(drive.Model, Is.Not.Null.Or.Empty);
-                Assert.That(drive.MediaType, Is.EqualTo(Cube.FileSystem.MediaType.HardDisk));
-                Assert.That(drive.InterfaceType, Is.Not.Null.Or.Empty);
-                Assert.That(drive.Size, Is.AtLeast(1024 * 1024 * 1024));
-                Assert.That(drive.FreeSpace, Is.AtLeast(1));
+                var drive = new Cube.FileSystem.Drive("C:");
+                var device = new Cube.FileSystem.Device(drive);
+                Assert.That(device.Index, Is.EqualTo(0));
+                Assert.That(device.Path, Is.Not.Null.Or.Empty);
+                Assert.That(device.Handle, Is.AtLeast(1));
             });
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TestGetError
+        /// TestDetach
         /// 
         /// <summary>
-        /// ドライブの情報を取得に失敗するテストを行います。
+        /// デバイスを取り外すテストを行います。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// C: ドライブを取り外そうとして失敗するテストを行います。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestGetError()
+        public void TestDetach()
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.Throws<Cube.FileSystem.VetoException>(() =>
             {
-                var drive = new Cube.FileSystem.Drive(new object());
-                Assert.Fail("never reached");
-            });
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TestGetDrives
-        /// 
-        /// <summary>
-        /// ドライブ一覧を取得するテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void TestGetDrives()
-        {
-            Assert.DoesNotThrow(() =>
-            {
-                var drives = Cube.FileSystem.Drive.GetDrives();
-                Assert.That(drives.Length, Is.AtLeast(1));
+                var drive = new Cube.FileSystem.Drive("C:");
+                var device = new Cube.FileSystem.Device(drive);
+                device.Detach();
             });
         }
     }
