@@ -77,10 +77,8 @@ namespace Cube.Tests
         {
             Assert.DoesNotThrow(() =>
             {
-                var time = DateTime.Now;
-                var scheduler = new Cube.Scheduler(time);
+                var scheduler = new Cube.Scheduler();
 
-                Assert.That(scheduler.LastExecuted, Is.EqualTo(time));
                 Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Stop));
 
                 scheduler.Start();
@@ -94,7 +92,6 @@ namespace Cube.Tests
 
                 scheduler.Stop();
                 Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Stop));
-                Assert.That(scheduler.LastExecuted, Is.GreaterThan(time));
             });
         }
 
