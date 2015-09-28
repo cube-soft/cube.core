@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Drawing;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -33,6 +34,8 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class NtsForm : System.Windows.Forms.Form
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// NtsForm
@@ -48,6 +51,24 @@ namespace Cube.Forms
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             DoubleBuffered = true;
             Font = FontFactory.Create(12, Font.Style, GraphicsUnit.Pixel);
+            Logger = LogManager.GetLogger(GetType());
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Logger
+        ///
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ILog Logger { get; private set; }
+
+        #endregion
     }
 }
