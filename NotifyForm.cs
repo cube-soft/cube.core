@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using TaskEx = Cube.TaskEx;
+using TaskEx = System.Threading.Tasks.Task;
 
 namespace Cube.Forms
 {
