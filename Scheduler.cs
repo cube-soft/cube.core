@@ -162,7 +162,7 @@ namespace Cube
             }
 
             _impl.Start();
-            Logger.Debug("Start");
+            Logger.DebugFormat("Start\tInterval:{0}\tInitialDelay:{1}", Interval, InitialDelay);
         }
 
         /* ----------------------------------------------------------------- */
@@ -243,7 +243,9 @@ namespace Cube
             System.Diagnostics.Debug.Assert(!_impl.Enabled);
             State = SchedulerState.Run;
             _impl.Start();
-            Logger.DebugFormat("Resume\tLastExecuted:{0}\tInterval:{1:D}msec", LastExecuted, _impl.Interval);
+            Logger.DebugFormat("Resume\tLastExecuted:{0}\tInterval:{1}",
+                LastExecuted, TimeSpan.FromMilliseconds(_impl.Interval)
+            );
         }
 
         #endregion
