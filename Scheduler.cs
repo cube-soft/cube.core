@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using log4net;
 
 namespace Cube
 {
@@ -49,6 +50,7 @@ namespace Cube
             InitialDelay = TimeSpan.Zero;
             LastExecuted = DateTime.Now;
             State = SchedulerState.Stop;
+            Logger = LogManager.GetLogger(GetType());
             _impl.Elapsed += (s, e) => OnExecute(e);
         }
 
@@ -107,6 +109,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public SchedulerState State { get; private set; }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ILog Logger { get; set; }
+
         #endregion
 
         #region Events
@@ -149,6 +162,7 @@ namespace Cube
             }
 
             _impl.Start();
+            Logger.Debug("Start");
         }
 
         /* ----------------------------------------------------------------- */
@@ -184,6 +198,8 @@ namespace Cube
             if (State == SchedulerState.Stop) return;
 
             if (_impl.Enabled) _impl.Stop();
+            Logger.DebugFormat("Stop\tLastExecuted:{0}", LastExecuted);
+
             State = SchedulerState.Stop;
             LastExecuted = DateTime.Now;
         }
@@ -204,6 +220,7 @@ namespace Cube
             System.Diagnostics.Debug.Assert(_impl.Enabled);
             _impl.Stop();
             State = SchedulerState.Suspend;
+            Logger.DebugFormat("Suspend\tLastExecuted:{0}", LastExecuted);
 
             var interval = Interval - (DateTime.Now - LastExecuted);
             if (interval < TimeSpan.Zero) interval = Interval;
@@ -226,6 +243,7 @@ namespace Cube
             System.Diagnostics.Debug.Assert(!_impl.Enabled);
             State = SchedulerState.Run;
             _impl.Start();
+            Logger.DebugFormat("Resume\tLastExecuted:{0}\tInterval:{1:D}msec", LastExecuted, _impl.Interval);
         }
 
         #endregion
