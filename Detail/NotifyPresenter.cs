@@ -21,6 +21,7 @@ using System;
 using System.Threading;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -77,6 +78,7 @@ namespace Cube.Forms
             Queue.CollectionChanged += Model_CollectionChanged;
 
             SynchronizationContext = System.Threading.SynchronizationContext.Current;
+            Logger = LogManager.GetLogger(GetType());
         }
 
         #endregion
@@ -115,6 +117,17 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public SynchronizationContext SynchronizationContext { get; private set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected ILog Logger { get; private set; }
 
         #endregion
 

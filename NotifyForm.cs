@@ -379,6 +379,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnShowing(CancelEventArgs e)
         {
+            Logger.DebugFormat("Title:{0}\tDescription:{1}", Title, Description);
             SetLocation();
             SetStyle();
             base.OnShowing(e);
