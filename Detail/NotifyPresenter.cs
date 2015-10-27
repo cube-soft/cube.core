@@ -145,8 +145,12 @@ namespace Cube.Forms
         private void Model_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
-            if (Queue.Count <= 0 || View.IsBusy) return;
-            Execute(Queue.Dequeue());
+
+            SynchronizationContext.Post(_ =>
+            {
+                if (Queue.Count <= 0 || View.IsBusy) return;
+                Execute(Queue.Dequeue());
+            }, null);
         }
 
         /* --------------------------------------------------------------------- */
@@ -179,17 +183,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void Execute(NotifyItem item)
         {
-            SynchronizationContext.Post(_ =>
-            {
-                View.Level = item.Level;
-                View.Title = item.Title;
-                View.Description = item.Description;
-                View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
-                View.Tag = item.Data;
-                if (item.Image != null) View.Image = item.Image;
+            View.Level = item.Level;
+            View.Title = item.Title;
+            View.Description = item.Description;
+            View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
+            View.Tag = item.Data;
+            if (item.Image != null) View.Image = item.Image;
 
-                View.Show((int)item.DisplayTime.TotalMilliseconds);
-            }, null);
+            View.Show((int)item.DisplayTime.TotalMilliseconds);
         }
 
         #endregion
