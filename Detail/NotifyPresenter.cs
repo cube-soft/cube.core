@@ -21,6 +21,7 @@ using System;
 using System.Threading;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -77,6 +78,7 @@ namespace Cube.Forms
             Queue.CollectionChanged += Model_CollectionChanged;
 
             SynchronizationContext = System.Threading.SynchronizationContext.Current;
+            Logger = LogManager.GetLogger(GetType());
         }
 
         #endregion
@@ -116,6 +118,17 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public SynchronizationContext SynchronizationContext { get; private set; }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected ILog Logger { get; private set; }
+
         #endregion
 
         #region Event handlers
@@ -132,8 +145,12 @@ namespace Cube.Forms
         private void Model_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
-            if (Queue.Count <= 0 || View.IsBusy) return;
-            Execute(Queue.Dequeue());
+
+            SynchronizationContext.Post(_ =>
+            {
+                if (Queue.Count <= 0 || View.IsBusy) return;
+                Execute(Queue.Dequeue());
+            }, null);
         }
 
         /* --------------------------------------------------------------------- */
@@ -166,17 +183,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void Execute(NotifyItem item)
         {
-            SynchronizationContext.Post(_ =>
-            {
-                View.Level = item.Level;
-                View.Title = item.Title;
-                View.Description = item.Description;
-                View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
-                View.Tag = item.Data;
-                if (item.Image != null) View.Image = item.Image;
+            View.Level = item.Level;
+            View.Title = item.Title;
+            View.Description = item.Description;
+            View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
+            View.Tag = item.Data;
+            if (item.Image != null) View.Image = item.Image;
 
-                View.Show((int)item.DisplayTime.TotalMilliseconds);
-            }, null);
+            View.Show((int)item.DisplayTime.TotalMilliseconds);
         }
 
         #endregion
