@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// IReadOnlyCollection.cs
+/// IProgress.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,28 +17,28 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-namespace System.Collections.Generic
+namespace System
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// System.Collections.Generic.IReadOnlyCollection
+    /// System.IProgress
     /// 
     /// <summary>
-    /// 要素の読み取り専用のコレクションを表します。
+    /// 進行状況の更新のプロバイダーを定義します。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IReadOnlyCollection<T> : IEnumerable<T>, IEnumerable
+    public interface IProgress<T>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Count
+        /// Report
         /// 
         /// <summary>
-        /// コレクション内の要素の数を取得します。
+        /// 進行状況の更新を報告します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        int Count { get;  }
+        void Report(T value);
     }
 }
