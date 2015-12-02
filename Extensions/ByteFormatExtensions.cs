@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FormatExtensions.cs
+/// ByteFormatExtensions.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -41,7 +41,7 @@ namespace Cube.Extensions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ToPrettyBytes(this UInt64 bytes)
+        public static string ToPrettyBytes(this long bytes)
         {
             var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
