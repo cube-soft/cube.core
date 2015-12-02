@@ -33,7 +33,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsTester : Cube.Development.ResourceInitializer
+    class SettingsTester : FileResource
     {
         /* ----------------------------------------------------------------- */
         ///
