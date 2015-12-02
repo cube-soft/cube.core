@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FormatExtensions.cs
+/// ByteFormatExtensions.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
