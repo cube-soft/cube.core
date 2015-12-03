@@ -71,6 +71,7 @@
     <Compile Include="NotifyItem.cs" />
     <Compile Include="NotifyLevel.cs" />
     <Compile Include="NotifyQueue.cs" />
+    <Compile Include="Settings\AssemblyReader.cs" />
     <Compile Include="Settings\ObservableSettings.cs">
       <SubType>Code</SubType>
     </Compile>
