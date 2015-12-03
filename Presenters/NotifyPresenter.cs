@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using log4net;
 
@@ -34,7 +33,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NotifyPresenter
+    public class NotifyPresenter : PresenterBase<NotifyForm, NotifyQueue>
     {
         #region Constructors
 
@@ -69,65 +68,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyPresenter(NotifyForm view, NotifyQueue queue)
+        public NotifyPresenter(NotifyForm view, NotifyQueue model)
+            : base(view, model)
         {
-            View = view;
             View.Hidden += View_Hidden;
-
-            Queue = queue;
-            Queue.CollectionChanged += Model_CollectionChanged;
-
-            SynchronizationContext = System.Threading.SynchronizationContext.Current;
-            Logger = LogManager.GetLogger(GetType());
+            Model.CollectionChanged += Model_CollectionChanged;
         }
-
-        #endregion
-
-        #region Properties
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// View
-        /// 
-        /// <summary>
-        /// ビューオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NotifyForm View { get; private set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Queue
-        /// 
-        /// <summary>
-        /// 未通知の項目一覧を取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NotifyQueue Queue { get; private set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// SynchronizationContext
-        /// 
-        /// <summary>
-        /// オブジェクト初期化時のコンテキストを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public SynchronizationContext SynchronizationContext { get; private set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected ILog Logger { get; private set; }
 
         #endregion
 
@@ -146,11 +92,11 @@ namespace Cube.Forms
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
 
-            SynchronizationContext.Post(_ =>
+            Sync(() =>
             {
-                if (Queue.Count <= 0 || View.IsBusy) return;
-                Execute(Queue.Dequeue());
-            }, null);
+                if (Model.Count <= 0 || View.IsBusy) return;
+                Execute(Model.Dequeue());
+            });
         }
 
         /* --------------------------------------------------------------------- */
@@ -164,8 +110,8 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void View_Hidden(object sender, EventArgs e)
         {
-            if (Queue.Count <= 0) return;
-            Execute(Queue.Dequeue());
+            if (Model.Count <= 0) return;
+            Sync(() => Execute(Model.Dequeue()));
         }
 
         #endregion

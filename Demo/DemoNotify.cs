@@ -91,7 +91,7 @@ namespace Cube.Forms.Demo
             item.InitialDelay = TimeSpan.FromSeconds((double)DelaySeconds.Value);
 
             Log(string.Format("Enqueue: Level = {0}", item.Level));
-            _notify.Queue.Enqueue(item);
+            _notify.Model.Enqueue(item);
         }
 
         /* ----------------------------------------------------------------- */
@@ -106,7 +106,7 @@ namespace Cube.Forms.Demo
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Log("ClearButton.Click");
-            _notify.Queue.Clear();
+            _notify.Model.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -136,7 +136,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void View_Hidden(object sender, EventArgs e)
         {
-            if (!_notify.View.IsBusy && _notify.Queue.Count == 0) Log("Hidden: Queue is empty");
+            if (!_notify.View.IsBusy && _notify.Model.Count == 0) Log("Hidden: Queue is empty");
             else Log("Hidden");
         }
 
