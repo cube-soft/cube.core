@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ImageButton = new Cube.Forms.Button();
+            this.ImageButton = new Cube.Forms.FlatButton();
             this.Separator = new System.Windows.Forms.PictureBox();
             this.RightPanel = new System.Windows.Forms.Panel();
-            this.HideButton = new Cube.Forms.Button();
-            this.DescriptionButton = new Cube.Forms.Button();
-            this.TitleButton = new Cube.Forms.Button();
+            this.HideButton = new Cube.Forms.FlatButton();
+            this.DescriptionButton = new Cube.Forms.FlatButton();
+            this.TitleButton = new Cube.Forms.FlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).BeginInit();
             this.RightPanel.SuspendLayout();
             this.SuspendLayout();
@@ -228,12 +228,12 @@
 
         #endregion
 
-        private Button ImageButton;
+        private FlatButton ImageButton;
         private System.Windows.Forms.PictureBox Separator;
         private System.Windows.Forms.Panel RightPanel;
-        private Button HideButton;
-        private Button DescriptionButton;
-        private Button TitleButton;
+        private FlatButton HideButton;
+        private FlatButton DescriptionButton;
+        private FlatButton TitleButton;
 
 
     }

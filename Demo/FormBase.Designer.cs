@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBase));
             this.HeaderPanel = new System.Windows.Forms.Panel();
-            this.CloseButton = new Cube.Forms.Button();
+            this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
             this.HeaderSplitter = new System.Windows.Forms.PictureBox();
@@ -139,7 +139,7 @@
         #endregion
 
         private System.Windows.Forms.Panel HeaderPanel;
-        private Button CloseButton;
+        private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;
         private System.Windows.Forms.PictureBox LogoPictureBox;
         private System.Windows.Forms.PictureBox HeaderSplitter;

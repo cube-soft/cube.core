@@ -53,9 +53,9 @@
             this.ImageRadioButton2 = new Cube.Forms.RadioButton();
             this.ImageRadioButton1 = new Cube.Forms.RadioButton();
             this.ButtonGroupBox = new System.Windows.Forms.GroupBox();
-            this.ImageButton2 = new Cube.Forms.Button();
-            this.FlatButton = new Cube.Forms.Button();
-            this.ImageButton1 = new Cube.Forms.Button();
+            this.ImageButton2 = new Cube.Forms.FlatButton();
+            this.FlatButton = new Cube.Forms.FlatButton();
+            this.ImageButton1 = new Cube.Forms.FlatButton();
             this.OriginalCheckBoxGroupBox.SuspendLayout();
             this.OriginalRadioButtonGroupBox.SuspendLayout();
             this.OriginalButtonGroupBox.SuspendLayout();
@@ -765,8 +765,8 @@
         private RadioButton ImageRadioButton2;
         private RadioButton ImageRadioButton1;
         private System.Windows.Forms.GroupBox ButtonGroupBox;
-        private Button ImageButton2;
-        private Button FlatButton;
-        private Button ImageButton1;
+        private FlatButton ImageButton2;
+        private FlatButton FlatButton;
+        private FlatButton ImageButton1;
     }
 }

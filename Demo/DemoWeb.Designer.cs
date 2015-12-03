@@ -31,7 +31,7 @@
             this.ToolPanel = new System.Windows.Forms.TableLayoutPanel();
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.VersionComboBox = new System.Windows.Forms.ComboBox();
-            this.UpdateButton = new Cube.Forms.Button();
+            this.UpdateButton = new Cube.Forms.FlatButton();
             this.WebBrowser = new Cube.Forms.WebBrowser();
             this.ToolPanel.SuspendLayout();
             this.SuspendLayout();
@@ -144,7 +144,7 @@
         private WebBrowser WebBrowser;
         private System.Windows.Forms.TextBox UrlTextBox;
         private System.Windows.Forms.ComboBox VersionComboBox;
-        private Button UpdateButton;
+        private FlatButton UpdateButton;
 
     }
 }
