@@ -148,6 +148,7 @@ namespace Cube.Forms
         {
             var reader = new AssemblyReader(Assembly);
             Text = string.Format("{0} について", reader.Product);
+            Icon = reader.Icon;
             base.OnLoad(e);
         }
 

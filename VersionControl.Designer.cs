@@ -60,7 +60,7 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.LayoutPanel.Size = new System.Drawing.Size(300, 250);
             this.LayoutPanel.TabIndex = 0;
             // 
@@ -104,7 +104,7 @@
             this.ContentsPanel.Location = new System.Drawing.Point(0, 118);
             this.ContentsPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ContentsPanel.Name = "ContentsPanel";
-            this.ContentsPanel.Size = new System.Drawing.Size(300, 92);
+            this.ContentsPanel.Size = new System.Drawing.Size(300, 96);
             this.ContentsPanel.TabIndex = 2;
             // 
             // DescriptionLabel
@@ -113,7 +113,7 @@
             this.DescriptionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DescriptionLabel.Location = new System.Drawing.Point(0, 0);
             this.DescriptionLabel.Name = "DescriptionLabel";
-            this.DescriptionLabel.Size = new System.Drawing.Size(300, 92);
+            this.DescriptionLabel.Size = new System.Drawing.Size(300, 96);
             this.DescriptionLabel.TabIndex = 0;
             this.DescriptionLabel.Text = "このライブラリは Apache 2.0 でライセンスされています。";
             this.DescriptionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -123,20 +123,20 @@
             this.FooterPanel.Controls.Add(this.WebLinkLabel);
             this.FooterPanel.Controls.Add(this.CopyrightLabel);
             this.FooterPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FooterPanel.Location = new System.Drawing.Point(0, 210);
+            this.FooterPanel.Location = new System.Drawing.Point(0, 214);
             this.FooterPanel.Margin = new System.Windows.Forms.Padding(0);
             this.FooterPanel.Name = "FooterPanel";
-            this.FooterPanel.Size = new System.Drawing.Size(300, 40);
+            this.FooterPanel.Size = new System.Drawing.Size(300, 36);
             this.FooterPanel.TabIndex = 3;
             // 
             // WebLinkLabel
             // 
             this.WebLinkLabel.BackColor = System.Drawing.Color.Transparent;
             this.WebLinkLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.WebLinkLabel.Location = new System.Drawing.Point(0, 20);
+            this.WebLinkLabel.Location = new System.Drawing.Point(0, 18);
             this.WebLinkLabel.Margin = new System.Windows.Forms.Padding(0);
             this.WebLinkLabel.Name = "WebLinkLabel";
-            this.WebLinkLabel.Size = new System.Drawing.Size(300, 20);
+            this.WebLinkLabel.Size = new System.Drawing.Size(300, 18);
             this.WebLinkLabel.TabIndex = 1;
             this.WebLinkLabel.TabStop = true;
             this.WebLinkLabel.Text = "http://www.cube-soft.jp/";
@@ -149,7 +149,7 @@
             this.CopyrightLabel.Location = new System.Drawing.Point(0, 0);
             this.CopyrightLabel.Margin = new System.Windows.Forms.Padding(0);
             this.CopyrightLabel.Name = "CopyrightLabel";
-            this.CopyrightLabel.Size = new System.Drawing.Size(300, 20);
+            this.CopyrightLabel.Size = new System.Drawing.Size(300, 18);
             this.CopyrightLabel.TabIndex = 0;
             this.CopyrightLabel.Text = "Copyright (c) 2014 CubeSoft, Inc.";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

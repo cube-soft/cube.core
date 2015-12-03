@@ -140,6 +140,8 @@ namespace Cube.Forms.Demo
         private void VersionButton_Click(object sender, EventArgs e)
         {
             var dialog = new VersionForm(System.Reflection.Assembly.GetExecutingAssembly());
+            dialog.Description = string.Empty;
+            dialog.Height = 350;
             dialog.ShowDialog();
         }
 
