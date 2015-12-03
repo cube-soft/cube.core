@@ -605,7 +605,7 @@
             this.ButtonGroupBox.Size = new System.Drawing.Size(285, 88);
             this.ButtonGroupBox.TabIndex = 1;
             this.ButtonGroupBox.TabStop = false;
-            this.ButtonGroupBox.Text = "Cube.Forms.Button";
+            this.ButtonGroupBox.Text = "Cube.Forms.FlatButton";
             // 
             // ImageButton2
             // 
