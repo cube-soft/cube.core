@@ -19,10 +19,9 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using Cube.Extensions.Forms;
+using Cube.Forms.Extensions;
 
 namespace Cube.Forms
 {

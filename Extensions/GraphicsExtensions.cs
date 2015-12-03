@@ -21,7 +21,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Cube.Extensions.Forms
+namespace Cube.Forms.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -32,7 +32,7 @@ namespace Cube.Extensions.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class GraphicsExtensions
+    internal static class GraphicsExtensions
     {
         #region Extension methods
 
