@@ -18,7 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
+using System.Drawing;
 
 namespace Cube.Forms
 {
@@ -70,6 +70,74 @@ namespace Cube.Forms
             get { return false; }
         }
 
+        #endregion
+
+        #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowFocusCues
+        ///
+        /// <summary>
+        /// フォーカス時に枠線を表示するかどうかを示す値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnEnabledChanged(EventArgs e)
+        {
+            if (Enabled) SetEnabledColor();
+            else SetDisabledColor();
+
+            base.OnEnabledChanged(e);
+        }
+
+        #endregion
+
+        #region Other private methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetEnabledColor
+        ///
+        /// <summary>
+        /// ボタンが有効状態の時の色を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetEnabledColor()
+        {
+            BackColor = _background;
+            ForeColor = _foreground;
+            FlatAppearance.BorderColor = _border;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetDisabledColor
+        ///
+        /// <summary>
+        /// ボタンが無効状態の時の色を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetDisabledColor()
+        {
+            _background = BackColor;
+            _foreground = ForeColor;
+            _border = FlatAppearance.BorderColor;
+
+            var control = SystemColors.ButtonFace;
+            BackColor = Color.FromArgb(204, 204, 204);
+            ForeColor = SystemColors.GrayText;
+            FlatAppearance.BorderColor = Color.FromArgb(191, 191, 191);
+        }
+
+        #endregion
+
+        #region Fields
+        private Color _background = Color.Empty;
+        private Color _foreground = Color.Empty;
+        private Color _border = Color.Empty;
         #endregion
     }
 }

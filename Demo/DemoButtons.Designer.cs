@@ -57,15 +57,15 @@
             this.FlatButton = new Cube.Forms.FlatButton();
             this.ImageFlatButton1 = new Cube.Forms.FlatButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.OriginalEnabledButton1 = new System.Windows.Forms.Button();
-            this.OriginalDisabledButton1 = new System.Windows.Forms.Button();
-            this.OriginalEnabledButton2 = new System.Windows.Forms.Button();
             this.OriginalDisabledButton2 = new System.Windows.Forms.Button();
-            this.EnabledButton1 = new Cube.Forms.Button();
-            this.EnabledButton2 = new Cube.Forms.Button();
-            this.DisabledButton1 = new Cube.Forms.Button();
+            this.OriginalEnabledButton2 = new System.Windows.Forms.Button();
+            this.OriginalDisabledButton1 = new System.Windows.Forms.Button();
+            this.OriginalEnabledButton1 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.DisabledButton2 = new Cube.Forms.Button();
+            this.DisabledButton1 = new Cube.Forms.Button();
+            this.EnabledButton2 = new Cube.Forms.Button();
+            this.EnabledButton1 = new Cube.Forms.Button();
             this.OriginalCheckBoxGroupBox.SuspendLayout();
             this.OriginalRadioButtonGroupBox.SuspendLayout();
             this.OriginalButtonGroupBox.SuspendLayout();
@@ -735,51 +735,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "System.Windows.Forms.Button";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.DisabledButton2);
-            this.groupBox2.Controls.Add(this.DisabledButton1);
-            this.groupBox2.Controls.Add(this.EnabledButton2);
-            this.groupBox2.Controls.Add(this.EnabledButton1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 37);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(285, 88);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Cube.Forms.Button";
-            // 
-            // OriginalEnabledButton1
-            // 
-            this.OriginalEnabledButton1.Location = new System.Drawing.Point(12, 22);
-            this.OriginalEnabledButton1.Name = "OriginalEnabledButton1";
-            this.OriginalEnabledButton1.Size = new System.Drawing.Size(60, 50);
-            this.OriginalEnabledButton1.TabIndex = 0;
-            this.OriginalEnabledButton1.Text = "Enable";
-            this.OriginalEnabledButton1.UseVisualStyleBackColor = true;
-            // 
-            // OriginalDisabledButton1
-            // 
-            this.OriginalDisabledButton1.Enabled = false;
-            this.OriginalDisabledButton1.Location = new System.Drawing.Point(147, 22);
-            this.OriginalDisabledButton1.Name = "OriginalDisabledButton1";
-            this.OriginalDisabledButton1.Size = new System.Drawing.Size(60, 50);
-            this.OriginalDisabledButton1.TabIndex = 1;
-            this.OriginalDisabledButton1.Text = "Disable";
-            this.OriginalDisabledButton1.UseVisualStyleBackColor = true;
-            // 
-            // OriginalEnabledButton2
-            // 
-            this.OriginalEnabledButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.OriginalEnabledButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
-            this.OriginalEnabledButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OriginalEnabledButton2.ForeColor = System.Drawing.Color.White;
-            this.OriginalEnabledButton2.Location = new System.Drawing.Point(78, 22);
-            this.OriginalEnabledButton2.Name = "OriginalEnabledButton2";
-            this.OriginalEnabledButton2.Size = new System.Drawing.Size(60, 50);
-            this.OriginalEnabledButton2.TabIndex = 2;
-            this.OriginalEnabledButton2.Text = "Enable";
-            this.OriginalEnabledButton2.UseVisualStyleBackColor = false;
-            // 
             // OriginalDisabledButton2
             // 
             this.OriginalDisabledButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
@@ -794,14 +749,72 @@
             this.OriginalDisabledButton2.Text = "Disable";
             this.OriginalDisabledButton2.UseVisualStyleBackColor = false;
             // 
-            // EnabledButton1
+            // OriginalEnabledButton2
             // 
-            this.EnabledButton1.Location = new System.Drawing.Point(12, 22);
-            this.EnabledButton1.Name = "EnabledButton1";
-            this.EnabledButton1.Size = new System.Drawing.Size(60, 50);
-            this.EnabledButton1.TabIndex = 0;
-            this.EnabledButton1.Text = "Enable";
-            this.EnabledButton1.UseVisualStyleBackColor = true;
+            this.OriginalEnabledButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.OriginalEnabledButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
+            this.OriginalEnabledButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OriginalEnabledButton2.ForeColor = System.Drawing.Color.White;
+            this.OriginalEnabledButton2.Location = new System.Drawing.Point(78, 22);
+            this.OriginalEnabledButton2.Name = "OriginalEnabledButton2";
+            this.OriginalEnabledButton2.Size = new System.Drawing.Size(60, 50);
+            this.OriginalEnabledButton2.TabIndex = 2;
+            this.OriginalEnabledButton2.Text = "Enable";
+            this.OriginalEnabledButton2.UseVisualStyleBackColor = false;
+            // 
+            // OriginalDisabledButton1
+            // 
+            this.OriginalDisabledButton1.Enabled = false;
+            this.OriginalDisabledButton1.Location = new System.Drawing.Point(147, 22);
+            this.OriginalDisabledButton1.Name = "OriginalDisabledButton1";
+            this.OriginalDisabledButton1.Size = new System.Drawing.Size(60, 50);
+            this.OriginalDisabledButton1.TabIndex = 1;
+            this.OriginalDisabledButton1.Text = "Disable";
+            this.OriginalDisabledButton1.UseVisualStyleBackColor = true;
+            // 
+            // OriginalEnabledButton1
+            // 
+            this.OriginalEnabledButton1.Location = new System.Drawing.Point(12, 22);
+            this.OriginalEnabledButton1.Name = "OriginalEnabledButton1";
+            this.OriginalEnabledButton1.Size = new System.Drawing.Size(60, 50);
+            this.OriginalEnabledButton1.TabIndex = 0;
+            this.OriginalEnabledButton1.Text = "Enable";
+            this.OriginalEnabledButton1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.DisabledButton2);
+            this.groupBox2.Controls.Add(this.DisabledButton1);
+            this.groupBox2.Controls.Add(this.EnabledButton2);
+            this.groupBox2.Controls.Add(this.EnabledButton1);
+            this.groupBox2.Location = new System.Drawing.Point(12, 37);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(285, 88);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Cube.Forms.Button";
+            // 
+            // DisabledButton2
+            // 
+            this.DisabledButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.DisabledButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
+            this.DisabledButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DisabledButton2.ForeColor = System.Drawing.Color.White;
+            this.DisabledButton2.Location = new System.Drawing.Point(213, 22);
+            this.DisabledButton2.Name = "DisabledButton2";
+            this.DisabledButton2.Size = new System.Drawing.Size(60, 50);
+            this.DisabledButton2.TabIndex = 3;
+            this.DisabledButton2.Text = "Disable";
+            this.DisabledButton2.UseVisualStyleBackColor = false;
+            // 
+            // DisabledButton1
+            // 
+            this.DisabledButton1.Location = new System.Drawing.Point(147, 22);
+            this.DisabledButton1.Name = "DisabledButton1";
+            this.DisabledButton1.Size = new System.Drawing.Size(60, 50);
+            this.DisabledButton1.TabIndex = 2;
+            this.DisabledButton1.Text = "Disable";
+            this.DisabledButton1.UseVisualStyleBackColor = true;
             // 
             // EnabledButton2
             // 
@@ -816,29 +829,14 @@
             this.EnabledButton2.Text = "Enable";
             this.EnabledButton2.UseVisualStyleBackColor = false;
             // 
-            // DisabledButton1
+            // EnabledButton1
             // 
-            this.DisabledButton1.Enabled = false;
-            this.DisabledButton1.Location = new System.Drawing.Point(147, 22);
-            this.DisabledButton1.Name = "DisabledButton1";
-            this.DisabledButton1.Size = new System.Drawing.Size(60, 50);
-            this.DisabledButton1.TabIndex = 2;
-            this.DisabledButton1.Text = "Disable";
-            this.DisabledButton1.UseVisualStyleBackColor = true;
-            // 
-            // DisabledButton2
-            // 
-            this.DisabledButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.DisabledButton2.Enabled = false;
-            this.DisabledButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
-            this.DisabledButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DisabledButton2.ForeColor = System.Drawing.Color.White;
-            this.DisabledButton2.Location = new System.Drawing.Point(213, 22);
-            this.DisabledButton2.Name = "DisabledButton2";
-            this.DisabledButton2.Size = new System.Drawing.Size(60, 50);
-            this.DisabledButton2.TabIndex = 3;
-            this.DisabledButton2.Text = "Disable";
-            this.DisabledButton2.UseVisualStyleBackColor = false;
+            this.EnabledButton1.Location = new System.Drawing.Point(12, 22);
+            this.EnabledButton1.Name = "EnabledButton1";
+            this.EnabledButton1.Size = new System.Drawing.Size(60, 50);
+            this.EnabledButton1.TabIndex = 0;
+            this.EnabledButton1.Text = "Enable";
+            this.EnabledButton1.UseVisualStyleBackColor = true;
             // 
             // DemoButtons
             // 
