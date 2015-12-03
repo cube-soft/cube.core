@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -48,6 +49,7 @@ namespace Cube.Forms
         protected PresenterBase(ViewType view, ModelType model)
         {
             SynchronizationContext = SynchronizationContext.Current;
+            Logger = LogManager.GetLogger(GetType());
 
             View  = view;
             Model = model;
@@ -89,6 +91,17 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public SynchronizationContext SynchronizationContext { get; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected ILog Logger { get; private set; }
 
         #endregion
 
