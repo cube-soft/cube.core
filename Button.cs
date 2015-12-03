@@ -18,7 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
+using System.Drawing;
 
 namespace Cube.Forms
 {
@@ -29,6 +29,12 @@ namespace Cube.Forms
     /// <summary>
     /// ボタンを作成するためのクラスです。
     /// </summary>
+    /// 
+    /// <remarks>
+    /// Button クラスは、System.Windows.Forms.Button クラスにおける
+    /// いくつかの表示上の問題を解決するために定義されたクラスです。
+    /// さらに柔軟な外観を定義する場合は、FlatButton クラスを利用して下さい。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public class Button : System.Windows.Forms.Button
@@ -44,7 +50,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Button() : base() { _painter = new ButtonPainter(this); }
+        public Button() : base() { }
 
         #endregion
 
@@ -52,62 +58,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Surface
-        ///
-        /// <summary>
-        /// ボタンの基本となる外観を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface Surface
-        {
-            get { return _painter.Surface; }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseDownSurface
-        /// 
-        /// <summary>
-        /// マウスがクリック状態時の外観を定義したオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseDownSurface
-        {
-            get { return _painter.MouseDownSurface; }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseOverSurface
-        /// 
-        /// <summary>
-        /// マウスポインタがボタンの境界範囲内に存在する時の外観を定義した
-        /// オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseOverSurface
-        {
-            get { return _painter.MouseOverSurface; }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ShowFocusCues
-        /// 
+        ///
         /// <summary>
-        /// フォーカス時に枠線を描画するかどうかを取得します。
+        /// フォーカス時に枠線を表示するかどうかを示す値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -116,101 +70,74 @@ namespace Cube.Forms
             get { return false; }
         }
 
-        #region Hiding properties
+        #endregion
 
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Color BackColor
-        {
-            get { return base.BackColor; }
-            set { base.BackColor = value; }
-        }
+        #region Override methods
 
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Image BackgroundImage
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowFocusCues
+        ///
+        /// <summary>
+        /// フォーカス時に枠線を表示するかどうかを示す値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnEnabledChanged(EventArgs e)
         {
-            get { return base.BackgroundImage; }
-            set { base.BackgroundImage = value; }
-        }
+            if (Enabled) SetEnabledColor();
+            else SetDisabledColor();
 
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.FlatButtonAppearance FlatAppearance
-        {
-            get { return base.FlatAppearance; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.FlatStyle FlatStyle
-        {
-            get { return base.FlatStyle; }
-            set { base.FlatStyle = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Color ForeColor
-        {
-            get { return base.ForeColor; }
-            set { base.ForeColor = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Image Image
-        {
-            get { return base.Image; }
-            set { base.Image = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new int ImageIndex
-        {
-            get { return base.ImageIndex; }
-            set { base.ImageIndex = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new string ImageKey
-        {
-            get { return base.ImageKey; }
-            set { base.ImageKey = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.ImageList ImageList
-        {
-            get { return base.ImageList; }
-            set { base.ImageList = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.TextImageRelation TextImageRelation
-        {
-            get { return base.TextImageRelation; }
-            set { base.TextImageRelation = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new bool UseVisualStyleBackColor
-        {
-            get { return base.UseVisualStyleBackColor; }
-            set { base.UseVisualStyleBackColor = value; }
+            base.OnEnabledChanged(e);
         }
 
         #endregion
+
+        #region Other private methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetEnabledColor
+        ///
+        /// <summary>
+        /// ボタンが有効状態の時の色を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetEnabledColor()
+        {
+            BackColor = _background;
+            ForeColor = _foreground;
+            FlatAppearance.BorderColor = _border;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetDisabledColor
+        ///
+        /// <summary>
+        /// ボタンが無効状態の時の色を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetDisabledColor()
+        {
+            _background = BackColor;
+            _foreground = ForeColor;
+            _border = FlatAppearance.BorderColor;
+
+            var control = SystemColors.ButtonFace;
+            BackColor = Color.FromArgb(204, 204, 204);
+            ForeColor = SystemColors.GrayText;
+            FlatAppearance.BorderColor = Color.FromArgb(191, 191, 191);
+        }
 
         #endregion
 
         #region Fields
-        private ButtonPainter _painter = null;
+        private Color _background = Color.Empty;
+        private Color _foreground = Color.Empty;
+        private Color _border = Color.Empty;
         #endregion
     }
 }

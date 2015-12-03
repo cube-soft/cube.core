@@ -44,6 +44,9 @@ namespace Cube.Forms.Demo
         public DemoButtons()
         {
             InitializeComponent();
+
+            DisabledButton1.Enabled = false;
+            DisabledButton2.Enabled = false;
         }
     }
 }

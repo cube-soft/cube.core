@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.NotifyFormButton = new Cube.Forms.Button();
-            this.WebBrowserButton = new Cube.Forms.Button();
-            this.ButtonsButton = new Cube.Forms.Button();
-            this.StockIconsButton = new Cube.Forms.Button();
-            this.DeviceAwareButton = new Cube.Forms.Button();
-            this.VersionButton = new Cube.Forms.Button();
+            this.NotifyFormButton = new Cube.Forms.FlatButton();
+            this.WebBrowserButton = new Cube.Forms.FlatButton();
+            this.ButtonsButton = new Cube.Forms.FlatButton();
+            this.StockIconsButton = new Cube.Forms.FlatButton();
+            this.DeviceAwareButton = new Cube.Forms.FlatButton();
+            this.VersionButton = new Cube.Forms.FlatButton();
             this.SuspendLayout();
             // 
             // NotifyFormButton
@@ -268,11 +268,11 @@
 
         #endregion
 
-        private Button NotifyFormButton;
-        private Button WebBrowserButton;
-        private Button ButtonsButton;
-        private Button StockIconsButton;
-        private Button DeviceAwareButton;
-        private Button VersionButton;
+        private FlatButton NotifyFormButton;
+        private FlatButton WebBrowserButton;
+        private FlatButton ButtonsButton;
+        private FlatButton StockIconsButton;
+        private FlatButton DeviceAwareButton;
+        private FlatButton VersionButton;
     }
 }

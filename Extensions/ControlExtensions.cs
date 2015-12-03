@@ -22,18 +22,18 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Cube.Extensions.Forms
+namespace Cube.Forms.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.Forms.ControlExtensions
+    /// Cube.Forms.Extensions.ControlExtensions
     /// 
     /// <summary>
     /// System.Windows.Forms.Control の拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class ControlExtensions
+    internal static class ControlExtensions
     {
         #region Extension methods
 
