@@ -32,7 +32,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoStockIcons : FormBase
+    public partial class DemoStockIcons : WidgetForm
     {
         #region Constructors
 
@@ -48,6 +48,8 @@ namespace Cube.Forms.Demo
         public DemoStockIcons()
         {
             InitializeComponent();
+
+            CloseButton.Click += (s, e) => Close();
 
             IconListView.LargeImageList = new ImageList();
             IconListView.LargeImageList.ImageSize = new Size(48, 48);

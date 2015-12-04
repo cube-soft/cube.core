@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Windows.Forms;
 
 namespace Cube.Forms.Demo
 {
@@ -30,7 +31,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoWeb : FormBase
+    public partial class DemoWeb : WidgetForm
     {
         #region Constructors
 
@@ -46,24 +47,58 @@ namespace Cube.Forms.Demo
         public DemoWeb()
         {
             InitializeComponent();
+
+            CloseButton.Click += (s, e) => Close();
+            UpdateButton.Click += (s, e) => UpdateBrowser();
+
             var url = WebBrowser.Url;
             if (url != null) UrlTextBox.Text = url.ToString();
         }
 
         #endregion
 
-        #region Event handlers
+        #region Override methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UpdateButton_Click
+        /// OnKeyDown
         ///
         /// <summary>
-        /// テキストボックスに入力された URL を設定します。
+        /// キーボードのキーが押下された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void UpdateButton_Click(object sender, EventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            try
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Enter:
+                    case Keys.F5:
+                        UpdateBrowser();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            finally { base.OnKeyDown(e); }
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateBrowser
+        ///
+        /// <summary>
+        /// Web ブラウザを更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void UpdateBrowser()
         {
             try
             {
@@ -72,10 +107,6 @@ namespace Cube.Forms.Demo
             }
             catch (Exception err) { ShowError(err); }
         }
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
