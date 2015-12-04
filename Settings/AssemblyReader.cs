@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 
 namespace Cube
@@ -63,7 +64,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Assembly Assembly { get; } = null;
+        public Assembly Assembly { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -256,6 +257,20 @@ namespace Cube
                        new Version(FileVersionInfo.GetVersionInfo(Assembly.Location).FileVersion) :
                        new Version();
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Icon
+        ///
+        /// <summary>
+        /// アイコンを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Icon Icon
+        {
+            get { return (Assembly != null) ? Icon.ExtractAssociatedIcon(Assembly.Location) : null; }
         }
 
         #endregion
