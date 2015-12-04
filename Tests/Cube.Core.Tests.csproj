@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
@@ -45,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ByteFormatTester.cs" />
     <Compile Include="Detail\Person.cs" />
+    <Compile Include="Detail\FileResource.cs" />
     <Compile Include="IconFactoryTester.cs" />
     <Compile Include="RegistryTester.cs" />
     <Compile Include="ScheduleTester.cs" />

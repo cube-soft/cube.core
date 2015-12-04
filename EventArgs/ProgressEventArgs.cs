@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormatExtensions.cs
+/// ProgressEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -19,43 +19,62 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Extensions
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.ByteFormatExtensions
-    /// 
+    /// Cube.ProgressEventArgs
+    ///
     /// <summary>
-    /// バイトサイズの書式に関する拡張メソッドを定義したクラスです。
+    /// 進捗情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ByteFormatExtensions
+    public class ProgressEventArgs : EventArgs
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
-        /// ToPrettyBytes
+        /// ProgressEventArgs
         /// 
         /// <summary>
-        /// バイトサイズを読みやすい文字列に変換します。
+        /// オブジェクトを初期化します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        public static string ToPrettyBytes(this long bytes)
+        public ProgressEventArgs(int value, string message) : base()
         {
-            var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
-            var value = (double)bytes;
-            var n = 0;
-
-            while (value > 1000.0)
-            {
-                value /= 1024.0;
-                ++n;
-                if (n >= units.Length - 1) break;
-            }
-
-            return string.Format("{0:G3} {1}", value, units[n]);
+            Value = value;
+            Message = message;
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        /// 
+        /// <summary>
+        /// 進捗状況を取得します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public int Value { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Message
+        /// 
+        /// <summary>
+        /// 進捗に関するメッセージを取得します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public string Message { get; }
+
+        #endregion
     }
 }

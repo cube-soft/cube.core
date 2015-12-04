@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,10 +31,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncBridge.Net35">
       <HintPath>..\packages\AsyncBridge.Net35.0.2.0\lib\net35-Client\AsyncBridge.Net35.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -44,10 +47,12 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Threading">
       <HintPath>..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
@@ -58,13 +63,15 @@
     <Compile Include="Missing\IProgress.cs" />
     <Compile Include="Missing\IReadOnlyCollection.cs" />
     <Compile Include="Missing\Progress.cs" />
+    <Compile Include="Missing\TaskEx.cs" />
+    <Compile Include="Bootstrap.cs" />
+    <Compile Include="EventArgs\ProgressEventArgs.cs" />
     <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettings.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EventArgs\DataCancelEventArgs.cs" />
     <Compile Include="EventArgs\DataEventArgs.cs" />
-    <Compile Include="Development\ResourceInitializer.cs" />
     <Compile Include="Extensions\ByteFormatExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
@@ -76,14 +83,14 @@
     <Compile Include="NotifyItem.cs" />
     <Compile Include="NotifyLevel.cs" />
     <Compile Include="NotifyQueue.cs" />
+    <Compile Include="Settings\AssemblyReader.cs" />
     <Compile Include="Settings\ObservableSettings.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
-    <Compile Include="Startup.cs" />
-    <Compile Include="Missing\TaskEx.cs" />
+    <Compile Include="Settings\Startup.cs" />
     <Compile Include="Scheduler.cs" />
   </ItemGroup>
   <ItemGroup>

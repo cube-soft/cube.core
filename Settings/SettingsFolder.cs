@@ -31,7 +31,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<UserSettings> : ObservableSettings where UserSettings : new()
+    public class SettingsFolder<TData> : ObservableSettings where TData : new()
     {
         #region Constructors
 
@@ -78,7 +78,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UserSettings User
+        public TData User
         {
             get { return _user; }
             private set { _user = value; }
@@ -188,7 +188,7 @@ namespace Cube
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                var result = Settings.Load<UserSettings>(subkey);
+                var result = Settings.Load<TData>(subkey);
                 if (result != null) User = result;
             }
         }
@@ -211,7 +211,7 @@ namespace Cube
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.CreateSubKey(SubKeyName))
             {
-                Settings.Save<UserSettings>(User, subkey);
+                Settings.Save<TData>(User, subkey);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Cube
 
         #region Fields
         private ApplicationSettings _app = new ApplicationSettings();
-        private UserSettings _user = new UserSettings();
+        private TData _user = new TData();
         private string _publisher = string.Empty;
         private string _product = string.Empty;
         #endregion
