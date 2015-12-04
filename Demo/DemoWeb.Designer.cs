@@ -28,49 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DemoWeb));
+            this.SizableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.ToolPanel = new System.Windows.Forms.TableLayoutPanel();
             this.UrlTextBox = new System.Windows.Forms.TextBox();
-            this.VersionComboBox = new System.Windows.Forms.ComboBox();
             this.UpdateButton = new Cube.Forms.FlatButton();
             this.WebBrowser = new Cube.Forms.WebBrowser();
+            this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.CloseButton = new Cube.Forms.FlatButton();
+            this.TitlePictureBox = new System.Windows.Forms.PictureBox();
+            this.LogoPictureBox = new System.Windows.Forms.PictureBox();
+            this.Splitter1 = new System.Windows.Forms.PictureBox();
+            this.Splitter2 = new System.Windows.Forms.PictureBox();
+            this.SizableLayoutPanel.SuspendLayout();
             this.ToolPanel.SuspendLayout();
+            this.HeaderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Splitter1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Splitter2)).BeginInit();
             this.SuspendLayout();
+            // 
+            // SizableLayoutPanel
+            // 
+            this.SizableLayoutPanel.ColumnCount = 1;
+            this.SizableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.SizableLayoutPanel.Controls.Add(this.ToolPanel, 0, 2);
+            this.SizableLayoutPanel.Controls.Add(this.WebBrowser, 0, 4);
+            this.SizableLayoutPanel.Controls.Add(this.HeaderPanel, 0, 0);
+            this.SizableLayoutPanel.Controls.Add(this.Splitter1, 0, 1);
+            this.SizableLayoutPanel.Controls.Add(this.Splitter2, 0, 3);
+            this.SizableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SizableLayoutPanel.Location = new System.Drawing.Point(2, 2);
+            this.SizableLayoutPanel.Name = "SizableLayoutPanel";
+            this.SizableLayoutPanel.RowCount = 5;
+            this.SizableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.SizableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.SizableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.SizableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.SizableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.SizableLayoutPanel.Size = new System.Drawing.Size(596, 396);
+            this.SizableLayoutPanel.TabIndex = 3;
             // 
             // ToolPanel
             // 
-            this.ToolPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.ToolPanel.ColumnCount = 3;
+            this.ToolPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ToolPanel.ColumnCount = 2;
             this.ToolPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ToolPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.ToolPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.ToolPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.ToolPanel.Controls.Add(this.UrlTextBox, 0, 0);
-            this.ToolPanel.Controls.Add(this.VersionComboBox, 1, 0);
-            this.ToolPanel.Controls.Add(this.UpdateButton, 2, 0);
-            this.ToolPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ToolPanel.Controls.Add(this.UpdateButton, 1, 0);
+            this.ToolPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ToolPanel.Location = new System.Drawing.Point(0, 26);
+            this.ToolPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ToolPanel.Name = "ToolPanel";
             this.ToolPanel.RowCount = 1;
             this.ToolPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ToolPanel.Size = new System.Drawing.Size(600, 30);
-            this.ToolPanel.TabIndex = 1;
+            this.ToolPanel.Size = new System.Drawing.Size(596, 30);
+            this.ToolPanel.TabIndex = 10;
             // 
             // UrlTextBox
             // 
             this.UrlTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UrlTextBox.Location = new System.Drawing.Point(3, 3);
             this.UrlTextBox.Name = "UrlTextBox";
-            this.UrlTextBox.Size = new System.Drawing.Size(454, 23);
+            this.UrlTextBox.Size = new System.Drawing.Size(550, 23);
             this.UrlTextBox.TabIndex = 0;
-            // 
-            // VersionComboBox
-            // 
-            this.VersionComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VersionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.VersionComboBox.FormattingEnabled = true;
-            this.VersionComboBox.Location = new System.Drawing.Point(463, 3);
-            this.VersionComboBox.Name = "VersionComboBox";
-            this.VersionComboBox.Size = new System.Drawing.Size(94, 23);
-            this.VersionComboBox.TabIndex = 0;
             // 
             // UpdateButton
             // 
@@ -85,7 +109,7 @@
             this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UpdateButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.UpdateButton.Image = null;
-            this.UpdateButton.Location = new System.Drawing.Point(563, 3);
+            this.UpdateButton.Location = new System.Drawing.Point(559, 3);
             this.UpdateButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
             this.UpdateButton.MouseDownSurface.BackgroundImage = null;
             this.UpdateButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
@@ -107,44 +131,145 @@
             this.UpdateButton.Surface.TextColor = System.Drawing.Color.Empty;
             this.UpdateButton.TabIndex = 1;
             this.UpdateButton.UseVisualStyleBackColor = false;
-            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
             // WebBrowser
             // 
             this.WebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WebBrowser.Location = new System.Drawing.Point(0, 56);
+            this.WebBrowser.Location = new System.Drawing.Point(0, 57);
+            this.WebBrowser.Margin = new System.Windows.Forms.Padding(0);
             this.WebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.WebBrowser.Name = "WebBrowser";
-            this.WebBrowser.Size = new System.Drawing.Size(600, 344);
-            this.WebBrowser.TabIndex = 2;
+            this.WebBrowser.Size = new System.Drawing.Size(596, 339);
+            this.WebBrowser.TabIndex = 8;
             this.WebBrowser.Url = new System.Uri("about:blank", System.UriKind.Absolute);
+            // 
+            // HeaderPanel
+            // 
+            this.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.HeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.HeaderPanel.Controls.Add(this.CloseButton);
+            this.HeaderPanel.Controls.Add(this.TitlePictureBox);
+            this.HeaderPanel.Controls.Add(this.LogoPictureBox);
+            this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
+            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.HeaderPanel.Name = "HeaderPanel";
+            this.HeaderPanel.Size = new System.Drawing.Size(596, 25);
+            this.HeaderPanel.TabIndex = 1;
+            // 
+            // CloseButton
+            // 
+            this.CloseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.CloseButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatAppearance.BorderSize = 0;
+            this.CloseButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.CloseButton.Image = null;
+            this.CloseButton.Location = new System.Drawing.Point(571, 0);
+            this.CloseButton.MouseDownSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.CloseButton.MouseDownSurface.BackgroundImage = null;
+            this.CloseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseDownSurface.Image = null;
+            this.CloseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.CloseButton.MouseOverSurface.BackgroundImage = null;
+            this.CloseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseOverSurface.Image = null;
+            this.CloseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(25, 25);
+            this.CloseButton.Surface.BackColor = System.Drawing.Color.Empty;
+            this.CloseButton.Surface.BackgroundImage = null;
+            this.CloseButton.Surface.BorderColor = System.Drawing.Color.Empty;
+            this.CloseButton.Surface.BorderSize = 0;
+            this.CloseButton.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonClose;
+            this.CloseButton.Surface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.TabIndex = 0;
+            this.CloseButton.UseVisualStyleBackColor = false;
+            // 
+            // TitlePictureBox
+            // 
+            this.TitlePictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.TitlePictureBox.Image = global::Cube.Forms.Demo.Properties.Resources.LogoTitle;
+            this.TitlePictureBox.Location = new System.Drawing.Point(32, 6);
+            this.TitlePictureBox.Name = "TitlePictureBox";
+            this.TitlePictureBox.Size = new System.Drawing.Size(41, 13);
+            this.TitlePictureBox.TabIndex = 1;
+            this.TitlePictureBox.TabStop = false;
+            // 
+            // LogoPictureBox
+            // 
+            this.LogoPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.LogoPictureBox.Image = global::Cube.Forms.Demo.Properties.Resources.LogoSmall;
+            this.LogoPictureBox.Location = new System.Drawing.Point(6, 2);
+            this.LogoPictureBox.Name = "LogoPictureBox";
+            this.LogoPictureBox.Size = new System.Drawing.Size(20, 20);
+            this.LogoPictureBox.TabIndex = 0;
+            this.LogoPictureBox.TabStop = false;
+            // 
+            // Splitter1
+            // 
+            this.Splitter1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.Splitter1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Splitter1.Location = new System.Drawing.Point(0, 25);
+            this.Splitter1.Margin = new System.Windows.Forms.Padding(0);
+            this.Splitter1.Name = "Splitter1";
+            this.Splitter1.Size = new System.Drawing.Size(596, 1);
+            this.Splitter1.TabIndex = 9;
+            this.Splitter1.TabStop = false;
+            // 
+            // Splitter2
+            // 
+            this.Splitter2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.Splitter2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Splitter2.Location = new System.Drawing.Point(0, 56);
+            this.Splitter2.Margin = new System.Windows.Forms.Padding(0);
+            this.Splitter2.Name = "Splitter2";
+            this.Splitter2.Size = new System.Drawing.Size(596, 1);
+            this.Splitter2.TabIndex = 11;
+            this.Splitter2.TabStop = false;
             // 
             // DemoWeb
             // 
-            this.AcceptButton = this.UpdateButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.ClientSize = new System.Drawing.Size(600, 400);
-            this.Controls.Add(this.WebBrowser);
-            this.Controls.Add(this.ToolPanel);
+            this.Controls.Add(this.SizableLayoutPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "DemoWeb";
+            this.Padding = new System.Windows.Forms.Padding(2);
             this.ShowInTaskbar = false;
+            this.Sizable = true;
             this.Text = "WebForm";
-            this.Controls.SetChildIndex(this.ToolPanel, 0);
-            this.Controls.SetChildIndex(this.WebBrowser, 0);
+            this.SizableLayoutPanel.ResumeLayout(false);
             this.ToolPanel.ResumeLayout(false);
             this.ToolPanel.PerformLayout();
+            this.HeaderPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Splitter1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Splitter2)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
+        private System.Windows.Forms.TableLayoutPanel SizableLayoutPanel;
+        private System.Windows.Forms.Panel HeaderPanel;
+        private FlatButton CloseButton;
+        private System.Windows.Forms.PictureBox TitlePictureBox;
+        private System.Windows.Forms.PictureBox LogoPictureBox;
         private System.Windows.Forms.TableLayoutPanel ToolPanel;
-        private WebBrowser WebBrowser;
         private System.Windows.Forms.TextBox UrlTextBox;
-        private System.Windows.Forms.ComboBox VersionComboBox;
         private FlatButton UpdateButton;
-
+        private WebBrowser WebBrowser;
+        private System.Windows.Forms.PictureBox Splitter1;
+        private System.Windows.Forms.PictureBox Splitter2;
     }
 }
