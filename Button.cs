@@ -85,10 +85,15 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnEnabledChanged(EventArgs e)
         {
-            if (Enabled) SetEnabledColor();
-            else SetDisabledColor();
+            try
+            {
+                if (Enabled == _previous) return;
 
-            base.OnEnabledChanged(e);
+                if (Enabled) SetEnabledColor();
+                else SetDisabledColor();
+                _previous = Enabled;
+            }
+            finally { base.OnEnabledChanged(e); }
         }
 
         #endregion
@@ -135,6 +140,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
+        private bool _previous = true;
         private Color _background = Color.Empty;
         private Color _foreground = Color.Empty;
         private Color _border = Color.Empty;
