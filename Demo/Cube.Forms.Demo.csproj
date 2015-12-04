@@ -154,8 +154,8 @@
     <EmbeddedResource Include="DemoWeb.resx">
       <DependentUpon>DemoWeb.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="app.manifest" />
+    <None Include="App.config" />
+    <None Include="App.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -167,7 +167,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.ico" />
+    <Content Include="App.ico" />
     <None Include="Resources\ButtonUpdate.png" />
     <None Include="Resources\LogoTitle.png" />
     <None Include="Resources\LogoSmall.png" />

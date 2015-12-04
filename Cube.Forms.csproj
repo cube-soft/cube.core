@@ -143,8 +143,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="App.config" />
+    <None Include="Packages.config" />
     <None Include="Resources\LogoLarge.png" />
   </ItemGroup>
   <ItemGroup>
