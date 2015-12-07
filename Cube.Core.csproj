@@ -54,6 +54,14 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="EventArgs\ProgressEventArgs.cs" />
+    <Compile Include="FileSystem\FileInfo.cs" />
+    <Compile Include="NativeApis\IImageList.cs" />
+    <Compile Include="NativeApis\ImageInfo.cs" />
+    <Compile Include="NativeApis\ImageListDrawParams.cs" />
+    <Compile Include="NativeApis\Point.cs" />
+    <Compile Include="NativeApis\Rect.cs" />
+    <Compile Include="NativeApis\SHFileInfo.cs" />
+    <Compile Include="NativeApis\SHStockIconInfo.cs" />
     <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettings.cs">
       <SubType>Code</SubType>
@@ -65,7 +73,7 @@
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Icons\IconFactory.cs" />
-    <Compile Include="Icons\IconNativeApi.cs" />
+    <Compile Include="NativeApis\Shell32.cs" />
     <Compile Include="Icons\IconSize.cs" />
     <Compile Include="Icons\StockIcons.cs" />
     <Compile Include="NotifyItem.cs" />

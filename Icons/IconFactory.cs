@@ -45,16 +45,16 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static Icon Create(StockIcons id, IconSize size)
         {
-            var info = new IconNativeApi.SHSTOCKICONINFO();
+            var info = new SHSTOCKICONINFO();
             info.cbSize = Marshal.SizeOf(info);
-            IconNativeApi.SHGetStockIconInfo((UInt32)id, IconNativeApi.SHGI_SYSICONINDEX, ref info);
+            Shell32.SHGetStockIconInfo((uint)id, Shell32.SHGI_SYSICONINDEX, ref info);
 
-            IconNativeApi.IImageList images;
-            IconNativeApi.SHGetImageList((Int32)size, IconNativeApi.IID_IImageList, out images);
+            IImageList images;
+            Shell32.SHGetImageList((int)size, Shell32.IID_IImageList, out images);
             if (images == null) return null;
 
             var handle = IntPtr.Zero;
-            images.GetIcon(info.iSysImageIndex, (int)IconNativeApi.ILD_TRANSPARENT, ref handle);
+            images.GetIcon(info.iSysImageIndex, (int)Shell32.ILD_TRANSPARENT, ref handle);
             return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
 
@@ -69,15 +69,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static Icon Create(string path, IconSize size)
         {
-            var info = new IconNativeApi.SHFILEINFO();
-            IconNativeApi.SHGetFileInfo(path, 0, ref info, Marshal.SizeOf(info), IconNativeApi.SHGI_SYSICONINDEX);
+            var info = new SHFILEINFO();
+            Shell32.SHGetFileInfo(path, 0, ref info, Marshal.SizeOf(info), Shell32.SHGI_SYSICONINDEX);
 
-            IconNativeApi.IImageList images;
-            IconNativeApi.SHGetImageList((Int32)size, IconNativeApi.IID_IImageList, out images);
+            IImageList images;
+            Shell32.SHGetImageList((int)size, Shell32.IID_IImageList, out images);
             if (images == null) return null;
 
             var handle = IntPtr.Zero;
-            images.GetIcon(info.iIcon, (int)IconNativeApi.ILD_TRANSPARENT, ref handle);
+            images.GetIcon(info.iIcon, (int)Shell32.ILD_TRANSPARENT, ref handle);
             return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
     }
