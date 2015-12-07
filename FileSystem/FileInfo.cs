@@ -332,9 +332,13 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public string GetTypeName()
         {
-            var shfi = new SHFILEINFO();
-            Shell32.SHGetFileInfo(FullName, 0, ref shfi, Marshal.SizeOf(shfi), 0x400 /* SHGFI_TYPENAME */);
-            return shfi.szTypeName;
+            var attr   = 0x080u /* FILE_ATTRIBUTE_NORMAL */;
+            var flags  = 0x400u /* SHGFI_TYPENAME */ |
+                         0x010u /* SHGFI_USEFILEATTRIBUTES */;
+            var shfi   = new SHFILEINFO();
+            var result = Shell32.SHGetFileInfo(FullName, attr, out shfi, (uint)Marshal.SizeOf(shfi), flags);
+
+            return (result != IntPtr.Zero) ? shfi.szTypeName : string.Empty;
         }
 
         #endregion

@@ -43,9 +43,8 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern int SHGetFileInfo(string pszPath, int dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, uint uFlags);
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern int SHGetFileInfo(IntPtr pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, uint uFlags);
+        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
+            out SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -57,7 +56,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern void SHGetStockIconInfo(UInt32 siid, UInt32 uFlags, ref SHSTOCKICONINFO sii);
+        public static extern void SHGetStockIconInfo(uint siid, uint uFlags, out SHSTOCKICONINFO sii);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -69,7 +68,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern void SHGetImageList(Int32 iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
+        public static extern void SHGetImageList(uint iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
 
         #region Constant fields
         public static readonly uint SHGI_SYSICONINDEX = 0x00004000;
