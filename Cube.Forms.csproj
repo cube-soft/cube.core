@@ -60,6 +60,9 @@
     <Compile Include="FlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\BrowserVersion.cs" />
     <Compile Include="Models\FeatureControl.cs">
       <SubType>Component</SubType>
@@ -74,6 +77,7 @@
     <Compile Include="EventArgs\NavigatingEventArgs.cs" />
     <Compile Include="EventArgs\NotifyEventArgs.cs" />
     <Compile Include="Detail\FlatButtonPainter.cs" />
+    <Compile Include="Models\WindowTheme.cs" />
     <Compile Include="Presenters\NotifyPresenter.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
