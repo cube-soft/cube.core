@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.SizableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.IconListView = new Cube.Forms.ListView();
             this.HeaderPanel = new System.Windows.Forms.Panel();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
-            this.IconListView = new System.Windows.Forms.ListView();
             this.Splitter = new System.Windows.Forms.PictureBox();
             this.SizableLayoutPanel.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
@@ -58,6 +58,18 @@
             this.SizableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.SizableLayoutPanel.Size = new System.Drawing.Size(636, 396);
             this.SizableLayoutPanel.TabIndex = 0;
+            // 
+            // IconListView
+            // 
+            this.IconListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.IconListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IconListView.Location = new System.Drawing.Point(0, 26);
+            this.IconListView.Margin = new System.Windows.Forms.Padding(0);
+            this.IconListView.Name = "IconListView";
+            this.IconListView.Size = new System.Drawing.Size(636, 370);
+            this.IconListView.TabIndex = 12;
+            this.IconListView.Theme = Cube.Forms.WindowTheme.Explorer;
+            this.IconListView.UseCompatibleStateImageBehavior = false;
             // 
             // HeaderPanel
             // 
@@ -127,17 +139,6 @@
             this.LogoPictureBox.TabIndex = 0;
             this.LogoPictureBox.TabStop = false;
             // 
-            // IconListView
-            // 
-            this.IconListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.IconListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IconListView.Location = new System.Drawing.Point(0, 26);
-            this.IconListView.Margin = new System.Windows.Forms.Padding(0);
-            this.IconListView.Name = "IconListView";
-            this.IconListView.Size = new System.Drawing.Size(636, 370);
-            this.IconListView.TabIndex = 12;
-            this.IconListView.UseCompatibleStateImageBehavior = false;
-            // 
             // Splitter
             // 
             this.Splitter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
@@ -173,7 +174,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel SizableLayoutPanel;
-        private System.Windows.Forms.ListView IconListView;
+        private Cube.Forms.ListView IconListView;
         private System.Windows.Forms.Panel HeaderPanel;
         private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;
