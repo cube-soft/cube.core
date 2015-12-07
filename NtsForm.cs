@@ -60,6 +60,30 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Bootstrap
+        /// 
+        /// <summary>
+        /// プロセス間通信を介した起動およびアクティブ化を制御するための
+        /// オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Bootstrap Bootstrap
+        {
+            get { return _bootstrap; }
+            set
+            {
+                if (_bootstrap != null) _bootstrap.Activated -= Bootstrap_Activated;
+
+                _bootstrap = value;
+                _bootstrap.Activated -= Bootstrap_Activated;
+                _bootstrap.Activated += Bootstrap_Activated;
+                _bootstrap.Register();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Logger
         ///
         /// <summary>
@@ -69,6 +93,70 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected ILog Logger { get; private set; }
 
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Received
+        ///
+        /// <summary>
+        /// 他のプロセスからデータを受信した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public EventHandler<DataEventArgs<object>> Received;
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReceived
+        ///
+        /// <summary>
+        /// 他のプロセスからデータを受信した時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReceived(DataEventArgs<object> e)
+        {
+            if (Received != null) Received(this, e);
+        }
+
+        #endregion
+
+        #region Event handlers
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bootstrap
+        /// 
+        /// <summary>
+        /// 他プロセスからアクティブ化時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Bootstrap_Activated(object sender, DataEventArgs<object> e)
+        {
+            if (InvokeRequired) Invoke(new Action(() => Bootstrap_Activated(sender, e)));
+            else
+            {
+                if (e.Value != null) OnReceived(e);
+
+                Show();
+                var tmp = TopMost;
+                TopMost = true;
+                TopMost = tmp;
+            }
+        }
+
+        #endregion
+
+        #region Fields
+        private Bootstrap _bootstrap = null;
         #endregion
     }
 }
