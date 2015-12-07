@@ -333,9 +333,6 @@ namespace Cube.FileSystem
         public string GetTypeName()
         {
             var shfi = new SHFILEINFO();
-            shfi.szDisplayName = new string(Convert.ToChar(0), 260);
-            shfi.szTypeName = new string(Convert.ToChar(0), 80);
-
             Shell32.SHGetFileInfo(FullName, 0, ref shfi, Marshal.SizeOf(shfi), 0x400 /* SHGFI_TYPENAME */);
             return shfi.szTypeName;
         }
