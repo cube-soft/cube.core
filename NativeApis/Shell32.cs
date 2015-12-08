@@ -44,7 +44,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
-            out SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
+            ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,7 +56,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern void SHGetStockIconInfo(uint siid, uint uFlags, out SHSTOCKICONINFO sii);
+        public static extern void SHGetStockIconInfo(uint siid, uint uFlags, ref SHSTOCKICONINFO sii);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -71,10 +71,13 @@ namespace Cube
         public static extern void SHGetImageList(uint iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
 
         #region Constant fields
-        public static readonly uint SHGI_SYSICONINDEX = 0x00004000;
-        public static readonly uint ILD_NORMAL        = 0x00000000;
-        public static readonly uint ILD_TRANSPARENT   = 0x00000001;
-        public static readonly Guid IID_IImageList    = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
+        public static readonly uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
+        public static readonly uint SHGFI_TYPENAME          = 0x00000400;
+        public static readonly uint SHGFI_SYSICONINDEX      = 0x00004000;
+        public static readonly uint FILE_ATTRIBUTE_NORMAL   = 0x00000080;
+        public static readonly uint ILD_NORMAL              = 0x00000000;
+        public static readonly uint ILD_TRANSPARENT         = 0x00000001;
+        public static readonly Guid IID_IImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
         #endregion
     }
 }

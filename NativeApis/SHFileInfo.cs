@@ -30,7 +30,7 @@ namespace Cube
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal struct SHFILEINFO
     {
         public IntPtr hIcon;

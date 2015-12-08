@@ -47,7 +47,7 @@ namespace Cube
         {
             var info = new SHSTOCKICONINFO();
             info.cbSize = Marshal.SizeOf(info);
-            Shell32.SHGetStockIconInfo((uint)id, Shell32.SHGI_SYSICONINDEX, out info);
+            Shell32.SHGetStockIconInfo((uint)id, Shell32.SHGFI_SYSICONINDEX, ref info);
 
             IImageList images;
             Shell32.SHGetImageList((uint)size, Shell32.IID_IImageList, out images);
@@ -70,7 +70,7 @@ namespace Cube
         public static Icon Create(string path, IconSize size)
         {
             var info = new SHFILEINFO();
-            Shell32.SHGetFileInfo(path, 0, out info, (uint)Marshal.SizeOf(info), Shell32.SHGI_SYSICONINDEX);
+            Shell32.SHGetFileInfo(path, 0, ref info, (uint)Marshal.SizeOf(info), Shell32.SHGFI_SYSICONINDEX);
 
             IImageList images;
             Shell32.SHGetImageList((uint)size, Shell32.IID_IImageList, out images);
