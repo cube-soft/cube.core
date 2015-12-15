@@ -109,16 +109,31 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Sync
+        /// Post
         /// 
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Sync(Action action)
+        public void Post(Action action)
         {
             SynchronizationContext.Post(_ => action(), null);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Send
+        /// 
+        /// <summary>
+        /// オブジェクト初期化時のスレッド上で各種操作を実行し、
+        /// 実行が完了するまで待機します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Send(Action action)
+        {
+            SynchronizationContext.Send(_ => action(), null);
         }
 
         #endregion
