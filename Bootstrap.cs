@@ -28,7 +28,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Bootstrap
+    /// Bootstrap
     ///
     /// <summary>
     /// プロセス間通信 (IPC: Inter-Process Communication) によって
