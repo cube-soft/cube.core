@@ -37,14 +37,14 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// TestToPrettyBytes
+        /// ToPrettyBytes
         /// 
         /// <summary>
         /// ToPrettyBytes のテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(999L, "1 KB")]
+        [TestCase(1L, "1 Bytes")]
         [TestCase(1234L, "1.21 KB")]
         [TestCase(12345L, "12.1 KB")]
         [TestCase(123456L, "121 KB")]
@@ -56,6 +56,21 @@ namespace Cube.Tests
         public void ToPrettyBytes(long src, string expected)
         {
             Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToRoughBytes
+        /// 
+        /// <summary>
+        /// ToRoughBytes のテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1L, "1 KB")]
+        public void ToRoughBytes(long src, string expected)
+        {
+            Assert.That(src.ToRoughBytes(), Is.EqualTo(expected));
         }
     }
 }
