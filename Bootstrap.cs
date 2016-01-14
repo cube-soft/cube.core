@@ -50,6 +50,21 @@ namespace Cube
         /// Bootstrap
         /// 
         /// <summary>
+        /// 静的オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        static Bootstrap()
+        {
+            LifetimeServices.LeaseTime = TimeSpan.Zero;
+            LifetimeServices.RenewOnCallTime = TimeSpan.Zero;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bootstrap
+        /// 
+        /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
@@ -60,9 +75,6 @@ namespace Cube
             Logger = LogManager.GetLogger(GetType());
             _mutex = new System.Threading.Mutex(false, Name);
             _core.Received += (s, e) => OnActivated(e);
-
-            LifetimeServices.LeaseTime = TimeSpan.Zero;
-            LifetimeServices.RenewOnCallTime = TimeSpan.Zero;
         }
 
         /* ----------------------------------------------------------------- */
@@ -153,9 +165,13 @@ namespace Cube
             {
                 var client = new IpcClientChannel();
                 ChannelServices.RegisterChannel(client, true);
-                var channel = String.Format("ipc://{0}/{1}", Name, _ActivateCommand);
+                var channel = string.Format("ipc://{0}/{1}", Name, _ActivateCommand);
                 var proxy = Activator.GetObject(typeof(IpcProxy), channel) as IpcProxy;
-                if (proxy != null) proxy.Send(args);
+                if (proxy != null)
+                {
+                    proxy.Send(args);
+                    Logger.Debug(channel);
+                }
             }
             catch (Exception err) { Logger.Error(err); }
         }
@@ -176,6 +192,7 @@ namespace Cube
                 var server = new IpcServerChannel(Name);
                 ChannelServices.RegisterChannel(server, true);
                 RemotingServices.Marshal(_core, _ActivateCommand, typeof(IpcProxy));
+                Logger.DebugFormat("{0}/{1} registered", Name, _ActivateCommand);
             }
             catch (Exception err) { Logger.Error(err); }
         }
