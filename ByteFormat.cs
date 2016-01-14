@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormatExtensions.cs
+/// ByteFormat.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -23,14 +23,14 @@ namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.ByteFormatExtensions
+    /// ByteFormat
     /// 
     /// <summary>
     /// バイトサイズの書式に関する拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ByteFormatExtensions
+    public static class ByteFormat
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -44,18 +44,17 @@ namespace Cube.Extensions
         public static string ToPrettyBytes(this long bytes)
         {
             var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
-            var value = (double)bytes;
-            var n = 0;
+            var value = Math.Max(bytes, 1024.0);
+            var index = 0;
 
             while (value > 1000.0)
             {
                 value /= 1024.0;
-                ++n;
-                if (n >= units.Length - 1) break;
+                ++index;
+                if (index >= units.Length - 1) break;
             }
 
-            return string.Format("{0:G3} {1}", value, units[n]);
+            return string.Format("{0:G3} {1}", value, units[index]);
         }
     }
 }

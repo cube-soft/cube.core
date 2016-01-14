@@ -44,16 +44,16 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(123456789L,    "118 MB")]
-        [TestCase( 12345678L,   "11.8 MB")]
-        [TestCase(  1234567L,   "1.18 MB")]
-        [TestCase(   123456L,    "121 KB")]
-        [TestCase(    12345L,   "12.1 KB")]
-        [TestCase(     1234L,   "1.21 KB")]
-        [TestCase(      123L, "123 Bytes")]
-        [TestCase(       12L,  "12 Bytes")]
-        [TestCase(        1L,   "1 Bytes")]
-        public void TestToPrettyBytes(long src, string expected)
+        [TestCase(999L, "1 KB")]
+        [TestCase(1234L, "1.21 KB")]
+        [TestCase(12345L, "12.1 KB")]
+        [TestCase(123456L, "121 KB")]
+        [TestCase(1234567L, "1.18 MB")]
+        [TestCase(1234567890L, "1.15 GB")]
+        [TestCase(1234567890123L, "1.12 TB")]
+        [TestCase(1234567890123456L, "1.1 PB")]
+        [TestCase(1234567890123456789L, "1.07 EB")]
+        public void ToPrettyBytes(long src, string expected)
         {
             Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
         }
