@@ -46,15 +46,15 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteFormatTester.cs" />
+    <Compile Include="ByteFormatTest.cs" />
     <Compile Include="Detail\Person.cs" />
     <Compile Include="Detail\FileResource.cs" />
-    <Compile Include="IconFactoryTester.cs" />
-    <Compile Include="RegistryTester.cs" />
-    <Compile Include="ScheduleTester.cs" />
-    <Compile Include="SettingsTester.cs" />
+    <Compile Include="FileResourceTest.cs" />
+    <Compile Include="IconFactoryTest.cs" />
+    <Compile Include="SettingsTest.cs" />
+    <Compile Include="SchedulerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UriTester.cs" />
+    <Compile Include="UriTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cube.Core.csproj">

@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// IconFactoryTester.cs
+/// IconFactoryTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,26 +17,25 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using NUnit.Framework;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.IconFactoryTester
+    /// IconFactoryTest
     /// 
     /// <summary>
-    /// IconFactory のテストを行うためのクラスです。
+    /// IconFactory のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class IconFactoryTester
+    class IconFactoryTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// TestCreateStockIcon
+        /// CreateStockIcon
         /// 
         /// <summary>
         /// システムで用意されているアイコンを生成するテストを行います。
@@ -47,36 +46,29 @@ namespace Cube.Tests
         [TestCase(Cube.StockIcons.Application, Cube.IconSize.Large,       32)]
         [TestCase(Cube.StockIcons.Application, Cube.IconSize.ExtraLarge,  48)]
         [TestCase(Cube.StockIcons.Application, Cube.IconSize.Jumbo,      256)]
-        public void TestCreateStockIcon(Cube.StockIcons id, Cube.IconSize size, int width)
+        public void CreateStockIcon(Cube.StockIcons id, Cube.IconSize size, int expected)
         {
-            Assert.DoesNotThrow(() =>
-            {
-                var icon = Cube.IconFactory.Create(id, size);
-                Assert.That(icon, Is.Not.Null);
-                Assert.That(icon.Width, Is.EqualTo(width));
-            });
+            var icon = Cube.IconFactory.Create(id, size);
+            Assert.That(icon, Is.Not.Null);
+            Assert.That(icon.Width, Is.EqualTo(expected));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TestCreateFileIcon
+        /// CreateFileIcon
         /// 
         /// <summary>
         /// ファイルからアイコンを抽出して生成するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Small, 16)]
-        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Large,      32)]
+        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Small,      16)]
         [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.ExtraLarge, 48)]
-        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Jumbo,     256)]
-        public void TestCreateFileIcon(string path, Cube.IconSize size, int width)
+        public void CreateFileIcon(string path, Cube.IconSize size, int expected)
         {
-            Assert.DoesNotThrow(() => {
-                var icon = Cube.IconFactory.Create(path, size);
-                Assert.That(icon, Is.Not.Null);
-                Assert.That(icon.Width, Is.EqualTo(width));
-            });
+            var icon = Cube.IconFactory.Create(path, size);
+            Assert.That(icon, Is.Not.Null);
+            Assert.That(icon.Width, Is.EqualTo(expected));
         }
     }
 }

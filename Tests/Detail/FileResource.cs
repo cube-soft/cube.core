@@ -17,14 +17,14 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using IO = System.IO;
+using System.IO;
+using System.Reflection;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.FileResource
+    /// FileResource
     /// 
     /// <summary>
     /// テストでファイルを使用するためのクラスです。
@@ -44,7 +44,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileResource() : this(Environment.CurrentDirectory) { }
+        public FileResource()
+            : this(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+        { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,7 +60,7 @@ namespace Cube.Tests
         public FileResource(string root)
         {
             Root = root;
-            if (!IO.Directory.Exists(Results)) IO.Directory.CreateDirectory(Results);
+            if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
         }
 
         #endregion
@@ -89,7 +91,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         public string Examples
         {
-            get { return IO.Path.Combine(Root, "Examples"); }
+            get { return Path.Combine(Root, "Examples"); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -103,7 +105,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         public string Results
         {
-            get { return IO.Path.Combine(Root, "Results"); }
+            get { return Path.Combine(Root, "Results"); }
         }
 
         #endregion

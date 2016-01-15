@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormatTester.cs
+/// FileResourceTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,60 +17,53 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
+using System.IO;
 using NUnit.Framework;
-using Cube.Extensions;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.ByteFormatTester
+    /// FileResourceTest
     /// 
     /// <summary>
-    /// バイトサイズの書式に関するテストを行うためのクラスです。
+    /// FileResource をテストするためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ByteFormatTester
+    class FileResourceTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ToPrettyBytes
+        /// ExamplesFolderExists
         /// 
         /// <summary>
-        /// ToPrettyBytes のテストを行います。
+        /// Examples フォルダが存在するかどうかをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1L, "1 Bytes")]
-        [TestCase(1234L, "1.21 KB")]
-        [TestCase(12345L, "12.1 KB")]
-        [TestCase(123456L, "121 KB")]
-        [TestCase(1234567L, "1.18 MB")]
-        [TestCase(1234567890L, "1.15 GB")]
-        [TestCase(1234567890123L, "1.12 TB")]
-        [TestCase(1234567890123456L, "1.1 PB")]
-        [TestCase(1234567890123456789L, "1.07 EB")]
-        public void ToPrettyBytes(long src, string expected)
+        [Test]
+        public void ExamplesFolderExists()
         {
-            Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
+            var resource = new FileResource();
+            Assert.That(Directory.Exists(resource.Examples), Is.True);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToRoughBytes
+        /// ResultsFolderExists
         /// 
         /// <summary>
-        /// ToRoughBytes のテストを行います。
+        /// Results フォルダが存在するかどうかをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1L, "1 KB")]
-        public void ToRoughBytes(long src, string expected)
+        [Test]
+        public void ResultsFolderExists()
         {
-            Assert.That(src.ToRoughBytes(), Is.EqualTo(expected));
+            var resource = new FileResource();
+            Assert.That(Directory.Exists(resource.Results), Is.True);
         }
     }
 }
