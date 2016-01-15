@@ -161,9 +161,9 @@ namespace Cube.Tests
             {
                 var settings = Cube.Settings.Load<Person>(registrar.TargetKey);
                 Assert.That(settings, Is.Not.Null);
-                Assert.That(settings.Phone.Type, Is.EqualTo("Mobile"));
+                Assert.That(settings.Phone.Type,  Is.EqualTo("Mobile"));
                 Assert.That(settings.Phone.Value, Is.EqualTo("090-1234-5678"));
-                Assert.That(settings.Email.Type, Is.EqualTo("Email"));
+                Assert.That(settings.Email.Type,  Is.EqualTo("Email"));
                 Assert.That(settings.Email.Value, Is.Null.Or.Empty);
             }
         }
@@ -197,9 +197,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Cube.Settings.FileType.Xml, "Settings.xml", "John Lennon")]
+        [TestCase(Cube.Settings.FileType.Xml,  "Settings.xml", "John Lennon")]
         [TestCase(Cube.Settings.FileType.Json, "Settings.json", "Mike Davis")]
-        [TestCase(Cube.Settings.FileType.Xml, "SettingsJapanese.xml", "鈴木一朗")]
+        [TestCase(Cube.Settings.FileType.Xml,  "SettingsJapanese.xml", "鈴木一朗")]
         [TestCase(Cube.Settings.FileType.Json, "SettingsJapanese.json", "山田太郎")]
         public void LoadFile(Cube.Settings.FileType type, string filename, string expected)
         {
@@ -230,7 +230,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
                 Assert.That(root.GetValue("Name"), Is.EqualTo("山田花子"));
             }
         }
@@ -250,7 +250,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
                 Assert.That(root.GetValue("Age"), Is.EqualTo(15));
             }
         }
@@ -270,7 +270,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
                 Assert.That(root.GetValue("Sex"), Is.EqualTo(1));
             }
         }
@@ -290,7 +290,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
                 Assert.That(root.GetValue("Reserved"), Is.EqualTo(1));
             }
         }
@@ -310,7 +310,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
                 Assert.That(root.GetValue("Creation"), Is.EqualTo(1420035930));
             }
         }
@@ -330,7 +330,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
 
                 using (var subkey = root.OpenSubKey("Phone"))
                 {
@@ -361,7 +361,7 @@ namespace Cube.Tests
             var person = CreatePerson();
             using (var root = CreateSubKey())
             {
-                Cube.Settings.Save<Person>(person, root);
+                Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, root));
                 Assert.That(root.GetValue("ID"), Is.EqualTo(123));
             }
         }
@@ -387,7 +387,7 @@ namespace Cube.Tests
         //    if (File.Exists(dest)) File.Delete(dest);
 
         //    var person = CreatePerson();
-        //    Cube.Settings.Save<Person>(person, dest, type);
+        //    Assert.DoesNotThrow(() => Cube.Settings.Save<Person>(person, dest, type));
         //    Assert.That(File.Exists(dest), Is.True);
         //}
 
@@ -432,7 +432,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private Microsoft.Win32.RegistryKey CreateSubKey()
         {
-            var name = @"Software\CubeSoft\SettingsTester";
+            var name = @"Software\CubeSoft\SettingsTest";
             return Microsoft.Win32.Registry.CurrentUser.CreateSubKey(name);
         }
 
