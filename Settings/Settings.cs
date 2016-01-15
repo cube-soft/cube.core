@@ -25,19 +25,20 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 using Cube.Extensions;
+using log4net;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Settings
+    /// Settings
     /// 
     /// <summary>
     /// アプリケーション and/or ユーザ設定を扱うためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class Settings
+    public static class Settings
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -141,7 +142,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static object LoadRegistry(RegistryKey root, Type type)
         {
-            var dest = System.Activator.CreateInstance(type);
+            var dest = Activator.CreateInstance(type);
             if (root == null || dest == null) return null;
 
             foreach (var item in GetDataMembers(type))
@@ -165,11 +166,7 @@ namespace Cube
                         if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
-                catch (Exception err)
-                {
-                    System.Diagnostics.Trace.TraceError(err.ToString());
-                    continue;
-                }
+                catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
             }
             return dest;
         }
@@ -233,16 +230,9 @@ namespace Cube
                     else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
                     else if (code == TypeCode.DateTime) root.SetValue(name, ((DateTime)value).ToUnixTime());
                     else if (code != TypeCode.Object) root.SetValue(name, value);
-                    else using (var subkey = root.CreateSubKey(name))
-                    {
-                        SaveRegistry(value, item.PropertyType, subkey);
-                    }
+                    else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, item.PropertyType, subkey);
                 }
-                catch (Exception err)
-                {
-                    System.Diagnostics.Trace.TraceError(err.ToString());
-                    continue;
-                }
+                catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
             }
         }
 
@@ -259,11 +249,16 @@ namespace Cube
         {
             try
             {
-                return type.GetProperties().Where(item => {
+                return type.GetProperties().Where(item =>
+                {
                     return Attribute.IsDefined(item, typeof(DataMemberAttribute));
                 });
             }
-            catch (Exception /* err */) { return null; }
+            catch (Exception err)
+            {
+                LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err);
+                return null;
+            }
         }
 
         /* ----------------------------------------------------------------- */
