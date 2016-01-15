@@ -17,9 +17,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Reflection;
-using System.ComponentModel;
 
 namespace Cube
 {
@@ -86,6 +84,17 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public TValue User { get; private set; } = default(TValue);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Startup
+        ///
+        /// <summary>
+        /// スタートアップ設定を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Startup Startup { get; } = new Startup();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -197,6 +206,7 @@ namespace Cube
         {
             LoadApplicationSettings();
             LoadUserSettings();
+            Startup.Load();
         }
 
         /* ----------------------------------------------------------------- */
@@ -215,6 +225,7 @@ namespace Cube
             {
                 Settings.Save<TValue>(User, subkey);
             }
+            Startup.Save();
         }
 
         /* ----------------------------------------------------------------- */
