@@ -17,6 +17,8 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace Cube.Tests
@@ -45,7 +47,18 @@ namespace Cube.Tests
         [Test]
         public void Properties()
         {
-            Assert.Pass();
+            var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
+            Assert.That(reader.Title,         Is.EqualTo("Cube.Core testing project"));
+            Assert.That(reader.Description,   Is.EqualTo("Test Cube.Core using NUnit framework."));
+            Assert.That(reader.Configuration, Is.Empty);
+            Assert.That(reader.Company,       Is.EqualTo("CubeSoft, Inc."));
+            Assert.That(reader.Product,       Is.EqualTo("Cube.Core.Tests"));
+            Assert.That(reader.Copyright,     Is.EqualTo("Copyright © 2010 CubeSoft, Inc."));
+            Assert.That(reader.Trademark,     Is.EqualTo("dummy trademark"));
+            Assert.That(reader.Culture,       Is.Empty);
+            Assert.That(reader.Version,       Is.AtLeast(new Version(1, 2, 0, 0)));
+            Assert.That(reader.FileVersion,   Is.AtLeast(new Version(1, 2, 0, 0)));
+            Assert.That(reader.Icon,          Is.Not.Null);
         }
     }
 }
