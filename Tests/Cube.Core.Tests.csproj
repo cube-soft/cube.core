@@ -65,7 +65,7 @@
     <Compile Include="UriTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cube.Core.csproj">
+    <ProjectReference Include="..\Libraries\Cube.Core.csproj">
       <Project>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</Project>
       <Name>Cube.Core</Name>
     </ProjectReference>
