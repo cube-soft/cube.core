@@ -26,7 +26,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.Device
+    /// Device
     /// 
     /// <summary>
     /// デバイスに関する情報を保持するクラスです。
@@ -160,11 +160,11 @@ namespace Cube.FileSystem
         private void DetachDevice()
         {
             var parent = 0;
-            CM_Get_Parent(ref parent, (int)Handle, 0);
+            SetupApi.CM_Get_Parent(ref parent, (int)Handle, 0);
 
             var veto = VetoType.Unknown;
             var name = new StringBuilder(10 * 1024);
-            var status = CM_Request_Device_Eject(parent, out veto, name, (ulong)name.Capacity, 0);
+            var status = SetupApi.CM_Request_Device_Eject(parent, out veto, name, (ulong)name.Capacity, 0);
             if (status != 0) throw new VetoException(veto, name.ToString());
         }
 
@@ -179,7 +179,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private void DetachMedia()
         {
-            mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
+            WinMM.mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
         }
 
         /* ----------------------------------------------------------------- */
@@ -204,7 +204,7 @@ namespace Cube.FileSystem
                 for (uint i = 0; true; ++i)
                 {
                     var data = new SP_DEVICE_INTERFACE_DATA();
-                    if (!SetupDiEnumDeviceInterfaces(handle, IntPtr.Zero, ref guid, i, data))
+                    if (!SetupApi.SetupDiEnumDeviceInterfaces(handle, IntPtr.Zero, ref guid, i, data))
                     {
                         var code = Marshal.GetLastWin32Error();
                         if (code == 259 /* ERROR_NO_MORE_ITEMS */) break;
@@ -223,7 +223,7 @@ namespace Cube.FileSystem
                     }
                 }
             }
-            finally { if (handle != IntPtr.Zero) SetupDiDestroyDeviceInfoList(handle); }
+            finally { if (handle != IntPtr.Zero) SetupApi.SetupDiDestroyDeviceInfoList(handle); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -272,7 +272,7 @@ namespace Cube.FileSystem
             const uint DIGCF_PRESENT = 0x00000002;
             const uint DIGCF_DEVICEINTERFACE = 0x00000010;
 
-            var dest = SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
+            var dest = SetupApi.SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (dest.ToInt32() == -1) throw new Win32Exception(Marshal.GetLastWin32Error());
 
@@ -305,7 +305,7 @@ namespace Cube.FileSystem
                 buffer = Marshal.AllocHGlobal((int)size);
                 Marshal.StructureToPtr(detail, buffer, false);
 
-                var status = SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
+                var status = SetupApi.SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
                 if (!status) throw new Win32Exception(Marshal.GetLastWin32Error());
 
                 var pos = (IntPtr)((int)buffer + Marshal.SizeOf(typeof(int)));
@@ -327,163 +327,12 @@ namespace Cube.FileSystem
         private uint GetRequiredSize(IntPtr handle, SP_DEVICE_INTERFACE_DATA data, SP_DEVINFO_DATA devinfo)
         {
             var dest = 0u;
-            if (!SetupDiGetDeviceInterfaceDetail(handle, data, IntPtr.Zero, 0, ref dest, devinfo))
+            if (!SetupApi.SetupDiGetDeviceInterfaceDetail(handle, data, IntPtr.Zero, 0, ref dest, devinfo))
             {
                 var code = Marshal.GetLastWin32Error();
                 if (code != 122 /* ERROR_INSUFFICIENT_BUFFER */) throw new Win32Exception(code);
             }
             return dest;
-        }
-
-        #endregion
-
-        #region Win32 APIs
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetupDiGetClassDevs
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff551069.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll", SetLastError = true)]
-        private static extern IntPtr SetupDiGetClassDevs(ref Guid classGuid, IntPtr enumerator,
-            IntPtr hwndParent, uint flags);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetupDiDestroyDeviceInfoList
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff550996.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll")]
-        private static extern uint SetupDiDestroyDeviceInfoList(IntPtr deviceInfoSet);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetupDiEnumDeviceInterfaces
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff550996.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll", SetLastError = true)]
-        private static extern bool SetupDiEnumDeviceInterfaces(IntPtr deviceInfoSet, IntPtr deviceInfoData,
-            ref Guid interfaceClassGuid, uint memberIndex, SP_DEVICE_INTERFACE_DATA deviceInterfaceData);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetupDiGetDeviceInterfaceDetail
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff551120.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        static extern bool SetupDiGetDeviceInterfaceDetail(IntPtr deviceInfoSet,
-            SP_DEVICE_INTERFACE_DATA deviceInterfaceData,
-            IntPtr deviceInterfaceDetailData, uint deviceInterfaceDetailDataSize,
-            ref uint requiredSize, SP_DEVINFO_DATA deviceInfoData);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CM_Get_Parent
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff538610.aspx
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll")]
-        private static extern int CM_Get_Parent(ref int pdnDevInst, int dnDevInst, ulong ulFlags);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CM_Request_Device_Eject
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff539806.aspx
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll")]
-        static extern int CM_Request_Device_Eject(int dnDevInst, out VetoType pVetoType,
-            StringBuilder pszVetoName, ulong ulNameLength, ulong ulFlags);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// mciSendString
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/dd757161.aspx
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        [DllImport("winmm.dll")]
-        static extern Int32 mciSendString(string command, StringBuilder buffer,
-            int bufferSize, IntPtr hwndCallback);
-
-        #endregion
-
-        #region Classes or structures for Win32 APIs
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SP_DEVINFO_DATA
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff552344.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [StructLayout(LayoutKind.Sequential)]
-        internal class SP_DEVINFO_DATA
-        {
-            public uint cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVINFO_DATA));
-            public Guid classGuid = Guid.Empty;
-            public uint devInst = 0;
-            public IntPtr reserved = IntPtr.Zero;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SP_DEVICE_INTERFACE_DATA
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff552342.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [StructLayout(LayoutKind.Sequential)]
-        internal class SP_DEVICE_INTERFACE_DATA
-        {
-            public uint cbSize = (uint)Marshal.SizeOf(typeof(SP_DEVICE_INTERFACE_DATA));
-            public Guid interfaceClassGuid = Guid.Empty;
-            public uint flags = 0;
-            public IntPtr reserved = IntPtr.Zero;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SP_DEVICE_INTERFACE_DETAIL_DATA
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff552343.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [StructLayout(LayoutKind.Sequential, Pack = 2)]
-        internal struct SP_DEVICE_INTERFACE_DETAIL_DATA
-        {
-            public uint cbSize;
-            public short devicePath;
         }
 
         #endregion

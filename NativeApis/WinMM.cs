@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// StorageDeviceNumber.cs
+/// WinMM.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,24 +17,34 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Text;
 using System.Runtime.InteropServices;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// STORAGE_DEVICE_NUMBER
+    /// WinMM
     /// 
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb968801.aspx
+    /// winmm.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct STORAGE_DEVICE_NUMBER
+    internal abstract class WinMM
     {
-        public uint DeviceType;
-        public uint DeviceNumber;
-        public uint PartitionNumber;
-    };
+        /* ----------------------------------------------------------------- */
+        ///
+        /// mciSendString
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/dd757161.aspx
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [DllImport("winmm.dll")]
+        public static extern Int32 mciSendString(string command, StringBuilder buffer,
+            int bufferSize, IntPtr hwndCallback);
+    }
 }

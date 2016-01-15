@@ -63,11 +63,14 @@
     <Compile Include="FileSystem\VetoType.cs" />
     <Compile Include="NativeApis\IImageList.cs" />
     <Compile Include="NativeApis\ImageInfo.cs" />
-    <Compile Include="NativeApis\ImageListDrawParams.cs" />
+    <Compile Include="NativeApis\Kernel32.cs" />
     <Compile Include="NativeApis\Point.cs" />
     <Compile Include="NativeApis\Rect.cs" />
+    <Compile Include="NativeApis\SetupApi.cs" />
     <Compile Include="NativeApis\SHFileInfo.cs" />
     <Compile Include="NativeApis\SHStockIconInfo.cs" />
+    <Compile Include="NativeApis\SpDevice.cs" />
+    <Compile Include="NativeApis\WinMM.cs" />
     <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
