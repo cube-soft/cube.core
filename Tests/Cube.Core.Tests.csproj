@@ -50,6 +50,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyReaderTest.cs" />
     <Compile Include="ByteFormatTest.cs" />
     <Compile Include="Detail\Person.cs" />
     <Compile Include="Detail\FileResource.cs" />
