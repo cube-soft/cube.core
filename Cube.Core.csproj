@@ -68,17 +68,17 @@
     </Compile>
     <Compile Include="EventArgs\DataCancelEventArgs.cs" />
     <Compile Include="EventArgs\DataEventArgs.cs" />
-    <Compile Include="ByteFormat.cs" />
-    <Compile Include="TaskExtensions.cs" />
-    <Compile Include="Extensions\UnixTimeExtensions.cs" />
+    <Compile Include="Extensions\ByteFormat.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Extensions\UnixTime.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="NativeApis\Shell32.cs" />
     <Compile Include="Icons\IconSize.cs" />
     <Compile Include="Icons\StockIcons.cs" />
-    <Compile Include="NotifyItem.cs" />
-    <Compile Include="NotifyLevel.cs" />
-    <Compile Include="NotifyQueue.cs" />
+    <Compile Include="Notifications\NotifyItem.cs" />
+    <Compile Include="Notifications\NotifyLevel.cs" />
+    <Compile Include="Notifications\NotifyQueue.cs" />
     <Compile Include="Settings\AssemblyReader.cs" />
     <Compile Include="Settings\ObservableSettings.cs">
       <SubType>Code</SubType>
