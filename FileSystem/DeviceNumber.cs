@@ -25,7 +25,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.DeviceNumber
+    /// DeviceNumber
     /// 
     /// <summary>
     /// デバイス番号を取得するためのクラスです。
@@ -82,13 +82,13 @@ namespace Cube.FileSystem
 
             try
             {
-                handle = CreateFile(deviceName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                handle = Kernel32.CreateFile(deviceName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
                     IntPtr.Zero, 3 /* OPEN_EXISTING */, 0, IntPtr.Zero);
                 if (handle.ToInt32() <= 0) throw new Win32Exception(Marshal.GetLastWin32Error());
                 return GetDeviceNumber(handle);
                 
             }
-            finally { if (handle.ToInt32() > 0) CloseHandle(handle); }
+            finally { if (handle.ToInt32() > 0) Kernel32.CloseHandle(handle); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,7 +110,7 @@ namespace Cube.FileSystem
                 var size = 0u;
                 buffer = Marshal.AllocHGlobal(capacity);
 
-                var result = DeviceIoControl(handle, 0x002D1080 /* IOCTL_STORAGE_GET_DEVICE_NUMBER */,
+                var result = Kernel32.DeviceIoControl(handle, 0x002D1080 /* IOCTL_STORAGE_GET_DEVICE_NUMBER */,
                     IntPtr.Zero, 0, buffer, (uint)capacity, out size, IntPtr.Zero);
                 if (!result || size == 0) throw new Win32Exception(Marshal.GetLastWin32Error());
 
@@ -119,70 +119,6 @@ namespace Cube.FileSystem
             }
             finally { if (buffer != IntPtr.Zero) Marshal.FreeHGlobal(buffer); }
         }
-
-        #endregion
-
-        #region Win32 APIs
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateFile
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
-            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CloseHandle
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool CloseHandle(IntPtr handle);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeviceIoControl
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
-            IntPtr lpInBuffer, uint nInBufferSize,
-            IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
-
-        #endregion
-
-        #region Structures for Win32 APIs
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// STORAGE_DEVICE_NUMBER
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb968801.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [StructLayout(LayoutKind.Sequential)]
-        struct STORAGE_DEVICE_NUMBER
-        {
-            public uint DeviceType;
-            public uint DeviceNumber;
-            public uint PartitionNumber;
-        };
 
         #endregion
     }
