@@ -18,15 +18,13 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using TaskEx = System.Threading.Tasks.Task;
 
 namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.TaskExtensions
+    /// TaskExtensions
     /// 
     /// <summary>
     /// Sytem.Threading.Tasks.Task の拡張クラスです。
@@ -46,8 +44,8 @@ namespace Cube.Extensions
         /* --------------------------------------------------------------------- */
         public static async Task Timeout(this Task task, TimeSpan timeout)
         {
-            var delay = TaskEx.Delay(timeout);
-            if (await TaskEx.WhenAny(task, delay) == delay)
+            var delay = Task.Delay(timeout);
+            if (await Task.WhenAny(task, delay) == delay)
             {
                 throw new TimeoutException();
             }

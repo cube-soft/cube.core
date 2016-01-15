@@ -23,14 +23,14 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.ProgressEventArgs
+    /// ProgressEventArgs
     ///
     /// <summary>
     /// 進捗情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ProgressEventArgs : EventArgs
+    public class ProgressEventArgs<TValue> : EventArgs
     {
         #region Constructors
 
@@ -43,10 +43,10 @@ namespace Cube
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public ProgressEventArgs(int value, string message) : base()
+        public ProgressEventArgs(double percentage, TValue value) : base()
         {
+            Percentage = percentage;
             Value = value;
-            Message = message;
         }
 
         #endregion
@@ -55,25 +55,25 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Value
+        /// Percentage
         /// 
         /// <summary>
-        /// 進捗状況を取得します。
+        /// 進捗状況を百分率で取得します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public int Value { get; }
+        public double Percentage { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Message
+        /// Value
         /// 
         /// <summary>
-        /// 進捗に関するメッセージを取得します。
+        /// ユーザから指定された値を取得します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public string Message { get; }
+        public TValue Value { get; }
 
         #endregion
     }

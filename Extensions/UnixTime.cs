@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DataCancelEventArgs.cs
+/// UnixTimeExtensions.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,53 +17,50 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 
-namespace Cube
+namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DataCancelEventArgs
-    ///
+    /// UnixTime
+    /// 
     /// <summary>
-    /// イベントハンドラに特定の型のデータを渡すためのクラスです。
+    /// DateTiem と UnixTime の相互変換を行うための拡張クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataCancelEventArgs<TData> : CancelEventArgs
+    public static class UnixTime
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// DataCancelEventArgs
+        /// ToUnixTime
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// DateTime オブジェクトから UNIX 時刻へ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataCancelEventArgs(TData value, bool cancel = false)
-            : base(cancel)
+        public static int ToUnixTime(this DateTime time)
         {
-            Value = value;
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var utc = time.ToUniversalTime();
+            return (int)utc.Subtract(epoch).TotalSeconds;
         }
 
-        #endregion
-
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Value
+        /// ToDateTime
         /// 
         /// <summary>
-        /// データを取得します。
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TData Value { get; private set; }
-
-        #endregion
+        public static DateTime ToDateTime(this int unix)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unix).ToLocalTime();
+        }
     }
 }

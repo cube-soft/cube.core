@@ -17,14 +17,13 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.ObjectModel;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.NotifyQueue
+    /// NotifyQueue
     /// 
     /// <summary>
     /// NotifyItem をキュー管理するためのクラスです。

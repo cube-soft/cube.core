@@ -26,7 +26,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.FileInfo
+    /// FileInfo
     /// 
     /// <summary>
     /// ファイル情報を取得するためのクラスです。

@@ -69,7 +69,7 @@
     <Compile Include="EventArgs\DataCancelEventArgs.cs" />
     <Compile Include="EventArgs\DataEventArgs.cs" />
     <Compile Include="ByteFormat.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="TaskExtensions.cs" />
     <Compile Include="Extensions\UnixTimeExtensions.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Icons\IconFactory.cs" />

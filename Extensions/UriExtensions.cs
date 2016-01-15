@@ -19,13 +19,12 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
-using Cube.Extensions.Time;
 
 namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.UriExtensions
+    /// UriExtensions
     /// 
     /// <summary>
     /// Sytem.Uri の拡張クラスです。

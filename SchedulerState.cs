@@ -17,13 +17,11 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.SchedulerState
+    /// SchedulerState
     /// 
     /// <summary>
     /// Scheduler オブジェクトの状態を表すための列挙型です。
