@@ -26,7 +26,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.AssemblyReader
+    /// AssemblyReader
     /// 
     /// <summary>
     /// Assembly オブジェクトの各種情報を取得するクラスです。
