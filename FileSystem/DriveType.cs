@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// MediaType.cs
+/// DriveType.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -23,18 +23,21 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.MediaType
+    /// Cube.FileSystem.DriveType
     /// 
     /// <summary>
-    /// 物理メディアの種類を定義した列挙型です。
+    /// ドライブの種類を定義した列挙型です。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public enum MediaType : uint
+    public enum DriveType : uint
     {
-        Unknown        =  0,
-        FloppyDisk     =  1,
-        RemovableMedia = 11,
-        HardDisk       = 12
+        Unknown        = 0,
+        CD             = 1,
+        Dvd            = 2,
+        FloppyDisk     = 3,
+        HardDisk       = 4, 
+        Network        = 5,
+        RemovableDisk  = 6
     }
 }

@@ -18,7 +18,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.IO;
 using System.Management;
 using System.Collections.Generic;
 
@@ -40,6 +39,21 @@ namespace Cube.FileSystem {
     public class Drive
     {
         #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 引数には、A-Z の英文字を指定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Drive(char letter) : this(string.Format("{0}:", letter)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -152,18 +166,7 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MediaType
-        ///
-        /// <summary>
-        /// ディスクの種類を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public MediaType MediaType { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InterfaceType
+        /// Interface
         ///
         /// <summary>
         /// インターフェースの種類を取得または設定します。
@@ -174,7 +177,7 @@ namespace Cube.FileSystem {
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public string InterfaceType { get; private set; }
+        public string Interface { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -296,9 +299,8 @@ namespace Cube.FileSystem {
         {
             Letter      = drive["Name"] as string;
             VolumeLabel = ToVolumeLabel(drive["VolumeName"], drive["Description"]);
-            Type        = ToDriveType(drive["DriveType"]);
+            Type        = ToDriveType(drive["DriveType"], drive["MediaType"]);
             Format      = drive["FileSystem"] as string;
-            MediaType   = ToMediaType(drive["MediaType"]);
             Size        = TryCast<UInt64>(drive["Size"]);
             FreeSpace   = TryCast<UInt64>(drive["FreeSpace"]);
         }
@@ -318,18 +320,18 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         private void GetDeviceInfo(ManagementObject drive)
         {
-            switch (MediaType)
+            switch (Type)
             {
-                case FileSystem.MediaType.FloppyDisk:
-                    // GetFloppyDiskInfo(drive);
+                case DriveType.CD:
+                case DriveType.Dvd:
+                    // GetCdInfo(drive);
                     break;
-                case FileSystem.MediaType.HardDisk:
+                case DriveType.HardDisk:
+                case DriveType.Network:
+                case DriveType.RemovableDisk:
                     GetHardDiskInfo(drive);
                     break;
-                case FileSystem.MediaType.RemovableMedia:
-                    // GetRemovableMediaInfo(drive);
-                    break;
-                case FileSystem.MediaType.Unknown:
+                case DriveType.Unknown:
                     break;
                 default:
                     break;
@@ -350,9 +352,10 @@ namespace Cube.FileSystem {
             foreach (ManagementObject partition in drive.GetRelated("Win32_DiskPartition"))
             foreach (ManagementObject device in partition.GetRelated("Win32_DiskDrive"))
             {
-                Index         = TryCast<uint>(device["Index"], uint.MaxValue);
-                Model         = device["Model"] as string;
-                InterfaceType = device["InterfaceType"] as string;
+                Index     = TryCast<uint>(device["Index"], uint.MaxValue);
+                Model     = device["Model"] as string;
+                Interface = device["InterfaceType"] as string;
+                if (Type == DriveType.HardDisk && Interface == "USB") Type = DriveType.RemovableDisk;
                 break;
             }
         }
@@ -384,16 +387,38 @@ namespace Cube.FileSystem {
         /// <summary>
         /// DriveType 列挙型に変換します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: USB 接続のハードディスクも 3 (Local Disk) に指定されている
+        /// ※ USB 接続のフラッシュメモリは（多分）2。
+        /// この辺りを他の情報も勘案しながら最適な DriveType へ割り当てる。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private DriveType ToDriveType(object obj)
+        private DriveType ToDriveType(object drive, object media)
         {
-            var index = TryCast<uint>(obj, 0);
-            foreach (DriveType type in Enum.GetValues(typeof(DriveType)))
+            var index = TryCast<uint>(drive, 0);
+
+            switch (index)
             {
-                if ((uint)type == index) return type;
+                case 0: // Unknown
+                    return DriveType.Unknown;
+                case 1: // No Root Directory
+                    return DriveType.Unknown;
+                case 2: // Removable Disk
+                    var type = ToMediaType(media);
+                    return (type != DriveType.Unknown) ? type : DriveType.RemovableDisk;
+                case 3: // Local Disk
+                    return DriveType.HardDisk;
+                case 4: // Network Drive
+                    return DriveType.Network;
+                case 5: // Compact Disc
+                    return DriveType.CD;
+                case 6: // RAM Disk
+                    return DriveType.Unknown;
+                default:
+                    return DriveType.Unknown;
             }
-            return DriveType.Unknown;
         }
 
         /* ----------------------------------------------------------------- */
@@ -405,29 +430,29 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private MediaType ToMediaType(object obj)
+        private DriveType ToMediaType(object obj)
         {
             var index = TryCast<uint>(obj, 0);
 
             switch (index)
             {
-                case  0: // Unknown
-                    return MediaType.Unknown;
-                case  1: // 5 1/4-Inch Floppy Disk - 1.2 MB - 512 bytes/sector
-                case  2: // 3 1/2-Inch Floppy Disk - 1.44 MB -512 bytes/sector
-                case  3: // 3 1/2-Inch Floppy Disk - 2.88 MB - 512 bytes/sector
-                case  4: // 3 1/2-Inch Floppy Disk - 20.8 MB - 512 bytes/sector
-                case  5: // 3 1/2-Inch Floppy Disk - 720 KB - 512 bytes/sector
-                case  6: // 5 1/4-Inch Floppy Disk - 360 KB - 512 bytes/sector
-                case  7: // 5 1/4-Inch Floppy Disk - 320 KB - 512 bytes/sector
-                case  8: // 5 1/4-Inch Floppy Disk - 320 KB - 1024 bytes/sector
-                case  9: // 5 1/4-Inch Floppy Disk - 180 KB - 512 bytes/sector
+                case 0: // Unknown
+                    return DriveType.Unknown;
+                case 1: // 5 1/4-Inch Floppy Disk - 1.2 MB - 512 bytes/sector
+                case 2: // 3 1/2-Inch Floppy Disk - 1.44 MB -512 bytes/sector
+                case 3: // 3 1/2-Inch Floppy Disk - 2.88 MB - 512 bytes/sector
+                case 4: // 3 1/2-Inch Floppy Disk - 20.8 MB - 512 bytes/sector
+                case 5: // 3 1/2-Inch Floppy Disk - 720 KB - 512 bytes/sector
+                case 6: // 5 1/4-Inch Floppy Disk - 360 KB - 512 bytes/sector
+                case 7: // 5 1/4-Inch Floppy Disk - 320 KB - 512 bytes/sector
+                case 8: // 5 1/4-Inch Floppy Disk - 320 KB - 1024 bytes/sector
+                case 9: // 5 1/4-Inch Floppy Disk - 180 KB - 512 bytes/sector
                 case 10: // 5 1/4-Inch Floppy Disk - 160 KB - 512 bytes/sector
-                    return MediaType.FloppyDisk;
+                    return DriveType.FloppyDisk;
                 case 11: // Removable media other than floppy
-                    return MediaType.RemovableMedia;
+                    return DriveType.RemovableDisk;
                 case 12: // Fixed hard disk media
-                    return MediaType.HardDisk;
+                    return DriveType.HardDisk;
                 case 13: // 3 1/2-Inch Floppy Disk - 120 MB - 512 bytes/sector
                 case 14: // 3 1/2-Inch Floppy Disk - 640 KB - 512 bytes/sector
                 case 15: // 5 1/4-Inch Floppy Disk - 640 KB - 512 bytes/sector
@@ -438,9 +463,9 @@ namespace Cube.FileSystem {
                 case 20: // 3 1/2-Inch Floppy Disk - 128 MB - 512 bytes/sector
                 case 21: // 3 1/2-Inch Floppy Disk - 230 MB - 512 bytes/sector
                 case 22: // 8-Inch Floppy Disk - 256 KB - 128 bytes/sector
-                    return MediaType.FloppyDisk;
+                    return DriveType.FloppyDisk;
                 default:
-                    return MediaType.Unknown;
+                    return DriveType.Unknown;
             }
         }
 

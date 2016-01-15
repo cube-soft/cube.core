@@ -48,12 +48,24 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public Device(Drive drive)
         {
-            InitializeProperties(drive);
+            Drive = drive;
+            InitializeProperties();
         }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive
+        /// 
+        /// <summary>
+        /// 対象となるドライブを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Drive Drive { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,6 +120,45 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Detach()
         {
+            switch (Drive.Type)
+            {
+                case DriveType.CD:
+                case DriveType.Dvd:
+                    DetachMedia();
+                    break;
+                case DriveType.FloppyDisk:
+                    break;
+                case DriveType.HardDisk:
+                case DriveType.RemovableDisk:
+                    DetachDevice();
+                    break;
+                case DriveType.Network:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DetachDevice
+        /// 
+        /// <summary>
+        /// デバイスを取り外します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: たまに（成功するはずなのに）失敗するので何度か試行すべき
+        /// と言う指摘があったので、その辺りの調査を行う。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void DetachDevice()
+        {
             var parent = 0;
             CM_Get_Parent(ref parent, (int)Handle, 0);
 
@@ -117,9 +168,19 @@ namespace Cube.FileSystem
             if (status != 0) throw new VetoException(veto, name.ToString());
         }
 
-        #endregion
-
-        #region Implementations
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DetachMedia
+        /// 
+        /// <summary>
+        /// メディアを取り出します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void DetachMedia()
+        {
+            mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -130,13 +191,13 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void InitializeProperties(Drive drive)
+        private void InitializeProperties()
         {
             var handle = IntPtr.Zero;
 
             try
             {
-                var guid = GetClassGuid(drive);
+                var guid = GetClassGuid(Drive);
                 if (guid == Guid.Empty) return;
 
                 handle = GetDeviceHandle(guid);
@@ -153,7 +214,7 @@ namespace Cube.FileSystem
                     var devinfo = new SP_DEVINFO_DATA();
                     var path = GetDevicePath(handle, data, devinfo);
                     var index = Cube.FileSystem.DeviceNumber.Get(path);
-                    if (drive.Index == index)
+                    if (Drive.Index == index)
                     {
                         Path = path;
                         Index = index;
@@ -182,14 +243,16 @@ namespace Cube.FileSystem
 
             switch (drive.Type)
             {
-                case System.IO.DriveType.Removable:
-                    return drive.MediaType == MediaType.FloppyDisk ?
-                           new Guid(GUID_DEVINTERFACE_FLOPPY) :
-                           new Guid(GUID_DEVINTERFACE_DISK);
-                case System.IO.DriveType.Fixed:
-                    return new Guid(GUID_DEVINTERFACE_DISK);
-                case System.IO.DriveType.CDRom:
+                case DriveType.CD:
+                case DriveType.Dvd:
                     return new Guid(GUID_DEVINTERFACE_CDROM);
+                case DriveType.FloppyDisk:
+                    return new Guid(GUID_DEVINTERFACE_FLOPPY);
+                case DriveType.HardDisk:
+                case DriveType.RemovableDisk:
+                    return new Guid(GUID_DEVINTERFACE_DISK);
+                case DriveType.Network:
+                    return Guid.Empty;
                 default:
                     return Guid.Empty;
             }
@@ -353,6 +416,19 @@ namespace Cube.FileSystem
         [DllImport("setupapi.dll")]
         static extern int CM_Request_Device_Eject(int dnDevInst, out VetoType pVetoType,
             StringBuilder pszVetoName, ulong ulNameLength, ulong ulFlags);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// mciSendString
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/dd757161.aspx
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [DllImport("winmm.dll")]
+        static extern Int32 mciSendString(string command, StringBuilder buffer,
+            int bufferSize, IntPtr hwndCallback);
 
         #endregion
 
