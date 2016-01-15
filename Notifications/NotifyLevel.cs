@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// MediaType.cs
+/// NotifyLevel.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,24 +17,24 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
-namespace Cube.FileSystem
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.MediaType
+    /// NotifyLevel
     /// 
     /// <summary>
-    /// 物理メディアの種類を定義した列挙型です。
+    /// 通知した項目の重要度を示す値を定義した列挙体です。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public enum MediaType : uint
+    public enum NotifyLevel : int
     {
-        Unknown        =  0,
-        FloppyDisk     =  1,
-        RemovableMedia = 11,
-        HardDisk       = 12
+        None        = 0,
+        Information = 1,
+        Recommended = 2,
+        Important   = 3,
+        Warning     = 4,
+        Error       = 5,
     }
 }

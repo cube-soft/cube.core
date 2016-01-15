@@ -17,58 +17,205 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
+using System.ComponentModel;
 using Microsoft.Win32;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Startup
+    /// Startup
     /// 
     /// <summary>
-    /// スタートアップへの登録および削除を行うためのクラスです。
+    /// スタートアップ設定を行うためのクラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public abstract class Startup
+    public class Startup : ObservableSettingsValue
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Register
+        /// Startup
         ///
         /// <summary>
-        /// レジストリへスタートアップを登録します。
+        /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Register(string name, string command)
+        public Startup()
+            : this(string.Empty, string.Empty, false)
+        { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Startup
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Startup(string name)
+            :this(name, string.Empty, false)
+        { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Startup
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Startup(string name, string command)
+            : this(name, command, true)
+        { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Startup
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Startup(string name, string command, bool enabled)
         {
-            using (var subkey = Registry.CurrentUser.OpenSubKey(_RegRoot, true))
+            Name    = name;
+            Command = command;
+            Enabled = enabled;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Enabled
+        ///
+        /// <summary>
+        /// スタートアップ設定が有効かどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
             {
-                subkey.SetValue(name, command);
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("Enabled"));
+                }
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Delete
+        /// Name
         ///
         /// <summary>
-        /// レジストリからスタートアップ設定を削除します。
+        /// スタートアップに登録する名前を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Delete(string name)
+        public string Name
         {
-            using (var subkey = Registry.CurrentUser.OpenSubKey(_RegRoot, true))
+            get { return _name; }
+            set
             {
-                if (subkey == null) return;
-                subkey.DeleteValue(name);
+                if (_name != value)
+                {
+                    _name = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("Name"));
+                }
             }
         }
 
-        #region Constant fields
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Command
+        ///
+        /// <summary>
+        /// スタートアップ時に実行されるコマンドを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Command
+        {
+            get { return _command; }
+            set
+            {
+                if (_command != value)
+                {
+                    _command = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs("Command"));
+                }
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load
+        ///
+        /// <summary>
+        /// レジストリから設定をロードします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Load()
+        {
+            if (string.IsNullOrEmpty(Name)) return;
+
+            using (var subkey = Registry.CurrentUser.OpenSubKey(_RegRoot, false))
+            {
+                Command = subkey.GetValue(Name, string.Empty) as string;
+                Enabled = !string.IsNullOrEmpty(Command);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save
+        ///
+        /// <summary>
+        /// レジストリへ設定を保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Save()
+        {
+            if (string.IsNullOrEmpty(Name)) return;
+
+            using (var subkey = Registry.CurrentUser.OpenSubKey(_RegRoot, true))
+            {
+                if (Enabled)
+                {
+                    if (!string.IsNullOrEmpty(Command)) subkey.SetValue(Name, Command);
+                }
+                else subkey.DeleteValue(Name);
+            }
+        }
+
+        #endregion
+
+        #region Fields
+        private bool _enabled = false;
+        private string _name = string.Empty;
+        private string _command = string.Empty;
+        #endregion
+
+        #region Static fields
         private static readonly string _RegRoot = @"Software\Microsoft\Windows\CurrentVersion\Run";
         #endregion
     }

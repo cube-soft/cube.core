@@ -17,13 +17,11 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.VetoType
+    /// VetoType
     /// 
     /// <summary>
     /// PnP 操作が拒否された理由を表すための列挙型です。

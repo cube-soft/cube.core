@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// TaskExtensions.cs
+/// UnixTimeExtensions.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,54 +18,49 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using TaskEx = System.Threading.Tasks.Task;
 
 namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.TaskExtensions
+    /// UnixTime
     /// 
     /// <summary>
-    /// Sytem.Threading.Tasks.Task の拡張クラスです。
+    /// DateTiem と UnixTime の相互変換を行うための拡張クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class TaskExtensions
+    public static class UnixTime
     {
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// Timeout
+        /// ToUnixTime
         /// 
         /// <summary>
-        /// タスクにタイムアウトを設定します。
+        /// DateTime オブジェクトから UNIX 時刻へ変換します。
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task task, TimeSpan timeout)
+        /* ----------------------------------------------------------------- */
+        public static int ToUnixTime(this DateTime time)
         {
-            var delay = TaskEx.Delay(timeout);
-            if (await TaskEx.WhenAny(task, delay) == delay)
-            {
-                throw new TimeoutException();
-            }
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var utc = time.ToUniversalTime();
+            return (int)utc.Subtract(epoch).TotalSeconds;
         }
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// Timeout
+        /// ToDateTime
         /// 
         /// <summary>
-        /// タスクにタイムアウトを設定します。
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToDateTime(this int unix)
         {
-            await ((Task)task).Timeout(timeout);
-            return await task;
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unix).ToLocalTime();
         }
     }
 }

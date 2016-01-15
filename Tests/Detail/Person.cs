@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// RegistryTester.cs
+/// Person.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -34,7 +34,8 @@ namespace Cube.Tests
     internal enum Sex : int
     {
         Male   = 0,
-        Female = 1
+        Female = 1,
+        Unknown = -1
     }
 
     /* ----------------------------------------------------------------- */
@@ -61,33 +62,20 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public string Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
+        public string Type { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Data
+        /// Value
         /// 
         /// <summary>
-        /// アドレスのデータを取得または設定します。
+        /// アドレスの内容を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public string Data
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public string Value { get; set; }
 
-        #endregion
-
-        #region Fields
-        private string _type = "Unknown";
-        private string _data = "Unknown data";
         #endregion
     }
 
@@ -115,11 +103,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember(Name = "ID")]
-        public int Identification
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
+        public int Identification { get; set; } = -1;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,11 +115,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public string Name { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -147,11 +127,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Sex Sex
-        {
-            get { return _sex; }
-            set { _sex = value; }
-        }
+        public Sex Sex { get; set; } = Sex.Unknown;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -163,11 +139,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public int Age
-        {
-            get { return _age; }
-            set { _age = value; }
-        }
+        public int Age { get; set; } = 0;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,11 +151,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public DateTime Creation
-        {
-            get { return _creation; }
-            set { _creation = value; }
-        }
+        public DateTime Creation { get; set; } = DateTime.MinValue;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -195,11 +163,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Phone
-        {
-            get { return _phone; }
-            set { _phone = value; }
-        }
+        public Address Phone { get; set; } = new Address { Type = "Phone", Value = string.Empty };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -211,11 +175,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Email
-        {
-            get { return _email; }
-            set { _email = value; }
-        }
+        public Address Email { get; set; } = new Address { Type = "Email", Value = string.Empty };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -227,11 +187,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public bool Reserved
-        {
-            get { return _reserved; }
-            set { _reserved = value; }
-        }
+        public bool Reserved { get; set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -242,24 +198,8 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Secret
-        {
-            get { return _secret; }
-            set { _secret = value; }
-        }
+        public string Secret { get; set; } = "secret message";
 
-        #endregion
-
-        #region Fields
-        private int _id = -1;
-        private string _name = "Personal name";
-        private int _age = -1;
-        private Sex _sex = Sex.Female;
-        private DateTime _creation = DateTime.MinValue;
-        private Address _phone = new Address();
-        private Address _email = new Address();
-        private bool _reserved = false;
-        private string _secret = "secret message";
         #endregion
     }
 }

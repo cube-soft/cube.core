@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// VetoException.cs
+/// ObservableSettingsValue.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,88 +17,71 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
+using System.ComponentModel;
 
-namespace Cube.FileSystem
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// VetoException
+    /// ObservableSettingsValue
     /// 
     /// <summary>
-    /// PnP 操作が拒否された時に送出される例外クラスです。
+    /// 各種 SettingsValue の基底クラスとなります。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class VetoException : Exception
+    public class ObservableSettingsValue : INotifyPropertyChanged
     {
-        #region Constructors
+        #region Constructor
 
         /* ----------------------------------------------------------------- */
         ///
-        /// VetoException
+        /// ObservableSettingsValue
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public VetoException(VetoType reason, string name)
-            : this(reason, name, string.Empty, null) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VetoException
         /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
+        /// <remarks>
+        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
+        /// 使用して下さい。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public VetoException(VetoType reason, string name, string message)
-            : this(reason, name, message, null) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VetoException
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public VetoException(VetoType reason, string name, string message, Exception inner)
-            : base(message, inner)
-        {
-            Reason = reason;
-            Name = name;
-        }
+        protected ObservableSettingsValue() { }
 
         #endregion
 
-        #region Properties
+        #region Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Reason
+        /// PropertyChanged
         /// 
         /// <summary>
-        /// 拒否された理由を取得します。
+        /// プロパティが変更された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VetoType Reason { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Virtual methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Name
+        /// OnPropertyChanged
         /// 
         /// <summary>
-        /// 名前を取得します。
+        /// プロパティが変更された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name { get; private set; }
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, e);
+        }
 
         #endregion
     }

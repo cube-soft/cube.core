@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResource.cs
+/// FileInfoTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,97 +17,82 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using System.IO;
 using System.Reflection;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResource
+    /// FileInfoTest
     /// 
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// FileInfo のテスト用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public class FileResource
+    [TestFixture]
+    class FileInfoTest
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
+        /// Properties
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// System.IO.FileInfo を参照しているプロパティをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileResource()
-            : this(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-        { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileResource
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource(string root)
+        [Test]
+        public void Properties()
         {
-            Root = root;
-            if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Root
-        ///
-        /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Root { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Examples
-        /// 
-        /// <summary>
-        /// テストを行うためのダミーファイルの存在するディレクトリへの
-        /// パスを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Examples
-        {
-            get { return Path.Combine(Root, "Examples"); }
+            var src  = Assembly.GetExecutingAssembly().Location;
+            var info = new Cube.FileSystem.FileInfo(src);
+            Assert.That(info.Exists, Is.True);
+            Assert.That(info.Name, Is.EqualTo(Path.GetFileName(src)));
+            Assert.That(info.FullName, Is.EqualTo(src));
+            Assert.That(info.DirectoryName, Is.EqualTo(Path.GetDirectoryName(src)));
+            Assert.That(info.Extension, Is.EqualTo(Path.GetExtension(src)));
+            Assert.That(info.Length, Is.AtLeast(1000));
+            Assert.That(info.IsReadOnly, Is.False);
+            Assert.That(info.CreationTime, Is.LessThanOrEqualTo(DateTime.Now));
+            Assert.That(info.LastWriteTime, Is.LessThanOrEqualTo(DateTime.Now));
+            Assert.That(info.LastAccessTime, Is.LessThanOrEqualTo(DateTime.Now));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results
-        /// 
+        /// TypeName
+        ///
         /// <summary>
-        /// テスト結果を格納するためのディレクトリへのパスを取得します。
+        /// TypeName が取得できているかをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Results
+        [Test]
+        public void TypeName()
         {
-            get { return Path.Combine(Root, "Results"); }
+            var info = new Cube.FileSystem.FileInfo(Assembly.GetExecutingAssembly().Location);
+            Assert.That(info.TypeName, Is.Not.Null.Or.Empty);
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Icon
+        ///
+        /// <summary>
+        /// Icon が取得できているかをテストします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Icon()
+        {
+            var info = new Cube.FileSystem.FileInfo(Assembly.GetExecutingAssembly().Location);
+            Assert.That(info.Icon, Is.Not.Null);
+            Assert.That(info.IconSize, Is.EqualTo(Cube.IconSize.Small));
+        }
     }
 }

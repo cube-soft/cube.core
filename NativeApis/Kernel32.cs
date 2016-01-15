@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// VetoException.cs
+/// Kernel32.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,88 +18,58 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Runtime.InteropServices;
 
-namespace Cube.FileSystem
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// VetoException
+    /// Kernel32
     /// 
     /// <summary>
-    /// PnP 操作が拒否された時に送出される例外クラスです。
+    /// kernel32.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class VetoException : Exception
+    internal abstract class Kernel32
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// VetoException
+        /// CreateFile
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VetoException(VetoType reason, string name)
-            : this(reason, name, string.Empty, null) { }
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
+            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// VetoException
+        /// CloseHandle
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VetoException(VetoType reason, string name, string message)
-            : this(reason, name, message, null) { }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool CloseHandle(IntPtr handle);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// VetoException
+        /// DeviceIoControl
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VetoException(VetoType reason, string name, string message, Exception inner)
-            : base(message, inner)
-        {
-            Reason = reason;
-            Name = name;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reason
-        /// 
-        /// <summary>
-        /// 拒否された理由を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public VetoType Reason { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Name
-        /// 
-        /// <summary>
-        /// 名前を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Name { get; private set; }
-
-        #endregion
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
+            IntPtr lpInBuffer, uint nInBufferSize,
+            IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
     }
 }

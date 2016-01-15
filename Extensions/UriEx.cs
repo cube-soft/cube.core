@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResource.cs
+/// UriEx.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,97 +17,95 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.IO;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
 
-namespace Cube.Tests
+namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResource
+    /// UriEx
     /// 
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// Sytem.Uri の拡張クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public class FileResource
+    public static class UriEx
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource()
-            : this(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-        { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileResource
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource(string root)
-        {
-            Root = root;
-            if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Root
-        ///
-        /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Root { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Examples
+        /// With
         /// 
         /// <summary>
-        /// テストを行うためのダミーファイルの存在するディレクトリへの
-        /// パスを取得します。
+        /// Uri オブジェクトに指定したクエリーを付与します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Examples
+        public static Uri With(this Uri uri, IDictionary<string, string> query)
         {
-            get { return Path.Combine(Root, "Examples"); }
+            if (uri == null) return uri;
+
+            var builder = new UriBuilder(uri);
+            if (query != null && query.Count > 0)
+            {
+                foreach (var item in query)
+                {
+                    var s = string.Format("{0}={1}", item.Key, item.Value);
+                    builder.Query = (builder.Query != null && builder.Query.Length > 1) ?
+                        builder.Query.Substring(1) + "&" + s : s;
+                }
+            }
+            return builder.Uri;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results
+        /// With
         /// 
         /// <summary>
-        /// テスト結果を格納するためのディレクトリへのパスを取得します。
+        /// Uri オブジェクトに指定したクエリーを付与します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Results
+        public static Uri With<T>(this Uri uri, string key, T value)
         {
-            get { return Path.Combine(Root, "Results"); }
+            var query = new Dictionary<string, string>();
+            query.Add(key, value.ToString());
+            return With(uri, query);
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With
+        /// 
+        /// <summary>
+        /// Uri オブジェクトに指定した時刻を付与します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 時刻は UnixTime に変換した上で、t=(unix) と言う形で
+        /// Uri オブジェクトに付与されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri With(this Uri uri, DateTime time)
+        {
+            return With(uri, "t", time.ToUnixTime());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WithVersion
+        /// 
+        /// <summary>
+        /// Uri オブジェクトにバージョン情報を付与します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri WithVersion(this Uri uri, string version)
+        {
+            return With(uri, "appver", version);
+        }
     }
 }

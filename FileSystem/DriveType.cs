@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NotifyLevel.cs
+/// DriveType.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,26 +17,25 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
-namespace Cube
+namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.NotifyLevel
+    /// DriveType
     /// 
     /// <summary>
-    /// 通知した項目の重要度を示す値を定義した列挙体です。
+    /// ドライブの種類を定義した列挙型です。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    public enum NotifyLevel : int
+    public enum DriveType : uint
     {
-        None = 0,
-        Information = 1,
-        Recommended = 2,
-        Important = 3,
-        Warning = 4,
-        Error = 5,
+        Unknown        = 0,
+        CD             = 1,
+        Dvd            = 2,
+        FloppyDisk     = 3,
+        HardDisk       = 4, 
+        Network        = 5,
+        RemovableDisk  = 6
     }
 }

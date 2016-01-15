@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DataCancelEventArgs.cs
+/// DriveTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,53 +17,47 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using NUnit.Framework;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DataCancelEventArgs
-    ///
+    /// DriveTest
+    /// 
     /// <summary>
-    /// イベントハンドラに特定の型の値を渡すためのクラスです。
+    /// Drive のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataCancelEventArgs<TValue> : CancelEventArgs
+    [TestFixture]
+    class DriveTest
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// DataCancelEventArgs
-        /// 
+        /// Drives
+        ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// ドライブ情報を取得するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataCancelEventArgs(TValue value, bool cancel = false)
-            : base(cancel)
+        [Test]
+        public void GetDrives()
         {
-            Value = value;
+            var drives = Cube.FileSystem.Drive.GetDrives();
+            Assert.That(drives.Length, Is.AtLeast(1));
+
+            var drive = drives[0];
+            Assert.That(drive.Index,       Is.EqualTo(0));
+            Assert.That(drive.Letter,      Is.EqualTo("C:"));
+            Assert.That(drive.VolumeLabel, Is.Not.Null.Or.Empty);
+            Assert.That(drive.Type,        Is.EqualTo(Cube.FileSystem.DriveType.HardDisk));
+            Assert.That(drive.Format,      Is.Not.Null.Or.Empty);
+            Assert.That(drive.Model,       Is.Not.Null.Or.Empty);
+            Assert.That(drive.Interface,   Is.EqualTo("IDE"));
+            Assert.That(drive.Size,        Is.AtLeast(100000000UL));
+            Assert.That(drive.FreeSpace,   Is.LessThan(drive.Size));
         }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        /// 
-        /// <summary>
-        /// データを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue Value { get; }
-
-        #endregion
     }
 }

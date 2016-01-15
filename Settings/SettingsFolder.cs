@@ -17,21 +17,25 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using System.ComponentModel;
+using System.Reflection;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.SettingsFolder
+    /// SettingsFolder
     /// 
     /// <summary>
-    /// アプリケーション/ユーザ設定を保持するためのクラスです。
+    /// ユーザ設定を保持するためのクラスです。
     /// </summary>
     /// 
+    /// <remarks>
+    /// このクラスでは、原則として各種設定をレジストリで保持する事を想定
+    /// しています。
+    /// </remarks>
+    /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<TData> : ObservableSettings where TData : new()
+    public class SettingsFolder<TValue>
     {
         #region Constructors
 
@@ -44,30 +48,31 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(string publisher, string product)
+        public SettingsFolder(Assembly assembly)
         {
-            Publisher = publisher;
-            Product   = product;
+            var reader = new AssemblyReader(assembly);
+            Company = reader.Company;
+            Product = reader.Product;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder(string company, string product)
+        {
+            Company = company;
+            Product = product;
         }
 
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Application
-        ///
-        /// <summary>
-        /// アプリケーション固有の設定を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ApplicationSettings Application
-        {
-            get { return _app; }
-            private set { _app = value; }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,26 +83,58 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TData User
+        public TValue User { get; private set; } = default(TValue);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Startup
+        ///
+        /// <summary>
+        /// スタートアップ設定を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Startup Startup { get; } = new Startup();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InstallDirectory
+        ///
+        /// <summary>
+        /// アプリケーションがインストールされているディレクトリのパスを
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string InstallDirectory
         {
-            get { return _user; }
-            private set { _user = value; }
+            get { return GetInstallDirectory(); }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Publisher
+        /// Version
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Version
+        {
+            get { return GetVersion(); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Company
         ///
         /// <summary>
         /// アプリケーションの発行元を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Publisher
-        {
-            get { return _publisher; }
-            private set { _publisher = value; }
-        }
+        public string Company { get; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,11 +145,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Product
-        {
-            get { return _product; }
-            private set { _product = value; }
-        }
+        public string Product { get; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -125,7 +158,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public string SubKeyName
         {
-            get { return string.Format(@"Software\{0}\{1}", Publisher, Product); }
+            get { return string.Format(@"Software\{0}\{1}", Company, Product); }
         }
 
         #endregion
@@ -155,65 +188,9 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Load() { ExecuteLoad(); }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadApplicationSettings
-        ///
-        /// <summary>
-        /// アプリケーション設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void LoadApplicationSettings()
-        {
-            var root = Microsoft.Win32.Registry.LocalMachine;
-            using (var subkey = root.OpenSubKey(SubKeyName, false))
-            {
-                var result = Settings.Load<ApplicationSettings>(subkey);
-                if (result != null) Application = result;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadUserSettings
-        ///
-        /// <summary>
-        /// ユーザ設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void LoadUserSettings()
-        {
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.OpenSubKey(SubKeyName, false))
-            {
-                var result = Settings.Load<TData>(subkey);
-                if (result != null) User = result;
-            }
-        }
-
         #endregion
 
         #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ExecuteSave
-        ///
-        /// <summary>
-        /// ユーザ設定をレジストリへ保存します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void ExecuteSave()
-        {
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.CreateSubKey(SubKeyName))
-            {
-                Settings.Save<TData>(User, subkey);
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -229,15 +206,103 @@ namespace Cube
         {
             LoadApplicationSettings();
             LoadUserSettings();
+            Startup.Load();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ExecuteSave
+        ///
+        /// <summary>
+        /// ユーザ設定をレジストリへ保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void ExecuteSave()
+        {
+            var root = Microsoft.Win32.Registry.CurrentUser;
+            using (var subkey = root.CreateSubKey(SubKeyName))
+            {
+                Settings.Save<TValue>(User, subkey);
+            }
+            Startup.Save();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetInstallDirectory
+        ///
+        /// <summary>
+        /// アプリケーションがインストールされているディレクトリのパスを
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual string GetInstallDirectory()
+        {
+            return (_app != null) ? _app.InstallDirectory : string.Empty;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetVersion
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual string GetVersion()
+        {
+            return (_app != null) ? _app.Version : string.Empty;
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadApplicationSettings
+        ///
+        /// <summary>
+        /// アプリケーション設定をレジストリから読み込みます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void LoadApplicationSettings()
+        {
+            var root = Microsoft.Win32.Registry.LocalMachine;
+            using (var subkey = root.OpenSubKey(SubKeyName, false))
+            {
+                var result = Settings.Load<ApplicationSettingsValue>(subkey);
+                if (result != null) _app = result;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadUserSettings
+        ///
+        /// <summary>
+        /// ユーザ設定をレジストリから読み込みます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void LoadUserSettings()
+        {
+            var root = Microsoft.Win32.Registry.CurrentUser;
+            using (var subkey = root.OpenSubKey(SubKeyName, false))
+            {
+                var result = Settings.Load<TValue>(subkey);
+                if (result != null) User = result;
+            }
         }
 
         #endregion
 
         #region Fields
-        private ApplicationSettings _app = new ApplicationSettings();
-        private TData _user = new TData();
-        private string _publisher = string.Empty;
-        private string _product = string.Empty;
+        private ApplicationSettingsValue _app = null;
         #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ApplicationSettings.cs
+/// ByteFormat.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,60 +18,62 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.Serialization;
 
-namespace Cube
+namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.ApplicationSettings
+    /// ByteFormat
     /// 
     /// <summary>
-    /// アプリケーション固有の設定を保持するためのクラスです。
+    /// バイトサイズの書式に関する拡張メソッドを定義したクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    public class ApplicationSettings
+    public static class ByteFormat
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// InstallDirectory
-        ///
+        /// ToPrettyBytes
+        /// 
         /// <summary>
-        /// アプリケーションがインストールされているディレクトリへの
-        /// パスを取得します。
+        /// バイトサイズを読みやすい文字列に変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string InstallDirectory
+        public static string ToPrettyBytes(this long bytes)
         {
-            get { return _root; }
-            set { _root = value; }
+            var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+            var value = (double)bytes;
+            var index = 0;
+
+            while (value > 1000.0)
+            {
+                value /= 1024.0;
+                ++index;
+                if (index >= units.Length - 1) break;
+            }
+
+            return string.Format("{0:G3} {1}", value, units[index]);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Version
-        ///
+        /// ToRoughBytes
+        /// 
         /// <summary>
-        /// アプリケーションのバージョン番号を表す文字列を取得します。
+        /// バイトサイズの概算値を文字列に変換します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
+        /// 出力します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string Version
+        public static string ToRoughBytes(this long bytes)
         {
-            get { return _version; }
-            set { _version = value; }
+            return ToPrettyBytes(Math.Max(bytes, 1024));
         }
-
-        #region Fields
-
-        private string _root = string.Empty;
-        private string _version = string.Empty;
-
-        #endregion
     }
 }

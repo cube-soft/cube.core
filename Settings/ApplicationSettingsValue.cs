@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormatTester.cs
+/// ApplicationSettingsValue.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,45 +17,45 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using NUnit.Framework;
-using Cube.Extensions;
+using System.Runtime.Serialization;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.ByteFormatTester
+    /// ApplicationSettingsValue
     /// 
     /// <summary>
-    /// バイトサイズの書式に関するテストを行うためのクラスです。
+    /// アプリケーション固有の設定を保持するためのクラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class ByteFormatTester
+    [DataContract]
+    public class ApplicationSettingsValue
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// TestToPrettyBytes
-        /// 
+        /// InstallDirectory
+        ///
         /// <summary>
-        /// ToPrettyBytes のテストを行います。
+        /// アプリケーションがインストールされているディレクトリへの
+        /// パスを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(123456789L,    "118 MB")]
-        [TestCase( 12345678L,   "11.8 MB")]
-        [TestCase(  1234567L,   "1.18 MB")]
-        [TestCase(   123456L,    "121 KB")]
-        [TestCase(    12345L,   "12.1 KB")]
-        [TestCase(     1234L,   "1.21 KB")]
-        [TestCase(      123L, "123 Bytes")]
-        [TestCase(       12L,  "12 Bytes")]
-        [TestCase(        1L,   "1 Bytes")]
-        public void TestToPrettyBytes(long src, string expected)
-        {
-            Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
-        }
+        [DataMember]
+        public string InstallDirectory { get; set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Version
+        ///
+        /// <summary>
+        /// アプリケーションのバージョン番号を表す文字列を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public string Version { get; set; } = string.Empty;
     }
 }

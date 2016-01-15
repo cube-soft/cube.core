@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormatExtensions.cs
+/// WinMM.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,44 +18,33 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Text;
+using System.Runtime.InteropServices;
 
-namespace Cube.Extensions
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.ByteFormatExtensions
+    /// WinMM
     /// 
     /// <summary>
-    /// バイトサイズの書式に関する拡張メソッドを定義したクラスです。
+    /// winmm.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ByteFormatExtensions
+    internal abstract class WinMM
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ToPrettyBytes
+        /// mciSendString
         /// 
         /// <summary>
-        /// バイトサイズを読みやすい文字列に変換します。
+        /// https://msdn.microsoft.com/en-us/library/dd757161.aspx
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        public static string ToPrettyBytes(this long bytes)
-        {
-            var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
-            var value = (double)bytes;
-            var n = 0;
-
-            while (value > 1000.0)
-            {
-                value /= 1024.0;
-                ++n;
-                if (n >= units.Length - 1) break;
-            }
-
-            return string.Format("{0:G3} {1}", value, units[n]);
-        }
+        [DllImport("winmm.dll")]
+        public static extern Int32 mciSendString(string command, StringBuilder buffer,
+            int bufferSize, IntPtr hwndCallback);
     }
 }

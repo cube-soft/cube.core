@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ObservableSettings.cs
+/// FileResourceTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,74 +17,53 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using System.ComponentModel;
+using System.IO;
+using NUnit.Framework;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.ObservableSettings
+    /// FileResourceTest
     /// 
     /// <summary>
-    /// INotifyPropertyChanged を実装したクラスです。
-    /// 各種 UserSettings クラスの基底クラスとなります。
+    /// FileResource をテストするためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ObservableSettings : INotifyPropertyChanged
+    [TestFixture]
+    class FileResourceTest
     {
-        #region Constructor
-
         /* ----------------------------------------------------------------- */
         ///
-        /// ObservableSettings
+        /// ExamplesFolderExists
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
-        /// 使用して下さい。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ObservableSettings() { }
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
+        /// Examples フォルダが存在するかどうかをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        [Test]
+        public void ExamplesFolderExists()
         {
-            if (PropertyChanged != null) PropertyChanged(this, e);
+            var resource = new FileResource();
+            Assert.That(Directory.Exists(resource.Examples), Is.True);
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ResultsFolderExists
+        /// 
+        /// <summary>
+        /// Results フォルダが存在するかどうかをテストします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void ResultsFolderExists()
+        {
+            var resource = new FileResource();
+            Assert.That(Directory.Exists(resource.Results), Is.True);
+        }
     }
 }

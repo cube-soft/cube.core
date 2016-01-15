@@ -30,7 +30,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataEventArgs<TData> : EventArgs
+    public class DataEventArgs<TValue> : EventArgs
     {
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataEventArgs(TData value)
+        public DataEventArgs(TValue value)
         {
             Value = value;
         }
@@ -61,7 +61,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TData Value { get; private set; }
+        public TValue Value { get; }
 
         #endregion
     }

@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NotifyQueue.cs
+/// TaskEx.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,84 +18,52 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
-namespace Cube
+namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.NotifyQueue
+    /// TaskEx
     /// 
     /// <summary>
-    /// NotifyItem をキュー管理するためのクラスです。
+    /// Sytem.Threading.Tasks.Task の拡張クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NotifyQueue : ObservableCollection<NotifyItem>
+    public static class TaskEx
     {
-        #region Constructor
-
         /* --------------------------------------------------------------------- */
         ///
-        /// NotifyQueue
+        /// Timeout
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyQueue() : base() { }
-
-        #endregion
-
-        #region Methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Enqueue
-        /// 
-        /// <summary>
-        /// オブジェクトを末尾に追加します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public void Enqueue(NotifyItem item)
+        public static async Task Timeout(this Task task, TimeSpan timeout)
         {
-            Add(item);
+            var delay = Task.Delay(timeout);
+            if (await Task.WhenAny(task, delay) == delay)
+            {
+                throw new TimeoutException();
+            }
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Dequeue
+        /// Timeout
         /// 
         /// <summary>
-        /// 先頭のオブジェクトを削除して取得します。
+        /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyItem Dequeue()
+        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
         {
-            if (Count <= 0) return null;
-            var dest = base[0];
-            RemoveAt(0);
-            return dest;
+            await ((Task)task).Timeout(timeout);
+            return await task;
         }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Peek
-        /// 
-        /// <summary>
-        /// 先頭のオブジェクトを削除せずに取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NotifyItem Peek()
-        {
-            if (Count <= 0) return null;
-            return base[0];
-        }
-
-        #endregion
     }
 }
