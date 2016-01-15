@@ -24,7 +24,7 @@ using System.Collections.Generic;
 namespace Cube.FileSystem {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.Drive
+    /// Drive
     /// 
     /// <summary>
     /// ドライブに関する情報を保持するためのクラスです。
@@ -188,7 +188,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UInt64 FreeSpace { get; private set; }
+        public ulong FreeSpace { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -199,7 +199,7 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UInt64 Size { get; private set; }
+        public ulong Size { get; private set; }
 
         #endregion
 
@@ -301,8 +301,8 @@ namespace Cube.FileSystem {
             VolumeLabel = ToVolumeLabel(drive["VolumeName"], drive["Description"]);
             Type        = ToDriveType(drive["DriveType"], drive["MediaType"]);
             Format      = drive["FileSystem"] as string;
-            Size        = TryCast<UInt64>(drive["Size"]);
-            FreeSpace   = TryCast<UInt64>(drive["FreeSpace"]);
+            Size        = TryCast<ulong>(drive["Size"]);
+            FreeSpace   = TryCast<ulong>(drive["FreeSpace"]);
         }
 
         /* ----------------------------------------------------------------- */
@@ -352,7 +352,7 @@ namespace Cube.FileSystem {
             foreach (ManagementObject partition in drive.GetRelated("Win32_DiskPartition"))
             foreach (ManagementObject device in partition.GetRelated("Win32_DiskDrive"))
             {
-                Index     = TryCast<uint>(device["Index"], uint.MaxValue);
+                Index     = TryCast(device["Index"], uint.MaxValue);
                 Model     = device["Model"] as string;
                 Interface = device["InterfaceType"] as string;
                 if (Type == DriveType.HardDisk && Interface == "USB") Type = DriveType.RemovableDisk;
@@ -406,8 +406,8 @@ namespace Cube.FileSystem {
                 case 1: // No Root Directory
                     return DriveType.Unknown;
                 case 2: // Removable Disk
-                    var type = ToMediaType(media);
-                    return (type != DriveType.Unknown) ? type : DriveType.RemovableDisk;
+                    var dest = ToDriveType(media);
+                    return (dest != DriveType.Unknown) ? dest : DriveType.RemovableDisk;
                 case 3: // Local Disk
                     return DriveType.HardDisk;
                 case 4: // Network Drive
@@ -423,16 +423,16 @@ namespace Cube.FileSystem {
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToMediaType
+        /// ToDriveType
         ///
         /// <summary>
-        /// MediaType 列挙型に変換します。
+        /// DriveType 列挙型に変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private DriveType ToMediaType(object obj)
+        private DriveType ToDriveType(object obj)
         {
-            var index = TryCast<uint>(obj, 0);
+            var index = TryCast<uint>(obj);
 
             switch (index)
             {
@@ -484,7 +484,7 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         private T TryCast<T>(object src)
         {
-            return TryCast<T>(src, default(T));
+            return TryCast(src, default(T));
         }
 
         /* ----------------------------------------------------------------- */

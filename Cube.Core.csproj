@@ -54,7 +54,13 @@
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
     <Compile Include="EventArgs\ProgressEventArgs.cs" />
+    <Compile Include="FileSystem\Device.cs" />
+    <Compile Include="FileSystem\DeviceNumber.cs" />
+    <Compile Include="FileSystem\Drive.cs" />
+    <Compile Include="FileSystem\DriveType.cs" />
     <Compile Include="FileSystem\FileInfo.cs" />
+    <Compile Include="FileSystem\VetoException.cs" />
+    <Compile Include="FileSystem\VetoType.cs" />
     <Compile Include="NativeApis\IImageList.cs" />
     <Compile Include="NativeApis\ImageInfo.cs" />
     <Compile Include="NativeApis\ImageListDrawParams.cs" />

@@ -54,6 +54,7 @@
     <Compile Include="ByteFormatTest.cs" />
     <Compile Include="Detail\Person.cs" />
     <Compile Include="Detail\FileResource.cs" />
+    <Compile Include="DriveTest.cs" />
     <Compile Include="FileInfoTest.cs" />
     <Compile Include="FileResourceTest.cs" />
     <Compile Include="IconFactoryTest.cs" />
