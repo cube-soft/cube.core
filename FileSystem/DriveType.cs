@@ -17,13 +17,11 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.DriveType
+    /// DriveType
     /// 
     /// <summary>
     /// ドライブの種類を定義した列挙型です。
