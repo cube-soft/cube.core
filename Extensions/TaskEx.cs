@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// TaskExtensions.cs
+/// TaskEx.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,14 +24,14 @@ namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskExtensions
+    /// TaskEx
     /// 
     /// <summary>
     /// Sytem.Threading.Tasks.Task の拡張クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class TaskExtensions
+    public static class TaskEx
     {
         /* --------------------------------------------------------------------- */
         ///

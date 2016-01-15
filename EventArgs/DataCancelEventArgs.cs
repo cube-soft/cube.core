@@ -26,11 +26,11 @@ namespace Cube
     /// DataCancelEventArgs
     ///
     /// <summary>
-    /// イベントハンドラに特定の型のデータを渡すためのクラスです。
+    /// イベントハンドラに特定の型の値を渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataCancelEventArgs<TData> : CancelEventArgs
+    public class DataCancelEventArgs<TValue> : CancelEventArgs
     {
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataCancelEventArgs(TData value, bool cancel = false)
+        public DataCancelEventArgs(TValue value, bool cancel = false)
             : base(cancel)
         {
             Value = value;
@@ -62,7 +62,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TData Value { get; private set; }
+        public TValue Value { get; }
 
         #endregion
     }
