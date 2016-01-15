@@ -23,7 +23,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.FileSystem.VetoException
+    /// VetoException
     /// 
     /// <summary>
     /// PnP 操作が拒否された時に送出される例外クラスです。
