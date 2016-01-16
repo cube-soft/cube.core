@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NtsUserControl.cs
+/// UserControl.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,7 +17,6 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Drawing;
 using log4net;
 
@@ -25,14 +24,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NtsUserControl
+    /// UserControl
     /// 
     /// <summary>
-    /// 自動スケールモードを無効にした UserControl クラスです。
+    /// System.Windows.Forms.UserControl を拡張したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NtsUserControl : System.Windows.Forms.UserControl
+    public class UserControl : System.Windows.Forms.UserControl
     {
         #region Constructors
 
@@ -45,7 +44,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NtsUserControl()
+        public UserControl()
             : base()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -67,7 +66,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; private set; }
+        protected ILog Logger { get; }
 
         #endregion
     }

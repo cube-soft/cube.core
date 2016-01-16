@@ -34,7 +34,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class VersionControl : NtsUserControl
+    public partial class VersionControl : UserControl
     {
         #region Constructors
 
