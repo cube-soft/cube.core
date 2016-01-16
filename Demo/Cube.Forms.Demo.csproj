@@ -177,7 +177,7 @@
     <None Include="Resources\LogoCube.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cube.Forms.csproj">
+    <ProjectReference Include="..\Libraries\Cube.Forms.csproj">
       <Project>{C305E44A-3F6C-4662-A111-0F146A7E2842}</Project>
       <Name>Cube.Forms</Name>
     </ProjectReference>
