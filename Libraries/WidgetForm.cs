@@ -35,7 +35,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WidgetForm : NtsForm
+    public class WidgetForm : Form
     {
         #region Constructors
 

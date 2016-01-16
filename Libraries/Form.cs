@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NtsForm.cs
+/// Form.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -25,28 +25,27 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NtsForm
+    /// Form
     /// 
     /// <summary>
-    /// 自動スケールモードを無効にした Form クラスです。
+    /// System.Windows.Forms.Form の拡張クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NtsForm : System.Windows.Forms.Form
+    public class Form : System.Windows.Forms.Form
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// NtsForm
+        /// Form
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NtsForm()
-            : base()
+        public Form() : base()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             DoubleBuffered = true;
@@ -73,12 +72,17 @@ namespace Cube.Forms
             get { return _bootstrap; }
             set
             {
-                if (_bootstrap != null) _bootstrap.Activated -= Bootstrap_Activated;
-
-                _bootstrap = value;
-                _bootstrap.Activated -= Bootstrap_Activated;
-                _bootstrap.Activated += Bootstrap_Activated;
-                _bootstrap.Register();
+                if (_bootstrap != value)
+                {
+                    if (_bootstrap != null) _bootstrap.Activated -= Bootstrap_Activated;
+                    _bootstrap = value;
+                    if (_bootstrap != null)
+                    {
+                        _bootstrap.Activated -= Bootstrap_Activated;
+                        _bootstrap.Activated += Bootstrap_Activated;
+                        _bootstrap.Register();
+                    }
+                }
             }
         }
 
@@ -87,11 +91,11 @@ namespace Cube.Forms
         /// Logger
         ///
         /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
+        /// ログ出力用オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; private set; }
+        protected ILog Logger { get; }
 
         #endregion
 
