@@ -24,7 +24,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NullExpandableObjectConverter
+    /// NullExpandableObjectConverter
     /// 
     /// <summary>
     /// プロパティエディタにおいて、ネストされたプロパティを展開可能に
