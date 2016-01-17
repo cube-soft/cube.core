@@ -71,6 +71,7 @@
     <Compile Include="NativeApis\SHStockIconInfo.cs" />
     <Compile Include="NativeApis\SpDevice.cs" />
     <Compile Include="NativeApis\WinMM.cs" />
+    <Compile Include="Notifications\NotifyEventArgs.cs" />
     <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
