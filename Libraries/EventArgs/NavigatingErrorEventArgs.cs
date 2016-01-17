@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DemoStockIcons.cs
+/// NavigatingErrorEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,53 +17,51 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace Cube.Forms.Demo
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DemoStockIcons
+    /// NavigateErrorEventArgs
     /// 
     /// <summary>
-    /// システムアイコン一覧を表示するためのデモ用クラスです。
+    /// ウェブブラウザにおいて、移動中にエラーが発生した時の引数を保持する
+    /// ためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoStockIcons : WidgetForm
+    public class NavigatingErrorEventArgs : NavigatingEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DemoStockIcons
-        ///
+        /// NavigatingErrorEventArgs
+        /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DemoStockIcons()
+        public NavigatingErrorEventArgs(string url, string frame, int code)
+            : base(url, frame)
         {
-            InitializeComponent();
-
-            CloseButton.Click += (s, e) => Close();
-
-            IconListView.LargeImageList = new ImageList();
-            IconListView.LargeImageList.ImageSize = new Size(48, 48);
-            IconListView.LargeImageList.ColorDepth = ColorDepth.Depth32Bit;
-            foreach (Cube.StockIcons kind in Enum.GetValues(typeof(Cube.StockIcons)))
-            {
-                var icon = Cube.IconFactory.Create(kind, Cube.IconSize.ExtraLarge);
-                if (icon == null) continue;
-
-                var text = string.Format("{0}\n{1}", (int)kind, kind);
-                IconListView.LargeImageList.Images.Add(icon.ToBitmap());
-                IconListView.Items.Add(new ListViewItem(text, IconListView.LargeImageList.Images.Count - 1));
-            }
+            StatusCode = code;
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StatusCode
+        /// 
+        /// <summary>
+        /// ステータスコードを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int StatusCode { get; private set; }
 
         #endregion
     }

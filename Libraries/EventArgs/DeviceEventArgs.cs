@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DemoNotify.cs
+/// DeviceEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -19,90 +19,79 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Forms.Demo
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DemoDeviceAware
-    /// 
+    /// DeviceEventArgs
+    ///
     /// <summary>
-    /// DeviceAwareForm のデモ用クラスです。
+    /// デバイスの着脱が発生した時の情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoDeviceAware : DeviceAwareForm
+    public class DeviceEventArgs : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DemoDeviceAware
+        /// DeviceEventArgs
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DemoDeviceAware()
+        public DeviceEventArgs(char letter, DeviceType type)
+            : base()
         {
-            InitializeComponent();
+            Letter = letter;
+            Type = type;
         }
 
         #endregion
 
-        #region Override methods
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnAttached
+        /// Letter
         ///
         /// <summary>
-        /// デバイスが追加された時に発生するイベントです。
+        /// ドライブレターを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnAttached(DeviceEventArgs e)
-        {
-            Log(string.Format("{0}: ({1}) is attached.", e.Letter, e.Type));
-            base.OnAttached(e);
-        }
+        public char Letter { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDetached
+        /// Type
         ///
         /// <summary>
-        /// デバイスが取り外された時に発生するイベントです。
+        /// 対象となるドライブの種類を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnDetached(DeviceEventArgs e)
-        {
-            Log(string.Format("{0}: ({1}) is detached.", e.Letter, e.Type));
-            base.OnDetached(e);
-        }
+        public DeviceType Type { get; }
 
         #endregion
+    }
 
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Log
-        ///
-        /// <summary>
-        /// ログを出力します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Log(string message)
-        {
-            var builder = new System.Text.StringBuilder();
-            if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine(LogTextBox.Text);
-            builder.Append(string.Format("{0} {1}", DateTime.Now, message));
-            LogTextBox.Text = builder.ToString();
-        }
-
-        #endregion
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DeviceType
+    ///
+    /// <summary>
+    /// デバイスの種類を表す列挙型です。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public enum DeviceType : uint
+    {
+        Drive   = 0, // physical device or drive
+        Media   = 1, // media in drive
+        Network = 2, // network volume
     }
 }

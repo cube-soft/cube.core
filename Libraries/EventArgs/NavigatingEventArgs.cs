@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DemoNotify.cs
+/// NavigatingEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,91 +17,63 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
-namespace Cube.Forms.Demo
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DemoDeviceAware
+    /// NavigatingEventArgs
     /// 
     /// <summary>
-    /// DeviceAwareForm のデモ用クラスです。
+    /// Web ブラウザにおいて、画面遷移が発生した時の引数を保持するための
+    /// クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoDeviceAware : DeviceAwareForm
+    public class NavigatingEventArgs : System.ComponentModel.CancelEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DemoDeviceAware
-        ///
+        /// NavigatingEventArgs
+        /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DemoDeviceAware()
+        public NavigatingEventArgs(string url, string frame)
+            : base(false)
         {
-            InitializeComponent();
+            Url = url;
+            Frame = frame;
         }
 
         #endregion
 
-        #region Override methods
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnAttached
-        ///
+        /// Url
+        /// 
         /// <summary>
-        /// デバイスが追加された時に発生するイベントです。
+        /// 遷移先の URL を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnAttached(DeviceEventArgs e)
-        {
-            Log(string.Format("{0}: ({1}) is attached.", e.Letter, e.Type));
-            base.OnAttached(e);
-        }
+        public string Url { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDetached
-        ///
+        /// Frame
+        /// 
         /// <summary>
-        /// デバイスが取り外された時に発生するイベントです。
+        /// 遷移先のターゲットフレームを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnDetached(DeviceEventArgs e)
-        {
-            Log(string.Format("{0}: ({1}) is detached.", e.Letter, e.Type));
-            base.OnDetached(e);
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Log
-        ///
-        /// <summary>
-        /// ログを出力します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Log(string message)
-        {
-            var builder = new System.Text.StringBuilder();
-            if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine(LogTextBox.Text);
-            builder.Append(string.Format("{0} {1}", DateTime.Now, message));
-            LogTextBox.Text = builder.ToString();
-        }
+        public string Frame { get; private set; }
 
         #endregion
     }

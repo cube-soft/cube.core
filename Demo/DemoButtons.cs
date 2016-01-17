@@ -17,13 +17,11 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.DemoButtons
+    /// DemoButtons
     /// 
     /// <summary>
     /// 各種ボタンのデモ用クラスです。

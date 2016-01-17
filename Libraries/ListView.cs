@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DemoNotify.cs
+/// Button.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,34 +18,46 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 
-namespace Cube.Forms.Demo
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DemoDeviceAware
+    /// ListView
     /// 
     /// <summary>
-    /// DeviceAwareForm のデモ用クラスです。
+    /// リストビューを表示するクラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    public partial class DemoDeviceAware : DeviceAwareForm
+    public class ListView : System.Windows.Forms.ListView
     {
-        #region Constructors
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DemoDeviceAware
+        /// Theme
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// 表示用のテーマを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DemoDeviceAware()
+        [Browsable(true)]
+        [DefaultValue(WindowTheme.Normal)]
+        public WindowTheme Theme
         {
-            InitializeComponent();
+            get { return _theme; }
+            set
+            {
+                if (_theme != value)
+                {
+                    _theme = value;
+                    UpdateTheme(_theme);
+                }
+            }
         }
 
         #endregion
@@ -54,55 +66,47 @@ namespace Cube.Forms.Demo
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnAttached
+        /// OnCreateControl
         ///
         /// <summary>
-        /// デバイスが追加された時に発生するイベントです。
+        /// コントロールの生成時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnAttached(DeviceEventArgs e)
+        protected override void OnCreateControl()
         {
-            Log(string.Format("{0}: ({1}) is attached.", e.Letter, e.Type));
-            base.OnAttached(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetached
-        ///
-        /// <summary>
-        /// デバイスが取り外された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetached(DeviceEventArgs e)
-        {
-            Log(string.Format("{0}: ({1}) is detached.", e.Letter, e.Type));
-            base.OnDetached(e);
+            UpdateTheme(_theme);
+            base.OnCreateControl();
         }
 
         #endregion
 
-        #region Implementations
+        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Log
+        /// UpdateTheme
         ///
         /// <summary>
-        /// ログを出力します。
+        /// 表示用のテーマを更新します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Log(string message)
+        private void UpdateTheme(WindowTheme theme)
         {
-            var builder = new System.Text.StringBuilder();
-            if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine(LogTextBox.Text);
-            builder.Append(string.Format("{0} {1}", DateTime.Now, message));
-            LogTextBox.Text = builder.ToString();
+            if (theme == WindowTheme.Normal) SetWindowTheme(Handle, null, null);
+            else SetWindowTheme(Handle, theme.ToString(), null);
         }
 
+        #endregion
+
+        #region Win32 APIs
+        [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
+        private static extern int SetWindowTheme(IntPtr hwnd, string pszSubAppName, string pszSubIdList);
+        #endregion
+
+        #region Fields
+        private WindowTheme _theme = WindowTheme.Normal;
         #endregion
     }
 }

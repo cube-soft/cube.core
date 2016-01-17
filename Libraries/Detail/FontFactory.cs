@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DemoStockIcons.cs
+/// FontFactory.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,54 +17,39 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Drawing;
-using System.Windows.Forms;
 
-namespace Cube.Forms.Demo
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DemoStockIcons
+    /// FontFactory
     /// 
     /// <summary>
-    /// システムアイコン一覧を表示するためのデモ用クラスです。
+    /// Cube.Forms で使用する既定のフォントオブジェクトを生成するための
+    /// クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoStockIcons : WidgetForm
+    internal abstract class FontFactory
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// DemoStockIcons
+        /// Create
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// フォントオブジェクトを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DemoStockIcons()
+        public static Font Create(int size, FontStyle style, GraphicsUnit unit)
         {
-            InitializeComponent();
+            const string primary   = "Meiryo UI";
+            const string secondary = "MS UI Gothic";
 
-            CloseButton.Click += (s, e) => Close();
-
-            IconListView.LargeImageList = new ImageList();
-            IconListView.LargeImageList.ImageSize = new Size(48, 48);
-            IconListView.LargeImageList.ColorDepth = ColorDepth.Depth32Bit;
-            foreach (Cube.StockIcons kind in Enum.GetValues(typeof(Cube.StockIcons)))
-            {
-                var icon = Cube.IconFactory.Create(kind, Cube.IconSize.ExtraLarge);
-                if (icon == null) continue;
-
-                var text = string.Format("{0}\n{1}", (int)kind, kind);
-                IconListView.LargeImageList.Images.Add(icon.ToBitmap());
-                IconListView.Items.Add(new ListViewItem(text, IconListView.LargeImageList.Images.Count - 1));
-            }
+            var dest = new Font(primary, size, style, unit);
+            if (dest.Name == primary) return dest;
+            return new Font(secondary, size, style, unit);
         }
-
-        #endregion
     }
 }
