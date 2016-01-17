@@ -23,7 +23,7 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.DemoDeviceAware
+    /// DemoDeviceAware
     /// 
     /// <summary>
     /// DeviceAwareForm のデモ用クラスです。

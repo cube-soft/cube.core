@@ -25,7 +25,7 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.DemoStockIcons
+    /// DemoStockIcons
     /// 
     /// <summary>
     /// システムアイコン一覧を表示するためのデモ用クラスです。

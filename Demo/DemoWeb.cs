@@ -24,7 +24,7 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.DemoWeb
+    /// DemoWeb
     /// 
     /// <summary>
     /// Web ブラウザのデモ用クラスです。

@@ -23,7 +23,7 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Demo.DemoNotify
+    /// DemoNotify
     /// 
     /// <summary>
     /// 通知フォームのデモ用クラスです。
