@@ -25,7 +25,7 @@ namespace Cube.Forms
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Cube.Forms.WebBrowser.FeatureControl
+        /// FeatureControl
         /// 
         /// <summary>
         /// WebBrowser に関するレジストリを修正するためのクラスです。

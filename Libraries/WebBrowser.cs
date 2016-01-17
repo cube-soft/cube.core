@@ -18,7 +18,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -26,7 +25,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.WebBrowser
+    /// WebBrowser
     /// 
     /// <summary>
     /// Web ページを表示するためのクラスです。

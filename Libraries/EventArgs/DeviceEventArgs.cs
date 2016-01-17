@@ -63,7 +63,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public char Letter { get; private set; }
+        public char Letter { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -74,7 +74,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DeviceType Type { get; private set; }
+        public DeviceType Type { get; }
 
         #endregion
     }

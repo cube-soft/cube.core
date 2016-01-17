@@ -24,7 +24,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.MousePoint
+    /// MousePoint
     /// 
     /// <summary>
     /// マウスポインタがコントロールのどの位置に存在するかを示すための
@@ -55,7 +55,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class MousePointExtensions
+    internal static class MousePointEx
     {
         /* ----------------------------------------------------------------- */
         ///

@@ -17,16 +17,14 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.ComponentModel;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Surface
+    /// Surface
     /// 
     /// <summary>
     /// コントロールの外観を定義するためのクラスです。

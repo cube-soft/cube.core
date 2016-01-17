@@ -26,14 +26,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.VersionForm
+    /// VersionForm
     /// 
     /// <summary>
     /// バージョン情報を表示するためのフォームクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class VersionForm : NtsForm
+    public partial class VersionForm : Form
     {
         #region Constructors
 

@@ -17,14 +17,13 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Drawing;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.FontFactory
+    /// FontFactory
     /// 
     /// <summary>
     /// Cube.Forms で使用する既定のフォントオブジェクトを生成するための
@@ -32,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class FontFactory
+    internal abstract class FontFactory
     {
         /* ----------------------------------------------------------------- */
         ///

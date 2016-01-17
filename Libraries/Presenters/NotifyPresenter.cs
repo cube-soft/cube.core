@@ -18,15 +18,13 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
 using System.Collections.Specialized;
-using log4net;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NotifyPresenter
+    /// NotifyPresenter
     /// 
     /// <summary>
     /// NotifyForm と NotifyQueue を繋げるためのクラスです。

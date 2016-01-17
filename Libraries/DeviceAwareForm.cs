@@ -25,14 +25,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.DeviceAwareForm
+    /// DeviceAwareForm
     /// 
     /// <summary>
     /// デバイスの追加等に反応するフォームクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DeviceAwareForm : NtsForm
+    public class DeviceAwareForm : Form
     {
         #region Constructors
 

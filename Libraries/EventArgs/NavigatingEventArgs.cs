@@ -17,8 +17,6 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
@@ -44,8 +42,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NavigatingEventArgs(string url, string frame, bool cancel = false)
-            : base(cancel)
+        public NavigatingEventArgs(string url, string frame)
+            : base(false)
         {
             Url = url;
             Frame = frame;

@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ControlExtensions.cs
+/// ControlEx.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -26,14 +26,14 @@ namespace Cube.Forms.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.Extensions.ControlExtensions
+    /// ControlEx
     /// 
     /// <summary>
     /// System.Windows.Forms.Control の拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class ControlExtensions
+    internal static class ControlEx
     {
         #region Extension methods
 

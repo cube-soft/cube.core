@@ -17,13 +17,11 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NavigateErrorEventArgs
+    /// NavigateErrorEventArgs
     /// 
     /// <summary>
     /// ウェブブラウザにおいて、移動中にエラーが発生した時の引数を保持する
@@ -44,8 +42,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NavigatingErrorEventArgs(string url, string frame, int code, bool cancel = false)
-            : base(url, frame, cancel)
+        public NavigatingErrorEventArgs(string url, string frame, int code)
+            : base(url, frame)
         {
             StatusCode = code;
         }

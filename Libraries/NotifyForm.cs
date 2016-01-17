@@ -22,13 +22,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using TaskEx = System.Threading.Tasks.Task;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NotifyForm
+    /// NotifyForm
     /// 
     /// <summary>
     /// 通知用フォームを作成するためのクラスです。
@@ -507,7 +506,7 @@ namespace Cube.Forms
 
             try
             {
-                await TaskEx.Delay(msec, source.Token);
+                await Task.Delay(msec, source.Token);
                 action();
             }
             catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }

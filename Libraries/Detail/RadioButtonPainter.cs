@@ -18,13 +18,12 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.RadioButtonPainter
+    /// RadioButtonPainter
     /// 
     /// <summary>
     /// ラジオボタンの外観を描画するためのクラスです。

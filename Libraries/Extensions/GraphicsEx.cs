@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// GraphicsExtensions.cs
+/// GraphicsEx.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -25,14 +25,14 @@ namespace Cube.Forms.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Extensions.Forms.GraphicsExtensions
+    /// GraphicsEx
     /// 
     /// <summary>
     /// System.Drawing.Graphics の拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class GraphicsExtensions
+    internal static class GraphicsEx
     {
         #region Extension methods
 

@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// VersionForm.cs
+/// PresenterBase.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -25,7 +25,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.PresenterBase
+    /// PresenterBase
     ///
     /// <summary>
     /// Model と View が 1 対 1 対応している Presenter の基底となる
@@ -101,7 +101,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected ILog Logger { get; private set; }
+        protected ILog Logger { get; }
 
         #endregion
 

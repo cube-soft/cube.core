@@ -17,7 +17,6 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Drawing;
 using System.ComponentModel;
 
@@ -25,7 +24,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.NotifyStyle
+    /// NotifyStyle
     /// 
     /// <summary>
     /// 通知用フォームのスタイルを定義するためのクラスです。

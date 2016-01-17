@@ -18,13 +18,12 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.ToggleButtonPainter
+    /// ToggleButtonPainter
     /// 
     /// <summary>
     /// トグルボタンの外観を描画するためのクラスです。

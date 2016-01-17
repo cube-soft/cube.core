@@ -27,7 +27,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.FlatButtonPainter
+    /// FlatButtonPainter
     /// 
     /// <summary>
     /// ボタンの外観を描画するためのクラスです。

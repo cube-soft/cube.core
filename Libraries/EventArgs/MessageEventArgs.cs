@@ -80,14 +80,26 @@ namespace Cube.Forms
         public int Result { get; set; }
 
         /* ----------------------------------------------------------------- */
+        ///
         /// Type
+        ///
+        /// <summary>
+        /// メッセージの種類を示す値を取得します。
+        /// </summary>
+        ///
         /* ----------------------------------------------------------------- */
-        public int Type { get; private set; }
+        public int Type { get; }
 
         /* ----------------------------------------------------------------- */
+        ///
         /// HelpContext
+        ///
+        /// <summary>
+        /// ヘルプコンテキストを取得します。
+        /// </summary>
+        ///
         /* ----------------------------------------------------------------- */
-        public int HelpContext { get; private set; }
+        public int HelpContext { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -98,7 +110,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,7 +121,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Caption { get; private set; }
+        public string Caption { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -120,7 +132,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string HelpFile { get; private set; }
+        public string HelpFile { get; }
 
         #endregion
     }

@@ -17,14 +17,13 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.ComponentModel;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Forms.RadioButton
+    /// RadioButton
     /// 
     /// <summary>
     /// ラジオボタンを作成するためのクラスです。
