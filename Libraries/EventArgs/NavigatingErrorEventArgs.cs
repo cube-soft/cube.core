@@ -61,7 +61,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; }
 
         #endregion
     }
