@@ -42,9 +42,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Small,       16)]
         [TestCase(Cube.StockIcons.Application, Cube.IconSize.Large,       32)]
-        [TestCase(Cube.StockIcons.Application, Cube.IconSize.ExtraLarge,  48)]
         [TestCase(Cube.StockIcons.Application, Cube.IconSize.Jumbo,      256)]
         public void CreateStockIcon(Cube.StockIcons id, Cube.IconSize size, int expected)
         {
@@ -69,6 +67,23 @@ namespace Cube.Tests
             var icon = Cube.IconFactory.Create(path, size);
             Assert.That(icon, Is.Not.Null);
             Assert.That(icon.Width, Is.EqualTo(expected));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateNullIcon
+        /// 
+        /// <summary>
+        /// IconSize.Zero を指定した時のテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void CreateNullIcon()
+        {
+            var path = @"C:\Windows\notepad.exe";
+            var icon = Cube.IconFactory.Create(path, Cube.IconSize.Zero);
+            Assert.That(icon, Is.Null);
         }
     }
 }

@@ -28,11 +28,12 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum IconSize : uint
+    public enum IconSize : int
     {
-        Large       = 0, //  16 x  16 pixel
-        Small       = 1, //  32 x  32 pixel
-        ExtraLarge  = 2, //  48 x  48 pixel
-        Jumbo       = 4  // 256 x 256 pixel
+        Zero        = -1, //   0 x   0 pixel
+        Large       =  0, //  16 x  16 pixel
+        Small       =  1, //  32 x  32 pixel
+        ExtraLarge  =  2, //  48 x  48 pixel
+        Jumbo       =  4  // 256 x 256 pixel
     }
 }
