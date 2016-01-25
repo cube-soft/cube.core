@@ -17,8 +17,8 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.IO;
 using System.Reflection;
+using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -31,7 +31,7 @@ namespace Cube.Tests
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class FileResource
+    class FileResource
     {
         #region Constructors
 
@@ -45,22 +45,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         public FileResource()
-            : this(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
-        { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileResource
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource(string root)
         {
-            Root = root;
-            if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
+            var exec = Assembly.GetExecutingAssembly().Location;
+            Root = IoEx.Path.GetDirectoryName(exec);
+            Initialize();
         }
 
         #endregion
@@ -77,21 +65,20 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Root { get; set; }
+        public string Root { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Examples
         /// 
         /// <summary>
-        /// テストを行うためのダミーファイルの存在するディレクトリへの
-        /// パスを取得します。
+        /// テスト用ファイルの存在するフォルダへのパスを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public string Examples
         {
-            get { return Path.Combine(Root, "Examples"); }
+            get { return IoEx.Path.Combine(Root, "Examples"); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -99,13 +86,60 @@ namespace Cube.Tests
         /// Results
         /// 
         /// <summary>
-        /// テスト結果を格納するためのディレクトリへのパスを取得します。
+        /// テスト結果を格納するためのフォルダへのパスを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public string Results
         {
-            get { return Path.Combine(Root, "Results"); }
+            get
+            {
+                var classname = GetType().FullName.Replace("Cube.Tests.", "");
+                var folder = string.Format(@"Results\{0}", classname);
+                return IoEx.Path.Combine(Root, folder);
+            }
+        }
+
+        #endregion
+
+        #region Other private methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Initialize
+        /// 
+        /// <summary>
+        /// リソースファイルを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Initialize()
+        {
+            if (!IoEx.Directory.Exists(Results)) IoEx.Directory.CreateDirectory(Results);
+            Clean(Results);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Clean
+        /// 
+        /// <summary>
+        /// 指定されたフォルダ内に存在する全てのファイルを削除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Clean(string folder)
+        {
+            foreach (string file in IoEx.Directory.GetFiles(folder))
+            {
+                IoEx.File.SetAttributes(file, IoEx.FileAttributes.Normal);
+                IoEx.File.Delete(file);
+            }
+
+            foreach (string sub in IoEx.Directory.GetDirectories(folder))
+            {
+                Clean(sub);
+            }
         }
 
         #endregion
