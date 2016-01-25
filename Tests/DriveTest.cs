@@ -149,7 +149,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [OneTimeSetUp]
-        public void OneTimeSetup()
+        public void OneTimeSetUp()
         {
             Drives = Drive.GetDrives();
         }
