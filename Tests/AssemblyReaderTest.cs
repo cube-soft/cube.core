@@ -48,7 +48,7 @@ namespace Cube.Tests
         #region Properties
 
         [Test]
-        public void Location_ExecutingAssembly()
+        public void Location_ExecutingAssembly_IsNotNullOrEmpty()
         {
             Assert.That(
                 Create().Location,
@@ -56,26 +56,62 @@ namespace Cube.Tests
             );
         }
 
-        [Test]
-        public void Title_ExecutingAssembly()
+        [TestCase("Cube.Core testing project")]
+        public void Title_ExecutingAssembly(string expected)
         {
             Assert.That(
                 Create().Title,
-                Is.EqualTo("Cube.Core testing project")
+                Is.EqualTo(expected)
             );
         }
 
-        [Test]
-        public void Description_ExecutingAssembly()
+        [TestCase("NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
+        public void Description_ExecutingAssembly(string expected)
         {
             Assert.That(
                 Create().Description,
-                Is.EqualTo("Test Cube.Core using NUnit framework.")
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("CubeSoft, Inc.")]
+        public void Company_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Company,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("Cube.Core.Tests")]
+        public void Product_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Product,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("Copyright © 2010 CubeSoft, Inc.")]
+        public void Copyright_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Copyright,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("ここに商標を設定します。")]
+        public void Trademark_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Trademark,
+                Is.EqualTo(expected)
             );
         }
 
         [Test]
-        public void Configuration_ExecutingAssembly()
+        public void Configuration_ExecutingAssembly_IsEmpty()
         {
             Assert.That(
                 Create().Configuration,
@@ -84,43 +120,7 @@ namespace Cube.Tests
         }
 
         [Test]
-        public void Company_ExecutingAssembly()
-        {
-            Assert.That(
-                Create().Company,
-                Is.EqualTo("CubeSoft, Inc.")
-            );
-        }
-
-        [Test]
-        public void Product_ExecutingAssembly()
-        {
-            Assert.That(
-                Create().Product,
-                Is.EqualTo("Cube.Core.Tests")
-            );
-        }
-
-        [Test]
-        public void Copyright_ExecutingAssembly()
-        {
-            Assert.That(
-                Create().Copyright,
-                Is.EqualTo("Copyright © 2010 CubeSoft, Inc.")
-            );
-        }
-
-        [Test]
-        public void Trademark_ExecutingAssembly()
-        {
-            Assert.That(
-                Create().Trademark,
-                Is.EqualTo("dummy trademark")
-            );
-        }
-
-        [Test]
-        public void Culture_ExecutingAssembly()
+        public void Culture_ExecutingAssembly_IsEmpty()
         {
             Assert.That(
                 Create().Culture,
@@ -128,30 +128,30 @@ namespace Cube.Tests
             );
         }
 
-        [Test]
-        public void Version_ExecutingAssembly()
+        [TestCase(1, 2, 0, 0)]
+        public void Version_ExecutingAssembly_IsAtLeast(int major, int minor, int build, int revision)
         {
             Assert.That(
                 Create().Version,
-                Is.AtLeast(new Version(1, 2, 0, 0))
+                Is.AtLeast(new Version(major, minor, build, revision))
             );
         }
 
-        [Test]
-        public void FileVersion_ExecutingAssembly()
+        [TestCase(1, 2, 0, 0)]
+        public void FileVersion_ExecutingAssembly_IsAtLeast(int major, int minor, int build, int revision)
         {
             Assert.That(
                 Create().FileVersion,
-                Is.AtLeast(new Version(1, 2, 0, 0))
+                Is.AtLeast(new Version(major, minor, build, revision))
             );
         }
 
-        [Test]
-        public void Icon_ExecutingAssembly()
+        [TestCase(16, 16)]
+        public void Icon_ExecutingAssembly(int width, int height)
         {
             Assert.That(
                 Create().Icon.Size,
-                Is.EqualTo(new Size(16, 16))
+                Is.EqualTo(new Size(width, height))
             );
         }
 
