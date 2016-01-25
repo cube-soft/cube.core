@@ -46,9 +46,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public AssemblyReader(Assembly assembly)
+        public AssemblyReader(Assembly assembly, IconSize size = IconSize.Small)
         {
             Assembly = assembly;
+            IconSize = size;
         }
 
         #endregion
@@ -65,6 +66,20 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public Assembly Assembly { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Location
+        ///
+        /// <summary>
+        /// アセンブリの存在するパスを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Location
+        {
+            get { return (Assembly != null) ? Assembly.Location : string.Empty; }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -270,8 +285,19 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public Icon Icon
         {
-            get { return (Assembly != null) ? Icon.ExtractAssociatedIcon(Assembly.Location) : null; }
+            get { return (Assembly != null) ? IconFactory.Create(Location, IconSize) : null; }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IconSize
+        ///
+        /// <summary>
+        /// アイコンサイズを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IconSize IconSize { get; set; }
 
         #endregion
     }
