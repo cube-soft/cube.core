@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using Cube.FileSystem;
 
 namespace Cube.Tests
 {
@@ -42,22 +43,128 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetDrives()
-        {
-            var drives = Cube.FileSystem.Drive.GetDrives();
-            Assert.That(drives.Length, Is.AtLeast(1));
+        #region Drives
 
-            var drive = drives[0];
-            Assert.That(drive.Index,       Is.EqualTo(0));
-            Assert.That(drive.Letter,      Is.EqualTo("C:"));
-            Assert.That(drive.VolumeLabel, Is.Not.Null.Or.Empty);
-            Assert.That(drive.Type,        Is.EqualTo(Cube.FileSystem.DriveType.HardDisk));
-            Assert.That(drive.Format,      Is.Not.Null.Or.Empty);
-            Assert.That(drive.Model,       Is.Not.Null.Or.Empty);
-            Assert.That(drive.Interface,   Is.EqualTo("IDE"));
-            Assert.That(drive.Size,        Is.AtLeast(100000000UL));
-            Assert.That(drive.FreeSpace,   Is.LessThan(drive.Size));
+        [TestCase(1)]
+        public void Drives_Length_IsAtLeast(int expected)
+        {
+            Assert.That(
+                Drives.Length,
+                Is.AtLeast(expected)
+            );
         }
+
+        [TestCase(0, 0)]
+        public void Drives_Index(int index, int expected)
+        {
+            Assert.That(
+                Drives[index].Index,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase(0, "C:")]
+        public void Drives_Letter(int index, string expected)
+        {
+            Assert.That(
+                Drives[index].Letter,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase(0, DriveType.HardDisk)]
+        public void Drives_Type(int index, DriveType expected)
+        {
+            Assert.That(
+                Drives[index].Type,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase(0, "NTFS")]
+        public void Drives_Format(int index, string expected)
+        {
+            Assert.That(
+                Drives[index].Format,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase(0, "IDE")]
+        public void Drives_Interface(int index, string expected)
+        {
+            Assert.That(
+                Drives[index].Interface,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase(0)]
+        public void Drives_VolumeLabel_IsNotNullOrEmpty(int index)
+        {
+            Assert.That(
+                Drives[index].VolumeLabel,
+                Is.Not.Null.Or.Empty
+            );
+        }
+
+        [TestCase(0)]
+        public void Drives_Model_IsNotNullOrEmpty(int index)
+        {
+            Assert.That(
+                Drives[index].Model,
+                Is.Not.Null.Or.Empty
+            );
+        }
+
+        [TestCase(0, 100000000UL)]
+        public void Drives_Size_IsAtLeast(int index, ulong expected)
+        {
+            Assert.That(
+                Drives[index].Size,
+                Is.AtLeast(expected)
+            );
+        }
+
+        [TestCase(0)]
+        public void Drives_FreeSpace_IsLessThanSize(int index)
+        {
+            Assert.That(
+                Drives[index].FreeSpace,
+                Is.LessThan(Drives[index].Size)
+            );
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OneTimeSetup
+        ///
+        /// <summary>
+        /// 初期化処理を一度だけ実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            Drives = Drive.GetDrives();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drives
+        ///
+        /// <summary>
+        /// ドライブ情報一覧を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Drive[] Drives { get; set; }
+
+        #endregion
     }
 }
