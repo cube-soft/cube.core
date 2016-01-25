@@ -58,7 +58,6 @@ namespace Cube.FileSystem
             _base = new System.IO.FileInfo(filename);
             TypeName = Exists ? GetTypeName() : string.Empty;
             IconSize = size;
-            Icon     = Exists ? IconFactory.Create(FullName, IconSize) : null;
         }
 
         #endregion
@@ -284,7 +283,10 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Icon Icon { get; private set; } = null;
+        public Icon Icon
+        {
+            get { return Exists? IconFactory.Create(FullName, IconSize) : null; }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -314,7 +316,6 @@ namespace Cube.FileSystem
         {
             _base.Refresh();
             TypeName = Exists ? GetTypeName() : string.Empty;
-            Icon     = Exists ? IconFactory.Create(FullName, IconSize) : null;
         }
 
         #endregion
