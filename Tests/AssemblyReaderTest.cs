@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Drawing;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -44,21 +45,134 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        #region Properties
+
         [Test]
-        public void Properties()
+        public void Location_ExecutingAssembly()
         {
-            var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
-            Assert.That(reader.Title,         Is.EqualTo("Cube.Core testing project"));
-            Assert.That(reader.Description,   Is.EqualTo("Test Cube.Core using NUnit framework."));
-            Assert.That(reader.Configuration, Is.Empty);
-            Assert.That(reader.Company,       Is.EqualTo("CubeSoft, Inc."));
-            Assert.That(reader.Product,       Is.EqualTo("Cube.Core.Tests"));
-            Assert.That(reader.Copyright,     Is.EqualTo("Copyright © 2010 CubeSoft, Inc."));
-            Assert.That(reader.Trademark,     Is.EqualTo("dummy trademark"));
-            Assert.That(reader.Culture,       Is.Empty);
-            Assert.That(reader.Version,       Is.AtLeast(new Version(1, 2, 0, 0)));
-            Assert.That(reader.FileVersion,   Is.AtLeast(new Version(1, 2, 0, 0)));
-            Assert.That(reader.Icon,          Is.Not.Null);
+            Assert.That(
+                Create().Location,
+                Is.Not.Null.Or.Empty
+            );
         }
+
+        [Test]
+        public void Title_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Title,
+                Is.EqualTo("Cube.Core testing project")
+            );
+        }
+
+        [Test]
+        public void Description_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Description,
+                Is.EqualTo("Test Cube.Core using NUnit framework.")
+            );
+        }
+
+        [Test]
+        public void Configuration_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Configuration,
+                Is.Empty
+            );
+        }
+
+        [Test]
+        public void Company_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Company,
+                Is.EqualTo("CubeSoft, Inc.")
+            );
+        }
+
+        [Test]
+        public void Product_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Product,
+                Is.EqualTo("Cube.Core.Tests")
+            );
+        }
+
+        [Test]
+        public void Copyright_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Copyright,
+                Is.EqualTo("Copyright © 2010 CubeSoft, Inc.")
+            );
+        }
+
+        [Test]
+        public void Trademark_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Trademark,
+                Is.EqualTo("dummy trademark")
+            );
+        }
+
+        [Test]
+        public void Culture_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Culture,
+                Is.Empty
+            );
+        }
+
+        [Test]
+        public void Version_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Version,
+                Is.AtLeast(new Version(1, 2, 0, 0))
+            );
+        }
+
+        [Test]
+        public void FileVersion_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().FileVersion,
+                Is.AtLeast(new Version(1, 2, 0, 0))
+            );
+        }
+
+        [Test]
+        public void Icon_ExecutingAssembly()
+        {
+            Assert.That(
+                Create().Icon.Size,
+                Is.EqualTo(new Size(16, 16))
+            );
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// AssemblyReader オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public AssemblyReader Create()
+        {
+            return new AssemblyReader(Assembly.GetExecutingAssembly());
+        }
+
+        #endregion
     }
 }
