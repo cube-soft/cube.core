@@ -51,7 +51,7 @@ namespace Cube
             LastExecuted = DateTime.Now;
             State = SchedulerState.Stop;
             Logger = LogManager.GetLogger(GetType());
-            _impl.Elapsed += (s, e) => OnExecute(e);
+            _core.Elapsed += (s, e) => OnExecute(e);
         }
 
         #endregion
@@ -151,17 +151,17 @@ namespace Cube
         public void Start()
         {
             if (State != SchedulerState.Stop) return;
-            System.Diagnostics.Debug.Assert(!_impl.Enabled);
+            System.Diagnostics.Debug.Assert(!_core.Enabled);
             State = SchedulerState.Run;
 
-            if (InitialDelay > TimeSpan.Zero) _impl.Interval = InitialDelay.TotalMilliseconds;
+            if (InitialDelay > TimeSpan.Zero) _core.Interval = InitialDelay.TotalMilliseconds;
             else
             {
                 OnExecute(new EventArgs());
-                _impl.Interval = Interval.TotalMilliseconds;
+                _core.Interval = Interval.TotalMilliseconds;
             }
 
-            _impl.Start();
+            _core.Start();
             Logger.DebugFormat("Start\tInterval:{0}\tInitialDelay:{1}", Interval, InitialDelay);
         }
 
@@ -197,7 +197,7 @@ namespace Cube
         {
             if (State == SchedulerState.Stop) return;
 
-            if (_impl.Enabled) _impl.Stop();
+            if (_core.Enabled) _core.Stop();
             Logger.DebugFormat("Stop\tLastExecuted:{0}", LastExecuted);
 
             State = SchedulerState.Stop;
@@ -217,14 +217,14 @@ namespace Cube
         {
             if (State != SchedulerState.Run) return;
 
-            System.Diagnostics.Debug.Assert(_impl.Enabled);
-            _impl.Stop();
+            System.Diagnostics.Debug.Assert(_core.Enabled);
+            _core.Stop();
             State = SchedulerState.Suspend;
             Logger.DebugFormat("Suspend\tLastExecuted:{0}", LastExecuted);
 
             var interval = Interval - (DateTime.Now - LastExecuted);
             if (interval < TimeSpan.Zero) interval = Interval;
-            _impl.Interval = interval.TotalMilliseconds;
+            _core.Interval = interval.TotalMilliseconds;
         }
 
         /* ----------------------------------------------------------------- */
@@ -240,11 +240,11 @@ namespace Cube
         {
             if (State != SchedulerState.Suspend) return;
 
-            System.Diagnostics.Debug.Assert(!_impl.Enabled);
+            System.Diagnostics.Debug.Assert(!_core.Enabled);
             State = SchedulerState.Run;
-            _impl.Start();
+            _core.Start();
             Logger.DebugFormat("Resume\tLastExecuted:{0}\tInterval:{1}",
-                LastExecuted, TimeSpan.FromMilliseconds(_impl.Interval)
+                LastExecuted, TimeSpan.FromMilliseconds(_core.Interval)
             );
         }
 
@@ -259,18 +259,13 @@ namespace Cube
         /// <summary>
         /// リセット処理を実行します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: クラス外部に OnReset に対応するイベントを公開すべきか
-        /// どうか検討。公開する場合、イベント名を何にするかも要検討。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnReset(EventArgs e)
         {
             if (State != SchedulerState.Stop) Stop();
             LastExecuted = DateTime.Now;
-            _impl.Interval = Interval.TotalMilliseconds;
+            _core.Interval = Interval.TotalMilliseconds;
         }
 
         /* ----------------------------------------------------------------- */
@@ -287,16 +282,16 @@ namespace Cube
             if (Execute != null) Execute(this, e);
 
             LastExecuted = DateTime.Now;
-            if ((int)_impl.Interval != (int)Interval.TotalMilliseconds)
+            if ((int)_core.Interval != (int)Interval.TotalMilliseconds)
             {
-                _impl.Interval = Interval.TotalMilliseconds;
+                _core.Interval = Interval.TotalMilliseconds;
             }
         }
 
         #endregion
 
         #region Fields
-        private System.Timers.Timer _impl = new System.Timers.Timer();
+        private System.Timers.Timer _core = new System.Timers.Timer();
         #endregion
     }
 }
