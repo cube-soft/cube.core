@@ -50,6 +50,16 @@ namespace Cube.Tests
         #region Properties
 
         [Test]
+        public void Exists_Dummy_IsFalse()
+        {
+            var dummy = new FileInfo("dummy-filename");
+            Assert.That(
+                dummy.Exists,
+                Is.False
+            );
+        }
+
+        [Test]
         public void Exists_Assembly_IsTrue()
         {
             Assert.That(
