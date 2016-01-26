@@ -17,9 +17,9 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -48,15 +48,15 @@ namespace Cube.Tests
         public void Load()
         {
             var exec = Assembly.GetExecutingAssembly().Location;
-            var name = Path.GetFileNameWithoutExtension(exec);
+            var name = IoEx.Path.GetFileNameWithoutExtension(exec);
             var startup = new Startup(name);
-            Assert.DoesNotThrow(() => startup.Load());
+            startup.Load();
             Assert.That(startup.Enabled, Is.False);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Save
+        /// Save_Delete
         ///
         /// <summary>
         /// スタートアップ設定の保存テストを行います。
@@ -64,27 +64,27 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Save()
+        public void Save_Delete()
         {
             var exec = Assembly.GetExecutingAssembly().Location;
-            var name = Path.GetFileNameWithoutExtension(exec);
+            var name = IoEx.Path.GetFileNameWithoutExtension(exec);
             var command = '"' + exec + '"';
 
             var s0 = new Startup(name);
             s0.Command = command;
             s0.Enabled = true;
-            Assert.DoesNotThrow(() => s0.Save());
+            s0.Save();
 
             var s1 = new Startup(name);
-            Assert.DoesNotThrow(() => s1.Load());
+            s1.Load();
             Assert.That(s1.Enabled, Is.True);
             Assert.That(s1.Command, Is.EqualTo(command));
 
             s1.Enabled = false;
-            Assert.DoesNotThrow(() => s1.Save());
+            s1.Save();
 
             var s2 = new Startup(name);
-            Assert.DoesNotThrow(() => s2.Load());
+            s2.Load();
             Assert.That(s2.Enabled, Is.False);
         }
     }
