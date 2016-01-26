@@ -85,12 +85,12 @@ namespace Cube.Tests
             );
         }
 
-        [TestCase(2015, 3, 16, 11, 32, 26)]
+        [TestCase(2015, 3, 16, 2, 32, 26)]
         public void Load_Registry_DateTime(int y, int m, int d, int hh, int mm, int ss)
         {
             Assert.That(
                 Loaded.Creation,
-                Is.EqualTo(new DateTime(y, m, d, hh, mm, ss))
+                Is.EqualTo(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc))
             );
         }
 
