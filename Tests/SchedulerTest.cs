@@ -35,7 +35,7 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// StateScenario
+        /// State_StartToStop
         /// 
         /// <summary>
         /// Start/Suspend/Resume/Stop のテストを行います。
@@ -43,10 +43,9 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void StateScenario()
+        public void State_StartToStop()
         {
             var scheduler = new Cube.Scheduler();
-
             Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Stop));
 
             scheduler.Start();
@@ -64,7 +63,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SuspendToStop
+        /// State_SuspendToStop
         /// 
         /// <summary>
         /// Suspend から直接 Stop した時のテストを行います。
@@ -72,7 +71,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void SuspendToStop()
+        public void State_SuspendToStop()
         {
             var scheduler = new Cube.Scheduler();
             Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Stop));
@@ -89,7 +88,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ResumeBeforeStart
+        /// State_ResumeBeforeStart
         /// 
         /// <summary>
         /// Start 前に Resume を実行した時のテストを行います。
@@ -97,7 +96,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ResumeBeforeStart()
+        public void State_ResumeBeforeStart()
         {
             var scheduler = new Cube.Scheduler();
 
@@ -107,7 +106,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ResumeAfterStop
+        /// State_ResumeAfterStop
         /// 
         /// <summary>
         /// Stop 後に Resume を実行した時のテストを行います。
@@ -115,13 +114,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ResumeAfterStop()
+        public void State_ResumeAfterStop()
         {
             var scheduler = new Cube.Scheduler();
 
             scheduler.Start();
-            Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Run));
-
             scheduler.Stop();
             scheduler.Resume();
             Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Stop));
@@ -129,7 +126,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SuspendBeforeStart
+        /// State_SuspendBeforeStart
         /// 
         /// <summary>
         /// Start 前に Suspend を実行した時のテストを行います。
@@ -137,7 +134,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void SuspendBeforeStart()
+        public void State_SuspendBeforeStart()
         {
             var scheduler = new Cube.Scheduler();
 
@@ -147,7 +144,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SuspendAfterStop
+        /// State_SuspendAfterStop
         /// 
         /// <summary>
         /// Stop 後に Suspend を実行した時のテストを行います。
@@ -155,13 +152,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void SuspendAfterStop()
+        public void State_SuspendAfterStop()
         {
             var scheduler = new Cube.Scheduler();
 
             scheduler.Start();
-            Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Run));
-
             scheduler.Stop();
             scheduler.Suspend();
             Assert.That(scheduler.State, Is.EqualTo(Cube.SchedulerState.Stop));
