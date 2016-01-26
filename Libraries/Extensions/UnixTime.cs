@@ -60,22 +60,36 @@ namespace Cube.Extensions
         public static DateTime ToDateTime(this int unix)
         {
             var us = (uint)unix;
-            return ToDateTime(us);
+            return ToUniversalTime(us);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToDateTime
+        /// ToUniversalTime
         /// 
         /// <summary>
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime ToDateTime(this long unix)
+        public static DateTime ToUniversalTime(this long unix)
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unix);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToLocalTime
+        /// 
+        /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToLocalTime(this long unix)
+        {
+            return ToUniversalTime(unix).ToLocalTime();
         }
     }
 }
