@@ -61,7 +61,6 @@
     <Compile Include="FileSystem\DriveType.cs" />
     <Compile Include="FileSystem\FileInfo.cs" />
     <Compile Include="FileSystem\VetoException.cs" />
-    <Compile Include="FileSystem\VetoType.cs" />
     <Compile Include="NativeApis\IImageList.cs" />
     <Compile Include="NativeApis\ImageInfo.cs" />
     <Compile Include="NativeApis\Kernel32.cs" />
@@ -73,7 +72,6 @@
     <Compile Include="NativeApis\SpDevice.cs" />
     <Compile Include="NativeApis\WinMM.cs" />
     <Compile Include="Notifications\NotifyEventArgs.cs" />
-    <Compile Include="SchedulerState.cs" />
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -88,7 +86,6 @@
     <Compile Include="Icons\IconSize.cs" />
     <Compile Include="Icons\StockIcons.cs" />
     <Compile Include="Notifications\NotifyItem.cs" />
-    <Compile Include="Notifications\NotifyLevel.cs" />
     <Compile Include="Notifications\NotifyQueue.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Settings\ObservableSettingsValue.cs">
@@ -101,7 +98,7 @@
     <Compile Include="Settings\Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
