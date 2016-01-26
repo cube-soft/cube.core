@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Drawing;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -44,21 +45,134 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        #region Properties
+
         [Test]
-        public void Properties()
+        public void Location_ExecutingAssembly_IsNotNullOrEmpty()
         {
-            var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
-            Assert.That(reader.Title,         Is.EqualTo("Cube.Core testing project"));
-            Assert.That(reader.Description,   Is.EqualTo("Test Cube.Core using NUnit framework."));
-            Assert.That(reader.Configuration, Is.Empty);
-            Assert.That(reader.Company,       Is.EqualTo("CubeSoft, Inc."));
-            Assert.That(reader.Product,       Is.EqualTo("Cube.Core.Tests"));
-            Assert.That(reader.Copyright,     Is.EqualTo("Copyright © 2010 CubeSoft, Inc."));
-            Assert.That(reader.Trademark,     Is.EqualTo("dummy trademark"));
-            Assert.That(reader.Culture,       Is.Empty);
-            Assert.That(reader.Version,       Is.AtLeast(new Version(1, 2, 0, 0)));
-            Assert.That(reader.FileVersion,   Is.AtLeast(new Version(1, 2, 0, 0)));
-            Assert.That(reader.Icon,          Is.Not.Null);
+            Assert.That(
+                Create().Location,
+                Is.Not.Null.Or.Empty
+            );
         }
+
+        [TestCase("Cube.Core testing project")]
+        public void Title_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Title,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
+        public void Description_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Description,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("CubeSoft, Inc.")]
+        public void Company_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Company,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("Cube.Core.Tests")]
+        public void Product_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Product,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("Copyright © 2010 CubeSoft, Inc.")]
+        public void Copyright_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Copyright,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [TestCase("ここに商標を設定します。")]
+        public void Trademark_ExecutingAssembly(string expected)
+        {
+            Assert.That(
+                Create().Trademark,
+                Is.EqualTo(expected)
+            );
+        }
+
+        [Test]
+        public void Configuration_ExecutingAssembly_IsEmpty()
+        {
+            Assert.That(
+                Create().Configuration,
+                Is.Empty
+            );
+        }
+
+        [Test]
+        public void Culture_ExecutingAssembly_IsEmpty()
+        {
+            Assert.That(
+                Create().Culture,
+                Is.Empty
+            );
+        }
+
+        [TestCase(1, 2, 0, 0)]
+        public void Version_ExecutingAssembly_IsAtLeast(int major, int minor, int build, int revision)
+        {
+            Assert.That(
+                Create().Version,
+                Is.AtLeast(new Version(major, minor, build, revision))
+            );
+        }
+
+        [TestCase(1, 2, 0, 0)]
+        public void FileVersion_ExecutingAssembly_IsAtLeast(int major, int minor, int build, int revision)
+        {
+            Assert.That(
+                Create().FileVersion,
+                Is.AtLeast(new Version(major, minor, build, revision))
+            );
+        }
+
+        [TestCase(16, 16)]
+        public void Icon_ExecutingAssembly(int width, int height)
+        {
+            Assert.That(
+                Create().Icon.Size,
+                Is.EqualTo(new Size(width, height))
+            );
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// AssemblyReader オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public AssemblyReader Create()
+        {
+            return new AssemblyReader(Assembly.GetExecutingAssembly());
+        }
+
+        #endregion
     }
 }

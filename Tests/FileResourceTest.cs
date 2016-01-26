@@ -17,8 +17,8 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.IO;
 using NUnit.Framework;
+using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -34,9 +34,11 @@ namespace Cube.Tests
     [TestFixture]
     class FileResourceTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// ExamplesFolderExists
+        /// Examples_Exists
         /// 
         /// <summary>
         /// Examples フォルダが存在するかどうかをテストします。
@@ -44,15 +46,17 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ExamplesFolderExists()
+        public void Examples_Exists()
         {
-            var resource = new FileResource();
-            Assert.That(Directory.Exists(resource.Examples), Is.True);
+            Assert.That(
+                IoEx.Directory.Exists(Create().Examples),
+                Is.True
+            );
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ResultsFolderExists
+        /// Results_Exists
         /// 
         /// <summary>
         /// Results フォルダが存在するかどうかをテストします。
@@ -60,10 +64,32 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ResultsFolderExists()
+        public void Results_Exists()
         {
-            var resource = new FileResource();
-            Assert.That(Directory.Exists(resource.Results), Is.True);
+            Assert.That(
+                IoEx.Directory.Exists(Create().Results),
+                Is.True
+            );
         }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// FileResource オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public FileResource Create()
+        {
+            return new FileResource();
+        }
+
+        #endregion
     }
 }

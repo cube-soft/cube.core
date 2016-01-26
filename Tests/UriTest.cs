@@ -37,7 +37,7 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// WithValue
+        /// With_Value
         /// 
         /// <summary>
         /// 様々な型を With に指定した時のテストを行います。
@@ -47,7 +47,7 @@ namespace Cube.Tests
         [TestCase("string", "value")]
         [TestCase("int", 5)]
         [TestCase("double", 3.14)]
-        public void WithValue<T>(string key, T value)
+        public void With_Value<T>(string key, T value)
         {
             var uri = new Uri("http://www.cube-soft.jp/index.html");
             var actual = uri.With(key, value);
@@ -57,7 +57,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithDateTime
+        /// With_DateTime
         /// 
         /// <summary>
         /// 時刻を付与するテストを行います。
@@ -65,7 +65,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void WithDateTime()
+        public void With_DateTime()
         {
             var time = new DateTime(2015, 3, 19, 23, 57, 57); // 1426777077
             var uri = new Uri("http://www.cube-soft.jp/index.html");
@@ -76,7 +76,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithNull
+        /// With_Null
         /// 
         /// <summary>
         /// 引数に null を指定した時のテストを行います。
@@ -84,7 +84,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void WithNull()
+        public void With_Null()
         {
             var uri = new Uri("http://www.cube-soft.jp/index.html");
             var actual = uri.With(null);
@@ -93,7 +93,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithMutiQuery
+        /// With_MultiQuery
         /// 
         /// <summary>
         /// 複数個のクエリーを With で結合した時のテストを行います。
@@ -101,7 +101,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void WithMultiQuery()
+        public void With_MultiQuery()
         {
             var uri = new Uri("http://www.cube-soft.jp/");
             var actual = uri.With("key1", "value1").With("key2", "value2");

@@ -18,9 +18,11 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.IO;
+using System.Drawing;
 using System.Reflection;
 using NUnit.Framework;
+using Cube.FileSystem;
+using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -41,58 +43,160 @@ namespace Cube.Tests
         /// Properties
         ///
         /// <summary>
-        /// System.IO.FileInfo を参照しているプロパティをテストします。
+        /// 各種プロパティのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        #region Properties
+
         [Test]
-        public void Properties()
+        public void Exists_Dummy_IsFalse()
         {
-            var src  = Assembly.GetExecutingAssembly().Location;
-            var info = new Cube.FileSystem.FileInfo(src);
-            Assert.That(info.Exists, Is.True);
-            Assert.That(info.Name, Is.EqualTo(Path.GetFileName(src)));
-            Assert.That(info.FullName, Is.EqualTo(src));
-            Assert.That(info.DirectoryName, Is.EqualTo(Path.GetDirectoryName(src)));
-            Assert.That(info.Extension, Is.EqualTo(Path.GetExtension(src)));
-            Assert.That(info.Length, Is.AtLeast(1000));
-            Assert.That(info.IsReadOnly, Is.False);
-            Assert.That(info.CreationTime, Is.LessThanOrEqualTo(DateTime.Now));
-            Assert.That(info.LastWriteTime, Is.LessThanOrEqualTo(DateTime.Now));
-            Assert.That(info.LastAccessTime, Is.LessThanOrEqualTo(DateTime.Now));
+            var dummy = new FileInfo("dummy-filename");
+            Assert.That(
+                dummy.Exists,
+                Is.False
+            );
+        }
+
+        [Test]
+        public void Exists_Assembly_IsTrue()
+        {
+            Assert.That(
+                FileInfo.Exists,
+                Is.True
+            );
+        }
+
+        [Test]
+        public void FullName_Assembly()
+        {
+            Assert.That(
+                FileInfo.FullName,
+                Is.EqualTo(Assembly.GetExecutingAssembly().Location)
+            );
+        }
+
+        [Test]
+        public void Name_Assembly()
+        {
+            Assert.That(
+                FileInfo.Name,
+                Is.EqualTo(IoEx.Path.GetFileName(Assembly.GetExecutingAssembly().Location))
+            );
+        }
+
+        [Test]
+        public void Extension_Assembly()
+        {
+            Assert.That(
+                FileInfo.Extension,
+                Is.EqualTo(IoEx.Path.GetExtension(Assembly.GetExecutingAssembly().Location))
+            );
+        }
+
+        [Test]
+        public void DirectoryName_Assembly()
+        {
+            Assert.That(
+                FileInfo.DirectoryName,
+                Is.EqualTo(IoEx.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+            );
+        }
+
+        [TestCase(1000)]
+        public void Length_Assembly_IsAtLeast(int expected)
+        {
+            Assert.That(
+                FileInfo.Length,
+                Is.AtLeast(expected)
+            );
+        }
+
+        [Test]
+        public void IsReadOnly_Assembly_IsFalse()
+        {
+            Assert.That(
+                FileInfo.IsReadOnly,
+                Is.False
+            );
+        }
+
+        [Test]
+        public void CreationTime_Assembly_IsAtMostNow()
+        {
+            Assert.That(
+                FileInfo.CreationTime,
+                Is.AtMost(DateTime.Now)
+            );
+        }
+
+        [Test]
+        public void LastWriteTime_Assembly_IsAtMostNow()
+        {
+            Assert.That(
+                FileInfo.LastWriteTime,
+                Is.AtMost(DateTime.Now)
+            );
+        }
+
+        [Test]
+        public void LastAccessTime_Assembly_IsAtMostNow()
+        {
+            Assert.That(
+                FileInfo.LastAccessTime,
+                Is.AtMost(DateTime.Now)
+            );
+        }
+
+        [Test]
+        public void TypeName_Assembly_IsNotNullOrEmpty()
+        {
+            Assert.That(
+                FileInfo.TypeName,
+                Is.Not.Null.Or.Empty
+            );
+        }
+
+        [TestCase(16, 16)]
+        public void Icon_Assembly(int width, int height)
+        {
+            Assert.That(
+                FileInfo.Icon.Size,
+                Is.EqualTo(new Size(width, height))
+            );
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OneTimeSetup
+        ///
+        /// <summary>
+        /// 初期化処理を一度だけ実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            FileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TypeName
+        /// FileInfo
         ///
         /// <summary>
-        /// TypeName が取得できているかをテストします。
+        /// ファイル情報を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void TypeName()
-        {
-            var info = new Cube.FileSystem.FileInfo(Assembly.GetExecutingAssembly().Location);
-            Assert.That(info.TypeName, Is.Not.Null.Or.Empty);
-        }
+        public FileInfo FileInfo { get; set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Icon
-        ///
-        /// <summary>
-        /// Icon が取得できているかをテストします。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Icon()
-        {
-            var info = new Cube.FileSystem.FileInfo(Assembly.GetExecutingAssembly().Location);
-            Assert.That(info.Icon, Is.Not.Null);
-            Assert.That(info.IconSize, Is.EqualTo(Cube.IconSize.Small));
-        }
+        #endregion
     }
 }

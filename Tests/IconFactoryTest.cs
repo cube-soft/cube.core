@@ -17,6 +17,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.Drawing;
 using NUnit.Framework;
 
 namespace Cube.Tests
@@ -35,43 +36,45 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateStockIcon
+        /// Create_StockIcon
         /// 
         /// <summary>
         /// システムで用意されているアイコンを生成するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Large,       32)]
-        [TestCase(Cube.StockIcons.Application, Cube.IconSize.Jumbo,      256)]
-        public void CreateStockIcon(Cube.StockIcons id, Cube.IconSize size, int expected)
+        [TestCase(StockIcons.Application, IconSize.Large, 32)]
+        [TestCase(StockIcons.Application, IconSize.Jumbo, 256)]
+        public void Create_StockIcon(StockIcons id, IconSize size, int expected)
         {
-            var icon = Cube.IconFactory.Create(id, size);
-            Assert.That(icon, Is.Not.Null);
-            Assert.That(icon.Width, Is.EqualTo(expected));
+            Assert.That(
+                IconFactory.Create(id, size).Size,
+                Is.EqualTo(new Size(expected, expected))
+            );
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateFileIcon
+        /// Create_FileIcon
         /// 
         /// <summary>
         /// ファイルからアイコンを抽出して生成するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.Small,      16)]
-        [TestCase(@"C:\Windows\notepad.exe", Cube.IconSize.ExtraLarge, 48)]
-        public void CreateFileIcon(string path, Cube.IconSize size, int expected)
+        [TestCase(@"C:\Windows\notepad.exe", IconSize.Small, 16)]
+        [TestCase(@"C:\Windows\notepad.exe", IconSize.ExtraLarge, 48)]
+        public void Create_FileIcon(string path, IconSize size, int expected)
         {
-            var icon = Cube.IconFactory.Create(path, size);
-            Assert.That(icon, Is.Not.Null);
-            Assert.That(icon.Width, Is.EqualTo(expected));
+            Assert.That(
+                IconFactory.Create(path, size).Size,
+                Is.EqualTo(new Size(expected, expected))
+            );
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateNullIcon
+        /// Create_ZeroIcon
         /// 
         /// <summary>
         /// IconSize.Zero を指定した時のテストを行います。
@@ -79,11 +82,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void CreateNullIcon()
+        public void Create_ZeroIcon()
         {
-            var path = @"C:\Windows\notepad.exe";
-            var icon = Cube.IconFactory.Create(path, Cube.IconSize.Zero);
-            Assert.That(icon, Is.Null);
+            Assert.That(
+                IconFactory.Create(@"C:\Windows\notepad.exe", IconSize.Zero),
+                Is.Null
+            );
         }
     }
 }

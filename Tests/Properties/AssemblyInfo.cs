@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("Cube.Core testing project")]
-[assembly: AssemblyDescription("Test Cube.Core using NUnit framework.")]
+[assembly: AssemblyDescription("NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CubeSoft, Inc.")]
 [assembly: AssemblyProduct("Cube.Core.Tests")]
 [assembly: AssemblyCopyright("Copyright © 2010 CubeSoft, Inc.")]
-[assembly: AssemblyTrademark("dummy trademark")]
+[assembly: AssemblyTrademark("ここに商標を設定します。")]
 [assembly: AssemblyCulture("")]
 
 // ComVisible を false に設定すると、その型はこのアセンブリ内で COM コンポーネントから 

@@ -228,7 +228,7 @@ namespace Cube
 
                     if (item.PropertyType.IsEnum) root.SetValue(name, (int)value);
                     else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
-                    else if (code == TypeCode.DateTime) root.SetValue(name, ((DateTime)value).ToUnixTime());
+                    else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
                     else if (code != TypeCode.Object) root.SetValue(name, value);
                     else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, item.PropertyType, subkey);
                 }
