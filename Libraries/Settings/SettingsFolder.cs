@@ -17,6 +17,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Reflection;
 
 namespace Cube
@@ -174,7 +175,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() { ExecuteSave(); }
+        public void Save() { OnSave(new EventArgs()); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -186,7 +187,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() { ExecuteLoad(); }
+        public void Load() { OnLoad(new EventArgs()); }
 
         #endregion
 
@@ -194,7 +195,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ExecuteLoad
+        /// OnLoad
         ///
         /// <summary>
         /// アプリケーション設定、およびユーザ設定をレジストリから
@@ -202,7 +203,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void ExecuteLoad()
+        protected virtual void OnLoad(EventArgs e)
         {
             LoadApplicationSettings();
             LoadUserSettings();
@@ -211,19 +212,19 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ExecuteSave
+        /// OnSave
         ///
         /// <summary>
         /// ユーザ設定をレジストリへ保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void ExecuteSave()
+        protected virtual void OnSave(EventArgs e)
         {
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.CreateSubKey(SubKeyName))
             {
-                Settings.Save<TValue>(User, subkey);
+                Settings.Save(User, subkey);
             }
             Startup.Save();
         }
