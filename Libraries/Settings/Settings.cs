@@ -24,8 +24,9 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
-using Cube.Extensions;
 using log4net;
+using Cube.Extensions;
+using IoEx = System.IO;
 
 namespace Cube
 {
@@ -85,7 +86,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static T Load<T>(string path, FileType type = FileType.Xml)
         {
-            using (var reader = new System.IO.StreamReader(path))
+            using (var reader = new IoEx.StreamReader(path))
             {
                 switch (type)
                 {
@@ -124,7 +125,23 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(T src, string path, FileType type = FileType.Xml) { }
+        public static void Save<T>(T src, string path, FileType type = FileType.Xml)
+        {
+            using (var writer = new IoEx.StreamWriter(path))
+            {
+                switch (type)
+                {
+                    case FileType.Xml:
+                        SaveXml(src, writer.BaseStream);
+                        break;
+                    case FileType.Json:
+                        SaveJson(src, writer.BaseStream);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         #endregion
 
@@ -180,7 +197,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadXml<T>(System.IO.Stream src)
+        private static T LoadXml<T>(IoEx.Stream src)
         {
             var serializer = new DataContractSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -196,7 +213,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadJson<T>(System.IO.Stream src)
+        private static T LoadJson<T>(IoEx.Stream src)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -234,6 +251,36 @@ namespace Cube
                 }
                 catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveXml
+        /// 
+        /// <summary>
+        /// ストリームに XML 形式で保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveXml<T>(T src, IoEx.Stream dest)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            serializer.WriteObject(dest, src);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveJson
+        /// 
+        /// <summary>
+        /// ストリームに JSON 形式で保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveJson<T>(T src, IoEx.Stream dest)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            serializer.WriteObject(dest, src);
         }
 
         /* ----------------------------------------------------------------- */

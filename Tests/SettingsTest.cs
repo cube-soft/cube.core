@@ -227,18 +227,17 @@ namespace Cube.Tests
             }
         }
 
-        // NOTE: 未実装
-        //[TestCase(Settings.FileType.Xml, "Person.xml")]
-        //[TestCase(Settings.FileType.Json, "Person.json")]
-        //public void Save_File(Settings.FileType type, string name)
-        //{
-        //    var dest = IoEx.Path.Combine(Results, name);
-        //    Cube.Settings.Save(CreatePerson(), dest, type);
-        //    Assert.That(
-        //        IoEx.File.Exists(dest),
-        //        Is.True
-        //    );
-        //}
+        [TestCase(Settings.FileType.Xml, "Person.xml")]
+        [TestCase(Settings.FileType.Json, "Person.json")]
+        public void Save_File(Settings.FileType type, string name)
+        {
+            var dest = IoEx.Path.Combine(Results, name);
+            Cube.Settings.Save(CreatePerson(), dest, type);
+            Assert.That(
+                IoEx.File.Exists(dest),
+                Is.True
+            );
+        }
 
         #endregion
 
