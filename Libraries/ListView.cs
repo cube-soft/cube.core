@@ -79,6 +79,37 @@ namespace Cube.Forms
             base.OnCreateControl();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSelectedIndexChanged
+        ///
+        /// <summary>
+        /// 選択項目が変更された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnSelectedIndexChanged(EventArgs e)
+        {
+            base.OnSelectedIndexChanged(e);
+            if (Theme == WindowTheme.Normal) return;
+            User32.SendMessage(Handle, 0x127, 0x10001, 0);
+        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnEnter
+        ///
+        /// <summary>
+        /// カーソルが領域内に侵入した時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnEnter(EventArgs e)
+        {
+            base.OnEnter(e);
+            if (Theme == WindowTheme.Normal) return;
+            User32.SendMessage(Handle, 0x127, 0x10001, 0);
+        }
+
         #endregion
 
         #region Other private methods
@@ -94,15 +125,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateTheme(WindowTheme theme)
         {
-            if (theme == WindowTheme.Normal) SetWindowTheme(Handle, null, null);
-            else SetWindowTheme(Handle, theme.ToString(), null);
+            if (theme == WindowTheme.Normal) UxTheme.SetWindowTheme(Handle, null, null);
+            else UxTheme.SetWindowTheme(Handle, theme.ToString(), null);
         }
 
-        #endregion
-
-        #region Win32 APIs
-        [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
-        private static extern int SetWindowTheme(IntPtr hwnd, string pszSubAppName, string pszSubIdList);
         #endregion
 
         #region Fields
