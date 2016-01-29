@@ -90,6 +90,7 @@ namespace Cube.Forms
                 Converter.Convert(item) :
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
+            HackAlignmentBug();
         }
 
         /* ----------------------------------------------------------------- */
@@ -108,6 +109,7 @@ namespace Cube.Forms
                 Converter.Convert(item) :
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
+            HackAlignmentBug();
         }
 
         #endregion
@@ -177,6 +179,26 @@ namespace Cube.Forms
         {
             if (theme == WindowTheme.Normal) UxTheme.SetWindowTheme(Handle, null, null);
             else UxTheme.SetWindowTheme(Handle, theme.ToString(), null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// HackAlignmentBug
+        ///
+        /// <summary>
+        /// Aligment に関連したバグの影響で表示順序がおかしくなる場合が
+        /// あるので、強制的に再描画させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void HackAlignmentBug()
+        {
+            if (View == System.Windows.Forms.View.List ||
+                View == System.Windows.Forms.View.Details) return;
+
+            var alignment = Alignment;
+            Alignment = System.Windows.Forms.ListViewAlignment.Default;
+            Alignment = alignment;
         }
 
         #endregion
