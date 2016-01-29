@@ -51,7 +51,11 @@ namespace Cube.Forms.Demo
 
             CloseButton.Click += (s, e) => Close();
 
-            IconListView.LargeImageList = new ImageList();
+            var converter = new StockIconConverter();
+            converter.ImageList = new ImageList();
+
+            IconListView.Converter = converter;
+            IconListView.LargeImageList = converter.ImageList;
             IconListView.LargeImageList.ImageSize = new Size(48, 48);
             IconListView.LargeImageList.ColorDepth = ColorDepth.Depth32Bit;
             foreach (Cube.StockIcons kind in Enum.GetValues(typeof(Cube.StockIcons)))
@@ -59,9 +63,33 @@ namespace Cube.Forms.Demo
                 var icon = Cube.IconFactory.Create(kind, Cube.IconSize.ExtraLarge);
                 if (icon == null) continue;
 
-                var text = string.Format("{0}\n{1}", (int)kind, kind);
                 IconListView.LargeImageList.Images.Add(icon.ToBitmap());
-                IconListView.Items.Add(new ListViewItem(text, IconListView.LargeImageList.Images.Count - 1));
+                IconListView.Add(kind);
+            }
+        }
+
+        #endregion
+
+        #region Internal classes
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StockIconConverter
+        ///
+        /// <summary>
+        /// 変換用クラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        internal class StockIconConverter : IListViewItemConverter
+        {
+            public ImageList ImageList { get; set; }
+
+            public ListViewItem Convert<T>(T src)
+            {
+                var text  = string.Format("{0:D}\n{1}", src, src);
+                var index = (ImageList != null) ? ImageList.Images.Count - 1 : 0;
+                return new ListViewItem(text, index);
             }
         }
 

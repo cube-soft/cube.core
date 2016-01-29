@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 
 namespace Cube.Forms
 {
@@ -58,6 +57,57 @@ namespace Cube.Forms
                     UpdateTheme(_theme);
                 }
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Converter
+        ///
+        /// <summary>
+        /// 変換用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IListViewItemConverter Converter { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Add
+        ///
+        /// <summary>
+        /// 項目を追加します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Add<T>(T item)
+        {
+            Items.Add(
+                Converter != null ?
+                Converter.Convert(item) :
+                new System.Windows.Forms.ListViewItem(item.ToString())
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Insert
+        ///
+        /// <summary>
+        /// 指定されたインデックスに項目を追加します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Insert<T>(int index, T item)
+        {
+            Items.Insert(index,
+                Converter != null ?
+                Converter.Convert(item) :
+                new System.Windows.Forms.ListViewItem(item.ToString())
+            );
         }
 
         #endregion

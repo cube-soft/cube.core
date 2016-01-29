@@ -76,6 +76,7 @@
     <Compile Include="EventArgs\NavigatingErrorEventArgs.cs" />
     <Compile Include="EventArgs\NavigatingEventArgs.cs" />
     <Compile Include="Detail\FlatButtonPainter.cs" />
+    <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\WindowTheme.cs" />
     <Compile Include="NativeApis\User32.cs" />
     <Compile Include="NativeApis\UxTheme.cs" />
