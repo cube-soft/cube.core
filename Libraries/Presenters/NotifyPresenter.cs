@@ -90,7 +90,7 @@ namespace Cube.Forms
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
 
-            Post(() =>
+            Sync(() =>
             {
                 if (Model.Count <= 0 || View.IsBusy) return;
                 Execute(Model.Dequeue());
@@ -109,7 +109,7 @@ namespace Cube.Forms
         private void View_Hidden(object sender, EventArgs e)
         {
             if (Model.Count <= 0) return;
-            Post(() => Execute(Model.Dequeue()));
+            Sync(() => Execute(Model.Dequeue()));
         }
 
         #endregion

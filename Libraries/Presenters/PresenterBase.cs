@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using log4net;
 
 namespace Cube.Forms
@@ -109,21 +110,35 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Post
+        /// Async
+        /// 
+        /// <summary>
+        /// 各種操作を非同期で実行します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Task Async(Action action)
+        {
+            return Task.Run(() => action());
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Sync
         /// 
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Post(Action action)
+        public void Sync(Action action)
         {
             SynchronizationContext.Post(_ => action(), null);
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Send
+        /// SyncWait
         /// 
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行し、
@@ -131,7 +146,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Send(Action action)
+        public void SyncWait(Action action)
         {
             SynchronizationContext.Send(_ => action(), null);
         }
