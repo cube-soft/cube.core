@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResource.cs
+/// NotifyItem.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,130 +17,120 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.Reflection;
-using IoEx = System.IO;
+using System;
+using System.Drawing;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResource
+    /// NotifyLevel
     /// 
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// 通知した項目の重要度を示す値を定義した列挙体です。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    class FileResource
+    public enum NotifyLevel : int
     {
-        #region Constructors
+        None        = 0,
+        Information = 1,
+        Recommended = 2,
+        Important   = 3,
+        Warning     = 4,
+        Error       = 5,
+    }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileResource
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource()
-        {
-            var exec = Assembly.GetExecutingAssembly().Location;
-            Root = IoEx.Path.GetDirectoryName(exec);
-            Initialize();
-        }
-
-        #endregion
-
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NotifyItem
+    /// 
+    /// <summary>
+    /// 通知内容を保持するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class NotifyItem
+    {
         #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Root
-        ///
-        /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Root { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Examples
+        /// Level
         /// 
         /// <summary>
-        /// テスト用ファイルの存在するフォルダへのパスを取得します。
+        /// 通知内容の重要度を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Examples
-        {
-            get { return IoEx.Path.Combine(Root, "Examples"); }
-        }
+        public NotifyLevel Level { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results
+        /// Title
         /// 
         /// <summary>
-        /// テスト結果を格納するためのフォルダへのパスを取得します。
+        /// 通知内容のタイトルを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Results
-        {
-            get
-            {
-                var classname = GetType().FullName.Replace("Cube.Tests.", "");
-                var folder = string.Format(@"Results\{0}", classname);
-                return IoEx.Path.Combine(Root, folder);
-            }
-        }
+        public string Title { get; set; }
 
-        #endregion
-
-        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Initialize
+        /// Description
         /// 
         /// <summary>
-        /// リソースファイルを初期化します。
+        /// 通知内容の本文を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize()
-        {
-            if (!IoEx.Directory.Exists(Results)) IoEx.Directory.CreateDirectory(Results);
-            Clean(Results);
-        }
+        public string Description { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Clean
+        /// Image
         /// 
         /// <summary>
-        /// 指定されたフォルダ内に存在する全てのファイルを削除します。
+        /// 通知内容を表すイメージを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Clean(string folder)
-        {
-            foreach (string file in IoEx.Directory.GetFiles(folder))
-            {
-                IoEx.File.SetAttributes(file, IoEx.FileAttributes.Normal);
-                IoEx.File.Delete(file);
-            }
+        public Image Image { get; set; }
 
-            foreach (string sub in IoEx.Directory.GetDirectories(folder))
-            {
-                Clean(sub);
-            }
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DisplayTime
+        /// 
+        /// <summary>
+        /// 通知内容の表示時間を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TimeSpan DisplayTime { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitialDelay
+        /// 
+        /// <summary>
+        /// 通知内容の表示を遅延させる時間を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TimeSpan InitialDelay { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Data
+        /// 
+        /// <summary>
+        /// ユーザデータを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public object Data { get; set; }
 
         #endregion
     }

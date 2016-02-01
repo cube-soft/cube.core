@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("Cube.Core testing project")]
-[assembly: AssemblyDescription("Test Cube.Core using NUnit framework.")]
+[assembly: AssemblyDescription("NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CubeSoft, Inc.")]
 [assembly: AssemblyProduct("Cube.Core.Tests")]
 [assembly: AssemblyCopyright("Copyright © 2010 CubeSoft, Inc.")]
-[assembly: AssemblyTrademark("dummy trademark")]
+[assembly: AssemblyTrademark("ここに商標を設定します。")]
 [assembly: AssemblyCulture("")]
 
 // ComVisible を false に設定すると、その型はこのアセンブリ内で COM コンポーネントから 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]

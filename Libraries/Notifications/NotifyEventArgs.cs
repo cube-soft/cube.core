@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResource.cs
+/// NotifyEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,38 +17,41 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.Reflection;
-using IoEx = System.IO;
+using System;
+using System.Drawing;
 
-namespace Cube.Tests
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResource
+    /// NotifyEventArgs
     /// 
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// 通知フォームで表示された内容を保持するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    class FileResource
+    public class NotifyEventArgs : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
-        ///
+        /// NotifyEventArgs
+        /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileResource()
+        public NotifyEventArgs(NotifyLevel level, string title, string description, Image image, object data = null)
+            : base()
         {
-            var exec = Assembly.GetExecutingAssembly().Location;
-            Root = IoEx.Path.GetDirectoryName(exec);
-            Initialize();
+            Level       = level;
+            Title       = title;
+            Description = description;
+            Image       = image;
+            Data        = data;
         }
 
         #endregion
@@ -57,90 +60,58 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Root
-        ///
-        /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Root { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Examples
+        /// Level
         /// 
         /// <summary>
-        /// テスト用ファイルの存在するフォルダへのパスを取得します。
+        /// 重要度を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Examples
-        {
-            get { return IoEx.Path.Combine(Root, "Examples"); }
-        }
+        public NotifyLevel Level { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results
+        /// Title
         /// 
         /// <summary>
-        /// テスト結果を格納するためのフォルダへのパスを取得します。
+        /// タイトルを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Results
-        {
-            get
-            {
-                var classname = GetType().FullName.Replace("Cube.Tests.", "");
-                var folder = string.Format(@"Results\{0}", classname);
-                return IoEx.Path.Combine(Root, folder);
-            }
-        }
-
-        #endregion
-
-        #region Other private methods
+        public string Title { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Initialize
+        /// Description
         /// 
         /// <summary>
-        /// リソースファイルを初期化します。
+        /// 本文を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize()
-        {
-            if (!IoEx.Directory.Exists(Results)) IoEx.Directory.CreateDirectory(Results);
-            Clean(Results);
-        }
+        public string Description { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Clean
+        /// Image
         /// 
         /// <summary>
-        /// 指定されたフォルダ内に存在する全てのファイルを削除します。
+        /// イメージを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Clean(string folder)
-        {
-            foreach (string file in IoEx.Directory.GetFiles(folder))
-            {
-                IoEx.File.SetAttributes(file, IoEx.FileAttributes.Normal);
-                IoEx.File.Delete(file);
-            }
+        public Image Image { get; private set; }
 
-            foreach (string sub in IoEx.Directory.GetDirectories(folder))
-            {
-                Clean(sub);
-            }
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Data
+        /// 
+        /// <summary>
+        /// ユーザデータを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public object Data { get; private set; }
 
         #endregion
     }

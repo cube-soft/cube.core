@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResource.cs
+/// SetupApi.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,131 +17,99 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.Reflection;
-using IoEx = System.IO;
+using System;
+using System.Text;
+using System.Runtime.InteropServices;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResource
+    /// SetupApi
     /// 
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// setupapi.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    class FileResource
+    internal abstract class SetupApi
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource()
-        {
-            var exec = Assembly.GetExecutingAssembly().Location;
-            Root = IoEx.Path.GetDirectoryName(exec);
-            Initialize();
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Root
-        ///
-        /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Root { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Examples
+        /// SetupDiGetClassDevs
         /// 
         /// <summary>
-        /// テスト用ファイルの存在するフォルダへのパスを取得します。
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff551069.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Examples
-        {
-            get { return IoEx.Path.Combine(Root, "Examples"); }
-        }
+        [DllImport("setupapi.dll", SetLastError = true)]
+        public static extern IntPtr SetupDiGetClassDevs(ref Guid classGuid, IntPtr enumerator,
+            IntPtr hwndParent, uint flags);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results
+        /// SetupDiDestroyDeviceInfoList
         /// 
         /// <summary>
-        /// テスト結果を格納するためのフォルダへのパスを取得します。
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff550996.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Results
-        {
-            get
-            {
-                var classname = GetType().FullName.Replace("Cube.Tests.", "");
-                var folder = string.Format(@"Results\{0}", classname);
-                return IoEx.Path.Combine(Root, folder);
-            }
-        }
-
-        #endregion
-
-        #region Other private methods
+        [DllImport("setupapi.dll")]
+        public static extern uint SetupDiDestroyDeviceInfoList(IntPtr deviceInfoSet);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Initialize
+        /// SetupDiEnumDeviceInterfaces
         /// 
         /// <summary>
-        /// リソースファイルを初期化します。
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff550996.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize()
-        {
-            if (!IoEx.Directory.Exists(Results)) IoEx.Directory.CreateDirectory(Results);
-            Clean(Results);
-        }
+        [DllImport("setupapi.dll", SetLastError = true)]
+        public static extern bool SetupDiEnumDeviceInterfaces(IntPtr deviceInfoSet, IntPtr deviceInfoData,
+            ref Guid interfaceClassGuid, uint memberIndex, SP_DEVICE_INTERFACE_DATA deviceInterfaceData);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Clean
+        /// SetupDiGetDeviceInterfaceDetail
         /// 
         /// <summary>
-        /// 指定されたフォルダ内に存在する全てのファイルを削除します。
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff551120.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Clean(string folder)
-        {
-            foreach (string file in IoEx.Directory.GetFiles(folder))
-            {
-                IoEx.File.SetAttributes(file, IoEx.FileAttributes.Normal);
-                IoEx.File.Delete(file);
-            }
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern bool SetupDiGetDeviceInterfaceDetail(IntPtr deviceInfoSet,
+            SP_DEVICE_INTERFACE_DATA deviceInterfaceData,
+            IntPtr deviceInterfaceDetailData, uint deviceInterfaceDetailDataSize,
+            ref uint requiredSize, SP_DEVINFO_DATA deviceInfoData);
 
-            foreach (string sub in IoEx.Directory.GetDirectories(folder))
-            {
-                Clean(sub);
-            }
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CM_Get_Parent
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff538610.aspx
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [DllImport("setupapi.dll")]
+        public static extern int CM_Get_Parent(ref int pdnDevInst, int dnDevInst, ulong ulFlags);
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CM_Request_Device_Eject
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/hardware/ff539806.aspx
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [DllImport("setupapi.dll")]
+        public static extern int CM_Request_Device_Eject(int dnDevInst, out Cube.FileSystem.VetoType pVetoType,
+            StringBuilder pszVetoName, ulong ulNameLength, ulong ulFlags);
     }
 }
