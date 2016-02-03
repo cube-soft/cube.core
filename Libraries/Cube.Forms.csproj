@@ -60,9 +60,6 @@
     <Compile Include="FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Models\Position.cs" />
     <Compile Include="FlatButton.cs">
       <SubType>Component</SubType>
