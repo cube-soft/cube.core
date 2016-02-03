@@ -17,9 +17,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -49,61 +47,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Maximize
-        /// 
-        /// <summary>
-        /// フォームを最大化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Maximize()
-        {
-            var form = FindForm();
-            if (form == null) return;
-
-            form.WindowState = form.WindowState == FormWindowState.Normal ?
-                               FormWindowState.Maximized :
-                               FormWindowState.Normal;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Minimize
-        /// 
-        /// <summary>
-        /// フォームを最小化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Minimize()
-        {
-            var form = FindForm();
-            if (form == null || form.WindowState == FormWindowState.Minimized) return;
-            form.WindowState = FormWindowState.Minimized;
-        }
-
-        #endregion
-
         #region Override methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDoubleClick
-        /// 
-        /// <summary>
-        /// ダブルクリック時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDoubleClick(EventArgs e)
-        {
-            Maximize();
-            base.OnDoubleClick(e);
-        }
 
         /* ----------------------------------------------------------------- */
         ///

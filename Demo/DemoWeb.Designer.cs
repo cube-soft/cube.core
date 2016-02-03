@@ -1,6 +1,6 @@
 ﻿namespace Cube.Forms.Demo
 {
-    partial class DemoWeb
+    partial class TitleBar
     {
         /// <summary>
         /// 必要なデザイナー変数です。
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DemoWeb));
-            this.SizableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TitleBar));
+            this.SizableLayoutPanel = new Cube.Forms.TableLayoutPanel();
             this.ToolPanel = new System.Windows.Forms.TableLayoutPanel();
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.UpdateButton = new Cube.Forms.FlatButton();
@@ -234,7 +234,7 @@
             this.Splitter2.TabIndex = 11;
             this.Splitter2.TabStop = false;
             // 
-            // DemoWeb
+            // TitleBar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -243,7 +243,7 @@
             this.Controls.Add(this.SizableLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Name = "DemoWeb";
+            this.Name = "TitleBar";
             this.Padding = new System.Windows.Forms.Padding(2);
             this.ShowInTaskbar = false;
             this.Sizable = true;
@@ -261,7 +261,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.TableLayoutPanel SizableLayoutPanel;
+        private TableLayoutPanel SizableLayoutPanel;
         private TitleControl HeaderPanel;
         private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;

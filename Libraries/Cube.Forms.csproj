@@ -57,6 +57,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Detail\FontFactory.cs" />
+    <Compile Include="FlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\Position.cs" />
     <Compile Include="FlatButton.cs">
       <SubType>Component</SubType>
@@ -80,6 +86,9 @@
     <Compile Include="Models\WindowTheme.cs" />
     <Compile Include="NativeApis\User32.cs" />
     <Compile Include="NativeApis\UxTheme.cs" />
+    <Compile Include="Panel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Presenters\NotifyPresenter.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
     <Compile Include="Extensions\ControlEx.cs" />
@@ -106,6 +115,12 @@
     </Compile>
     <Compile Include="Detail\RadioButtonPainter.cs" />
     <Compile Include="Models\Surface.cs" />
+    <Compile Include="SplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TableLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TitleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -31,7 +31,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class DemoWeb : WidgetForm
+    public partial class TitleBar : WidgetForm
     {
         #region Constructors
 
@@ -44,7 +44,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DemoWeb()
+        public TitleBar()
         {
             InitializeComponent();
 

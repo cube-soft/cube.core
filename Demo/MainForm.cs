@@ -78,7 +78,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void WebBrowserButton_Click(object sender, EventArgs e)
         {
-            var dialog = new DemoWeb();
+            var dialog = new TitleBar();
             dialog.ShowDialog();
         }
 

@@ -164,40 +164,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnMouseDown
-        /// 
-        /// <summary>
-        /// マウスの押下時に実行されます。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            try
-            {
-                if (e.Button != MouseButtons.Left) return;
-                if (AllowDragMove) DoDragMove();
-            }
-            finally { base.OnMouseDown(e); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnShown
-        /// 
-        /// <summary>
-        /// フォームの表示直後に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnShown(EventArgs e)
-        {
-            AddMouseDown(this);
-            base.OnShown(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// OnNcHitTest
         /// 
         /// <summary>
@@ -243,85 +209,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Moving methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DoDragMove
-        /// 
-        /// <summary>
-        /// フォームのドラッグ移動を実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void DoDragMove()
-        {
-            User32.ReleaseCapture();
-            User32.SendMessage(Handle, 0xa1 /* WM_NCLBUTTONDOWN */,
-                (IntPtr)Position.Caption, IntPtr.Zero);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// AddMouseDown
-        /// 
-        /// <summary>
-        /// コントロールに対して、ドラッグ中のマウス移動に
-        /// フォームを追随させるためのイベントハンドラを設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void AddMouseDown(Control control)
-        {
-            foreach (Control child in control.Controls) AddMouseDown(child);
-            if (MouseDownAvailable(control))
-            {
-                control.MouseDown += (s, e) => OnMouseDown(e);
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseDownAvailable
-        /// 
-        /// <summary>
-        /// MouseDown イベントに対して、ドラッグ中のマウス移動にフォームを
-        /// 追随させるためのハンドラを追加して良いかどうかを判別します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool MouseDownAvailable(Control control)
-        {
-            var reserved = control.HasEventHandler("MouseEnter") ||
-                           control.HasEventHandler("MouseHover") ||
-                           control.HasEventHandler("MouseLeave") ||
-                           control.HasEventHandler("MouseDown") ||
-                           control.HasEventHandler("MouseUp") ||
-                           control.HasEventHandler("MouseClick") ||
-                           control.HasEventHandler("MouseDoubleclick");
-            return IsContainerComponent(control) && !reserved;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsContainerComponent
-        /// 
-        /// <summary>
-        /// MouseDown イベントを奪っても良いコンポーネントかどうかを
-        /// 判別します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool IsContainerComponent(Control control)
-        {
-            if (control is SplitContainer ||
-                control is Panel ||
-                control is GroupBox ||
-                control is TabControl ||
-                control is Label ||
-                control is PictureBox) return true;
-            return false;
-        }
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///

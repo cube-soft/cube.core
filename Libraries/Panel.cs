@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UserControl.cs
+/// Panel.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -25,35 +25,28 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UserControl
+    /// Panel
     /// 
     /// <summary>
-    /// System.Windows.Forms.UserControl を拡張したクラスです。
+    /// System.Windows.Forms.Panel を拡張したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UserControl : System.Windows.Forms.UserControl
+    public class Panel : System.Windows.Forms.Panel
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// UserControl
+        /// SplitContainer
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UserControl()
-            : base()
+        public Panel() : base()
         {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            DoubleBuffered = true;
             Logger = LogManager.GetLogger(GetType());
         }
-
-        #endregion
 
         #region Properties
 
@@ -98,7 +91,12 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
+            e.Cancel = true;
             if (NcHitTest != null) NcHitTest(this, e);
+            if (!e.Cancel) return;
+
+            e.Result = Position.Transparent;
+            e.Cancel = false;
         }
 
         #endregion
