@@ -108,6 +108,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Title
+        /// 
+        /// <summary>
+        /// タイトルバーを表すコントロールを取得または設定します。。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TitleControl Title { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// CreateParams
         /// 
         /// <summary>
@@ -207,10 +218,11 @@ namespace Cube.Forms
             var w = ClientSize.Width;
             var h = ClientSize.Height;
 
-            var left   = (x >= 0 && x <= SizeGrip);
-            var top    = (y >= 0 && y <= SizeGrip);
-            var right  = (x <= w && x >= w - SizeGrip);
-            var bottom = (y <= h && y >= h - SizeGrip);
+            var left    = (x >= 0 && x <= SizeGrip);
+            var top     = (y >= 0 && y <= SizeGrip);
+            var right   = (x <= w && x >= w - SizeGrip);
+            var bottom  = (y <= h && y >= h - SizeGrip);
+            var caption = IsCaption(e.Query);
 
             e.Result = top && left     ? Position.TopLeft     :
                        top && right    ? Position.TopRight    :
@@ -220,9 +232,11 @@ namespace Cube.Forms
                        bottom          ? Position.Bottom      :
                        left            ? Position.Left        :
                        right           ? Position.Right       :
+                       caption         ? Position.Caption     :
                                          Position.NoWhere     ;
 
-            e.Cancel = (!Sizable || e.Result == Position.NoWhere);
+            e.Cancel = e.Result == Position.Caption ? false :
+                       e.Result == Position.NoWhere ? true  : !Sizable;
 
             base.OnNcHitTest(e);
         }
@@ -307,6 +321,23 @@ namespace Cube.Forms
                 control is Label ||
                 control is PictureBox) return true;
             return false;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsCaption
+        /// 
+        /// <summary>
+        /// Position.Caption を表す領域かどうかを判別します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool IsCaption(Point origin)
+        {
+            if (Title == null) return false;
+            var p = Title.PointToClient(origin);
+            return p.X >= 0 && p.X <= Title.ClientSize.Width &&
+                   p.Y >= 0 && p.Y <= Title.ClientSize.Height;
         }
 
         #endregion

@@ -106,6 +106,9 @@
     </Compile>
     <Compile Include="Detail\RadioButtonPainter.cs" />
     <Compile Include="Models\Surface.cs" />
+    <Compile Include="TitleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>

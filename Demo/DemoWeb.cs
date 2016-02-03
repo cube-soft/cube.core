@@ -53,6 +53,8 @@ namespace Cube.Forms.Demo
 
             var url = WebBrowser.Url;
             if (url != null) UrlTextBox.Text = url.ToString();
+
+            Title = HeaderPanel;
         }
 
         #endregion

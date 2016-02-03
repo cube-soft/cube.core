@@ -34,7 +34,7 @@
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.UpdateButton = new Cube.Forms.FlatButton();
             this.WebBrowser = new Cube.Forms.WebBrowser();
-            this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.HeaderPanel = new Cube.Forms.TitleControl();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
@@ -151,6 +151,7 @@
             this.HeaderPanel.Controls.Add(this.TitlePictureBox);
             this.HeaderPanel.Controls.Add(this.LogoPictureBox);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HeaderPanel.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
             this.HeaderPanel.Margin = new System.Windows.Forms.Padding(0);
             this.HeaderPanel.Name = "HeaderPanel";
@@ -237,7 +238,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Green;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.ClientSize = new System.Drawing.Size(600, 400);
             this.Controls.Add(this.SizableLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -261,7 +262,7 @@
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel SizableLayoutPanel;
-        private System.Windows.Forms.Panel HeaderPanel;
+        private TitleControl HeaderPanel;
         private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;
         private System.Windows.Forms.PictureBox LogoPictureBox;
