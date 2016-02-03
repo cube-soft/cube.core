@@ -546,7 +546,7 @@ namespace Cube.Forms
             const uint SWP_NOACTIVATE     = 0x0010;
             const uint SWP_NOSENDCHANGING = 0x0400;
 
-            SetWindowPos(
+            User32.SetWindowPos(
                 Handle,
                 (IntPtr)(-1), /* HWND_TOPMOST */
                 0,
@@ -633,14 +633,6 @@ namespace Cube.Forms
         {
             OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
-
-        #endregion
-
-        #region Win32 APIs
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
-            int X, int Y, int cx, int cy, uint uFlags);
 
         #endregion
 
