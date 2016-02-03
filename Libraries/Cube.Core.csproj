@@ -53,8 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="EventArgs\PasswordEventArgs.cs" />
     <Compile Include="EventArgs\ProgressEventArgs.cs" />
+    <Compile Include="EventArgs\QueryEventArgs.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />

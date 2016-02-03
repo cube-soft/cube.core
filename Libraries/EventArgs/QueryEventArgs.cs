@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// PasswordEventArgs.cs
+/// QueryEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -23,30 +23,40 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PasswordEventArgs
-    ///
+    /// QueryEventArgs
+    /// 
     /// <summary>
-    /// パスワード入力に感れするイベントの内容を保持するクラスです。
+    /// クエリーデータを受け渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PasswordEventArgs : CancelEventArgs
+    public class QueryEventArgs<TQuery, TResult> : CancelEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PasswordEventArgs
+        /// QueryEventArgs
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// オブジェクトを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public PasswordEventArgs(string path, bool cancel = false)
-            : base(cancel)
+        public QueryEventArgs(TQuery query) : this(query, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        /// 
+        /// <summary>
+        /// オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(TQuery query, bool cancel) : base(cancel)
         {
-            Path = path;
+            Query = query;
         }
 
         #endregion
@@ -55,25 +65,25 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Path
+        /// Query
         /// 
         /// <summary>
-        /// 対象となるファイルのパスを取得します。
+        /// イベント発生元から受け取ったクエリーデータを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Path { get; }
+        public TQuery Query { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Password
+        /// Result
         /// 
         /// <summary>
-        /// 入力パスワードを取得または設定します。
+        /// クエリーデータに対する結果を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Password { get; set; } = string.Empty;
+        public TResult Result { get; set; }
 
         #endregion
     }
