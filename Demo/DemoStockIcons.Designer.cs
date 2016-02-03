@@ -30,7 +30,7 @@
         {
             this.SizableLayoutPanel = new Cube.Forms.TableLayoutPanel();
             this.IconListView = new Cube.Forms.ListView();
-            this.TitleBar = new Cube.Forms.TitleControl();
+            this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
@@ -175,8 +175,8 @@
         #endregion
 
         private TableLayoutPanel SizableLayoutPanel;
-        private Cube.Forms.ListView IconListView;
-        private TitleControl TitleBar;
+        private ListView IconListView;
+        private UserControl TitleBar;
         private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;
         private System.Windows.Forms.PictureBox LogoPictureBox;

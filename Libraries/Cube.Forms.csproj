@@ -121,9 +121,6 @@
     <Compile Include="TableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TitleControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>

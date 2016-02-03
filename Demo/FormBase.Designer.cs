@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBase));
-            this.TitleBar = new Cube.Forms.TitleControl();
+            this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
@@ -137,7 +137,7 @@
 
         #endregion
 
-        private TitleControl TitleBar;
+        private UserControl TitleBar;
         private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;
         private System.Windows.Forms.PictureBox LogoPictureBox;

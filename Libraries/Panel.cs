@@ -91,12 +91,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
-            e.Cancel = true;
             if (NcHitTest != null) NcHitTest(this, e);
-            if (!e.Cancel) return;
-
-            e.Result = Position.Transparent;
-            e.Cancel = false;
         }
 
         #endregion
@@ -119,33 +114,15 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0084: // WM_NCHITTEST
-                    var e = new QueryEventArgs<Point, Position>(CreatePoint(m.LParam));
+                    var x = (int)m.LParam & 0xffff;
+                    var y = (int)m.LParam >> 16 & 0xffff;
+                    var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);
                     OnNcHitTest(e);
-                    if (!e.Cancel) m.Result = (IntPtr)e.Result;
+                    m.Result = e.Cancel ? (IntPtr)Position.Transparent : (IntPtr)e.Result;
                     break;
                 default:
                     break;
             }
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreatePoint
-        /// 
-        /// <summary>
-        /// lParam から Point オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Point CreatePoint(IntPtr lparam)
-        {
-            var x = (int)lparam & 0xffff;
-            var y = (int)lparam >> 16 & 0xffff;
-            return new Point(x, y);
         }
 
         #endregion

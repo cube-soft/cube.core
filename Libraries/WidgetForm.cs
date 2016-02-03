@@ -113,7 +113,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TitleControl TitleControl { get; set; }
+        public UserControl TitleControl { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///

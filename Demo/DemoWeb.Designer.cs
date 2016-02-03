@@ -1,6 +1,6 @@
 ﻿namespace Cube.Forms.Demo
 {
-    partial class TitleBar
+    partial class DemoWeb
     {
         /// <summary>
         /// 必要なデザイナー変数です。
@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TitleBar));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DemoWeb));
             this.SizableLayoutPanel = new Cube.Forms.TableLayoutPanel();
             this.ToolPanel = new System.Windows.Forms.TableLayoutPanel();
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.UpdateButton = new Cube.Forms.FlatButton();
             this.WebBrowser = new Cube.Forms.WebBrowser();
-            this.HeaderPanel = new Cube.Forms.TitleControl();
+            this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new System.Windows.Forms.PictureBox();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
@@ -42,7 +42,7 @@
             this.Splitter2 = new System.Windows.Forms.PictureBox();
             this.SizableLayoutPanel.SuspendLayout();
             this.ToolPanel.SuspendLayout();
-            this.HeaderPanel.SuspendLayout();
+            this.TitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Splitter1)).BeginInit();
@@ -55,7 +55,7 @@
             this.SizableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.SizableLayoutPanel.Controls.Add(this.ToolPanel, 0, 2);
             this.SizableLayoutPanel.Controls.Add(this.WebBrowser, 0, 4);
-            this.SizableLayoutPanel.Controls.Add(this.HeaderPanel, 0, 0);
+            this.SizableLayoutPanel.Controls.Add(this.TitleBar, 0, 0);
             this.SizableLayoutPanel.Controls.Add(this.Splitter1, 0, 1);
             this.SizableLayoutPanel.Controls.Add(this.Splitter2, 0, 3);
             this.SizableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -143,20 +143,20 @@
             this.WebBrowser.TabIndex = 8;
             this.WebBrowser.Url = new System.Uri("about:blank", System.UriKind.Absolute);
             // 
-            // HeaderPanel
+            // TitleBar
             // 
-            this.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.HeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.HeaderPanel.Controls.Add(this.CloseButton);
-            this.HeaderPanel.Controls.Add(this.TitlePictureBox);
-            this.HeaderPanel.Controls.Add(this.LogoPictureBox);
-            this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HeaderPanel.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
-            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Size = new System.Drawing.Size(596, 25);
-            this.HeaderPanel.TabIndex = 1;
+            this.TitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.TitleBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.TitleBar.Controls.Add(this.CloseButton);
+            this.TitleBar.Controls.Add(this.TitlePictureBox);
+            this.TitleBar.Controls.Add(this.LogoPictureBox);
+            this.TitleBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TitleBar.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.TitleBar.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar.Margin = new System.Windows.Forms.Padding(0);
+            this.TitleBar.Name = "TitleBar";
+            this.TitleBar.Size = new System.Drawing.Size(596, 25);
+            this.TitleBar.TabIndex = 1;
             // 
             // CloseButton
             // 
@@ -234,7 +234,7 @@
             this.Splitter2.TabIndex = 11;
             this.Splitter2.TabStop = false;
             // 
-            // TitleBar
+            // DemoWeb
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -243,7 +243,7 @@
             this.Controls.Add(this.SizableLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Name = "TitleBar";
+            this.Name = "DemoWeb";
             this.Padding = new System.Windows.Forms.Padding(2);
             this.ShowInTaskbar = false;
             this.Sizable = true;
@@ -251,7 +251,7 @@
             this.SizableLayoutPanel.ResumeLayout(false);
             this.ToolPanel.ResumeLayout(false);
             this.ToolPanel.PerformLayout();
-            this.HeaderPanel.ResumeLayout(false);
+            this.TitleBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Splitter1)).EndInit();
@@ -262,7 +262,7 @@
 
         #endregion
         private TableLayoutPanel SizableLayoutPanel;
-        private TitleControl HeaderPanel;
+        private UserControl TitleBar;
         private FlatButton CloseButton;
         private System.Windows.Forms.PictureBox TitlePictureBox;
         private System.Windows.Forms.PictureBox LogoPictureBox;

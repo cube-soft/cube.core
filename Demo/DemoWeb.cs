@@ -31,7 +31,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class TitleBar : WidgetForm
+    public partial class DemoWeb : WidgetForm
     {
         #region Constructors
 
@@ -44,7 +44,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TitleBar()
+        public DemoWeb()
         {
             InitializeComponent();
 
@@ -54,7 +54,7 @@ namespace Cube.Forms.Demo
             var url = WebBrowser.Url;
             if (url != null) UrlTextBox.Text = url.ToString();
 
-            TitleControl = HeaderPanel;
+            TitleControl = TitleBar;
         }
 
         #endregion
@@ -121,9 +121,9 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void ShowError(Exception err)
         {
-            System.Windows.Forms.MessageBox.Show(err.ToString(), "Cube.Forms.Demo",
-                System.Windows.Forms.MessageBoxButtons.OK,
-                System.Windows.Forms.MessageBoxIcon.Error
+            MessageBox.Show(err.ToString(), "Cube.Forms.Demo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
             );
         }
 
