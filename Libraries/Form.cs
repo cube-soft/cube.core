@@ -145,7 +145,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public EventHandler<DataEventArgs<object>> Received;
+        public event EventHandler<DataEventArgs<object>> Received;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -156,7 +156,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
+        public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
 
         #endregion
 
