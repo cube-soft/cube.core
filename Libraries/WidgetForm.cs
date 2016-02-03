@@ -107,6 +107,27 @@ namespace Cube.Forms
         [DefaultValue(5)]
         public int SizeGrip { get; set; } = 5;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateParams
+        /// 
+        /// <summary>
+        /// コントロールの作成時に必要な情報をカプセル化します。
+        /// WidgetForm クラスでは、フォームに陰影を付与するための
+        /// パラメータをベースの値に追加しています。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ClassStyle |= 0x00020000;
+                return cp;
+            }
+        }
+
         #region Hiding properties
 
         [Browsable(false)]
@@ -129,28 +150,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override properties and methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateParams
-        /// 
-        /// <summary>
-        /// コントロールの作成時に必要な情報をカプセル化します。
-        /// WidgetForm クラスでは、フォームに陰影を付与するための
-        /// パラメータをベースの値に追加しています。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ClassStyle |= 0x00020000;
-                return cp;
-            }
-        }
+        #region Override methods
 
         /* ----------------------------------------------------------------- */
         ///
