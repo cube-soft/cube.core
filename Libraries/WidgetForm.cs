@@ -20,8 +20,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
-using Cube.Forms.Extensions;
 
 namespace Cube.Forms
 {
@@ -50,10 +48,10 @@ namespace Cube.Forms
         public WidgetForm()
             : base()
         {
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
-            SizeGripStyle = SizeGripStyle.Hide;
+            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
         }
 
         #endregion
@@ -128,7 +126,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override CreateParams CreateParams
+        protected override System.Windows.Forms.CreateParams CreateParams
         {
             get
             {
@@ -142,7 +140,7 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new AutoScaleMode AutoScaleMode
+        public new System.Windows.Forms.AutoScaleMode AutoScaleMode
         {
             get { return base.AutoScaleMode; }
             set { base.AutoScaleMode = value; }
@@ -150,7 +148,7 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new SizeGripStyle SizeGripStyle
+        public new System.Windows.Forms.SizeGripStyle SizeGripStyle
         {
             get { return base.SizeGripStyle; }
             set { base.SizeGripStyle = value; }
@@ -205,6 +203,33 @@ namespace Cube.Forms
                        e.Result == Position.NoWhere ? true  : !Sizable;
 
             base.OnNcHitTest(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WndProc
+        ///
+        /// <summary>
+        /// ウィンドウメッセージを処理します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void WndProc(ref System.Windows.Forms.Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x0112: // WM_SYSCOMMAND
+                    var flag = (m.WParam.ToInt32() & 0xf030); // SC_MAXIMIZE
+                    if (!Sizable && flag == 0xf030)
+                    {
+                        m.Result = IntPtr.Zero;
+                        return;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            base.WndProc(ref m);
         }
 
         #endregion
