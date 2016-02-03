@@ -108,14 +108,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Title
+        /// TitleControl
         /// 
         /// <summary>
         /// タイトルバーを表すコントロールを取得または設定します。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TitleControl Title { get; set; }
+        public TitleControl TitleControl { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -334,10 +334,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private bool IsCaption(Point origin)
         {
-            if (Title == null) return false;
-            var p = Title.PointToClient(origin);
-            return p.X >= 0 && p.X <= Title.ClientSize.Width &&
-                   p.Y >= 0 && p.Y <= Title.ClientSize.Height;
+            if (TitleControl == null) return false;
+            var p = TitleControl.PointToClient(origin);
+            return p.X >= 0 && p.X <= TitleControl.ClientSize.Width &&
+                   p.Y >= 0 && p.Y <= TitleControl.ClientSize.Height;
         }
 
         #endregion
