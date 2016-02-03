@@ -43,6 +43,18 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ReleaseCapture
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646261.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
     }
 }

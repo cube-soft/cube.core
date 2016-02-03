@@ -21,7 +21,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using Cube.Forms.Extensions;
 
 namespace Cube.Forms
@@ -157,7 +156,7 @@ namespace Cube.Forms
         /// OnMouseDown
         /// 
         /// <summary>
-        /// マウスが押下された時に実行されるハンドラです。
+        /// マウスの押下時に実行されます。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -166,91 +165,9 @@ namespace Cube.Forms
             try
             {
                 if (e.Button != MouseButtons.Left) return;
-
-                var kind = GetMousePoint(e.Location, Size);
-                if (kind != MousePoint.Others) BeginDragResize(kind, e.Location);
-                else if (AllowDragMove) DoDragMove();
+                if (AllowDragMove) DoDragMove();
             }
             finally { base.OnMouseDown(e); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnMouseUp
-        /// 
-        /// <summary>
-        /// マウスのボタンが離れた時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            EndDragResize();
-            base.OnMouseUp(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnMouseMove
-        /// 
-        /// <summary>
-        /// マウスが移動した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            try
-            {
-                if (!Sizable) return;
-
-                switch (e.Button)
-                {
-                    case MouseButtons.None:
-                        UpdateCursor(e.Location);
-                        break;
-                    case MouseButtons.Left:
-                        UpdateSize(e.Location);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            finally { base.OnMouseMove(e); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnMouseLeave
-        /// 
-        /// <summary>
-        /// マウスポインタがフォームから離れた時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            try
-            {
-                if (!Sizable) return;
-                Cursor = _userCursor;
-            }
-            finally { base.OnMouseLeave(e); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnLoad
-        /// 
-        /// <summary>
-        /// フォームがロードされた時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnLoad(EventArgs e)
-        {
-            AddMouseDown(this);
-            base.OnLoad(e);
         }
 
         /* ----------------------------------------------------------------- */
@@ -258,14 +175,56 @@ namespace Cube.Forms
         /// OnShown
         /// 
         /// <summary>
-        /// フォームが表示された時に実行されるハンドラです。
+        /// フォームの表示直後に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected override void OnShown(EventArgs e)
         {
-            _userCursor = Cursor;
+            AddMouseDown(this);
             base.OnShown(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnNcHitTest
+        /// 
+        /// <summary>
+        /// マウスのヒットテスト発生時に実行されます。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// サイズ変更用のマウスカーソルを描画するかどうかを決定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnNcHitTest(QueryEventArgs<Point, Position> e)
+        {
+            var origin = PointToClient(e.Query);
+
+            var x = origin.X;
+            var y = origin.Y;
+            var w = ClientSize.Width;
+            var h = ClientSize.Height;
+
+            var left   = (x >= 0 && x <= SizeGrip);
+            var top    = (y >= 0 && y <= SizeGrip);
+            var right  = (x <= w && x >= w - SizeGrip);
+            var bottom = (y <= h && y >= h - SizeGrip);
+
+            e.Result = top && left     ? Position.TopLeft     :
+                       top && right    ? Position.TopRight    :
+                       bottom && left  ? Position.BottomLeft  :
+                       bottom && right ? Position.BottomRight :
+                       top             ? Position.Top         :
+                       bottom          ? Position.Bottom      :
+                       left            ? Position.Left        :
+                       right           ? Position.Right       :
+                                         Position.NoWhere     ;
+
+            e.Cancel = (!Sizable || e.Result == Position.NoWhere);
+
+            base.OnNcHitTest(e);
         }
 
         #endregion
@@ -283,9 +242,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void DoDragMove()
         {
-            Win32Api.ReleaseCapture();
-            Win32Api.SendMessage(Handle, Win32Api.WM_NCLBUTTONDOWN,
-                (IntPtr)Win32Api.HT_CAPTION, IntPtr.Zero);
+            User32.ReleaseCapture();
+            User32.SendMessage(Handle, 0xa1 /* WM_NCLBUTTONDOWN */,
+                (IntPtr)Position.Caption, IntPtr.Zero);
         }
 
         /* ----------------------------------------------------------------- */
@@ -350,187 +309,6 @@ namespace Cube.Forms
             return false;
         }
 
-        #endregion
-
-        #region Resizing methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BeginDragResize
-        /// 
-        /// <summary>
-        /// マウスドラッグによるサイズ変更操作を開始します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void BeginDragResize(MousePoint kind, Point point)
-        {
-            _startKind  = kind;
-            _startPoint = PointToScreen(point);
-            _startSize  = Size;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EndDragResize
-        /// 
-        /// <summary>
-        /// マウスドラッグによるサイズ変更操作を終了します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void EndDragResize()
-        {
-            _startKind  = MousePoint.Others;
-            _startPoint = Point.Empty;
-            _startSize  = Size.Empty;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateSize
-        /// 
-        /// <summary>
-        /// フォームのサイズを変更します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateSize(Point point)
-        {
-            var converted = PointToScreen(point);
-            UpdateWidth(converted);
-            UpdateHeight(converted);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateWidth
-        /// 
-        /// <summary>
-        /// マウス座標を基にフォームの幅を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateWidth(Point current)
-        {
-            if ((_startKind & (MousePoint.Left | MousePoint.Right)) == 0) return;
-
-            var offset = current.X - _startPoint.X;
-            if ((_startKind & MousePoint.Left) != 0)
-            {
-                var value = _startSize.Width - offset;
-                if (value == Width) return;
-
-                Width = value;
-                Left = _startPoint.X + offset;
-            }
-            else
-            {
-                var value = _startSize.Width + offset;
-                if (Width != value) Width = value;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateHeight
-        /// 
-        /// <summary>
-        /// マウス座標を基にフォームの高さを更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateHeight(Point current)
-        {
-            if ((_startKind & (MousePoint.Top | MousePoint.Bottom)) == 0) return;
-
-            var offset = current.Y - _startPoint.Y;
-            if ((_startKind & MousePoint.Top) != 0)
-            {
-                var value = _startSize.Height - offset;
-                if (value == Height) return;
-
-                Height = value;
-                Top = _startPoint.Y + offset;
-            }
-            else
-            {
-                var value = _startSize.Height + offset;
-                if (value != Height) Height = value;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateCursor
-        /// 
-        /// <summary>
-        /// カーソルの外観を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateCursor(Point point)
-        {
-            var kind = GetMousePoint(point, Size);
-            var dest = kind.ToCursor();
-            Cursor = (dest != Cursors.Default) ? dest : _userCursor;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetMousePoint
-        /// 
-        /// <summary>
-        /// マウスポインタが存在する位置を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private MousePoint GetMousePoint(Point origin, Size size)
-        {
-            var x = origin.X;
-            var y = origin.Y;
-            var w = size.Width;
-            var h = size.Height;
-
-            var left   = (x >= 0 && x <= SizeGrip);
-            var top    = (y >= 0 && y <= SizeGrip);
-            var right  = (x <= w && x >= w - SizeGrip);
-            var bottom = (y <= h && y >= h - SizeGrip);
-
-            return top && left     ? MousePoint.TopLeft     :
-                   top && right    ? MousePoint.TopRight    :
-                   bottom && left  ? MousePoint.BottomLeft  :
-                   bottom && right ? MousePoint.BottomRight :
-                   top             ? MousePoint.Top         :
-                   bottom          ? MousePoint.Bottom      :
-                   left            ? MousePoint.Left        :
-                   right           ? MousePoint.Right       :
-                                     MousePoint.Others      ;
-        }
-
-        #endregion
-
-        #region Win32 APIs
-
-        internal class Win32Api
-        {
-            public const int WM_NCLBUTTONDOWN = 0xA1;
-            public const int HT_CAPTION = 0x2;
-
-            [DllImport("user32.dll", CharSet = CharSet.Auto)]
-            public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
-
-            [DllImport("user32.dll", CharSet = CharSet.Auto)]
-            public static extern bool ReleaseCapture();
-        }
-
-        #endregion
-
-        #region Fields
-        private Cursor _userCursor = Cursors.Default;
-        private MousePoint _startKind = MousePoint.Others;
-        private Point _startPoint = Point.Empty;
-        private Size _startSize = Size.Empty;
         #endregion
     }
 }

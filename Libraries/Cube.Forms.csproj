@@ -57,7 +57,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Detail\FontFactory.cs" />
-    <Compile Include="Detail\MousePoint.cs" />
+    <Compile Include="Models\Position.cs" />
     <Compile Include="FlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
