@@ -102,6 +102,65 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Added
+        ///
+        /// <summary>
+        /// 項目が追加された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<DataEventArgs<int>> Added;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Replaced
+        ///
+        /// <summary>
+        /// 項目が置換された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<DataEventArgs<int>> Replaced;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Removed
+        ///
+        /// <summary>
+        /// 項目が削除された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<DataEventArgs<int[]>> Removed;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Cleared
+        ///
+        /// <summary>
+        /// 全ての項目が削除された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler Cleared;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Moved
+        ///
+        /// <summary>
+        /// 項目が移動された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<MoveEventArgs> Moved;
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -121,6 +180,8 @@ namespace Cube.Forms
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
             HackAlignmentBug();
+
+            OnAdded(new DataEventArgs<int>(Items.Count - 1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -140,6 +201,8 @@ namespace Cube.Forms
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
             HackAlignmentBug();
+
+            OnAdded(new DataEventArgs<int>(index));
         }
 
         /* ----------------------------------------------------------------- */
@@ -157,6 +220,8 @@ namespace Cube.Forms
             Items[index] = Converter != null ?
                            Converter.Convert(item) :
                            new System.Windows.Forms.ListViewItem(item.ToString());
+
+            OnReplaced(new DataEventArgs<int>(index));
         }
 
         /* ----------------------------------------------------------------- */
@@ -175,7 +240,8 @@ namespace Cube.Forms
                 if (index < 0 || index >= Items.Count) continue;
                 Items.RemoveAt(index);
             }
-            
+
+            OnRemoved(new DataEventArgs<int[]>(indices.ToArray()));
         }
 
         /* ----------------------------------------------------------------- */
@@ -206,6 +272,7 @@ namespace Cube.Forms
         public void ClearItems()
         {
             Items.Clear();
+            OnCleared(new EventArgs());
         }
 
         /* ----------------------------------------------------------------- */
@@ -238,6 +305,8 @@ namespace Cube.Forms
                 var newindex = Math.Max(Math.Min(index + offset, Items.Count), 0);
                 Items.Insert(newindex, item);
             }
+
+            OnMoved(new MoveEventArgs(indices.ToArray(), offset));
         }
 
         /* ----------------------------------------------------------------- */
@@ -254,6 +323,80 @@ namespace Cube.Forms
             var indices = new List<int>();
             foreach (int index in SelectedIndices) indices.Add(index);
             MoveItems(indices, offset);
+        }
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnAdded
+        ///
+        /// <summary>
+        /// Added イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnAdded(DataEventArgs<int> e)
+        {
+            if (Added != null) Added(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReplaced
+        ///
+        /// <summary>
+        /// Replaced イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReplaced(DataEventArgs<int> e)
+        {
+            if (Replaced != null) Replaced(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnRemoved
+        ///
+        /// <summary>
+        /// Removed イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnRemoved(DataEventArgs<int[]> e)
+        {
+            if (Removed != null) Removed(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnCleared
+        ///
+        /// <summary>
+        /// Cleared イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnCleared(EventArgs e)
+        {
+            if (Cleared != null) Cleared(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMoved
+        ///
+        /// <summary>
+        /// Moved イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnMoved(MoveEventArgs e)
+        {
+            if (Moved != null) Moved(this, e);
         }
 
         #endregion
@@ -343,6 +486,31 @@ namespace Cube.Forms
             var alignment = Alignment;
             Alignment = System.Windows.Forms.ListViewAlignment.Default;
             Alignment = alignment;
+        }
+
+        #endregion
+
+        #region Classes
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveEventArgs
+        ///
+        /// <summary>
+        /// Move イベントのデータを保持するクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public class MoveEventArgs : EventArgs
+        {
+            public MoveEventArgs(int[] indices, int offset)
+            {
+                Indices = indices;
+                Offset  = offset;
+            }
+
+            public int[] Indices { get; }
+            public int Offset { get; }
         }
 
         #endregion
