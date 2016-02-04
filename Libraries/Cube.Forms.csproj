@@ -86,6 +86,9 @@
     <Compile Include="Panel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Presenters\NotifyPresenter.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
     <Compile Include="Extensions\ControlEx.cs" />

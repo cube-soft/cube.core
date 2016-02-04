@@ -87,8 +87,8 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(5)]
-        public int SizeGrip { get; set; } = 5;
+        [DefaultValue(6)]
+        public int SizeGrip { get; set; } = 6;
 
         /* ----------------------------------------------------------------- */
         ///
