@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using Cube.Forms.Extensions;
 
 namespace Cube.Forms
 {
@@ -161,30 +162,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
-            var origin = PointToClient(e.Query);
+            var result = this.HitTest(PointToClient(e.Query), SizeGrip);
+            if (result == Position.Client) result = Position.NoWhere;
+            if (result == Position.NoWhere && IsCaption(e.Query)) result = Position.Caption;
 
-            var x = origin.X;
-            var y = origin.Y;
-            var w = ClientSize.Width;
-            var h = ClientSize.Height;
-
-            var left    = (x >= 0 && x <= SizeGrip);
-            var top     = (y >= 0 && y <= SizeGrip);
-            var right   = (x <= w && x >= w - SizeGrip);
-            var bottom  = (y <= h && y >= h - SizeGrip);
-            var caption = IsCaption(e.Query);
-
-            e.Result = top && left     ? Position.TopLeft     :
-                       top && right    ? Position.TopRight    :
-                       bottom && left  ? Position.BottomLeft  :
-                       bottom && right ? Position.BottomRight :
-                       top             ? Position.Top         :
-                       bottom          ? Position.Bottom      :
-                       left            ? Position.Left        :
-                       right           ? Position.Right       :
-                       caption         ? Position.Caption     :
-                                         Position.NoWhere     ;
-
+            e.Result = result;
             e.Cancel = e.Result == Position.Caption ? false :
                        e.Result == Position.NoWhere ? true  : !Sizable;
 
