@@ -54,7 +54,7 @@ namespace Cube.Forms.Demo
             var url = WebBrowser.Url;
             if (url != null) UrlTextBox.Text = url.ToString();
 
-            TitleControl = TitleBar;
+            Caption = TitleBar;
         }
 
         #endregion

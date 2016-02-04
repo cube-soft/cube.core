@@ -111,7 +111,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void View_Showing(object sender, CancelEventArgs e)
         {
-            Logger.DebugFormat("Title:{0}\tDescription:{1}", View.TitleText, View.Description);
+            Logger.DebugFormat("Title:{0}\tDescription:{1}", View.Title, View.Description);
         }
 
         /* --------------------------------------------------------------------- */
@@ -145,7 +145,7 @@ namespace Cube.Forms
         private void Execute(NotifyItem item)
         {
             View.Level = item.Level;
-            View.TitleText = item.Title;
+            View.Title = item.Title;
             View.Description = item.Description;
             View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
             View.Tag = item.Data;

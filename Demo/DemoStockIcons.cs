@@ -67,7 +67,7 @@ namespace Cube.Forms.Demo
                 IconListView.Add(kind);
             }
 
-            TitleControl = TitleBar;
+            Caption = TitleBar;
         }
 
         #endregion

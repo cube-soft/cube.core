@@ -48,7 +48,7 @@ namespace Cube.Forms.Demo
         {
             InitializeComponent();
             CloseButton.Click += (s, e) => Close();
-            TitleControl = TitleBar;
+            Caption = TitleBar;
         }
     }
 }
