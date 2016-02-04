@@ -19,6 +19,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.Forms
 {
@@ -57,6 +59,34 @@ namespace Cube.Forms
                     UpdateTheme(_theme);
                 }
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Count
+        ///
+        /// <summary>
+        /// 項目数を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int Count
+        {
+            get { return Items.Count; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AnyItemsSelected
+        ///
+        /// <summary>
+        /// 項目を 1 つ以上選択しているかどうかを示す値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool AnyItemsSelected
+        {
+            get { return SelectedIndices != null && SelectedIndices.Count > 0; }
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,6 +140,120 @@ namespace Cube.Forms
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
             HackAlignmentBug();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Replace
+        ///
+        /// <summary>
+        /// 指定されたインデックスの内容を置換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Replace<T>(int index, T item)
+        {
+            if (index < 0 || index >= Items.Count) return;
+            Items[index] = Converter != null ?
+                           Converter.Convert(item) :
+                           new System.Windows.Forms.ListViewItem(item.ToString());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RemoveItems
+        ///
+        /// <summary>
+        /// 項目を削除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void RemoveItems(IEnumerable<int> indices)
+        {
+            foreach (var index in indices.OrderByDescending(x => x))
+            {
+                if (index < 0 || index >= Items.Count) continue;
+                Items.RemoveAt(index);
+            }
+            
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RemoveItems
+        ///
+        /// <summary>
+        /// 選択されている項目を削除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void RemoveItems()
+        {
+            var indices = new List<int>();
+            foreach (int index in SelectedIndices) indices.Add(index);
+            RemoveItems(indices);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ClearItems
+        ///
+        /// <summary>
+        /// 全ての項目を削除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void ClearItems()
+        {
+            Items.Clear();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveItems
+        ///
+        /// <summary>
+        /// 項目を移動します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// offset が正の数の場合は後ろに、負の数の場合は前に移動します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void MoveItems(IEnumerable<int> indices, int offset)
+        {
+            if (offset == 0) return;
+
+            var sorted = offset > 0 ?
+                         indices.OrderByDescending(x => x) :
+                         indices.OrderBy(x => x);
+
+            foreach (var index in sorted)
+            {
+                if (index < 0 || index >= Items.Count) continue;
+                var item = Items[index];
+                Items.RemoveAt(index);
+
+                var newindex = Math.Max(Math.Min(index + offset, Items.Count), 0);
+                Items.Insert(newindex, item);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveItems
+        ///
+        /// <summary>
+        /// 選択されている項目を移動します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public void MoveItems(int offset)
+        {
+            var indices = new List<int>();
+            foreach (int index in SelectedIndices) indices.Add(index);
+            MoveItems(indices, offset);
         }
 
         #endregion
