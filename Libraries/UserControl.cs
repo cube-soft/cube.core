@@ -121,6 +121,7 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0084: // WM_NCHITTEST
+                    if (DesignMode) break;
                     var x = (int)m.LParam & 0xffff;
                     var y = (int)m.LParam >> 16 & 0xffff;
                     var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);
