@@ -21,7 +21,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using log4net;
 
 namespace Cube.Forms
 {
@@ -52,7 +51,6 @@ namespace Cube.Forms
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             DoubleBuffered = true;
             Font = FontFactory.Create(12, Font.Style, GraphicsUnit.Pixel);
-            Logger = LogManager.GetLogger(GetType());
         }
 
         #endregion
@@ -87,17 +85,6 @@ namespace Cube.Forms
                 }
             }
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Logger
-        ///
-        /// <summary>
-        /// ログ出力用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; }
 
         #endregion
 

@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Drawing;
-using log4net;
 
 namespace Cube.Forms
 {
@@ -36,32 +35,14 @@ namespace Cube.Forms
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// SplitContainer
+        /// TableLayoutPanel
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TableLayoutPanel() : base()
-        {
-            Logger = LogManager.GetLogger(GetType());
-        }
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Logger
-        ///
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; }
-
-        #endregion
+        public TableLayoutPanel() : base() { }
 
         #region Events
 
