@@ -66,6 +66,8 @@ namespace Cube.Forms.Demo
                 IconListView.LargeImageList.Images.Add(icon.ToBitmap());
                 IconListView.Add(kind);
             }
+
+            Caption = TitleBar;
         }
 
         #endregion

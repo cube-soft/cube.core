@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Collections.Specialized;
 
 namespace Cube.Forms
@@ -69,7 +70,9 @@ namespace Cube.Forms
         public NotifyPresenter(NotifyForm view, NotifyQueue model)
             : base(view, model)
         {
-            View.Hidden += View_Hidden;
+            View.Showing += View_Showing;
+            View.Hidden  += View_Hidden;
+
             Model.CollectionChanged += Model_CollectionChanged;
         }
 
@@ -95,6 +98,20 @@ namespace Cube.Forms
                 if (Model.Count <= 0 || View.IsBusy) return;
                 Execute(Model.Dequeue());
             });
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// View_Showing
+        /// 
+        /// <summary>
+        /// 画面が表示される直前に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void View_Showing(object sender, CancelEventArgs e)
+        {
+            Logger.DebugFormat("Title:{0}\tDescription:{1}", View.Title, View.Description);
         }
 
         /* --------------------------------------------------------------------- */

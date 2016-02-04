@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Cube.Forms.Extensions
@@ -53,6 +54,40 @@ namespace Cube.Forms.Extensions
             var key = GetEventKey(control, name);
             if (handler == null || key == null) return false;
             return handler[key] != null;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// HitTest
+        /// 
+        /// <summary>
+        /// コントロール中のどの位置にいるのかヒットテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Position HitTest(this Control control, Point point, int grip)
+        {
+            var x = point.X;
+            var y = point.Y;
+            var w = control.ClientSize.Width;
+            var h = control.ClientSize.Height;
+
+            var client = (x > grip && x < w - grip && y > grip && y < h - grip);
+            var left   = (x >= 0 && x <= grip);
+            var top    = (y >= 0 && y <= grip);
+            var right  = (x <= w && x >= w - grip);
+            var bottom = (y <= h && y >= h - grip);
+
+            return client          ? Position.Client      :
+                   top && left     ? Position.TopLeft     :
+                   top && right    ? Position.TopRight    :
+                   bottom && left  ? Position.BottomLeft  :
+                   bottom && right ? Position.BottomRight :
+                   top             ? Position.Top         :
+                   bottom          ? Position.Bottom      :
+                   left            ? Position.Left        :
+                   right           ? Position.Right       :
+                                     Position.NoWhere     ;
         }
 
         #endregion

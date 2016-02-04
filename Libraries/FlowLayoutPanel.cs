@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UserControl.cs
+/// FlowLayoutPanel.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,34 +24,25 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UserControl
+    /// FlowLayoutPanel
     /// 
     /// <summary>
-    /// System.Windows.Forms.UserControl を拡張したクラスです。
+    /// System.Windows.Forms.FlowLayoutPanel を拡張したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UserControl : System.Windows.Forms.UserControl
+    public class FlowLayoutPanel : System.Windows.Forms.FlowLayoutPanel
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// UserControl
+        /// FlowLayoutPanel
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UserControl()
-            : base()
-        {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            DoubleBuffered = true;
-        }
-
-        #endregion
+        public FlowLayoutPanel() : base() { }
 
         #region Events
 

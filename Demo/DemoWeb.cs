@@ -53,6 +53,8 @@ namespace Cube.Forms.Demo
 
             var url = WebBrowser.Url;
             if (url != null) UrlTextBox.Text = url.ToString();
+
+            Caption = TitleBar;
         }
 
         #endregion
@@ -119,9 +121,9 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         private void ShowError(Exception err)
         {
-            System.Windows.Forms.MessageBox.Show(err.ToString(), "Cube.Forms.Demo",
-                System.Windows.Forms.MessageBoxButtons.OK,
-                System.Windows.Forms.MessageBoxIcon.Error
+            MessageBox.Show(err.ToString(), "Cube.Forms.Demo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
             );
         }
 

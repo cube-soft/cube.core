@@ -29,30 +29,30 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBase));
-            this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
-            this.TitlePictureBox = new System.Windows.Forms.PictureBox();
-            this.LogoPictureBox = new System.Windows.Forms.PictureBox();
-            this.HeaderSplitter = new System.Windows.Forms.PictureBox();
-            this.HeaderPanel.SuspendLayout();
+            this.TitlePictureBox = new Cube.Forms.PictureBox();
+            this.LogoPictureBox = new Cube.Forms.PictureBox();
+            this.HeaderSplitter = new Cube.Forms.PictureBox();
+            this.TitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeaderSplitter)).BeginInit();
             this.SuspendLayout();
             // 
-            // HeaderPanel
+            // TitleBar
             // 
-            this.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.HeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.HeaderPanel.Controls.Add(this.CloseButton);
-            this.HeaderPanel.Controls.Add(this.TitlePictureBox);
-            this.HeaderPanel.Controls.Add(this.LogoPictureBox);
-            this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
-            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Size = new System.Drawing.Size(300, 25);
-            this.HeaderPanel.TabIndex = 0;
+            this.TitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.TitleBar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.TitleBar.Controls.Add(this.CloseButton);
+            this.TitleBar.Controls.Add(this.TitlePictureBox);
+            this.TitleBar.Controls.Add(this.LogoPictureBox);
+            this.TitleBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TitleBar.Location = new System.Drawing.Point(0, 0);
+            this.TitleBar.Margin = new System.Windows.Forms.Padding(0);
+            this.TitleBar.Name = "TitleBar";
+            this.TitleBar.Size = new System.Drawing.Size(300, 25);
+            this.TitleBar.TabIndex = 0;
             // 
             // CloseButton
             // 
@@ -123,12 +123,11 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(300, 300);
             this.Controls.Add(this.HeaderSplitter);
-            this.Controls.Add(this.HeaderPanel);
-            this.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.Controls.Add(this.TitleBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormBase";
             this.Text = "Cube.Forms.Demo";
-            this.HeaderPanel.ResumeLayout(false);
+            this.TitleBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeaderSplitter)).EndInit();
@@ -138,10 +137,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel HeaderPanel;
+        private UserControl TitleBar;
         private FlatButton CloseButton;
-        private System.Windows.Forms.PictureBox TitlePictureBox;
-        private System.Windows.Forms.PictureBox LogoPictureBox;
-        private System.Windows.Forms.PictureBox HeaderSplitter;
+        private PictureBox TitlePictureBox;
+        private PictureBox LogoPictureBox;
+        private PictureBox HeaderSplitter;
     }
 }

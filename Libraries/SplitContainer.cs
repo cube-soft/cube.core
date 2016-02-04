@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UserControl.cs
+/// SplitContainer.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,34 +24,25 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UserControl
+    /// SplitContainer
     /// 
     /// <summary>
-    /// System.Windows.Forms.UserControl を拡張したクラスです。
+    /// System.Windows.Forms.SplitContainer を拡張したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UserControl : System.Windows.Forms.UserControl
+    public class SplitContainer : System.Windows.Forms.SplitContainer
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// UserControl
+        /// SplitContainer
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UserControl()
-            : base()
-        {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            DoubleBuffered = true;
-        }
-
-        #endregion
+        public SplitContainer() : base() { }
 
         #region Events
 
@@ -104,7 +95,7 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0084: // WM_NCHITTEST
-                    if (DesignMode) break;
+                    if (DesignMode) return;
                     var x = (int)m.LParam & 0xffff;
                     var y = (int)m.LParam >> 16 & 0xffff;
                     var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);

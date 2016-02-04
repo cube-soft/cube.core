@@ -20,7 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using log4net;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -51,7 +51,6 @@ namespace Cube.Forms
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             DoubleBuffered = true;
             Font = FontFactory.Create(12, Font.Style, GraphicsUnit.Pixel);
-            Logger = LogManager.GetLogger(GetType());
         }
 
         #endregion
@@ -86,17 +85,6 @@ namespace Cube.Forms
                 }
             }
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Logger
-        ///
-        /// <summary>
-        /// ログ出力用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; }
 
         #endregion
 
@@ -144,7 +132,18 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public EventHandler<DataEventArgs<object>> Received;
+        public event EventHandler<DataEventArgs<object>> Received;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NcHitTest
+        ///
+        /// <summary>
+        /// マウスのヒットテスト時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
 
         #endregion
 
@@ -155,7 +154,7 @@ namespace Cube.Forms
         /// OnShowing
         /// 
         /// <summary>
-        /// フォームが表示される直前に発生するイベントです。
+        /// Showing イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -169,7 +168,7 @@ namespace Cube.Forms
         /// OnHiding
         /// 
         /// <summary>
-        /// フォームが非表示になる直前に発生するイベントです。
+        /// Hiding イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -183,7 +182,7 @@ namespace Cube.Forms
         /// OnHidden
         /// 
         /// <summary>
-        /// フォームが非表示なった直後に発生するイベントです。
+        /// Hidden イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -197,13 +196,27 @@ namespace Cube.Forms
         /// OnReceived
         ///
         /// <summary>
-        /// 他のプロセスからデータを受信した時に実行されるハンドラです。
+        /// Received イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnReceived(DataEventArgs<object> e)
         {
             if (Received != null) Received(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnNcHitTest
+        ///
+        /// <summary>
+        /// NcHitTest イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
+        {
+            if (NcHitTest != null) NcHitTest(this, e);
         }
 
         #endregion
@@ -227,6 +240,31 @@ namespace Cube.Forms
             base.SetVisibleCore(ev.Cancel ? prev : value);
             if (prev == value || ev.Cancel) return;
             RaiseVisibleChangedEvent(value, prev, new EventArgs());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WndProc
+        ///
+        /// <summary>
+        /// ウィンドウメッセージを処理します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            switch (m.Msg)
+            {
+                case 0x0084: // WM_NCHITTEST
+                    var e = new QueryEventArgs<Point, Position>(CreatePoint(m.LParam));
+                    OnNcHitTest(e);
+                    if (!e.Cancel) m.Result = (IntPtr)e.Result;
+                    break;
+                default:
+                    break;
+            }
         }
 
         #endregion
@@ -285,13 +323,29 @@ namespace Cube.Forms
         /// 
         /// <remarks>
         /// TODO: システムによる Shown イベントは最初の 1 度しか発生しない
-        ///       模様。Showing イベント等との整合性をどうするか検討する。
+        /// 模様。Showing イベント等との整合性をどうするか検討する。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private void RaiseVisibleChangedEvent(bool current, bool behind, EventArgs e)
         {
             if (!current && behind) OnHidden(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreatePoint
+        /// 
+        /// <summary>
+        /// lParam から Point オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Point CreatePoint(IntPtr lparam)
+        {
+            var x = (int)lparam & 0xffff;
+            var y = (int)lparam >> 16 & 0xffff;
+            return new Point(x, y);
         }
 
         #endregion

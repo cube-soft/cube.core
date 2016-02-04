@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Cube.Forms
@@ -378,7 +377,6 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnShowing(CancelEventArgs e)
         {
-            Logger.DebugFormat("Title:{0}\tDescription:{1}", Title, Description);
             SetLocation();
             SetStyle();
             base.OnShowing(e);
@@ -546,7 +544,7 @@ namespace Cube.Forms
             const uint SWP_NOACTIVATE     = 0x0010;
             const uint SWP_NOSENDCHANGING = 0x0400;
 
-            SetWindowPos(
+            User32.SetWindowPos(
                 Handle,
                 (IntPtr)(-1), /* HWND_TOPMOST */
                 0,
@@ -633,14 +631,6 @@ namespace Cube.Forms
         {
             OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
-
-        #endregion
-
-        #region Win32 APIs
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
-            int X, int Y, int cx, int cy, uint uFlags);
 
         #endregion
 

@@ -144,7 +144,7 @@ namespace Cube.Forms
         {
             base.OnSelectedIndexChanged(e);
             if (Theme == WindowTheme.Normal) return;
-            User32.SendMessage(Handle, 0x127, 0x10001, 0);
+            User32.SendMessage(Handle, 0x127, (IntPtr)0x10001, IntPtr.Zero);
         }
         /* ----------------------------------------------------------------- */
         ///
@@ -159,7 +159,7 @@ namespace Cube.Forms
         {
             base.OnEnter(e);
             if (Theme == WindowTheme.Normal) return;
-            User32.SendMessage(Handle, 0x127, 0x10001, 0);
+            User32.SendMessage(Handle, 0x127, (IntPtr)0x10001, IntPtr.Zero);
         }
 
         #endregion

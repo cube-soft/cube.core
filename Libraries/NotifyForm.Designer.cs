@@ -208,7 +208,6 @@
             // 
             // NotifyForm
             // 
-            this.AllowDragMove = false;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(350, 64);
             this.Controls.Add(this.TitleButton);
