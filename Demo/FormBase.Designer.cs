@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBase));
             this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
-            this.TitlePictureBox = new System.Windows.Forms.PictureBox();
-            this.LogoPictureBox = new System.Windows.Forms.PictureBox();
-            this.HeaderSplitter = new System.Windows.Forms.PictureBox();
+            this.TitlePictureBox = new Cube.Forms.PictureBox();
+            this.LogoPictureBox = new Cube.Forms.PictureBox();
+            this.HeaderSplitter = new Cube.Forms.PictureBox();
             this.TitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
@@ -139,8 +139,8 @@
 
         private UserControl TitleBar;
         private FlatButton CloseButton;
-        private System.Windows.Forms.PictureBox TitlePictureBox;
-        private System.Windows.Forms.PictureBox LogoPictureBox;
-        private System.Windows.Forms.PictureBox HeaderSplitter;
+        private PictureBox TitlePictureBox;
+        private PictureBox LogoPictureBox;
+        private PictureBox HeaderSplitter;
     }
 }

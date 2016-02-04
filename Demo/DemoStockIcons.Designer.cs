@@ -32,9 +32,9 @@
             this.IconListView = new Cube.Forms.ListView();
             this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
-            this.TitlePictureBox = new System.Windows.Forms.PictureBox();
-            this.LogoPictureBox = new System.Windows.Forms.PictureBox();
-            this.Splitter = new System.Windows.Forms.PictureBox();
+            this.TitlePictureBox = new Cube.Forms.PictureBox();
+            this.LogoPictureBox = new Cube.Forms.PictureBox();
+            this.Splitter = new Cube.Forms.PictureBox();
             this.SizableLayoutPanel.SuspendLayout();
             this.TitleBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TitlePictureBox)).BeginInit();
@@ -178,8 +178,8 @@
         private ListView IconListView;
         private UserControl TitleBar;
         private FlatButton CloseButton;
-        private System.Windows.Forms.PictureBox TitlePictureBox;
-        private System.Windows.Forms.PictureBox LogoPictureBox;
-        private System.Windows.Forms.PictureBox Splitter;
+        private PictureBox TitlePictureBox;
+        private PictureBox LogoPictureBox;
+        private PictureBox Splitter;
     }
 }

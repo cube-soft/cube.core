@@ -30,16 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DemoWeb));
             this.SizableLayoutPanel = new Cube.Forms.TableLayoutPanel();
-            this.ToolPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.ToolPanel = new Cube.Forms.TableLayoutPanel();
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.UpdateButton = new Cube.Forms.FlatButton();
             this.WebBrowser = new Cube.Forms.WebBrowser();
             this.TitleBar = new Cube.Forms.UserControl();
             this.CloseButton = new Cube.Forms.FlatButton();
-            this.TitlePictureBox = new System.Windows.Forms.PictureBox();
-            this.LogoPictureBox = new System.Windows.Forms.PictureBox();
-            this.Splitter1 = new System.Windows.Forms.PictureBox();
-            this.Splitter2 = new System.Windows.Forms.PictureBox();
+            this.TitlePictureBox = new Cube.Forms.PictureBox();
+            this.LogoPictureBox = new Cube.Forms.PictureBox();
+            this.Splitter1 = new Cube.Forms.PictureBox();
+            this.Splitter2 = new Cube.Forms.PictureBox();
             this.SizableLayoutPanel.SuspendLayout();
             this.ToolPanel.SuspendLayout();
             this.TitleBar.SuspendLayout();
@@ -261,16 +261,17 @@
         }
 
         #endregion
+
         private TableLayoutPanel SizableLayoutPanel;
         private UserControl TitleBar;
         private FlatButton CloseButton;
-        private System.Windows.Forms.PictureBox TitlePictureBox;
-        private System.Windows.Forms.PictureBox LogoPictureBox;
-        private System.Windows.Forms.TableLayoutPanel ToolPanel;
+        private PictureBox TitlePictureBox;
+        private PictureBox LogoPictureBox;
+        private TableLayoutPanel ToolPanel;
         private System.Windows.Forms.TextBox UrlTextBox;
         private FlatButton UpdateButton;
         private WebBrowser WebBrowser;
-        private System.Windows.Forms.PictureBox Splitter1;
-        private System.Windows.Forms.PictureBox Splitter2;
+        private PictureBox Splitter1;
+        private PictureBox Splitter2;
     }
 }
