@@ -77,7 +77,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Title
+        /// TitleText
         /// 
         /// <summary>
         /// タイトルを取得または設定します。
@@ -85,7 +85,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         [Browsable(true)]
-        public string Title
+        public string TitleText
         {
             get { return TitleButton.Text; }
             set
@@ -615,7 +615,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void RaiseTextClickEvent()
         {
-            OnTextClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
+            OnTextClick(new NotifyEventArgs(Level, TitleText, Description, Image, Tag));
         }
 
         /* --------------------------------------------------------------------- */
@@ -629,7 +629,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void RaiseImageClickEvent()
         {
-            OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
+            OnImageClick(new NotifyEventArgs(Level, TitleText, Description, Image, Tag));
         }
 
         #endregion
