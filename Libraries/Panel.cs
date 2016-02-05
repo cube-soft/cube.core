@@ -95,12 +95,13 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0084: // WM_NCHITTEST
-                    if (DesignMode) return;
                     var x = (int)m.LParam & 0xffff;
                     var y = (int)m.LParam >> 16 & 0xffff;
                     var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);
                     OnNcHitTest(e);
-                    m.Result = e.Cancel ? (IntPtr)Position.Transparent : (IntPtr)e.Result;
+                    var result = e.Cancel ? Position.Transparent : e.Result;
+                    if (DesignMode && result == Position.Transparent) break;
+                    m.Result = (IntPtr)result;
                     break;
                 default:
                     break;
