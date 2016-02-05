@@ -72,7 +72,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public int Count
         {
-            get { return Items.Count; }
+            get
+            {
+                return VirtualMode ? VirtualListSize : Items.Count;
+
+            }
         }
 
         /* ----------------------------------------------------------------- */
