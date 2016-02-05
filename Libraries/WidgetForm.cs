@@ -162,13 +162,15 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
+            var normal = WindowState == System.Windows.Forms.FormWindowState.Normal;
             var result = this.HitTest(PointToClient(e.Query), SizeGrip);
             if (result == Position.Client) result = Position.NoWhere;
             if (result == Position.NoWhere && IsCaption(e.Query)) result = Position.Caption;
 
             e.Result = result;
             e.Cancel = e.Result == Position.Caption ? false :
-                       e.Result == Position.NoWhere ? true  : !Sizable;
+                       e.Result == Position.NoWhere ? true  :
+                       (!Sizable || !normal);
 
             base.OnNcHitTest(e);
         }

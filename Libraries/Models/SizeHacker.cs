@@ -121,7 +121,7 @@ namespace Cube.Forms
             if (control == null) return;
 
             var form = control.FindForm();
-            if (form == null) return;
+            if (form == null || form.WindowState != FormWindowState.Normal) return;
 
             var point = form.PointToClient(control.PointToScreen(e.Location));
             form.Cursor = form.HitTest(point, SizeGrip).ToCursor();
@@ -142,7 +142,7 @@ namespace Cube.Forms
             if (control == null) return;
 
             var form = control.FindForm();
-            if (form == null) return;
+            if (form == null || form.WindowState != FormWindowState.Normal) return;
             
             var point  = form.PointToClient(control.PointToScreen(e.Location));
             var result = form.HitTest(point, SizeGrip);
