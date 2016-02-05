@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Button.cs
+/// ListView.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -169,6 +169,76 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Select
+        ///
+        /// <summary>
+        /// 項目を選択します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Select(int index)
+        {
+            if (index < 0 || index >= Count) return;
+            SelectedIndices.Clear();
+            SelectedIndices.Add(index);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Select
+        ///
+        /// <summary>
+        /// 項目を選択します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Select(IEnumerable<int> indices)
+        {
+            SelectedIndices.Clear();
+            foreach (var index in indices)
+            {
+                if (index < 0 || index >= Count) continue;
+                SelectedIndices.Add(index);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SelectMore
+        ///
+        /// <summary>
+        /// 既に選択されている項目を保持したまま、項目を選択します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void SelectMore(int index)
+        {
+            if (index < 0 || index >= Count) return;
+            if (SelectedIndices.Contains(index)) return;
+            SelectedIndices.Add(index);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SelectMore
+        ///
+        /// <summary>
+        /// 既に選択されている項目を保持したまま、項目を選択します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void SelectMore(IEnumerable<int> indices)
+        {
+            foreach (var index in indices)
+            {
+                if (index < 0 || index >= Count) return;
+                if (SelectedIndices.Contains(index)) return;
+                SelectedIndices.Add(index);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Add
         ///
         /// <summary>
@@ -220,7 +290,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Replace<T>(int index, T item)
         {
-            if (index < 0 || index >= Items.Count) return;
+            if (index < 0 || index >= Count) return;
             Items[index] = Converter != null ?
                            Converter.Convert(item) :
                            new System.Windows.Forms.ListViewItem(item.ToString());
@@ -241,7 +311,7 @@ namespace Cube.Forms
         {
             foreach (var index in indices.OrderByDescending(x => x))
             {
-                if (index < 0 || index >= Items.Count) continue;
+                if (index < 0 || index >= Count) continue;
                 Items.RemoveAt(index);
             }
 
@@ -302,11 +372,11 @@ namespace Cube.Forms
 
             foreach (var index in sorted)
             {
-                if (index < 0 || index >= Items.Count) continue;
+                if (index < 0 || index >= Count) continue;
                 var item = Items[index];
                 Items.RemoveAt(index);
 
-                var newindex = Math.Max(Math.Min(index + offset, Items.Count), 0);
+                var newindex = Math.Max(Math.Min(index + offset, Count), 0);
                 Items.Insert(newindex, item);
             }
 
@@ -455,7 +525,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Other private methods
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
