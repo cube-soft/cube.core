@@ -314,8 +314,8 @@ namespace Cube.Forms
                 Converter.Convert(item) :
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
-            HackAlignmentBug();
 
+            HackAlignmentBug();
             OnAdded(new DataEventArgs<int>(index));
         }
 
@@ -339,8 +339,8 @@ namespace Cube.Forms
                 Converter.Convert(item) :
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
-            HackAlignmentBug();
 
+            HackAlignmentBug();
             OnAdded(new DataEventArgs<int>(index));
         }
 
@@ -360,10 +360,16 @@ namespace Cube.Forms
             OnReplacing(args);
             if (args.Cancel || VirtualMode) return;
 
+            var focused  = Items[index].Focused;
+            var selected = Items[index].Selected;
+
             Items[index] = Converter != null ?
                            Converter.Convert(item) :
                            new System.Windows.Forms.ListViewItem(item.ToString());
 
+            HackAlignmentBug();
+            Items[index].Focused = focused;
+            Items[index].Selected = selected;
             OnReplaced(new DataEventArgs<int>(index));
         }
 
