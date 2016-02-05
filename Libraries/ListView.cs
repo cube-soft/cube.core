@@ -113,11 +113,33 @@ namespace Cube.Forms
         /// Added
         ///
         /// <summary>
+        /// 項目を追加する直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<DataCancelEventArgs<int>> Adding;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Added
+        ///
+        /// <summary>
         /// 項目が追加された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public event EventHandler<DataEventArgs<int>> Added;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Repllacing
+        ///
+        /// <summary>
+        /// 項目が置換される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<DataCancelEventArgs<int>> Replacing;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,6 +154,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Removing
+        ///
+        /// <summary>
+        /// 項目が削除される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<DataCancelEventArgs<int[]>> Removing;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Removed
         ///
         /// <summary>
@@ -143,6 +176,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Clearing
+        ///
+        /// <summary>
+        /// 全ての項目が削除される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<CancelEventArgs> Clearing;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Cleared
         ///
         /// <summary>
@@ -151,6 +195,17 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public event EventHandler Cleared;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Moving
+        ///
+        /// <summary>
+        /// 項目が移動される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<CancelEventArgs> Moving;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -248,6 +303,12 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Add<T>(T item)
         {
+            var index = Count;
+
+            var args = new DataCancelEventArgs<int>(index);
+            OnAdding(args);
+            if (args.Cancel || VirtualMode) return;
+
             Items.Add(
                 Converter != null ?
                 Converter.Convert(item) :
@@ -255,7 +316,7 @@ namespace Cube.Forms
             );
             HackAlignmentBug();
 
-            OnAdded(new DataEventArgs<int>(Items.Count - 1));
+            OnAdded(new DataEventArgs<int>(index));
         }
 
         /* ----------------------------------------------------------------- */
@@ -269,6 +330,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Insert<T>(int index, T item)
         {
+            var args = new DataCancelEventArgs<int>(index);
+            OnAdding(args);
+            if (args.Cancel || VirtualMode) return;
+
             Items.Insert(index,
                 Converter != null ?
                 Converter.Convert(item) :
@@ -291,6 +356,10 @@ namespace Cube.Forms
         public void Replace<T>(int index, T item)
         {
             if (index < 0 || index >= Count) return;
+            var args = new DataCancelEventArgs<int>(index);
+            OnReplacing(args);
+            if (args.Cancel || VirtualMode) return;
+
             Items[index] = Converter != null ?
                            Converter.Convert(item) :
                            new System.Windows.Forms.ListViewItem(item.ToString());
@@ -309,6 +378,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void RemoveItems(IEnumerable<int> indices)
         {
+            var args = new DataCancelEventArgs<int[]>(indices.ToArray());
+            OnRemoving(args);
+            if (args.Cancel || VirtualMode) return;
+
             foreach (var index in indices.OrderByDescending(x => x))
             {
                 if (index < 0 || index >= Count) continue;
@@ -345,6 +418,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void ClearItems()
         {
+            var args = new CancelEventArgs();
+            OnClearing(args);
+            if (args.Cancel || VirtualMode) return;
+
             Items.Clear();
             OnCleared(new EventArgs());
         }
@@ -365,6 +442,10 @@ namespace Cube.Forms
         public void MoveItems(IEnumerable<int> indices, int offset)
         {
             if (offset == 0) return;
+
+            var args = new MoveCancelEventArgs(indices.ToArray(), offset);
+            OnMoving(args);
+            if (args.Cancel || VirtualMode) return;
 
             var sorted = offset > 0 ?
                          indices.OrderByDescending(x => x) :
@@ -405,6 +486,20 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnAdding
+        ///
+        /// <summary>
+        /// Adding イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnAdding(DataCancelEventArgs<int> e)
+        {
+            if (Adding != null) Adding(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnAdded
         ///
         /// <summary>
@@ -415,6 +510,20 @@ namespace Cube.Forms
         protected virtual void OnAdded(DataEventArgs<int> e)
         {
             if (Added != null) Added(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReplacing
+        ///
+        /// <summary>
+        /// Replacing イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReplacing(DataCancelEventArgs<int> e)
+        {
+            if (Replacing != null) Replacing(this, e);
         }
 
         /* ----------------------------------------------------------------- */
@@ -433,6 +542,20 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnRemoving
+        ///
+        /// <summary>
+        /// Removing イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnRemoving(DataCancelEventArgs<int[]> e)
+        {
+            if (Removing != null) Removing(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnRemoved
         ///
         /// <summary>
@@ -447,6 +570,20 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnClearing
+        ///
+        /// <summary>
+        /// Clearing イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnClearing(CancelEventArgs e)
+        {
+            if (Clearing != null) Clearing(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnCleared
         ///
         /// <summary>
@@ -457,6 +594,20 @@ namespace Cube.Forms
         protected virtual void OnCleared(EventArgs e)
         {
             if (Cleared != null) Cleared(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMoving
+        ///
+        /// <summary>
+        /// Moving イベントを発生させます。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnMoving(MoveCancelEventArgs e)
+        {
+            if (Moving != null) Moving(this, e);
         }
 
         /* ----------------------------------------------------------------- */
@@ -577,10 +728,31 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public class MoveEventArgs : EventArgs
         {
-            public MoveEventArgs(int[] indices, int offset)
+            public MoveEventArgs(int[] indices, int offset) : base()
             {
                 Indices = indices;
                 Offset  = offset;
+            }
+
+            public int[] Indices { get; }
+            public int Offset { get; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveCancelEventArgs
+        ///
+        /// <summary>
+        /// Move イベントのデータを保持するクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public class MoveCancelEventArgs : CancelEventArgs
+        {
+            public MoveCancelEventArgs(int[] indices, int offset) : base(false)
+            {
+                Indices = indices;
+                Offset = offset;
             }
 
             public int[] Indices { get; }
