@@ -34,7 +34,7 @@ namespace Cube.Forms.Extensions
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class ControlEx
+    public static class ControlEx
     {
         #region Extension methods
 

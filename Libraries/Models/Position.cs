@@ -17,6 +17,8 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.Windows.Forms;
+
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
@@ -57,5 +59,47 @@ namespace Cube.Forms
         Help             = 0x15, // HTHELP
         Transparent      = -1,   // HTTRANSPARENT
         Error            = -2,   // HTERROR
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PositionEx
+    /// 
+    /// <summary>
+    /// Position の拡張用クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class PositionEx
+    {
+        #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ToCursor
+        /// 
+        /// <summary>
+        /// Position に対応するカーソルを取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public static Cursor ToCursor(this Position position)
+        {
+            switch (position)
+            {
+                case Position.TopLeft:     return Cursors.SizeNWSE;
+                case Position.TopRight:    return Cursors.SizeNESW;
+                case Position.BottomLeft:  return Cursors.SizeNESW;
+                case Position.BottomRight: return Cursors.SizeNWSE;
+                case Position.Top:         return Cursors.SizeNS;
+                case Position.Bottom:      return Cursors.SizeNS;
+                case Position.Left:        return Cursors.SizeWE;
+                case Position.Right:       return Cursors.SizeWE;
+                default: break;
+            }
+            return Cursors.Default;
+        }
+
+        #endregion
     }
 }

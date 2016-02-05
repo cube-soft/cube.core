@@ -32,7 +32,7 @@ namespace Cube.Forms.Extensions
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class GraphicsEx
+    public static class GraphicsEx
     {
         #region Extension methods
 
