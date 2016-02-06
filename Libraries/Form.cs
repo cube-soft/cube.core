@@ -132,7 +132,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataEventArgs<object>> Received;
+        public event EventHandler<ValueEventArgs<object>> Received;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -200,7 +200,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(DataEventArgs<object> e)
+        protected virtual void OnReceived(ValueEventArgs<object> e)
         {
             if (Received != null) Received(this, e);
         }
@@ -280,7 +280,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Bootstrap_Activated(object sender, DataEventArgs<object> e)
+        private void Bootstrap_Activated(object sender, ValueEventArgs<object> e)
         {
             if (InvokeRequired) Invoke(new Action(() => Bootstrap_Activated(sender, e)));
             else

@@ -117,7 +117,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataCancelEventArgs<int>> Adding;
+        public event EventHandler<ValueCancelEventArgs<int>> Adding;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -128,7 +128,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataEventArgs<int>> Added;
+        public event EventHandler<ValueEventArgs<int>> Added;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -139,7 +139,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataCancelEventArgs<int>> Replacing;
+        public event EventHandler<ValueCancelEventArgs<int>> Replacing;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -150,7 +150,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataEventArgs<int>> Replaced;
+        public event EventHandler<ValueEventArgs<int>> Replaced;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,7 +161,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataCancelEventArgs<int[]>> Removing;
+        public event EventHandler<ValueCancelEventArgs<int[]>> Removing;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -172,7 +172,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataEventArgs<int[]>> Removed;
+        public event EventHandler<ValueEventArgs<int[]>> Removed;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -305,7 +305,7 @@ namespace Cube.Forms
         {
             var index = Count;
 
-            var args = new DataCancelEventArgs<int>(index);
+            var args = new ValueCancelEventArgs<int>(index);
             OnAdding(args);
             if (args.Cancel || VirtualMode) return;
 
@@ -316,7 +316,7 @@ namespace Cube.Forms
             );
 
             HackAlignmentBug();
-            OnAdded(new DataEventArgs<int>(index));
+            OnAdded(new ValueEventArgs<int>(index));
         }
 
         /* ----------------------------------------------------------------- */
@@ -330,7 +330,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Insert<T>(int index, T item)
         {
-            var args = new DataCancelEventArgs<int>(index);
+            var args = new ValueCancelEventArgs<int>(index);
             OnAdding(args);
             if (args.Cancel || VirtualMode) return;
 
@@ -341,7 +341,7 @@ namespace Cube.Forms
             );
 
             HackAlignmentBug();
-            OnAdded(new DataEventArgs<int>(index));
+            OnAdded(new ValueEventArgs<int>(index));
         }
 
         /* ----------------------------------------------------------------- */
@@ -356,7 +356,7 @@ namespace Cube.Forms
         public void Replace<T>(int index, T item)
         {
             if (index < 0 || index >= Count) return;
-            var args = new DataCancelEventArgs<int>(index);
+            var args = new ValueCancelEventArgs<int>(index);
             OnReplacing(args);
             if (args.Cancel || VirtualMode) return;
 
@@ -370,7 +370,7 @@ namespace Cube.Forms
             HackAlignmentBug();
             Items[index].Focused = focused;
             Items[index].Selected = selected;
-            OnReplaced(new DataEventArgs<int>(index));
+            OnReplaced(new ValueEventArgs<int>(index));
         }
 
         /* ----------------------------------------------------------------- */
@@ -384,7 +384,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void RemoveItems(IEnumerable<int> indices)
         {
-            var args = new DataCancelEventArgs<int[]>(indices.ToArray());
+            var args = new ValueCancelEventArgs<int[]>(indices.ToArray());
             OnRemoving(args);
             if (args.Cancel || VirtualMode) return;
 
@@ -394,7 +394,7 @@ namespace Cube.Forms
                 Items.RemoveAt(index);
             }
 
-            OnRemoved(new DataEventArgs<int[]>(indices.ToArray()));
+            OnRemoved(new ValueEventArgs<int[]>(indices.ToArray()));
         }
 
         /* ----------------------------------------------------------------- */
@@ -499,7 +499,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        protected virtual void OnAdding(DataCancelEventArgs<int> e)
+        protected virtual void OnAdding(ValueCancelEventArgs<int> e)
         {
             if (Adding != null) Adding(this, e);
         }
@@ -513,7 +513,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        protected virtual void OnAdded(DataEventArgs<int> e)
+        protected virtual void OnAdded(ValueEventArgs<int> e)
         {
             if (Added != null) Added(this, e);
         }
@@ -527,7 +527,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReplacing(DataCancelEventArgs<int> e)
+        protected virtual void OnReplacing(ValueCancelEventArgs<int> e)
         {
             if (Replacing != null) Replacing(this, e);
         }
@@ -541,7 +541,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReplaced(DataEventArgs<int> e)
+        protected virtual void OnReplaced(ValueEventArgs<int> e)
         {
             if (Replaced != null) Replaced(this, e);
         }
@@ -555,7 +555,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        protected virtual void OnRemoving(DataCancelEventArgs<int[]> e)
+        protected virtual void OnRemoving(ValueCancelEventArgs<int[]> e)
         {
             if (Removing != null) Removing(this, e);
         }
@@ -569,7 +569,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        protected virtual void OnRemoved(DataEventArgs<int[]> e)
+        protected virtual void OnRemoved(ValueEventArgs<int[]> e)
         {
             if (Removed != null) Removed(this, e);
         }
