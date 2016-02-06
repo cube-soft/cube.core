@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DataCancelEventArgs.cs
+/// KeyValueEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,35 +17,35 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DataCancelEventArgs
+    /// KeyValueEventArgs
     ///
     /// <summary>
-    /// イベントハンドラに特定の型の値を渡すためのクラスです。
+    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataCancelEventArgs<TValue> : CancelEventArgs
+    public class KeyValueEventArgs<TKey, TValue> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DataCancelEventArgs
+        /// KeyValueEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataCancelEventArgs(TValue value, bool cancel = false)
-            : base(cancel)
+        public KeyValueEventArgs(TKey key, TValue value) : base()
         {
+            Key = key;
             Value = value;
         }
 
@@ -55,10 +55,21 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Key
+        /// 
+        /// <summary>
+        /// キーを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TKey Key { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Value
         /// 
         /// <summary>
-        /// データを取得します。
+        /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

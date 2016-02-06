@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// QueryEventArgs.cs
+/// ValueEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,46 +17,35 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryEventArgs
-    /// 
+    /// ValueEventArgs
+    ///
     /// <summary>
-    /// クエリーデータを受け渡すためのクラスです。
+    /// イベントハンドラに特定の型の値を渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class QueryEventArgs<TQuery, TResult> : CancelEventArgs
+    public class ValueEventArgs<TValue> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// QueryEventArgs
-        /// 
-        /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(TQuery query) : this(query, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
+        /// ValueEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public QueryEventArgs(TQuery query, bool cancel) : base(cancel)
+        public ValueEventArgs(TValue value)
         {
-            Query = query;
+            Value = value;
         }
 
         #endregion
@@ -65,25 +54,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Query
+        /// Value
         /// 
         /// <summary>
-        /// イベント発生元から受け取ったクエリーデータを取得します。
+        /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TQuery Query { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Result
-        /// 
-        /// <summary>
-        /// クエリーデータに対する結果を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TResult Result { get; set; }
+        public TValue Value { get; }
 
         #endregion
     }
