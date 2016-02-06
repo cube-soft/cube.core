@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Cube.Forms.Extensions;
 
@@ -37,9 +38,9 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class SizeHacker
+    public class SizeHacker : IDisposable
     {
-        #region Constructors
+        #region Constructors and destructors
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,7 +55,21 @@ namespace Cube.Forms
         {
             SizeGrip = grip;
             Root = control;
-            Monitor(Root);
+            StartMonitor(Root);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SizeHacker
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~SizeHacker()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -85,6 +100,48 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄する際に必要な終了処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄する際に必要な終了処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            _disposed = true;
+            if (!disposing) return;
+
+            EndMonitor(Root);
+            _cursors.Clear();
+        }
+
+        #endregion
+
         #region Event handlers
 
         /* ----------------------------------------------------------------- */
@@ -98,10 +155,21 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Control_ControlAdded(object sender, ControlEventArgs e)
         {
-            var control = sender as Control;
-            if (control == null) return;
+            StartMonitor(e.Control);
+        }
 
-            Monitor(control);
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Control_ControlRemoved
+        /// 
+        /// <summary>
+        /// コントロールが削除された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Control_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            EndMonitor(e.Control);
         }
 
         /* ----------------------------------------------------------------- */
@@ -123,8 +191,10 @@ namespace Cube.Forms
             var form = control.FindForm();
             if (form == null || form.WindowState != FormWindowState.Normal) return;
 
-            var point = form.PointToClient(control.PointToScreen(e.Location));
-            form.Cursor = form.HitTest(point, SizeGrip).ToCursor();
+            var point  = form.PointToClient(control.PointToScreen(e.Location));
+            var cursor = form.HitTest(point, SizeGrip).ToCursor();
+            if (cursor != Cursors.Default) Stash(control, cursor);
+            else Pop(control);
         }
 
         /* ----------------------------------------------------------------- */
@@ -161,7 +231,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Monitor
+        /// StartMonitor
         /// 
         /// <summary>
         /// 指定されたコントロールおよび Controls に含まれる全ての
@@ -169,18 +239,80 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Monitor(Control root)
+        private void StartMonitor(Control control)
         {
-            foreach (Control child in root.Controls) Monitor(child);
+            foreach (Control child in control.Controls) StartMonitor(child);
 
-            root.ControlAdded -= Control_ControlAdded;
-            root.ControlAdded += Control_ControlAdded;
-            root.MouseMove    -= Control_MouseMove;
-            root.MouseMove    += Control_MouseMove;
-            root.MouseDown    -= Control_MouseDown;
-            root.MouseDown    += Control_MouseDown;
+            control.ControlAdded   -= Control_ControlAdded;
+            control.ControlAdded   += Control_ControlAdded;
+            control.ControlRemoved -= Control_ControlRemoved;
+            control.ControlRemoved += Control_ControlRemoved;
+            control.MouseMove      -= Control_MouseMove;
+            control.MouseMove      += Control_MouseMove;
+            control.MouseDown      -= Control_MouseDown;
+            control.MouseDown      += Control_MouseDown;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EndMonitor
+        /// 
+        /// <summary>
+        /// 指定されたコントロールおよび Controls に含まれる全ての
+        /// コントロールの監視を終了します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void EndMonitor(Control control)
+        {
+            control.ControlAdded   -= Control_ControlAdded;
+            control.ControlRemoved -= Control_ControlRemoved;
+            control.MouseMove      -= Control_MouseMove;
+            control.MouseDown      -= Control_MouseDown;
+
+            Pop(control);
+
+            foreach (Control child in control.Controls) EndMonitor(child);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Stash
+        /// 
+        /// <summary>
+        /// コントロールが元々保持していたカーソルを退避し、新たなカーソルに
+        /// 設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Stash(Control control, Cursor cursor)
+        {
+            if (!_cursors.ContainsKey(control)) _cursors.Add(control, control.Cursor);
+            control.Cursor = cursor;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Pop
+        /// 
+        /// <summary>
+        /// コントロールが元々保持していたカーソルを復元します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Pop(Control control)
+        {
+            if (!_cursors.ContainsKey(control)) return;
+
+            control.Cursor = _cursors[control];
+            _cursors.Remove(control);
+        }
+
+        #endregion
+
+        #region Fields
+        private bool _disposed = false;
+        private IDictionary<Control, Cursor> _cursors = new Dictionary<Control, Cursor>();
         #endregion
     }
 }
