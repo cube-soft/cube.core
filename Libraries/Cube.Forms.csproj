@@ -116,6 +116,9 @@
     </Compile>
     <Compile Include="Detail\RadioButtonPainter.cs" />
     <Compile Include="Models\Surface.cs" />
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SizeGripControl.cs">
       <SubType>Component</SubType>
     </Compile>
