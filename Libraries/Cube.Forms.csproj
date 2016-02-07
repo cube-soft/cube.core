@@ -119,9 +119,6 @@
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsWidgetForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="SizeGripControl.cs">
       <SubType>Component</SubType>
     </Compile>
