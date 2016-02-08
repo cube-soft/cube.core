@@ -34,9 +34,9 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PresenterBase<ViewType, ModelType>
+    public class PresenterBase<ViewType, ModelType> : IDisposable
     {
-        #region Constructors
+        #region Constructors and destructors
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,6 +54,20 @@ namespace Cube.Forms
 
             View  = view;
             Model = model;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~PresenterBase
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~PresenterBase()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -108,6 +122,21 @@ namespace Cube.Forms
 
         #region Methods
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄する際に必要な終了処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         /* --------------------------------------------------------------------- */
         ///
         /// Async
@@ -133,7 +162,8 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Sync(Action action)
         {
-            SynchronizationContext.Post(_ => action(), null);
+            try { SynchronizationContext.Post(_ => action(), null); }
+            catch (Exception err) { Logger.Error(err); }
         }
 
         /* --------------------------------------------------------------------- */
@@ -148,9 +178,33 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
         {
-            SynchronizationContext.Send(_ => action(), null);
+            try { SynchronizationContext.Send(_ => action(), null); }
+            catch (Exception err) { Logger.Error(err); }
         }
 
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄する際に必要な終了処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            _disposed = true;
+        }
+
+        #endregion
+
+        #region Fields
+        private bool _disposed = false;
         #endregion
     }
 }
