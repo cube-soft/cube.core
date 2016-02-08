@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Cube
 {
@@ -30,6 +31,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [DataContract]
     public class ObservableSettingsValue : INotifyPropertyChanged
     {
         #region Constructor
