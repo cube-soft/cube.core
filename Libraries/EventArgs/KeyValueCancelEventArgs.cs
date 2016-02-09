@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DataCancelEventArgs.cs
+/// KeyValueCancelEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,35 +17,48 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using System.ComponentModel;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DataCancelEventArgs
+    /// KeyValueCancelEventArgs
     ///
     /// <summary>
-    /// イベントハンドラに特定の型の値を渡すためのクラスです。
+    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataCancelEventArgs<TValue> : CancelEventArgs
+    public class KeyValueCancelEventArgs<TKey, TValue> : CancelEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DataCancelEventArgs
+        /// KeyValueCancelEventArgs
+        /// 
+        /// <summary>
+        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public KeyValueCancelEventArgs(TKey key, TValue value)
+            : this(key, value, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataCancelEventArgs(TValue value, bool cancel = false)
-            : base(cancel)
+        public KeyValueCancelEventArgs(TKey key, TValue value, bool cancel) : base(cancel)
         {
+            Key = key;
             Value = value;
         }
 
@@ -55,10 +68,21 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Key
+        /// 
+        /// <summary>
+        /// キーを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TKey Key { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Value
         /// 
         /// <summary>
-        /// データを取得します。
+        /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

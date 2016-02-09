@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// PasswordEventArgs.cs
+/// KeyValueEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,36 +17,36 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PasswordEventArgs
+    /// KeyValueEventArgs
     ///
     /// <summary>
-    /// パスワード入力に感れするイベントの内容を保持するクラスです。
+    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PasswordEventArgs : CancelEventArgs
+    public class KeyValueEventArgs<TKey, TValue> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PasswordEventArgs
+        /// KeyValueEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public PasswordEventArgs(string path, bool cancel = false)
-            : base(cancel)
+        public KeyValueEventArgs(TKey key, TValue value) : base()
         {
-            Path = path;
+            Key = key;
+            Value = value;
         }
 
         #endregion
@@ -55,25 +55,25 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Path
+        /// Key
         /// 
         /// <summary>
-        /// 対象となるファイルのパスを取得します。
+        /// キーを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Path { get; }
+        public TKey Key { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Password
+        /// Value
         /// 
         /// <summary>
-        /// 入力パスワードを取得または設定します。
+        /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Password { get; set; } = string.Empty;
+        public TValue Value { get; }
 
         #endregion
     }

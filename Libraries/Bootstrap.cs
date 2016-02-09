@@ -130,7 +130,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<DataEventArgs<object>> Activated;
+        public event EventHandler<ValueEventArgs<object>> Activated;
 
         #endregion
 
@@ -249,7 +249,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnActivated(DataEventArgs<object> e)
+        protected virtual void OnActivated(ValueEventArgs<object> e)
         {
             if (Activated != null) Activated(this, e);
         }
@@ -260,11 +260,11 @@ namespace Cube
 
         public class IpcProxy : MarshalByRefObject
         {
-            public event EventHandler<DataEventArgs<object>> Received;
+            public event EventHandler<ValueEventArgs<object>> Received;
 
             public void Send(object args)
             {
-                if (Received != null) Received(this, new DataEventArgs<object>(args));
+                if (Received != null) Received(this, new ValueEventArgs<object>(args));
             }
         }
 

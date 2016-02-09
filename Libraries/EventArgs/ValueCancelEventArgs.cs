@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ObservableSettingsValue.cs
+/// ValueCancelEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,72 +18,61 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
-using System.Runtime.Serialization;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableSettingsValue
-    /// 
+    /// ValueCancelEventArgs
+    ///
     /// <summary>
-    /// 各種 SettingsValue の基底クラスとなります。
+    /// イベントハンドラに特定の型の値を渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    public class ObservableSettingsValue : INotifyPropertyChanged
+    public class ValueCancelEventArgs<TValue> : CancelEventArgs
     {
-        #region Constructor
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ObservableSettingsValue
+        /// ValueCancelEventArgs
+        /// 
+        /// <summary>
+        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ValueCancelEventArgs(TValue value) : this(value, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ValueCancelEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
-        /// 使用して下さい。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableSettingsValue() { }
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        public ValueCancelEventArgs(TValue value, bool cancel) : base(cancel)
         {
-            if (PropertyChanged != null) PropertyChanged(this, e);
+            Value = value;
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        /// 
+        /// <summary>
+        /// 値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue Value { get; }
 
         #endregion
     }

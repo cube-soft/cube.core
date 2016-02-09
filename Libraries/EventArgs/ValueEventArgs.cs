@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DataEventArgs.cs
+/// ValueEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -23,27 +23,27 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.DataEventArgs
+    /// ValueEventArgs
     ///
     /// <summary>
-    /// イベントハンドラに特定の型のデータを渡すためのクラスです。
+    /// イベントハンドラに特定の型の値を渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DataEventArgs<TValue> : EventArgs
+    public class ValueEventArgs<TValue> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DataEventArgs
+        /// ValueEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DataEventArgs(TValue value)
+        public ValueEventArgs(TValue value)
         {
             Value = value;
         }
@@ -57,7 +57,7 @@ namespace Cube
         /// Value
         /// 
         /// <summary>
-        /// データを取得します。
+        /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

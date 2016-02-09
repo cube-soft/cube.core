@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ObservableSettingsValue.cs
+/// QueryEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,72 +18,72 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
-using System.Runtime.Serialization;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableSettingsValue
+    /// QueryEventArgs
     /// 
     /// <summary>
-    /// 各種 SettingsValue の基底クラスとなります。
+    /// クエリーデータを受け渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    public class ObservableSettingsValue : INotifyPropertyChanged
+    public class QueryEventArgs<TQuery, TResult> : CancelEventArgs
     {
-        #region Constructor
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ObservableSettingsValue
+        /// QueryEventArgs
+        /// 
+        /// <summary>
+        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(TQuery query) : this(query, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
-        /// 使用して下さい。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableSettingsValue() { }
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        public QueryEventArgs(TQuery query, bool cancel) : base(cancel)
         {
-            if (PropertyChanged != null) PropertyChanged(this, e);
+            Query = query;
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        /// 
+        /// <summary>
+        /// イベント発生元から受け取ったクエリーデータを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TQuery Query { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Result
+        /// 
+        /// <summary>
+        /// クエリーデータに対する結果を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TResult Result { get; set; }
 
         #endregion
     }

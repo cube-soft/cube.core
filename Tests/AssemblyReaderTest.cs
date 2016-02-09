@@ -74,7 +74,7 @@ namespace Cube.Tests
             );
         }
 
-        [TestCase("CubeSoft, Inc.")]
+        [TestCase("CubeSoft")]
         public void Company_ExecutingAssembly(string expected)
         {
             Assert.That(

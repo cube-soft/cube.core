@@ -65,8 +65,10 @@
     <Compile Include="Missing\Progress.cs" />
     <Compile Include="Missing\Task35.cs" />
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="EventArgs\PasswordEventArgs.cs" />
+    <Compile Include="EventArgs\KeyValueCancelEventArgs.cs" />
+    <Compile Include="EventArgs\KeyValueEventArgs.cs" />
     <Compile Include="EventArgs\ProgressEventArgs.cs" />
+    <Compile Include="EventArgs\QueryEventArgs.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
@@ -87,8 +89,8 @@
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EventArgs\DataCancelEventArgs.cs" />
-    <Compile Include="EventArgs\DataEventArgs.cs" />
+    <Compile Include="EventArgs\ValueCancelEventArgs.cs" />
+    <Compile Include="EventArgs\ValueEventArgs.cs" />
     <Compile Include="Extensions\ByteFormat.cs" />
     <Compile Include="Extensions\TaskEx.cs" />
     <Compile Include="Extensions\UnixTime.cs" />
