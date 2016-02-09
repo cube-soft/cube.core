@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// PictureBox.cs
+/// StatusStrip.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,27 +24,27 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PictureBox
+    /// StatusStrip
     /// 
     /// <summary>
-    /// System.Windows.Forms.PictureBox を拡張したクラスです。
+    /// System.Windows.Forms.StatusStrip を拡張したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PictureBox : System.Windows.Forms.PictureBox
+    public class StatusStrip : System.Windows.Forms.StatusStrip
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PictureBox
+        /// StatusStrip
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public PictureBox() : base() { }
+        public StatusStrip() : base() { }
 
         #endregion
 
@@ -77,11 +77,56 @@ namespace Cube.Forms
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
             if (NcHitTest != null) NcHitTest(this, e);
+            if (!e.Cancel || FindForm() == null) return;
+
+            if (IsNormalWindow() && IsSizingGrip(PointToClient(e.Query)))
+            {
+                e.Result = Position.Client;
+                e.Cancel = false;
+            }
         }
 
         #endregion
 
         #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMouseMove
+        /// 
+        /// <summary>
+        /// マウス移動時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnMouseMove(System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.None &&
+                IsNormalWindow() && IsSizingGrip(e.Location))
+            {
+                Cursor = System.Windows.Forms.Cursors.SizeNWSE;
+            }
+            else base.OnMouseMove(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMouseDown
+        ///
+        /// <summary>
+        /// マウスのボタンを押下時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+        {
+            if (IsNormalWindow() && IsSizingGrip(e.Location))
+            {
+                User32.ReleaseCapture();
+                User32.SendMessage(FindForm().Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);
+            }
+            else base.OnMouseDown(e);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,6 +155,43 @@ namespace Cube.Forms
                 default:
                     break;
             }
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsSizingGrip
+        ///
+        /// <summary>
+        /// リサイズ用グリップ部分かどうかを判別します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool IsSizingGrip(Point point)
+        {
+            var grip = Height;
+            return SizingGrip &&
+                   point.X >= Width  - grip && point.X <= Width &&
+                   point.Y >= Height - grip && point.Y <= Height;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsNormalWindow
+        ///
+        /// <summary>
+        /// FindForm で見つかるフォームが通常状態かどうかを判別します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool IsNormalWindow()
+        {
+            var form = FindForm();
+            return form != null &&
+                   form.WindowState == System.Windows.Forms.FormWindowState.Normal;
         }
 
         #endregion

@@ -122,6 +122,9 @@
     <Compile Include="SizeGripControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="StatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
