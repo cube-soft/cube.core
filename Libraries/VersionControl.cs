@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -82,6 +83,7 @@ namespace Cube.Forms
             get { return _reader.Assembly; }
             set
             {
+                if (_reader != null && _reader.Assembly == value) return;
                 _reader = new AssemblyReader(value);
                 UpdateInformation();
             }
@@ -103,6 +105,49 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// VersionDigit
+        ///
+        /// <summary>
+        /// 表示するバージョンの桁数を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(4)]
+        public int VersionDigit
+        {
+            get { return _versionDigit; }
+            set
+            {
+                if (_versionDigit == value) return;
+                _versionDigit = Math.Min(Math.Max(value, 1), 4);
+                UpdateInformation();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// VersionSuffix
+        ///
+        /// <summary>
+        /// バージョンのサフィックスを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        public string VersionSuffix
+        {
+            get { return _versionSuffix; }
+            set
+            {
+                if (_versionSuffix == value) return;
+                _versionSuffix = value;
+                UpdateInformation();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Description
         ///
         /// <summary>
@@ -114,7 +159,12 @@ namespace Cube.Forms
         public string Description
         {
             get { return DescriptionLabel.Text; }
-            set { DescriptionLabel.Text = value; }
+            set
+            {
+                if (DescriptionLabel.Text == value) return;
+                DescriptionLabel.Text = value;
+                UpdateInformation();
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -134,8 +184,9 @@ namespace Cube.Forms
             {
                 if (LogoPanel.Image != value)
                 {
+                    if (LogoPanel.Image == value) return;
                     LogoPanel.Image = value;
-                    LayoutPanel.RowStyles[0].Height = LogoPanel.Image.Height;
+                    UpdateInformation();
                 }
             }
         }
@@ -153,7 +204,34 @@ namespace Cube.Forms
         public string Url
         {
             get { return WebLinkLabel.Text; }
-            set { WebLinkLabel.Text = value; }
+            set
+            {
+                if (WebLinkLabel.Text == value) return;
+                WebLinkLabel.Text = value;
+                UpdateInformation();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Spacing
+        ///
+        /// <summary>
+        /// 項目間のスペースを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(16)]
+        public int Spacing
+        {
+            get { return _spacing; }
+            set
+            {
+                if (_spacing == value) return;
+                _spacing = value;
+                UpdateInformation();
+            }
         }
 
         #endregion
@@ -194,20 +272,62 @@ namespace Cube.Forms
         private void UpdateInformation()
         {
             var ss = new System.Text.StringBuilder();
-            ss.AppendFormat("{0} {1} ({2})", _reader.Product, _reader.Version, Architecture);
+            var version = Create(_reader.Version, VersionDigit);
+            ss.AppendFormat("{0} {1}{2} ({3})", _reader.Product, version, VersionSuffix, Architecture);
             ss.AppendLine();
             ss.AppendFormat("{0}", Environment.OSVersion.ToString());
             ss.AppendLine();
             ss.AppendFormat("Microsoft .NET Framework {0}", Environment.Version.ToString());
 
-            VersionLabel.Text = ss.ToString(); ;
+            VersionLabel.Text = ss.ToString();
+
+            if (LogoPanel.Image != null)
+            {
+                LayoutPanel.ColumnStyles[0].Width = LogoPanel.Image.Width;
+                var diff = Math.Max(LogoPanel.Image.Height - VersionLabel.Height, 0);
+                VersionLabel.Margin = new Padding(0, diff / 2, 0, diff / 2);
+            }
+
+            var space = string.IsNullOrEmpty(Description) ? 0 : Spacing;
+            DescriptionLabel.Margin = new Padding(0, space, 0, 0);
+
             CopyrightLabel.Text = _reader.Copyright;
+            CopyrightLabel.Margin = new Padding(0, Spacing, 0, 0);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToString
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string Create(Version src, int digit)
+        {
+            var ss = new System.Text.StringBuilder();
+
+            ss.Append(src.Major);
+            if (digit <= 1) return ss.ToString();
+
+            ss.AppendFormat(".{0}", src.Minor);
+            if (digit <= 2) return ss.ToString();
+
+            ss.AppendFormat(".{0}", src.Build);
+            if (digit <= 3) return ss.ToString();
+
+            ss.AppendFormat(".{0}", src.Revision);
+            return ss.ToString();
         }
 
         #endregion
 
         #region Fields
         private AssemblyReader _reader;
+        private int _versionDigit = 4;
+        private string _versionSuffix = string.Empty;
+        private int _spacing = 16;
         #endregion
     }
 }
