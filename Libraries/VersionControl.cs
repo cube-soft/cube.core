@@ -20,7 +20,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -48,7 +47,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionControl() : this(null) { }
+        public VersionControl() : this(Assembly.GetExecutingAssembly()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -63,6 +62,7 @@ namespace Cube.Forms
         {
             InitializeComponent();
             Assembly = assembly;
+            CopyrightLinkLabel.LinkClicked += LinkLabel_LinkClicked;
         }
 
         #endregion
@@ -201,16 +201,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public string Url
-        {
-            get { return WebLinkLabel.Text; }
-            set
-            {
-                if (WebLinkLabel.Text == value) return;
-                WebLinkLabel.Text = value;
-                UpdateInformation();
-            }
-        }
+        public string Url { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -249,10 +240,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void LinkLabel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
         {
-            var control = sender as System.Windows.Forms.LinkLabel;
-            if (control == null) return;
-
-            try { Process.Start(control.Text); }
+            try { Process.Start(Url); }
             catch (Exception /* err */) { /* ignore */ }
         }
 
@@ -271,33 +259,33 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateInformation()
         {
+            VersionLabel.Text = string.Format("{0} {1}{2} ({3})",
+                _reader.Product,
+                Create(_reader.Version, VersionDigit),
+                VersionSuffix,
+                Architecture
+            );
+
             var ss = new System.Text.StringBuilder();
-            var version = Create(_reader.Version, VersionDigit);
-            ss.AppendFormat("{0} {1}{2} ({3})", _reader.Product, version, VersionSuffix, Architecture);
-            ss.AppendLine();
             ss.AppendFormat("{0}", Environment.OSVersion.ToString());
             ss.AppendLine();
             ss.AppendFormat("Microsoft .NET Framework {0}", Environment.Version.ToString());
-
-            VersionLabel.Text = ss.ToString();
-
-            if (LogoPanel.Image != null)
-            {
-                LayoutPanel.ColumnStyles[0].Width = LogoPanel.Image.Width;
-                var diff = Math.Max(LogoPanel.Image.Height - VersionLabel.Height, 0);
-                VersionLabel.Margin = new Padding(0, diff / 2, 0, diff / 2);
-            }
+            PlatformLabel.Text = ss.ToString();
+            PlatformLabel.Margin = new System.Windows.Forms.Padding(0, Spacing, 0, 0);
 
             var space = string.IsNullOrEmpty(Description) ? 0 : Spacing;
-            DescriptionLabel.Margin = new Padding(0, space, 0, 0);
+            DescriptionLabel.Margin = new System.Windows.Forms.Padding(0, space, 0, 0);
+            DescriptionLabel.Visible = !string.IsNullOrEmpty(Description);
 
-            CopyrightLabel.Text = _reader.Copyright;
-            CopyrightLabel.Margin = new Padding(0, Spacing, 0, 0);
+            CopyrightLinkLabel.Text = _reader.Copyright;
+            CopyrightLinkLabel.Margin = new System.Windows.Forms.Padding(0, Spacing, 0, 0);
+
+            if (LogoPanel.Image != null) LayoutPanel.ColumnStyles[0].Width = LogoPanel.Image.Width;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToString
+        /// Create
         ///
         /// <summary>
         /// バージョンを表す文字列を生成します。
@@ -325,9 +313,9 @@ namespace Cube.Forms
 
         #region Fields
         private AssemblyReader _reader;
+        private int _spacing = 16;
         private int _versionDigit = 4;
         private string _versionSuffix = string.Empty;
-        private int _spacing = 16;
         #endregion
     }
 }
