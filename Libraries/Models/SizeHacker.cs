@@ -243,6 +243,8 @@ namespace Cube.Forms
         {
             foreach (Control child in control.Controls) StartMonitor(child);
 
+            Push(control);
+
             control.ControlAdded   -= Control_ControlAdded;
             control.ControlAdded   += Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
@@ -287,8 +289,22 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Stash(Control control, Cursor cursor)
         {
-            if (!_cursors.ContainsKey(control)) _cursors.Add(control, control.Cursor);
+            Push(control);
             control.Cursor = cursor;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Push
+        /// 
+        /// <summary>
+        /// コントロールが元々保持していたカーソルを記憶します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Push(Control control)
+        {
+            if (!_cursors.ContainsKey(control)) _cursors.Add(control, control.Cursor);
         }
 
         /* ----------------------------------------------------------------- */
