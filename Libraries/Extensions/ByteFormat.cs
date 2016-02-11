@@ -54,7 +54,7 @@ namespace Cube.Extensions
                 if (index >= units.Length - 1) break;
             }
 
-            return string.Format("{0:G3} {1}", value, units[index]);
+            return $"{value:G3} {units[index]}";
         }
 
         /* ----------------------------------------------------------------- */

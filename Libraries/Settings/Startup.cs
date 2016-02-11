@@ -108,11 +108,9 @@ namespace Cube
             get { return _enabled; }
             set
             {
-                if (_enabled != value)
-                {
-                    _enabled = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs("Enabled"));
-                }
+                if (_enabled == value) return;
+                _enabled = value;
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 
@@ -130,11 +128,9 @@ namespace Cube
             get { return _name; }
             set
             {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs("Name"));
-                }
+                if (_name == value) return;
+                _name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -152,11 +148,9 @@ namespace Cube
             get { return _command; }
             set
             {
-                if (_command != value)
-                {
-                    _command = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs("Command"));
-                }
+                if (_command == value) return;
+                _command = value;
+                OnPropertyChanged(nameof(Command));
             }
         }
 

@@ -111,20 +111,20 @@ namespace Cube.Tests
         }
 
         [Test]
-        public void Configuration_ExecutingAssembly_IsEmpty()
+        public void Configuration_ExecutingAssembly_IsNullOrEmpty()
         {
             Assert.That(
                 Create().Configuration,
-                Is.Empty
+                Is.Null.Or.Empty
             );
         }
 
         [Test]
-        public void Culture_ExecutingAssembly_IsEmpty()
+        public void Culture_ExecutingAssembly_IsNullOrEmpty()
         {
             Assert.That(
                 Create().Culture,
-                Is.Empty
+                Is.Null.Or.Empty
             );
         }
 

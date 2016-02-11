@@ -107,10 +107,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string InstallDirectory
-        {
-            get { return GetInstallDirectory(); }
-        }
+        public string InstallDirectory => GetInstallDirectory();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -121,10 +118,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Version
-        {
-            get { return GetVersion(); }
-        }
+        public string Version => GetVersion();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -157,10 +151,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string SubKeyName
-        {
-            get { return string.Format(@"Software\{0}\{1}", Company, Product); }
-        }
+        public string SubKeyName => $@"Software\{Company}\{Product}";
 
         #endregion
 
@@ -175,7 +166,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() { OnSave(new EventArgs()); }
+        public void Save() { OnSave(); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -187,7 +178,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() { OnLoad(new EventArgs()); }
+        public void Load() { OnLoad(); }
 
         #endregion
 
@@ -203,7 +194,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnLoad(EventArgs e)
+        protected virtual void OnLoad()
         {
             LoadApplicationSettings();
             LoadUserSettings();
@@ -219,7 +210,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnSave(EventArgs e)
+        protected virtual void OnSave()
         {
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.CreateSubKey(SubKeyName))
@@ -241,7 +232,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual string GetInstallDirectory()
         {
-            return (_app != null) ? _app.InstallDirectory : string.Empty;
+            return _app?.InstallDirectory;
         }
 
         /* ----------------------------------------------------------------- */
@@ -255,7 +246,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual string GetVersion()
         {
-            return (_app != null) ? _app.Version : string.Empty;
+            return _app?.Version;
         }
 
         #endregion
