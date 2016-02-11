@@ -183,7 +183,7 @@ namespace Cube
                         if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
-                catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
+                catch (Exception err) { Log(err); }
             }
             return dest;
         }
@@ -249,7 +249,7 @@ namespace Cube
                     else if (code != TypeCode.Object) root.SetValue(name, value);
                     else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, item.PropertyType, subkey);
                 }
-                catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
+                catch (Exception err) { Log(err); }
             }
         }
 
@@ -303,7 +303,7 @@ namespace Cube
             }
             catch (Exception err)
             {
-                LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err);
+                Log(err);
                 return null;
             }
         }
@@ -323,7 +323,7 @@ namespace Cube
             if (objects == null || objects.Length == 0) return info.Name;
 
             var attr = objects[0] as DataMemberAttribute;
-            return (attr == null || string.IsNullOrEmpty(attr.Name)) ? info.Name : attr.Name;
+            return attr?.Name ?? info.Name;
         }
 
         /* ----------------------------------------------------------------- */
@@ -341,6 +341,18 @@ namespace Cube
             if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
             return Convert.ChangeType(value, type);            
         }
+
+        /* ------------------------------------------------------------- */
+        ///
+        /// Log
+        /// 
+        /// <summary>
+        /// エラー内容を記録します。
+        /// </summary>
+        ///
+        /* ------------------------------------------------------------- */
+        private static void Log(Exception err)
+            => LogManager.GetLogger(typeof(Settings)).Error(err);
 
         #endregion
     }

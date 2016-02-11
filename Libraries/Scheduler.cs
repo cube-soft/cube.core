@@ -174,7 +174,7 @@ namespace Cube
             if (InitialDelay > TimeSpan.Zero) _core.Interval = InitialDelay.TotalMilliseconds;
             else
             {
-                OnExecute(new EventArgs());
+                OnExecute(EventArgs.Empty);
                 _core.Interval = Interval.TotalMilliseconds;
             }
 
@@ -196,10 +196,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public void Reset()
-        {
-            OnReset(new EventArgs());
-        }
+        public void Reset() => OnReset(EventArgs.Empty);
 
         /* ----------------------------------------------------------------- */
         ///
