@@ -29,12 +29,12 @@ namespace Cube.Forms
     /// PresenterBase
     ///
     /// <summary>
-    /// Model と View が 1 対 1 対応している Presenter の基底となる
+    /// View と Model が 1 対 1 対応している Presenter の基底となる
     /// クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PresenterBase<ViewType, ModelType> : IDisposable
+    public class PresenterBase<TView, TModel> : IDisposable
     {
         #region Constructors and destructors
 
@@ -47,7 +47,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(ViewType view, ModelType model)
+        protected PresenterBase(TView view, TModel model)
         {
             SynchronizationContext = SynchronizationContext.Current;
             Logger = LogManager.GetLogger(GetType());
@@ -83,7 +83,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ModelType Model { get; private set; }
+        public TModel Model { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,7 +94,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ViewType View { get; private set; }
+        public TView View { get; private set; }
 
         /* --------------------------------------------------------------------- */
         ///
