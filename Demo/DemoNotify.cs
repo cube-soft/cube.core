@@ -90,7 +90,7 @@ namespace Cube.Forms.Demo
             item.DisplayTime = TimeSpan.FromSeconds((double)DisplaySeconds.Value);
             item.InitialDelay = TimeSpan.FromSeconds((double)DelaySeconds.Value);
 
-            Log(string.Format("Enqueue: Level = {0}", item.Level));
+            Log($"Enqueue: Level = {item.Level}");
             _notify.Model.Enqueue(item);
         }
 
@@ -156,7 +156,7 @@ namespace Cube.Forms.Demo
         private void Log(string message)
         {
             var builder = new System.Text.StringBuilder();
-            var newline = string.Format("{0} {1}", DateTime.Now, message);
+            var newline = $"{DateTime.Now} {message}";
             builder.Append(LogTextBox.Text);
             if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine();
             builder.Append(newline);

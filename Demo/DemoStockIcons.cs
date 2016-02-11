@@ -89,7 +89,7 @@ namespace Cube.Forms.Demo
 
             public ListViewItem Convert<T>(T src)
             {
-                var text  = string.Format("{0:D}\n{1}", src, src);
+                var text  = $"{src:D}\n{src}";
                 var index = (ImageList != null) ? ImageList.Images.Count - 1 : 0;
                 return new ListViewItem(text, index);
             }

@@ -63,7 +63,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         protected override void OnAttached(DeviceEventArgs e)
         {
-            Log(string.Format("{0}: ({1}) is attached.", e.Letter, e.Type));
+            Log($"{e.Letter}: ({e.Type}) is attached.");
             base.OnAttached(e);
         }
 
@@ -78,7 +78,7 @@ namespace Cube.Forms.Demo
         /* ----------------------------------------------------------------- */
         protected override void OnDetached(DeviceEventArgs e)
         {
-            Log(string.Format("{0}: ({1}) is detached.", e.Letter, e.Type));
+            Log($"{e.Letter}: ({e.Type}) is detached.");
             base.OnDetached(e);
         }
 
@@ -99,7 +99,7 @@ namespace Cube.Forms.Demo
         {
             var builder = new System.Text.StringBuilder();
             if (!string.IsNullOrEmpty(LogTextBox.Text)) builder.AppendLine(LogTextBox.Text);
-            builder.Append(string.Format("{0} {1}", DateTime.Now, message));
+            builder.Append($"{DateTime.Now} {message}");
             LogTextBox.Text = builder.ToString();
         }
 
