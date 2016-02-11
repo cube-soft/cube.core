@@ -53,11 +53,9 @@ namespace Cube.Forms
             get { return _theme; }
             set
             {
-                if (_theme != value)
-                {
-                    _theme = value;
-                    UpdateTheme(_theme);
-                }
+                if (_theme == value) return;
+                _theme = value;
+                UpdateTheme(_theme);
             }
         }
 
@@ -70,14 +68,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Count
-        {
-            get
-            {
-                return VirtualMode ? VirtualListSize : Items.Count;
-
-            }
-        }
+        public int Count => VirtualMode ? VirtualListSize : Items.Count;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,10 +79,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool AnyItemsSelected
-        {
-            get { return SelectedIndices != null && SelectedIndices.Count > 0; }
-        }
+        public bool AnyItemsSelected => SelectedIndices.Count > 0;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -310,8 +298,7 @@ namespace Cube.Forms
             if (args.Cancel || VirtualMode) return;
 
             Items.Add(
-                Converter != null ?
-                Converter.Convert(item) :
+                Converter?.Convert(item) ??
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
 
@@ -335,8 +322,7 @@ namespace Cube.Forms
             if (args.Cancel || VirtualMode) return;
 
             Items.Insert(index,
-                Converter != null ?
-                Converter.Convert(item) :
+                Converter?.Convert(item) ??
                 new System.Windows.Forms.ListViewItem(item.ToString())
             );
 
@@ -363,8 +349,7 @@ namespace Cube.Forms
             var focused  = Items[index].Focused;
             var selected = Items[index].Selected;
 
-            Items[index] = Converter != null ?
-                           Converter.Convert(item) :
+            Items[index] = Converter?.Convert(item) ??
                            new System.Windows.Forms.ListViewItem(item.ToString());
 
             HackAlignmentBug();
@@ -429,7 +414,7 @@ namespace Cube.Forms
             if (args.Cancel || VirtualMode) return;
 
             Items.Clear();
-            OnCleared(new EventArgs());
+            OnCleared(EventArgs.Empty);
         }
 
         /* ----------------------------------------------------------------- */
@@ -500,9 +485,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnAdding(ValueCancelEventArgs<int> e)
-        {
-            if (Adding != null) Adding(this, e);
-        }
+            => Adding?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -514,9 +497,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnAdded(ValueEventArgs<int> e)
-        {
-            if (Added != null) Added(this, e);
-        }
+            => Added?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -528,9 +509,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnReplacing(ValueCancelEventArgs<int> e)
-        {
-            if (Replacing != null) Replacing(this, e);
-        }
+            => Replacing?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -542,9 +521,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnReplaced(ValueEventArgs<int> e)
-        {
-            if (Replaced != null) Replaced(this, e);
-        }
+            => Replaced?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -556,9 +533,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnRemoving(ValueCancelEventArgs<int[]> e)
-        {
-            if (Removing != null) Removing(this, e);
-        }
+            => Removing?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -570,9 +545,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnRemoved(ValueEventArgs<int[]> e)
-        {
-            if (Removed != null) Removed(this, e);
-        }
+            => Removed?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -584,9 +557,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnClearing(CancelEventArgs e)
-        {
-            if (Clearing != null) Clearing(this, e);
-        }
+            => Clearing?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -598,9 +569,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnCleared(EventArgs e)
-        {
-            if (Cleared != null) Cleared(this, e);
-        }
+            => Cleared?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -612,9 +581,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnMoving(MoveCancelEventArgs e)
-        {
-            if (Moving != null) Moving(this, e);
-        }
+            => Moving?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -626,9 +593,7 @@ namespace Cube.Forms
         /// 
         /* ----------------------------------------------------------------- */
         protected virtual void OnMoved(MoveEventArgs e)
-        {
-            if (Moved != null) Moved(this, e);
-        }
+            => Moved?.Invoke(this, e);
 
         #endregion
 

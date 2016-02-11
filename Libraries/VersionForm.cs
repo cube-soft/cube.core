@@ -147,7 +147,7 @@ namespace Cube.Forms
         protected override void OnLoad(EventArgs e)
         {
             var reader = new AssemblyReader(Assembly);
-            Text = string.Format("{0} について", reader.Product);
+            Text = $"{reader.Product} について";
             Icon = reader.Icon;
             base.OnLoad(e);
         }

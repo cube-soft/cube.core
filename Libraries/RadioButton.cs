@@ -61,10 +61,7 @@ namespace Cube.Forms
         [Browsable(true)]
         [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface Surface
-        {
-            get { return _painter.Surface; }
-        }
+        public Surface Surface => _painter.Surface;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,10 +75,7 @@ namespace Cube.Forms
         [Browsable(true)]
         [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface CheckedSurface
-        {
-            get { return _painter.CheckedSurface; }
-        }
+        public Surface CheckedSurface => _painter.CheckedSurface;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -95,10 +89,7 @@ namespace Cube.Forms
         [Browsable(true)]
         [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseDownSurface
-        {
-            get { return _painter.MouseDownSurface; }
-        }
+        public Surface MouseDownSurface => _painter.MouseDownSurface;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -113,10 +104,7 @@ namespace Cube.Forms
         [Browsable(true)]
         [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseOverSurface
-        {
-            get { return _painter.MouseOverSurface; }
-        }
+        public Surface MouseOverSurface => _painter.MouseOverSurface;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -127,10 +115,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool ShowFocusCues
-        {
-            get { return false; }
-        }
+        protected override bool ShowFocusCues => false;
 
         #region Hiding properties for ButtonBase
 

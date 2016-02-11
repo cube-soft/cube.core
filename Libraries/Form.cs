@@ -20,7 +20,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -72,16 +71,14 @@ namespace Cube.Forms
             get { return _bootstrap; }
             set
             {
-                if (_bootstrap != value)
+                if (_bootstrap == value) return;
+                if (_bootstrap != null) _bootstrap.Activated -= Bootstrap_Activated;
+                _bootstrap = value;
+                if (_bootstrap != null)
                 {
-                    if (_bootstrap != null) _bootstrap.Activated -= Bootstrap_Activated;
-                    _bootstrap = value;
-                    if (_bootstrap != null)
-                    {
-                        _bootstrap.Activated -= Bootstrap_Activated;
-                        _bootstrap.Activated += Bootstrap_Activated;
-                        _bootstrap.Register();
-                    }
+                    _bootstrap.Activated -= Bootstrap_Activated;
+                    _bootstrap.Activated += Bootstrap_Activated;
+                    _bootstrap.Register();
                 }
             }
         }
@@ -159,9 +156,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnShowing(CancelEventArgs e)
-        {
-            if (Showing != null) Showing(this, e);
-        }
+            => Showing?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -173,9 +168,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnHiding(CancelEventArgs e)
-        {
-            if (Hiding != null) Hiding(this, e);
-        }
+            => Hiding?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -187,9 +180,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnHidden(EventArgs e)
-        {
-            if (Hidden != null) Hidden(this, e);
-        }
+            => Hidden?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -201,9 +192,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnReceived(ValueEventArgs<object> e)
-        {
-            if (Received != null) Received(this, e);
-        }
+            => Received?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -215,9 +204,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
-        {
-            if (NcHitTest != null) NcHitTest(this, e);
-        }
+            => NcHitTest?.Invoke(this, e);
 
         #endregion
 
@@ -239,7 +226,7 @@ namespace Cube.Forms
             RaiseChangingVisibleEvent(prev, value, ev);
             base.SetVisibleCore(ev.Cancel ? prev : value);
             if (prev == value || ev.Cancel) return;
-            RaiseVisibleChangedEvent(value, prev, new EventArgs());
+            RaiseVisibleChangedEvent(value, prev, EventArgs.Empty);
         }
 
         /* ----------------------------------------------------------------- */
@@ -251,7 +238,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void WndProc(ref Message m)
+        protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             base.WndProc(ref m);
 

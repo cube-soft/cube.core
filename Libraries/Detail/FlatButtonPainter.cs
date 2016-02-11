@@ -74,11 +74,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonBase View
-        {
-            get { return _view; }
-            private set { _view = value; }
-        }
+        public ButtonBase View { get; private set; } = null;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -89,10 +85,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Surface Surface
-        {
-            get { return _surface; }
-        }
+        public Surface Surface { get; } = new Surface();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,10 +96,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Surface CheckedSurface
-        {
-            get { return _checked; }
-        }
+        public Surface CheckedSurface { get; } = new Surface();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -117,10 +107,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Surface MouseDownSurface
-        {
-            get { return _mouseDown; }
-        }
+        public Surface MouseDownSurface { get; } = new Surface();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,10 +119,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Surface MouseOverSurface
-        {
-            get { return _mouseOver; }
-        }
+        public Surface MouseOverSurface { get; } = new Surface();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -146,11 +130,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            protected set { _isChecked = value; }
-        }
+        public bool IsChecked { get; protected set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,11 +141,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsMouseDown
-        {
-            get { return _isMouseDown; }
-            protected set { _isMouseDown = value; }
-        }
+        public bool IsMouseDown { get; protected set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -176,11 +152,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsMouseOver
-        {
-            get { return _isMouseOver; }
-            protected set { _isMouseOver = value; }
-        }
+        public bool IsMouseOver { get; protected set; } = false;
 
         #endregion
 
@@ -198,13 +170,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void InvalidateViewSurface()
         {
-            var transparent = System.Drawing.Color.FromArgb(0, 255, 255, 255);
+            var transparent = Color.FromArgb(0, 255, 255, 255);
 
             View.BackColor = transparent;
             View.ForeColor = transparent;
             View.BackgroundImage = null;
             View.Image = null;
-            View.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            View.FlatStyle = FlatStyle.Flat;
             View.FlatAppearance.BorderColor = transparent;
             View.FlatAppearance.BorderSize = 0;
             View.FlatAppearance.CheckedBackColor = transparent;
@@ -227,8 +199,8 @@ namespace Cube.Forms
             if (e == null || e.Graphics == null) return;
 
             var gs = e.Graphics;
-            var client = _view.ClientRectangle;
-            var bounds = GetDrawBounds(client, _view.Padding);
+            var client = View.ClientRectangle;
+            var bounds = GetDrawBounds(client, View.Padding);
             gs.FillBackground(client, GetBackColor());
             gs.DrawImage(client, GetBackgroundImage(), View.BackgroundImageLayout);
             gs.DrawImage(bounds, GetImage(), View.ImageAlign);
@@ -463,17 +435,6 @@ namespace Cube.Forms
             return new Rectangle(x, y, width, height);
         }
 
-        #endregion
-
-        #region Fields
-        private ButtonBase _view = null;
-        private Surface _surface = new Surface();
-        private Surface _checked = new Surface();
-        private Surface _mouseOver = new Surface();
-        private Surface _mouseDown = new Surface();
-        private bool _isChecked = false;
-        private bool _isMouseOver = false;
-        private bool _isMouseDown = false;
         #endregion
     }
 }

@@ -86,7 +86,7 @@ namespace Cube.Forms.Extensions
         /* ----------------------------------------------------------------- */
         public static void DrawText(this Graphics gs, Rectangle bounds, string text, Font font, Color color, ContentAlignment align)
         {
-            using (var brush = new System.Drawing.SolidBrush(color))
+            using (var brush = new SolidBrush(color))
             {
                 var format = GetStringFormat(align);
                 gs.DrawString(text, font, brush, bounds, format);

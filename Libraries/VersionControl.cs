@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
 using System.Reflection;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -60,6 +61,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public VersionControl(Assembly assembly)
         {
+            Logger = LogManager.GetLogger(GetType());
+
             InitializeComponent();
             Assembly = assembly;
             CopyrightLinkLabel.LinkClicked += LinkLabel_LinkClicked;
@@ -98,10 +101,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Architecture
-        {
-            get { return (IntPtr.Size == 4) ? "x86" : "x64"; }
-        }
+        public string Architecture => (IntPtr.Size == 4) ? "x86" : "x64";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -225,6 +225,17 @@ namespace Cube.Forms
             }
         }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected ILog Logger { get; }
+
         #endregion
 
         #region Event handlers
@@ -241,7 +252,7 @@ namespace Cube.Forms
         private void LinkLabel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
         {
             try { Process.Start(Url); }
-            catch (Exception /* err */) { /* ignore */ }
+            catch (Exception err) { Logger.Error(err); }
         }
 
         #endregion
@@ -267,9 +278,9 @@ namespace Cube.Forms
             );
 
             var ss = new System.Text.StringBuilder();
-            ss.AppendFormat("{0}", Environment.OSVersion.ToString());
+            ss.Append(Environment.OSVersion.ToString());
             ss.AppendLine();
-            ss.AppendFormat("Microsoft .NET Framework {0}", Environment.Version.ToString());
+            ss.Append($"Microsoft .NET Framework {Environment.Version}");
             PlatformLabel.Text = ss.ToString();
             PlatformLabel.Margin = new System.Windows.Forms.Padding(0, Spacing, 0, 0);
 
@@ -299,13 +310,13 @@ namespace Cube.Forms
             ss.Append(src.Major);
             if (digit <= 1) return ss.ToString();
 
-            ss.AppendFormat(".{0}", src.Minor);
+            ss.Append($".{src.Minor}");
             if (digit <= 2) return ss.ToString();
 
-            ss.AppendFormat(".{0}", src.Build);
+            ss.Append($".{src.Build}");
             if (digit <= 3) return ss.ToString();
 
-            ss.AppendFormat(".{0}", src.Revision);
+            ss.Append($".{src.Revision}");
             return ss.ToString();
         }
 

@@ -166,7 +166,7 @@ namespace Cube.Forms
                 else ControlPaint.DrawSizeGrip(gs, BackColor, bounds);
             }
 
-            if (Image != null) Image.Dispose();
+            Image?.Dispose();
             Image = image;
         }
 

@@ -117,9 +117,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnApplied(EventArgs e)
-        {
-            if (Applied != null) Applied(this, e);
-        }
+            => Applied?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,7 +130,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(KeyValueEventArgs<string, object> e)
         {
-            if (PropertyChanged != null) PropertyChanged(this, e);
+            PropertyChanged?.Invoke(this, e);
             if (ApplyButton != null) ApplyButton.Enabled = true;
         }
 
@@ -271,9 +269,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected void RaisePropertyChanged(System.Windows.Forms.Control control, object value)
         {
-            var name = control.Tag is string ?
-                       control.Tag as string :
-                       control.Name.Replace(control.GetType().Name, string.Empty);
+            var name = control.Name.Replace(control.GetType().Name, string.Empty);
             if (string.IsNullOrEmpty(name)) return;
 
             OnPropertyChanged(new KeyValueEventArgs<string, object>(name, value));

@@ -114,8 +114,7 @@ namespace Cube.Forms.Extensions
             };
 
             var info = method(obj.GetType());
-            if (info == null) return null;
-            return info.Invoke(obj, new object[] { }) as EventHandlerList;
+            return info?.Invoke(obj, new object[] { }) as EventHandlerList;
         }
 
         /* ----------------------------------------------------------------- */
@@ -131,13 +130,13 @@ namespace Cube.Forms.Extensions
         {
             Func<Type, string, FieldInfo> method = null;
             method = (t, n) => {
-                var fi = t.GetField("Event" + n, GetAllFlags());
+                var fi = t.GetField($"Event{n}", GetAllFlags());
                 if (fi == null && t.BaseType != null) fi = method(t.BaseType, n);
                 return fi;
             };
 
             var info = method(obj.GetType(), name);
-            return (info != null) ? info.GetValue(obj) : null;
+            return info?.GetValue(obj);
         }
 
         /* ----------------------------------------------------------------- */

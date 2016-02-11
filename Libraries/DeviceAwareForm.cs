@@ -20,6 +20,7 @@
 using System;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -45,7 +46,25 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DeviceAwareForm() : base() { }
+        public DeviceAwareForm() : base()
+        {
+            Logger = LogManager.GetLogger(GetType());
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected ILog Logger { get; }
 
         #endregion
 
@@ -173,7 +192,7 @@ namespace Cube.Forms
                 if (action == DBT_DEVICEARRIVAL) OnAttached(args);
                 else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
             }
-            catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
+            catch (Exception err) { Logger.Error(err); }
         }
 
         /* ----------------------------------------------------------------- */

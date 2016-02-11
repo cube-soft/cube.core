@@ -76,9 +76,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
-            if (NcHitTest != null) NcHitTest(this, e);
-            if (!e.Cancel || FindForm() == null) return;
+            NcHitTest?.Invoke(this, e);
 
+            if (!e.Cancel || FindForm() == null) return;
             if (IsNormalWindow() && IsSizingGrip(PointToClient(e.Query)))
             {
                 e.Result = Position.Client;

@@ -65,10 +65,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool ShowFocusCues
-        {
-            get { return false; }
-        }
+        protected override bool ShowFocusCues => false;
 
         #endregion
 

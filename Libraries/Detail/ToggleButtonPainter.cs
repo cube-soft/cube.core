@@ -87,10 +87,7 @@ namespace Cube.Forms
         protected override void InvalidateViewSurface()
         {
             var radio = View as System.Windows.Forms.CheckBox;
-            if (radio != null)
-            {
-                radio.Appearance = System.Windows.Forms.Appearance.Button;
-            }
+            if (radio != null) radio.Appearance = System.Windows.Forms.Appearance.Button;
             base.InvalidateViewSurface();
         }
 

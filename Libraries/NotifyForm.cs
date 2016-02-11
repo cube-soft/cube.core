@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using log4net;
 
 namespace Cube.Forms
 {
@@ -48,6 +49,8 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public NotifyForm()
         {
+            Logger = LogManager.GetLogger(GetType());
+
             InitializeComponent();
             InitializeStyles();
             SetTopMost();
@@ -195,9 +198,18 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public IDictionary<NotifyLevel, NotifyStyle> Styles
-        {
-            get { return _styles; }
-        }
+            => new Dictionary<NotifyLevel, NotifyStyle>();
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Logger
+        /// 
+        /// <summary>
+        /// ログ出力用オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected ILog Logger { get; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -208,10 +220,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected override bool ShowWithoutActivation
-        {
-            get { return true; }
-        }
+        protected override bool ShowWithoutActivation => true;
 
         #region Hiding properties
 
@@ -289,7 +298,7 @@ namespace Cube.Forms
         public void Show(int msec)
         {
             Show();
-            var _ = RunAsync(() => Hide(), InitialDelay + msec); // suppress warning
+            var _ = RunAsync(() => Hide(), InitialDelay + msec);
         }
 
         #endregion
@@ -307,9 +316,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected virtual void OnTextClick(NotifyEventArgs e)
-        {
-            if (TextClick != null) TextClick(this, e);
-        }
+            => TextClick?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -321,9 +328,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected virtual void OnImageClick(NotifyEventArgs e)
-        {
-            if (ImageClick != null) ImageClick(this, e);
-        }
+            => ImageClick?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -336,7 +341,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         protected virtual void OnHideClick(EventArgs e)
         {
-            if (HideClick != null) HideClick(this, e);
+            HideClick?.Invoke(this, e);
             Hide();
         }
 
@@ -360,7 +365,7 @@ namespace Cube.Forms
             if (showing) IsBusy = true;
             if (showing && InitialDelay > 0)
             {
-                var _ = RunAsync(() => base.SetVisibleCore(value), InitialDelay); // suppress warning
+                var _ = RunAsync(() => base.SetVisibleCore(value), InitialDelay);
                 base.SetVisibleCore(current);
             }
             else base.SetVisibleCore(value);
@@ -485,7 +490,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Implementations
+        #region Others
 
         /* --------------------------------------------------------------------- */
         ///
@@ -509,7 +514,7 @@ namespace Cube.Forms
             }
             catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }
             catch (OperationCanceledException /* err */) { /* ignore user's cancel */ }
-            catch (Exception err) { System.Diagnostics.Trace.TraceError(err.ToString()); }
+            catch (Exception err) { Logger.Error(err); }
             finally { Hidden -= m; }
         }
 
@@ -632,10 +637,6 @@ namespace Cube.Forms
             OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
         }
 
-        #endregion
-
-        #region Fields
-        private Dictionary<NotifyLevel, NotifyStyle> _styles = new Dictionary<NotifyLevel, NotifyStyle>();
         #endregion
     }
 }

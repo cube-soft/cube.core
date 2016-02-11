@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -109,9 +108,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected virtual void OnBeforeNavigating(NavigatingEventArgs e)
-        {
-            if (BeforeNavigating != null) BeforeNavigating(this, e);
-        }
+            => BeforeNavigating?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -123,9 +120,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected virtual void OnBeforeNewWindow(NavigatingEventArgs e)
-        {
-            if (BeforeNewWindow != null) BeforeNewWindow(this, e);
-        }
+            => BeforeNewWindow?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -137,9 +132,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected virtual void OnNavigatingError(NavigatingErrorEventArgs e)
-        {
-            if (NavigatingError != null) NavigatingError(this, e);
-        }
+            => NavigatingError?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -151,9 +144,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected virtual void OnMessageShowing(MessageEventArgs e)
-        {
-            if (MessageShowing != null) MessageShowing(this, e);
-        }
+            => MessageShowing?.Invoke(this, e);
 
         #endregion
 
@@ -173,7 +164,7 @@ namespace Cube.Forms
         /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void WndProc(ref Message m)
+        protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             switch (m.Msg)
             {
@@ -197,10 +188,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override WebBrowserSiteBase CreateWebBrowserSiteBase()
-        {
-            return new ShowUIWebBrowserSite(this);
-        }
+        protected override System.Windows.Forms.WebBrowserSiteBase CreateWebBrowserSiteBase()
+            => new ShowUIWebBrowserSite(this);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -220,7 +209,7 @@ namespace Cube.Forms
         {
             base.CreateSink();
             _events = new ActiveXControlEvents(this);
-            _cookie = new AxHost.ConnectionPointCookie(ActiveXInstance, _events, typeof(DWebBrowserEvents2));
+            _cookie = new System.Windows.Forms.AxHost.ConnectionPointCookie(ActiveXInstance, _events, typeof(DWebBrowserEvents2));
         }
 
         /* --------------------------------------------------------------------- */
@@ -383,9 +372,7 @@ namespace Cube.Forms
             /* ----------------------------------------------------------------- */
             public void BeforeNavigate2(object pDisp, ref object URL, ref object flags,
                 ref object targetFrameName, ref object postData, ref object headers, ref bool cancel)
-            {
-                Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
-            }
+                => Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
 
             /* ----------------------------------------------------------------- */
             ///
@@ -398,9 +385,7 @@ namespace Cube.Forms
             /* ----------------------------------------------------------------- */
             public void NewWindow3(object pDisp, ref bool cancel, ref object flags,
                 ref object URLContext, ref object URL)
-            {
-                Target.RaiseBeforeNewWindow((string)URL, out cancel);
-            }
+                => Target.RaiseBeforeNewWindow((string)URL, out cancel);
 
             /* ----------------------------------------------------------------- */
             ///
@@ -413,9 +398,7 @@ namespace Cube.Forms
             /* ----------------------------------------------------------------- */
             public void NavigateError(object pDisp, ref object URL, ref object targetFrameName,
                 ref object statusCode, ref bool cancel)
-            {
-                Target.RaiseNavigatingError((string)URL, (string)targetFrameName, (int)statusCode, out cancel);
-            }
+                => Target.RaiseNavigatingError((string)URL, (string)targetFrameName, (int)statusCode, out cancel);
         }
 
         /* ----------------------------------------------------------------- */
@@ -484,10 +467,7 @@ namespace Cube.Forms
             /// </remarks>
             ///
             /* ----------------------------------------------------------------- */
-            public int ShowHelp(IntPtr hwnd, string file, int command, int data, POINT mouse, object hit)
-            {
-                return 1;
-            }
+            public int ShowHelp(IntPtr hwnd, string file, int command, int data, POINT mouse, object hit) => 1;
         }
 
         #endregion
@@ -503,37 +483,40 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [System.Runtime.InteropServices.ComImport(),
-         System.Runtime.InteropServices.Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"),
-         System.Runtime.InteropServices.InterfaceTypeAttribute(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsIDispatch),
-         System.Runtime.InteropServices.TypeLibType(System.Runtime.InteropServices.TypeLibTypeFlags.FHidden)]
+        [ComImport,
+         Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"),
+         InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
+         TypeLibType(TypeLibTypeFlags.FHidden)]
         internal interface DWebBrowserEvents2
         {
-            [System.Runtime.InteropServices.DispId(250)]
+            [DispId(250)]
             void BeforeNavigate2(
-                [System.Runtime.InteropServices.In,
-                System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IDispatch)] object pDisp,
-                [System.Runtime.InteropServices.In] ref object URL,
-                [System.Runtime.InteropServices.In] ref object flags,
-                [System.Runtime.InteropServices.In] ref object targetFrameName, [System.Runtime.InteropServices.In] ref object postData,
-                [System.Runtime.InteropServices.In] ref object headers,
-                [System.Runtime.InteropServices.In,
-                System.Runtime.InteropServices.Out] ref bool cancel);
+                [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+                [In] ref object URL,
+                [In] ref object flags,
+                [In] ref object targetFrameName,
+                [In] ref object postData,
+                [In] ref object headers,
+                [In, Out] ref bool cancel
+            );
 
-            [System.Runtime.InteropServices.DispId(273)]
+            [DispId(273)]
             void NewWindow3(
-                [System.Runtime.InteropServices.In,
-                System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IDispatch)] object pDisp,
-                [System.Runtime.InteropServices.In, System.Runtime.InteropServices.Out] ref bool cancel,
-                [System.Runtime.InteropServices.In] ref object flags,
-                [System.Runtime.InteropServices.In] ref object URLContext,
-                [System.Runtime.InteropServices.In] ref object URL);
+                [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+                [In, Out] ref bool cancel,
+                [In] ref object flags,
+                [In] ref object URLContext,
+                [In] ref object URL
+            );
 
-            [System.Runtime.InteropServices.DispId(271)]
+            [DispId(271)]
             void NavigateError(
-                [System.Runtime.InteropServices.In, System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IDispatch)] object pDisp,
-                [System.Runtime.InteropServices.In] ref object URL, [System.Runtime.InteropServices.In] ref object frame,
-                [System.Runtime.InteropServices.In] ref object statusCode, [System.Runtime.InteropServices.In, System.Runtime.InteropServices.Out] ref bool cancel);
+                [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+                [In] ref object URL,
+                [In] ref object frame,
+                [In] ref object statusCode,
+                [In, Out] ref bool cancel
+            );
         }
 
         /* ----------------------------------------------------------------- */
@@ -545,7 +528,9 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [ComImport, Guid("C4D244B0-D43E-11CF-893B-00AA00BDCE1A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        [ComImport,
+         Guid("C4D244B0-D43E-11CF-893B-00AA00BDCE1A"),
+         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         protected interface IDocHostShowUI
         {
             [return: MarshalAs(UnmanagedType.U4)]
