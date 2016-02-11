@@ -32,7 +32,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class FileResourceTest
+    class FileResourceTest : FileResource
     {
         #region Tests
 
@@ -49,7 +49,7 @@ namespace Cube.Tests
         public void Examples_Exists()
         {
             Assert.That(
-                IoEx.Directory.Exists(Create().Examples),
+                IoEx.Directory.Exists(Examples),
                 Is.True
             );
         }
@@ -67,27 +67,9 @@ namespace Cube.Tests
         public void Results_Exists()
         {
             Assert.That(
-                IoEx.Directory.Exists(Create().Results),
+                IoEx.Directory.Exists(Results),
                 Is.True
             );
-        }
-
-        #endregion
-
-        #region Helper methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        /// 
-        /// <summary>
-        /// FileResource オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileResource Create()
-        {
-            return new FileResource();
         }
 
         #endregion

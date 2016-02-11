@@ -53,7 +53,7 @@ namespace Cube.FileSystem {
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public Drive(char letter) : this(string.Format("{0}:", letter)) { }
+        public Drive(char letter) : this($"{letter}:") { }
 
         /* ----------------------------------------------------------------- */
         ///

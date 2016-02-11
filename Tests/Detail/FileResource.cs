@@ -44,10 +44,11 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileResource()
+        protected FileResource()
         {
-            var exec = Assembly.GetExecutingAssembly().Location;
-            Root = IoEx.Path.GetDirectoryName(exec);
+            var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
+            Root = IoEx.Path.GetDirectoryName(reader.Location);
+            _folder = GetType().FullName.Replace($"{reader.Product}.", "");
             Initialize();
         }
 
@@ -65,7 +66,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Root { get; }
+        protected string Root { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,10 +77,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Examples
-        {
-            get { return IoEx.Path.Combine(Root, "Examples"); }
-        }
+        protected string Examples => IoEx.Path.Combine(Root, "Examples");
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,15 +88,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Results
-        {
-            get
-            {
-                var classname = GetType().FullName.Replace("Cube.Tests.", "");
-                var folder = string.Format(@"Results\{0}", classname);
-                return IoEx.Path.Combine(Root, folder);
-            }
-        }
+        protected string Results => IoEx.Path.Combine(Root, $@"Results\{_folder}");
 
         #endregion
 
@@ -142,6 +132,10 @@ namespace Cube.Tests
             }
         }
 
+        #endregion
+
+        #region Fields
+        private string _folder = string.Empty;
         #endregion
     }
 }

@@ -51,8 +51,8 @@ namespace Cube.Extensions
             {
                 foreach (var item in query)
                 {
-                    var s = string.Format("{0}={1}", item.Key, item.Value);
-                    builder.Query = builder.Query?.Length > 1 ?
+                    var s = $"{item.Key}={item.Value}";
+                    builder.Query = builder != null && builder.Query.Length > 1 ?
                                     $"{builder.Query.Substring(1)}&{s}" :
                                     s;
                 }
