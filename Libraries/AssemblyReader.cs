@@ -247,10 +247,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version Version =>
-            Assembly != null ?
-            Assembly.GetName().Version :
-            new Version();
+        public Version Version => Assembly?.GetName().Version ?? new Version();
 
         /* ----------------------------------------------------------------- */
         ///
