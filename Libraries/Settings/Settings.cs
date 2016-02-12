@@ -162,10 +162,12 @@ namespace Cube
             var dest = Activator.CreateInstance(type);
             if (root == null || dest == null) return null;
 
-            foreach (var item in GetDataMembers(type))
+            foreach (var item in type.GetProperties())
             {
                 try
                 {
+                    if (!Attribute.IsDefined(item, typeof(DataMemberAttribute))) continue;
+
                     var name = GetDataMemberName(item);
                     if (string.IsNullOrEmpty(name)) continue;
 
@@ -233,10 +235,12 @@ namespace Cube
         {
             if (src == null || root == null) return;
 
-            foreach (var item in GetDataMembers(type))
+            foreach (var item in type.GetProperties())
             {
                 try
                 {
+                    if (!Attribute.IsDefined(item, typeof(DataMemberAttribute))) continue;
+
                     var name = GetDataMemberName(item);
                     if (name == null) continue;
 
@@ -281,31 +285,6 @@ namespace Cube
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             serializer.WriteObject(dest, src);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetDataMembers
-        /// 
-        /// <summary>
-        /// DataMember 属性のプロパティ一覧を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<PropertyInfo> GetDataMembers(Type type)
-        {
-            try
-            {
-                return type.GetProperties().Where(item =>
-                {
-                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
-                });
-            }
-            catch (Exception err)
-            {
-                Log(err);
-                return null;
-            }
         }
 
         /* ----------------------------------------------------------------- */
