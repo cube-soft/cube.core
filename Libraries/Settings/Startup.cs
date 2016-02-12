@@ -110,7 +110,7 @@ namespace Cube
             {
                 if (_enabled == value) return;
                 _enabled = value;
-                OnPropertyChanged(nameof(Enabled));
+                RaisePropertyChanged(nameof(Enabled));
             }
         }
 
@@ -130,7 +130,7 @@ namespace Cube
             {
                 if (_name == value) return;
                 _name = value;
-                OnPropertyChanged(nameof(Name));
+                RaisePropertyChanged(nameof(Name));
             }
         }
 
@@ -150,7 +150,7 @@ namespace Cube
             {
                 if (_command == value) return;
                 _command = value;
-                OnPropertyChanged(nameof(Command));
+                RaisePropertyChanged(nameof(Command));
             }
         }
 
