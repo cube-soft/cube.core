@@ -20,6 +20,7 @@
 using System;
 using System.Management;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.FileSystem {
     /* --------------------------------------------------------------------- */
@@ -235,16 +236,14 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         public static Drive[] GetDrives()
         {
-            var dest = new List<Drive>();
-
-            using (var searcher = new ManagementObjectSearcher("Select * From Win32_LogicalDisk"))
-            foreach (ManagementObject obj in searcher.Get())
+            using (var mos = new ManagementObjectSearcher("Select * From Win32_LogicalDisk"))
             {
-                var drive = new Drive(obj);
-                if (!string.IsNullOrEmpty(drive.Letter)) dest.Add(drive);
+                return mos.Get()
+                          .Cast<ManagementObject>()
+                          .Select(obj => new Drive(obj))
+                          .Where(drive => !string.IsNullOrEmpty(drive.Letter))
+                          .ToArray();
             }
-
-            return dest.ToArray();
         }
 
         #endregion
@@ -263,8 +262,8 @@ namespace Cube.FileSystem {
         private void GetInfo(string letter)
         {
             var query = $"Select * From Win32_LogicalDisk Where DeviceID = '{letter}'";
-            using (var searcher = new ManagementObjectSearcher(query))
-            foreach (ManagementObject drive in searcher.Get())
+            using (var mos = new ManagementObjectSearcher(query))
+            foreach (ManagementObject drive in mos.Get())
             {
                 GetInfo(drive);
                 break;
