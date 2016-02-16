@@ -157,12 +157,8 @@ namespace Cube.Forms
 
             var result = dialog.ShowDialog();
 
-            AnyColor = dialog.AnyColor;
-            SolidColorOnly = dialog.SolidColorOnly;
-            AllowFullOpen = dialog.AllowFullOpen;
             FullOpen = dialog.FullOpen;
             Tag = dialog.Tag;
-
             CustomColors?.Clear();
             foreach (var color in dialog.CustomColors) CustomColors?.Add(color);
 
