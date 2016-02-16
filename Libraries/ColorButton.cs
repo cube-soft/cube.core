@@ -153,12 +153,10 @@ namespace Cube.Forms
             dialog.AllowFullOpen = AllowFullOpen;
             dialog.FullOpen = FullOpen;
             dialog.CustomColors = CustomColors?.ToArray();
-            dialog.Tag = Tag;
-
+            
             var result = dialog.ShowDialog();
 
             FullOpen = dialog.FullOpen;
-            Tag = dialog.Tag;
             CustomColors?.Clear();
             foreach (var color in dialog.CustomColors) CustomColors?.Add(color);
 
