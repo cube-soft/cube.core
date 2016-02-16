@@ -391,12 +391,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void RemoveItems()
-        {
-            var indices = new List<int>();
-            foreach (int index in SelectedIndices) indices.Add(index);
-            RemoveItems(indices);
-        }
+        public void RemoveItems() => RemoveItems(SelectedIndices.Cast<int>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -464,12 +459,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public void MoveItems(int offset)
-        {
-            var indices = new List<int>();
-            foreach (int index in SelectedIndices) indices.Add(index);
-            MoveItems(indices, offset);
-        }
+        public void MoveItems(int offset) => MoveItems(SelectedIndices.Cast<int>(), offset);
 
         #endregion
 

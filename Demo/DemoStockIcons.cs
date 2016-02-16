@@ -58,9 +58,9 @@ namespace Cube.Forms.Demo
             IconListView.LargeImageList = converter.ImageList;
             IconListView.LargeImageList.ImageSize = new Size(48, 48);
             IconListView.LargeImageList.ColorDepth = ColorDepth.Depth32Bit;
-            foreach (Cube.StockIcons kind in Enum.GetValues(typeof(Cube.StockIcons)))
+            foreach (StockIcons kind in Enum.GetValues(typeof(StockIcons)))
             {
-                var icon = Cube.IconFactory.Create(kind, Cube.IconSize.ExtraLarge);
+                var icon = IconFactory.Create(kind, IconSize.ExtraLarge);
                 if (icon == null) continue;
 
                 IconListView.LargeImageList.Images.Add(icon.ToBitmap());
