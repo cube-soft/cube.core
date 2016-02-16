@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace Cube
@@ -76,14 +77,28 @@ namespace Cube
         /// OnPropertyChanged
         /// 
         /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
+        /// PropertyChanged イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (PropertyChanged != null) PropertyChanged(this, e);
-        }
+            => PropertyChanged?.Invoke(this, e);
+
+        #endregion
+
+        #region Non-virtual protected methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaisePropertyChanged
+        /// 
+        /// <summary>
+        /// PropertyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void RaisePropertyChanged([CallerMemberName] string name = null)
+            => OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         #endregion
     }

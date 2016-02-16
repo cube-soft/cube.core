@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResourceTest.cs
+/// CollectionEx.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,61 +17,32 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
-using IoEx = System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
-namespace Cube.Tests
+namespace Cube.Extensions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResourceTest
+    /// CollectionEx
     /// 
     /// <summary>
-    /// FileResource をテストするためのクラスです。
+    /// Collection クラスの拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class FileResourceTest : FileResource
+    public static class CollectionEx
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
+        /// ToObservable
         /// 
         /// <summary>
-        /// Examples フォルダが存在するかどうかをテストします。
+        /// ObservableCollection に変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Examples_Exists()
-        {
-            Assert.That(
-                IoEx.Directory.Exists(Examples),
-                Is.True
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Results_Exists
-        /// 
-        /// <summary>
-        /// Results フォルダが存在するかどうかをテストします。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Results_Exists()
-        {
-            Assert.That(
-                IoEx.Directory.Exists(Results),
-                Is.True
-            );
-        }
-
-        #endregion
+        public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> src)
+            => new ObservableCollection<T>(src);
     }
 }

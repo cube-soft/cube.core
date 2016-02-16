@@ -76,10 +76,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Location
-        {
-            get { return (Assembly != null) ? Assembly.Location : string.Empty; }
-        }
+        public string Location => Assembly?.Location;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,10 +91,10 @@ namespace Cube
         {
             get
             {
-                if (Assembly == null) return string.Empty;
+                if (Assembly == null) return null;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyTitleAttribute)) as AssemblyTitleAttribute;
-                return (obj != null) ? obj.Title : string.Empty;
+                return obj?.Title;
             }
         }
 
@@ -117,7 +114,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
-                return (obj != null) ? obj.Description : string.Empty;
+                return obj?.Description;
             }
         }
 
@@ -137,7 +134,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyConfigurationAttribute)) as AssemblyConfigurationAttribute;
-                return (obj != null) ? obj.Configuration : string.Empty;
+                return obj?.Configuration;
             }
         }
 
@@ -157,7 +154,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
-                return (obj != null) ? obj.Company : string.Empty;
+                return obj?.Company;
             }
         }
 
@@ -177,7 +174,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyProductAttribute)) as AssemblyProductAttribute;
-                return (obj != null) ? obj.Product : string.Empty;
+                return obj?.Product;
             }
         }
 
@@ -197,7 +194,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
-                return (obj != null) ? obj.Copyright : string.Empty;
+                return obj?.Copyright;
             }
         }
 
@@ -217,7 +214,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyTrademarkAttribute)) as AssemblyTrademarkAttribute;
-                return (obj != null) ? obj.Trademark : string.Empty;
+                return obj?.Trademark;
             }
         }
 
@@ -237,7 +234,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyCultureAttribute)) as AssemblyCultureAttribute;
-                return (obj != null) ? obj.Culture : string.Empty;
+                return obj?.Culture;
             }
         }
 
@@ -250,10 +247,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version Version
-        {
-            get { return (Assembly != null) ? Assembly.GetName().Version : new Version(); }
-        }
+        public Version Version => Assembly?.GetName().Version ?? new Version();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -264,15 +258,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version FileVersion
-        {
-            get
-            {
-                return Assembly != null ?
-                       new Version(FileVersionInfo.GetVersionInfo(Assembly.Location).FileVersion) :
-                       new Version();
-            }
-        }
+        public Version FileVersion =>
+            Assembly != null ?
+            new Version(FileVersionInfo.GetVersionInfo(Assembly.Location).FileVersion) :
+            new Version();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -283,10 +272,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Icon Icon
-        {
-            get { return (Assembly != null) ? IconFactory.Create(Location, IconSize) : null; }
-        }
+        public Icon Icon =>
+            Assembly != null ?
+            IconFactory.Create(Location, IconSize) :
+            null;
 
         /* ----------------------------------------------------------------- */
         ///

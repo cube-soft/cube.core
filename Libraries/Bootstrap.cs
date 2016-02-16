@@ -165,7 +165,7 @@ namespace Cube
             {
                 var client = new IpcClientChannel();
                 ChannelServices.RegisterChannel(client, true);
-                var channel = string.Format("ipc://{0}/{1}", Name, _ActivateCommand);
+                var channel = $"ipc://{Name}/{_ActivateCommand}";
                 var proxy = Activator.GetObject(typeof(IpcProxy), channel) as IpcProxy;
                 if (proxy != null)
                 {
@@ -192,7 +192,7 @@ namespace Cube
                 var server = new IpcServerChannel(Name);
                 ChannelServices.RegisterChannel(server, true);
                 RemotingServices.Marshal(_core, _ActivateCommand, typeof(IpcProxy));
-                Logger.DebugFormat("{0}/{1} registered", Name, _ActivateCommand);
+                Logger.Debug($"{Name}/{_ActivateCommand} registered");
             }
             catch (Exception err) { Logger.Error(err); }
         }

@@ -174,12 +174,12 @@ namespace Cube
             if (InitialDelay > TimeSpan.Zero) _core.Interval = InitialDelay.TotalMilliseconds;
             else
             {
-                OnExecute(new EventArgs());
+                OnExecute(EventArgs.Empty);
                 _core.Interval = Interval.TotalMilliseconds;
             }
 
             _core.Start();
-            Logger.DebugFormat("Start\tInterval:{0}\tInitialDelay:{1}", Interval, InitialDelay);
+            Logger.Debug($"Start\tInterval:{Interval}\tInitialDelay:{InitialDelay}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -196,10 +196,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public void Reset()
-        {
-            OnReset(new EventArgs());
-        }
+        public void Reset() => OnReset(EventArgs.Empty);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -215,7 +212,7 @@ namespace Cube
             if (State == SchedulerState.Stop) return;
 
             if (_core.Enabled) _core.Stop();
-            Logger.DebugFormat("Stop\tLastExecuted:{0}", LastExecuted);
+            Logger.Debug($"Stop\tLastExecuted:{LastExecuted}");
 
             State = SchedulerState.Stop;
             LastExecuted = DateTime.Now;
@@ -237,7 +234,7 @@ namespace Cube
             System.Diagnostics.Debug.Assert(_core.Enabled);
             _core.Stop();
             State = SchedulerState.Suspend;
-            Logger.DebugFormat("Suspend\tLastExecuted:{0}", LastExecuted);
+            Logger.Debug("Suspend\tLastExecuted:{LastExecuted}");
 
             var interval = Interval - (DateTime.Now - LastExecuted);
             if (interval < TimeSpan.Zero) interval = Interval;
@@ -260,9 +257,7 @@ namespace Cube
             System.Diagnostics.Debug.Assert(!_core.Enabled);
             State = SchedulerState.Run;
             _core.Start();
-            Logger.DebugFormat("Resume\tLastExecuted:{0}\tInterval:{1}",
-                LastExecuted, TimeSpan.FromMilliseconds(_core.Interval)
-            );
+            Logger.Debug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{TimeSpan.FromMilliseconds(_core.Interval)}");
         }
 
         #endregion

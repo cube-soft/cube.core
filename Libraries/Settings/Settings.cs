@@ -18,8 +18,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -162,10 +160,12 @@ namespace Cube
             var dest = Activator.CreateInstance(type);
             if (root == null || dest == null) return null;
 
-            foreach (var item in GetDataMembers(type))
+            foreach (var item in type.GetProperties())
             {
                 try
                 {
+                    if (!Attribute.IsDefined(item, typeof(DataMemberAttribute))) continue;
+
                     var name = GetDataMemberName(item);
                     if (string.IsNullOrEmpty(name)) continue;
 
@@ -183,7 +183,7 @@ namespace Cube
                         if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
-                catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
+                catch (Exception err) { Log(err); }
             }
             return dest;
         }
@@ -233,10 +233,12 @@ namespace Cube
         {
             if (src == null || root == null) return;
 
-            foreach (var item in GetDataMembers(type))
+            foreach (var item in type.GetProperties())
             {
                 try
                 {
+                    if (!Attribute.IsDefined(item, typeof(DataMemberAttribute))) continue;
+
                     var name = GetDataMemberName(item);
                     if (name == null) continue;
 
@@ -249,7 +251,7 @@ namespace Cube
                     else if (code != TypeCode.Object) root.SetValue(name, value);
                     else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, item.PropertyType, subkey);
                 }
-                catch (Exception err) { LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err); }
+                catch (Exception err) { Log(err); }
             }
         }
 
@@ -285,31 +287,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDataMembers
-        /// 
-        /// <summary>
-        /// DataMember 属性のプロパティ一覧を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<PropertyInfo> GetDataMembers(Type type)
-        {
-            try
-            {
-                return type.GetProperties().Where(item =>
-                {
-                    return Attribute.IsDefined(item, typeof(DataMemberAttribute));
-                });
-            }
-            catch (Exception err)
-            {
-                LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error(err);
-                return null;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// GetDataMemberName
         /// 
         /// <summary>
@@ -323,7 +300,7 @@ namespace Cube
             if (objects == null || objects.Length == 0) return info.Name;
 
             var attr = objects[0] as DataMemberAttribute;
-            return (attr == null || string.IsNullOrEmpty(attr.Name)) ? info.Name : attr.Name;
+            return attr?.Name ?? info.Name;
         }
 
         /* ----------------------------------------------------------------- */
@@ -341,6 +318,18 @@ namespace Cube
             if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
             return Convert.ChangeType(value, type);            
         }
+
+        /* ------------------------------------------------------------- */
+        ///
+        /// Log
+        /// 
+        /// <summary>
+        /// エラー内容を記録します。
+        /// </summary>
+        ///
+        /* ------------------------------------------------------------- */
+        private static void Log(Exception err)
+            => LogManager.GetLogger(typeof(Settings)).Error(err);
 
         #endregion
     }

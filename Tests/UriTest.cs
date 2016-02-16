@@ -35,6 +35,8 @@ namespace Cube.Tests
     [TestFixture]
     class UriTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// With_Value
@@ -49,10 +51,10 @@ namespace Cube.Tests
         [TestCase("double", 3.14)]
         public void With_Value<T>(string key, T value)
         {
-            var uri = new Uri("http://www.cube-soft.jp/index.html");
-            var actual = uri.With(key, value);
-            var expected = string.Format("{0}?{1}={2}", uri, key, value);
-            Assert.That(actual.ToString(), Is.EqualTo(expected));
+            Assert.That(
+                Create().With(key, value).ToString,
+                Is.EqualTo($"{Create()}?{key}={value}")
+            );
         }
 
         /* ----------------------------------------------------------------- */
@@ -64,14 +66,14 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void With_DateTime()
+        [TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
+        public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
         {
-            var time = new DateTime(2015, 3, 19, 23, 57, 57); // 1426777077
-            var uri = new Uri("http://www.cube-soft.jp/index.html");
-            var actual = uri.With(time);
-            var expected = string.Format("{0}?t=1426777077", uri);
-            Assert.That(actual.ToString(), Is.EqualTo(expected));
+            var time = new DateTime(y, m, d, hh, mm, ss);
+            Assert.That(
+                Create().With(time).ToString(),
+                Is.EqualTo($"{Create()}?t={unix}")
+            );
         }
 
         /* ----------------------------------------------------------------- */
@@ -86,9 +88,10 @@ namespace Cube.Tests
         [Test]
         public void With_Null()
         {
-            var uri = new Uri("http://www.cube-soft.jp/index.html");
-            var actual = uri.With(null);
-            Assert.That(actual.ToString(), Is.EqualTo(uri.ToString()));
+            Assert.That(
+                Create().With(null).ToString(),
+                Is.EqualTo(Create().ToString())
+            );
         }
 
         /* ----------------------------------------------------------------- */
@@ -103,10 +106,27 @@ namespace Cube.Tests
         [Test]
         public void With_MultiQuery()
         {
-            var uri = new Uri("http://www.cube-soft.jp/");
-            var actual = uri.With("key1", "value1").With("key2", "value2");
-            var expected = string.Format("{0}?{1}={2}&{3}={4}", uri, "key1", "value1", "key2", "value2");
-            Assert.That(actual.ToString(), Is.EqualTo(expected));
+            Assert.That(
+                Create().With("key1", "value1").With("key2", "value2").ToString(),
+                Is.EqualTo($"{Create()}?key1=value1&key2=value2")
+            );
         }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// ベースとなる Uri オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Uri Create() => new Uri("http://www.cube-soft.jp/");
+
+        #endregion
     }
 }

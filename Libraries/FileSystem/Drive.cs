@@ -53,7 +53,7 @@ namespace Cube.FileSystem {
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public Drive(char letter) : this(string.Format("{0}:", letter)) { }
+        public Drive(char letter) : this($"{letter}:") { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -262,7 +262,7 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         private void GetInfo(string letter)
         {
-            var query = string.Format("Select * From Win32_LogicalDisk Where DeviceID = '{0}'", letter);
+            var query = $"Select * From Win32_LogicalDisk Where DeviceID = '{letter}'";
             using (var searcher = new ManagementObjectSearcher(query))
             foreach (ManagementObject drive in searcher.Get())
             {

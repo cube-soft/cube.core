@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResourceTest.cs
+/// ValueChangedEventArgs.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,60 +17,63 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
-using IoEx = System.IO;
+using System;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResourceTest
+    /// ValueChangedEventArgs
     /// 
     /// <summary>
-    /// FileResource をテストするためのクラスです。
+    /// 値の変更に関連するイベントに使用するクラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class FileResourceTest : FileResource
+    public class ValueChangedEventArgs<TValue> : EventArgs
     {
-        #region Tests
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
+        /// ValueChangedEventArgs
         /// 
         /// <summary>
-        /// Examples フォルダが存在するかどうかをテストします。
+        /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Examples_Exists()
+        public ValueChangedEventArgs(TValue before, TValue after)
         {
-            Assert.That(
-                IoEx.Directory.Exists(Examples),
-                Is.True
-            );
+            OldValue = before;
+            NewValue = after;
         }
+
+        #endregion
+
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results_Exists
+        /// OldValue
         /// 
         /// <summary>
-        /// Results フォルダが存在するかどうかをテストします。
+        /// 変更前のオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Results_Exists()
-        {
-            Assert.That(
-                IoEx.Directory.Exists(Results),
-                Is.True
-            );
-        }
+        public TValue OldValue { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NewValue
+        /// 
+        /// <summary>
+        /// 変更後のオブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue NewValue { get; }
 
         #endregion
     }
