@@ -226,6 +226,55 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnCreateControl
+        ///
+        /// <summary>
+        /// コントロールが生成された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnCreateControl()
+        {
+            base.OnCreateControl();
+            Attach(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnControlAdded
+        ///
+        /// <summary>
+        /// コントロールが追加された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnControlAdded(System.Windows.Forms.ControlEventArgs e)
+        {
+            base.OnControlAdded(e);
+            Attach(e.Control);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnControlRemoved
+        ///
+        /// <summary>
+        /// コントロールが削除された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnControlRemoved(System.Windows.Forms.ControlEventArgs e)
+        {
+            base.OnControlRemoved(e);
+            Detach(e.Control);
+        }
+
+        #endregion
+
         #region Event handlers
 
         /* ----------------------------------------------------------------- */
@@ -267,6 +316,32 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private void CancelButton_Click(object sender, EventArgs e) => OnCancel(e);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Control_ControlAdded
+        ///
+        /// <summary>
+        /// コントロールに子コントロールが追加された時に実行される
+        /// ハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Control_ControlAdded(object sender, System.Windows.Forms.ControlEventArgs e)
+            => Attach(e.Control);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Control_ControlRemoved
+        ///
+        /// <summary>
+        /// コントロールから子コントロールが削除された時に実行される
+        /// ハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Control_ControlRemoved(object sender, System.Windows.Forms.ControlEventArgs e)
+            => Detach(e.Control);
 
         #endregion
 
@@ -387,7 +462,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected void ColorButtonChanged(object sender, EventArgs e)
         {
-            var control = sender as System.Windows.Forms.Control;
+            var control = sender as ColorButton;
             if (control == null) return;
             RaisePropertyChanged(control, control.BackColor);
         }
@@ -407,9 +482,59 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected void FontButtonChanged(object sender, EventArgs e)
         {
-            var control = sender as System.Windows.Forms.Control;
+            var control = sender as FontButton;
             if (control == null) return;
             RaisePropertyChanged(control, control.Font);
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Attach
+        ///
+        /// <summary>
+        /// 指定されたコントロール以下の全てのコントロールに対して
+        /// 必要なイベントを関連付けます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Attach(System.Windows.Forms.Control control)
+        {
+            // TODO: control の実際の型に応じて
+            // CheckBoxChanged -- FontButtonChanged のどれかを関連付ける
+            // e.g.
+            //   - CheckBox -> control.CheckedChanged += CheckBoxChanged
+            //   - ColorButton -> control.Click += ColorButtonChanged 等
+            // RaiseXxxEvent の中に存在しないコンポーネントに関しては何もしない
+            // 尚、以下のように一度 -= を挟むとイベントハンドラの重複登録を防げる
+            //  control.Click -= ColorButtonChanged;
+            //  control.Click += ColorButtonChanged;
+
+            control.ControlAdded -= Control_ControlAdded;
+            control.ControlAdded += Control_ControlAdded;
+            control.ControlRemoved -= Control_ControlRemoved;
+            control.ControlRemoved += Control_ControlRemoved;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Detach
+        ///
+        /// <summary>
+        /// 指定されたコントロール以下の全てのコントロールから関連付けた
+        /// イベントを解除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Detach(System.Windows.Forms.Control control)
+        {
+            // TODO: Attach で関連付けたイベントハンドラを削除する
+
+            control.ControlAdded -= Control_ControlAdded;
+            control.ControlRemoved -= Control_ControlRemoved;
         }
 
         #endregion
