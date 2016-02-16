@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -31,7 +32,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsControl : UserControl
+    public class SettingsControl : Panel
     {
         #region Constructors
 
@@ -503,20 +504,48 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Attach(System.Windows.Forms.Control control)
         {
-            // TODO: control の実際の型に応じて
-            // CheckBoxChanged -- FontButtonChanged のどれかを関連付ける
-            // e.g.
-            //   - CheckBox -> control.CheckedChanged += CheckBoxChanged
-            //   - ColorButton -> control.Click += ColorButtonChanged 等
-            // RaiseXxxEvent の中に存在しないコンポーネントに関しては何もしない
-            // 尚、以下のように一度 -= を挟むとイベントハンドラの重複登録を防げる
-            //  control.Click -= ColorButtonChanged;
-            //  control.Click += ColorButtonChanged;
 
             control.ControlAdded -= Control_ControlAdded;
             control.ControlAdded += Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
             control.ControlRemoved += Control_ControlRemoved;
+
+            if (control is ColorButton)
+            {
+                ((ColorButton)control).BackColorChanged -= ColorButtonChanged;
+                ((ColorButton)control).BackColorChanged += ColorButtonChanged;
+            }
+            else if (control is FontButton)
+            {
+                ((FontButton)control).FontChanged -= FontButtonChanged;
+                ((FontButton)control).FontChanged += FontButtonChanged;
+            }
+            else if (control is CheckBox)
+            {
+                ((CheckBox)control).CheckedChanged -= CheckBoxChanged;
+                ((CheckBox)control).CheckedChanged += CheckBoxChanged;
+            }
+            else if (control is ComboBox)
+            {
+                ((ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
+                ((ComboBox)control).SelectedIndexChanged += ComboBoxChanged;
+            }
+            else if (control is NumericUpDown)
+            {
+                ((NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
+                ((NumericUpDown)control).ValueChanged += NumericUpDownChanged;
+            }
+            else if (control is RadioButton)
+            {
+                ((RadioButton)control).CheckedChanged -= RadioButtonChanged;
+                ((RadioButton)control).CheckedChanged += RadioButtonChanged;
+            }
+            else if (control is TextBox)
+            {
+                ((TextBox)control).TextChanged -= TextBoxChanged;
+                ((TextBox)control).TextChanged += TextBoxChanged;
+            }
+            
         }
 
         /* ----------------------------------------------------------------- */
@@ -531,18 +560,46 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Detach(System.Windows.Forms.Control control)
         {
-            // TODO: Attach で関連付けたイベントハンドラを削除する
 
             control.ControlAdded -= Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
+
+            if (control is ColorButton)
+            {
+                ((ColorButton)control).BackColorChanged -= ColorButtonChanged;
+            }
+            else if (control is FontButton)
+            {
+                ((FontButton)control).FontChanged -= FontButtonChanged;
+            }
+            else if (control is CheckBox)
+            {
+                ((CheckBox)control).CheckedChanged -= CheckBoxChanged;
+            }
+            else if (control is ComboBox)
+            {
+                ((ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
+            }
+            else if (control is NumericUpDown)
+            {
+                ((NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
+            }
+            else if (control is RadioButton)
+            {
+                ((RadioButton)control).CheckedChanged -= RadioButtonChanged;
+            }
+            else if (control is TextBox)
+            {
+                ((TextBox)control).TextChanged -= TextBoxChanged;
+            }
         }
 
         #endregion
 
         #region Fields
-        private System.Windows.Forms.Control _ok;
-        private System.Windows.Forms.Control _cancel;
-        private System.Windows.Forms.Control _apply;
+        private System.Windows.Forms.Control _ok=null;
+        private System.Windows.Forms.Control _cancel=null;
+        private System.Windows.Forms.Control _apply=null;
         #endregion
     }
 }
