@@ -56,6 +56,9 @@
     <Compile Include="Button.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ColorButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Detail\FontFactory.cs" />
     <Compile Include="FlowLayoutPanel.cs">
       <SubType>Component</SubType>
