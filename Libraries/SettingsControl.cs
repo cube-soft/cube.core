@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// SettingsForm.cs
+/// SettingsControl.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,31 +24,58 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingsForm
+    /// SettingsControl
     /// 
     /// <summary>
-    /// 設定フォーム用のクラスです。
+    /// 設定フォームを補助するためのコントロールクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsForm : Form
+    public class SettingsControl : UserControl
     {
-        #region Contructors
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsForm
+        /// SettingsControl
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsForm() : base() { }
+        public SettingsControl() : base() { }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OKButton
+        ///
+        /// <summary>
+        /// OK ボタンを表すコントロールを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public System.Windows.Forms.Control OKButton
+        {
+            get { return _ok; }
+            set
+            {
+                if (_ok == value) return;
+                if (_ok != null) _ok.Click -= OKButton_Click;
+                _ok = value;
+                if (_ok != null)
+                {
+                    _ok.Click -= OKButton_Click;
+                    _ok.Click += OKButton_Click;
+                }
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -77,20 +104,58 @@ namespace Cube.Forms
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CancelButton
+        ///
+        /// <summary>
+        /// キャンセルボタンを表すコントロールを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public System.Windows.Forms.Control CancelButton
+        {
+            get { return _cancel; }
+            set
+            {
+                if (_cancel == value) return;
+                if (_cancel != null) _cancel.Click -= CancelButton_Click;
+                _cancel = value;
+                if (_cancel != null)
+                {
+                    _cancel.Click -= CancelButton_Click;
+                    _cancel.Click += CancelButton_Click;
+                }
+            }
+        }
+
         #endregion
 
         #region Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Applied
+        /// Apply
         ///
         /// <summary>
-        /// 適用ボタンが押下された時に発生するイベントです。
+        /// OK ボタン、または適用ボタンが押下された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler Applied;
+        public event EventHandler Apply;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Cancel
+        ///
+        /// <summary>
+        /// キャンセルボタンが押下された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler Cancel;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,15 +174,25 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnApplied
+        /// OnApply
         ///
         /// <summary>
-        /// Applied イベントを発生させます。
+        /// Apply イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnApplied(EventArgs e)
-            => Applied?.Invoke(this, e);
+        protected virtual void OnApply(EventArgs e) => Apply?.Invoke(this, e);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnCancel
+        ///
+        /// <summary>
+        /// Cancel イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnCancel(EventArgs e) => Cancel?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -129,14 +204,40 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(KeyValueEventArgs<string, object> e)
+            => PropertyChanged?.Invoke(this, e);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaisePropertyChanged
+        ///
+        /// <summary>
+        /// PropertyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void RaisePropertyChanged(System.Windows.Forms.Control control, object value)
         {
-            PropertyChanged?.Invoke(this, e);
+            var name = control.Name.Replace(control.GetType().Name, string.Empty);
+            if (string.IsNullOrEmpty(name)) return;
+
+            OnPropertyChanged(new KeyValueEventArgs<string, object>(name, value));
             if (ApplyButton != null) ApplyButton.Enabled = true;
         }
 
         #endregion
 
         #region Event handlers
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OKButton_Click
+        ///
+        /// <summary>
+        /// OK ボタンが押下された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OKButton_Click(object sender, EventArgs e) => OnApply(e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -149,14 +250,27 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            if (ApplyButton == null) return;
-            OnApplied(e);
-            ApplyButton.Enabled = false;
+            var control = sender as System.Windows.Forms.Control;
+            if (control == null) return;
+
+            OnApply(e);
+            control.Enabled = false;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CancelButton_Click
+        ///
+        /// <summary>
+        /// キャンセルボタンが押下された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void CancelButton_Click(object sender, EventArgs e) => OnCancel(e);
 
         #endregion
 
-        #region Others
+        #region RaiseXxxEvent methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -243,7 +357,7 @@ namespace Cube.Forms
         /// TextBoxChanged
         ///
         /// <summary>
-        /// ラジオボタンの状態が変化した時に実行されるハンドラです。
+        /// テキストボックスの状態が変化した時に実行されるハンドラです。
         /// </summary>
         /// 
         /// <remarks>
@@ -260,24 +374,49 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaisePropertyChanged
+        /// ColorButtonChanged
         ///
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// 色選択用ボタンの状態が変化した時に実行されるハンドラです。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には TextBox.BackColor が設定されます。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged(System.Windows.Forms.Control control, object value)
+        protected void ColorButtonChanged(object sender, EventArgs e)
         {
-            var name = control.Name.Replace(control.GetType().Name, string.Empty);
-            if (string.IsNullOrEmpty(name)) return;
+            var control = sender as System.Windows.Forms.Control;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.BackColor);
+        }
 
-            OnPropertyChanged(new KeyValueEventArgs<string, object>(name, value));
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FontButtonChanged
+        ///
+        /// <summary>
+        /// フォント選択用ボタンの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には TextBox.Font が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void FontButtonChanged(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.Control;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.Font);
         }
 
         #endregion
 
         #region Fields
+        private System.Windows.Forms.Control _ok;
+        private System.Windows.Forms.Control _cancel;
         private System.Windows.Forms.Control _apply;
         #endregion
     }
