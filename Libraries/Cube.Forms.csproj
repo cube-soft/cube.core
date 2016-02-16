@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
@@ -63,6 +64,10 @@
     <Compile Include="FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FontButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Models\EmptyTextDesigner.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="FlatButton.cs">
       <SubType>Component</SubType>
