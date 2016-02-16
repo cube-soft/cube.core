@@ -123,12 +123,6 @@
     <Compile Include="DemoWeb.Designer.cs">
       <DependentUpon>DemoWeb.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingForm.Designer.cs">
-      <DependentUpon>SettingForm.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="DemoButtons.resx">
       <DependentUpon>DemoButtons.cs</DependentUpon>
     </EmbeddedResource>

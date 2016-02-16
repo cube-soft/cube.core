@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -60,8 +59,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public System.Windows.Forms.Control OKButton
         {
             get { return _ok; }
@@ -87,8 +84,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public System.Windows.Forms.Control ApplyButton
         {
             get { return _apply; }
@@ -114,8 +109,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public System.Windows.Forms.Control CancelButton
         {
             get { return _cancel; }
@@ -520,30 +513,30 @@ namespace Cube.Forms
                 ((FontButton)control).FontChanged -= FontButtonChanged;
                 ((FontButton)control).FontChanged += FontButtonChanged;
             }
-            else if (control is CheckBox)
+            else if (control is System.Windows.Forms.CheckBox)
             {
-                ((CheckBox)control).CheckedChanged -= CheckBoxChanged;
-                ((CheckBox)control).CheckedChanged += CheckBoxChanged;
+                ((System.Windows.Forms.CheckBox)control).CheckedChanged -= CheckBoxChanged;
+                ((System.Windows.Forms.CheckBox)control).CheckedChanged += CheckBoxChanged;
             }
-            else if (control is ComboBox)
+            else if (control is System.Windows.Forms.ComboBox)
             {
-                ((ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
-                ((ComboBox)control).SelectedIndexChanged += ComboBoxChanged;
+                ((System.Windows.Forms.ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
+                ((System.Windows.Forms.ComboBox)control).SelectedIndexChanged += ComboBoxChanged;
             }
-            else if (control is NumericUpDown)
+            else if (control is System.Windows.Forms.NumericUpDown)
             {
-                ((NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
-                ((NumericUpDown)control).ValueChanged += NumericUpDownChanged;
+                ((System.Windows.Forms.NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
+                ((System.Windows.Forms.NumericUpDown)control).ValueChanged += NumericUpDownChanged;
             }
-            else if (control is RadioButton)
+            else if (control is System.Windows.Forms.RadioButton)
             {
-                ((RadioButton)control).CheckedChanged -= RadioButtonChanged;
-                ((RadioButton)control).CheckedChanged += RadioButtonChanged;
+                ((System.Windows.Forms.RadioButton)control).CheckedChanged -= RadioButtonChanged;
+                ((System.Windows.Forms.RadioButton)control).CheckedChanged += RadioButtonChanged;
             }
-            else if (control is TextBox)
+            else if (control is System.Windows.Forms.TextBox)
             {
-                ((TextBox)control).TextChanged -= TextBoxChanged;
-                ((TextBox)control).TextChanged += TextBoxChanged;
+                ((System.Windows.Forms.TextBox)control).TextChanged -= TextBoxChanged;
+                ((System.Windows.Forms.TextBox)control).TextChanged += TextBoxChanged;
             }
             
         }
@@ -572,25 +565,25 @@ namespace Cube.Forms
             {
                 ((FontButton)control).FontChanged -= FontButtonChanged;
             }
-            else if (control is CheckBox)
+            else if (control is System.Windows.Forms.CheckBox)
             {
-                ((CheckBox)control).CheckedChanged -= CheckBoxChanged;
+                ((System.Windows.Forms.CheckBox)control).CheckedChanged -= CheckBoxChanged;
             }
-            else if (control is ComboBox)
+            else if (control is System.Windows.Forms.ComboBox)
             {
-                ((ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
+                ((System.Windows.Forms.ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
             }
-            else if (control is NumericUpDown)
+            else if (control is System.Windows.Forms.NumericUpDown)
             {
-                ((NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
+                ((System.Windows.Forms.NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
             }
-            else if (control is RadioButton)
+            else if (control is System.Windows.Forms.RadioButton)
             {
-                ((RadioButton)control).CheckedChanged -= RadioButtonChanged;
+                ((System.Windows.Forms.RadioButton)control).CheckedChanged -= RadioButtonChanged;
             }
-            else if (control is TextBox)
+            else if (control is System.Windows.Forms.TextBox)
             {
-                ((TextBox)control).TextChanged -= TextBoxChanged;
+                ((System.Windows.Forms.TextBox)control).TextChanged -= TextBoxChanged;
             }
         }
 
