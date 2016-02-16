@@ -34,6 +34,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Designer(typeof(EmptyTextDesigner))]
     public class ColorButton : Button
     {
         #region Constructors
