@@ -18,7 +18,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 
 namespace Cube.Forms
 {
@@ -202,6 +201,150 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CheckBoxChanged
+        ///
+        /// <summary>
+        /// チェックボックスの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には CheckBox.Checked が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void CheckBoxChanged(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.CheckBox;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.Checked);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ComboBoxChanged
+        ///
+        /// <summary>
+        /// コンボボックスの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には ComboBox.SelectedIndex が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void ComboBoxChanged(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.ComboBox;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.SelectedIndex);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NumericUpDownChanged
+        ///
+        /// <summary>
+        /// NumericUpDown の状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には NumericUpDown.Value が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void NumericUpDownChanged(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.NumericUpDown;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.Value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RadioButtonChanged
+        ///
+        /// <summary>
+        /// ラジオボタンの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には RadioButton.Checked が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void RadioButtonChanged(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.RadioButton;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.Checked);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TextBoxChanged
+        ///
+        /// <summary>
+        /// テキストボックスの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には TextBox.Text が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void TextBoxChanged(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.TextBox;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.Text);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ColorButtonChanged
+        ///
+        /// <summary>
+        /// 色選択用ボタンの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には TextBox.BackColor が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void ColorButtonChanged(object sender, EventArgs e)
+        {
+            var control = sender as ColorButton;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.BackColor);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FontButtonChanged
+        ///
+        /// <summary>
+        /// フォント選択用ボタンの状態が変化した時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Value には TextBox.Font が設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void FontButtonChanged(object sender, EventArgs e)
+        {
+            var control = sender as FontButton;
+            if (control == null) return;
+            RaisePropertyChanged(control, control.Font);
+        }
+
+        #endregion
+
+        #region Non-virtual protected methods
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// RaisePropertyChanged
         ///
         /// <summary>
@@ -339,150 +482,6 @@ namespace Cube.Forms
 
         #endregion
 
-        #region RaiseXxxEvent methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CheckBoxChanged
-        ///
-        /// <summary>
-        /// チェックボックスの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には CheckBox.Checked が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void CheckBoxChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.CheckBox;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Checked);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ComboBoxChanged
-        ///
-        /// <summary>
-        /// コンボボックスの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には ComboBox.SelectedIndex が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void ComboBoxChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.ComboBox;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.SelectedIndex);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NumericUpDownChanged
-        ///
-        /// <summary>
-        /// NumericUpDown の状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には NumericUpDown.Value が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void NumericUpDownChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.NumericUpDown;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RadioButtonChanged
-        ///
-        /// <summary>
-        /// ラジオボタンの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には RadioButton.Checked が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RadioButtonChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.RadioButton;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Checked);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TextBoxChanged
-        ///
-        /// <summary>
-        /// テキストボックスの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には TextBox.Text が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void TextBoxChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.TextBox;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Text);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ColorButtonChanged
-        ///
-        /// <summary>
-        /// 色選択用ボタンの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には TextBox.BackColor が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void ColorButtonChanged(object sender, EventArgs e)
-        {
-            var control = sender as ColorButton;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.BackColor);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FontButtonChanged
-        ///
-        /// <summary>
-        /// フォント選択用ボタンの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には TextBox.Font が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void FontButtonChanged(object sender, EventArgs e)
-        {
-            var control = sender as FontButton;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Font);
-        }
-
-        #endregion
-
         #region Others
 
         /* ----------------------------------------------------------------- */
@@ -497,48 +496,49 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Attach(System.Windows.Forms.Control control)
         {
-
             control.ControlAdded -= Control_ControlAdded;
             control.ControlAdded += Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
             control.ControlRemoved += Control_ControlRemoved;
 
-            if (control is ColorButton)
+            switch (control.GetType().Name)
             {
-                ((ColorButton)control).BackColorChanged -= ColorButtonChanged;
-                ((ColorButton)control).BackColorChanged += ColorButtonChanged;
+                case nameof(ColorButton):
+                    var color = control as ColorButton;
+                    color.BackColorChanged -= ColorButtonChanged;
+                    color.BackColorChanged += ColorButtonChanged;
+                    break;
+                case nameof(FontButton):
+                    var font = control as FontButton;
+                    font.FontChanged -= FontButtonChanged;
+                    font.FontChanged += FontButtonChanged;
+                    break;
+                case nameof(System.Windows.Forms.CheckBox):
+                    var check = control as System.Windows.Forms.CheckBox;
+                    check.CheckedChanged -= CheckBoxChanged;
+                    check.CheckedChanged += CheckBoxChanged;
+                    break;
+                case nameof(System.Windows.Forms.ComboBox):
+                    var combo = control as System.Windows.Forms.ComboBox;
+                    combo.SelectedIndexChanged -= ComboBoxChanged;
+                    combo.SelectedIndexChanged += ComboBoxChanged;
+                    break;
+                case nameof(System.Windows.Forms.NumericUpDown):
+                    var num = control as System.Windows.Forms.NumericUpDown;
+                    num.ValueChanged -= NumericUpDownChanged;
+                    num.ValueChanged += NumericUpDownChanged;
+                    break;
+                case nameof(System.Windows.Forms.RadioButton):
+                    var radio = control as System.Windows.Forms.RadioButton;
+                    radio.CheckedChanged -= RadioButtonChanged;
+                    radio.CheckedChanged += RadioButtonChanged;
+                    break;
+                case nameof(System.Windows.Forms.TextBox):
+                    var text = control as System.Windows.Forms.TextBox;
+                    text.TextChanged -= TextBoxChanged;
+                    text.TextChanged += TextBoxChanged;
+                    break;
             }
-            else if (control is FontButton)
-            {
-                ((FontButton)control).FontChanged -= FontButtonChanged;
-                ((FontButton)control).FontChanged += FontButtonChanged;
-            }
-            else if (control is System.Windows.Forms.CheckBox)
-            {
-                ((System.Windows.Forms.CheckBox)control).CheckedChanged -= CheckBoxChanged;
-                ((System.Windows.Forms.CheckBox)control).CheckedChanged += CheckBoxChanged;
-            }
-            else if (control is System.Windows.Forms.ComboBox)
-            {
-                ((System.Windows.Forms.ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
-                ((System.Windows.Forms.ComboBox)control).SelectedIndexChanged += ComboBoxChanged;
-            }
-            else if (control is System.Windows.Forms.NumericUpDown)
-            {
-                ((System.Windows.Forms.NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
-                ((System.Windows.Forms.NumericUpDown)control).ValueChanged += NumericUpDownChanged;
-            }
-            else if (control is System.Windows.Forms.RadioButton)
-            {
-                ((System.Windows.Forms.RadioButton)control).CheckedChanged -= RadioButtonChanged;
-                ((System.Windows.Forms.RadioButton)control).CheckedChanged += RadioButtonChanged;
-            }
-            else if (control is System.Windows.Forms.TextBox)
-            {
-                ((System.Windows.Forms.TextBox)control).TextChanged -= TextBoxChanged;
-                ((System.Windows.Forms.TextBox)control).TextChanged += TextBoxChanged;
-            }
-            
         }
 
         /* ----------------------------------------------------------------- */
@@ -553,37 +553,39 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Detach(System.Windows.Forms.Control control)
         {
-
             control.ControlAdded -= Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
 
-            if (control is ColorButton)
+            switch (control.GetType().Name)
             {
-                ((ColorButton)control).BackColorChanged -= ColorButtonChanged;
-            }
-            else if (control is FontButton)
-            {
-                ((FontButton)control).FontChanged -= FontButtonChanged;
-            }
-            else if (control is System.Windows.Forms.CheckBox)
-            {
-                ((System.Windows.Forms.CheckBox)control).CheckedChanged -= CheckBoxChanged;
-            }
-            else if (control is System.Windows.Forms.ComboBox)
-            {
-                ((System.Windows.Forms.ComboBox)control).SelectedIndexChanged -= ComboBoxChanged;
-            }
-            else if (control is System.Windows.Forms.NumericUpDown)
-            {
-                ((System.Windows.Forms.NumericUpDown)control).ValueChanged -= NumericUpDownChanged;
-            }
-            else if (control is System.Windows.Forms.RadioButton)
-            {
-                ((System.Windows.Forms.RadioButton)control).CheckedChanged -= RadioButtonChanged;
-            }
-            else if (control is System.Windows.Forms.TextBox)
-            {
-                ((System.Windows.Forms.TextBox)control).TextChanged -= TextBoxChanged;
+                case nameof(ColorButton):
+                    var color = control as ColorButton;
+                    color.BackColorChanged -= ColorButtonChanged;
+                    break;
+                case nameof(FontButton):
+                    var font = control as FontButton;
+                    font.FontChanged -= FontButtonChanged;
+                    break;
+                case nameof(System.Windows.Forms.CheckBox):
+                    var check = control as System.Windows.Forms.CheckBox;
+                    check.CheckedChanged -= CheckBoxChanged;
+                    break;
+                case nameof(System.Windows.Forms.ComboBox):
+                    var combo = control as System.Windows.Forms.ComboBox;
+                    combo.SelectedIndexChanged -= ComboBoxChanged;
+                    break;
+                case nameof(System.Windows.Forms.NumericUpDown):
+                    var num = control as System.Windows.Forms.NumericUpDown;
+                    num.ValueChanged -= NumericUpDownChanged;
+                    break;
+                case nameof(System.Windows.Forms.RadioButton):
+                    var radio = control as System.Windows.Forms.RadioButton;
+                    radio.CheckedChanged -= RadioButtonChanged;
+                    break;
+                case nameof(System.Windows.Forms.TextBox):
+                    var text = control as System.Windows.Forms.TextBox;
+                    text.TextChanged -= TextBoxChanged;
+                    break;
             }
         }
 
