@@ -500,7 +500,7 @@ namespace Cube.Forms
             control.ControlAdded += Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
             control.ControlRemoved += Control_ControlRemoved;
-
+            _controllist.Add(control);
             switch (control.GetType().Name)
             {
                 case nameof(ColorButton):
@@ -538,6 +538,9 @@ namespace Cube.Forms
                     text.TextChanged -= TextBoxChanged;
                     text.TextChanged += TextBoxChanged;
                     break;
+                default:
+                    _controllist.Remove(control);
+                    break;
             }
         }
 
@@ -555,7 +558,7 @@ namespace Cube.Forms
         {
             control.ControlAdded -= Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
-
+            _controllist.Remove(control);
             switch (control.GetType().Name)
             {
                 case nameof(ColorButton):
@@ -589,12 +592,68 @@ namespace Cube.Forms
             }
         }
 
+        public void UpdateFromSetting(object setting)
+        {
+            var type=setting.GetType();
+            foreach(var control in _controllist)
+            {
+                var name = control.Name.Replace(control.GetType().Name, string.Empty);
+                var value = type.GetProperty(name).GetValue(setting);
+                if (value == null) return;
+                CheckUpdateType(control, name, value);
+            }
+        }
+
+        protected virtual void CheckUpdateType(System.Windows.Forms.Control control,string propertyname,object value)
+        {
+            switch (control.GetType().Name)
+            {
+                case nameof(ColorButton):
+                    if (!(value is System.Drawing.Color)) break;
+                    var color = control as ColorButton;
+                    color.BackColor = (System.Drawing.Color)value;
+                    color.ForeColor = (System.Drawing.Color)value;
+                    break;
+                case nameof(FontButton):
+                    if (!(value is System.Drawing.Font)) break;
+                    var font = control as FontButton;
+                    font.Font = (System.Drawing.Font)value;
+                    break;
+                case nameof(System.Windows.Forms.CheckBox):
+                    if (!(value is bool)) break;
+                    var check = control as System.Windows.Forms.CheckBox;
+                    check.Checked = (bool)value;
+                    break;
+                case nameof(System.Windows.Forms.ComboBox):
+                    if (!(value is int)) break;
+                    var combo = control as System.Windows.Forms.ComboBox;
+                    combo.SelectedIndex = (int)value;
+                    break;
+                case nameof(System.Windows.Forms.NumericUpDown):
+                    if (!(value is int)) break;
+                    var num = control as System.Windows.Forms.NumericUpDown;
+                    num.Value = (int)value;
+                    break;
+                case nameof(System.Windows.Forms.RadioButton):
+                    if (!(value is bool)) break;
+                    var radio = control as System.Windows.Forms.RadioButton;
+                    radio.Checked = (bool)value;
+                    break;
+                case nameof(System.Windows.Forms.TextBox):
+                    if (!(value is string)) break;
+                    var text = control as System.Windows.Forms.TextBox;
+                    text.Text = (string)value;
+                    break;
+            }
+        }
         #endregion
 
         #region Fields
         private System.Windows.Forms.Control _ok=null;
         private System.Windows.Forms.Control _cancel=null;
         private System.Windows.Forms.Control _apply=null;
+        private System.Collections.Generic.List<System.Windows.Forms.Control> _controllist= 
+            new System.Collections.Generic.List<System.Windows.Forms.Control>();
         #endregion
     }
 }
