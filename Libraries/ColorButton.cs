@@ -127,6 +127,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IList<int> CustomColors { get; set; } = new List<int>();
 
         #endregion
@@ -152,13 +154,16 @@ namespace Cube.Forms
             dialog.SolidColorOnly = SolidColorOnly;
             dialog.AllowFullOpen = AllowFullOpen;
             dialog.FullOpen = FullOpen;
-            dialog.CustomColors = CustomColors?.ToArray();
+            if (CustomColors != null) dialog.CustomColors = CustomColors.ToArray();
             
             var result = dialog.ShowDialog();
 
             FullOpen = dialog.FullOpen;
-            CustomColors?.Clear();
-            foreach (var color in dialog.CustomColors) CustomColors?.Add(color);
+            if (CustomColors != null)
+            {
+                CustomColors.Clear();
+                foreach (var color in dialog.CustomColors) CustomColors.Add(color);
+            }
 
             if (result == System.Windows.Forms.DialogResult.Cancel) return;
 

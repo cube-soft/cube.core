@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Drawing;
 using Control = System.Windows.Forms.Control;
@@ -77,6 +78,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control OKButton
         {
             get { return _ok; }
@@ -102,6 +105,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control ApplyButton
         {
             get { return _apply; }
@@ -127,6 +132,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control CancelButton
         {
             get { return _cancel; }
@@ -152,6 +159,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEnumerable<Control> MonitoredControls => MonitoredControlList;
 
         /* ----------------------------------------------------------------- */
@@ -163,7 +172,37 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected IList<Control> MonitoredControlList { get; } = new List<Control>();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CustomColors
+        ///
+        /// <summary>
+        /// 全ての ColorButton で共有する CustomColors オブジェクトを
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IList<int> CustomColors { get; } = new List<int>();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UseCustomColors
+        ///
+        /// <summary>
+        /// 全ての ColorButton で CustomColors オブジェクトを共有するか
+        /// どうかを示す値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool UseCustomColors { get; set; } = true;
 
         #endregion
 
@@ -764,6 +803,7 @@ namespace Cube.Forms
                     var color = control as ColorButton;
                     color.BackColorChanged -= ColorButtonChanged;
                     color.BackColorChanged += ColorButtonChanged;
+                    if (UseCustomColors && CustomColors != null) color.CustomColors = CustomColors;
                     break;
                 case nameof(FontButton):
                     var font = control as FontButton;
@@ -824,6 +864,7 @@ namespace Cube.Forms
                 case nameof(ColorButton):
                     var color = control as ColorButton;
                     color.BackColorChanged -= ColorButtonChanged;
+                    if (CustomColors == color.CustomColors) color.CustomColors = null;
                     break;
                 case nameof(FontButton):
                     var font = control as FontButton;
@@ -848,6 +889,8 @@ namespace Cube.Forms
                 case nameof(System.Windows.Forms.TextBox):
                     var text = control as System.Windows.Forms.TextBox;
                     text.TextChanged -= TextBoxChanged;
+                    break;
+                default:
                     break;
             }
         }
