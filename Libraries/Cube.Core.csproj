@@ -59,6 +59,7 @@
     <Compile Include="EventArgs\QueryEventArgs.cs" />
     <Compile Include="EventArgs\ValueChangedEventArgs.cs" />
     <Compile Include="Extensions\CollectionEx.cs" />
+    <Compile Include="Extensions\GenericOperations.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
