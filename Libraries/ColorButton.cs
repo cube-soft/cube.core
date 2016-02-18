@@ -147,6 +147,7 @@ namespace Cube.Forms
             base.OnClick(e);
 
             var dialog = new System.Windows.Forms.ColorDialog();
+            dialog.Color = BackColor;
             dialog.AnyColor = AnyColor;
             dialog.SolidColorOnly = SolidColorOnly;
             dialog.AllowFullOpen = AllowFullOpen;
