@@ -67,7 +67,6 @@
     <Compile Include="FontButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Models\EmptyTextDesigner.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="FlatButton.cs">
       <SubType>Component</SubType>
@@ -124,8 +123,8 @@
     </Compile>
     <Compile Include="Detail\RadioButtonPainter.cs" />
     <Compile Include="Models\Surface.cs" />
-    <Compile Include="SettingsForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="SettingsControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="SizeGripControl.cs">
       <SubType>Component</SubType>
