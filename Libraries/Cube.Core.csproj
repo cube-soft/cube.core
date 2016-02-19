@@ -59,8 +59,8 @@
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueChangedEventArgs.cs" />
-    <Compile Include="Extensions\CollectionEx.cs" />
-    <Compile Include="Extensions\GenericOperations.cs" />
+    <Compile Include="Operations\CollectionEx.cs" />
+    <Compile Include="Operations\Generics.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
@@ -83,10 +83,10 @@
     </Compile>
     <Compile Include="Events\ValueCancelEventArgs.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="Extensions\ByteFormat.cs" />
-    <Compile Include="Extensions\TaskEx.cs" />
-    <Compile Include="Extensions\UnixTime.cs" />
-    <Compile Include="Extensions\UriEx.cs" />
+    <Compile Include="Conversions\ByteFormat.cs" />
+    <Compile Include="Tasks\TaskEx.cs" />
+    <Compile Include="Conversions\UnixTime.cs" />
+    <Compile Include="Conversions\UriQuery.cs" />
     <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="NativeApis\Shell32.cs" />
     <Compile Include="Icons\IconSize.cs" />

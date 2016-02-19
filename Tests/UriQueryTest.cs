@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UriTest.cs
+/// UriQueryTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -19,13 +19,13 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using NUnit.Framework;
-using Cube.Extensions;
+using Cube.Conversions;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriTest
+    /// UriQueryTest
     /// 
     /// <summary>
     /// Uri クラスの拡張メソッドをテストするためのクラスです。
@@ -33,7 +33,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class UriTest
+    class UriQueryTest
     {
         #region Tests
 
@@ -73,6 +73,16 @@ namespace Cube.Tests
             Assert.That(
                 Create().With(time).ToString(),
                 Is.EqualTo($"{Create()}?t={unix}")
+            );
+        }
+
+        [TestCase(1, 128, 26, 5, 3)]
+        public void With_Version(int major, int minor, int build, int revision, int digit)
+        {
+            var version = new Version(major, minor, build, revision);
+            Assert.That(
+                Create().With(version, digit).ToString(),
+                Is.EqualTo($"{Create()}?v={version.ToString(digit)}")
             );
         }
 

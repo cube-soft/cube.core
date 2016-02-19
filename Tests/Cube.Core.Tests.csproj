@@ -63,7 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartupTest.cs" />
     <Compile Include="UnixTimeTest.cs" />
-    <Compile Include="UriTest.cs" />
+    <Compile Include="UriQueryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.Core.csproj">

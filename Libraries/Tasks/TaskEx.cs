@@ -20,7 +20,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Cube.Extensions
+namespace Cube.Tasks
 {
     /* --------------------------------------------------------------------- */
     ///

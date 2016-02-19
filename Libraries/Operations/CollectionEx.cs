@@ -20,18 +20,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Cube.Extensions
+namespace Cube.Operations
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CollectionEx
+    /// Collections
     /// 
     /// <summary>
-    /// Collection クラスの拡張用クラスです。
+    /// Collection クラスの拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class CollectionEx
+    public static class Collections
     {
         /* ----------------------------------------------------------------- */
         ///

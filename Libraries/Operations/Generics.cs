@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// GenericOperations.cs
+/// Generics.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,14 +24,14 @@ namespace Cube.Operations
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Operations.ExtensionMethods
+    /// Generics
     /// 
     /// <summary>
     /// クラスに対する汎用的な操作を定義するための拡張メソッド用クラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public static class ExtensionMethods
+    public static class Generics
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -57,7 +57,7 @@ namespace Cube.Operations
             foreach (var field in type.GetFields())
             {
                 var value = field.GetValue(src);
-                
+                field.SetValue(dest, value);
             }
         }
 

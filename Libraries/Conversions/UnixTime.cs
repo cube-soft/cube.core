@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UriEx.cs
+/// UnixTimeExtensions.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,95 +18,78 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 
-namespace Cube.Extensions
+namespace Cube.Conversions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriEx
+    /// UnixTime
     /// 
     /// <summary>
-    /// Sytem.Uri の拡張クラスです。
+    /// DateTiem と UnixTime の相互変換を行う拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class UriEx
+    public static class UnixTime
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// With
+        /// ToUnixTime
         /// 
         /// <summary>
-        /// Uri オブジェクトに指定したクエリーを付与します。
+        /// DateTime オブジェクトから UNIX 時刻へ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Uri With(this Uri uri, IDictionary<string, string> query)
+        public static long ToUnixTime(this DateTime time)
         {
-            if (uri == null) return uri;
-
-            var builder = new UriBuilder(uri);
-            if (query?.Count > 0)
-            {
-                foreach (var item in query)
-                {
-                    var s = $"{item.Key}={item.Value}";
-                    builder.Query = builder != null && builder.Query.Length > 1 ?
-                                    $"{builder.Query.Substring(1)}&{s}" :
-                                    s;
-                }
-            }
-            return builder.Uri;
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var utc = time.ToUniversalTime();
+            return (long)utc.Subtract(epoch).TotalSeconds;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// With
+        /// ToDateTime
         /// 
         /// <summary>
-        /// Uri オブジェクトに指定したクエリーを付与します。
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Uri With<T>(this Uri uri, string key, T value)
+        public static DateTime ToDateTime(this int unix)
         {
-            var query = new Dictionary<string, string>();
-            query.Add(key, value.ToString());
-            return With(uri, query);
+            var us = (uint)unix;
+            return ToUniversalTime(us);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// With
+        /// ToUniversalTime
         /// 
         /// <summary>
-        /// Uri オブジェクトに指定した時刻を付与します。
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// 時刻は UnixTime に変換した上で、t=(unix) と言う形で
-        /// Uri オブジェクトに付与されます。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static Uri With(this Uri uri, DateTime time)
+        public static DateTime ToUniversalTime(this long unix)
         {
-            return With(uri, "t", time.ToUnixTime());
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unix);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithVersion
+        /// ToLocalTime
         /// 
         /// <summary>
-        /// Uri オブジェクトにバージョン情報を付与します。
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Uri WithVersion(this Uri uri, string version)
+        public static DateTime ToLocalTime(this long unix)
         {
-            return With(uri, "appver", version);
+            return ToUniversalTime(unix).ToLocalTime();
         }
     }
 }
