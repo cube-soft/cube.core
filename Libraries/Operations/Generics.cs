@@ -20,18 +20,18 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using IoEx = System.IO;
 
-namespace Cube.Operations
+namespace Cube.Generics
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Generics
+    /// Generics.Operations
     /// 
     /// <summary>
     /// クラスに対する汎用的な操作を定義するための拡張メソッド用クラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public static class Generics
+    public static class Operations
     {
         /* ----------------------------------------------------------------- */
         ///
