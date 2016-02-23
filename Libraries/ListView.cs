@@ -68,6 +68,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
         public int Count => VirtualMode ? VirtualListSize : Items.Count;
 
         /* ----------------------------------------------------------------- */
@@ -79,6 +80,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
         public bool AnyItemsSelected => SelectedIndices.Count > 0;
 
         /* ----------------------------------------------------------------- */
@@ -90,6 +92,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IListViewItemConverter Converter { get; set; }
 
         #endregion
