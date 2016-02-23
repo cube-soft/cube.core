@@ -18,7 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using Cube.Extensions;
+using Cube.Conversions;
 
 namespace Cube.Tests
 {

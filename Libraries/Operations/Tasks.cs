@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// TaskEx.cs
+/// Tasks.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -20,18 +20,18 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Cube.Extensions
+namespace Cube.Tasks
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskEx
+    /// Tasks.Operations
     /// 
     /// <summary>
-    /// Sytem.Threading.Tasks.Task の拡張クラスです。
+    /// Task の拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class TaskEx
+    public static class Operations
     {
         /* --------------------------------------------------------------------- */
         ///

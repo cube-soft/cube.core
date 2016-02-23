@@ -65,12 +65,14 @@
     <Compile Include="Missing\Progress.cs" />
     <Compile Include="Missing\Task35.cs" />
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="EventArgs\KeyValueCancelEventArgs.cs" />
-    <Compile Include="EventArgs\KeyValueEventArgs.cs" />
-    <Compile Include="EventArgs\ProgressEventArgs.cs" />
-    <Compile Include="EventArgs\QueryEventArgs.cs" />
-    <Compile Include="EventArgs\ValueChangedEventArgs.cs" />
-    <Compile Include="Extensions\CollectionEx.cs" />
+    <Compile Include="Events\KeyValueCancelEventArgs.cs" />
+    <Compile Include="Events\KeyValueEventArgs.cs" />
+    <Compile Include="Events\ProgressEventArgs.cs" />
+    <Compile Include="Events\QueryEventArgs.cs" />
+    <Compile Include="Events\RelayEvent.cs" />
+    <Compile Include="Events\ValueChangedEventArgs.cs" />
+    <Compile Include="Operations\Collections.cs" />
+    <Compile Include="Operations\Generics.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
@@ -91,12 +93,12 @@
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EventArgs\ValueCancelEventArgs.cs" />
-    <Compile Include="EventArgs\ValueEventArgs.cs" />
-    <Compile Include="Extensions\ByteFormat.cs" />
-    <Compile Include="Extensions\TaskEx.cs" />
-    <Compile Include="Extensions\UnixTime.cs" />
-    <Compile Include="Extensions\UriEx.cs" />
+    <Compile Include="Events\ValueCancelEventArgs.cs" />
+    <Compile Include="Events\ValueEventArgs.cs" />
+    <Compile Include="Conversions\ByteFormat.cs" />
+    <Compile Include="Operations\Tasks.cs" />
+    <Compile Include="Conversions\UnixTime.cs" />
+    <Compile Include="Conversions\UriQuery.cs" />
     <Compile Include="Icons\IconFactory.cs" />
     <Compile Include="NativeApis\Shell32.cs" />
     <Compile Include="Icons\IconSize.cs" />

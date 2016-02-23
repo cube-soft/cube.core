@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UriTest.cs
+/// RelayEvent.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,114 +18,113 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using NUnit.Framework;
-using Cube.Extensions;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriTest
+    /// RelayEvent
     /// 
     /// <summary>
-    /// Uri クラスの拡張メソッドをテストするためのクラスです。
+    /// イベントを中継するためのクラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class UriTest
+    public class RelayEvent
     {
-        #region Tests
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// With_Value
+        /// Raise
         /// 
         /// <summary>
-        /// 様々な型を With に指定した時のテストを行います。
+        /// イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("string", "value")]
-        [TestCase("int", 5)]
-        [TestCase("double", 3.14)]
-        public void With_Value<T>(string key, T value)
-        {
-            Assert.That(
-                Create().With(key, value).ToString,
-                Is.EqualTo($"{Create()}?{key}={value}")
-            );
-        }
+        public void Raise() => Raise(this);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// With_DateTime
+        /// Raise
         /// 
         /// <summary>
-        /// 時刻を付与するテストを行います。
+        /// イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
-        public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
-        {
-            var time = new DateTime(y, m, d, hh, mm, ss);
-            Assert.That(
-                Create().With(time).ToString(),
-                Is.EqualTo($"{Create()}?t={unix}")
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With_Null
-        /// 
-        /// <summary>
-        /// 引数に null を指定した時のテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void With_Null()
-        {
-            Assert.That(
-                Create().With(null).ToString(),
-                Is.EqualTo(Create().ToString())
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With_MultiQuery
-        /// 
-        /// <summary>
-        /// 複数個のクエリーを With で結合した時のテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void With_MultiQuery()
-        {
-            Assert.That(
-                Create().With("key1", "value1").With("key2", "value2").ToString(),
-                Is.EqualTo($"{Create()}?key1=value1&key2=value2")
-            );
-        }
+        public void Raise(object sender) => Handle?.Invoke(sender, EventArgs.Empty);
 
         #endregion
 
-        #region Helper methods
+        #region Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Handle
         /// 
         /// <summary>
-        /// ベースとなる Uri オブジェクトを生成します。
+        /// Raise によって発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Uri Create() => new Uri("http://www.cube-soft.jp/");
+        public event EventHandler Handle;
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// RelayEvent
+    /// 
+    /// <summary>
+    /// イベントを中継するためのクラスです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public class RelayEvent<TEvent> where TEvent : EventArgs
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Raise
+        /// 
+        /// <summary>
+        /// イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Raise(TEvent args)
+            => Raise(this, args);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Raise
+        /// 
+        /// <summary>
+        /// イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Raise(object sender, TEvent args)
+            => Handle?.Invoke(sender, args);
+
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Handle
+        /// 
+        /// <summary>
+        /// Raise によって発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<TEvent> Handle;
 
         #endregion
     }

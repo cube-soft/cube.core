@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 using log4net;
-using Cube.Extensions;
+using Cube.Conversions;
 using IoEx = System.IO;
 
 namespace Cube
