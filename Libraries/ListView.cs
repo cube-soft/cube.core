@@ -440,13 +440,21 @@ namespace Cube.Forms
             foreach (var index in sorted)
             {
                 if (index < 0 || index >= Count) continue;
-                var item = Items[index];
+                var item     = Items[index];
+                var selected = item.Selected;
+                var focused  = item.Focused;
                 Items.RemoveAt(index);
 
                 var newindex = Math.Max(Math.Min(index + offset, Count), 0);
-                Items.Insert(newindex, item);
+                var result = Items.Insert(newindex, item);
+                if (result != null)
+                {
+                    result.Selected = selected;
+                    result.Focused  = focused;
+                }
             }
 
+            HackAlignmentBug();
             OnMoved(new MoveEventArgs(indices.ToArray(), offset));
         }
 
