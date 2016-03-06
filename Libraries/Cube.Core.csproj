@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="Events\EventArgsFactory.cs" />
     <Compile Include="Events\KeyValueCancelEventArgs.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
     <Compile Include="Events\ProgressEventArgs.cs" />

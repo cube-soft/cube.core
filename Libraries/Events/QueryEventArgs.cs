@@ -44,6 +44,19 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(TQuery query) : this(query, false) { }
+        
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(TQuery query, bool cancel)
+            : this(query, default(TResult), cancel)
+        { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,9 +67,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public QueryEventArgs(TQuery query, bool cancel) : base(cancel)
+        public QueryEventArgs(TQuery query, TResult result, bool cancel) : base(cancel)
         {
-            Query = query;
+            Query  = query;
+            Result = result;
         }
 
         #endregion
