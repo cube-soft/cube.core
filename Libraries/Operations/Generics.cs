@@ -50,8 +50,8 @@ namespace Cube.Generics
             {
                 if (property.GetGetMethod() == null ||
                     property.GetSetMethod() == null) continue;
-                var value = property.GetValue(src);
-                property.SetValue(dest, value);
+                var value = property.GetValue(src, null);
+                property.SetValue(dest, value, null);
             }
 
             foreach (var field in type.GetFields())
