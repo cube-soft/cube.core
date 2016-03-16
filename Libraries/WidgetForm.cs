@@ -134,8 +134,8 @@ namespace Cube.Forms
             get
             {
                 var cp = base.CreateParams;
-                cp.Style |= 0x20000; /* WS_MINIMIZEBOX*/
-                cp.ClassStyle |= 0x00020000; /* CS_DROPSHADOW */
+                cp.Style |= 0x20000; // WS_MINIMIZEBOX
+                cp.ClassStyle |= 0x00020000; // CS_DROPSHADOW
                 return cp;
             }
         }
@@ -180,7 +180,6 @@ namespace Cube.Forms
             WindowState  = WindowState == System.Windows.Forms.FormWindowState.Normal ?
                            System.Windows.Forms.FormWindowState.Maximized :
                            System.Windows.Forms.FormWindowState.Normal;
-            _windowState = WindowState;
         }
 
         /* ----------------------------------------------------------------- */
@@ -216,8 +215,10 @@ namespace Cube.Forms
         public void Restore()
         {
             var minimized = System.Windows.Forms.FormWindowState.Minimized;
+            var normal = System.Windows.Forms.FormWindowState.Normal;
+
             if (WindowState != minimized) return;
-            WindowState = _windowState;
+            WindowState = normal;
             try { if (FormBorderStyle != _borderStyle) FormBorderStyle = _borderStyle; }
             catch { /* ignore errors */ }
         }
@@ -253,7 +254,6 @@ namespace Cube.Forms
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            _windowState = WindowState;
             _borderStyle = FormBorderStyle;
         }
 
@@ -404,7 +404,6 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private System.Windows.Forms.FormWindowState _windowState;
         private System.Windows.Forms.FormBorderStyle _borderStyle;
         #endregion
     }
