@@ -61,6 +61,20 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// MinimizeAnimation
+        /// 
+        /// <summary>
+        /// 最小化時のアニメーションを有効にするかどうかを示す値を取得または
+        /// 設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool MinimizeAnimation { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Sizable
         /// 
         /// <summary>
@@ -100,6 +114,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserControl Caption { get; set; }
 
         /* ----------------------------------------------------------------- */
@@ -118,7 +134,8 @@ namespace Cube.Forms
             get
             {
                 var cp = base.CreateParams;
-                cp.ClassStyle |= 0x00020000;
+                cp.Style |= 0x20000; /* WS_MINIMIZEBOX*/
+                cp.ClassStyle |= 0x00020000; /* CS_DROPSHADOW */
                 return cp;
             }
         }
@@ -145,7 +162,101 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Maximize
+        ///
+        /// <summary>
+        /// 最大化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Maximize()
+        {
+            if (!Sizable || !MaximizeBox) return;
+
+            WindowState  = WindowState == System.Windows.Forms.FormWindowState.Normal ?
+                           System.Windows.Forms.FormWindowState.Maximized :
+                           System.Windows.Forms.FormWindowState.Normal;
+            _windowState = WindowState;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Minimize
+        ///
+        /// <summary>
+        /// 最小化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Minimize()
+        {
+            var minimized = System.Windows.Forms.FormWindowState.Minimized;
+            var none  = System.Windows.Forms.FormBorderStyle.None;
+            var style = System.Windows.Forms.FormBorderStyle.FixedSingle;
+
+            if (WindowState == minimized) return;
+            try { if (MinimizeAnimation && FormBorderStyle == none) FormBorderStyle = style; }
+            catch { /* ignore erros */ }
+            WindowState = minimized;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Restore
+        ///
+        /// <summary>
+        /// 最小化される直前の WindowState に戻します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Restore()
+        {
+            var minimized = System.Windows.Forms.FormWindowState.Minimized;
+
+            if (WindowState != minimized) return;
+            WindowState = _windowState;
+            try { if (FormBorderStyle != _borderStyle) FormBorderStyle = _borderStyle; }
+            catch { /* ignore errors */ }
+        }
+
+        #endregion
+
         #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnLoad
+        /// 
+        /// <summary>
+        /// フォームのロード時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            UpdateMaximumSize();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnShown
+        /// 
+        /// <summary>
+        /// 初回表示時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            _windowState = WindowState;
+            _borderStyle = FormBorderStyle;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -164,8 +275,8 @@ namespace Cube.Forms
         {
             var normal = WindowState == System.Windows.Forms.FormWindowState.Normal;
             var result = this.HitTest(PointToClient(e.Query), SizeGrip);
-            if (result == Position.Client) result = Position.NoWhere;
-            if (result == Position.NoWhere && IsCaption(e.Query)) result = Position.Caption;
+            var others = result == Position.NoWhere || result == Position.Client;
+            if (others && IsCaption(e.Query)) result = Position.Caption;
 
             e.Result = result;
             e.Cancel = e.Result == Position.Caption ? false :
@@ -189,17 +300,73 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0112: // WM_SYSCOMMAND
-                    var flag = (m.WParam.ToInt32() & 0xf030); // SC_MAXIMIZE
-                    if (!Sizable && flag == 0xf030)
+                    switch (m.WParam.ToInt32())
                     {
-                        m.Result = IntPtr.Zero;
-                        return;
+                        case 0xf020: // SC_MINIMIZE
+                            OnSysMinimize(ref m);
+                            break;
+                        case 0xf030: // SC_MAXIMIZE
+                            OnSysMaximize(ref m);
+                            break;
+                        case 0xf120: // SC_RESTORE
+                            OnSysRestore(ref m);
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 default:
                     break;
             }
             base.WndProc(ref m);
+        }
+
+        #endregion
+
+        #region Event handlers
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSysMinimize
+        ///
+        /// <summary>
+        /// 最小化コマンドを受信した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnSysMinimize(ref System.Windows.Forms.Message m)
+        {
+            Minimize();
+            m.Result = IntPtr.Zero;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSysMaximize
+        ///
+        /// <summary>
+        /// 最大化コマンドを受信した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnSysMaximize(ref System.Windows.Forms.Message m)
+        {
+            if (!Sizable) m.Result = IntPtr.Zero;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSysRestore
+        ///
+        /// <summary>
+        /// 元に戻すコマンドを受信した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnSysRestore(ref System.Windows.Forms.Message m)
+        {
+            Restore();
+            m.Result = IntPtr.Zero;
         }
 
         #endregion
@@ -223,6 +390,23 @@ namespace Cube.Forms
                    p.Y >= 0 && p.Y <= Caption.ClientSize.Height;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateMaximumSize
+        ///
+        /// <summary>
+        /// フォームの最大サイズを更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void UpdateMaximumSize()
+            => MaximumSize = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
+
+        #endregion
+
+        #region Fields
+        private System.Windows.Forms.FormWindowState _windowState;
+        private System.Windows.Forms.FormBorderStyle _borderStyle;
         #endregion
     }
 }
