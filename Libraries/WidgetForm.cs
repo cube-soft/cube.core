@@ -142,6 +142,7 @@ namespace Cube.Forms
             get
             {
                 var cp = base.CreateParams;
+                cp.Style |= 0x00010000; // WS_MAXIMIZEBOX
                 cp.Style |= 0x00020000; // WS_MINIMIZEBOX
                 cp.Style |= 0x00080000; // WS_SYSMENU
                 cp.ClassStyle |= 0x00020000; // CS_DROPSHADOW
@@ -444,11 +445,12 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void RemoveSysMenuStyle()
         {
-            var flag = User32.GetWindowLong(Handle, -16 /* GWL_STYLE */);
-            flag &= ~0x00080000; // WS_SYSMENU
-            User32.SetWindowLong(Handle, -16, flag);
-            User32.SetWindowPos(Handle, IntPtr.Zero, 0, 0, 0, 0,
-                0x27 /* SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED */);
+            var style = User32.GetWindowLong(Handle, -16 /* GWL_STYLE */);
+            style &= ~0x00080000; // WS_SYSMENU
+            User32.SetWindowLong(Handle, -16, style);
+
+            var flags = 0x27u; // SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED
+            User32.SetWindowPos(Handle, IntPtr.Zero, 0, 0, 0, 0, flags);
         }
 
         #endregion
