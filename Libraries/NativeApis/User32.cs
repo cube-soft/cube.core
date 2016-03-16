@@ -47,6 +47,18 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// PostMessage
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644944.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ReleaseCapture
         ///
         /// <summary>
@@ -59,6 +71,30 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// GetWindowLong
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633584.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetWindowLong
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633591.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SetWindowPos
         ///
         /// <summary>
@@ -66,8 +102,33 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll")]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
             int X, int Y, int cx, int cy, uint uFlags);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetSystemMenu
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms647985.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TrackPopupMenuEx
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648003.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags,
+            int x, int y, IntPtr hwnd, IntPtr lptpm);
     }
 }

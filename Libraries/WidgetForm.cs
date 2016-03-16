@@ -127,6 +127,14 @@ namespace Cube.Forms
         /// WidgetForm クラスでは、フォームに陰影を付与するための
         /// パラメータをベースの値に追加しています。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// WS_SYSMENU が設定されている場合、リサイズする事ができません。
+        /// そのため、OnLoad(EventArgs) 時にフラグのみを除去します。
+        /// 尚、実際にシステムメニューを生成するかどうかはコントロール生成時に
+        /// 決定されるようなので、後から WS_SYSMENU を除去してもシステムメニューは
+        /// 残ります。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected override System.Windows.Forms.CreateParams CreateParams
@@ -134,7 +142,8 @@ namespace Cube.Forms
             get
             {
                 var cp = base.CreateParams;
-                cp.Style |= 0x20000; // WS_MINIMIZEBOX
+                cp.Style |= 0x00020000; // WS_MINIMIZEBOX
+                cp.Style |= 0x00080000; // WS_SYSMENU
                 cp.ClassStyle |= 0x00020000; // CS_DROPSHADOW
                 return cp;
             }
@@ -225,6 +234,32 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Non-virtual protected methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowSystemMenu
+        ///
+        /// <summary>
+        /// システムメニューを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ShowSystemMenu(Point point)
+        {
+            var menu = User32.GetSystemMenu(Handle, false);
+            if (menu == IntPtr.Zero) return;
+
+            var cvt = PointToScreen(point);
+            var command = User32.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
+                cvt.X, cvt.Y, Handle, IntPtr.Zero);
+            if (command == 0) return;
+
+            User32.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
+        }
+
+        #endregion
+
         #region Override methods
 
         /* ----------------------------------------------------------------- */
@@ -240,6 +275,7 @@ namespace Cube.Forms
         {
             base.OnLoad(e);
             UpdateMaximumSize();
+            RemoveSysMenuStyle();
         }
 
         /* ----------------------------------------------------------------- */
@@ -400,6 +436,24 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateMaximumSize()
             => MaximumSize = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RemoveSysMenuStyle
+        ///
+        /// <summary>
+        /// WS_SYSMENU を除去します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RemoveSysMenuStyle()
+        {
+            var flag = User32.GetWindowLong(Handle, -16 /* GWL_STYLE */);
+            flag &= ~0x00080000; // WS_SYSMENU
+            User32.SetWindowLong(Handle, -16, flag);
+            User32.SetWindowPos(Handle, IntPtr.Zero, 0, 0, 0, 0,
+                0x27 /* SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED */);
+        }
 
         #endregion
 
