@@ -229,7 +229,12 @@ namespace Cube.Forms
 
             if (WindowState != minimized) return;
             WindowState = normal;
-            try { if (FormBorderStyle != _borderStyle) FormBorderStyle = _borderStyle; }
+            try
+            {
+                if (FormBorderStyle == _borderStyle) return;
+                FormBorderStyle = _borderStyle;
+                RemoveSysMenuStyle();
+            }
             catch { /* ignore errors */ }
         }
 
