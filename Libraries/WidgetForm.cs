@@ -229,13 +229,7 @@ namespace Cube.Forms
 
             if (WindowState != minimized) return;
             WindowState = normal;
-            try
-            {
-                if (FormBorderStyle == _borderStyle) return;
-                FormBorderStyle = _borderStyle;
-                RemoveSysMenuStyle();
-            }
-            catch { /* ignore errors */ }
+            RestoreBorderStyle();
         }
 
         /* ----------------------------------------------------------------- */
@@ -389,6 +383,7 @@ namespace Cube.Forms
         private void OnSysMaximize(ref System.Windows.Forms.Message m)
         {
             if (!Sizable) m.Result = IntPtr.Zero;
+            else RestoreBorderStyle();
         }
 
         /* ----------------------------------------------------------------- */
@@ -438,6 +433,26 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateMaximumSize()
             => MaximumSize = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RestoreBorderStyle
+        ///
+        /// <summary>
+        /// FormBorderStyle を元に戻します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void RestoreBorderStyle()
+        {
+            try
+            {
+                if (FormBorderStyle == _borderStyle) return;
+                FormBorderStyle = _borderStyle;
+                RemoveSysMenuStyle();
+            }
+            catch { /* ignore errors */ }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
