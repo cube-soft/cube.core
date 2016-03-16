@@ -120,6 +120,19 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// EnableMenuItem
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms647636.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern bool EnableMenuItem(IntPtr hMenu,
+            uint uIDEnableItem, uint uEnable);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// TrackPopupMenuEx
         ///
         /// <summary>

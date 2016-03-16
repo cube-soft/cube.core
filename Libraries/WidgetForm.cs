@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using Microsoft.Win32;
 using Cube.Forms.Extensions;
 
 namespace Cube.Forms
@@ -54,6 +55,7 @@ namespace Cube.Forms
             MaximizeBox = false;
             MinimizeBox = false;
             SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
         }
 
         #endregion
@@ -464,6 +466,15 @@ namespace Cube.Forms
             var menu = User32.GetSystemMenu(Handle, false);
             if (menu == IntPtr.Zero) return;
 
+            var enabled = 0x0000u; // MF_ENABLED
+            var grayed  = 0x0001u; // MF_GRAYED
+            var normal  = System.Windows.Forms.FormWindowState.Normal;
+            var sizable = (Sizable && WindowState == normal) ? enabled : grayed;
+            var movable = (Caption != null && WindowState == normal) ? enabled : grayed;
+
+            User32.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
+            User32.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
+
             var command = User32.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
                 absolute.X, absolute.Y, Handle, IntPtr.Zero);
             if (command == 0) return;
@@ -498,7 +509,12 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private void UpdateMaximumSize()
-            => MaximumSize = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
+        {
+            var size = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
+            if (size.Width  == MaximumSize.Width &&
+                size.Height == MaximumSize.Height) return;
+            MaximumSize = size;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
