@@ -49,6 +49,7 @@ namespace Cube.Forms
         public WidgetForm()
             : base()
         {
+            KeyPreview = true;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -72,6 +73,19 @@ namespace Cube.Forms
         [Browsable(true)]
         [DefaultValue(true)]
         public bool MinimizeAnimation { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SystemMenu
+        /// 
+        /// <summary>
+        /// システムメニューを表示するかどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool SystemMenu { get; set; } = true;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -232,28 +246,6 @@ namespace Cube.Forms
             RestoreBorderStyle();
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowSystemMenu
-        ///
-        /// <summary>
-        /// システムメニューを表示します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void ShowSystemMenu(Point point)
-        {
-            var menu = User32.GetSystemMenu(Handle, false);
-            if (menu == IntPtr.Zero) return;
-
-            var cvt = PointToScreen(point);
-            var command = User32.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
-                cvt.X, cvt.Y, Handle, IntPtr.Zero);
-            if (command == 0) return;
-
-            User32.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
-        }
-
         #endregion
 
         #region Override methods
@@ -287,6 +279,34 @@ namespace Cube.Forms
         {
             base.OnShown(e);
             _borderStyle = FormBorderStyle;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnKeyDown
+        /// 
+        /// <summary>
+        /// キーが押下された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnKeyDown(System.Windows.Forms.KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.Handled) return;
+
+            var result = true;
+            switch (e.KeyCode)
+            {
+                case System.Windows.Forms.Keys.Space:
+                    if (e.Alt) PopupSystemMenu(PointToScreen(new Point(10, 10)));
+                    else result = false;
+                    break;
+                default:
+                    result = false;
+                    break;
+            }
+            e.Handled = result;
         }
 
         /* ----------------------------------------------------------------- */
@@ -330,6 +350,9 @@ namespace Cube.Forms
         {
             switch (m.Msg)
             {
+                case 0x00a5: // WM_NCRBUTTONUP
+                    OnSystemMenu(ref m);
+                    break;
                 case 0x0112: // WM_SYSCOMMAND
                     switch (m.WParam.ToInt32() & 0xfff0)
                     {
@@ -355,6 +378,26 @@ namespace Cube.Forms
         #endregion
 
         #region Event handlers
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSystemMenu
+        ///
+        /// <summary>
+        /// システムメニューの表示コマンドを受信した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnSystemMenu(ref System.Windows.Forms.Message m)
+        {
+            var point = new Point(
+                (int)m.LParam & 0xffff,
+                (int)m.LParam >> 16 & 0xffff);
+            if (!IsCaption(point)) return;
+
+            PopupSystemMenu(point);
+            m.Result = IntPtr.Zero;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -404,6 +447,29 @@ namespace Cube.Forms
         #endregion
 
         #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PopupSystemMenu
+        ///
+        /// <summary>
+        /// システムメニューを表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void PopupSystemMenu(Point absolute)
+        {
+            if (!SystemMenu) return;
+
+            var menu = User32.GetSystemMenu(Handle, false);
+            if (menu == IntPtr.Zero) return;
+
+            var command = User32.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
+                absolute.X, absolute.Y, Handle, IntPtr.Zero);
+            if (command == 0) return;
+
+            User32.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
