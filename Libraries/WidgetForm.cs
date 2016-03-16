@@ -216,7 +216,6 @@ namespace Cube.Forms
         public void Restore()
         {
             var minimized = System.Windows.Forms.FormWindowState.Minimized;
-
             if (WindowState != minimized) return;
             WindowState = _windowState;
             try { if (FormBorderStyle != _borderStyle) FormBorderStyle = _borderStyle; }
@@ -300,7 +299,7 @@ namespace Cube.Forms
             switch (m.Msg)
             {
                 case 0x0112: // WM_SYSCOMMAND
-                    switch (m.WParam.ToInt32())
+                    switch (m.WParam.ToInt32() & 0xfff0)
                     {
                         case 0xf020: // SC_MINIMIZE
                             OnSysMinimize(ref m);
