@@ -171,7 +171,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Methods
+        #region Non-virtual protected methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -182,7 +182,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Maximize()
+        protected void Maximize()
         {
             if (!Sizable || !MaximizeBox) return;
 
@@ -200,7 +200,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Minimize()
+        protected void Minimize()
         {
             var minimized = System.Windows.Forms.FormWindowState.Minimized;
             var none  = System.Windows.Forms.FormBorderStyle.None;
@@ -221,7 +221,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Restore()
+        protected void Restore()
         {
             var minimized = System.Windows.Forms.FormWindowState.Minimized;
             var normal = System.Windows.Forms.FormWindowState.Normal;
@@ -232,10 +232,6 @@ namespace Cube.Forms
             catch { /* ignore errors */ }
         }
 
-        #endregion
-
-        #region Non-virtual protected methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// ShowSystemMenu
@@ -245,7 +241,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ShowSystemMenu(Point point)
+        protected void ShowSystemMenu(Point point)
         {
             var menu = User32.GetSystemMenu(Handle, false);
             if (menu == IntPtr.Zero) return;
