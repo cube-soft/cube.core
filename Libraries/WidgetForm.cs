@@ -97,6 +97,36 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// SystemMenu
+        /// 
+        /// <summary>
+        /// システムメニューを表示するかどうかを示す値を取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// システムメニューの有無は FormBorderStyle の値を変更する事で対応します。
+        /// SystemMenu を false に設定した場合は、システムメニューの非表示に加えて
+        /// 最小化時のアニメーション等、システムによる動作が無効化されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool SystemMenu
+        {
+            get { return base.FormBorderStyle != System.Windows.Forms.FormBorderStyle.None; }
+            set
+            {
+                var dest = value ?
+                           System.Windows.Forms.FormBorderStyle.Sizable :
+                           System.Windows.Forms.FormBorderStyle.None;
+                if (base.FormBorderStyle == dest) return;
+                base.FormBorderStyle = dest;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Caption
         /// 
         /// <summary>
@@ -341,7 +371,7 @@ namespace Cube.Forms
             var point = new Point(
                 (int)m.LParam & 0xffff,
                 (int)m.LParam >> 16 & 0xffff);
-            if (!IsCaption(point)) return false;
+            if (!SystemMenu || !IsCaption(point)) return false;
 
             PopupSystemMenu(point);
             m.Result = IntPtr.Zero;
