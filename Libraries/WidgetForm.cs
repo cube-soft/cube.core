@@ -51,9 +51,6 @@ namespace Cube.Forms
             : base()
         {
             KeyPreview = true;
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            MaximizeBox = false;
-            MinimizeBox = false;
             SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
         }
@@ -145,23 +142,28 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /// <remarks>
-        /// WS_SYSMENU が設定されている場合、リサイズする事ができません。
-        /// そのため、OnLoad(EventArgs) 時にフラグのみを除去します。
-        /// 尚、実際にシステムメニューを生成するかどうかはコントロール生成時に
-        /// 決定されるようなので、後から WS_SYSMENU を除去してもシステムメニューは
-        /// 残ります。
+        /// いくつかのメソッド (メッセージ) では、カスタマイズされた非クライアント
+        /// サイズに関する不都合が存在します。そこで、CreateParams から一時的に
+        /// WS_THICKFRAME 等の値を除去する事によって、この不都合を回避します。
         /// </remarks>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
         protected override System.Windows.Forms.CreateParams CreateParams
         {
             get
             {
                 var cp = base.CreateParams;
-                cp.Style |= 0x00010000; // WS_MAXIMIZEBOX
-                cp.Style |= 0x00020000; // WS_MINIMIZEBOX
-                cp.Style |= 0x00080000; // WS_SYSMENU
                 cp.ClassStyle |= 0x00020000; // CS_DROPSHADOW
+                if (_fakeMode)
+                {
+                    //(WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_THICKFRAME);
+                    cp.Style &= ~(
+                        0x00800000 // WS_BORDER
+                      | 0x00C00000 // WS_CAPTION
+                      | 0x00400000 // WS_DLGFRAME
+                      | 0x00040000 // WS_THICKFRAME
+                    );          
+                }
                 return cp;
             }
         }
@@ -174,6 +176,14 @@ namespace Cube.Forms
         {
             get { return base.AutoScaleMode; }
             set { base.AutoScaleMode = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public new System.Windows.Forms.FormBorderStyle FormBorderStyle
+        {
+            get { return base.FormBorderStyle; }
+            set { base.FormBorderStyle = value; }
         }
 
         [Browsable(false)]
@@ -219,14 +229,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected void Minimize()
         {
-            var minimized = System.Windows.Forms.FormWindowState.Minimized;
-            var none  = System.Windows.Forms.FormBorderStyle.None;
-            var style = System.Windows.Forms.FormBorderStyle.FixedSingle;
-
-            if (WindowState == minimized) return;
-            try { if (MinimizeAnimation && FormBorderStyle == none) FormBorderStyle = style; }
-            catch { /* ignore erros */ }
-            WindowState = minimized;
+            var state = System.Windows.Forms.FormWindowState.Minimized;
+            if (WindowState == state) return;
+            WindowState = state;
         }
 
         /* ----------------------------------------------------------------- */
@@ -245,7 +250,7 @@ namespace Cube.Forms
 
             if (WindowState != minimized) return;
             WindowState = normal;
-            RestoreBorderStyle();
+            //RestoreBorderStyle();
         }
 
         #endregion
@@ -265,22 +270,6 @@ namespace Cube.Forms
         {
             base.OnLoad(e);
             UpdateMaximumSize();
-            RemoveSysMenuStyle();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnShown
-        /// 
-        /// <summary>
-        /// 初回表示時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
-            _borderStyle = FormBorderStyle;
         }
 
         /* ----------------------------------------------------------------- */
@@ -341,37 +330,58 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// SetClientSizeCore
+        ///
+        /// <summary>
+        /// コントロールのクライアント領域のサイズを設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 処理内容の詳細については、CreateParams の remarks を参照下さい。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void SetClientSizeCore(int x, int y)
+        {
+            try {
+                _fakeMode = true;
+                base.SetClientSizeCore(x, y);
+            }
+            finally { _fakeMode = false; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// WndProc
         ///
         /// <summary>
         /// ウィンドウメッセージを処理します。
         /// </summary>
+        /// 
         ///
         /* ----------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             switch (m.Msg)
             {
+                case 0x0047: // WM_WINDOWPOSCHANGED
+                    try { // see remarks of CreateParams
+                        _fakeMode = true;
+                        base.WndProc(ref m);
+                    }
+                    finally { _fakeMode = false; }
+                    return;
+                case 0x0083: // WM_NCCALCSIZE
+                    m.Result = IntPtr.Zero;
+                    return;
                 case 0x00a5: // WM_NCRBUTTONUP
                     OnSystemMenu(ref m);
-                    break;
+                    return;
                 case 0x0112: // WM_SYSCOMMAND
-                    switch (m.WParam.ToInt32() & 0xfff0)
-                    {
-                        case 0xf020: // SC_MINIMIZE
-                            OnSysMinimize(ref m);
-                            break;
-                        case 0xf030: // SC_MAXIMIZE
-                            OnSysMaximize(ref m);
-                            break;
-                        case 0xf120: // SC_RESTORE
-                            OnSysRestore(ref m);
-                            break;
-                        default:
-                            break;
-                    }
+                    if (OnSysCommand(ref m)) return;
                     break;
                 default:
+                    System.Diagnostics.Trace.WriteLine($"MSG: 0x{m.Msg:x4}");
                     break;
             }
             base.WndProc(ref m);
@@ -383,6 +393,31 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnSysCommand
+        ///
+        /// <summary>
+        /// システムメコマンドを受信した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool OnSysCommand(ref System.Windows.Forms.Message m)
+        {
+            switch (m.WParam.ToInt32() & 0xfff0)
+            {
+                case 0xf020: // SC_MINIMIZE
+                    return OnSysMinimize(ref m);
+                case 0xf030: // SC_MAXIMIZE
+                    return OnSysMaximize(ref m);
+                case 0xf120: // SC_RESTORE
+                    return OnSysRestore(ref m);
+                default:
+                    break;
+            }
+            return false;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnSystemMenu
         ///
         /// <summary>
@@ -390,30 +425,16 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnSystemMenu(ref System.Windows.Forms.Message m)
+        private bool OnSystemMenu(ref System.Windows.Forms.Message m)
         {
             var point = new Point(
                 (int)m.LParam & 0xffff,
                 (int)m.LParam >> 16 & 0xffff);
-            if (!IsCaption(point)) return;
+            if (!IsCaption(point)) return false;
 
             PopupSystemMenu(point);
             m.Result = IntPtr.Zero;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSysMinimize
-        ///
-        /// <summary>
-        /// 最小化コマンドを受信した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void OnSysMinimize(ref System.Windows.Forms.Message m)
-        {
-            Minimize();
-            m.Result = IntPtr.Zero;
+            return true;
         }
 
         /* ----------------------------------------------------------------- */
@@ -425,10 +446,26 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnSysMaximize(ref System.Windows.Forms.Message m)
+        private bool OnSysMaximize(ref System.Windows.Forms.Message m)
         {
             if (!Sizable) m.Result = IntPtr.Zero;
-            else RestoreBorderStyle();
+            return !Sizable;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSysMinimize
+        ///
+        /// <summary>
+        /// 最小化コマンドを受信した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool OnSysMinimize(ref System.Windows.Forms.Message m)
+        {
+            Minimize();
+            m.Result = IntPtr.Zero;
+            return true;
         }
 
         /* ----------------------------------------------------------------- */
@@ -440,10 +477,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnSysRestore(ref System.Windows.Forms.Message m)
+        private bool OnSysRestore(ref System.Windows.Forms.Message m)
         {
             Restore();
             m.Result = IntPtr.Zero;
+            return true;
         }
 
         #endregion
@@ -511,54 +549,15 @@ namespace Cube.Forms
         private void UpdateMaximumSize()
         {
             var size = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
-            if (size.Width  == MaximumSize.Width &&
+            if (size.Width == MaximumSize.Width &&
                 size.Height == MaximumSize.Height) return;
             MaximumSize = size;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RestoreBorderStyle
-        ///
-        /// <summary>
-        /// FormBorderStyle を元に戻します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RestoreBorderStyle()
-        {
-            try
-            {
-                if (FormBorderStyle == _borderStyle) return;
-                FormBorderStyle = _borderStyle;
-                RemoveSysMenuStyle();
-            }
-            catch { /* ignore errors */ }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RemoveSysMenuStyle
-        ///
-        /// <summary>
-        /// WS_SYSMENU を除去します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RemoveSysMenuStyle()
-        {
-            var style = User32.GetWindowLong(Handle, -16 /* GWL_STYLE */);
-            style &= ~0x00080000; // WS_SYSMENU
-            User32.SetWindowLong(Handle, -16, style);
-
-            var flags = 0x27u; // SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED
-            User32.SetWindowPos(Handle, IntPtr.Zero, 0, 0, 0, 0, flags);
         }
 
         #endregion
 
         #region Fields
-        private System.Windows.Forms.FormBorderStyle _borderStyle;
+        private bool _fakeMode = false;
         #endregion
     }
 }
