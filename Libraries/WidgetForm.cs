@@ -166,8 +166,6 @@ namespace Cube.Forms
         /// 
         /// <summary>
         /// コントロールの作成時に必要な情報をカプセル化します。
-        /// WidgetForm クラスでは、フォームに陰影を付与するための
-        /// パラメータをベースの値に追加しています。
         /// </summary>
         /// 
         /// <remarks>
@@ -330,18 +328,27 @@ namespace Cube.Forms
         /// <summary>
         /// ウィンドウメッセージを処理します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: WM_CREATE (0x0001) および WM_NCCREATE (0x0081) で設定されて
+        /// いるサイズは、デザイナ (InitializeComponents) 等で設定された Size に
+        /// 非クライアント領域のサイズが加算されている。現状では WM_CREATE で
+        /// Result に Zero を設定した後（Zero はウィンドウ生成を意味する）、
+        /// システム側の処理をスキップさせている。確認した限りではうまく機能して
+        /// いるが、何かに影響が及んでいないか要検討。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             switch (m.Msg)
             {
-                case 0x0001: // WM_CREATE
-                    // TODO: デザイナで設定した値に非クライアント領域の値が
-                    //       加算されてしまう。
-                    //       m.Result = IntPtr.Zero; return;
-                    //       とすれば上手く動くように見えるが、他への影響が懸念される。
-                    //       要検討。
+                case 0x0001: // WM_CREATE (see remarks)
+                    if (SystemMenu)
+                    {
+                        m.Result = IntPtr.Zero;
+                        return;
+                    }
                     break;
                 case 0x0024: // WM_GETMINMAXINFO
                     if (OnGetMinMaxInfo(ref m)) return;
@@ -437,9 +444,9 @@ namespace Cube.Forms
 
             var enabled = 0x0000u; // MF_ENABLED
             var grayed  = 0x0001u; // MF_GRAYED
-            var normal  = System.Windows.Forms.FormWindowState.Normal;
-            var sizable = (Sizable && WindowState == normal) ? enabled : grayed;
-            var movable = (Caption != null && WindowState == normal) ? enabled : grayed;
+            var normal  = (WindowState == System.Windows.Forms.FormWindowState.Normal);
+            var sizable = (Sizable && normal) ? enabled : grayed;
+            var movable = (Caption != null && normal) ? enabled : grayed;
 
             User32.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
             User32.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
@@ -460,10 +467,10 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool IsCaption(Point origin)
+        private bool IsCaption(Point absolute)
         {
             if (Caption == null) return false;
-            var p = Caption.PointToClient(origin);
+            var p = Caption.PointToClient(absolute);
             return p.X >= 0 && p.X <= Caption.ClientSize.Width &&
                    p.Y >= 0 && p.Y <= Caption.ClientSize.Height;
         }
