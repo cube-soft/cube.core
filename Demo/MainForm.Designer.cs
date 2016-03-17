@@ -255,7 +255,11 @@
             this.Controls.Add(this.NotifyFormButton);
             this.Controls.Add(this.WebBrowserButton);
             this.Controls.Add(this.ButtonsButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.Sizable = false;
+            this.SystemMenu = false;
             this.Controls.SetChildIndex(this.ButtonsButton, 0);
             this.Controls.SetChildIndex(this.WebBrowserButton, 0);
             this.Controls.SetChildIndex(this.NotifyFormButton, 0);

@@ -65,6 +65,19 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// DropShadow
+        /// 
+        /// <summary>
+        /// フォームの外部に陰影を描画するかどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool DropShadow { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Sizable
         /// 
         /// <summary>
@@ -73,8 +86,17 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(false)]
-        public bool Sizable { get; set; } = false;
+        [DefaultValue(true)]
+        public bool Sizable
+        {
+            get { return _sizable; }
+            set
+            {
+                if (_sizable == value) return;
+                _sizable = value;
+                if (!_sizable && MaximizeBox) MaximizeBox = false;
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,7 +128,7 @@ namespace Cube.Forms
         /// <remarks>
         /// システムメニューの有無は FormBorderStyle の値を変更する事で対応します。
         /// SystemMenu を false に設定した場合は、システムメニューの非表示に加えて
-        /// 最小化時のアニメーション等、システムによる動作が無効化されます。
+        /// 最小化時のアニメーション等、いくつかのシステムによる動作が無効化されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -160,10 +182,9 @@ namespace Cube.Forms
             get
             {
                 var cp = base.CreateParams;
-                cp.ClassStyle |= 0x00020000; // CS_DROPSHADOW
+                if (DropShadow) cp.ClassStyle |= 0x00020000; // CS_DROPSHADOW
                 if (_fakeMode)
                 {
-                    //(WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_THICKFRAME);
                     cp.Style &= ~(
                         0x00800000 // WS_BORDER
                       | 0x00C00000 // WS_CAPTION
@@ -191,14 +212,6 @@ namespace Cube.Forms
         {
             get { return base.FormBorderStyle; }
             set { base.FormBorderStyle = value; }
-        }
-
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.SizeGripStyle SizeGripStyle
-        {
-            get { return base.SizeGripStyle; }
-            set { base.SizeGripStyle = value; }
         }
 
         #endregion
@@ -474,6 +487,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
+        private bool _sizable = true;
         private bool _fakeMode = false;
         #endregion
     }
