@@ -33,6 +33,11 @@ namespace Cube.Forms
     /// <summary>
     /// Widget アプリケーション用のフォームを作成するためのクラスです。
     /// </summary>
+    /// 
+    /// <remarks>
+    /// 既存の Form クラスに対して、タイトルバーや枠線等を全てクライアント領域と
+    /// 見なすように修正されています。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public class WidgetForm : Form
@@ -115,7 +120,7 @@ namespace Cube.Forms
         /// 
         /// <remarks>
         /// いくつかのメソッド (メッセージ) では、カスタマイズされた非クライアント
-        /// サイズに関する不都合が存在します。そこで、CreateParams から一時的に
+        /// 領域に関する不都合が存在します。そこで、CreateParams から一時的に
         /// WS_THICKFRAME 等の値を除去する事によって、この不都合を回避します。
         /// </remarks>
         /// 
@@ -288,22 +293,30 @@ namespace Cube.Forms
         {
             switch (m.Msg)
             {
+                case 0x0001: // WM_CREATE
+                    // TODO: デザイナで設定した値に非クライアント領域の値が
+                    //       加算されてしまう。
+                    //       m.Result = IntPtr.Zero; return;
+                    //       とすれば上手く動くように見えるが、他への影響が懸念される。
+                    //       要検討。
+                    break;
                 case 0x0024: // WM_GETMINMAXINFO
                     if (OnGetMinMaxInfo(ref m)) return;
                     break;
-                case 0x0047: // WM_WINDOWPOSCHANGED
-                    try { // see remarks of CreateParams
-                        _fakeMode = true;
-                        base.WndProc(ref m);
-                    }
-                    finally { _fakeMode = false; }
-                    return;
                 case 0x0083: // WM_NCCALCSIZE
                     m.Result = IntPtr.Zero;
                     return;
                 case 0x00a5: // WM_NCRBUTTONUP
                     if (OnSystemMenu(ref m)) return;
                     break;
+                case 0x0047: // WM_WINDOWPOSCHANGED
+                    try
+                    { // see remarks of CreateParams
+                        _fakeMode = true;
+                        base.WndProc(ref m);
+                    }
+                    finally { _fakeMode = false; }
+                    return;
                 default:
                     break;
             }
@@ -346,7 +359,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private bool OnGetMinMaxInfo(ref System.Windows.Forms.Message m)
         {
-            if (MaximumSize.Width <= 0) return false;
+            if (MaximumSize.Width <= 0 || MaximumSize.Height <= 0) return false;
 
             var info = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
             info.ptMaxPosition.x  = 1;
