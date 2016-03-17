@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using Cube.Forms.Extensions;
 
@@ -50,8 +51,6 @@ namespace Cube.Forms
         public WidgetForm()
             : base()
         {
-            KeyPreview = true;
-            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
         }
 
@@ -283,13 +282,15 @@ namespace Cube.Forms
         /// <summary>
         /// ウィンドウメッセージを処理します。
         /// </summary>
-        /// 
         ///
         /* ----------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             switch (m.Msg)
             {
+                case 0x0024: // WM_GETMINMAXINFO
+                    if (OnGetMinMaxInfo(ref m)) return;
+                    break;
                 case 0x0047: // WM_WINDOWPOSCHANGED
                     try { // see remarks of CreateParams
                         _fakeMode = true;
@@ -330,6 +331,32 @@ namespace Cube.Forms
             if (!IsCaption(point)) return false;
 
             PopupSystemMenu(point);
+            m.Result = IntPtr.Zero;
+            return true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnGetMinMaxInfo
+        ///
+        /// <summary>
+        /// 最小値・最大値を決定する時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool OnGetMinMaxInfo(ref System.Windows.Forms.Message m)
+        {
+            if (MaximumSize.Width <= 0) return false;
+
+            var info = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
+            info.ptMaxPosition.x  = 1;
+            info.ptMaxPosition.y  = 1;
+            info.ptMaxSize.x      = MaximumSize.Width;
+            info.ptMaxSize.y      = MaximumSize.Height;
+            info.ptMaxTrackSize.x = MaximumSize.Width;
+            info.ptMaxTrackSize.y = MaximumSize.Height;
+            Marshal.StructureToPtr(info, m.LParam, false);
+
             m.Result = IntPtr.Zero;
             return true;
         }
@@ -397,8 +424,7 @@ namespace Cube.Forms
         private void UpdateMaximumSize()
         {
             var size = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
-            if (size.Width == MaximumSize.Width &&
-                size.Height == MaximumSize.Height) return;
+            if (MaximumSize == size) return;
             MaximumSize = size;
         }
 

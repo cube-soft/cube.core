@@ -108,6 +108,18 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// GetSystemMetrics
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int nIndex);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetSystemMenu
         ///
         /// <summary>
