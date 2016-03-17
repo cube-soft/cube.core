@@ -246,7 +246,6 @@
             this.Name = "DemoWeb";
             this.Padding = new System.Windows.Forms.Padding(2);
             this.ShowInTaskbar = false;
-            this.Sizable = true;
             this.Text = "WebForm";
             this.SizableLayoutPanel.ResumeLayout(false);
             this.ToolPanel.ResumeLayout(false);

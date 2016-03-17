@@ -286,7 +286,7 @@
             // 
             // DemoNotify
             // 
-            this.ClientSize = new System.Drawing.Size(450, 400);
+            this.ClientSize = new System.Drawing.Size(456, 406);
             this.Controls.Add(this.DescriptionLabel);
             this.Controls.Add(this.DescriptionTextBox);
             this.Controls.Add(this.ClearButton);
@@ -303,9 +303,12 @@
             this.Controls.Add(this.TitleTextBox);
             this.Controls.Add(this.DisplayLabel);
             this.Controls.Add(this.TitleLabel);
+            this.MaximizeBox = false;
             this.Name = "DemoNotify";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.Sizable = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Cube.Forms.NotifyForm";
             this.Controls.SetChildIndex(this.TitleLabel, 0);
             this.Controls.SetChildIndex(this.DisplayLabel, 0);

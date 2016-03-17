@@ -62,7 +62,6 @@
             // IconListView
             // 
             this.IconListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.IconListView.Converter = null;
             this.IconListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.IconListView.Location = new System.Drawing.Point(0, 26);
             this.IconListView.Margin = new System.Windows.Forms.Padding(0);
@@ -160,7 +159,6 @@
             this.Name = "DemoStockIcons";
             this.Padding = new System.Windows.Forms.Padding(2);
             this.ShowInTaskbar = false;
-            this.Sizable = true;
             this.SizeGrip = 3;
             this.Text = "DemoStockIcons";
             this.SizableLayoutPanel.ResumeLayout(false);

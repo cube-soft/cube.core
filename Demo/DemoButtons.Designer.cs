@@ -849,8 +849,11 @@
             this.Controls.Add(this.ToggleButtonGroupBox);
             this.Controls.Add(this.RadioButtonGroupBox);
             this.Controls.Add(this.ButtonGroupBox);
+            this.MaximizeBox = false;
             this.Name = "DemoButtons";
             this.ShowInTaskbar = false;
+            this.Sizable = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Cube.Forms.Button";
             this.Controls.SetChildIndex(this.ButtonGroupBox, 0);
             this.Controls.SetChildIndex(this.RadioButtonGroupBox, 0);
