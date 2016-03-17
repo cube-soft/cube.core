@@ -81,6 +81,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Assembly Assembly
         {
             get { return _reader.Assembly; }
@@ -101,6 +103,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Browsable(false)]
         public string Architecture => (IntPtr.Size == 4) ? "x86" : "x64";
 
         /* ----------------------------------------------------------------- */
@@ -234,6 +237,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected ILog Logger { get; }
 
         #endregion

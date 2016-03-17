@@ -181,6 +181,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
+        [Browsable(false)]
         public bool IsBusy { get; private set; }
 
         /* --------------------------------------------------------------------- */
@@ -197,6 +198,8 @@ namespace Cube.Forms
         /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDictionary<NotifyLevel, NotifyStyle> Styles
             => new Dictionary<NotifyLevel, NotifyStyle>();
 
@@ -209,6 +212,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected ILog Logger { get; }
 
         /* --------------------------------------------------------------------- */
