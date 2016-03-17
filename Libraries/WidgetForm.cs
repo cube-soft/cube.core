@@ -301,13 +301,9 @@ namespace Cube.Forms
                     m.Result = IntPtr.Zero;
                     return;
                 case 0x00a5: // WM_NCRBUTTONUP
-                    OnSystemMenu(ref m);
-                    return;
-                case 0x0112: // WM_SYSCOMMAND
-                    if (OnSysCommand(ref m)) return;
+                    if (OnSystemMenu(ref m)) return;
                     break;
                 default:
-                    System.Diagnostics.Trace.WriteLine($"MSG: 0x{m.Msg:x4}");
                     break;
             }
             base.WndProc(ref m);
@@ -316,29 +312,6 @@ namespace Cube.Forms
         #endregion
 
         #region Event handlers
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSysCommand
-        ///
-        /// <summary>
-        /// システムメコマンドを受信した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool OnSysCommand(ref System.Windows.Forms.Message m)
-        {
-            switch (m.WParam.ToInt32() & 0xfff0)
-            {
-                case 0xf020: // SC_MINIMIZE
-                    return OnSysMinimize(ref m);
-                case 0xf030: // SC_MAXIMIZE
-                    return OnSysMaximize(ref m);
-                default:
-                    break;
-            }
-            return false;
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -357,38 +330,6 @@ namespace Cube.Forms
             if (!IsCaption(point)) return false;
 
             PopupSystemMenu(point);
-            m.Result = IntPtr.Zero;
-            return true;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSysMaximize
-        ///
-        /// <summary>
-        /// 最大化コマンドを受信した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool OnSysMaximize(ref System.Windows.Forms.Message m)
-        {
-            if (Sizable) Maximize();
-            else m.Result = IntPtr.Zero;
-            return true;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSysMinimize
-        ///
-        /// <summary>
-        /// 最小化コマンドを受信した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool OnSysMinimize(ref System.Windows.Forms.Message m)
-        {
-            Minimize();
             m.Result = IntPtr.Zero;
             return true;
         }
