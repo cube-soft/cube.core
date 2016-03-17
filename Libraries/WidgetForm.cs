@@ -61,33 +61,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MinimizeAnimation
-        /// 
-        /// <summary>
-        /// 最小化時のアニメーションを有効にするかどうかを示す値を取得または
-        /// 設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DefaultValue(true)]
-        public bool MinimizeAnimation { get; set; } = true;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SystemMenu
-        /// 
-        /// <summary>
-        /// システムメニューを表示するかどうかを示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DefaultValue(true)]
-        public bool SystemMenu { get; set; } = true;
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Sizable
         /// 
         /// <summary>
@@ -234,25 +207,6 @@ namespace Cube.Forms
             WindowState = state;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Restore
-        ///
-        /// <summary>
-        /// 最小化される直前の WindowState に戻します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Restore()
-        {
-            var minimized = System.Windows.Forms.FormWindowState.Minimized;
-            var normal = System.Windows.Forms.FormWindowState.Normal;
-
-            if (WindowState != minimized) return;
-            WindowState = normal;
-            //RestoreBorderStyle();
-        }
-
         #endregion
 
         #region Override methods
@@ -270,34 +224,6 @@ namespace Cube.Forms
         {
             base.OnLoad(e);
             UpdateMaximumSize();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnKeyDown
-        /// 
-        /// <summary>
-        /// キーが押下された時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnKeyDown(System.Windows.Forms.KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-            if (e.Handled) return;
-
-            var result = true;
-            switch (e.KeyCode)
-            {
-                case System.Windows.Forms.Keys.Space:
-                    if (e.Alt) PopupSystemMenu(PointToScreen(new Point(10, 10)));
-                    else result = false;
-                    break;
-                default:
-                    result = false;
-                    break;
-            }
-            e.Handled = result;
         }
 
         /* ----------------------------------------------------------------- */
@@ -408,8 +334,6 @@ namespace Cube.Forms
                     return OnSysMinimize(ref m);
                 case 0xf030: // SC_MAXIMIZE
                     return OnSysMaximize(ref m);
-                case 0xf120: // SC_RESTORE
-                    return OnSysRestore(ref m);
                 default:
                     break;
             }
@@ -448,8 +372,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private bool OnSysMaximize(ref System.Windows.Forms.Message m)
         {
-            if (!Sizable) m.Result = IntPtr.Zero;
-            return !Sizable;
+            if (Sizable) Maximize();
+            else m.Result = IntPtr.Zero;
+            return true;
         }
 
         /* ----------------------------------------------------------------- */
@@ -464,22 +389,6 @@ namespace Cube.Forms
         private bool OnSysMinimize(ref System.Windows.Forms.Message m)
         {
             Minimize();
-            m.Result = IntPtr.Zero;
-            return true;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSysRestore
-        ///
-        /// <summary>
-        /// 元に戻すコマンドを受信した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool OnSysRestore(ref System.Windows.Forms.Message m)
-        {
-            Restore();
             m.Result = IntPtr.Zero;
             return true;
         }
@@ -499,8 +408,6 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void PopupSystemMenu(Point absolute)
         {
-            if (!SystemMenu) return;
-
             var menu = User32.GetSystemMenu(Handle, false);
             if (menu == IntPtr.Zero) return;
 
