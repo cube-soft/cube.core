@@ -418,7 +418,9 @@ namespace Cube.Forms
             info.ptMaxSize.y      = MaximumSize.Height;
             info.ptMaxTrackSize.x = MaximumSize.Width;
             info.ptMaxTrackSize.y = MaximumSize.Height;
-            Marshal.StructureToPtr(info, m.LParam, false);
+            info.ptMinTrackSize.x = MinimumSize.Width;
+            info.ptMinTrackSize.y = MinimumSize.Height;
+            Marshal.StructureToPtr(info, m.LParam, true);
 
             m.Result = IntPtr.Zero;
             return true;

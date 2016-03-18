@@ -243,6 +243,7 @@
             this.Controls.Add(this.SizableLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "DemoWeb";
             this.Padding = new System.Windows.Forms.Padding(2);
             this.ShowInTaskbar = false;
