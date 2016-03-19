@@ -22,7 +22,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Lifetime;
-using log4net;
+using Cube.Log;
 
 namespace Cube
 {
@@ -72,7 +72,6 @@ namespace Cube
         public Bootstrap(string name)
         {
             Name = name;
-            Logger = LogManager.GetLogger(GetType());
             _mutex = new System.Threading.Mutex(false, Name);
             _core.Received += (s, e) => OnActivated(e);
         }
@@ -97,6 +96,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ActivateCommand
+        /// 
+        /// <summary>
+        /// アクティブ化するためのコマンドを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string ActivateCommand = "activate";
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Name
         /// 
         /// <summary>
@@ -105,17 +115,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Name { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; set; }
 
         #endregion
 
@@ -160,21 +159,18 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Activate(object args = null)
+            => this.LogException(() =>
         {
-            try
+            var client = new IpcClientChannel();
+            ChannelServices.RegisterChannel(client, true);
+            var channel = $"ipc://{Name}/{ActivateCommand}";
+            var proxy = Activator.GetObject(typeof(IpcProxy), channel) as IpcProxy;
+            if (proxy != null)
             {
-                var client = new IpcClientChannel();
-                ChannelServices.RegisterChannel(client, true);
-                var channel = $"ipc://{Name}/{_ActivateCommand}";
-                var proxy = Activator.GetObject(typeof(IpcProxy), channel) as IpcProxy;
-                if (proxy != null)
-                {
-                    proxy.Send(args);
-                    Logger.Debug(channel);
-                }
+                proxy.Send(args);
+                this.LogDebug(channel);
             }
-            catch (Exception err) { Logger.Error(err); }
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -186,16 +182,13 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Register()
+            => this.LogException(() =>
         {
-            try
-            {
-                var server = new IpcServerChannel(Name);
-                ChannelServices.RegisterChannel(server, true);
-                RemotingServices.Marshal(_core, _ActivateCommand, typeof(IpcProxy));
-                Logger.Debug($"{Name}/{_ActivateCommand} registered");
-            }
-            catch (Exception err) { Logger.Error(err); }
-        }
+            var server = new IpcServerChannel(Name);
+            ChannelServices.RegisterChannel(server, true);
+            RemotingServices.Marshal(_core, ActivateCommand, typeof(IpcProxy));
+            this.LogDebug($"{Name}/{ActivateCommand} registered");
+        });
 
         #endregion
 
@@ -274,10 +267,6 @@ namespace Cube
         private bool _disposed = false;
         private System.Threading.Mutex _mutex = null;
         private IpcProxy _core = new IpcProxy();
-        #endregion
-
-        #region Constant fields
-        private static readonly string _ActivateCommand = "activate";
         #endregion
     }
 }
