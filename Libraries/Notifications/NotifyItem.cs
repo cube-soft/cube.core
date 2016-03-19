@@ -34,8 +34,8 @@ namespace Cube
     public enum NotifyLevel : int
     {
         None        = 0,
-        Information = 1,
-        Recommended = 2,
+        Debug       = 1,
+        Information = 2,
         Important   = 3,
         Warning     = 4,
         Error       = 5,
