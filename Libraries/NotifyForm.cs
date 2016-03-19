@@ -198,8 +198,8 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDictionary<NotifyLevel, NotifyStyle> Styles
-            => new Dictionary<NotifyLevel, NotifyStyle>();
+        public IDictionary<NotifyLevel, NotifyStyle> Styles { get; }
+            = new Dictionary<NotifyLevel, NotifyStyle>();
 
         /* --------------------------------------------------------------------- */
         ///
@@ -427,6 +427,16 @@ namespace Cube.Forms
                 DescriptionColor = System.Drawing.SystemColors.ControlText
             });
 
+            Styles.Add(NotifyLevel.Debug, new NotifyStyle
+            {
+                BackColor        = DefaultStyle.BackColor,
+                BorderColor      = DefaultStyle.BorderColor,
+                Title            = Font,
+                TitleColor       = System.Drawing.SystemColors.ControlText,
+                Description      = Font,
+                DescriptionColor = System.Drawing.SystemColors.ControlText
+            });
+
             Styles.Add(NotifyLevel.Information, new NotifyStyle
             {
                 BackColor        = DefaultStyle.BackColor,
@@ -435,16 +445,6 @@ namespace Cube.Forms
                 TitleColor       = DefaultStyle.TitleColor,
                 Description      = DefaultStyle.Description,
                 DescriptionColor = DefaultStyle.DescriptionColor
-            });
-
-            Styles.Add(NotifyLevel.Recommended, new NotifyStyle
-            {
-                BackColor        = DefaultStyle.BackColor,
-                BorderColor      = DefaultStyle.BorderColor,
-                Title            = DefaultStyle.Title,
-                TitleColor       = DefaultStyle.TitleColor,
-                Description      = DefaultStyle.Description,
-                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
             });
 
             Styles.Add(NotifyLevel.Important, new NotifyStyle
@@ -520,7 +520,7 @@ namespace Cube.Forms
         private void SetLocation()
         {
             var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
-            SetDesktopLocation(screen.Width - Width - 10, screen.Height - Height - 10);
+            SetDesktopLocation(screen.Width - Width - 2, screen.Height - Height - 2);
         }
 
         /* --------------------------------------------------------------------- */
