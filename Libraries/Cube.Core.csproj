@@ -79,6 +79,7 @@
     <Compile Include="NativeApis\SpDevice.cs" />
     <Compile Include="NativeApis\WinMM.cs" />
     <Compile Include="Notifications\NotifyEventArgs.cs" />
+    <Compile Include="Operations\Log.cs" />
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
     </Compile>
