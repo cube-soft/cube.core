@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using log4net;
+using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -49,8 +49,6 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public NotifyForm()
         {
-            Logger = LogManager.GetLogger(GetType());
-
             InitializeComponent();
             InitializeStyles();
             SetTopMost();
@@ -202,19 +200,6 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDictionary<NotifyLevel, NotifyStyle> Styles
             => new Dictionary<NotifyLevel, NotifyStyle>();
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected ILog Logger { get; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -519,7 +504,7 @@ namespace Cube.Forms
             }
             catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }
             catch (OperationCanceledException /* err */) { /* ignore user's cancel */ }
-            catch (Exception err) { Logger.Error(err); }
+            catch (Exception err) { this.LogError(err.Message, err); }
             finally { Hidden -= m; }
         }
 
@@ -624,9 +609,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         private void RaiseTextClickEvent()
-        {
-            OnTextClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
-        }
+            => OnTextClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
 
         /* --------------------------------------------------------------------- */
         ///
@@ -638,9 +621,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         private void RaiseImageClickEvent()
-        {
-            OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
-        }
+            => OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
 
         #endregion
     }

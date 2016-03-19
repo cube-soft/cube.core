@@ -20,7 +20,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using log4net;
+using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -50,7 +50,6 @@ namespace Cube.Forms
         protected PresenterBase(TView view, TModel model)
         {
             SynchronizationContext = SynchronizationContext.Current;
-            Logger = LogManager.GetLogger(GetType());
 
             View  = view;
             Model = model;
@@ -107,17 +106,6 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public SynchronizationContext SynchronizationContext { get; }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected ILog Logger { get; }
-
         #endregion
 
         #region Methods
@@ -146,10 +134,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public Task Async(Action action)
-        {
-            return Task.Run(() => action());
-        }
+        public Task Async(Action action) => Task.Run(() => action());
 
         /* --------------------------------------------------------------------- */
         ///
@@ -161,10 +146,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public void Sync(Action action)
-        {
-            try { SynchronizationContext.Post(_ => action(), null); }
-            catch (Exception err) { Logger.Error(err); }
-        }
+            => this.LogException(() => SynchronizationContext.Post(_ => action(), null));
 
         /* --------------------------------------------------------------------- */
         ///
@@ -177,10 +159,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
-        {
-            try { SynchronizationContext.Send(_ => action(), null); }
-            catch (Exception err) { Logger.Error(err); }
-        }
+            => this.LogException(() => SynchronizationContext.Send(_ => action(), null));
 
         #endregion
 

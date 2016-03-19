@@ -18,10 +18,9 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using log4net;
+using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -47,27 +46,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DeviceAwareForm() : base()
-        {
-            Logger = LogManager.GetLogger(GetType());
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected ILog Logger { get; }
+        public DeviceAwareForm() : base() { }
 
         #endregion
 
@@ -175,28 +154,25 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private void RaiseDeviceChangeEvent(Message m)
+            => this.LogException(() =>
         {
-            const int DBT_DEVICEARRIVAL        = 0x8000;
+            const int DBT_DEVICEARRIVAL = 0x8000;
             const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
 
-            try
-            {
-                var action = m.WParam.ToInt32();
-                if (action != DBT_DEVICEARRIVAL && action != DBT_DEVICEREMOVECOMPLETE) return;
+            var action = m.WParam.ToInt32();
+            if (action != DBT_DEVICEARRIVAL && action != DBT_DEVICEREMOVECOMPLETE) return;
 
-                var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
-                if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
+            var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
+            if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
 
-                var device = (DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_VOLUME));
-                var letter = ToDriveLetter(device.dbcv_unitmask);
-                var type = (DeviceType)device.dbcv_flags;
-                var args = new DeviceEventArgs(letter, type);
+            var device = (DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_VOLUME));
+            var letter = ToDriveLetter(device.dbcv_unitmask);
+            var type = (DeviceType)device.dbcv_flags;
+            var args = new DeviceEventArgs(letter, type);
 
-                if (action == DBT_DEVICEARRIVAL) OnAttached(args);
-                else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
-            }
-            catch (Exception err) { Logger.Error(err); }
-        }
+            if (action == DBT_DEVICEARRIVAL) OnAttached(args);
+            else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
+        });
 
         /* ----------------------------------------------------------------- */
         ///

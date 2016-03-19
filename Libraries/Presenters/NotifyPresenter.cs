@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -110,9 +111,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         private void View_Showing(object sender, CancelEventArgs e)
-        {
-            Logger.DebugFormat("Title:{0}\tDescription:{1}", View.Title, View.Description);
-        }
+            => this.LogDebug($"Title:{View.Title}\tDescription:{View.Description}");
 
         /* --------------------------------------------------------------------- */
         ///

@@ -22,7 +22,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
 using System.Reflection;
-using log4net;
+using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -61,8 +61,6 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public VersionControl(Assembly assembly)
         {
-            Logger = LogManager.GetLogger(GetType());
-
             InitializeComponent();
             Assembly = assembly;
             CopyrightLinkLabel.LinkClicked += LinkLabel_LinkClicked;
@@ -228,19 +226,6 @@ namespace Cube.Forms
             }
         }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected ILog Logger { get; }
-
         #endregion
 
         #region Event handlers
@@ -254,11 +239,9 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void LinkLabel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-        {
-            try { Process.Start(Url); }
-            catch (Exception err) { Logger.Error(err); }
-        }
+        private void LinkLabel_LinkClicked(object sender,
+            System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+            => this.LogException(() => Process.Start(Url));
 
         #endregion
 
