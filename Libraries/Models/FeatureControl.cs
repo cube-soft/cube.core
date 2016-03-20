@@ -113,7 +113,7 @@ namespace Cube.Forms
                 }
                 catch (Exception err)
                 {
-                    Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err);
+                    LogError(err);
                     return BrowserVersion.IE7;
                 }
             }
@@ -140,7 +140,7 @@ namespace Cube.Forms
                         subkey.SetValue(filename, (int)value);
                     }
                 }
-                catch (Exception err) { Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err); }
+                catch (Exception err) { LogError(err); }
             }
 
             #endregion
@@ -174,7 +174,7 @@ namespace Cube.Forms
                 }
                 catch (Exception err)
                 {
-                    Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err);
+                    LogError(err);
                     return false;
                 }
             }
@@ -201,7 +201,7 @@ namespace Cube.Forms
                         subkey.SetValue(filename, value);
                     }
                 }
-                catch (Exception err) { Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err); }
+                catch (Exception err) { LogError(err); }
             }
 
             #endregion
@@ -237,7 +237,7 @@ namespace Cube.Forms
                 }
                 catch (Exception err)
                 {
-                    Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err);
+                    LogError(err);
                     return default_max_connection;
                 }
             }
@@ -266,7 +266,7 @@ namespace Cube.Forms
                         subkey10.SetValue(filename, number);
                     }
                 }
-                catch (Exception err) { Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err); }
+                catch (Exception err) { LogError(err); }
             }
 
             #endregion
@@ -313,10 +313,22 @@ namespace Cube.Forms
                 }
                 catch (Exception err)
                 {
-                    Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err);
+                    LogError(err);
                     return BrowserVersion.IE7;
                 }
             }
+
+            /* ----------------------------------------------------------------- */
+            ///
+            /// LogError
+            /// 
+            /// <summary>
+            /// 例外情報をログに出力します。
+            /// </summary>
+            ///
+            /* ----------------------------------------------------------------- */
+            private static void LogError(Exception err)
+                => Cube.Log.Operations.Error(typeof(WebBrowser), err.Message, err);
 
             #endregion
 
