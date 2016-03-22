@@ -107,6 +107,29 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// With_SoftwareVersion
+        /// 
+        /// <summary>
+        /// SoftwareVersion オブジェクトを With で結合した時のテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_SoftwareVersion()
+        {
+            Assert.That(
+                Create().With(new SoftwareVersion
+                {
+                    Number    = new Version(1, 2, 0, 0),
+                    Available = 2,
+                    Postfix   = "beta"
+                }).ToString(),
+                Is.EqualTo($"{Create()}?v=1.2beta")
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// With_Utm
         /// 
         /// <summary>

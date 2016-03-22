@@ -105,6 +105,7 @@
     <Compile Include="Scheduler.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="UtmQuery.cs" />
+    <Compile Include="SoftwareVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />

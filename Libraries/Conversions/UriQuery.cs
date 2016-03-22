@@ -113,6 +113,18 @@ namespace Cube.Conversions
         /// With
         /// 
         /// <summary>
+        /// Uri オブジェクトにバージョン情報を付与します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri With(this Uri uri, SoftwareVersion version)
+            => With(uri, "v", version);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With
+        /// 
+        /// <summary>
         /// Uri オブジェクトに UTM クエリの情報を付与します。
         /// </summary>
         ///
