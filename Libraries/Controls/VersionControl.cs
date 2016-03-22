@@ -258,12 +258,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateInformation()
         {
-            VersionLabel.Text = string.Format("{0} {1}{2} ({3})",
-                _reader.Product,
-                Create(_reader.Version, VersionDigit),
-                VersionSuffix,
-                Architecture
-            );
+            var version = new SoftwareVersion(_reader.Version, VersionDigit, VersionSuffix);
+            var product = _reader.Product;
+            VersionLabel.Text = $"{product} {version} ({Architecture})";
 
             var ss = new System.Text.StringBuilder();
             ss.Append(Environment.OSVersion.ToString());
@@ -280,32 +277,6 @@ namespace Cube.Forms
             CopyrightLinkLabel.Margin = new System.Windows.Forms.Padding(0, Spacing, 0, 0);
 
             if (LogoPanel.Image != null) LayoutPanel.ColumnStyles[0].Width = LogoPanel.Image.Width;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// バージョンを表す文字列を生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string Create(Version src, int digit)
-        {
-            var ss = new System.Text.StringBuilder();
-
-            ss.Append(src.Major);
-            if (digit <= 1) return ss.ToString();
-
-            ss.Append($".{src.Minor}");
-            if (digit <= 2) return ss.ToString();
-
-            ss.Append($".{src.Build}");
-            if (digit <= 3) return ss.ToString();
-
-            ss.Append($".{src.Revision}");
-            return ss.ToString();
         }
 
         #endregion
