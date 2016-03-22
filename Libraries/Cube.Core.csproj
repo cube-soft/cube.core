@@ -104,6 +104,7 @@
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="Settings\Startup.cs" />
+    <Compile Include="UtmQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
