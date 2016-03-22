@@ -32,6 +32,37 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class SoftwareVersion
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SoftwareVersion
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion() { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SoftwareVersion
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion(Version number, int digit, string suffix)
+        {
+            Number = number;
+            Digit  = digit;
+            Suffix = suffix;
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -47,14 +78,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Available
+        /// Digit
         /// 
         /// <summary>
         /// Number プロパティの有効桁数を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Available { get; set; } = 3;
+        public int Digit { get; set; } = 3;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -107,13 +138,13 @@ namespace Cube
             var ss = new System.Text.StringBuilder();
 
             ss.Append(Number.Major);
-            if (Available <= 1) return ss.ToString();
+            if (Digit <= 1) return ss.ToString();
 
             ss.Append($".{Number.Minor}");
-            if (Available <= 2) return ss.ToString();
+            if (Digit <= 2) return ss.ToString();
 
             ss.Append($".{Number.Build}");
-            if (Available <= 3) return ss.ToString();
+            if (Digit <= 3) return ss.ToString();
 
             ss.Append($".{Number.Revision}");
             return ss.ToString();

@@ -110,9 +110,9 @@ namespace Cube.Tests
             Assert.That(
                 Create().With(new SoftwareVersion
                 {
-                    Number    = new Version(1, 2, 0, 0),
-                    Available = 2,
-                    Suffix    = "beta"
+                    Number = new Version(1, 2, 0, 0),
+                    Digit  = 2,
+                    Suffix = "beta"
                 }).ToString(),
                 Is.EqualTo($"{Create()}?v=1.2beta")
             );
