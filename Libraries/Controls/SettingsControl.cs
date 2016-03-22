@@ -281,7 +281,7 @@ namespace Cube.Forms
                 var name = control.Name.Replace(control.GetType().Name, string.Empty);
                 if (string.IsNullOrEmpty(name)) continue;
 
-                var value = type.GetProperty(name)?.GetValue(properties);
+                var value = type.GetProperty(name)?.GetValue(properties, null);
                 if (value == null) continue;
 
                 RaiseUpdateControl(control, value);
