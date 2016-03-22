@@ -102,21 +102,6 @@ namespace Cube.Conversions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Uri With(this Uri uri, Version version, int digit)
-        {
-            var n = Math.Min(Math.Max(digit, 1), 4);
-            return With(uri, "v", version.ToString(n));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        /// 
-        /// <summary>
-        /// Uri オブジェクトにバージョン情報を付与します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, SoftwareVersion version)
             => With(uri, "v", version);
 

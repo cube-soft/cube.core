@@ -58,14 +58,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Postfix
+        /// Suffix
         /// 
         /// <summary>
         /// バージョン番号の末尾に付与する文字列を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Postfix { get; set; } = string.Empty;
+        public string Suffix { get; set; } = string.Empty;
 
         #endregion
 
@@ -82,10 +82,41 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public override string ToString()
         {
-            var n = Math.Min(Math.Max(Available, 1), 4);
-            var dest = Number?.ToString(n) ?? string.Empty;
-            if (!string.IsNullOrEmpty(Postfix)) dest += Postfix;
+            var dest = CreateVersion();
+            if (!string.IsNullOrEmpty(Suffix)) dest += Suffix;
             return dest;
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string CreateVersion()
+        {
+            if (Number == null) return string.Empty;
+
+            var ss = new System.Text.StringBuilder();
+
+            ss.Append(Number.Major);
+            if (Available <= 1) return ss.ToString();
+
+            ss.Append($".{Number.Minor}");
+            if (Available <= 2) return ss.ToString();
+
+            ss.Append($".{Number.Build}");
+            if (Available <= 3) return ss.ToString();
+
+            ss.Append($".{Number.Revision}");
+            return ss.ToString();
         }
 
         #endregion
