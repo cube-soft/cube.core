@@ -82,7 +82,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public override string ToString()
         {
-            var dest = Number?.ToString(Available) ?? string.Empty;
+            var n = Math.Min(Math.Max(Available, 1), 4);
+            var dest = Number?.ToString(n) ?? string.Empty;
             if (!string.IsNullOrEmpty(Postfix)) dest += Postfix;
             return dest;
         }
