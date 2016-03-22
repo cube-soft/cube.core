@@ -22,7 +22,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
-using log4net;
 using Cube.Conversions;
 using IoEx = System.IO;
 
@@ -183,7 +182,7 @@ namespace Cube
                         if (obj != null) item.SetValue(dest, obj, null);
                     }
                 }
-                catch (Exception err) { Log(err); }
+                catch (Exception err) { LogError(err); }
             }
             return dest;
         }
@@ -251,7 +250,7 @@ namespace Cube
                     else if (code != TypeCode.Object) root.SetValue(name, value);
                     else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, item.PropertyType, subkey);
                 }
-                catch (Exception err) { Log(err); }
+                catch (Exception err) { LogError(err); }
             }
         }
 
@@ -319,17 +318,17 @@ namespace Cube
             return Convert.ChangeType(value, type);            
         }
 
-        /* ------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// Log
+        /// LogError
         /// 
         /// <summary>
-        /// エラー内容を記録します。
+        /// 例外情報をログに出力します。
         /// </summary>
         ///
-        /* ------------------------------------------------------------- */
-        private static void Log(Exception err)
-            => LogManager.GetLogger(typeof(Settings)).Error(err);
+        /* ----------------------------------------------------------------- */
+        private static void LogError(Exception err)
+            => Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
 
         #endregion
     }

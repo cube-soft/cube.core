@@ -89,14 +89,14 @@ namespace Cube.Generics
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BinaryFormatter
+        /// CopyWithBinaryFormatter
         ///
         /// <summary>
         /// BinaryFormatter を用いてオブジェクトのコピーを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T CopyWithBinaryFormatter<T>(this T src)
+        private static T CopyWithBinaryFormatter<T>(this T src)
         {
             object dest = null;
             using (var stream = new IoEx.MemoryStream())

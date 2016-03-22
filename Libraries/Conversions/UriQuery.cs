@@ -95,7 +95,7 @@ namespace Cube.Conversions
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithVersion
+        /// With
         /// 
         /// <summary>
         /// Uri オブジェクトにバージョン情報を付与します。
@@ -106,6 +106,40 @@ namespace Cube.Conversions
         {
             var n = Math.Min(Math.Max(digit, 1), 4);
             return With(uri, "v", version.ToString(n));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With
+        /// 
+        /// <summary>
+        /// Uri オブジェクトにバージョン情報を付与します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri With(this Uri uri, SoftwareVersion version)
+            => With(uri, "v", version);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With
+        /// 
+        /// <summary>
+        /// Uri オブジェクトに UTM クエリの情報を付与します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri With(this Uri uri, UtmQuery utm)
+        {
+            if (utm == null) return uri;
+
+            var query = new Dictionary<string, string>();
+            if (!string.IsNullOrEmpty(utm.Source)) query.Add("utm_source", utm.Source);
+            if (!string.IsNullOrEmpty(utm.Medium)) query.Add("utm_medium", utm.Medium);
+            if (!string.IsNullOrEmpty(utm.Campaign)) query.Add("utm_campaign", utm.Campaign);
+            if (!string.IsNullOrEmpty(utm.Term)) query.Add("utm_term", utm.Term);
+            if (!string.IsNullOrEmpty(utm.Content)) query.Add("utm_content", utm.Content);
+            return With(uri, query);
         }
     }
 }

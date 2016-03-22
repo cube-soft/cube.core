@@ -18,7 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using log4net;
+using Cube.Log;
 
 namespace Cube
 {
@@ -67,7 +67,6 @@ namespace Cube
             InitialDelay = TimeSpan.Zero;
             LastExecuted = DateTime.Now;
             State = SchedulerState.Stop;
-            Logger = LogManager.GetLogger(GetType());
             _core.Elapsed += (s, e) => OnExecute(e);
         }
 
@@ -126,17 +125,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public SchedulerState State { get; private set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Logger
-        /// 
-        /// <summary>
-        /// ログ出力用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ILog Logger { get; set; }
-
         #endregion
 
         #region Events
@@ -179,7 +167,7 @@ namespace Cube
             }
 
             _core.Start();
-            Logger.Debug($"Start\tInterval:{Interval}\tInitialDelay:{InitialDelay}");
+            this.LogDebug($"Start\tInterval:{Interval}\tInitialDelay:{InitialDelay}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -212,7 +200,7 @@ namespace Cube
             if (State == SchedulerState.Stop) return;
 
             if (_core.Enabled) _core.Stop();
-            Logger.Debug($"Stop\tLastExecuted:{LastExecuted}");
+            this.LogDebug($"Stop\tLastExecuted:{LastExecuted}");
 
             State = SchedulerState.Stop;
             LastExecuted = DateTime.Now;
@@ -234,7 +222,7 @@ namespace Cube
             System.Diagnostics.Debug.Assert(_core.Enabled);
             _core.Stop();
             State = SchedulerState.Suspend;
-            Logger.Debug("Suspend\tLastExecuted:{LastExecuted}");
+            this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
 
             var interval = Interval - (DateTime.Now - LastExecuted);
             if (interval < TimeSpan.Zero) interval = Interval;
@@ -257,7 +245,9 @@ namespace Cube
             System.Diagnostics.Debug.Assert(!_core.Enabled);
             State = SchedulerState.Run;
             _core.Start();
-            Logger.Debug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{TimeSpan.FromMilliseconds(_core.Interval)}");
+
+            var msec = TimeSpan.FromMilliseconds(_core.Interval);
+            this.LogDebug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{msec}");
         }
 
         #endregion

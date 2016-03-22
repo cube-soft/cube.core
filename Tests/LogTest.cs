@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NotifyItem.cs
+/// LogTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,120 +18,115 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Drawing;
+using NUnit.Framework;
+using Cube.Log;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyLevel
+    /// GenericsTest
     /// 
     /// <summary>
-    /// 通知した項目の重要度を示す値を定義した列挙体です。
+    /// 拡張メソッドのテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum NotifyLevel : int
+    [Parallelizable]
+    [TestFixture]
+    class LogTest
     {
-        None        = 0,
-        Debug       = 1,
-        Information = 2,
-        Important   = 3,
-        Warning     = 4,
-        Error       = 5,
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NotifyItem
-    /// 
-    /// <summary>
-    /// 通知内容を保持するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class NotifyItem
-    {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Level
-        /// 
+        /// Log_Debug
+        ///
         /// <summary>
-        /// 通知内容の重要度を取得または設定します。
+        /// LogDebug(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NotifyLevel Level { get; set; }
+        [Test]
+        public void Log_Debug()
+        {
+            Assert.DoesNotThrow(() => this.LogDebug("Debug"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Title
-        /// 
+        /// Log_Info
+        ///
         /// <summary>
-        /// 通知内容のタイトルを取得または設定します。
+        /// LogInfo(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title { get; set; }
-
+        [Test]
+        public void Log_Info()
+        {
+            Assert.DoesNotThrow(() => this.LogInfo("Info"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Description
-        /// 
+        /// Log_Warn
+        ///
         /// <summary>
-        /// 通知内容の本文を取得または設定します。
+        /// LogWarn(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Description { get; set; }
+        [Test]
+        public void Log_Warn()
+        {
+            Assert.DoesNotThrow(() => this.LogWarn("Warn"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Image
-        /// 
+        /// Log_Error
+        ///
         /// <summary>
-        /// 通知内容を表すイメージを取得または設定します。
+        /// LogError(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Image Image { get; set; }
+        [Test]
+        public void Log_Error()
+        {
+            Assert.DoesNotThrow(() => this.LogError("Error"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisplayTime
-        /// 
+        /// Log_Fatal
+        ///
         /// <summary>
-        /// 通知内容の表示時間を取得または設定します。
+        /// LogFatal(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TimeSpan DisplayTime { get; set; }
+        [Test]
+        public void Log_Fatal()
+        {
+            Assert.DoesNotThrow(() => this.LogFatal("Fatal"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InitialDelay
-        /// 
+        /// Log_Exception
+        ///
         /// <summary>
-        /// 通知内容の表示を遅延させる時間を取得または設定します。
+        /// LogException(Action) 拡張メソッドのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TimeSpan InitialDelay { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Data
-        /// 
-        /// <summary>
-        /// ユーザデータを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Data { get; set; }
-
-        #endregion
+        [Test]
+        public void Log_Exception()
+        {
+            Assert.DoesNotThrow(() => this.LogException(() =>
+            {
+                throw new ArgumentException("dummy exception");
+            }));
+        }
     }
 }

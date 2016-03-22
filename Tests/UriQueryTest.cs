@@ -32,6 +32,7 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Parallelizable]
     [TestFixture]
     class UriQueryTest
     {
@@ -88,24 +89,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// With_Null
-        /// 
-        /// <summary>
-        /// 引数に null を指定した時のテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void With_Null()
-        {
-            Assert.That(
-                Create().With(null).ToString(),
-                Is.EqualTo(Create().ToString())
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// With_MultiQuery
         /// 
         /// <summary>
@@ -119,6 +102,54 @@ namespace Cube.Tests
             Assert.That(
                 Create().With("key1", "value1").With("key2", "value2").ToString(),
                 Is.EqualTo($"{Create()}?key1=value1&key2=value2")
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With_SoftwareVersion
+        /// 
+        /// <summary>
+        /// SoftwareVersion オブジェクトを With で結合した時のテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_SoftwareVersion()
+        {
+            Assert.That(
+                Create().With(new SoftwareVersion
+                {
+                    Number    = new Version(1, 2, 0, 0),
+                    Available = 2,
+                    Postfix   = "beta"
+                }).ToString(),
+                Is.EqualTo($"{Create()}?v=1.2beta")
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With_Utm
+        /// 
+        /// <summary>
+        /// UTM クエリーを With で結合した時のテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Utm()
+        {
+            Assert.That(
+                Create().With(new UtmQuery
+                {
+                    Source   = "cube",
+                    Medium   = "tests",
+                    Campaign = "january",
+                    Term     = "dummy",
+                    Content  = "content"
+                }).ToString(),
+                Is.EqualTo($"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content")
             );
         }
 

@@ -91,6 +91,7 @@
     <Compile Include="NativeApis\SpDevice.cs" />
     <Compile Include="NativeApis\WinMM.cs" />
     <Compile Include="Notifications\NotifyEventArgs.cs" />
+    <Compile Include="Operations\Log.cs" />
     <Compile Include="Settings\ApplicationSettingsValue.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +116,8 @@
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="Settings\Startup.cs" />
+    <Compile Include="UtmQuery.cs" />
+    <Compile Include="SoftwareVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
