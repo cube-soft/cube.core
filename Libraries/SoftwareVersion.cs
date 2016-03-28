@@ -32,6 +32,37 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class SoftwareVersion
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SoftwareVersion
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion() { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SoftwareVersion
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion(Version number, int digit, string suffix)
+        {
+            Number = number;
+            Digit  = digit;
+            Suffix = suffix;
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -47,25 +78,25 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Available
+        /// Digit
         /// 
         /// <summary>
         /// Number プロパティの有効桁数を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Available { get; set; } = 3;
+        public int Digit { get; set; } = 3;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Postfix
+        /// Suffix
         /// 
         /// <summary>
         /// バージョン番号の末尾に付与する文字列を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Postfix { get; set; } = string.Empty;
+        public string Suffix { get; set; } = string.Empty;
 
         #endregion
 
@@ -82,9 +113,41 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public override string ToString()
         {
-            var dest = Number?.ToString(Available) ?? string.Empty;
-            if (!string.IsNullOrEmpty(Postfix)) dest += Postfix;
+            var dest = CreateVersion();
+            if (!string.IsNullOrEmpty(Suffix)) dest += Suffix;
             return dest;
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string CreateVersion()
+        {
+            if (Number == null) return string.Empty;
+
+            var ss = new System.Text.StringBuilder();
+
+            ss.Append(Number.Major);
+            if (Digit <= 1) return ss.ToString();
+
+            ss.Append($".{Number.Minor}");
+            if (Digit <= 2) return ss.ToString();
+
+            ss.Append($".{Number.Build}");
+            if (Digit <= 3) return ss.ToString();
+
+            ss.Append($".{Number.Revision}");
+            return ss.ToString();
         }
 
         #endregion

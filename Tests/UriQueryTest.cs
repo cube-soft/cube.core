@@ -77,16 +77,6 @@ namespace Cube.Tests
             );
         }
 
-        [TestCase(1, 128, 26, 5, 3)]
-        public void With_Version(int major, int minor, int build, int revision, int digit)
-        {
-            var version = new Version(major, minor, build, revision);
-            Assert.That(
-                Create().With(version, digit).ToString(),
-                Is.EqualTo($"{Create()}?v={version.ToString(digit)}")
-            );
-        }
-
         /* ----------------------------------------------------------------- */
         ///
         /// With_MultiQuery
@@ -120,9 +110,9 @@ namespace Cube.Tests
             Assert.That(
                 Create().With(new SoftwareVersion
                 {
-                    Number    = new Version(1, 2, 0, 0),
-                    Available = 2,
-                    Postfix   = "beta"
+                    Number = new Version(1, 2, 0, 0),
+                    Digit  = 2,
+                    Suffix = "beta"
                 }).ToString(),
                 Is.EqualTo($"{Create()}?v=1.2beta")
             );
