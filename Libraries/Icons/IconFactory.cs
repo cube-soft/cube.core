@@ -32,7 +32,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class IconFactory
+    public static class IconFactory
     {
         /* ----------------------------------------------------------------- */
         ///

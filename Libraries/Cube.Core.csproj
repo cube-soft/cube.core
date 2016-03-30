@@ -65,7 +65,6 @@
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
-    <Compile Include="FileSystem\DriveType.cs" />
     <Compile Include="FileSystem\FileInfo.cs" />
     <Compile Include="FileSystem\VetoException.cs" />
     <Compile Include="NativeMethods\IImageList.cs" />

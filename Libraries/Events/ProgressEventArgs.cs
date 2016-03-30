@@ -23,7 +23,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ProgressEventArgs
+    /// ProgressEventArgs(TValue)
     ///
     /// <summary>
     /// 進捗情報を保持するためのクラスです。

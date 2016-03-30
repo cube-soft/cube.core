@@ -23,7 +23,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueEventArgs
+    /// KeyValueEventArgs(TKey, TValue)
     ///
     /// <summary>
     /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。

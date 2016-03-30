@@ -24,7 +24,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueCancelEventArgs
+    /// KeyValueCancelEventArgs(TKey, TValue)
     ///
     /// <summary>
     /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
