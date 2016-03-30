@@ -18,6 +18,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Text;
+using System.Reflection;
 
 namespace Cube
 {
@@ -54,11 +56,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(Version number, int digit, string suffix)
+        public SoftwareVersion(Assembly assembly)
         {
-            Number = number;
-            Digit  = digit;
-            Suffix = suffix;
+            var number = assembly?.GetName()?.Version;
+            if (number != null) Number = number;
         }
 
         #endregion
@@ -85,7 +86,18 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Digit { get; set; } = 3;
+        public int Digit { get; set; } = 4;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Prefix
+        /// 
+        /// <summary>
+        /// バージョン番号の先頭に付与する文字列を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Prefix { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,6 +109,17 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Suffix { get; set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Platform
+        /// 
+        /// <summary>
+        /// ソフトウェアのプラットフォームを示す文字列を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Platform => (IntPtr.Size == 4) ? "x86" : "x64";
 
         #endregion
 
@@ -113,9 +136,12 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public override string ToString()
         {
-            var dest = CreateVersion();
-            if (!string.IsNullOrEmpty(Suffix)) dest += Suffix;
-            return dest;
+            var ss = new StringBuilder();
+            if (!string.IsNullOrEmpty(Prefix)) ss.Append(Prefix);
+            ss.Append(CreateVersion());
+            if (!string.IsNullOrEmpty(Suffix)) ss.Append(Suffix);
+
+            return $"{ss.ToString()} ({Platform})";
         }
 
         #endregion
