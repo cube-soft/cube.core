@@ -134,15 +134,27 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override string ToString()
+        public override string ToString() => ToString(true);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToString
+        /// 
+        /// <summary>
+        /// バージョンを表す文字列を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string ToString(bool platform)
         {
             var ss = new StringBuilder();
 
             if (!string.IsNullOrEmpty(Prefix)) ss.Append(Prefix);
             AppendNumber(ss);
             if (!string.IsNullOrEmpty(Suffix)) ss.Append(Suffix);
+            if (platform) ss.Append($" ({Platform})");
 
-            return $"{ss.ToString()} ({Platform})";
+            return ss.ToString();
         }
 
         #endregion

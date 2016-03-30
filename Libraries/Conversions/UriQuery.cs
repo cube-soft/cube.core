@@ -103,7 +103,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, SoftwareVersion version)
-            => With(uri, "v", version);
+            => With(uri, "v", version.ToString(false));
 
         /* ----------------------------------------------------------------- */
         ///
