@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Runtime.Serialization;
 
 namespace Cube.FileSystem
 {
@@ -60,6 +61,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Serializable]
     public class VetoException : Exception
     {
         #region Constructors
@@ -129,6 +131,27 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public string Name { get; private set; }
+
+        #endregion
+
+        #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetObjectData
+        /// 
+        /// <summary>
+        /// SerializationInfo に、オブジェクトをシリアル化するために必要な
+        /// データを設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("Reason", Reason);
+            info.AddValue("Name", Name);
+        }
 
         #endregion
     }

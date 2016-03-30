@@ -137,8 +137,9 @@ namespace Cube
         public override string ToString()
         {
             var ss = new StringBuilder();
+
             if (!string.IsNullOrEmpty(Prefix)) ss.Append(Prefix);
-            ss.Append(CreateVersion());
+            AppendNumber(ss);
             if (!string.IsNullOrEmpty(Suffix)) ss.Append(Suffix);
 
             return $"{ss.ToString()} ({Platform})";
@@ -150,30 +151,27 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// AppendNumber
         ///
         /// <summary>
-        /// バージョンを表す文字列を生成します。
+        /// バージョン番号を追加します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string CreateVersion()
+        private void AppendNumber(StringBuilder ss)
         {
-            if (Number == null) return string.Empty;
-
-            var ss = new System.Text.StringBuilder();
+            if (Number == null) return;
 
             ss.Append(Number.Major);
-            if (Digit <= 1) return ss.ToString();
+            if (Digit <= 1) return;
 
             ss.Append($".{Number.Minor}");
-            if (Digit <= 2) return ss.ToString();
+            if (Digit <= 2) return;
 
             ss.Append($".{Number.Build}");
-            if (Digit <= 3) return ss.ToString();
+            if (Digit <= 3) return;
 
             ss.Append($".{Number.Revision}");
-            return ss.ToString();
         }
 
         #endregion

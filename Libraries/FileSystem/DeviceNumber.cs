@@ -82,13 +82,14 @@ namespace Cube.FileSystem
 
             try
             {
-                handle = Kernel32.CreateFile(deviceName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                handle = Kernel32.NativeMethods.CreateFile(deviceName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
                     IntPtr.Zero, 3 /* OPEN_EXISTING */, 0, IntPtr.Zero);
-                if (handle.ToInt32() <= 0) throw new Win32Exception(Marshal.GetLastWin32Error());
+                var errno = Marshal.GetLastWin32Error();
+                if (handle.ToInt32() <= 0) throw new Win32Exception(errno);
                 return GetDeviceNumber(handle);
                 
             }
-            finally { if (handle.ToInt32() > 0) Kernel32.CloseHandle(handle); }
+            finally { if (handle.ToInt32() > 0) Kernel32.NativeMethods.CloseHandle(handle); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,7 +111,8 @@ namespace Cube.FileSystem
                 var size = 0u;
                 buffer = Marshal.AllocHGlobal(capacity);
 
-                var result = Kernel32.DeviceIoControl(handle, 0x002D1080 /* IOCTL_STORAGE_GET_DEVICE_NUMBER */,
+                var result = Kernel32.NativeMethods.DeviceIoControl(handle,
+                    0x002D1080 /* IOCTL_STORAGE_GET_DEVICE_NUMBER */,
                     IntPtr.Zero, 0, buffer, (uint)capacity, out size, IntPtr.Zero);
                 if (!result || size == 0) throw new Win32Exception(Marshal.GetLastWin32Error());
 

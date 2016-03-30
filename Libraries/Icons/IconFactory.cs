@@ -49,14 +49,17 @@ namespace Cube
 
             var info = new SHSTOCKICONINFO();
             info.cbSize = Marshal.SizeOf(info);
-            Shell32.SHGetStockIconInfo((uint)id, Shell32.SHGFI_SYSICONINDEX, ref info);
+            Shell32.NativeMethods.SHGetStockIconInfo((uint)id,
+                Shell32.NativeMethods.SHGFI_SYSICONINDEX, ref info);
 
             IImageList images;
-            Shell32.SHGetImageList((uint)size, Shell32.IID_IImageList, out images);
+            Shell32.NativeMethods.SHGetImageList((uint)size,
+                Shell32.NativeMethods.IID_IImageList, out images);
             if (images == null) return null;
 
             var handle = IntPtr.Zero;
-            images.GetIcon(info.iSysImageIndex, (int)Shell32.ILD_TRANSPARENT, ref handle);
+            images.GetIcon(info.iSysImageIndex,
+                (int)Shell32.NativeMethods.ILD_TRANSPARENT, ref handle);
             return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
 
@@ -74,14 +77,16 @@ namespace Cube
             if (size == IconSize.Zero) return null;
 
             var info = new SHFILEINFO();
-            Shell32.SHGetFileInfo(path, 0, ref info, (uint)Marshal.SizeOf(info), Shell32.SHGFI_SYSICONINDEX);
+            Shell32.NativeMethods.SHGetFileInfo(path, 0, ref info, (uint)Marshal.SizeOf(info),
+                Shell32.NativeMethods.SHGFI_SYSICONINDEX);
 
             IImageList images;
-            Shell32.SHGetImageList((uint)size, Shell32.IID_IImageList, out images);
+            Shell32.NativeMethods.SHGetImageList((uint)size,
+                Shell32.NativeMethods.IID_IImageList, out images);
             if (images == null) return null;
 
             var handle = IntPtr.Zero;
-            images.GetIcon(info.iIcon, (int)Shell32.ILD_TRANSPARENT, ref handle);
+            images.GetIcon(info.iIcon, (int)Shell32.NativeMethods.ILD_TRANSPARENT, ref handle);
             return (handle != IntPtr.Zero) ? Icon.FromHandle(handle) : null;
         }
     }
