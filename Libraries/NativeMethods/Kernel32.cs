@@ -20,18 +20,18 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube
+namespace Cube.Kernel32
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Kernel32
+    /// Kernel32.NativeMethods
     /// 
     /// <summary>
     /// kernel32.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class Kernel32
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///

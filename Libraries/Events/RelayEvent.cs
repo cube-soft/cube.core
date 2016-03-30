@@ -76,14 +76,14 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// RelayEvent
+    /// RelayEvent(TArgs)
     /// 
     /// <summary>
     /// イベントを中継するためのクラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class RelayEvent<TEvent> where TEvent : EventArgs
+    public class RelayEvent<TArgs> where TArgs : EventArgs
     {
         #region Methods
 
@@ -96,7 +96,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Raise(TEvent args)
+        public void Raise(TArgs args)
             => Raise(this, args);
 
         /* ----------------------------------------------------------------- */
@@ -108,7 +108,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Raise(object sender, TEvent args)
+        public void Raise(object sender, TArgs args)
             => Handle?.Invoke(sender, args);
 
         #endregion
@@ -124,7 +124,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<TEvent> Handle;
+        public event EventHandler<TArgs> Handle;
 
         #endregion
     }

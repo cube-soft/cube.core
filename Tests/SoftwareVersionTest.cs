@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// KeyValueEventArgs.cs
+/// SoftwareVersionTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,63 +18,50 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Reflection;
+using NUnit.Framework;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueEventArgs(TKey, TValue)
-    ///
+    /// SoftwareVersionTest
+    /// 
     /// <summary>
-    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
+    /// SoftwareVersion のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class KeyValueEventArgs<TKey, TValue> : EventArgs
+    [Parallelizable]
+    [TestFixture]
+    class SoftwareVersionTest
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// KeyValueEventArgs
-        /// 
+        /// ToString_Assembly
+        ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// バージョンを表す文字列を取得するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueEventArgs(TKey key, TValue value) : base()
+        [Test]
+        public void ToString_Assembly()
         {
-            Key = key;
-            Value = value;
+            var asm   = Assembly.GetExecutingAssembly();
+            var major = asm.GetName().Version.Major;
+            var minor = asm.GetName().Version.Minor;
+            var arch  = (IntPtr.Size == 4) ? "x86" : "x64";
+
+            var version = new SoftwareVersion(asm);
+            version.Digit  = 2;
+            version.Prefix = "begin-";
+            version.Suffix = "-end";
+
+            Assert.That(
+                version.ToString(),
+                Is.EqualTo($"begin-{major}.{minor}-end ({arch})")
+            );
         }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Key
-        /// 
-        /// <summary>
-        /// キーを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TKey Key { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        /// 
-        /// <summary>
-        /// 値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue Value { get; }
-
-        #endregion
     }
 }

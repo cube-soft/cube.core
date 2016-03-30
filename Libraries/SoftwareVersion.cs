@@ -18,6 +18,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Text;
+using System.Reflection;
 
 namespace Cube
 {
@@ -54,11 +56,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(Version number, int digit, string suffix)
+        public SoftwareVersion(Assembly assembly)
         {
-            Number = number;
-            Digit  = digit;
-            Suffix = suffix;
+            var number = assembly?.GetName()?.Version;
+            if (number != null) Number = number;
         }
 
         #endregion
@@ -85,7 +86,18 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Digit { get; set; } = 3;
+        public int Digit { get; set; } = 4;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Prefix
+        /// 
+        /// <summary>
+        /// バージョン番号の先頭に付与する文字列を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Prefix { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,6 +109,17 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Suffix { get; set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Platform
+        /// 
+        /// <summary>
+        /// ソフトウェアのプラットフォームを示す文字列を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Platform => (IntPtr.Size == 4) ? "x86" : "x64";
 
         #endregion
 
@@ -111,11 +134,27 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override string ToString()
+        public override string ToString() => ToString(true);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToString
+        /// 
+        /// <summary>
+        /// バージョンを表す文字列を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string ToString(bool platform)
         {
-            var dest = CreateVersion();
-            if (!string.IsNullOrEmpty(Suffix)) dest += Suffix;
-            return dest;
+            var ss = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(Prefix)) ss.Append(Prefix);
+            AppendNumber(ss);
+            if (!string.IsNullOrEmpty(Suffix)) ss.Append(Suffix);
+            if (platform) ss.Append($" ({Platform})");
+
+            return ss.ToString();
         }
 
         #endregion
@@ -124,30 +163,27 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// AppendNumber
         ///
         /// <summary>
-        /// バージョンを表す文字列を生成します。
+        /// バージョン番号を追加します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string CreateVersion()
+        private void AppendNumber(StringBuilder ss)
         {
-            if (Number == null) return string.Empty;
-
-            var ss = new System.Text.StringBuilder();
+            if (Number == null) return;
 
             ss.Append(Number.Major);
-            if (Digit <= 1) return ss.ToString();
+            if (Digit <= 1) return;
 
             ss.Append($".{Number.Minor}");
-            if (Digit <= 2) return ss.ToString();
+            if (Digit <= 2) return;
 
             ss.Append($".{Number.Build}");
-            if (Digit <= 3) return ss.ToString();
+            if (Digit <= 3) return;
 
             ss.Append($".{Number.Revision}");
-            return ss.ToString();
         }
 
         #endregion

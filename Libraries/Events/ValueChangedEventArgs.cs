@@ -23,7 +23,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ValueChangedEventArgs
+    /// ValueChangedEventArgs(TValue)
     /// 
     /// <summary>
     /// 値の変更に関連するイベントに使用するクラスです。

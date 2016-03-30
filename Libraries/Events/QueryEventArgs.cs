@@ -23,7 +23,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryEventArgs
+    /// QueryEventArgs(TQuery, TResult)
     /// 
     /// <summary>
     /// クエリーデータを受け渡すためのクラスです。

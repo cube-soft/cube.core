@@ -78,7 +78,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IpcBootstrap
+        /// Bootstrap
         /// 
         /// <summary>
         /// オブジェクトを破棄します。
@@ -187,7 +187,7 @@ namespace Cube
             var server = new IpcServerChannel(Name);
             ChannelServices.RegisterChannel(server, true);
             RemotingServices.Marshal(_core, ActivateCommand, typeof(IpcProxy));
-            this.LogDebug($"{Name}/{ActivateCommand} registered");
+            this.LogDebug($"Register:{Name}/{ActivateCommand}");
         });
 
         #endregion
