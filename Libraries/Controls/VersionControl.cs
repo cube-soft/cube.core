@@ -72,6 +72,18 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Version
+        ///
+        /// <summary>
+        /// バージョン情報を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        public SoftwareVersion Version { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Assembly
         ///
         /// <summary>
@@ -88,62 +100,8 @@ namespace Cube.Forms
             {
                 if (_reader != null && _reader.Assembly == value) return;
                 _reader = new AssemblyReader(value);
-                UpdateInformation();
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Architecture
-        ///
-        /// <summary>
-        /// アプリケーションのアーキテクチャを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        public string Architecture => (IntPtr.Size == 4) ? "x86" : "x64";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VersionDigit
-        ///
-        /// <summary>
-        /// 表示するバージョンの桁数を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DefaultValue(4)]
-        public int VersionDigit
-        {
-            get { return _versionDigit; }
-            set
-            {
-                if (_versionDigit == value) return;
-                _versionDigit = Math.Min(Math.Max(value, 1), 4);
-                UpdateInformation();
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VersionSuffix
-        ///
-        /// <summary>
-        /// バージョンのサフィックスを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        public string VersionSuffix
-        {
-            get { return _versionSuffix; }
-            set
-            {
-                if (_versionSuffix == value) return;
-                _versionSuffix = value;
-                UpdateInformation();
+                UpdateVersion(value);
+                Refresh();
             }
         }
 
@@ -164,7 +122,7 @@ namespace Cube.Forms
             {
                 if (DescriptionLabel.Text == value) return;
                 DescriptionLabel.Text = value;
-                UpdateInformation();
+                Refresh();
             }
         }
 
@@ -187,7 +145,7 @@ namespace Cube.Forms
                 {
                     if (LogoPanel.Image == value) return;
                     LogoPanel.Image = value;
-                    UpdateInformation();
+                    Refresh();
                 }
             }
         }
@@ -222,7 +180,47 @@ namespace Cube.Forms
             {
                 if (_spacing == value) return;
                 _spacing = value;
-                UpdateInformation();
+                Refresh();
+            }
+        }
+
+        #endregion
+
+        #region Override methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Refresh
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override void Refresh()
+        {
+            try
+            {
+                SuspendLayout();
+
+                VersionLabel.Text = $"{_reader.Product} {Version}";
+
+                PlatformLabel.Text = GetFrameworkVersion();
+                PlatformLabel.Margin = PaddingTop();
+
+                var visible = !string.IsNullOrEmpty(Description);
+                DescriptionLabel.Margin = PaddingTop(visible ? Spacing : 0);
+                DescriptionLabel.Visible = visible;
+
+                CopyrightLinkLabel.Text = _reader.Copyright;
+                CopyrightLinkLabel.Margin = PaddingTop();
+
+                LayoutPanel.ColumnStyles[0].Width = LogoPanel?.Image?.Width ?? 1;
+            }
+            finally
+            {
+                ResumeLayout();
+                base.Refresh();
             }
         }
 
@@ -245,47 +243,64 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Other private methods
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UpdateInformation
+        /// UpdateVersion
         ///
         /// <summary>
-        /// 各種情報を更新します。
+        /// Assembly の内容にしたがって Version プロパティを更新します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void UpdateVersion(Assembly assembly)
+        {
+            var previous = Version;
+            Version = new SoftwareVersion(assembly);
+            if (previous == null) return;
+
+            Version.Digit  = previous.Digit;
+            Version.Prefix = previous.Prefix;
+            Version.Suffix = previous.Suffix;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFrameworkVersion
+        ///
+        /// <summary>
+        /// 使用するフレームワークのバージョンを表す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void UpdateInformation()
+        private string GetFrameworkVersion()
         {
-            var version = new SoftwareVersion(_reader.Version, VersionDigit, VersionSuffix);
-            var product = _reader.Product;
-            VersionLabel.Text = $"{product} {version} ({Architecture})";
-
             var ss = new System.Text.StringBuilder();
             ss.Append(Environment.OSVersion.ToString());
             ss.AppendLine();
             ss.Append($"Microsoft .NET Framework {Environment.Version}");
-            PlatformLabel.Text = ss.ToString();
-            PlatformLabel.Margin = new System.Windows.Forms.Padding(0, Spacing, 0, 0);
-
-            var space = string.IsNullOrEmpty(Description) ? 0 : Spacing;
-            DescriptionLabel.Margin = new System.Windows.Forms.Padding(0, space, 0, 0);
-            DescriptionLabel.Visible = !string.IsNullOrEmpty(Description);
-
-            CopyrightLinkLabel.Text = _reader.Copyright;
-            CopyrightLinkLabel.Margin = new System.Windows.Forms.Padding(0, Spacing, 0, 0);
-
-            if (LogoPanel.Image != null) LayoutPanel.ColumnStyles[0].Width = LogoPanel.Image.Width;
+            return ss.ToString();
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PaddingTop
+        ///
+        /// <summary>
+        /// Top の値を設定した Padding オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private System.Windows.Forms.Padding PaddingTop() => PaddingTop(Spacing);
+        private System.Windows.Forms.Padding PaddingTop(int value)
+            => new System.Windows.Forms.Padding(0, value, 0, 0);
 
         #endregion
 
         #region Fields
         private AssemblyReader _reader;
         private int _spacing = 16;
-        private int _versionDigit = 4;
-        private string _versionSuffix = string.Empty;
         #endregion
     }
 }

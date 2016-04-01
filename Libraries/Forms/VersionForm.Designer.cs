@@ -65,7 +65,6 @@
             this.VersionControl.Size = new System.Drawing.Size(384, 151);
             this.VersionControl.TabIndex = 0;
             this.VersionControl.Url = "http://www.cube-soft.jp/";
-            this.VersionControl.VersionSuffix = "";
             // 
             // ExitButton
             // 
