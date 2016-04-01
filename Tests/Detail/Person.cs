@@ -33,7 +33,7 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     internal enum Sex : int
     {
-        Male   = 0,
+        Male = 0,
         Female = 1,
         Unknown = -1
     }

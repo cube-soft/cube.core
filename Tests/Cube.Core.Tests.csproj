@@ -54,9 +54,11 @@
     <Compile Include="ByteFormatTest.cs" />
     <Compile Include="Detail\Person.cs" />
     <Compile Include="Detail\FileResource.cs" />
+    <Compile Include="Detail\SerializableData.cs" />
     <Compile Include="DriveTest.cs" />
     <Compile Include="FileInfoTest.cs" />
     <Compile Include="FileResourceTest.cs" />
+    <Compile Include="GenericsTest.cs" />
     <Compile Include="IconFactoryTest.cs" />
     <Compile Include="LogTest.cs" />
     <Compile Include="SettingsTest.cs" />
