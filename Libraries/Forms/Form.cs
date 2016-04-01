@@ -206,7 +206,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
-            => NcHitTest?.Invoke(this, e);
+        {
+            if (NcHitTest != null) NcHitTest(this, e);
+            else e.Cancel = true;
+        }
 
         #endregion
 
