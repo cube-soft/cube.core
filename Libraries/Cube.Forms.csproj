@@ -55,7 +55,7 @@
     <Compile Include="Controls\ColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Detail\FontFactory.cs" />
+    <Compile Include="Details\FontFactory.cs" />
     <Compile Include="Controls\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -80,7 +80,7 @@
     <Compile Include="EventArgs\MessageEventArgs.cs" />
     <Compile Include="EventArgs\NavigatingErrorEventArgs.cs" />
     <Compile Include="EventArgs\NavigatingEventArgs.cs" />
-    <Compile Include="Detail\FlatButtonPainter.cs" />
+    <Compile Include="Details\FlatButtonPainter.cs" />
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="Models\WindowTheme.cs" />
@@ -118,7 +118,7 @@
     <Compile Include="Controls\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Detail\RadioButtonPainter.cs" />
+    <Compile Include="Details\RadioButtonPainter.cs" />
     <Compile Include="Models\Surface.cs" />
     <Compile Include="Controls\SettingsControl.cs">
       <SubType>Component</SubType>
@@ -135,7 +135,7 @@
     <Compile Include="Controls\ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Detail\ToggleButtonPainter.cs" />
+    <Compile Include="Details\ToggleButtonPainter.cs" />
     <Compile Include="Controls\UserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
