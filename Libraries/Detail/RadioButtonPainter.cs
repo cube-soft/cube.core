@@ -73,11 +73,11 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #region Initialize methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InvalidateViewSurface
+        /// InitializeSurface
         /// 
         /// <summary>
         /// 外観の描画に関して RadioButton オブジェクトと競合するプロパティを
@@ -85,11 +85,10 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void InvalidateViewSurface()
+        private void InitializeSurface()
         {
             var radio = View as System.Windows.Forms.RadioButton;
             if (radio != null) radio.Appearance = System.Windows.Forms.Appearance.Button;
-            base.InvalidateViewSurface();
         }
 
         #endregion

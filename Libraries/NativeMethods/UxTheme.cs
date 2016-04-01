@@ -20,18 +20,18 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+namespace Cube.Forms.UxTheme
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UxTheme
+    /// UxTheme.NativeMethods
     /// 
     /// <summary>
     /// uxtheme.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class UxTheme
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///

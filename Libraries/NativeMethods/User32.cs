@@ -20,18 +20,18 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+namespace Cube.Forms.User32
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// User32
+    /// User32.NativeMethods
     /// 
     /// <summary>
     /// user32.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class User32
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -55,7 +55,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         /* ----------------------------------------------------------------- */
         ///

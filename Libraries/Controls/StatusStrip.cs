@@ -122,8 +122,8 @@ namespace Cube.Forms
         {
             if (IsNormalWindow() && IsSizingGrip(e.Location))
             {
-                User32.ReleaseCapture();
-                User32.SendMessage(FindForm().Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);
+                User32.NativeMethods.ReleaseCapture();
+                User32.NativeMethods.SendMessage(FindForm().Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);
             }
             else base.OnMouseDown(e);
         }

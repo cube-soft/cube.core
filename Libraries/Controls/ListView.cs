@@ -629,7 +629,7 @@ namespace Cube.Forms
         {
             base.OnSelectedIndexChanged(e);
             if (Theme == WindowTheme.Normal) return;
-            User32.SendMessage(Handle, 0x127, (IntPtr)0x10001, IntPtr.Zero);
+            User32.NativeMethods.SendMessage(Handle, 0x127, (IntPtr)0x10001, IntPtr.Zero);
         }
         /* ----------------------------------------------------------------- */
         ///
@@ -644,7 +644,7 @@ namespace Cube.Forms
         {
             base.OnEnter(e);
             if (Theme == WindowTheme.Normal) return;
-            User32.SendMessage(Handle, 0x127, (IntPtr)0x10001, IntPtr.Zero);
+            User32.NativeMethods.SendMessage(Handle, 0x127, (IntPtr)0x10001, IntPtr.Zero);
         }
 
         #endregion
@@ -662,8 +662,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateTheme(WindowTheme theme)
         {
-            if (theme == WindowTheme.Normal) UxTheme.SetWindowTheme(Handle, null, null);
-            else UxTheme.SetWindowTheme(Handle, theme.ToString(), null);
+            if (theme == WindowTheme.Normal) UxTheme.NativeMethods.SetWindowTheme(Handle, null, null);
+            else UxTheme.NativeMethods.SetWindowTheme(Handle, theme.ToString(), null);
         }
 
         /* ----------------------------------------------------------------- */

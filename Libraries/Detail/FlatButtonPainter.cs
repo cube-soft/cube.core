@@ -56,7 +56,7 @@ namespace Cube.Forms
             View.MouseDown  += (s, e) => OnMouseDown(e);
             View.MouseUp    += (s, e) => OnMouseUp(e);
 
-            InvalidateViewSurface();
+            InitializeSurface();
             Surface.BorderColor = Color.Black;
             Surface.BorderSize = 1;
         }
@@ -160,33 +160,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InvalidateViewSurface
-        /// 
-        /// <summary>
-        /// 外観の描画に関して ButtonBase オブジェクトと競合するプロパティを
-        /// 無効にします。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void InvalidateViewSurface()
-        {
-            var transparent = Color.FromArgb(0, 255, 255, 255);
-
-            View.BackColor = transparent;
-            View.ForeColor = transparent;
-            View.BackgroundImage = null;
-            View.Image = null;
-            View.FlatStyle = FlatStyle.Flat;
-            View.FlatAppearance.BorderColor = transparent;
-            View.FlatAppearance.BorderSize = 0;
-            View.FlatAppearance.CheckedBackColor = transparent;
-            View.FlatAppearance.MouseDownBackColor = transparent;
-            View.FlatAppearance.MouseOverBackColor = transparent;
-            View.UseVisualStyleBackColor = false;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// OnPaint
         /// 
         /// <summary>
@@ -267,7 +240,38 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Implementations
+        #region Initialize methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitializeSurface
+        /// 
+        /// <summary>
+        /// 外観の描画に関して ButtonBase オブジェクトと競合するプロパティを
+        /// 無効にします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void InitializeSurface()
+        {
+            var transparent = Color.FromArgb(0, 255, 255, 255);
+
+            View.BackColor = transparent;
+            View.ForeColor = transparent;
+            View.BackgroundImage = null;
+            View.Image = null;
+            View.FlatStyle = FlatStyle.Flat;
+            View.FlatAppearance.BorderColor = transparent;
+            View.FlatAppearance.BorderSize = 0;
+            View.FlatAppearance.CheckedBackColor = transparent;
+            View.FlatAppearance.MouseDownBackColor = transparent;
+            View.FlatAppearance.MouseOverBackColor = transparent;
+            View.UseVisualStyleBackColor = false;
+        }
+
+        #endregion
+
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///

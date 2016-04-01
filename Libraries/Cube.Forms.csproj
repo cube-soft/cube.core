@@ -84,10 +84,10 @@
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="Models\WindowTheme.cs" />
-    <Compile Include="NativeApis\MinMaxInfo.cs" />
-    <Compile Include="NativeApis\Point.cs" />
-    <Compile Include="NativeApis\User32.cs" />
-    <Compile Include="NativeApis\UxTheme.cs" />
+    <Compile Include="NativeMethods\MinMaxInfo.cs" />
+    <Compile Include="NativeMethods\Point.cs" />
+    <Compile Include="NativeMethods\User32.cs" />
+    <Compile Include="NativeMethods\UxTheme.cs" />
     <Compile Include="Controls\Panel.cs">
       <SubType>Component</SubType>
     </Compile>

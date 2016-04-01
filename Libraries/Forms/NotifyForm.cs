@@ -539,7 +539,7 @@ namespace Cube.Forms
             const uint SWP_NOACTIVATE     = 0x0010;
             const uint SWP_NOSENDCHANGING = 0x0400;
 
-            User32.SetWindowPos(
+            User32.NativeMethods.SetWindowPos(
                 Handle,
                 (IntPtr)(-1), /* HWND_TOPMOST */
                 0,

@@ -47,6 +47,7 @@ namespace Cube.Forms
             : base(view)
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
+            InitializeSurface();
         }
 
         #endregion
@@ -72,11 +73,11 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InvalidateViewSurface
+        /// InitializeSurface
         /// 
         /// <summary>
         /// 外観の描画に関して CheckBox オブジェクトと競合するプロパティを
@@ -84,11 +85,10 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void InvalidateViewSurface()
+        private void InitializeSurface()
         {
             var radio = View as System.Windows.Forms.CheckBox;
             if (radio != null) radio.Appearance = System.Windows.Forms.Appearance.Button;
-            base.InvalidateViewSurface();
         }
 
         #endregion

@@ -221,8 +221,8 @@ namespace Cube.Forms
                 result != Position.TopLeft    && result != Position.TopRight &&
                 result != Position.BottomLeft && result != Position.BottomRight) return;
 
-            User32.ReleaseCapture();
-            User32.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)result, IntPtr.Zero);
+            User32.NativeMethods.ReleaseCapture();
+            User32.NativeMethods.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)result, IntPtr.Zero);
         }
 
         #endregion

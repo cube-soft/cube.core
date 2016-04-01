@@ -441,7 +441,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void PopupSystemMenu(Point absolute)
         {
-            var menu = User32.GetSystemMenu(Handle, false);
+            var menu = User32.NativeMethods.GetSystemMenu(Handle, false);
             if (menu == IntPtr.Zero) return;
 
             var enabled = 0x0000u; // MF_ENABLED
@@ -450,14 +450,14 @@ namespace Cube.Forms
             var sizable = (Sizable && normal) ? enabled : grayed;
             var movable = (Caption != null && normal) ? enabled : grayed;
 
-            User32.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
-            User32.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
+            User32.NativeMethods.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
+            User32.NativeMethods.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
 
-            var command = User32.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
+            var command = User32.NativeMethods.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
                 absolute.X, absolute.Y, Handle, IntPtr.Zero);
             if (command == 0) return;
 
-            User32.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
+            User32.NativeMethods.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
         }
 
         /* ----------------------------------------------------------------- */

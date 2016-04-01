@@ -131,8 +131,8 @@ namespace Cube.Forms
             var form = FindForm();
             if (form != null || form.WindowState == FormWindowState.Normal)
             {
-                User32.ReleaseCapture();
-                User32.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);
+                User32.NativeMethods.ReleaseCapture();
+                User32.NativeMethods.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);
             }
             else base.OnMouseDown(e);
         }
