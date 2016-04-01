@@ -23,7 +23,7 @@ using System.Reflection;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Extensions
+namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -34,7 +34,7 @@ namespace Cube.Forms.Extensions
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ControlEx
+    public static class Operations
     {
         #region Extension methods
 

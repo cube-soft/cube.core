@@ -22,7 +22,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
-using Cube.Forms.Extensions;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {

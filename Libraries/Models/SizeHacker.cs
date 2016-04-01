@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Cube.Forms.Extensions;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {

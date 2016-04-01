@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// GraphicsEx.cs
+/// Graphics.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -21,18 +21,18 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Extensions
+namespace Cube.Forms.Drawings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GraphicsEx
+    /// Drawings.Operations
     /// 
     /// <summary>
     /// System.Drawing.Graphics の拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class GraphicsEx
+    public static class Operations
     {
         #region Extension methods
 
@@ -84,7 +84,8 @@ namespace Cube.Forms.Extensions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawText(this Graphics gs, Rectangle bounds, string text, Font font, Color color, ContentAlignment align)
+        public static void DrawText(this Graphics gs,
+            Rectangle bounds, string text, Font font, Color color, ContentAlignment align)
         {
             using (var brush = new SolidBrush(color))
             {
@@ -102,7 +103,8 @@ namespace Cube.Forms.Extensions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawImage(this Graphics gs, Rectangle bounds, Image image, ContentAlignment align)
+        public static void DrawImage(this Graphics gs,
+            Rectangle bounds, Image image, ContentAlignment align)
         {
             if (image == null) return;
             var rect = GetDrawBounds(bounds, image, align);
@@ -118,7 +120,8 @@ namespace Cube.Forms.Extensions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void DrawImage(this Graphics gs, Rectangle bounds, Image image, ImageLayout layout)
+        public static void DrawImage(this Graphics gs,
+            Rectangle bounds, Image image, ImageLayout layout)
         {
             if (image == null) return;
 
@@ -181,7 +184,7 @@ namespace Cube.Forms.Extensions
             var height = (int)Math.Floor(image.Height * ratio);
 
             var resize = new Bitmap(width, height);
-            using (var igs = Graphics.FromImage(resize))
+            using (var igs = System.Drawing.Graphics.FromImage(resize))
             {
                 igs.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 igs.DrawImage(image, 0, 0, width, height);
@@ -220,8 +223,8 @@ namespace Cube.Forms.Extensions
         {
             var dest = new Rectangle(bounds.X, bounds.Y, image.Width, image.Height);
 
-            var width  = (int)bounds.Width;
-            var height = (int)bounds.Height;
+            var width  = bounds.Width;
+            var height = bounds.Height;
             var offset = Point.Empty;
 
             switch (align)
