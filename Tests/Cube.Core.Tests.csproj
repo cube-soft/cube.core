@@ -56,6 +56,7 @@
     <Compile Include="Details\FileResource.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="DriveTest.cs" />
+    <Compile Include="FileHandlerTest.cs" />
     <Compile Include="FileInfoTest.cs" />
     <Compile Include="FileResourceTest.cs" />
     <Compile Include="GenericsTest.cs" />
