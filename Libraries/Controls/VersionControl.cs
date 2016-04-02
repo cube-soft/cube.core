@@ -203,7 +203,8 @@ namespace Cube.Forms
             {
                 SuspendLayout();
 
-                VersionLabel.Text = $"{_reader.Product} {Version}";
+                ProductLabel.Text = _reader.Product;
+                VersionLabel.Text = $"Version {Version}";
 
                 PlatformLabel.Text = GetFrameworkVersion();
                 PlatformLabel.Margin = PaddingTop();

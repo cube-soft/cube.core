@@ -47,12 +47,11 @@
             this.LayoutPanel.RowCount = 2;
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.LayoutPanel.Size = new System.Drawing.Size(384, 211);
+            this.LayoutPanel.Size = new System.Drawing.Size(434, 271);
             this.LayoutPanel.TabIndex = 0;
             // 
             // VersionControl
             // 
-            this.VersionControl.Assembly = null;
             this.VersionControl.BackColor = System.Drawing.SystemColors.Window;
             this.VersionControl.Description = "このソフトウェアは Apache 2.0 でライセンスされています。";
             this.VersionControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -61,15 +60,15 @@
             this.VersionControl.Logo = ((System.Drawing.Image)(resources.GetObject("VersionControl.Logo")));
             this.VersionControl.Margin = new System.Windows.Forms.Padding(0);
             this.VersionControl.Name = "VersionControl";
-            this.VersionControl.Padding = new System.Windows.Forms.Padding(20);
-            this.VersionControl.Size = new System.Drawing.Size(384, 151);
+            this.VersionControl.Padding = new System.Windows.Forms.Padding(30);
+            this.VersionControl.Size = new System.Drawing.Size(434, 211);
             this.VersionControl.TabIndex = 0;
             this.VersionControl.Url = "http://www.cube-soft.jp/";
             // 
             // ExitButton
             // 
             this.ExitButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.ExitButton.Location = new System.Drawing.Point(132, 166);
+            this.ExitButton.Location = new System.Drawing.Point(157, 226);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(120, 30);
             this.ExitButton.TabIndex = 1;
@@ -78,7 +77,7 @@
             // 
             // VersionForm
             // 
-            this.ClientSize = new System.Drawing.Size(384, 211);
+            this.ClientSize = new System.Drawing.Size(434, 271);
             this.Controls.Add(this.LayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;

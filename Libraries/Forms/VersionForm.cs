@@ -46,7 +46,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionForm() : this(null) { }
+        public VersionForm() : this(Assembly.GetExecutingAssembly()) { }
 
         /* ----------------------------------------------------------------- */
         ///

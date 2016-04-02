@@ -31,6 +31,7 @@
             this.LayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.LogoPanel = new System.Windows.Forms.PictureBox();
             this.ContentsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.ProductLabel = new System.Windows.Forms.Label();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.PlatformLabel = new System.Windows.Forms.Label();
             this.DescriptionLabel = new System.Windows.Forms.Label();
@@ -55,7 +56,7 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.LayoutPanel.Size = new System.Drawing.Size(350, 120);
+            this.LayoutPanel.Size = new System.Drawing.Size(350, 140);
             this.LayoutPanel.TabIndex = 0;
             // 
             // LogoPanel
@@ -65,12 +66,13 @@
             this.LogoPanel.Location = new System.Drawing.Point(0, 0);
             this.LogoPanel.Margin = new System.Windows.Forms.Padding(0);
             this.LogoPanel.Name = "LogoPanel";
-            this.LogoPanel.Size = new System.Drawing.Size(48, 120);
+            this.LogoPanel.Size = new System.Drawing.Size(48, 140);
             this.LogoPanel.TabIndex = 0;
             this.LogoPanel.TabStop = false;
             // 
             // ContentsPanel
             // 
+            this.ContentsPanel.Controls.Add(this.ProductLabel);
             this.ContentsPanel.Controls.Add(this.VersionLabel);
             this.ContentsPanel.Controls.Add(this.PlatformLabel);
             this.ContentsPanel.Controls.Add(this.DescriptionLabel);
@@ -81,26 +83,38 @@
             this.ContentsPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ContentsPanel.Name = "ContentsPanel";
             this.ContentsPanel.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
-            this.ContentsPanel.Size = new System.Drawing.Size(302, 120);
+            this.ContentsPanel.Size = new System.Drawing.Size(302, 140);
             this.ContentsPanel.TabIndex = 1;
+            // 
+            // ProductLabel
+            // 
+            this.ProductLabel.AutoEllipsis = true;
+            this.ProductLabel.AutoSize = true;
+            this.ProductLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ProductLabel.Location = new System.Drawing.Point(12, 0);
+            this.ProductLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.ProductLabel.Name = "ProductLabel";
+            this.ProductLabel.Size = new System.Drawing.Size(219, 12);
+            this.ProductLabel.TabIndex = 10;
+            this.ProductLabel.Text = "CubeSoft";
             // 
             // VersionLabel
             // 
             this.VersionLabel.AutoEllipsis = true;
             this.VersionLabel.AutoSize = true;
             this.VersionLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VersionLabel.Location = new System.Drawing.Point(12, 0);
-            this.VersionLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.VersionLabel.Location = new System.Drawing.Point(12, 14);
+            this.VersionLabel.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(219, 12);
-            this.VersionLabel.TabIndex = 10;
-            this.VersionLabel.Text = "CubeSoft 1.0.0 (x86)";
+            this.VersionLabel.TabIndex = 18;
+            this.VersionLabel.Text = "Version 1.0.0 (x86)";
             // 
             // PlatformLabel
             // 
             this.PlatformLabel.AutoSize = true;
             this.PlatformLabel.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.PlatformLabel.Location = new System.Drawing.Point(12, 28);
+            this.PlatformLabel.Location = new System.Drawing.Point(12, 42);
             this.PlatformLabel.Margin = new System.Windows.Forms.Padding(0, 16, 0, 0);
             this.PlatformLabel.Name = "PlatformLabel";
             this.PlatformLabel.Size = new System.Drawing.Size(219, 24);
@@ -113,7 +127,7 @@
             this.DescriptionLabel.AutoSize = true;
             this.DescriptionLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.DescriptionLabel.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.DescriptionLabel.Location = new System.Drawing.Point(12, 68);
+            this.DescriptionLabel.Location = new System.Drawing.Point(12, 82);
             this.DescriptionLabel.Margin = new System.Windows.Forms.Padding(0, 16, 0, 0);
             this.DescriptionLabel.Name = "DescriptionLabel";
             this.DescriptionLabel.Size = new System.Drawing.Size(219, 12);
@@ -126,7 +140,7 @@
             this.CopyrightLinkLabel.AutoSize = true;
             this.CopyrightLinkLabel.BackColor = System.Drawing.Color.Transparent;
             this.CopyrightLinkLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CopyrightLinkLabel.Location = new System.Drawing.Point(12, 96);
+            this.CopyrightLinkLabel.Location = new System.Drawing.Point(12, 110);
             this.CopyrightLinkLabel.Margin = new System.Windows.Forms.Padding(0, 16, 0, 0);
             this.CopyrightLinkLabel.Name = "CopyrightLinkLabel";
             this.CopyrightLinkLabel.Size = new System.Drawing.Size(219, 12);
@@ -139,7 +153,7 @@
             // 
             this.Controls.Add(this.LayoutPanel);
             this.Name = "VersionControl";
-            this.Size = new System.Drawing.Size(350, 120);
+            this.Size = new System.Drawing.Size(350, 140);
             this.LayoutPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LogoPanel)).EndInit();
             this.ContentsPanel.ResumeLayout(false);
@@ -153,9 +167,10 @@
         private System.Windows.Forms.TableLayoutPanel LayoutPanel;
         private System.Windows.Forms.PictureBox LogoPanel;
         private System.Windows.Forms.FlowLayoutPanel ContentsPanel;
-        private System.Windows.Forms.Label VersionLabel;
+        private System.Windows.Forms.Label ProductLabel;
         private System.Windows.Forms.Label DescriptionLabel;
         private System.Windows.Forms.LinkLabel CopyrightLinkLabel;
         private System.Windows.Forms.Label PlatformLabel;
+        private System.Windows.Forms.Label VersionLabel;
     }
 }
