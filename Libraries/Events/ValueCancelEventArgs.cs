@@ -23,7 +23,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ValueCancelEventArgs
+    /// ValueCancelEventArgs(TValue)
     ///
     /// <summary>
     /// イベントハンドラに特定の型の値を渡すためのクラスです。

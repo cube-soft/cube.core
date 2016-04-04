@@ -21,18 +21,18 @@ using System;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Cube
+namespace Cube.SetupApi
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SetupApi
+    /// SetupApi.NativeMethods
     /// 
     /// <summary>
     /// setupapi.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class SetupApi
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -97,7 +97,7 @@ namespace Cube
         /// 
         /* ----------------------------------------------------------------- */
         [DllImport("setupapi.dll")]
-        public static extern int CM_Get_Parent(ref int pdnDevInst, int dnDevInst, ulong ulFlags);
+        public static extern int CM_Get_Parent(ref int pdnDevInst, int dnDevInst, uint ulFlags);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,8 +108,8 @@ namespace Cube
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        [DllImport("setupapi.dll")]
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode)]
         public static extern int CM_Request_Device_Eject(int dnDevInst, out Cube.FileSystem.VetoType pVetoType,
-            StringBuilder pszVetoName, ulong ulNameLength, ulong ulFlags);
+            StringBuilder pszVetoName, uint ulNameLength, uint ulFlags);
     }
 }

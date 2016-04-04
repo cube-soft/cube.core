@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Kernel32.cs
+/// SerializableData.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,58 +18,78 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.InteropServices;
 
-namespace Cube
+namespace Cube.Tests
 {
-    /* --------------------------------------------------------------------- */
+    /* ----------------------------------------------------------------- */
     ///
-    /// Kernel32
+    /// SerializableData
     /// 
     /// <summary>
-    /// kernel32.dll に定義された関数を宣言するためのクラスです。
+    /// Serializabl 属性を持つクラスのサンプルです。
     /// </summary>
     ///
-    /* --------------------------------------------------------------------- */
-    internal abstract class Kernel32
+    /* ----------------------------------------------------------------- */
+    [Serializable]
+    internal class SerializableData
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateFile
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
-            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CloseHandle
+        /// Identification
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211.aspx
+        /// ID を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CloseHandle(IntPtr handle);
+        public int Identification { get; set; } = -1;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DeviceIoControl
+        /// Name
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216.aspx
+        /// 名前を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
-            IntPtr lpInBuffer, uint nInBufferSize,
-            IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
+        public string Name { get; set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Sex
+        /// 
+        /// <summary>
+        /// 性別を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Sex Sex { get; set; } = Sex.Unknown;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Creation
+        /// 
+        /// <summary>
+        /// 作成日時を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DateTime Creation { get; set; } = DateTime.MinValue;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Reserved
+        /// 
+        /// <summary>
+        /// フラグを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Reserved { get; set; } = false;
+
+        #endregion
     }
 }

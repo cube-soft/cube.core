@@ -19,10 +19,29 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Management;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Cube.FileSystem {
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DriveType
+    /// 
+    /// <summary>
+    /// ドライブの種類を定義した列挙型です。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public enum DriveType : uint
+    {
+        Unknown       = 0,
+        CD            = 1,
+        Dvd           = 2,
+        FloppyDisk    = 3,
+        HardDisk      = 4,
+        Network       = 5,
+        RemovableDisk = 6
+    }
+
     /* --------------------------------------------------------------------- */
     ///
     /// Drive

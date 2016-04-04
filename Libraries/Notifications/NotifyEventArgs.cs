@@ -44,6 +44,23 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        public NotifyEventArgs(NotifyItem item) : this(
+            item.Level,
+            item.Title,
+            item.Description,
+            item.Image,
+            item.Data
+        ) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NotifyEventArgs
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         public NotifyEventArgs(NotifyLevel level, string title, string description, Image image, object data = null)
             : base()
         {

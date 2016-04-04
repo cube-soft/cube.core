@@ -109,9 +109,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static void Save<T>(T src, RegistryKey root)
-        {
-            SaveRegistry(src, typeof(T), root);
-        }
+            => SaveRegistry(src, typeof(T), root);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -142,7 +140,7 @@ namespace Cube
 
         #endregion
 
-        #region Implementations
+        #region Load methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -159,31 +157,28 @@ namespace Cube
             var dest = Activator.CreateInstance(type);
             if (root == null || dest == null) return null;
 
-            foreach (var item in type.GetProperties())
+            foreach (var info in type.GetProperties()) LogException(() =>
             {
-                try
+                if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return;
+
+                var name = GetDataMemberName(info);
+                if (string.IsNullOrEmpty(name)) return;
+
+                if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
                 {
-                    if (!Attribute.IsDefined(item, typeof(DataMemberAttribute))) continue;
+                    var value = root.GetValue(name, null);
+                    if (value == null) return;
 
-                    var name = GetDataMemberName(item);
-                    if (string.IsNullOrEmpty(name)) continue;
-
-                    if (Type.GetTypeCode(item.PropertyType) != TypeCode.Object)
-                    {
-                        var value = root.GetValue(name, null);
-                        if (value == null) continue;
-
-                        var changed = ChangeType(value, item.PropertyType);
-                        if (changed != null) item.SetValue(dest, changed, null);
-                    }
-                    else using (var subkey = root.OpenSubKey(name))
-                    {
-                        var obj = LoadRegistry(subkey, item.PropertyType);
-                        if (obj != null) item.SetValue(dest, obj, null);
-                    }
+                    var changed = ChangeType(value, info.PropertyType);
+                    if (changed != null) info.SetValue(dest, changed, null);
                 }
-                catch (Exception err) { LogError(err); }
-            }
+                else using (var subkey = root.OpenSubKey(name))
+                {
+                    var obj = LoadRegistry(subkey, info.PropertyType);
+                    if (obj != null) info.SetValue(dest, obj, null);
+                }
+            });
+
             return dest;
         }
 
@@ -219,6 +214,10 @@ namespace Cube
             return dest;
         }
 
+        #endregion
+
+        #region Save methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// SaveRegistry
@@ -228,31 +227,38 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void SaveRegistry(object src, Type type, RegistryKey root)
+        private static void SaveRegistry(object src, Type type, RegistryKey root)
         {
             if (src == null || root == null) return;
-
-            foreach (var item in type.GetProperties())
-            {
-                try
-                {
-                    if (!Attribute.IsDefined(item, typeof(DataMemberAttribute))) continue;
-
-                    var name = GetDataMemberName(item);
-                    if (name == null) continue;
-
-                    var value = item.GetValue(src, null);
-                    var code = Type.GetTypeCode(item.PropertyType);
-
-                    if (item.PropertyType.IsEnum) root.SetValue(name, (int)value);
-                    else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
-                    else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
-                    else if (code != TypeCode.Object) root.SetValue(name, value);
-                    else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, item.PropertyType, subkey);
-                }
-                catch (Exception err) { LogError(err); }
-            }
+            foreach (var info in type.GetProperties()) SaveRegistry(src, info, root);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveRegistry
+        /// 
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveRegistry(object src, PropertyInfo info, RegistryKey root)
+            => LogException(() =>
+        {
+            if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return;
+
+            var name = GetDataMemberName(info);
+            if (name == null) return;
+
+            var value = info.GetValue(src, null);
+            var code = Type.GetTypeCode(info.PropertyType);
+
+            if (info.PropertyType.IsEnum) root.SetValue(name, (int)value);
+            else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
+            else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
+            else if (code != TypeCode.Object) root.SetValue(name, value);
+            else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, info.PropertyType, subkey);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -283,6 +289,10 @@ namespace Cube
             var serializer = new DataContractJsonSerializer(typeof(T));
             serializer.WriteObject(dest, src);
         }
+
+        #endregion
+
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
@@ -329,6 +339,21 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static void LogError(Exception err)
             => Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LogException
+        /// 
+        /// <summary>
+        /// 実行時に送出された例外をログに出力します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void LogException(Action action)
+        {
+            try { action(); }
+            catch (Exception err) { LogError(err); }
+        }
 
         #endregion
     }

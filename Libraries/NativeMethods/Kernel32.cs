@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UnixTime.cs
+/// Kernel32.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,78 +18,58 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Runtime.InteropServices;
 
-namespace Cube.Conversions
+namespace Cube.Kernel32
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UnixTime
+    /// Kernel32.NativeMethods
     /// 
     /// <summary>
-    /// DateTiem と UnixTime の相互変換を行う拡張メソッド用クラスです。
+    /// kernel32.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class UnixTime
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ToUnixTime
+        /// CreateFile
         /// 
         /// <summary>
-        /// DateTime オブジェクトから UNIX 時刻へ変換します。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static long ToUnixTime(this DateTime time)
-        {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var utc = time.ToUniversalTime();
-            return (long)utc.Subtract(epoch).TotalSeconds;
-        }
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
+            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToDateTime
+        /// CloseHandle
         /// 
         /// <summary>
-        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime ToDateTime(this int unix)
-        {
-            var us = (uint)unix;
-            return ToUniversalTime(us);
-        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool CloseHandle(IntPtr handle);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToUniversalTime
+        /// DeviceIoControl
         /// 
         /// <summary>
-        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363216.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime ToUniversalTime(this long unix)
-        {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return epoch.AddSeconds(unix);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToLocalTime
-        /// 
-        /// <summary>
-        /// UNIX 時刻から DateTime オブジェクトへ変換します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static DateTime ToLocalTime(this long unix)
-        {
-            return ToUniversalTime(unix).ToLocalTime();
-        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
+            IntPtr lpInBuffer, uint nInBufferSize,
+            IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
     }
 }

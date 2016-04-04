@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResourceTest.cs
+/// FileHandlerTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,53 +24,70 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResourceTest
+    /// FileHandlerTest
     /// 
     /// <summary>
-    /// FileResource をテストするためのクラスです。
+    /// FileHandler のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class FileResourceTest : FileResource
+    class FileHandlerTest : FileResource
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
-        /// 
+        /// Move_Overwrite
+        ///
         /// <summary>
-        /// Examples フォルダが存在するかどうかをテストします。
+        /// 上書き移動のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Examples_Exists()
+        [TestCase("Sample.txt")]
+        public void Move_Overwrite(string filename)
+            => Assert.DoesNotThrow(() =>
         {
-            Assert.That(
-                IoEx.Directory.Exists(Examples),
-                Is.True
-            );
-        }
+            var op = new Cube.FileSystem.FileHandler();
+            op.Failed += (s, e) => Assert.Fail($"{e.Key}: {e.Value}");
+
+            var name = IoEx.Path.GetFileNameWithoutExtension(filename);
+            var ext  = IoEx.Path.GetExtension(filename);
+            var src  = IoEx.Path.Combine(Results, filename);
+            var dest = IoEx.Path.Combine(Results, $"{name}-Move{ext}");
+
+            op.Copy(IoEx.Path.Combine(Examples, filename), src, false);
+            op.Copy(src, dest, false);
+            op.Move(src, dest, true);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results_Exists
-        /// 
+        /// Move_Failed
+        ///
         /// <summary>
-        /// Results フォルダが存在するかどうかをテストします。
+        /// 移動操作に失敗するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Results_Exists()
+        public void Move_Failed()
         {
-            Assert.That(
-                IoEx.Directory.Exists(Results),
-                Is.True
-            );
+            var failed = false;
+            var op = new Cube.FileSystem.FileHandler();
+            op.Failed += (s, e) =>
+            {
+                failed   = true;
+                e.Cancel = true;
+            };
+
+            var src = IoEx.Path.Combine(Results, "FileNotFound.txt");
+            var dest = IoEx.Path.Combine(Results, "Moved.txt");
+            op.Move(src, dest, true);
+
+            Assert.That(failed, Is.True);
         }
 
         #endregion

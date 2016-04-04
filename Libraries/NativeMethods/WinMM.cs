@@ -21,18 +21,18 @@ using System;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Cube
+namespace Cube.WinMM
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WinMM
+    /// WinMM.NativeMethods
     /// 
     /// <summary>
     /// winmm.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class WinMM
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -43,7 +43,7 @@ namespace Cube
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        [DllImport("winmm.dll")]
+        [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
         public static extern Int32 mciSendString(string command, StringBuilder buffer,
             int bufferSize, IntPtr hwndCallback);
     }

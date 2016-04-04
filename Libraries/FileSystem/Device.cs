@@ -160,11 +160,12 @@ namespace Cube.FileSystem
         private void DetachDevice()
         {
             var parent = 0;
-            SetupApi.CM_Get_Parent(ref parent, (int)Handle, 0);
+            SetupApi.NativeMethods.CM_Get_Parent(ref parent, (int)Handle, 0);
 
             var veto = VetoType.Unknown;
             var name = new StringBuilder(10 * 1024);
-            var status = SetupApi.CM_Request_Device_Eject(parent, out veto, name, (ulong)name.Capacity, 0);
+            var status = SetupApi.NativeMethods.CM_Request_Device_Eject(parent,
+                out veto, name, (uint)name.Capacity, 0);
             if (status != 0) throw new VetoException(veto, name.ToString());
         }
 
@@ -179,7 +180,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private void DetachMedia()
         {
-            WinMM.mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
+            WinMM.NativeMethods.mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
         }
 
         /* ----------------------------------------------------------------- */
@@ -204,7 +205,7 @@ namespace Cube.FileSystem
                 for (uint i = 0; true; ++i)
                 {
                     var data = new SP_DEVICE_INTERFACE_DATA();
-                    if (!SetupApi.SetupDiEnumDeviceInterfaces(handle, IntPtr.Zero, ref guid, i, data))
+                    if (!SetupApi.NativeMethods.SetupDiEnumDeviceInterfaces(handle, IntPtr.Zero, ref guid, i, data))
                     {
                         var code = Marshal.GetLastWin32Error();
                         if (code == 259 /* ERROR_NO_MORE_ITEMS */) break;
@@ -223,7 +224,7 @@ namespace Cube.FileSystem
                     }
                 }
             }
-            finally { if (handle != IntPtr.Zero) SetupApi.SetupDiDestroyDeviceInfoList(handle); }
+            finally { if (handle != IntPtr.Zero) SetupApi.NativeMethods.SetupDiDestroyDeviceInfoList(handle); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -272,9 +273,10 @@ namespace Cube.FileSystem
             const uint DIGCF_PRESENT = 0x00000002;
             const uint DIGCF_DEVICEINTERFACE = 0x00000010;
 
-            var dest = SetupApi.SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
+            var dest  = SetupApi.NativeMethods.SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            if (dest.ToInt32() == -1) throw new Win32Exception(Marshal.GetLastWin32Error());
+            var errno = Marshal.GetLastWin32Error();
+            if (dest.ToInt32() == -1) throw new Win32Exception(errno);
 
             return dest;
         }
@@ -305,7 +307,7 @@ namespace Cube.FileSystem
                 buffer = Marshal.AllocHGlobal((int)size);
                 Marshal.StructureToPtr(detail, buffer, false);
 
-                var status = SetupApi.SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
+                var status = SetupApi.NativeMethods.SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
                 if (!status) throw new Win32Exception(Marshal.GetLastWin32Error());
 
                 var pos = (IntPtr)((int)buffer + Marshal.SizeOf(typeof(int)));
@@ -327,7 +329,7 @@ namespace Cube.FileSystem
         private uint GetRequiredSize(IntPtr handle, SP_DEVICE_INTERFACE_DATA data, SP_DEVINFO_DATA devinfo)
         {
             var dest = 0u;
-            if (!SetupApi.SetupDiGetDeviceInterfaceDetail(handle, data, IntPtr.Zero, 0, ref dest, devinfo))
+            if (!SetupApi.NativeMethods.SetupDiGetDeviceInterfaceDetail(handle, data, IntPtr.Zero, 0, ref dest, devinfo))
             {
                 var code = Marshal.GetLastWin32Error();
                 if (code != 122 /* ERROR_INSUFFICIENT_BUFFER */) throw new Win32Exception(code);

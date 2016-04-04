@@ -48,7 +48,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Scheduler
+    public class Scheduler : IDisposable
     {
         #region Constructors
 
@@ -68,6 +68,20 @@ namespace Cube
             LastExecuted = DateTime.Now;
             State = SchedulerState.Stop;
             _core.Elapsed += (s, e) => OnExecute(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~Scheduler
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~Scheduler()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -252,6 +266,41 @@ namespace Cube
 
         #endregion
 
+        #region Methods for IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            _disposed = true;
+            if (disposing) _core.Dispose();
+        }
+
+        #endregion
+
         #region Virtual methods
 
         /* ----------------------------------------------------------------- */
@@ -293,6 +342,7 @@ namespace Cube
         #endregion
 
         #region Fields
+        private bool _disposed = false;
         private System.Timers.Timer _core = new System.Timers.Timer();
         #endregion
     }

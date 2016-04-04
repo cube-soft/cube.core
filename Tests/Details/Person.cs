@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// SoftwareVersion.cs
+/// Person.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,173 +18,187 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Text;
-using System.Reflection;
+using System.Runtime.Serialization;
 
-namespace Cube
+namespace Cube.Tests
 {
-    /* --------------------------------------------------------------------- */
+    /* ----------------------------------------------------------------- */
     ///
-    /// SoftwareVersion
+    /// Sex
     /// 
     /// <summary>
-    /// ソフトウェアのバージョンを表すクラスです。
+    /// 性別を表す列挙体です。
     /// </summary>
     ///
-    /* --------------------------------------------------------------------- */
-    public class SoftwareVersion
+    /* ----------------------------------------------------------------- */
+    internal enum Sex : int
     {
-        #region Constructors
+        Male = 0,
+        Female = 1,
+        Unknown = -1
+    }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SoftwareVersion
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SoftwareVersion() { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SoftwareVersion
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SoftwareVersion(Assembly assembly)
-        {
-            var number = assembly?.GetName()?.Version;
-            if (number != null) Number = number;
-        }
-
-        #endregion
-
+    /* ----------------------------------------------------------------- */
+    ///
+    /// Address
+    /// 
+    /// <summary>
+    /// アドレスを保持するためのクラスです。
+    /// </summary>
+    ///
+    /* ----------------------------------------------------------------- */
+    [DataContract]
+    internal class Address
+    {
         #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Number
+        /// Type
         /// 
         /// <summary>
-        /// バージョン番号を取得または設定します。
+        /// アドレスの種類を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version Number { get; set; } = new Version(1, 0, 0, 0);
+        [DataMember]
+        public string Type { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Digit
+        /// Value
         /// 
         /// <summary>
-        /// Number プロパティの有効桁数を取得または設定します。
+        /// アドレスの内容を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Digit { get; set; } = 4;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Prefix
-        /// 
-        /// <summary>
-        /// バージョン番号の先頭に付与する文字列を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Prefix { get; set; } = string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Suffix
-        /// 
-        /// <summary>
-        /// バージョン番号の末尾に付与する文字列を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Suffix { get; set; } = string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Platform
-        /// 
-        /// <summary>
-        /// ソフトウェアのプラットフォームを示す文字列を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Platform => (IntPtr.Size == 4) ? "x86" : "x64";
+        [DataMember]
+        public string Value { get; set; }
 
         #endregion
+    }
 
-        #region Methods
+    /* ----------------------------------------------------------------- */
+    ///
+    /// Person
+    /// 
+    /// <summary>
+    /// 個人情報を保持するためのクラスです。
+    /// </summary>
+    ///
+    /* ----------------------------------------------------------------- */
+    [DataContract]
+    internal class Person
+    {
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToString
+        /// Identification
         /// 
         /// <summary>
-        /// バージョンを表す文字列を取得します。
+        /// ID を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override string ToString() => ToString(true);
+        [DataMember(Name = "ID")]
+        public int Identification { get; set; } = -1;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToString
+        /// Name
         /// 
         /// <summary>
-        /// バージョンを表す文字列を取得します。
+        /// 名前を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string ToString(bool platform)
-        {
-            var ss = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(Prefix)) ss.Append(Prefix);
-            AppendNumber(ss);
-            if (!string.IsNullOrEmpty(Suffix)) ss.Append(Suffix);
-            if (platform) ss.Append($" ({Platform})");
-
-            return ss.ToString();
-        }
-
-        #endregion
-
-        #region Others
+        [DataMember]
+        public string Name { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AppendNumber
-        ///
+        /// Sex
+        /// 
         /// <summary>
-        /// バージョン番号を追加します。
+        /// 性別を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void AppendNumber(StringBuilder ss)
-        {
-            if (Number == null) return;
+        [DataMember]
+        public Sex Sex { get; set; } = Sex.Unknown;
 
-            ss.Append(Number.Major);
-            if (Digit <= 1) return;
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Age
+        /// 
+        /// <summary>
+        /// 年齢を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public int Age { get; set; } = 0;
 
-            ss.Append($".{Number.Minor}");
-            if (Digit <= 2) return;
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Creation
+        /// 
+        /// <summary>
+        /// 作成日時を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public DateTime Creation { get; set; } = DateTime.MinValue;
 
-            ss.Append($".{Number.Build}");
-            if (Digit <= 3) return;
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Phone
+        /// 
+        /// <summary>
+        /// 電話番号を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public Address Phone { get; set; } = new Address { Type = "Phone", Value = string.Empty };
 
-            ss.Append($".{Number.Revision}");
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Email
+        /// 
+        /// <summary>
+        /// Email アドレスを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public Address Email { get; set; } = new Address { Type = "Email", Value = string.Empty };
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Reserved
+        /// 
+        /// <summary>
+        /// フラグを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public bool Reserved { get; set; } = false;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Secret
+        /// 
+        /// <summary>
+        /// 秘密のメモ用データを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Secret { get; set; } = "secret message";
 
         #endregion
     }

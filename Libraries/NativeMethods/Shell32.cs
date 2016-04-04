@@ -20,7 +20,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube
+namespace Cube.Shell32
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -31,7 +31,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class Shell32
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -68,7 +68,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern void SHGetImageList(uint iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
+        public static extern int SHGetImageList(uint iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
 
         #region Constant fields
         public static readonly uint SHGFI_USEFILEATTRIBUTES = 0x00000010;

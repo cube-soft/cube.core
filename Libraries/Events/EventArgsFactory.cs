@@ -31,7 +31,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class ValueEventArgs
+    public static class ValueEventArgs
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -72,7 +72,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class KeyValueEventArgs
+    public static class KeyValueEventArgs
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -101,7 +101,7 @@ namespace Cube
 
     #endregion
 
-    #region ProcessEventArgs
+    #region ProgressEventArgs
 
     /* --------------------------------------------------------------------- */
     ///
@@ -112,7 +112,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class ProgressEventArgs
+    public static class ProgressEventArgs
     {
         /* ----------------------------------------------------------------- */
         ///
