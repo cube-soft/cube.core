@@ -88,9 +88,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnAttached(DeviceEventArgs e)
-        {
-            if (Attached != null) Attached(this, e);
-        }
+            => Attached?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -102,9 +100,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnDetached(DeviceEventArgs e)
-        {
-            if (Detached != null) Detached(this, e);
-        }
+            => Detached?.Invoke(this, e);
 
         #endregion
 
