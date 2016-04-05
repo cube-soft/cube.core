@@ -286,6 +286,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override void OnNcHitTest(QueryEventArgs<Point, Position> e)
         {
+            base.OnNcHitTest(e);
+            if (!e.Cancel) return;
+
             var normal = WindowState == System.Windows.Forms.FormWindowState.Normal;
             var result = this.HitTest(PointToClient(e.Query), SizeGrip);
             var others = result == Position.NoWhere || result == Position.Client;
@@ -295,8 +298,6 @@ namespace Cube.Forms
             e.Cancel = e.Result == Position.Caption ? false :
                        e.Result == Position.NoWhere ? true  :
                        (!Sizable || !normal);
-
-            base.OnNcHitTest(e);
         }
 
         /* ----------------------------------------------------------------- */
