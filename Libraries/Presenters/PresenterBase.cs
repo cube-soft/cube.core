@@ -138,6 +138,17 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// Async
+        /// 
+        /// <summary>
+        /// 各種操作を非同期で実行します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Task<TResult> Async<TResult>(Func<TResult> func) => Task.Run(() => func());
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Sync
         /// 
         /// <summary>
@@ -160,6 +171,24 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
             => this.LogException(() => SynchronizationContext.Send(_ => action(), null));
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SyncWait
+        /// 
+        /// <summary>
+        /// オブジェクト初期化時のスレッド上で各種操作を実行し、
+        /// 実行が完了するまで待機します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public TResult SyncWait<TResult>(Func<TResult> func)
+        {
+            TResult result = default(TResult);
+            try { SynchronizationContext.Send(_ => { result = func(); }, null); }
+            catch (Exception err) { this.LogError(err.Message, err); }
+            return result;
+        }
 
         #endregion
 
