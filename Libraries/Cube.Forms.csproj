@@ -99,7 +99,7 @@
     <Compile Include="Presenters\NotifyPresenter.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
     <Compile Include="Operations\Controls.cs" />
-    <Compile Include="Operations\Graphics.cs" />
+    <Compile Include="Details\Graphics.cs" />
     <Compile Include="Models\NullExpandableObjectConverter.cs" />
     <Compile Include="Forms\NotifyForm.cs">
       <SubType>Form</SubType>
