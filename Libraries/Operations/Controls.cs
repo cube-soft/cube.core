@@ -21,7 +21,6 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -36,7 +35,7 @@ namespace Cube.Forms.Controls
     /* --------------------------------------------------------------------- */
     public static class Operations
     {
-        #region Extension methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -48,7 +47,7 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool HasEventHandler(this Control control, string name)
+        public static bool HasEventHandler(this System.Windows.Forms.Control control, string name)
         {
             var handler = GetEventHandlerList(control);
             var key = GetEventKey(control, name);
@@ -65,7 +64,8 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Position HitTest(this Control control, Point point, int grip)
+        public static Position HitTest(this System.Windows.Forms.Control control,
+            Point point, int grip)
         {
             var x = point.X;
             var y = point.Y;
@@ -90,9 +90,43 @@ namespace Cube.Forms.Controls
                                      Position.NoWhere     ;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateText
+        /// 
+        /// <summary>
+        /// フォームのタイトルを "message - ProductName" と言う表記で更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateText(this System.Windows.Forms.Form form, string message)
+            => UpdateText(form, message,
+               Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateText
+        /// 
+        /// <summary>
+        /// フォームのタイトルを "message - ProductName" と言う表記で更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateText(this System.Windows.Forms.Form form,
+            string message, Assembly assembly)
+        {
+            var asm = new AssemblyReader(assembly);
+            var ss = new System.Text.StringBuilder();
+            ss.Append(message);
+            if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(asm.Product)) ss.Append(" - ");
+            ss.Append(asm.Product);
+
+            form.Text = ss.ToString();
+        }
+
         #endregion
 
-        #region Private methods
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///

@@ -21,7 +21,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using Cube.Forms.Drawings;
+using Cube.Forms.Drawing;
 
 namespace Cube.Forms
 {

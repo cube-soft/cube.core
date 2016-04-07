@@ -21,11 +21,11 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Drawings
+namespace Cube.Forms.Drawing
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Drawings.Operations
+    /// Drawing.Operations
     /// 
     /// <summary>
     /// System.Drawing.Graphics の拡張メソッドを定義したクラスです。

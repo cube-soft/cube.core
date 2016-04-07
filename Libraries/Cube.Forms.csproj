@@ -94,6 +94,7 @@
     <Compile Include="Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Operations\Images.cs" />
     <Compile Include="Operations\SelectedIndices.cs" />
     <Compile Include="Presenters\NotifyPresenter.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
