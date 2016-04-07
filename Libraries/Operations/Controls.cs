@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ControlEx.cs
+/// Controls.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -26,7 +26,7 @@ namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ControlEx
+    /// Controls.Operations
     /// 
     /// <summary>
     /// System.Windows.Forms.Control の拡張メソッドを定義したクラスです。

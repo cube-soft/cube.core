@@ -110,21 +110,6 @@ namespace Cube.Forms
 
         #region Methods
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        /// 
-        /// <summary>
-        /// オブジェクトを破棄する際に必要な終了処理を実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         /* --------------------------------------------------------------------- */
         ///
         /// Async
@@ -192,7 +177,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Virtual methods
+        #region Methods for IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
@@ -203,16 +188,23 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (_disposed) return;
-            _disposed = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄する際に必要な終了処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing) { }
 
-        #region Fields
-        private bool _disposed = false;
         #endregion
     }
 }

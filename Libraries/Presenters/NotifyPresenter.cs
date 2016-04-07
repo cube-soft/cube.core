@@ -143,11 +143,11 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         private void Execute(NotifyItem item)
         {
-            View.Level = item.Level;
-            View.Title = item.Title;
-            View.Description = item.Description;
+            View.Level        = item.Level;
+            View.Title        = item.Title;
+            View.Description  = item.Description;
             View.InitialDelay = (int)item.InitialDelay.TotalMilliseconds;
-            View.Tag = item.Data;
+            View.Tag          = item.Data;
             if (item.Image != null) View.Image = item.Image;
 
             View.Show((int)item.DisplayTime.TotalMilliseconds);
