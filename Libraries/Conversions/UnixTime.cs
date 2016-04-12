@@ -65,6 +65,18 @@ namespace Cube.Conversions
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ToDateTime
+        /// 
+        /// <summary>
+        /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToDateTime(this string time, string format)
+            => ToUniversaltime(time, format);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ToUniversalTime
         /// 
         /// <summary>
@@ -80,6 +92,24 @@ namespace Cube.Conversions
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ToUniversaltime
+        /// 
+        /// <summary>
+        /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToUniversaltime(this string time, string format)
+        {
+            if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
+            return DateTime.ParseExact(time, format,
+                System.Globalization.DateTimeFormatInfo.InvariantInfo,
+                System.Globalization.DateTimeStyles.AssumeUniversal
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ToLocalTime
         /// 
         /// <summary>
@@ -88,8 +118,24 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this long unix)
+            => ToUniversalTime(unix).ToLocalTime();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToLocalTime
+        /// 
+        /// <summary>
+        /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToLocalTime(this string time, string format)
         {
-            return ToUniversalTime(unix).ToLocalTime();
+            if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
+            return DateTime.ParseExact(time, format,
+                System.Globalization.DateTimeFormatInfo.InvariantInfo,
+                System.Globalization.DateTimeStyles.AssumeLocal
+            );
         }
     }
 }
