@@ -170,9 +170,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         public AssemblyReader Create()
-        {
-            return new AssemblyReader(Assembly.GetExecutingAssembly());
-        }
+            => new AssemblyReader(Assembly.GetExecutingAssembly());
 
         #endregion
     }
