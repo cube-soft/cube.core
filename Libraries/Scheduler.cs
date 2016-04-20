@@ -198,7 +198,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public void Reset() => OnReset(EventArgs.Empty);
+        public void Reset() => OnReset();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -312,7 +312,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReset(EventArgs e)
+        protected virtual void OnReset()
         {
             if (State != SchedulerState.Stop) Stop();
             LastExecuted = DateTime.Now;

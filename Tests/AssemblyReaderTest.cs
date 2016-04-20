@@ -31,9 +31,13 @@ namespace Cube.Tests
     /// <summary>
     /// AssemblyReader のテスト用クラスです。
     /// </summary>
+    /// 
+    /// <remarks>
+    /// TODO: Parallelizable 属性を付与すると Icon_ExecutingAssembly() の
+    /// テストに失敗する場合がある。要調査。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
     class AssemblyReaderTest
     {

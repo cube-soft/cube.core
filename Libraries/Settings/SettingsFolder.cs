@@ -17,7 +17,6 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Reflection;
 
 namespace Cube
@@ -99,6 +98,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Application
+        ///
+        /// <summary>
+        /// アプリケーション固有の設定を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ApplicationSettingsValue Application { get; set; } = null;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// InstallDirectory
         ///
         /// <summary>
@@ -107,7 +117,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string InstallDirectory => GetInstallDirectory();
+        public string InstallDirectory => Application?.InstallDirectory;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -118,7 +128,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Version => GetVersion();
+        public string Version => Application?.Version;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -220,35 +230,6 @@ namespace Cube
             Startup.Save();
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetInstallDirectory
-        ///
-        /// <summary>
-        /// アプリケーションがインストールされているディレクトリのパスを
-        /// 取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual string GetInstallDirectory()
-        {
-            return _app?.InstallDirectory;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetVersion
-        ///
-        /// <summary>
-        /// バージョンを表す文字列を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual string GetVersion()
-        {
-            return _app?.Version;
-        }
-
         #endregion
 
         #region Implementations
@@ -268,7 +249,7 @@ namespace Cube
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
                 var result = Settings.Load<ApplicationSettingsValue>(subkey);
-                if (result != null) _app = result;
+                if (result != null) Application = result;
             }
         }
 
@@ -291,10 +272,6 @@ namespace Cube
             }
         }
 
-        #endregion
-
-        #region Fields
-        private ApplicationSettingsValue _app = null;
         #endregion
     }
 }
