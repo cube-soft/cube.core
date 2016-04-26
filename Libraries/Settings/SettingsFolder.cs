@@ -206,9 +206,28 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoad()
         {
-            LoadApplicationSettings();
+            OnLoadApplicationSettings();
             LoadUserSettings();
             Startup.Load();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnLoadApplicationSettings
+        ///
+        /// <summary>
+        /// アプリケーション設定をレジストリから読み込みます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnLoadApplicationSettings()
+        {
+            var root = Microsoft.Win32.Registry.LocalMachine;
+            using (var subkey = root.OpenSubKey(SubKeyName, false))
+            {
+                var result = Settings.Load<ApplicationSettingsValue>(subkey);
+                if (result != null) Application = result;
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -232,26 +251,7 @@ namespace Cube
 
         #endregion
 
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadApplicationSettings
-        ///
-        /// <summary>
-        /// アプリケーション設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void LoadApplicationSettings()
-        {
-            var root = Microsoft.Win32.Registry.LocalMachine;
-            using (var subkey = root.OpenSubKey(SubKeyName, false))
-            {
-                var result = Settings.Load<ApplicationSettingsValue>(subkey);
-                if (result != null) Application = result;
-            }
-        }
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
