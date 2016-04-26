@@ -153,7 +153,7 @@ namespace Cube
         private static object LoadRegistry(RegistryKey root, Type type)
         {
             var dest = Activator.CreateInstance(type);
-            if (root == null || dest == null) return null;
+            if (root == null) return dest;
 
             foreach (var info in type.GetProperties())
             {
