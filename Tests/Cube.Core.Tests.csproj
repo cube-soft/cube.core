@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AssemblyReaderTest.cs" />
     <Compile Include="ByteFormatTest.cs" />
+    <Compile Include="CollectionsTest.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\FileResource.cs" />
     <Compile Include="Details\SerializableData.cs" />

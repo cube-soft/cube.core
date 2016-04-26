@@ -68,9 +68,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static T Load<T>(RegistryKey root)
-        {
-            return (T)LoadRegistry(root, typeof(T));
-        }
+            => (T)LoadRegistry(root, typeof(T));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -157,27 +155,22 @@ namespace Cube
             var dest = Activator.CreateInstance(type);
             if (root == null || dest == null) return null;
 
-            foreach (var info in type.GetProperties()) LogException(() =>
+            foreach (var info in type.GetProperties())
             {
-                if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return;
-
                 var name = GetDataMemberName(info);
-                if (string.IsNullOrEmpty(name)) return;
+                if (string.IsNullOrEmpty(name)) continue;
 
                 if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
                 {
-                    var value = root.GetValue(name, null);
-                    if (value == null) return;
-
-                    var changed = ChangeType(value, info.PropertyType);
-                    if (changed != null) info.SetValue(dest, changed, null);
+                    var value = Convert(root.GetValue(name, null), info.PropertyType);
+                    if (value != null) info.SetValue(dest, value, null);
                 }
                 else using (var subkey = root.OpenSubKey(name))
                 {
-                    var obj = LoadRegistry(subkey, info.PropertyType);
-                    if (obj != null) info.SetValue(dest, obj, null);
+                    var value = LoadRegistry(subkey, info.PropertyType);
+                    if (value != null) info.SetValue(dest, value, null);
                 }
-            });
+            }
 
             return dest;
         }
@@ -243,22 +236,29 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         private static void SaveRegistry(object src, PropertyInfo info, RegistryKey root)
-            => LogException(() =>
         {
-            if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return;
-
             var name = GetDataMemberName(info);
             if (name == null) return;
 
             var value = info.GetValue(src, null);
             var code = Type.GetTypeCode(info.PropertyType);
 
-            if (info.PropertyType.IsEnum) root.SetValue(name, (int)value);
-            else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
-            else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
-            else if (code != TypeCode.Object) root.SetValue(name, value);
-            else using (var subkey = root.CreateSubKey(name)) SaveRegistry(value, info.PropertyType, subkey);
-        });
+            try
+            {
+                if (info.PropertyType.IsEnum) root.SetValue(name, (int)value);
+                else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
+                else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
+                else if (code != TypeCode.Object) root.SetValue(name, value);
+                else using (var subkey = root.CreateSubKey(name))
+                {
+                    SaveRegistry(value, info.PropertyType, subkey);
+                }
+            }
+            catch (Exception err)
+            {
+                Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -305,54 +305,39 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static string GetDataMemberName(PropertyInfo info)
         {
-            var objects = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
-            if (objects == null || objects.Length == 0) return info.Name;
+            if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return null;
 
-            var attr = objects[0] as DataMemberAttribute;
+            var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
+            if (obj == null || obj.Length == 0) return info.Name;
+
+            var attr = obj[0] as DataMemberAttribute;
             return attr?.Name ?? info.Name;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ChangeType
+        /// Convert
         /// 
         /// <summary>
-        /// 指定した型で、指定したオブジェクトと等しい値を持つ object を返します。
+        /// 指定した型で、指定したオブジェクトと同じ内容を表すを持つオブジェクトを
+        /// 返します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static object ChangeType(object value, Type type)
+        private static object Convert(object value, Type type)
         {
-            if (type.IsEnum) return (int)value;
-            if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
-            return Convert.ChangeType(value, type);            
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogError
-        /// 
-        /// <summary>
-        /// 例外情報をログに出力します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void LogError(Exception err)
-            => Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogException
-        /// 
-        /// <summary>
-        /// 実行時に送出された例外をログに出力します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void LogException(Action action)
-        {
-            try { action(); }
-            catch (Exception err) { LogError(err); }
+            try
+            {
+                if (value == null) return null;
+                if (type.IsEnum) return (int)value;
+                if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
+                return System.Convert.ChangeType(value, type);
+            }
+            catch (Exception err)
+            {
+                Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
+                return null;
+            }
         }
 
         #endregion
