@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
 using System.Reflection;
+using Cube.Log;
 
 namespace Cube
 {
@@ -267,17 +268,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// User_PropertyChanged
+        /// User_Changed
         ///
         /// <summary>
         /// ユーザ設定が変更された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void User_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void User_Changed(object sender, PropertyChangedEventArgs e)
+            => this.LogException(() =>
         {
             if (AutoSave) Save();
-        }
+        });
 
         #endregion
 
@@ -294,7 +296,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private void LoadUserSettings()
         {
-            if (User != null) User.PropertyChanged -= User_PropertyChanged;
+            if (User != null) User.PropertyChanged -= User_Changed;
 
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
@@ -302,7 +304,7 @@ namespace Cube
                 var result = Settings.Load<TValue>(subkey);
                 if (result == null) return;
                 User = result;
-                User.PropertyChanged += User_PropertyChanged;
+                User.PropertyChanged += User_Changed;
             }
         }
 
