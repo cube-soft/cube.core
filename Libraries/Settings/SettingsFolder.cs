@@ -50,11 +50,25 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        public SettingsFolder() : this(Assembly.GetEntryAssembly()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly)
         {
             var reader = new AssemblyReader(assembly);
-            Company = reader.Company;
-            Product = reader.Product;
+
+            Assembly = assembly;
+            Company  = reader.Company;
+            Product  = reader.Product;
+            Version  = new SoftwareVersion(Assembly);
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,14 +81,50 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(string company, string product)
+            : this(Assembly.GetEntryAssembly(), company, product) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder(Assembly assembly, string company, string product)
         {
-            Company = company;
-            Product = product;
+            Assembly = assembly;
+            Company  = company;
+            Product  = product;
+            Version  = new SoftwareVersion(Assembly);
         }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Assembly
+        ///
+        /// <summary>
+        /// アセンブリ情報を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Assembly Assembly { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Version
+        ///
+        /// <summary>
+        /// バージョン情報を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion Version { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,17 +150,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Application
-        ///
-        /// <summary>
-        /// アプリケーション固有の設定を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ApplicationSettingsValue Application { get; set; } = null;
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// AutoSave
         ///
         /// <summary>
@@ -119,29 +158,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public bool AutoSave { get; set; } = false;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InstallDirectory
-        ///
-        /// <summary>
-        /// アプリケーションがインストールされているディレクトリのパスを
-        /// 取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string InstallDirectory => Application?.InstallDirectory;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Version
-        ///
-        /// <summary>
-        /// バージョンを表す文字列を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Version => Application?.Version;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -219,28 +235,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoad()
         {
-            OnLoadApplicationSettings();
-            LoadUserSettings();
-            Startup.Load();
-        }
+            if (User != null) User.PropertyChanged -= User_Changed;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnLoadApplicationSettings
-        ///
-        /// <summary>
-        /// アプリケーション設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnLoadApplicationSettings()
-        {
-            var root = Microsoft.Win32.Registry.LocalMachine;
+            var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                var result = Settings.Load<ApplicationSettingsValue>(subkey);
-                if (result != null) Application = result;
+                var result = Settings.Load<TValue>(subkey);
+                if (result == null) return;
+                User = result;
+                User.PropertyChanged += User_Changed;
             }
+            Startup.Load();
         }
 
         /* ----------------------------------------------------------------- */
@@ -280,33 +285,6 @@ namespace Cube
         {
             if (AutoSave) Save();
         });
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadUserSettings
-        ///
-        /// <summary>
-        /// ユーザ設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void LoadUserSettings()
-        {
-            if (User != null) User.PropertyChanged -= User_Changed;
-
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.OpenSubKey(SubKeyName, false))
-            {
-                var result = Settings.Load<TValue>(subkey);
-                if (result == null) return;
-                User = result;
-                User.PropertyChanged += User_Changed;
-            }
-        }
 
         #endregion
     }

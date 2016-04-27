@@ -167,6 +167,7 @@ namespace Cube
                 }
                 else using (var subkey = root.OpenSubKey(name))
                 {
+                    if (subkey == null) continue;
                     var value = LoadRegistry(subkey, info.PropertyType);
                     if (value != null) info.SetValue(dest, value, null);
                 }
