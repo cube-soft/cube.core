@@ -19,7 +19,9 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Linq;
 
 namespace Cube
 {
@@ -60,6 +62,20 @@ namespace Cube
         {
             var number = assembly?.GetName()?.Version;
             if (number != null) Number = number;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SoftwareVersion
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion(string version)
+        {
+            Parse(version);
         }
 
         #endregion
@@ -184,6 +200,35 @@ namespace Cube
             if (Digit <= 3) return;
 
             ss.Append($".{Number.Revision}");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を解析します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Parse(string str)
+        {
+            var match = Regex.Match(
+                str,
+                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){1,3})(?<suffix>.*)",
+                RegexOptions.Singleline
+            );
+
+            Prefix = match.Groups["prefix"].Value;
+            Suffix = match.Groups["suffix"].Value;
+
+            var result = Number;
+            var number = match.Groups["number"].Value;
+            if (Version.TryParse(number, out result))
+            {
+                Number = result;
+                Digit  = number.Count(c => c == '.') + 1;
+            }
         }
 
         #endregion
