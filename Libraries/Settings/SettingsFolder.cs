@@ -17,6 +17,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.ComponentModel;
 using System.Reflection;
 
 namespace Cube
@@ -35,7 +36,7 @@ namespace Cube
     /// </remarks>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<TValue>
+    public class SettingsFolder<TValue> where TValue : INotifyPropertyChanged
     {
         #region Constructors
 
@@ -106,6 +107,17 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected ApplicationSettingsValue Application { get; set; } = null;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AutoSave
+        ///
+        /// <summary>
+        /// ユーザ毎の設定を自動的に保存するかどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool AutoSave { get; set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -251,6 +263,24 @@ namespace Cube
 
         #endregion
 
+        #region Event handlers
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// User_PropertyChanged
+        ///
+        /// <summary>
+        /// ユーザ設定が変更された時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void User_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (AutoSave) Save();
+        }
+
+        #endregion
+
         #region Others
 
         /* ----------------------------------------------------------------- */
@@ -264,11 +294,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private void LoadUserSettings()
         {
+            if (User != null) User.PropertyChanged -= User_PropertyChanged;
+
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
                 var result = Settings.Load<TValue>(subkey);
-                if (result != null) User = result;
+                if (result == null) return;
+                User = result;
+                User.PropertyChanged += User_PropertyChanged;
             }
         }
 
