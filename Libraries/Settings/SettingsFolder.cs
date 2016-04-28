@@ -17,7 +17,10 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using System.ComponentModel;
+using System.Timers;
+using System.Threading.Tasks;
 using System.Reflection;
 using Cube.Log;
 
@@ -37,9 +40,10 @@ namespace Cube
     /// </remarks>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<TValue> where TValue : INotifyPropertyChanged
+    public class SettingsFolder<TValue> : IDisposable
+        where TValue : INotifyPropertyChanged
     {
-        #region Constructors
+        #region Constructors and destructors
 
         /* ----------------------------------------------------------------- */
         ///
@@ -64,11 +68,7 @@ namespace Cube
         public SettingsFolder(Assembly assembly)
         {
             var reader = new AssemblyReader(assembly);
-
-            Assembly = assembly;
-            Company  = reader.Company;
-            Product  = reader.Product;
-            Version  = new SoftwareVersion(Assembly);
+            Initialize(assembly, reader.Company, reader.Product);
         }
 
         /* ----------------------------------------------------------------- */
@@ -94,10 +94,42 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, string company, string product)
         {
+            Initialize(assembly, company, product);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~SettingsFolder()
+        {
+            Dispose(false);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Initialize
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Initialize(Assembly assembly, string company, string product)
+        {
             Assembly = assembly;
             Company  = company;
             Product  = product;
             Version  = new SoftwareVersion(Assembly);
+
+            _autosaver.AutoReset = false;
+            _autosaver.Interval  = 1000;
+            _autosaver.Elapsed  += AutoSaver_Elapsed;
         }
 
         #endregion
@@ -113,7 +145,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Assembly Assembly { get; }
+        public Assembly Assembly { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -124,7 +156,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion Version { get; }
+        public SoftwareVersion Version { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -168,7 +200,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Company { get; } = string.Empty;
+        public string Company { get; private set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,7 +211,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Product { get; } = string.Empty;
+        public string Product { get; private set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -218,6 +250,42 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Load() { OnLoad(); }
+
+        #endregion
+
+        #region Methods for IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            _disposed = true;
+
+            if (disposing) _autosaver.Dispose();
+        }
 
         #endregion
 
@@ -281,11 +349,31 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         private void User_Changed(object sender, PropertyChangedEventArgs e)
-            => this.LogException(() =>
         {
-            if (AutoSave) Save();
+            _autosaver.Stop();
+            if (AutoSave) _autosaver.Start();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AutoSaver_Elapsed
+        ///
+        /// <summary>
+        /// Start() 実行後、一度だけ実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
+            => await Task.Run(() =>
+        {
+            this.LogException(() => Save());
         });
 
+        #endregion
+
+        #region Fields
+        private bool _disposed = false;
+        private Timer _autosaver = new Timer();
         #endregion
     }
 }
