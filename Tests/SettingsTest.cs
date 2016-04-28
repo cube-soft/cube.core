@@ -37,6 +37,56 @@ namespace Cube.Tests
     [TestFixture]
     class SettingsTest : FileResource
     {
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Loaded
+        /// 
+        /// <summary>
+        /// Registrar クラスを用いてロードした Person オブジェクトを
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Person Loaded { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadKeyName
+        /// 
+        /// <summary>
+        /// ロードテスト用のレジストリのサブキー名を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string LoadKeyName => @"Software\CubeSoft\Settings_SaveTest";
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Saved
+        /// 
+        /// <summary>
+        /// Settings クラスを用いて Person オブジェクトを保存した後の
+        /// RegistryKey オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public RegistryKey Saved { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveKeyName
+        /// 
+        /// <summary>
+        /// 保存テスト用のレジストリのサブキー名を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string SaveKeyName => @"Software\CubeSoft\Settings_SaveTest";
+
+        #endregion
+
         #region Test methods
 
         /* ----------------------------------------------------------------- */
@@ -286,58 +336,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Loaded
-        /// 
-        /// <summary>
-        /// Registrar クラスを用いてロードした Person オブジェクトを
-        /// 取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Person Loaded { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadKeyName
-        /// 
-        /// <summary>
-        /// ロードテスト用のレジストリのサブキー名を生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string LoadKeyName
-        {
-            get { return @"Software\CubeSoft\Settings_SaveTest"; }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Saved
-        /// 
-        /// <summary>
-        /// Settings クラスを用いて Person オブジェクトを保存した後の
-        /// RegistryKey オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public RegistryKey Saved { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveKeyName
-        /// 
-        /// <summary>
-        /// 保存テスト用のレジストリのサブキー名を生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string SaveKeyName
-        {
-            get { return @"Software\CubeSoft\Settings_SaveTest"; }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// CreatePerson
         /// 
         /// <summary>
@@ -345,20 +343,18 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Person CreatePerson()
+        private Person CreatePerson() => new Person
         {
-            return new Person {
-                Identification = 123,
-                Name           = "山田花子",
-                Sex            = Tests.Sex.Female,
-                Age            = 15,
-                Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
-                Phone          = new Address { Type = "Mobile", Value = "080-9876-5432" },
-                Email          = new Address { Type = "PC", Value = "dummy@example.com" },
-                Reserved       = true,
-                Secret         = "dummy data"
-            };
-        }
+            Identification = 123,
+            Name           = "山田花子",
+            Sex            = Tests.Sex.Female,
+            Age            = 15,
+            Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
+            Phone          = new Address { Type = "Mobile", Value = "080-9876-5432" },
+            Email          = new Address { Type = "PC", Value = "dummy@example.com" },
+            Reserved       = true,
+            Secret         = "dummy data"
+        };
 
         #endregion
 
