@@ -91,7 +91,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, DateTime time)
-            => With(uri, "t", time.ToUnixTime());
+            => With(uri, Properties.Resources.keyTime, time.ToUnixTime());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,7 +103,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, SoftwareVersion version)
-            => With(uri, "v", version.ToString(false));
+            => With(uri, Properties.Resources.KeyVersion, version.ToString(false));
 
         /* ----------------------------------------------------------------- */
         ///

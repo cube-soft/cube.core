@@ -114,7 +114,7 @@ namespace Cube.Tests
                     Digit  = 2,
                     Suffix = "beta"
                 }).ToString(),
-                Is.EqualTo($"{Create()}?v=1.2beta")
+                Is.EqualTo($"{Create()}?ver=1.2beta")
             );
         }
 
