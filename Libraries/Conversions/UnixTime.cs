@@ -58,10 +58,19 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this int unix)
-        {
-            var us = (uint)unix;
-            return ToUniversalTime(us);
-        }
+            => ToDateTime((long)unix);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToDateTime
+        /// 
+        /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToDateTime(this long unix)
+            => ToUniversalTime(unix);
 
         /* ----------------------------------------------------------------- */
         ///

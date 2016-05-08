@@ -331,7 +331,10 @@ namespace Cube
             {
                 if (value == null) return null;
                 if (type.IsEnum) return (int)value;
-                if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
+                if (Type.GetTypeCode(type) == TypeCode.DateTime)
+                {
+                    return ((long)((int)value)).ToLocalTime();
+                }
                 return System.Convert.ChangeType(value, type);
             }
             catch (Exception err)
