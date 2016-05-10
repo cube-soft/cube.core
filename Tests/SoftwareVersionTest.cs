@@ -63,5 +63,33 @@ namespace Cube.Tests
                 Is.EqualTo($"begin-{major}.{minor}-end ({arch})")
             );
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_DoesNotThrow
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を解析するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("1.0")]
+        [TestCase("1.0.0")]
+        [TestCase("1.0.0.0")]
+        [TestCase("1.0.0.0-suffix")]
+        [TestCase("v1.0.0.0-suffix")]
+        [TestCase("v1.0.0.0-p21")]
+        [TestCase("p21-v1.0.0.0-suffix")]
+        public void Parse_DoesNotThrow(string src)
+        {
+            Assert.DoesNotThrow(() =>
+            {
+                var version = new SoftwareVersion(src);
+                Assert.That(
+                    version.ToString(false),
+                    Is.EqualTo(src)
+                );
+            });
+        }
     }
 }

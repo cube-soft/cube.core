@@ -17,7 +17,12 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
+using System.ComponentModel;
+using System.Timers;
+using System.Threading.Tasks;
 using System.Reflection;
+using Cube.Log;
 
 namespace Cube
 {
@@ -35,9 +40,21 @@ namespace Cube
     /// </remarks>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<TValue>
+    public class SettingsFolder<TValue> : IDisposable
+        where TValue : INotifyPropertyChanged
     {
-        #region Constructors
+        #region Constructors and destructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder() : this(Assembly.GetEntryAssembly()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -51,8 +68,7 @@ namespace Cube
         public SettingsFolder(Assembly assembly)
         {
             var reader = new AssemblyReader(assembly);
-            Company = reader.Company;
-            Product = reader.Product;
+            Initialize(assembly, reader.Company, reader.Product);
         }
 
         /* ----------------------------------------------------------------- */
@@ -65,14 +81,82 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(string company, string product)
+            : this(Assembly.GetEntryAssembly(), company, product) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder(Assembly assembly, string company, string product)
         {
-            Company = company;
-            Product = product;
+            Initialize(assembly, company, product);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~SettingsFolder()
+        {
+            Dispose(false);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Initialize
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Initialize(Assembly assembly, string company, string product)
+        {
+            Assembly = assembly;
+            Company  = company;
+            Product  = product;
+            Version  = new SoftwareVersion(Assembly);
+
+            _autosaver.AutoReset = false;
+            _autosaver.Interval  = 1000;
+            _autosaver.Elapsed  += AutoSaver_Elapsed;
         }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Assembly
+        ///
+        /// <summary>
+        /// アセンブリ情報を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Assembly Assembly { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Version
+        ///
+        /// <summary>
+        /// バージョン情報を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion Version { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -98,37 +182,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Application
+        /// AutoSave
         ///
         /// <summary>
-        /// アプリケーション固有の設定を取得または設定します。
+        /// ユーザ毎の設定を自動的に保存するかどうかを示す値を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ApplicationSettingsValue Application { get; set; } = null;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InstallDirectory
-        ///
-        /// <summary>
-        /// アプリケーションがインストールされているディレクトリのパスを
-        /// 取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string InstallDirectory => Application?.InstallDirectory;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Version
-        ///
-        /// <summary>
-        /// バージョンを表す文字列を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Version => Application?.Version;
+        public bool AutoSave { get; set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -139,7 +200,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Company { get; } = string.Empty;
+        public string Company { get; private set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -150,7 +211,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Product { get; } = string.Empty;
+        public string Product { get; private set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -192,6 +253,42 @@ namespace Cube
 
         #endregion
 
+        #region Methods for IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            _disposed = true;
+
+            if (disposing) _autosaver.Dispose();
+        }
+
+        #endregion
+
         #region Virtual methods
 
         /* ----------------------------------------------------------------- */
@@ -206,28 +303,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoad()
         {
-            OnLoadApplicationSettings();
-            LoadUserSettings();
-            Startup.Load();
-        }
+            if (User != null) User.PropertyChanged -= User_Changed;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnLoadApplicationSettings
-        ///
-        /// <summary>
-        /// アプリケーション設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnLoadApplicationSettings()
-        {
-            var root = Microsoft.Win32.Registry.LocalMachine;
+            var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                var result = Settings.Load<ApplicationSettingsValue>(subkey);
-                if (result != null) Application = result;
+                var result = Settings.Load<TValue>(subkey);
+                if (result == null) return;
+                User = result;
+                User.PropertyChanged += User_Changed;
             }
+            Startup.Load();
         }
 
         /* ----------------------------------------------------------------- */
@@ -251,27 +337,43 @@ namespace Cube
 
         #endregion
 
-        #region Others
+        #region Event handlers
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LoadUserSettings
+        /// User_Changed
         ///
         /// <summary>
-        /// ユーザ設定をレジストリから読み込みます。
+        /// ユーザ設定が変更された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void LoadUserSettings()
+        private void User_Changed(object sender, PropertyChangedEventArgs e)
         {
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.OpenSubKey(SubKeyName, false))
-            {
-                var result = Settings.Load<TValue>(subkey);
-                if (result != null) User = result;
-            }
+            _autosaver.Stop();
+            if (AutoSave) _autosaver.Start();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AutoSaver_Elapsed
+        ///
+        /// <summary>
+        /// Start() 実行後、一度だけ実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
+            => await Task35.Run(() =>
+        {
+            this.LogException(() => Save());
+        });
+
+        #endregion
+
+        #region Fields
+        private bool _disposed = false;
+        private Timer _autosaver = new Timer();
         #endregion
     }
 }

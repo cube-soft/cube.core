@@ -153,7 +153,7 @@ namespace Cube
         private static object LoadRegistry(RegistryKey root, Type type)
         {
             var dest = Activator.CreateInstance(type);
-            if (root == null || dest == null) return null;
+            if (root == null) return dest;
 
             foreach (var info in type.GetProperties())
             {
@@ -167,6 +167,7 @@ namespace Cube
                 }
                 else using (var subkey = root.OpenSubKey(name))
                 {
+                    if (subkey == null) continue;
                     var value = LoadRegistry(subkey, info.PropertyType);
                     if (value != null) info.SetValue(dest, value, null);
                 }
@@ -330,7 +331,10 @@ namespace Cube
             {
                 if (value == null) return null;
                 if (type.IsEnum) return (int)value;
-                if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToDateTime();
+                if (Type.GetTypeCode(type) == TypeCode.DateTime)
+                {
+                    return ((long)((int)value)).ToLocalTime();
+                }
                 return System.Convert.ChangeType(value, type);
             }
             catch (Exception err)
