@@ -63,6 +63,7 @@
     <Compile Include="Missing\IProgress.cs" />
     <Compile Include="Missing\IReadOnlyCollection.cs" />
     <Compile Include="Missing\Progress.cs" />
+    <Compile Include="Missing\Streams.cs" />
     <Compile Include="Missing\Task35.cs" />
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Events\EventArgsFactory.cs" />
