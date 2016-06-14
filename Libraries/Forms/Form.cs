@@ -335,8 +335,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Point CreatePoint(IntPtr lparam)
         {
-            var x = (int)lparam & 0xffff;
-            var y = (int)lparam >> 16 & 0xffff;
+            int x = (short)(lparam.ToInt32() & 0x0000ffff);
+            int y = (short)((lparam.ToInt32() & 0xffff0000) >> 16);
             return new Point(x, y);
         }
 
