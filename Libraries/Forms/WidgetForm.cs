@@ -413,14 +413,14 @@ namespace Cube.Forms
         {
             if (MaximumSize.Width <= 0 || MaximumSize.Height <= 0) return false;
 
-            var area = System.Windows.Forms.Screen.FromControl(this).WorkingArea;
+            var screen = System.Windows.Forms.Screen.FromControl(this);
             var info = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
-            info.ptMaxPosition.x  = area.X;
-            info.ptMaxPosition.y  = area.Y;
-            info.ptMaxSize.x      = area.Width;
-            info.ptMaxSize.y      = area.Height;
-            info.ptMaxTrackSize.x = area.Width;
-            info.ptMaxTrackSize.y = area.Height - 1;
+            info.ptMaxPosition.x = screen.WorkingArea.X - screen.Bounds.X;
+            info.ptMaxPosition.y = screen.WorkingArea.Y - screen.Bounds.Y;
+            info.ptMaxSize.x = screen.WorkingArea.Width;
+            info.ptMaxSize.y = screen.WorkingArea.Height;
+            info.ptMaxTrackSize.x = screen.WorkingArea.Width;
+            info.ptMaxTrackSize.y = screen.WorkingArea.Height - 1;
             info.ptMinTrackSize.x = MinimumSize.Width;
             info.ptMinTrackSize.y = MinimumSize.Height;
             Marshal.StructureToPtr(info, m.LParam, true);
