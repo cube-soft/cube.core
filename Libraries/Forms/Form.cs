@@ -47,9 +47,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public Form() : base()
         {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
-            Font = FontFactory.Create(12, Font.Style, GraphicsUnit.Pixel);
         }
 
         #endregion

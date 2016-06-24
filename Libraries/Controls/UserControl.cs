@@ -47,7 +47,7 @@ namespace Cube.Forms
         public UserControl()
             : base()
         {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
         }
 
