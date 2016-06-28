@@ -42,7 +42,19 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Font Create(int size, FontStyle style, GraphicsUnit unit)
+        public static Font Create(Font hint)
+            => Create(hint.Size, hint.Style, hint.Unit);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// フォントオブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Font Create(float size, FontStyle style, GraphicsUnit unit)
         {
             const string primary   = "Meiryo UI";
             const string secondary = "MS UI Gothic";

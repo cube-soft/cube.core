@@ -50,6 +50,7 @@ namespace Cube.Forms
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
+            Font = FontFactory.Create(Font);
             using (var gs = CreateGraphics())
             {
                 Dpi = gs.DpiX;
