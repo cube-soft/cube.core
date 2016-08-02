@@ -160,6 +160,22 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Reset
+        /// 
+        /// <summary>
+        /// リセットします。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 派生クラスでリセット処理が必要な場合、OnReset メソッドを
+        /// オーバーライドして実装して下さい。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Reset() => OnReset();
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Start
         /// 
         /// <summary>
@@ -183,22 +199,6 @@ namespace Cube
             _core.Start();
             this.LogDebug($"Start\tInterval:{Interval}\tInitialDelay:{InitialDelay}");
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reset
-        /// 
-        /// <summary>
-        /// リセットします。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// 派生クラスでリセット処理が必要な場合、OnReset メソッドを
-        /// オーバーライドして実装して下さい。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Reset() => OnReset();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -337,6 +337,29 @@ namespace Cube
             {
                 _core.Interval = Interval.TotalMilliseconds;
             }
+        }
+
+        #endregion
+
+        #region Non-virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseExecute
+        /// 
+        /// <summary>
+        /// 直ちに Execute イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void RaiseExecute()
+        {
+            if (State != SchedulerState.Run) return;
+            System.Diagnostics.Debug.Assert(!_core.Enabled);
+
+            this.LogDebug($"RaiseExecute");
+            OnExecute(EventArgs.Empty);
+            _core.Interval = Interval.TotalMilliseconds;
         }
 
         #endregion
