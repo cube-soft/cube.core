@@ -63,10 +63,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public Scheduler()
         {
-            Interval = TimeSpan.FromSeconds(1);
-            InitialDelay = TimeSpan.Zero;
-            LastExecuted = DateTime.Now;
-            State = SchedulerState.Stop;
             _core.Elapsed += (s, e) => OnExecute(e);
         }
 
@@ -97,7 +93,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TimeSpan Interval { get; set; }
+        public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(1);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -115,7 +111,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public TimeSpan InitialDelay { get; set; }
+        public TimeSpan InitialDelay { get; set; } = TimeSpan.Zero;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,7 +122,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastExecuted { get; private set; }
+        public DateTime LastExecuted { get; private set; } = DateTime.Now;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -137,7 +133,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SchedulerState State { get; private set; }
+        public SchedulerState State { get; private set; } = SchedulerState.Stop;
 
         #endregion
 
@@ -330,7 +326,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnExecute(EventArgs e)
         {
-            if (Execute != null) Execute(this, e);
+            Execute?.Invoke(this, e);
 
             LastExecuted = DateTime.Now;
             if ((int)_core.Interval != (int)Interval.TotalMilliseconds)
