@@ -426,10 +426,16 @@ namespace Cube
         {
             if (!PowerModeAware) return;
 
+            var previous = State;
+
             switch (PowerMode)
             {
                 case PowerModes.Resume:
-                    if (State == SchedulerState.Suspend) Resume();
+                    if (State == SchedulerState.Suspend)
+                    {
+                        Resume();
+                        if (DateTime.Now - LastExecuted > Interval) RaiseExecute();
+                    }
                     break;
                 case PowerModes.StatusChange:
                     break;
@@ -440,7 +446,7 @@ namespace Cube
                     break;
             }
 
-            this.LogDebug($"State:{State}\tPowerMode:{PowerMode}");
+            this.LogDebug($"PowerMode:{PowerMode}\tState:{previous}->{State}");
         }
 
         #endregion
