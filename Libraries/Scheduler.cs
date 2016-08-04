@@ -144,6 +144,12 @@ namespace Cube
         /// <summary>
         /// 電源の状態を取得します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// このプロパティは Resume または Suspend どちらかの値を示します。
+        /// そのため、PowerModeChanged イベントの Mode プロパティの値とは
+        /// 必ずしも一致しません。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public PowerModes PowerMode { get; private set; } = PowerModes.Resume;
@@ -251,51 +257,6 @@ namespace Cube
             LastExecuted = DateTime.Now;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Suspend
-        /// 
-        /// <summary>
-        /// スケジューリングを一時停止します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Suspend()
-        {
-            if (State != SchedulerState.Run) return;
-
-            _core.Stop();
-            State = SchedulerState.Suspend;
-            this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
-
-            var passed   = DateTime.Now - LastExecuted;
-            var interval = Interval > passed ?
-                           Interval - passed :
-                           TimeSpan.FromMilliseconds(1);
-
-            _core.Interval = interval.TotalMilliseconds;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Resume
-        /// 
-        /// <summary>
-        /// 一時停止していたスケジューリングを再開します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Resume()
-        {
-            if (State != SchedulerState.Suspend) return;
-
-            State = SchedulerState.Run;
-            _core.Start();
-
-            var msec = TimeSpan.FromMilliseconds(_core.Interval);
-            this.LogDebug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{msec}");
-        }
-
         #endregion
 
         #region Methods for IDisposable
@@ -378,8 +339,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
         {
-            PowerMode = e.Mode;
-            ChangeState();
+            if (e.Mode != PowerModes.StatusChange) PowerMode = e.Mode;
+            ChangeState(e.Mode);
             PowerModeChanged?.Invoke(this, e);
         }
 
@@ -409,6 +370,49 @@ namespace Cube
             _core.Interval = Interval.TotalMilliseconds;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Suspend
+        /// 
+        /// <summary>
+        /// スケジューリングを一時停止します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Suspend()
+        {
+            if (State != SchedulerState.Run) return;
+
+            _core.Stop();
+            State = SchedulerState.Suspend;
+            this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resume
+        /// 
+        /// <summary>
+        /// 一時停止していたスケジューリングを再開します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Resume()
+        {
+            if (State != SchedulerState.Suspend) return;
+
+            var passed   = DateTime.Now - LastExecuted;
+            var interval = Interval > passed ?
+                           Interval - passed :
+                           TimeSpan.FromMilliseconds(1);
+
+            State = SchedulerState.Run;
+            _core.Interval = interval.TotalMilliseconds;
+            _core.Start();
+
+            this.LogDebug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{interval}");
+        }
+
         #endregion
 
         #region Other private methods
@@ -422,20 +426,16 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ChangeState()
+        private void ChangeState(PowerModes mode)
         {
             if (!PowerModeAware) return;
 
             var previous = State;
 
-            switch (PowerMode)
+            switch (mode)
             {
                 case PowerModes.Resume:
-                    if (State == SchedulerState.Suspend)
-                    {
-                        Resume();
-                        if (DateTime.Now - LastExecuted > Interval) RaiseExecute();
-                    }
+                    if (State == SchedulerState.Suspend) Resume();
                     break;
                 case PowerModes.StatusChange:
                     break;
@@ -446,7 +446,7 @@ namespace Cube
                     break;
             }
 
-            this.LogDebug($"PowerMode:{PowerMode}\tState:{previous}->{State}");
+            this.LogDebug($"PowerMode:{mode}\tState:{previous}->{State}");
         }
 
         #endregion
