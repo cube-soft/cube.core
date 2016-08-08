@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using Microsoft.Win32;
 using Cube.Log;
 
 namespace Cube
@@ -64,6 +65,7 @@ namespace Cube
         public Scheduler()
         {
             _core.Elapsed += (s, e) => OnExecute(e);
+            SystemEvents.PowerModeChanged += (s, e) => OnPowerModeChanged(e);
         }
 
         /* ----------------------------------------------------------------- */
@@ -135,6 +137,35 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public SchedulerState State { get; private set; } = SchedulerState.Stop;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PowerMode
+        /// 
+        /// <summary>
+        /// 電源の状態を取得します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// このプロパティは Resume または Suspend どちらかの値を示します。
+        /// そのため、PowerModeChanged イベントの Mode プロパティの値とは
+        /// 必ずしも一致しません。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PowerModes PowerMode { get; private set; } = PowerModes.Resume;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PowerModeAware
+        /// 
+        /// <summary>
+        /// 電源の状態に反応してスケジュール機能を停止、再開するかどうかを
+        /// 示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool PowerModeAware { get; set; } = true;
+
         #endregion
 
         #region Events
@@ -150,25 +181,20 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public event EventHandler Execute;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PowerModeChanged
+        /// 
+        /// <summary>
+        /// 電源状態が変更された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<PowerModeChangedEventArgs> PowerModeChanged;
+
         #endregion
 
         #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reset
-        /// 
-        /// <summary>
-        /// リセットします。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// 派生クラスでリセット処理が必要な場合、OnReset メソッドを
-        /// オーバーライドして実装して下さい。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Reset() => OnReset();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -182,17 +208,16 @@ namespace Cube
         public void Start()
         {
             if (State != SchedulerState.Stop) return;
-            System.Diagnostics.Debug.Assert(!_core.Enabled);
-            State = SchedulerState.Run;
 
+            State = SchedulerState.Run;
             if (InitialDelay > TimeSpan.Zero) _core.Interval = InitialDelay.TotalMilliseconds;
             else
             {
                 OnExecute(EventArgs.Empty);
                 _core.Interval = Interval.TotalMilliseconds;
             }
-
             _core.Start();
+
             this.LogDebug($"Start\tInterval:{Interval}\tInitialDelay:{InitialDelay}");
         }
 
@@ -210,55 +235,42 @@ namespace Cube
             if (State == SchedulerState.Stop) return;
 
             if (_core.Enabled) _core.Stop();
-            this.LogDebug($"Stop\tLastExecuted:{LastExecuted}");
-
             State = SchedulerState.Stop;
+
+            this.LogDebug($"Stop\tLastExecuted:{LastExecuted}");
             LastExecuted = DateTime.Now;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Suspend
+        /// Restart
         /// 
         /// <summary>
-        /// スケジューリングを一時停止します。
+        /// スケジューリングを再起動します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Suspend()
+        public void Restart()
         {
-            if (State != SchedulerState.Run) return;
-
-            System.Diagnostics.Debug.Assert(_core.Enabled);
-            _core.Stop();
-            State = SchedulerState.Suspend;
-            this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
-
-            var interval = Interval - (DateTime.Now - LastExecuted);
-            if (interval < TimeSpan.Zero) interval = Interval;
-            _core.Interval = interval.TotalMilliseconds;
+            Stop();
+            Start();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Resume
+        /// Reset
         /// 
         /// <summary>
-        /// 一時停止していたスケジューリングを再開します。
+        /// リセットします。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// 派生クラスでリセット処理が必要な場合、OnReset メソッドを
+        /// オーバーライドして実装して下さい。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public void Resume()
-        {
-            if (State != SchedulerState.Suspend) return;
-
-            System.Diagnostics.Debug.Assert(!_core.Enabled);
-            State = SchedulerState.Run;
-            _core.Start();
-
-            var msec = TimeSpan.FromMilliseconds(_core.Interval);
-            this.LogDebug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{msec}");
-        }
+        public void Reset() => OnReset();
 
         #endregion
 
@@ -310,7 +322,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnReset()
         {
-            if (State != SchedulerState.Stop) Stop();
             LastExecuted = DateTime.Now;
             _core.Interval = Interval.TotalMilliseconds;
         }
@@ -320,19 +331,32 @@ namespace Cube
         /// OnExecute
         /// 
         /// <summary>
-        /// 操作を実行するタイミングになった時に発生するイベントです。
+        /// 操作を実行するタイミングになった時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnExecute(EventArgs e)
         {
-            Execute?.Invoke(this, e);
-
             LastExecuted = DateTime.Now;
-            if ((int)_core.Interval != (int)Interval.TotalMilliseconds)
-            {
-                _core.Interval = Interval.TotalMilliseconds;
-            }
+            var delta = Math.Abs(_core.Interval - Interval.TotalMilliseconds);
+            if (delta > 1.0) _core.Interval = Interval.TotalMilliseconds;
+            Execute?.Invoke(this, e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPowerModeChanged
+        /// 
+        /// <summary>
+        /// 電源の状態が変化した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
+        {
+            if (e.Mode != PowerModes.StatusChange) PowerMode = e.Mode;
+            ChangeState(e.Mode);
+            PowerModeChanged?.Invoke(this, e);
         }
 
         #endregion
@@ -346,16 +370,98 @@ namespace Cube
         /// <summary>
         /// 直ちに Execute イベントを発生させます。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// State が Run 以外の場合、RaiseExecute は無視されます。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected void RaiseExecute()
         {
             if (State != SchedulerState.Run) return;
-            System.Diagnostics.Debug.Assert(!_core.Enabled);
 
             this.LogDebug($"RaiseExecute");
             OnExecute(EventArgs.Empty);
             _core.Interval = Interval.TotalMilliseconds;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Suspend
+        /// 
+        /// <summary>
+        /// スケジューリングを一時停止します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Suspend()
+        {
+            if (State != SchedulerState.Run) return;
+
+            _core.Stop();
+            State = SchedulerState.Suspend;
+            this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resume
+        /// 
+        /// <summary>
+        /// 一時停止していたスケジューリングを再開します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Resume()
+        {
+            if (State != SchedulerState.Suspend) return;
+
+            var passed   = DateTime.Now - LastExecuted;
+            var interval = Interval > passed ?
+                           Interval - passed :
+                           TimeSpan.FromMilliseconds(1);
+
+            State = SchedulerState.Run;
+            _core.Interval = interval.TotalMilliseconds;
+            _core.Start();
+
+            this.LogDebug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{interval}");
+        }
+
+        #endregion
+
+        #region Other private methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ChangeState
+        /// 
+        /// <summary>
+        /// PowerMode に応じて State を変更します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ChangeState(PowerModes mode)
+        {
+            if (!PowerModeAware) return;
+
+            var previous = State;
+
+            switch (mode)
+            {
+                case PowerModes.Resume:
+                    if (State == SchedulerState.Suspend) Resume();
+                    break;
+                case PowerModes.StatusChange:
+                    break;
+                case PowerModes.Suspend:
+                    if (State == SchedulerState.Run) Suspend();
+                    break;
+                default:
+                    break;
+            }
+
+            this.LogDebug($"PowerMode:{mode}\tState:{previous}->{State}");
         }
 
         #endregion
