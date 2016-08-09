@@ -118,7 +118,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TextColor
+        /// ContentColor
         ///
         /// <summary>
         /// コントロール上に表示されるテキストの色を取得または設定します。
@@ -126,7 +126,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color TextColor { get; set; }
+        public Color ContentColor { get; set; }
 
         #endregion
     }

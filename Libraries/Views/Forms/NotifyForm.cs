@@ -565,9 +565,9 @@ namespace Cube.Forms
             ImageButton.Surface.BackColor = style.BackColor;
             Separator.BackColor = style.BorderColor;
             TitleButton.Font = style.Title;
-            TitleButton.Surface.TextColor = style.TitleColor;
+            TitleButton.Surface.ContentColor = style.TitleColor;
             DescriptionButton.Font = style.Description;
-            DescriptionButton.Surface.TextColor = style.DescriptionColor;
+            DescriptionButton.Surface.ContentColor = style.DescriptionColor;
         }
 
         /* ----------------------------------------------------------------- */

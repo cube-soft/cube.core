@@ -71,12 +71,12 @@
             this.CloseButton.MouseDownSurface.BackgroundImage = null;
             this.CloseButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.CloseButton.MouseDownSurface.Image = null;
-            this.CloseButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.CloseButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.CloseButton.MouseOverSurface.BackgroundImage = null;
             this.CloseButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.CloseButton.MouseOverSurface.Image = null;
-            this.CloseButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(25, 25);
             this.CloseButton.Surface.BackColor = System.Drawing.Color.Empty;
@@ -84,7 +84,7 @@
             this.CloseButton.Surface.BorderColor = System.Drawing.Color.Empty;
             this.CloseButton.Surface.BorderSize = 0;
             this.CloseButton.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.ButtonClose;
-            this.CloseButton.Surface.TextColor = System.Drawing.Color.Empty;
+            this.CloseButton.Surface.ContentColor = System.Drawing.Color.Empty;
             this.CloseButton.TabIndex = 0;
             this.CloseButton.UseVisualStyleBackColor = false;
             // 

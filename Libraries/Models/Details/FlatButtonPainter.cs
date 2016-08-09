@@ -380,10 +380,10 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private Color GetTextColor()
         {
-            return Select(Surface.TextColor,
-                          CheckedSurface.TextColor,
-                          MouseOverSurface.TextColor,
-                          MouseDownSurface.TextColor);
+            return Select(Surface.ContentColor,
+                          CheckedSurface.ContentColor,
+                          MouseOverSurface.ContentColor,
+                          MouseDownSurface.ContentColor);
         }
 
         /* ----------------------------------------------------------------- */

@@ -290,7 +290,7 @@
             this.ImageToggleButton4.CheckedSurface.BackgroundImage = null;
             this.ImageToggleButton4.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageToggleButton4.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageToggleButton4.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton4.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageToggleButton4.FlatAppearance.BorderSize = 0;
             this.ImageToggleButton4.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -304,12 +304,12 @@
             this.ImageToggleButton4.MouseDownSurface.BackgroundImage = null;
             this.ImageToggleButton4.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton4.MouseDownSurface.Image = null;
-            this.ImageToggleButton4.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton4.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton4.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageToggleButton4.MouseOverSurface.BackgroundImage = null;
             this.ImageToggleButton4.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton4.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageToggleButton4.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton4.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton4.Name = "ImageToggleButton4";
             this.ImageToggleButton4.Size = new System.Drawing.Size(60, 50);
             this.ImageToggleButton4.Surface.BackColor = System.Drawing.Color.Empty;
@@ -317,7 +317,7 @@
             this.ImageToggleButton4.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageToggleButton4.Surface.BorderSize = 1;
             this.ImageToggleButton4.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageToggleButton4.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton4.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton4.TabIndex = 3;
             this.ImageToggleButton4.UseVisualStyleBackColor = false;
             // 
@@ -329,7 +329,7 @@
             this.ImageToggleButton3.CheckedSurface.BackgroundImage = null;
             this.ImageToggleButton3.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageToggleButton3.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageToggleButton3.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton3.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton3.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageToggleButton3.FlatAppearance.BorderSize = 0;
             this.ImageToggleButton3.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -343,12 +343,12 @@
             this.ImageToggleButton3.MouseDownSurface.BackgroundImage = null;
             this.ImageToggleButton3.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton3.MouseDownSurface.Image = null;
-            this.ImageToggleButton3.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton3.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton3.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageToggleButton3.MouseOverSurface.BackgroundImage = null;
             this.ImageToggleButton3.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton3.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageToggleButton3.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton3.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton3.Name = "ImageToggleButton3";
             this.ImageToggleButton3.Size = new System.Drawing.Size(60, 50);
             this.ImageToggleButton3.Surface.BackColor = System.Drawing.Color.Empty;
@@ -356,7 +356,7 @@
             this.ImageToggleButton3.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageToggleButton3.Surface.BorderSize = 1;
             this.ImageToggleButton3.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageToggleButton3.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton3.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton3.TabIndex = 2;
             this.ImageToggleButton3.UseVisualStyleBackColor = false;
             // 
@@ -368,7 +368,7 @@
             this.ImageToggleButton2.CheckedSurface.BackgroundImage = null;
             this.ImageToggleButton2.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageToggleButton2.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageToggleButton2.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton2.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageToggleButton2.FlatAppearance.BorderSize = 0;
             this.ImageToggleButton2.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -382,12 +382,12 @@
             this.ImageToggleButton2.MouseDownSurface.BackgroundImage = null;
             this.ImageToggleButton2.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton2.MouseDownSurface.Image = null;
-            this.ImageToggleButton2.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton2.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton2.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageToggleButton2.MouseOverSurface.BackgroundImage = null;
             this.ImageToggleButton2.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton2.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageToggleButton2.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton2.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton2.Name = "ImageToggleButton2";
             this.ImageToggleButton2.Size = new System.Drawing.Size(60, 50);
             this.ImageToggleButton2.Surface.BackColor = System.Drawing.Color.Empty;
@@ -395,7 +395,7 @@
             this.ImageToggleButton2.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageToggleButton2.Surface.BorderSize = 1;
             this.ImageToggleButton2.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageToggleButton2.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton2.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton2.TabIndex = 1;
             this.ImageToggleButton2.UseVisualStyleBackColor = false;
             // 
@@ -407,7 +407,7 @@
             this.ImageToggleButton1.CheckedSurface.BackgroundImage = null;
             this.ImageToggleButton1.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageToggleButton1.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageToggleButton1.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton1.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageToggleButton1.FlatAppearance.BorderSize = 0;
             this.ImageToggleButton1.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -421,12 +421,12 @@
             this.ImageToggleButton1.MouseDownSurface.BackgroundImage = null;
             this.ImageToggleButton1.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton1.MouseDownSurface.Image = null;
-            this.ImageToggleButton1.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton1.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton1.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageToggleButton1.MouseOverSurface.BackgroundImage = null;
             this.ImageToggleButton1.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageToggleButton1.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageToggleButton1.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton1.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton1.Name = "ImageToggleButton1";
             this.ImageToggleButton1.Size = new System.Drawing.Size(60, 50);
             this.ImageToggleButton1.Surface.BackColor = System.Drawing.Color.Empty;
@@ -434,7 +434,7 @@
             this.ImageToggleButton1.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageToggleButton1.Surface.BorderSize = 1;
             this.ImageToggleButton1.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageToggleButton1.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageToggleButton1.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageToggleButton1.TabIndex = 0;
             this.ImageToggleButton1.UseVisualStyleBackColor = false;
             // 
@@ -459,7 +459,7 @@
             this.ImageRadioButton4.CheckedSurface.BackgroundImage = null;
             this.ImageRadioButton4.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageRadioButton4.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageRadioButton4.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton4.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageRadioButton4.FlatAppearance.BorderSize = 0;
             this.ImageRadioButton4.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -473,12 +473,12 @@
             this.ImageRadioButton4.MouseDownSurface.BackgroundImage = null;
             this.ImageRadioButton4.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton4.MouseDownSurface.Image = null;
-            this.ImageRadioButton4.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton4.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton4.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageRadioButton4.MouseOverSurface.BackgroundImage = null;
             this.ImageRadioButton4.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton4.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageRadioButton4.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton4.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton4.Name = "ImageRadioButton4";
             this.ImageRadioButton4.Size = new System.Drawing.Size(60, 50);
             this.ImageRadioButton4.Surface.BackColor = System.Drawing.Color.Empty;
@@ -486,7 +486,7 @@
             this.ImageRadioButton4.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageRadioButton4.Surface.BorderSize = 1;
             this.ImageRadioButton4.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageRadioButton4.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton4.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton4.TabIndex = 3;
             this.ImageRadioButton4.UseVisualStyleBackColor = false;
             // 
@@ -498,7 +498,7 @@
             this.ImageRadioButton3.CheckedSurface.BackgroundImage = null;
             this.ImageRadioButton3.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageRadioButton3.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageRadioButton3.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton3.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton3.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageRadioButton3.FlatAppearance.BorderSize = 0;
             this.ImageRadioButton3.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -512,12 +512,12 @@
             this.ImageRadioButton3.MouseDownSurface.BackgroundImage = null;
             this.ImageRadioButton3.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton3.MouseDownSurface.Image = null;
-            this.ImageRadioButton3.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton3.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton3.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageRadioButton3.MouseOverSurface.BackgroundImage = null;
             this.ImageRadioButton3.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton3.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageRadioButton3.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton3.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton3.Name = "ImageRadioButton3";
             this.ImageRadioButton3.Size = new System.Drawing.Size(60, 50);
             this.ImageRadioButton3.Surface.BackColor = System.Drawing.Color.Empty;
@@ -525,7 +525,7 @@
             this.ImageRadioButton3.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageRadioButton3.Surface.BorderSize = 1;
             this.ImageRadioButton3.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageRadioButton3.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton3.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton3.TabIndex = 2;
             this.ImageRadioButton3.UseVisualStyleBackColor = false;
             // 
@@ -537,7 +537,7 @@
             this.ImageRadioButton2.CheckedSurface.BackgroundImage = null;
             this.ImageRadioButton2.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageRadioButton2.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageRadioButton2.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton2.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageRadioButton2.FlatAppearance.BorderSize = 0;
             this.ImageRadioButton2.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -551,12 +551,12 @@
             this.ImageRadioButton2.MouseDownSurface.BackgroundImage = null;
             this.ImageRadioButton2.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton2.MouseDownSurface.Image = null;
-            this.ImageRadioButton2.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton2.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton2.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageRadioButton2.MouseOverSurface.BackgroundImage = null;
             this.ImageRadioButton2.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton2.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageRadioButton2.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton2.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton2.Name = "ImageRadioButton2";
             this.ImageRadioButton2.Size = new System.Drawing.Size(60, 50);
             this.ImageRadioButton2.Surface.BackColor = System.Drawing.Color.Empty;
@@ -564,7 +564,7 @@
             this.ImageRadioButton2.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageRadioButton2.Surface.BorderSize = 1;
             this.ImageRadioButton2.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageRadioButton2.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton2.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton2.TabIndex = 1;
             this.ImageRadioButton2.UseVisualStyleBackColor = false;
             // 
@@ -576,7 +576,7 @@
             this.ImageRadioButton1.CheckedSurface.BackgroundImage = null;
             this.ImageRadioButton1.CheckedSurface.BorderColor = System.Drawing.Color.DarkRed;
             this.ImageRadioButton1.CheckedSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubePdf;
-            this.ImageRadioButton1.CheckedSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton1.CheckedSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ImageRadioButton1.FlatAppearance.BorderSize = 0;
             this.ImageRadioButton1.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -590,12 +590,12 @@
             this.ImageRadioButton1.MouseDownSurface.BackgroundImage = null;
             this.ImageRadioButton1.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton1.MouseDownSurface.Image = null;
-            this.ImageRadioButton1.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton1.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton1.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageRadioButton1.MouseOverSurface.BackgroundImage = null;
             this.ImageRadioButton1.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageRadioButton1.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.ImageRadioButton1.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton1.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton1.Name = "ImageRadioButton1";
             this.ImageRadioButton1.Size = new System.Drawing.Size(60, 50);
             this.ImageRadioButton1.Surface.BackColor = System.Drawing.Color.Empty;
@@ -603,7 +603,7 @@
             this.ImageRadioButton1.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageRadioButton1.Surface.BorderSize = 1;
             this.ImageRadioButton1.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.ImageRadioButton1.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageRadioButton1.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageRadioButton1.TabIndex = 0;
             this.ImageRadioButton1.UseVisualStyleBackColor = false;
             // 
@@ -635,12 +635,12 @@
             this.ImageFlatButton2.MouseDownSurface.BackgroundImage = null;
             this.ImageFlatButton2.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageFlatButton2.MouseDownSurface.Image = null;
-            this.ImageFlatButton2.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageFlatButton2.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageFlatButton2.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageFlatButton2.MouseOverSurface.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
             this.ImageFlatButton2.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageFlatButton2.MouseOverSurface.Image = null;
-            this.ImageFlatButton2.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageFlatButton2.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageFlatButton2.Name = "ImageFlatButton2";
             this.ImageFlatButton2.Size = new System.Drawing.Size(60, 50);
             this.ImageFlatButton2.Surface.BackColor = System.Drawing.Color.Empty;
@@ -648,7 +648,7 @@
             this.ImageFlatButton2.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageFlatButton2.Surface.BorderSize = 1;
             this.ImageFlatButton2.Surface.Image = null;
-            this.ImageFlatButton2.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageFlatButton2.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageFlatButton2.TabIndex = 1;
             this.ImageFlatButton2.UseVisualStyleBackColor = false;
             // 
@@ -669,12 +669,12 @@
             this.FlatButton.MouseDownSurface.BackgroundImage = null;
             this.FlatButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.FlatButton.MouseDownSurface.Image = null;
-            this.FlatButton.MouseDownSurface.TextColor = System.Drawing.Color.Red;
+            this.FlatButton.MouseDownSurface.ContentColor = System.Drawing.Color.Red;
             this.FlatButton.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.FlatButton.MouseOverSurface.BackgroundImage = null;
             this.FlatButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.FlatButton.MouseOverSurface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
-            this.FlatButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.FlatButton.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.FlatButton.Name = "FlatButton";
             this.FlatButton.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.FlatButton.Size = new System.Drawing.Size(129, 50);
@@ -683,7 +683,7 @@
             this.FlatButton.Surface.BorderColor = System.Drawing.Color.Black;
             this.FlatButton.Surface.BorderSize = 1;
             this.FlatButton.Surface.Image = global::Cube.Forms.Demo.Properties.Resources.LogoCube;
-            this.FlatButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.FlatButton.Surface.ContentColor = System.Drawing.Color.Black;
             this.FlatButton.TabIndex = 2;
             this.FlatButton.Text = "FreeText";
             this.FlatButton.UseVisualStyleBackColor = false;
@@ -705,12 +705,12 @@
             this.ImageFlatButton1.MouseDownSurface.BackgroundImage = null;
             this.ImageFlatButton1.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageFlatButton1.MouseDownSurface.Image = null;
-            this.ImageFlatButton1.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageFlatButton1.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageFlatButton1.MouseOverSurface.BackColor = System.Drawing.Color.PaleTurquoise;
             this.ImageFlatButton1.MouseOverSurface.BackgroundImage = global::Cube.Forms.Demo.Properties.Resources.LogoCubeIce;
             this.ImageFlatButton1.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageFlatButton1.MouseOverSurface.Image = null;
-            this.ImageFlatButton1.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageFlatButton1.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageFlatButton1.Name = "ImageFlatButton1";
             this.ImageFlatButton1.Size = new System.Drawing.Size(60, 50);
             this.ImageFlatButton1.Surface.BackColor = System.Drawing.Color.Empty;
@@ -718,7 +718,7 @@
             this.ImageFlatButton1.Surface.BorderColor = System.Drawing.Color.Black;
             this.ImageFlatButton1.Surface.BorderSize = 1;
             this.ImageFlatButton1.Surface.Image = null;
-            this.ImageFlatButton1.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageFlatButton1.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageFlatButton1.TabIndex = 0;
             this.ImageFlatButton1.UseVisualStyleBackColor = false;
             // 

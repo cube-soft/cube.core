@@ -56,12 +56,12 @@
             this.ImageButton.MouseDownSurface.BackgroundImage = null;
             this.ImageButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageButton.MouseDownSurface.Image = null;
-            this.ImageButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageButton.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageButton.MouseOverSurface.BackColor = System.Drawing.Color.Empty;
             this.ImageButton.MouseOverSurface.BackgroundImage = null;
             this.ImageButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.ImageButton.MouseOverSurface.Image = null;
-            this.ImageButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.ImageButton.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.ImageButton.Name = "ImageButton";
             this.ImageButton.Size = new System.Drawing.Size(64, 64);
             this.ImageButton.Surface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
@@ -69,7 +69,7 @@
             this.ImageButton.Surface.BorderColor = System.Drawing.Color.Empty;
             this.ImageButton.Surface.BorderSize = 0;
             this.ImageButton.Surface.Image = global::Cube.Forms.Properties.Resources.LogoLarge;
-            this.ImageButton.Surface.TextColor = System.Drawing.Color.Empty;
+            this.ImageButton.Surface.ContentColor = System.Drawing.Color.Empty;
             this.ImageButton.TabIndex = 1;
             this.ImageButton.UseVisualStyleBackColor = false;
             // 
@@ -111,12 +111,12 @@
             this.HideButton.MouseDownSurface.BackgroundImage = null;
             this.HideButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.HideButton.MouseDownSurface.Image = null;
-            this.HideButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.HideButton.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.HideButton.MouseOverSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.HideButton.MouseOverSurface.BackgroundImage = null;
             this.HideButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.HideButton.MouseOverSurface.Image = null;
-            this.HideButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.HideButton.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.HideButton.Name = "HideButton";
             this.HideButton.Size = new System.Drawing.Size(25, 25);
             this.HideButton.Surface.BackColor = System.Drawing.Color.Empty;
@@ -124,7 +124,7 @@
             this.HideButton.Surface.BorderColor = System.Drawing.Color.Empty;
             this.HideButton.Surface.BorderSize = 0;
             this.HideButton.Surface.Image = global::Cube.Forms.Properties.Resources.ButtonClose;
-            this.HideButton.Surface.TextColor = System.Drawing.Color.Empty;
+            this.HideButton.Surface.ContentColor = System.Drawing.Color.Empty;
             this.HideButton.TabIndex = 0;
             this.HideButton.UseVisualStyleBackColor = false;
             // 
@@ -147,12 +147,12 @@
             this.DescriptionButton.MouseDownSurface.BackgroundImage = null;
             this.DescriptionButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.DescriptionButton.MouseDownSurface.Image = null;
-            this.DescriptionButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.DescriptionButton.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.DescriptionButton.MouseOverSurface.BackColor = System.Drawing.Color.Empty;
             this.DescriptionButton.MouseOverSurface.BackgroundImage = null;
             this.DescriptionButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.DescriptionButton.MouseOverSurface.Image = null;
-            this.DescriptionButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.DescriptionButton.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.DescriptionButton.Name = "DescriptionButton";
             this.DescriptionButton.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.DescriptionButton.Size = new System.Drawing.Size(260, 38);
@@ -161,7 +161,7 @@
             this.DescriptionButton.Surface.BorderColor = System.Drawing.Color.Empty;
             this.DescriptionButton.Surface.BorderSize = 0;
             this.DescriptionButton.Surface.Image = null;
-            this.DescriptionButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.DescriptionButton.Surface.ContentColor = System.Drawing.Color.Black;
             this.DescriptionButton.TabIndex = 3;
             this.DescriptionButton.Text = "Descriptions about the notification.";
             this.DescriptionButton.TextAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -186,12 +186,12 @@
             this.TitleButton.MouseDownSurface.BackgroundImage = null;
             this.TitleButton.MouseDownSurface.BorderColor = System.Drawing.Color.Empty;
             this.TitleButton.MouseDownSurface.Image = null;
-            this.TitleButton.MouseDownSurface.TextColor = System.Drawing.Color.Empty;
+            this.TitleButton.MouseDownSurface.ContentColor = System.Drawing.Color.Empty;
             this.TitleButton.MouseOverSurface.BackColor = System.Drawing.Color.Empty;
             this.TitleButton.MouseOverSurface.BackgroundImage = null;
             this.TitleButton.MouseOverSurface.BorderColor = System.Drawing.Color.Empty;
             this.TitleButton.MouseOverSurface.Image = null;
-            this.TitleButton.MouseOverSurface.TextColor = System.Drawing.Color.Empty;
+            this.TitleButton.MouseOverSurface.ContentColor = System.Drawing.Color.Empty;
             this.TitleButton.Name = "TitleButton";
             this.TitleButton.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.TitleButton.Size = new System.Drawing.Size(260, 22);
@@ -200,7 +200,7 @@
             this.TitleButton.Surface.BorderColor = System.Drawing.Color.Empty;
             this.TitleButton.Surface.BorderSize = 0;
             this.TitleButton.Surface.Image = null;
-            this.TitleButton.Surface.TextColor = System.Drawing.Color.Black;
+            this.TitleButton.Surface.ContentColor = System.Drawing.Color.Black;
             this.TitleButton.TabIndex = 2;
             this.TitleButton.Text = "Title";
             this.TitleButton.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
