@@ -49,68 +49,68 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Button.cs">
+    <Compile Include="Views\Controls\Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CaptionControl.cs">
+    <Compile Include="Views\Controls\CaptionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ColorButton.cs">
+    <Compile Include="Views\Controls\ColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Details\FontFactory.cs" />
-    <Compile Include="Controls\FlowLayoutPanel.cs">
+    <Compile Include="Models\Details\FontFactory.cs" />
+    <Compile Include="Views\Controls\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\FontButton.cs">
+    <Compile Include="Views\Controls\FontButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Position.cs" />
-    <Compile Include="Controls\FlatButton.cs">
+    <Compile Include="Views\Controls\FlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ListView.cs">
+    <Compile Include="Views\Controls\ListView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\BrowserVersion.cs" />
-    <Compile Include="Models\FeatureControl.cs">
+    <Compile Include="Views\Controls\FeatureControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\DeviceAwareForm.cs">
+    <Compile Include="Views\Forms\DeviceAwareForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EventArgs\DeviceEventArgs.cs" />
-    <Compile Include="EventArgs\MessageEventArgs.cs" />
-    <Compile Include="EventArgs\NavigatingErrorEventArgs.cs" />
-    <Compile Include="EventArgs\NavigatingEventArgs.cs" />
-    <Compile Include="Details\FlatButtonPainter.cs" />
+    <Compile Include="Models\EventArgs\DeviceEventArgs.cs" />
+    <Compile Include="Models\EventArgs\MessageEventArgs.cs" />
+    <Compile Include="Models\EventArgs\NavigatingErrorEventArgs.cs" />
+    <Compile Include="Models\EventArgs\NavigatingEventArgs.cs" />
+    <Compile Include="Models\Details\FlatButtonPainter.cs" />
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="Models\WindowTheme.cs" />
-    <Compile Include="NativeMethods\MinMaxInfo.cs" />
-    <Compile Include="NativeMethods\Point.cs" />
-    <Compile Include="NativeMethods\User32.cs" />
-    <Compile Include="NativeMethods\UxTheme.cs" />
-    <Compile Include="Controls\Panel.cs">
+    <Compile Include="Models\NativeMethods\MinMaxInfo.cs" />
+    <Compile Include="Models\NativeMethods\Point.cs" />
+    <Compile Include="Models\NativeMethods\User32.cs" />
+    <Compile Include="Models\NativeMethods\UxTheme.cs" />
+    <Compile Include="Views\Controls\Panel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PictureBox.cs">
+    <Compile Include="Views\Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Operations\Images.cs" />
-    <Compile Include="Operations\SelectedIndices.cs" />
+    <Compile Include="Models\Operations\Images.cs" />
+    <Compile Include="Models\Operations\SelectedIndices.cs" />
     <Compile Include="Presenters\NotifyPresenter.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
-    <Compile Include="Operations\Controls.cs" />
-    <Compile Include="Details\Graphics.cs" />
+    <Compile Include="Models\Operations\Controls.cs" />
+    <Compile Include="Models\Details\Graphics.cs" />
     <Compile Include="Models\NullExpandableObjectConverter.cs" />
-    <Compile Include="Forms\NotifyForm.cs">
+    <Compile Include="Views\Forms\NotifyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NotifyForm.Designer.cs">
+    <Compile Include="Views\Forms\NotifyForm.Designer.cs">
       <DependentUpon>NotifyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form.cs">
+    <Compile Include="Views\Forms\Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Presenters\PresenterBase.cs" />
@@ -120,61 +120,61 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RadioButton.cs">
+    <Compile Include="Views\Controls\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Details\RadioButtonPainter.cs" />
+    <Compile Include="Models\Details\RadioButtonPainter.cs" />
     <Compile Include="Models\Surface.cs" />
-    <Compile Include="Controls\SettingsControl.cs">
+    <Compile Include="Views\Controls\SettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\SizeGripControl.cs">
+    <Compile Include="Views\Controls\SizeGripControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\StatusStrip.cs">
+    <Compile Include="Views\Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TableLayoutPanel.cs">
+    <Compile Include="Views\Controls\TableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ToggleButton.cs">
+    <Compile Include="Views\Controls\ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Details\ToggleButtonPainter.cs" />
-    <Compile Include="Controls\UserControl.cs">
+    <Compile Include="Models\Details\ToggleButtonPainter.cs" />
+    <Compile Include="Views\Controls\UserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\VersionControl.cs">
+    <Compile Include="Views\Controls\VersionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\VersionControl.Designer.cs">
+    <Compile Include="Views\Controls\VersionControl.Designer.cs">
       <DependentUpon>VersionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\VersionForm.cs">
+    <Compile Include="Views\Forms\VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\VersionForm.Designer.cs">
+    <Compile Include="Views\Forms\VersionForm.Designer.cs">
       <DependentUpon>VersionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\WidgetForm.cs">
+    <Compile Include="Views\Forms\WidgetForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\WebBrowser.cs">
+    <Compile Include="Views\Controls\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\NotifyForm.resx">
+    <EmbeddedResource Include="Views\Forms\NotifyForm.resx">
       <DependentUpon>NotifyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\VersionControl.resx">
+    <EmbeddedResource Include="Views\Controls\VersionControl.resx">
       <DependentUpon>VersionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\VersionForm.resx">
+    <EmbeddedResource Include="Views\Forms\VersionForm.resx">
       <DependentUpon>VersionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
