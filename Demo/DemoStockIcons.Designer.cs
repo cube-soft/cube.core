@@ -30,7 +30,7 @@
         {
             this.SizableLayoutPanel = new Cube.Forms.TableLayoutPanel();
             this.IconListView = new Cube.Forms.ListView();
-            this.TitleBar = new Cube.Forms.UserControl();
+            this.TitleBar = new Cube.Forms.CaptionControl();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new Cube.Forms.PictureBox();
             this.LogoPictureBox = new Cube.Forms.PictureBox();
@@ -174,7 +174,7 @@
 
         private TableLayoutPanel SizableLayoutPanel;
         private ListView IconListView;
-        private UserControl TitleBar;
+        private CaptionControl TitleBar;
         private FlatButton CloseButton;
         private PictureBox TitlePictureBox;
         private PictureBox LogoPictureBox;

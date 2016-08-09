@@ -34,7 +34,7 @@
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.UpdateButton = new Cube.Forms.FlatButton();
             this.WebBrowser = new Cube.Forms.WebBrowser();
-            this.TitleBar = new Cube.Forms.UserControl();
+            this.TitleBar = new Cube.Forms.CaptionControl();
             this.CloseButton = new Cube.Forms.FlatButton();
             this.TitlePictureBox = new Cube.Forms.PictureBox();
             this.LogoPictureBox = new Cube.Forms.PictureBox();
@@ -263,7 +263,7 @@
         #endregion
 
         private TableLayoutPanel SizableLayoutPanel;
-        private UserControl TitleBar;
+        private CaptionControl TitleBar;
         private FlatButton CloseButton;
         private PictureBox TitlePictureBox;
         private PictureBox LogoPictureBox;
