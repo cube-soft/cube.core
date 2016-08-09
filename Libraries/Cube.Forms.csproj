@@ -49,24 +49,24 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\Controls\Button.cs">
+    <Compile Include="Views\Controls\Buttons\Button.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\Controls\CaptionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\ColorButton.cs">
+    <Compile Include="Views\Controls\Buttons\ColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Details\FontFactory.cs" />
-    <Compile Include="Views\Controls\FlowLayoutPanel.cs">
+    <Compile Include="Views\Controls\Panels\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\FontButton.cs">
+    <Compile Include="Views\Controls\Buttons\FontButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Position.cs" />
-    <Compile Include="Views\Controls\FlatButton.cs">
+    <Compile Include="Views\Controls\Buttons\FlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\Controls\ListView.cs">
@@ -91,7 +91,7 @@
     <Compile Include="Models\NativeMethods\Point.cs" />
     <Compile Include="Models\NativeMethods\User32.cs" />
     <Compile Include="Models\NativeMethods\UxTheme.cs" />
-    <Compile Include="Views\Controls\Panel.cs">
+    <Compile Include="Views\Controls\Panels\Panel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\Controls\PictureBox.cs">
@@ -120,11 +120,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\RadioButton.cs">
+    <Compile Include="Views\Controls\Buttons\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Details\RadioButtonPainter.cs" />
-    <Compile Include="Models\Surface.cs" />
+    <Compile Include="Models\ButtonStyle.cs" />
     <Compile Include="Views\Controls\SettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -134,10 +134,10 @@
     <Compile Include="Views\Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\TableLayoutPanel.cs">
+    <Compile Include="Views\Controls\Panels\TableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\ToggleButton.cs">
+    <Compile Include="Views\Controls\Buttons\ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\Details\ToggleButtonPainter.cs" />

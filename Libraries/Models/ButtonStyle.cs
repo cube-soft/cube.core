@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Surface.cs
+/// ButtonStyle.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,36 +24,16 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Surface
+    /// ButtonStyle
     /// 
     /// <summary>
-    /// コントロールの外観を定義するためのクラスです。
+    /// ボタンの外観を定義するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(NullExpandableObjectConverter))]
-    public class Surface
+    public class ButtonStyle
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Surface
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Surface()
-        {
-            BorderSize = -1;
-        }
-
-        #endregion
-
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// BackColor
@@ -64,7 +44,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color BackColor { get; set; }
+        public Color BackColor { get; set; } = SystemColors.Control;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,7 +56,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image BackgroundImage { get; set; }
+        public Image BackgroundImage { get; set; } = null;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,7 +68,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color BorderColor { get; set; }
+        public Color BorderColor { get; set; } = Color.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -102,7 +82,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         [DefaultValue(-1)]
-        public int BorderSize { get; set; }
+        public int BorderSize { get; set; } = -1;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -114,7 +94,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image Image { get; set; }
+        public Image Image { get; set; } = null;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,8 +106,79 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color ContentColor { get; set; }
+        public Color ContentColor { get; set; } = SystemColors.WindowText;
+    }
 
-        #endregion
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ButtonStyleContainer
+    /// 
+    /// <summary>
+    /// ボタンの外観を定義するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TypeConverter(typeof(NullExpandableObjectConverter))]
+    public class ButtonStyleContainer
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Normal
+        ///
+        /// <summary>
+        /// 通常時の外観を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TypeConverter(typeof(NullExpandableObjectConverter))]
+        public ButtonStyle Normal { get; set; } = new ButtonStyle();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Checked
+        ///
+        /// <summary>
+        /// チェック時の外観を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TypeConverter(typeof(NullExpandableObjectConverter))]
+        public ButtonStyle Checked { get; set; } = new ButtonStyle();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Disabled
+        ///
+        /// <summary>
+        /// 無効時の外観を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TypeConverter(typeof(NullExpandableObjectConverter))]
+        public ButtonStyle Disabled { get; set; } = new ButtonStyle();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MouseOver
+        ///
+        /// <summary>
+        /// マウスオーバ時の外観を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TypeConverter(typeof(NullExpandableObjectConverter))]
+        public ButtonStyle MouseOver { get; set; } = new ButtonStyle();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MouseDown
+        ///
+        /// <summary>
+        /// マウス押下時の外観を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TypeConverter(typeof(NullExpandableObjectConverter))]
+        public ButtonStyle MouseDown { get; set; } = new ButtonStyle();
     }
 }

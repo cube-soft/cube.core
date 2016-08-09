@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// RadioButton.cs
+/// ToggleButton.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -23,27 +23,27 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// RadioButton
+    /// ToggleButton
     /// 
     /// <summary>
-    /// ラジオボタンを作成するためのクラスです。
+    /// トグルボタンを作成するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class RadioButton : System.Windows.Forms.RadioButton
+    public class ToggleButton : System.Windows.Forms.CheckBox
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RadioButton
+        /// ToggleButton
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public RadioButton() : base() { _painter = new RadioButtonPainter(this); }
+        public ToggleButton() : base() { _painter = new ToggleButtonPainter(this); }
 
         #endregion
 
@@ -51,60 +51,32 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Surface
+        /// Styles
         ///
         /// <summary>
-        /// ボタンの基本となる外観を取得または設定します。
+        /// ボタンの外観を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface Surface => _painter.Surface;
+        public ButtonStyleContainer Styles => _painter.Styles;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CheckedSurface
+        /// Content
         ///
         /// <summary>
-        /// ボタンがチェック状態時の外観を取得または設定します。
+        /// ボタンに表示する内容を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface CheckedSurface => _painter.CheckedSurface;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseDownSurface
-        /// 
-        /// <summary>
-        /// マウスがクリック状態時の外観を定義したオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseDownSurface => _painter.MouseDownSurface;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseOverSurface
-        /// 
-        /// <summary>
-        /// マウスポインタがボタンの境界範囲内に存在する時の外観を定義した
-        /// オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseOverSurface => _painter.MouseOverSurface;
+        public string Content
+        {
+            get { return _painter.Content; }
+            set { _painter.Content = value; }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -117,7 +89,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override bool ShowFocusCues => false;
 
-        #region Hiding properties for ButtonBase
+        #endregion
+
+        #region Hiding properties
+
+        #region ButtonBase
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -192,6 +168,14 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
+        public new string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.TextImageRelation TextImageRelation
         {
             get { return base.TextImageRelation; }
@@ -208,7 +192,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Hiding properties for RadioButton
+        #region CheckBox
 
         [Browsable(false)]
         public new System.Windows.Forms.Appearance Appearance

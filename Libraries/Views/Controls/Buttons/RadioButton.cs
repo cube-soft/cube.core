@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FlatButton.cs
+/// RadioButton.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -23,27 +23,27 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FlatButton
+    /// RadioButton
     /// 
     /// <summary>
-    /// ボタンを作成するためのクラスです。
+    /// ラジオボタンを作成するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FlatButton : System.Windows.Forms.Button
+    public class RadioButton : System.Windows.Forms.RadioButton
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FlatButton
+        /// RadioButton
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FlatButton() : base() { _painter = new FlatButtonPainter(this); }
+        public RadioButton() : base() { _painter = new RadioButtonPainter(this); }
 
         #endregion
 
@@ -51,46 +51,32 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Surface
+        /// Styles
         ///
         /// <summary>
-        /// ボタンの基本となる外観を取得または設定します。
+        /// ボタンの外観を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [Category("Surface")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface Surface => _painter.Surface;
+        public ButtonStyleContainer Styles => _painter.Styles;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseDownSurface
-        /// 
+        /// Content
+        ///
         /// <summary>
-        /// マウスがクリック状態時の外観を定義したオブジェクトを取得します。
+        /// ボタンに表示する内容を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseDownSurface => _painter.MouseDownSurface;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseOverSurface
-        /// 
-        /// <summary>
-        /// マウスポインタがボタンの境界範囲内に存在する時の外観を定義した
-        /// オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [Category("Surface")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Surface MouseOverSurface => _painter.MouseOverSurface;
+        public string Content
+        {
+            get { return _painter.Content; }
+            set { _painter.Content = value; }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,7 +89,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override bool ShowFocusCues => false;
 
+        #endregion
+
         #region Hiding properties
+
+        #region ButtonBase
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -178,6 +168,14 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
+        public new string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.TextImageRelation TextImageRelation
         {
             get { return base.TextImageRelation; }
@@ -190,6 +188,24 @@ namespace Cube.Forms
         {
             get { return base.UseVisualStyleBackColor; }
             set { base.UseVisualStyleBackColor = value; }
+        }
+
+        #endregion
+
+        #region RadioButton
+
+        [Browsable(false)]
+        public new System.Windows.Forms.Appearance Appearance
+        {
+            get { return base.Appearance; }
+            set { base.Appearance = value; }
+        }
+
+        [Browsable(false)]
+        public new System.Drawing.ContentAlignment CheckAlign
+        {
+            get { return base.CheckAlign; }
+            set { base.CheckAlign = value; }
         }
 
         #endregion

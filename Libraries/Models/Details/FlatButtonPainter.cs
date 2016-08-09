@@ -57,8 +57,6 @@ namespace Cube.Forms
             View.MouseUp    += (s, e) => OnMouseUp(e);
 
             InitializeSurface();
-            Surface.BorderColor = Color.Black;
-            Surface.BorderSize = 1;
         }
 
         #endregion
@@ -78,6 +76,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Content
+        /// 
+        /// <summary>
+        /// ボタンに表示する内容を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Content { get; set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Surface
         /// 
         /// <summary>
@@ -85,41 +94,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Surface Surface { get; } = new Surface();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Surface
-        /// 
-        /// <summary>
-        /// ボタンがチェック状態時の外観を定義したオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Surface CheckedSurface { get; } = new Surface();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseDownSurface
-        /// 
-        /// <summary>
-        /// マウスがクリック状態時の外観を定義したオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Surface MouseDownSurface { get; } = new Surface();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MouseOverSurface
-        /// 
-        /// <summary>
-        /// マウスポインタがボタンの境界範囲内に存在する時の外観を定義した
-        /// オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Surface MouseOverSurface { get; } = new Surface();
+        public ButtonStyleContainer Styles { get; } = new ButtonStyleContainer();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -177,7 +152,7 @@ namespace Cube.Forms
             gs.FillBackground(client, GetBackColor());
             gs.DrawImage(client, GetBackgroundImage(), View.BackgroundImageLayout);
             gs.DrawImage(bounds, GetImage(), View.ImageAlign);
-            gs.DrawText(bounds, View.Text, View.Font, GetTextColor(), View.TextAlign);
+            gs.DrawText(bounds, Content, View.Font, GetContentColor(), View.TextAlign);
             gs.DrawBorder(client, GetBorderColor(), GetBorderSize());
         }
 
@@ -191,9 +166,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnMouseEnter(EventArgs e)
-        {
-            IsMouseOver = true;
-        }
+            => IsMouseOver = true;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -205,9 +178,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnMouseLeave(EventArgs e)
-        {
-            IsMouseOver = false;
-        }
+            => IsMouseOver = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -219,9 +190,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnMouseDown(MouseEventArgs e)
-        {
-            IsMouseDown = (e.Button == MouseButtons.Left);
-        }
+            => IsMouseDown = (e.Button == MouseButtons.Left);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -260,6 +229,7 @@ namespace Cube.Forms
             View.ForeColor = transparent;
             View.BackgroundImage = null;
             View.Image = null;
+            View.Text = string.Empty;
             View.FlatStyle = FlatStyle.Flat;
             View.FlatAppearance.BorderColor = transparent;
             View.FlatAppearance.BorderSize = 0;
@@ -326,13 +296,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Color GetBorderColor()
-        {
-            return Select(Surface.BorderColor,
-                          CheckedSurface.BorderColor,
-                          MouseOverSurface.BorderColor,
-                          MouseDownSurface.BorderColor);
-        }
+        private Color GetBorderColor() => Select(
+            Styles.Normal.BorderColor,
+            Styles.Checked.BorderColor,
+            Styles.MouseOver.BorderColor,
+            Styles.MouseDown.BorderColor
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -343,14 +312,13 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private int GetBorderSize()
-        {
-            return Select(Surface.BorderSize,
-                          CheckedSurface.BorderSize,
-                          MouseOverSurface.BorderSize,
-                          MouseDownSurface.BorderSize,
-                          -1);
-        }
+        private int GetBorderSize() => Select(
+            Styles.Normal.BorderSize,
+            Styles.Checked.BorderSize,
+            Styles.MouseOver.BorderSize,
+            Styles.MouseDown.BorderSize,
+            -1
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -361,30 +329,28 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Color GetBackColor()
-        {
-            return Select(Surface.BackColor,
-                          CheckedSurface.BackColor,
-                          MouseOverSurface.BackColor,
-                          MouseDownSurface.BackColor);
-        }
+        private Color GetBackColor() => Select(
+            Styles.Normal.BackColor,
+            Styles.Checked.BackColor,
+            Styles.MouseOver.BackColor,
+            Styles.MouseDown.BackColor
+        );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetTextColor
+        /// GetContentColor
         /// 
         /// <summary>
         /// 現在のテキスト色を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Color GetTextColor()
-        {
-            return Select(Surface.ContentColor,
-                          CheckedSurface.ContentColor,
-                          MouseOverSurface.ContentColor,
-                          MouseDownSurface.ContentColor);
-        }
+        private Color GetContentColor() => Select(
+            Styles.Normal.ContentColor,
+            Styles.Checked.ContentColor,
+            Styles.MouseOver.ContentColor,
+            Styles.MouseDown.ContentColor
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -395,13 +361,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Image GetImage()
-        {
-            return Select(Surface.Image,
-                          CheckedSurface.Image,
-                          MouseOverSurface.Image,
-                          MouseDownSurface.Image);
-        }
+        private Image GetImage() => Select(
+            Styles.Normal.Image,
+            Styles.Checked.Image,
+            Styles.MouseOver.Image,
+            Styles.MouseDown.Image
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -412,13 +377,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Image GetBackgroundImage()
-        {
-            return Select(Surface.BackgroundImage,
-                          CheckedSurface.BackgroundImage,
-                          MouseOverSurface.BackgroundImage,
-                          MouseDownSurface.BackgroundImage);
-        }
+        private Image GetBackgroundImage() => Select(
+            Styles.Normal.BackgroundImage,
+            Styles.Checked.BackgroundImage,
+            Styles.MouseOver.BackgroundImage,
+            Styles.MouseDown.BackgroundImage
+        );
 
         /* ----------------------------------------------------------------- */
         ///

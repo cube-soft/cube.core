@@ -154,8 +154,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public System.Drawing.Image Image
         {
-            get { return ImageButton.Surface.Image; }
-            set { ImageButton.Surface.Image = value; }
+            get { return ImageButton.Styles.Normal.Image; }
+            set { ImageButton.Styles.Normal.Image = value; }
         }
 
         /* --------------------------------------------------------------------- */
@@ -562,12 +562,12 @@ namespace Cube.Forms
         private void SetStyle()
         {
             var style = Styles.ContainsKey(Level) ? Styles[Level] : DefaultStyle;
-            ImageButton.Surface.BackColor = style.BackColor;
+            ImageButton.Styles.Normal.BackColor = style.BackColor;
             Separator.BackColor = style.BorderColor;
             TitleButton.Font = style.Title;
-            TitleButton.Surface.ContentColor = style.TitleColor;
+            TitleButton.Styles.Normal.ContentColor = style.TitleColor;
             DescriptionButton.Font = style.Description;
-            DescriptionButton.Surface.ContentColor = style.DescriptionColor;
+            DescriptionButton.Styles.Normal.ContentColor = style.DescriptionColor;
         }
 
         /* ----------------------------------------------------------------- */
