@@ -153,13 +153,25 @@ namespace Cube.Forms
         /// Caption
         /// 
         /// <summary>
-        /// タイトルバーを表すコントロールを取得または設定します。
+        /// キャプション（タイトルバー）を表すコントロールを取得または
+        /// 設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public UserControl Caption { get; set; }
+        public CaptionControl Caption
+        {
+            get { return _caption; }
+            set
+            {
+                if (_caption == value) return;
+                Detach(_caption);
+                _caption = value;
+                Detach(_caption);
+                Attach(_caption);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -421,6 +433,42 @@ namespace Cube.Forms
             return true;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMaximize
+        ///
+        /// <summary>
+        /// 最大化要求時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnMaximize(object sender, EventArgs e)
+            => Maximize();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMinimize
+        ///
+        /// <summary>
+        /// 最小化要求時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnMinimize(object sender, EventArgs e)
+            => Minimize();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnClose
+        ///
+        /// <summary>
+        /// 画面を閉じる操作が要求された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void OnClose(object sender, EventArgs e)
+            => Close();
+
         #endregion
 
         #region Others
@@ -488,11 +536,46 @@ namespace Cube.Forms
             MaximumSize = size;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Attach
+        ///
+        /// <summary>
+        /// CaptionBase オブジェクトにイベントハンドラを設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Attach(CaptionControl caption)
+        {
+            if (caption == null) return;
+            caption.Maximize += OnMaximize;
+            caption.Minimize += OnMinimize;
+            caption.Close    += OnClose;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Detach
+        ///
+        /// <summary>
+        /// CaptionBase オブジェクトからイベントハンドラを削除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Detach(CaptionControl caption)
+        {
+            if (caption == null) return;
+            caption.Maximize -= OnMaximize;
+            caption.Minimize -= OnMinimize;
+            caption.Close    -= OnClose;
+        }
+
         #endregion
 
         #region Fields
         private bool _sizable = true;
         private bool _fakeMode = false;
+        private CaptionControl _caption = null;
         #endregion
     }
 }

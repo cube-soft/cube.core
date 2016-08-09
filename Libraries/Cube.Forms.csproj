@@ -52,7 +52,7 @@
     <Compile Include="Controls\Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CaptionBase.cs">
+    <Compile Include="Controls\CaptionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ColorButton.cs">
