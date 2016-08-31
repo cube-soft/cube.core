@@ -195,6 +195,7 @@ namespace Cube.Forms
         #region RadioButton
 
         [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.Appearance Appearance
         {
             get { return base.Appearance; }
@@ -202,6 +203,7 @@ namespace Cube.Forms
         }
 
         [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Drawing.ContentAlignment CheckAlign
         {
             get { return base.CheckAlign; }

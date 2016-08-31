@@ -57,6 +57,11 @@ namespace Cube.Forms
             View.MouseUp    += (s, e) => OnMouseUp(e);
 
             InitializeSurface();
+
+            Styles.Normal.BackColor    = SystemColors.Control;
+            Styles.Normal.BorderColor  = SystemColors.ControlDarkDark;
+            Styles.Normal.BorderSize   = 1;
+            Styles.Normal.ContentColor = SystemColors.WindowText;
         }
 
         #endregion

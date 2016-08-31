@@ -47,6 +47,7 @@ namespace Cube.Forms
             : base(view)
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
+            InitializeSurface();
         }
 
         #endregion
