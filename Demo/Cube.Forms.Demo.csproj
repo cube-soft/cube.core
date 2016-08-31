@@ -108,6 +108,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
+      <DependentUpon>CustomCaptionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="App.manifest" />
     <None Include="Packages.config" />
