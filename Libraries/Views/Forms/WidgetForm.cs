@@ -175,6 +175,20 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CaptionAutoMonitoring
+        /// 
+        /// <summary>
+        /// キャプションから発生するイベントを既定の動作で自動的に
+        /// 処理するかどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool CaptionAutoMonitoring { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// CreateParams
         /// 
         /// <summary>
@@ -548,6 +562,11 @@ namespace Cube.Forms
         private void Attach(CaptionControl caption)
         {
             if (caption == null) return;
+            caption.MaximizeBox = MaximizeBox;
+            caption.MinimizeBox = MinimizeBox;
+            caption.CloseBox    = true;
+
+            if (!CaptionAutoMonitoring) return;
             caption.Maximize += OnMaximize;
             caption.Minimize += OnMinimize;
             caption.Close    += OnClose;
@@ -565,6 +584,7 @@ namespace Cube.Forms
         private void Detach(CaptionControl caption)
         {
             if (caption == null) return;
+
             caption.Maximize -= OnMaximize;
             caption.Minimize -= OnMinimize;
             caption.Close    -= OnClose;
