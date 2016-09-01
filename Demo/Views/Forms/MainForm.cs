@@ -46,24 +46,25 @@ namespace Cube.Forms.Demo
         public MainForm()
         {
             InitializeComponent();
-            InitializeEvents();
+
+            ContentsControl.Resize += ContentsControl_Resize;
 
             Caption = HeaderControl;
         }
 
         #endregion
 
-        #region Initialize methods
-
-        private void InitializeEvents()
-        {
-            ContentsControl.Resize += ContentsControl_Resize;
-        }
-
-        #endregion
-
         #region Event handlers
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ContentsControl_Resize
+        /// 
+        /// <summary>
+        /// リサイズ時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
         private void ContentsControl_Resize(object sender, EventArgs e)
         {
             var control = sender as System.Windows.Forms.Control;
