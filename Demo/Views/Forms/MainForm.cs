@@ -46,7 +46,34 @@ namespace Cube.Forms.Demo
         public MainForm()
         {
             InitializeComponent();
+            InitializeEvents();
+
             Caption = HeaderControl;
+        }
+
+        #endregion
+
+        #region Initialize methods
+
+        private void InitializeEvents()
+        {
+            ContentsControl.Resize += ContentsControl_Resize;
+        }
+
+        #endregion
+
+        #region Event handlers
+
+        private void ContentsControl_Resize(object sender, EventArgs e)
+        {
+            var control = sender as System.Windows.Forms.Control;
+            if (control == null) return;
+
+            var width = control.ClientSize.Width;
+            var left  = control.Padding.Left;
+            var right = control.Padding.Right;
+
+            DemoButton1.Width = width - left - right;
         }
 
         #endregion
