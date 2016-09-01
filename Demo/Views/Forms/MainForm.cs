@@ -18,6 +18,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Cube.Forms.Demo
 {
@@ -54,6 +56,29 @@ namespace Cube.Forms.Demo
 
         #endregion
 
+        #region Override methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnLoad
+        /// 
+        /// <summary>
+        /// ロード時に実行されます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            var area = Screen.FromControl(this).WorkingArea;
+            var x = (int)(area.Left + area.Width * 0.1);
+            var y = (int)(area.Top + area.Height * 0.1);
+            Location = new Point(x, y);
+        }
+
+        #endregion
+
         #region Event handlers
 
         /* --------------------------------------------------------------------- */
@@ -67,7 +92,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         private void ContentsControl_Resize(object sender, EventArgs e)
         {
-            var control = sender as System.Windows.Forms.Control;
+            var control = sender as Control;
             if (control == null) return;
 
             var width = control.ClientSize.Width;
