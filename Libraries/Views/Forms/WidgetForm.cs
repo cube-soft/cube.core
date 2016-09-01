@@ -412,6 +412,9 @@ namespace Cube.Forms
                 case 0x0083: // WM_NCCALCSIZE
                     m.Result = IntPtr.Zero;
                     return;
+                case 0x0085: // WM_NCPAINT
+                    m.Result = new IntPtr(1);
+                    break;
                 case 0x00a5: // WM_NCRBUTTONUP
                     if (OnSystemMenu(ref m)) return;
                     break;
