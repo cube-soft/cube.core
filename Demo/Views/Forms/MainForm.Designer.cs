@@ -416,6 +416,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(0, 0);
             this.MaximumSize = new System.Drawing.Size(1920, 1160);
+            this.MinimumSize = new System.Drawing.Size(300, 0);
             this.Name = "MainForm";
             this.Text = "Cube.Forms.Demo";
             this.LayoutPanel.ResumeLayout(false);
