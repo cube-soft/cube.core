@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Cube.Forms.Demo
 {
@@ -75,6 +76,21 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
+        /// OnControlAdded
+        /// 
+        /// <summary>
+        /// このコントロールが何らかのコンテナに追加された時に実行されます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected override void OnControlAdded(System.Windows.Forms.ControlEventArgs e)
+        {
+            base.OnControlAdded(e);
+            _backColor = BackColor;
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// OnPropertyChanged
         /// 
         /// <summary>
@@ -97,11 +113,49 @@ namespace Cube.Forms.Demo
                 case nameof(CloseBox):
                     ExitButton.Visible = CloseBox;
                     break;
+                case nameof(IsActive):
+                    UpdateLayout();
+                    break;
                 default:
                     break;
             }
         }
 
+        #endregion
+
+        #region Others
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// UpdateLayout
+        /// 
+        /// <summary>
+        /// 外観を更新します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void UpdateLayout()
+        {
+            if (IsActive)
+            {
+                BackColor = _backColor;
+                MinimizeButton.Styles.Normal.Image = Properties.Resources.Minimize;
+                MaximizeButton.Styles.Normal.Image = Properties.Resources.Maximize;
+                ExitButton.Styles.Normal.Image     = Properties.Resources.Close;
+            }
+            else
+            {
+                BackColor = Color.White;
+                MinimizeButton.Styles.Normal.Image = Properties.Resources.MinimizeGrey;
+                MaximizeButton.Styles.Normal.Image = Properties.Resources.MaximizeGrey;
+                ExitButton.Styles.Normal.Image     = Properties.Resources.CloseGrey;
+            }
+        }
+
+        #endregion
+
+        #region Fields
+        private Color _backColor = Color.Empty;
         #endregion
     }
 }

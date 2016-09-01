@@ -123,13 +123,15 @@ namespace Cube.Forms
         /// SystemMenu
         /// 
         /// <summary>
-        /// システムメニューを表示するかどうかを示す値を取得または設定します。
+        /// システムメニューを表示するかどうかを示す値を取得または
+        /// 設定します。
         /// </summary>
         /// 
         /// <remarks>
-        /// システムメニューの有無は FormBorderStyle の値を変更する事で対応します。
-        /// SystemMenu を false に設定した場合は、システムメニューの非表示に加えて
-        /// 最小化時のアニメーション等、いくつかのシステムによる動作が無効化されます。
+        /// システムメニューの有無は FormBorderStyle の値を変更する事で
+        /// 対応します。 SystemMenu を false に設定した場合は、
+        /// システムメニューの非表示に加えて最小化時のアニメーション等、
+        /// いくつかのシステムによる動作が無効化されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -175,17 +177,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CaptionAutoMonitoring
+        /// CaptionMonitoring
         /// 
         /// <summary>
-        /// キャプションから発生するイベントを既定の動作で自動的に
-        /// 処理するかどうかを示す値を取得または設定します。
+        /// キャプションから発生するイベントを監視するかどうかを示す値を
+        /// 取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         [DefaultValue(true)]
-        public bool CaptionAutoMonitoring { get; set; } = true;
+        public bool CaptionMonitoring { get; set; } = true;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -288,6 +290,38 @@ namespace Cube.Forms
         {
             base.OnLoad(e);
             UpdateMaximumSize();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnActivated
+        /// 
+        /// <summary>
+        /// フォームがアクティブ化された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            if (Caption == null || !CaptionMonitoring) return;
+            Caption.IsActive = true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDeactivate
+        /// 
+        /// <summary>
+        /// フォームが非アクティブ化された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnDeactivate(EventArgs e)
+        {
+            base.OnDeactivate(e);
+            if (Caption == null || !CaptionMonitoring) return;
+            Caption.IsActive = false;
         }
 
         /* ----------------------------------------------------------------- */
@@ -566,7 +600,7 @@ namespace Cube.Forms
             caption.MinimizeBox = MinimizeBox;
             caption.CloseBox    = true;
 
-            if (!CaptionAutoMonitoring) return;
+            if (!CaptionMonitoring) return;
             caption.Maximize += OnMaximize;
             caption.Minimize += OnMinimize;
             caption.Close    += OnClose;

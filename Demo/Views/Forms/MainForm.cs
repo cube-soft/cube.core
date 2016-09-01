@@ -46,33 +46,7 @@ namespace Cube.Forms.Demo
         public MainForm()
         {
             InitializeComponent();
-            InitializeCaption();
-        }
-
-        #endregion
-
-        #region Initialize methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// InitializeCaption
-        /// 
-        /// <summary>
-        /// タイトルバーを初期化します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void InitializeCaption()
-        {
             Caption = HeaderControl;
-
-            Caption.MinimizeBox = MinimizeBox;
-            Caption.MaximizeBox = MaximizeBox;
-            Caption.CloseBox    = true;
-
-            Caption.Minimize += (s, e) => Minimize();
-            Caption.Maximize += (s, e) => Maximize();
-            Caption.Close    += (s, e) => Close();
         }
 
         #endregion
