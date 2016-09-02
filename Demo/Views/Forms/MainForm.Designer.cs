@@ -55,15 +55,15 @@
             Cube.Forms.ButtonStyle buttonStyle25 = new Cube.Forms.ButtonStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.LayoutPanel = new Cube.Forms.TableLayoutPanel();
+            this.HeaderControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.Separator = new Cube.Forms.PictureBox();
             this.ContentsControl = new Cube.Forms.FlowLayoutPanel();
-            this.FooterControl = new Cube.Forms.StatusStrip();
             this.DemoButton1 = new Cube.Forms.FlatButton();
             this.DemoButton2 = new Cube.Forms.FlatButton();
             this.DemoButton3 = new Cube.Forms.FlatButton();
             this.DemoButton4 = new Cube.Forms.FlatButton();
             this.VersionButton = new Cube.Forms.FlatButton();
-            this.HeaderControl = new Cube.Forms.Demo.CustomCaptionControl();
+            this.FooterControl = new Cube.Forms.StatusStrip();
             this.LayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).BeginInit();
             this.ContentsControl.SuspendLayout();
@@ -87,6 +87,20 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.LayoutPanel.Size = new System.Drawing.Size(350, 280);
             this.LayoutPanel.TabIndex = 0;
+            // 
+            // HeaderControl
+            // 
+            this.HeaderControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.HeaderControl.CloseBox = true;
+            this.HeaderControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HeaderControl.Active = true;
+            this.HeaderControl.Location = new System.Drawing.Point(0, 0);
+            this.HeaderControl.Margin = new System.Windows.Forms.Padding(0);
+            this.HeaderControl.MaximizeBox = true;
+            this.HeaderControl.MinimizeBox = true;
+            this.HeaderControl.Name = "HeaderControl";
+            this.HeaderControl.Size = new System.Drawing.Size(350, 30);
+            this.HeaderControl.TabIndex = 0;
             // 
             // Separator
             // 
@@ -114,14 +128,6 @@
             this.ContentsControl.Padding = new System.Windows.Forms.Padding(20);
             this.ContentsControl.Size = new System.Drawing.Size(350, 224);
             this.ContentsControl.TabIndex = 2;
-            // 
-            // FooterControl
-            // 
-            this.FooterControl.Location = new System.Drawing.Point(0, 258);
-            this.FooterControl.Name = "FooterControl";
-            this.FooterControl.Size = new System.Drawing.Size(350, 22);
-            this.FooterControl.TabIndex = 3;
-            this.FooterControl.Text = "statusStrip1";
             // 
             // DemoButton1
             // 
@@ -392,19 +398,13 @@
             this.VersionButton.TabIndex = 4;
             this.VersionButton.UseVisualStyleBackColor = false;
             // 
-            // HeaderControl
+            // FooterControl
             // 
-            this.HeaderControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.HeaderControl.CloseBox = true;
-            this.HeaderControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HeaderControl.IsActive = true;
-            this.HeaderControl.Location = new System.Drawing.Point(0, 0);
-            this.HeaderControl.Margin = new System.Windows.Forms.Padding(0);
-            this.HeaderControl.MaximizeBox = true;
-            this.HeaderControl.MinimizeBox = true;
-            this.HeaderControl.Name = "HeaderControl";
-            this.HeaderControl.Size = new System.Drawing.Size(350, 30);
-            this.HeaderControl.TabIndex = 0;
+            this.FooterControl.Location = new System.Drawing.Point(0, 258);
+            this.FooterControl.Name = "FooterControl";
+            this.FooterControl.Size = new System.Drawing.Size(350, 22);
+            this.FooterControl.TabIndex = 3;
+            this.FooterControl.Text = "statusStrip1";
             // 
             // MainForm
             // 
