@@ -415,6 +415,13 @@ namespace Cube.Forms
                 case 0x0085: // WM_NCPAINT
                     m.Result = new IntPtr(1);
                     break;
+                case 0x0086: // WM_NCACTIVE
+                    if (WindowState != System.Windows.Forms.FormWindowState.Minimized)
+                    {
+                        m.Result = new IntPtr(1);
+                        return;
+                    }
+                    break;
                 case 0x00a5: // WM_NCRBUTTONUP
                     if (OnSystemMenu(ref m)) return;
                     break;
