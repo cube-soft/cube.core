@@ -98,7 +98,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// IsActive
+        /// Active
         /// 
         /// <summary>
         /// 関連付けられているフォームがアクティブかどうかを示す値を取得
@@ -106,14 +106,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public bool IsActive
+        public bool Active
         {
             get { return _active; }
             set
             {
                 if (_active == value) return;
                 _active = value;
-                RaisePropertyChanged(nameof(IsActive));
+                RaisePropertyChanged(nameof(Active));
             }
         }
 

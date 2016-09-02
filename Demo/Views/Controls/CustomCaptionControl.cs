@@ -113,7 +113,7 @@ namespace Cube.Forms.Demo
                 case nameof(CloseBox):
                     ExitButton.Visible = CloseBox;
                     break;
-                case nameof(IsActive):
+                case nameof(Active):
                     UpdateLayout();
                     break;
                 default:
@@ -136,7 +136,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         private void UpdateLayout()
         {
-            if (IsActive)
+            if (Active)
             {
                 BackColor = _backColor;
                 MinimizeButton.Styles.Normal.Image = Properties.Resources.Minimize;

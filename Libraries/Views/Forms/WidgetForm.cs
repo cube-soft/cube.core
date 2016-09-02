@@ -307,7 +307,7 @@ namespace Cube.Forms
         {
             base.OnActivated(e);
             if (Caption == null || !CaptionMonitoring) return;
-            Caption.IsActive = true;
+            Caption.Active = true;
         }
 
         /* ----------------------------------------------------------------- */
@@ -323,7 +323,7 @@ namespace Cube.Forms
         {
             base.OnDeactivate(e);
             if (Caption == null || !CaptionMonitoring) return;
-            Caption.IsActive = false;
+            Caption.Active = false;
         }
 
         /* ----------------------------------------------------------------- */
