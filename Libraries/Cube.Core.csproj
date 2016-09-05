@@ -119,6 +119,7 @@
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="Settings\Startup.cs" />
+    <Compile Include="LooseArguments.cs" />
     <Compile Include="UtmQuery.cs" />
     <Compile Include="SoftwareVersion.cs" />
   </ItemGroup>
