@@ -45,7 +45,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        bool MaximizeBox
+        public bool MaximizeBox
         {
             get { return _maximize; }
             set
@@ -65,7 +65,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        bool MinimizeBox
+        public bool MinimizeBox
         {
             get { return _minimize; }
             set
@@ -85,7 +85,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        bool CloseBox
+        public bool CloseBox
         {
             get { return _close; }
             set
@@ -93,6 +93,27 @@ namespace Cube.Forms
                 if (_close == value) return;
                 _close = value;
                 RaisePropertyChanged(nameof(CloseBox));
+            }
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Active
+        /// 
+        /// <summary>
+        /// 関連付けられているフォームがアクティブかどうかを示す値を取得
+        /// または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public bool Active
+        {
+            get { return _active; }
+            set
+            {
+                if (_active == value) return;
+                _active = value;
+                RaisePropertyChanged(nameof(Active));
             }
         }
 
@@ -218,6 +239,7 @@ namespace Cube.Forms
         private bool _maximize = true;
         private bool _minimize = true;
         private bool _close = true;
+        private bool _active = true;
         #endregion
     }
 }

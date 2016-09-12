@@ -44,7 +44,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color BackColor { get; set; } = SystemColors.Control;
+        public Color BackColor { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,7 +56,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image BackgroundImage { get; set; } = null;
+        public Image BackgroundImage { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -68,7 +68,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color BorderColor { get; set; } = Color.Empty;
+        public Color BorderColor { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,7 +94,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image Image { get; set; } = null;
+        public Image Image { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,7 +106,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color ContentColor { get; set; } = SystemColors.WindowText;
+        public Color ContentColor { get; set; }
     }
 
     /* --------------------------------------------------------------------- */

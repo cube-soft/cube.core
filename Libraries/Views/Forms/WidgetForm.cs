@@ -35,8 +35,8 @@ namespace Cube.Forms
     /// </summary>
     /// 
     /// <remarks>
-    /// 既存の Form クラスに対して、タイトルバーや枠線等を全てクライアント領域と
-    /// 見なすように修正されています。
+    /// 既存の Form クラスに対して、タイトルバーや枠線等を全てクライアント
+    /// 領域と見なすように修正されています。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -69,7 +69,8 @@ namespace Cube.Forms
         /// DropShadow
         /// 
         /// <summary>
-        /// フォームの外部に陰影を描画するかどうかを示す値を取得または設定します。
+        /// フォームの外部に陰影を描画するかどうかを示す値を取得または
+        /// 設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -123,13 +124,15 @@ namespace Cube.Forms
         /// SystemMenu
         /// 
         /// <summary>
-        /// システムメニューを表示するかどうかを示す値を取得または設定します。
+        /// システムメニューを表示するかどうかを示す値を取得または
+        /// 設定します。
         /// </summary>
         /// 
         /// <remarks>
-        /// システムメニューの有無は FormBorderStyle の値を変更する事で対応します。
-        /// SystemMenu を false に設定した場合は、システムメニューの非表示に加えて
-        /// 最小化時のアニメーション等、いくつかのシステムによる動作が無効化されます。
+        /// システムメニューの有無は FormBorderStyle の値を変更する事で
+        /// 対応します。 SystemMenu を false に設定した場合は、
+        /// システムメニューの非表示に加えて最小化時のアニメーション等、
+        /// いくつかのシステムによる動作が無効化されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -175,6 +178,20 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CaptionMonitoring
+        /// 
+        /// <summary>
+        /// キャプションから発生するイベントを監視するかどうかを示す値を
+        /// 取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public bool CaptionMonitoring { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// CreateParams
         /// 
         /// <summary>
@@ -182,9 +199,10 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /// <remarks>
-        /// いくつかのメソッド (メッセージ) では、カスタマイズされた非クライアント
-        /// 領域に関する不都合が存在します。そこで、CreateParams から一時的に
-        /// WS_THICKFRAME 等の値を除去する事によって、この不都合を回避します。
+        /// いくつかのメソッド (メッセージ) では、カスタマイズされた
+        /// 非クライアント領域に関する不都合が存在します。
+        /// そこで、CreateParams から一時的に WS_THICKFRAME 等の値を除去
+        /// する事によって、この不都合を回避します。
         /// </remarks>
         /// 
         /* ----------------------------------------------------------------- */
@@ -278,6 +296,38 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnActivated
+        /// 
+        /// <summary>
+        /// フォームがアクティブ化された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            if (Caption == null || !CaptionMonitoring) return;
+            Caption.Active = true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDeactivate
+        /// 
+        /// <summary>
+        /// フォームが非アクティブ化された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnDeactivate(EventArgs e)
+        {
+            base.OnDeactivate(e);
+            if (Caption == null || !CaptionMonitoring) return;
+            Caption.Active = false;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnNcHitTest
         /// 
         /// <summary>
@@ -336,12 +386,13 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /// <remarks>
-        /// TODO: WM_CREATE (0x0001) および WM_NCCREATE (0x0081) で設定されて
-        /// いるサイズは、デザイナ (InitializeComponents) 等で設定された Size に
-        /// 非クライアント領域のサイズが加算されている。現状では WM_CREATE で
-        /// Result に Zero を設定した後（Zero はウィンドウ生成を意味する）、
-        /// システム側の処理をスキップさせている。確認した限りではうまく機能して
-        /// いるが、何かに影響が及んでいないか要検討。
+        /// TODO: WM_CREATE (0x0001) および WM_NCCREATE (0x0081) で
+        /// 設定されているサイズは、デザイナ (InitializeComponents) 等で
+        /// 設定された Size に非クライアント領域のサイズが加算されている。
+        /// 現状では WM_CREATE で Result に Zero を設定した後（Zero は
+        /// ウィンドウ生成を意味する）システム側の処理をスキップさせている。
+        /// 確認した限りではうまく機能しているが、何かに影響が及んで
+        /// いないか要検討。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -362,6 +413,16 @@ namespace Cube.Forms
                 case 0x0083: // WM_NCCALCSIZE
                     m.Result = IntPtr.Zero;
                     return;
+                case 0x0085: // WM_NCPAINT
+                    m.Result = new IntPtr(1);
+                    break;
+                case 0x0086: // WM_NCACTIVE
+                    if (WindowState != System.Windows.Forms.FormWindowState.Minimized)
+                    {
+                        m.Result = new IntPtr(1);
+                        return;
+                    }
+                    break;
                 case 0x00a5: // WM_NCRBUTTONUP
                     if (OnSystemMenu(ref m)) return;
                     break;
@@ -548,6 +609,11 @@ namespace Cube.Forms
         private void Attach(CaptionControl caption)
         {
             if (caption == null) return;
+            caption.MaximizeBox = MaximizeBox;
+            caption.MinimizeBox = MinimizeBox;
+            caption.CloseBox    = true;
+
+            if (!CaptionMonitoring) return;
             caption.Maximize += OnMaximize;
             caption.Minimize += OnMinimize;
             caption.Close    += OnClose;
@@ -565,6 +631,7 @@ namespace Cube.Forms
         private void Detach(CaptionControl caption)
         {
             if (caption == null) return;
+
             caption.Maximize -= OnMaximize;
             caption.Minimize -= OnMinimize;
             caption.Close    -= OnClose;
