@@ -64,11 +64,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// Dpi
         /// 
         /// <summary>
-        /// プロセス間通信を介した起動およびアクティブ化を制御するための
-        /// オブジェクトを取得または設定します。
+        /// 現在の Dpi の値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -112,6 +111,34 @@ namespace Cube.Forms
                     _bootstrap.Register();
                 }
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AdjustDesktopLocation
+        /// 
+        /// <summary>
+        /// スクリーンからはみ出さないように表示位置を調整します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void AdjustDesktopLocation()
+        {
+            var screen = System.Windows.Forms.Screen.FromPoint(DesktopLocation) ??
+                         System.Windows.Forms.Screen.PrimaryScreen;
+            var left   = screen.WorkingArea.Left;
+            var top    = screen.WorkingArea.Top;
+            var right  = screen.WorkingArea.Right;
+            var bottom = screen.WorkingArea.Bottom;
+
+            SetDesktopLocation(
+                Math.Min(Math.Max(DesktopLocation.X, left), right - Width),
+                Math.Min(Math.Max(DesktopLocation.Y, top), bottom - Height)
+            );
         }
 
         #endregion
