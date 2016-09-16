@@ -29,12 +29,11 @@ namespace Cube.Forms
     /// PresenterBase
     ///
     /// <summary>
-    /// View と Model が 1 対 1 対応している Presenter の基底となる
-    /// クラスです。
+    /// View のみを保持する Presenter の基底となるクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PresenterBase<TView, TModel> : IDisposable
+    public class PresenterBase<TView> : IDisposable
     {
         #region Constructors and destructors
 
@@ -47,12 +46,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model)
+        protected PresenterBase(TView view)
         {
             SynchronizationContext = SynchronizationContext.Current;
 
             View  = view;
-            Model = model;
         }
 
         /* ----------------------------------------------------------------- */
@@ -72,17 +70,6 @@ namespace Cube.Forms
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Model
-        /// 
-        /// <summary>
-        /// Model オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TModel Model { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -207,4 +194,144 @@ namespace Cube.Forms
 
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PresenterBase
+    ///
+    /// <summary>
+    /// View と Model が 1 対 1 対応する Presenter の基底となるクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class PresenterBase<TView, TModel> : PresenterBase<TView>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PresenterBase
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PresenterBase(TView view, TModel model) : base(view)
+        {
+            Model = model;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Model
+        /// 
+        /// <summary>
+        /// Model オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TModel Model { get; private set; }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PresenterBase
+    ///
+    /// <summary>
+    /// View/Model/EventAggregator を持つ Presenter の基底となるクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class PresenterBase<TView, TModel, TEvents> : PresenterBase<TView, TModel>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PresenterBase
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PresenterBase(TView view, TModel model, TEvents events)
+            : base(view, model)
+        {
+            Events = events;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Events
+        /// 
+        /// <summary>
+        /// EventAggregator オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TEvents Events { get; private set; }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PresenterBase
+    ///
+    /// <summary>
+    /// View/Model/EventAggregator/Settings を持つ Presenter の基底となる
+    /// クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class PresenterBase<TView, TModel, TEvents, TSettings>
+        : PresenterBase<TView, TModel, TEvents>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PresenterBase
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PresenterBase(TView view, TModel model, TEvents events, TSettings settings)
+            : base(view, model, events)
+        {
+            Settings = settings;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Settings
+        /// 
+        /// <summary>
+        /// Settings オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TSettings Settings { get; private set; }
+
+        #endregion
+    }
+
 }
