@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -84,21 +85,23 @@ namespace Cube
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
             => PropertyChanged?.Invoke(this, e);
 
-        #endregion
-
-        #region Non-virtual protected methods
-
         /* ----------------------------------------------------------------- */
         ///
-        /// RaisePropertyChanged
+        /// SetProperty
         /// 
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// プロパティに値を設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged([CallerMemberName] string name = null)
-            => OnPropertyChanged(new PropertyChangedEventArgs(name));
+        protected virtual bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
+            return true;
+        }
 
         #endregion
     }
