@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Cube.Forms
@@ -48,12 +49,7 @@ namespace Cube.Forms
         public bool MaximizeBox
         {
             get { return _maximize; }
-            set
-            {
-                if (_maximize == value) return;
-                _maximize = value;
-                RaisePropertyChanged(nameof(MaximizeBox));
-            }
+            set { SetProperty(ref _maximize, value); }
         }
 
         /* --------------------------------------------------------------------- */
@@ -68,12 +64,7 @@ namespace Cube.Forms
         public bool MinimizeBox
         {
             get { return _minimize; }
-            set
-            {
-                if (_minimize == value) return;
-                _minimize = value;
-                RaisePropertyChanged(nameof(MinimizeBox));
-            }
+            set { SetProperty(ref _minimize, value); }
         }
 
         /* --------------------------------------------------------------------- */
@@ -88,12 +79,7 @@ namespace Cube.Forms
         public bool CloseBox
         {
             get { return _close; }
-            set
-            {
-                if (_close == value) return;
-                _close = value;
-                RaisePropertyChanged(nameof(CloseBox));
-            }
+            set { SetProperty(ref _close, value); }
         }
 
         /* --------------------------------------------------------------------- */
@@ -109,12 +95,7 @@ namespace Cube.Forms
         public bool Active
         {
             get { return _active; }
-            set
-            {
-                if (_active == value) return;
-                _active = value;
-                RaisePropertyChanged(nameof(Active));
-            }
+            set { SetProperty(ref _active, value); }
         }
 
         #endregion
@@ -217,21 +198,23 @@ namespace Cube.Forms
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
             => PropertyChanged?.Invoke(this, e);
 
-        #endregion
-
-        #region Non-virtual protected methods
-
         /* ----------------------------------------------------------------- */
         ///
-        /// RaisePropertyChanged
+        /// SetProperty
         /// 
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// プロパティに値を設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged([CallerMemberName] string name = null)
-            => OnPropertyChanged(new PropertyChangedEventArgs(name));
+        protected virtual bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
+            return true;
+        }
 
         #endregion
 
