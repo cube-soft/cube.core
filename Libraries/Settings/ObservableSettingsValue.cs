@@ -85,6 +85,10 @@ namespace Cube
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
             => PropertyChanged?.Invoke(this, e);
 
+        #endregion
+
+        #region Non-virtual protected methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// SetProperty
@@ -94,10 +98,23 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null)
+        protected bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null) =>
+            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        /// 
+        /// <summary>
+        /// プロパティに値を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(ref T field, T value,
+            IEqualityComparer<T> func, [CallerMemberName] string name = null)
         {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            if (func.Equals(field, value)) return false;
             field = value;
             OnPropertyChanged(new PropertyChangedEventArgs(name));
             return true;
