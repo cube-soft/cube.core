@@ -237,7 +237,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() { OnSave(); }
+        public void Save() => OnSave();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -249,7 +249,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() { OnLoad(); }
+        public void Load() => OnLoad();
 
         #endregion
 
