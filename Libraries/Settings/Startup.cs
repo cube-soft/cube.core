@@ -30,7 +30,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class Startup : ObservableSettingsValue
+    public sealed class Startup : ObservableSettingsValue
     {
         #region Constructors
 
