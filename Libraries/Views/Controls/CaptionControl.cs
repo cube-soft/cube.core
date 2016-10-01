@@ -98,6 +98,21 @@ namespace Cube.Forms
             set { SetProperty(ref _active, value); }
         }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// WindowState
+        /// 
+        /// <summary>
+        /// ウィンドウの状態を取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public System.Windows.Forms.FormWindowState WindowState
+        {
+            get { return _state; }
+            set { SetProperty(ref _state, value); }
+        }
+
         #endregion
 
         #region Events
@@ -240,6 +255,7 @@ namespace Cube.Forms
         private bool _minimize = true;
         private bool _close = true;
         private bool _active = true;
+        private System.Windows.Forms.FormWindowState _state = System.Windows.Forms.FormWindowState.Normal;
         #endregion
     }
 }
