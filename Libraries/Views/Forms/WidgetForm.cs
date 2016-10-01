@@ -257,6 +257,8 @@ namespace Cube.Forms
             WindowState  = WindowState == System.Windows.Forms.FormWindowState.Normal ?
                            System.Windows.Forms.FormWindowState.Maximized :
                            System.Windows.Forms.FormWindowState.Normal;
+
+            if (Caption != null) Caption.WindowState = WindowState;
         }
 
         /* ----------------------------------------------------------------- */
@@ -273,6 +275,7 @@ namespace Cube.Forms
             var state = System.Windows.Forms.FormWindowState.Minimized;
             if (WindowState == state) return;
             WindowState = state;
+            if (Caption != null) Caption.WindowState = WindowState;
         }
 
         #endregion
@@ -417,11 +420,10 @@ namespace Cube.Forms
                     m.Result = new IntPtr(1);
                     break;
                 case 0x0086: // WM_NCACTIVE
-                    if (WindowState != System.Windows.Forms.FormWindowState.Minimized)
-                    {
-                        m.Result = new IntPtr(1);
-                        return;
-                    }
+                    if (OnNcActive(ref m)) return;
+                    break;
+                case 0x00a3: // WM_NCLBUTTONDBLCLK:
+                    if (OnSystemMaximize(ref m)) return;
                     break;
                 case 0x00a5: // WM_NCRBUTTONUP
                     if (OnSystemMenu(ref m)) return;
@@ -446,6 +448,25 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnNcActive
+        ///
+        /// <summary>
+        /// 非クライアント領域のアクティブ状態が変更された時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool OnNcActive(ref System.Windows.Forms.Message m)
+        {
+            if (WindowState != System.Windows.Forms.FormWindowState.Minimized)
+            {
+                m.Result = new IntPtr(1);
+                return true;
+            }
+            return false;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnSystemMenu
         ///
         /// <summary>
@@ -461,6 +482,27 @@ namespace Cube.Forms
             if (!SystemMenu || !IsCaption(point)) return false;
 
             PopupSystemMenu(point);
+            m.Result = IntPtr.Zero;
+            return true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSystemMaximize
+        ///
+        /// <summary>
+        /// 最大化ボタンのクリック以外で最大化要求が発生した時に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool OnSystemMaximize(ref System.Windows.Forms.Message m)
+        {
+            var point = new Point(
+                (int)m.LParam & 0xffff,
+                (int)m.LParam >> 16 & 0xffff);
+            if (!Sizable || !MaximizeBox || !IsCaption(point)) return false;
+
+            Maximize();
             m.Result = IntPtr.Zero;
             return true;
         }
