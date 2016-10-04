@@ -609,7 +609,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OKButton_Click(object sender, EventArgs e) => OnApply(e);
+        private void OKButton_Click(object sender, EventArgs e)
+        {
+            OnApply(e);
+            FindForm()?.Close();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -638,7 +642,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void CancelButton_Click(object sender, EventArgs e) => OnCancel(e);
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            OnCancel(e);
+            FindForm()?.Close();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
