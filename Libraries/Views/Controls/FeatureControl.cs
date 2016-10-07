@@ -81,6 +81,21 @@ namespace Cube.Forms
                 set { SetMaxConnections(value); }
             }
 
+            /* ------------------------------------------------------------- */
+            ///
+            /// NavigationSounds
+            /// 
+            /// <summary>
+            /// クリック音等が有効かどうかを示す値を取得または設定します。
+            /// </summary>
+            ///
+            /* ------------------------------------------------------------- */
+            public static bool NavigationSounds
+            {
+                get { return GetNavigationSounds(); }
+                set { SetNavigationSounds(value); }
+            }
+
             #endregion
 
             #region Implementations
@@ -268,6 +283,41 @@ namespace Cube.Forms
                 }
                 catch (Exception err) { LogError(err); }
             }
+
+            #endregion
+
+            #region Navigation sounds
+
+            /* ------------------------------------------------------------- */
+            ///
+            /// GetNavigationSounds
+            /// 
+            /// <summary>
+            /// クリック音等が有効かどうかを判別します。
+            /// </summary>
+            ///
+            /* ------------------------------------------------------------- */
+            private static bool GetNavigationSounds()
+                => UrlMon.NativeMethods.CoInternetIsFeatureEnabled(
+                21,     // FEATURE_DISABLE_NAVIGATION_SOUNDS
+                0x02    // SET_FEATURE_ON_PROCESS
+            ) != 0;
+
+            /* ------------------------------------------------------------- */
+            ///
+            /// SetNavigationSounds
+            /// 
+            /// <summary>
+            /// クリック音等を有効または無効に設定します。
+            /// </summary>
+            ///
+            /* ------------------------------------------------------------- */
+            private static void SetNavigationSounds(bool enabled)
+                => UrlMon.NativeMethods.CoInternetSetFeatureEnabled(
+                21,     // FEATURE_DISABLE_NAVIGATION_SOUNDS
+                0x02,   // SET_FEATURE_ON_PROCESS
+                !enabled
+            );
 
             #endregion
 
