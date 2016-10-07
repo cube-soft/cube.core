@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -90,15 +91,34 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaisePropertyChanged
+        /// SetProperty
         /// 
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// プロパティに値を設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged([CallerMemberName] string name = null)
-            => OnPropertyChanged(new PropertyChangedEventArgs(name));
+        protected bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null) =>
+            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        /// 
+        /// <summary>
+        /// プロパティに値を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(ref T field, T value,
+            IEqualityComparer<T> func, [CallerMemberName] string name = null)
+        {
+            if (func.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
+            return true;
+        }
 
         #endregion
     }

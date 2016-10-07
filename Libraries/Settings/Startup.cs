@@ -17,7 +17,6 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
 using Microsoft.Win32;
 
 namespace Cube
@@ -106,12 +105,7 @@ namespace Cube
         public bool Enabled
         {
             get { return _enabled; }
-            set
-            {
-                if (_enabled == value) return;
-                _enabled = value;
-                RaisePropertyChanged(nameof(Enabled));
-            }
+            set { SetProperty(ref _enabled, value); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -126,12 +120,7 @@ namespace Cube
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (_name == value) return;
-                _name = value;
-                RaisePropertyChanged(nameof(Name));
-            }
+            set { SetProperty(ref _name, value); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -146,12 +135,7 @@ namespace Cube
         public string Command
         {
             get { return _command; }
-            set
-            {
-                if (_command == value) return;
-                _command = value;
-                RaisePropertyChanged(nameof(Command));
-            }
+            set { SetProperty(ref _command, value); }
         }
 
         #endregion

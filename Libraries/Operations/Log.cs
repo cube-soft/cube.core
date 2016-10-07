@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Reflection;
 using log4net;
 
 namespace Cube.Log
@@ -76,6 +77,27 @@ namespace Cube.Log
 
         public static void Info(Type type, string message, Exception err)
             => Logger(type).Info(message, err);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Info
+        ///
+        /// <summary>
+        /// システム情報をログに出力します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public static void Info(Type type, Assembly assembly)
+        {
+            var reader = new AssemblyReader(assembly);
+            var proc = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432") ?? "x86";
+            var arch = (proc == "x86") ? "32bit" : "64bit";
+
+            Info(type, $"{reader.Product} {reader.Version} ({proc})");
+            Info(type, $"{Environment.OSVersion} ({arch} OS)");
+            Info(type, $"Microsoft .NET Framework {Environment.Version}");
+            Info(type, $"{Environment.UserName}@{Environment.MachineName}");
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,6 +177,9 @@ namespace Cube.Log
 
         public static void LogInfo<T>(this T src, string message, Exception err)
             => src.Logger().Info(message, err);
+
+        public static void LogInfo<T>(this T src, Assembly assembly)
+            => Info(src.GetType(), assembly);
 
         /* ----------------------------------------------------------------- */
         ///
