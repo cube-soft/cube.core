@@ -90,8 +90,9 @@ namespace Cube.Log
         public static void Info(Type type, Assembly assembly)
         {
             var reader = new AssemblyReader(assembly);
-            var proc = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432") ?? "x86";
-            var arch = (proc == "x86") ? "32bit" : "64bit";
+            var pa = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432");
+            var arch = (pa == null || pa == "x86") ? "32bit" : "64bit";
+            var proc = (IntPtr.Size == 4) ? "x86" : "x64";
 
             Info(type, $"{reader.Product} {reader.Version} ({proc})");
             Info(type, $"{Environment.OSVersion} ({arch} OS)");
