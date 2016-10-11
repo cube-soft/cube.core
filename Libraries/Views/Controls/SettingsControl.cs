@@ -272,13 +272,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update(object properties)
+        public void Update(object properties) => Update(properties, string.Empty);
+        public void Update(object properties, string prefix)
         {
             var type = properties.GetType();
 
             foreach (var control in MonitoredControlList)
             {
-                var name = control.Name.Replace(control.GetType().Name, string.Empty);
+                var name = prefix + control.Name.Replace(control.GetType().Name, string.Empty);
                 if (string.IsNullOrEmpty(name)) continue;
 
                 var value = type.GetProperty(name)?.GetValue(properties, null);
@@ -531,7 +532,7 @@ namespace Cube.Forms
             var name = control.Name.Replace(control.GetType().Name, string.Empty);
             if (string.IsNullOrEmpty(name)) return;
 
-            OnPropertyChanged(new KeyValueEventArgs<string, object>(name, value));
+            OnPropertyChanged(KeyValueEventArgs.Create(name, value));
             if (ApplyButton != null) ApplyButton.Enabled = true;
         }
 
@@ -545,7 +546,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected void RaiseUpdateControl(Control control, object value)
-            => OnUpdateControl(new KeyValueCancelEventArgs<Control, object>(control, value));
+            => OnUpdateControl(KeyValueEventArgs.Create(control, value, false));
 
         #endregion
 
