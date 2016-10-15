@@ -61,6 +61,7 @@
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueChangedEventArgs.cs" />
     <Compile Include="FileSystem\FileHandler.cs" />
+    <Compile Include="Operations\Numeric.cs" />
     <Compile Include="Operations\Collections.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="FileSystem\Device.cs" />
