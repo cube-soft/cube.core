@@ -161,20 +161,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnumerable<Control> MonitoredControls => MonitoredControlList;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MonitoredControlList
-        ///
-        /// <summary>
-        /// 監視されているコントロールの一覧を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected IList<Control> MonitoredControlList { get; } = new List<Control>();
+        public IEnumerable<Control> MonitoredControls => _monitor;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -272,17 +259,18 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update(object properties) => Update(properties, string.Empty);
-        public void Update(object properties, string prefix)
+        public void Update<T>(T settings) => Update(settings, string.Empty);
+        public void Update<T>(T settings, string prefix)
         {
-            var type = properties.GetType();
+            var type = settings.GetType();
 
-            foreach (var control in MonitoredControlList)
+            foreach (var control in _monitor)
             {
-                var name = prefix + control.Name.Replace(control.GetType().Name, string.Empty);
+                var name = control.Name.Replace(control.GetType().Name, string.Empty);
+                if (!string.IsNullOrEmpty(prefix)) name = name.Replace(prefix, string.Empty);
                 if (string.IsNullOrEmpty(name)) continue;
 
-                var value = type.GetProperty(name)?.GetValue(properties, null);
+                var value = type.GetProperty(name)?.GetValue(settings, null);
                 if (value == null) continue;
 
                 RaiseUpdateControl(control, value);
@@ -848,7 +836,7 @@ namespace Cube.Forms
                     break;
             }
 
-            MonitoredControlList.Add(control);
+            _monitor.Add(control);
         }
 
         /* ----------------------------------------------------------------- */
@@ -863,7 +851,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void Detach(Control control)
         {
-            MonitoredControlList.Remove(control);
+            _monitor.Remove(control);
 
             control.ControlAdded   -= Control_ControlAdded;
             control.ControlRemoved -= Control_ControlRemoved;
@@ -910,6 +898,7 @@ namespace Cube.Forms
         private Control _ok     = null;
         private Control _cancel = null;
         private Control _apply  = null;
+        private IList<Control> _monitor = new List<Control>();
         #endregion
     }
 }
