@@ -21,6 +21,7 @@ using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Control = System.Windows.Forms.Control;
 
 namespace Cube.Forms
@@ -259,18 +260,20 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update<T>(T settings) => Update(settings, string.Empty);
-        public void Update<T>(T settings, string prefix)
+        public void Update<T>(T model) => Update(model, string.Empty);
+        public void Update<T>(T model, string prefix)
         {
-            var type = settings.GetType();
+            var type     = model.GetType();
+            var controls = string.IsNullOrEmpty(prefix) ?
+                           _monitor :
+                           _monitor.Where(x => x.Name.Contains(prefix));
 
-            foreach (var control in _monitor)
+            foreach (var control in controls)
             {
-                var name = control.Name.Replace(control.GetType().Name, string.Empty);
-                if (!string.IsNullOrEmpty(prefix)) name = name.Replace(prefix, string.Empty);
+                var name = GetName(control, prefix);
                 if (string.IsNullOrEmpty(name)) continue;
 
-                var value = type.GetProperty(name)?.GetValue(settings, null);
+                var value = type.GetProperty(name)?.GetValue(model, null);
                 if (value == null) continue;
 
                 RaiseUpdateControl(control, value);
@@ -890,6 +893,22 @@ namespace Cube.Forms
                 default:
                     break;
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetName
+        ///
+        /// <summary>
+        /// Control オブジェクトから対応する Model の名前を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string GetName(Control control, string prefix)
+        {
+            var dest = control.Name.Replace(control.GetType().Name, string.Empty);
+            if (string.IsNullOrEmpty(dest) || string.IsNullOrEmpty(prefix)) return dest;
+            return dest.Contains(prefix) ? dest.Replace(prefix, string.Empty) : string.Empty;
         }
 
         #endregion
