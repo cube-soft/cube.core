@@ -192,6 +192,25 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public bool UseCustomColors { get; set; } = true;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetName
+        ///
+        /// <summary>
+        /// Control オブジェクトから対応する Model の名前を返す関数を
+        /// 取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Func<Control, string, string> GetName { get; set; } = (control, prefix) =>
+        {
+            var dest = control.Name.Replace(control.GetType().Name, string.Empty);
+            if (string.IsNullOrEmpty(dest) || string.IsNullOrEmpty(prefix)) return dest;
+            return dest.Contains(prefix) ? dest.Replace(prefix, string.Empty) : string.Empty;
+        };
+
         #endregion
 
         #region Events
@@ -263,14 +282,14 @@ namespace Cube.Forms
         public void Update<T>(T model) => Update(model, string.Empty);
         public void Update<T>(T model, string prefix)
         {
-            var type     = model.GetType();
-            var controls = string.IsNullOrEmpty(prefix) ?
-                           _monitor :
-                           _monitor.Where(x => x.Name.Contains(prefix));
+            var type = model.GetType();
+            var list = string.IsNullOrEmpty(prefix) ?
+                       MonitoredControls :
+                       MonitoredControls.Where(x => x.Name.Contains(prefix));
 
-            foreach (var control in controls)
+            foreach (var control in list)
             {
-                var name = GetName(control, prefix);
+                var name = GetName?.Invoke(control, prefix);
                 if (string.IsNullOrEmpty(name)) continue;
 
                 var value = type.GetProperty(name)?.GetValue(model, null);
@@ -520,7 +539,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected void RaisePropertyChanged(Control control, object value)
         {
-            var name = control.Name.Replace(control.GetType().Name, string.Empty);
+            var name = GetName?.Invoke(control, string.Empty);
             if (string.IsNullOrEmpty(name)) return;
 
             OnPropertyChanged(KeyValueEventArgs.Create(name, value));
@@ -668,7 +687,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region UpdateXxx methods
+        #region Update control methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -778,7 +797,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Others
+        #region Attach and detach methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -836,7 +855,7 @@ namespace Cube.Forms
                     text.TextChanged += TextBoxChanged;
                     break;
                 default:
-                    break;
+                    return;
             }
 
             _monitor.Add(control);
@@ -893,22 +912,6 @@ namespace Cube.Forms
                 default:
                     break;
             }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetName
-        ///
-        /// <summary>
-        /// Control オブジェクトから対応する Model の名前を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string GetName(Control control, string prefix)
-        {
-            var dest = control.Name.Replace(control.GetType().Name, string.Empty);
-            if (string.IsNullOrEmpty(dest) || string.IsNullOrEmpty(prefix)) return dest;
-            return dest.Contains(prefix) ? dest.Replace(prefix, string.Empty) : string.Empty;
         }
 
         #endregion
