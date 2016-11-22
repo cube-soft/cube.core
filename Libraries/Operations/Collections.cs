@@ -34,6 +34,8 @@ namespace Cube.Collections
     /* --------------------------------------------------------------------- */
     public static class Operations
     {
+        #region IEnumerable(T)
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToObservable
@@ -45,6 +47,37 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> src)
             => new ObservableCollection<T>(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Difference
+        /// 
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
+            this IEnumerable<T> newer, IEnumerable<T> older, bool diffonly = true)
+            => new Cube.Differences.OnpAlgorithm<T>().Compare(older, newer, diffonly);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Difference
+        /// 
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
+            this IEnumerable<T> newer, IEnumerable<T> older,
+            IEqualityComparer<T> comparer, bool diffonly = true)
+            => new Cube.Differences.OnpAlgorithm<T>(comparer).Compare(older, newer, diffonly);
+
+        #endregion
+
+        #region IList(T)
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,5 +105,7 @@ namespace Cube.Collections
             if (src == null || src.Count == 0) return 0;
             else return src.Count - 1;
         }
+
+        #endregion
     }
 }
