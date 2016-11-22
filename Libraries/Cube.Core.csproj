@@ -53,7 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="Differences\CommonSubsequence.cs" />
+    <Compile Include="Differences\CommonSequence.cs" />
+    <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
     <Compile Include="Events\EventArgsFactory.cs" />
     <Compile Include="Events\KeyValueCancelEventArgs.cs" />

@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// CommonSubsequence.cs
+/// CommonSequence.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -25,15 +25,47 @@ namespace Cube.Differences
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommonSubsequence
+    /// CommonSequence
     ///
     /// <summary>
     /// シーケンスを保持するためのクラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    internal class CommonSubsequence<T>
+    internal class CommonSequence<T>
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CommonSequence
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public CommonSequence() : this(0, 0, 0, null) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CommonSequence
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public CommonSequence(int older, int newer, int count, CommonSequence<T> next)
+        {
+            OlderStart = older;
+            NewerStart = newer;
+            Count      = count;
+            Next       = next;
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -78,7 +110,7 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public CommonSubsequence<T> Next { get; set; }
+        public CommonSequence<T> Next { get; set; }
 
         #endregion
 
@@ -93,10 +125,10 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public CommonSubsequence<T> Reverse()
+        public CommonSequence<T> Reverse()
         {
-            CommonSubsequence<T> top     = null;
-            CommonSubsequence<T> current = this;
+            CommonSequence<T> top     = null;
+            CommonSequence<T> current = this;
 
             while (current != null)
             {
@@ -117,7 +149,7 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, bool swap, bool all = true)
+        public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, bool diffonly, bool swap)
         {
             var dest  = new List<Result<T>>();
             var seq   = this;
@@ -141,7 +173,7 @@ namespace Cube.Differences
                 oprev = ostart;
                 nprev = nstart;
 
-                if (all) dest.Add(Create(Condition.None, older, oprev, seq.Count, newer, nprev, seq.Count));
+                if (!diffonly) dest.Add(Create(Condition.None, older, oprev, seq.Count, newer, nprev, seq.Count));
 
                 oprev += seq.Count;
                 nprev += seq.Count;
@@ -208,8 +240,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         private IEnumerable<T> Slice(T[] src, int start, int count)
         {
-            Debug.Assert(src != null);
-            var n = Math.Min(src.Length - start, count);
+            var n = Math.Min(count, src?.Length - start ?? 0);
             if (n <= 0) return null;
 
             var dest = new T[n];
