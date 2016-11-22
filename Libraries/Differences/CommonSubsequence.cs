@@ -17,6 +17,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -116,98 +117,44 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<Result<T>> ToResult(IList<T> older, IList<T> newer,
-            bool swap, bool all = true) => swap ?
-            ToResultSwap(older, newer, all) :
-            ToResultNormal(older, newer, all);
+        public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, bool swap, bool all = true)
+        {
+            var dest  = new List<Result<T>>();
+            var seq   = this;
+            var oprev = 0;
+            var nprev = 0;
+
+            while (seq != null)
+            {
+                var ostart = swap ? seq.NewerStart : seq.OlderStart;
+                var nstart = swap ? seq.OlderStart : seq.NewerStart;
+
+                if (oprev < ostart || nprev < nstart)
+                {
+                    var ocount = ostart - oprev;
+                    var ncount = nstart - nprev;
+                    dest.Add(Create(older, oprev, ocount, newer, nprev, ncount));
+                }
+
+                if (seq.Count == 0) break; // End of contents
+
+                oprev = ostart;
+                nprev = nstart;
+
+                if (all) dest.Add(Create(Condition.None, older, oprev, seq.Count, newer, nprev, seq.Count));
+
+                oprev += seq.Count;
+                nprev += seq.Count;
+
+                seq = seq.Next;
+            }
+
+            return dest;
+        }
 
         #endregion
 
         #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToResultNormal
-        /// 
-        /// <summary>
-        /// Result オブジェクトに変換します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private IEnumerable<Result<T>> ToResultNormal(IList<T> older, IList<T> newer, bool all)
-        {
-            var dest = new List<Result<T>>();
-            var cs   = this;
-            var iold = 0;
-            var inew = 0;
-
-            while (cs != null)
-            {
-                if (iold < cs.OlderStart || inew < cs.NewerStart)
-                {
-                    dest.Add(Create(
-                        older, iold, cs.OlderStart - iold,
-                        newer, inew, cs.NewerStart - inew
-                    ));
-                }
-
-                if (cs.Count == 0) break; // End of contents
-
-                iold = cs.OlderStart;
-                inew = cs.NewerStart;
-
-                if (all) dest.Add(Create(Condition.None, older, iold, cs.Count, newer, inew, cs.Count));
-
-                iold += cs.Count;
-                inew += cs.Count;
-
-                cs = cs.Next;
-            }
-
-            return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToResultSwap
-        /// 
-        /// <summary>
-        /// Result オブジェクトに変換します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private IEnumerable<Result<T>> ToResultSwap(IList<T> older, IList<T> newer, bool all)
-        {
-            var dest = new List<Result<T>>();
-            var cs   = this;
-            var iold = 0;
-            var inew = 0;
-
-            while (cs != null)
-            {
-                if (iold < cs.NewerStart || inew < cs.OlderStart)
-                {
-                    dest.Add(Create(
-                        older, iold, cs.NewerStart - iold,
-                        newer, inew, cs.OlderStart - inew
-                    ));
-                }
-
-                if (cs.Count == 0) break; // End of contents
-
-                iold = cs.NewerStart;
-                inew = cs.OlderStart;
-
-                if (all) dest.Add(Create(Condition.None, older, iold, cs.Count, newer, inew, cs.Count));
-
-                iold += cs.Count;
-                inew += cs.Count;
-
-                cs = cs.Next;
-            }
-
-            return dest;
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -218,8 +165,8 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Result<T> Create(IList<T> older, int ostart, int ocount,
-            IList<T> newer, int nstart, int ncount)
+        private Result<T> Create(T[] older, int ostart, int ocount,
+            T[] newer, int nstart, int ncount)
         {
             Debug.Assert(ocount > 0 || ncount > 0);
 
@@ -242,27 +189,31 @@ namespace Cube.Differences
         ///
         /* ----------------------------------------------------------------- */
         private Result<T> Create(Condition condition,
-            IList<T> older, int ostart, int ocount,
-            IList<T> newer, int nstart, int ncount)
+            T[] older, int ostart, int ocount,
+            T[] newer, int nstart, int ncount)
             => new Result<T>(
                 condition,
-                Range(older, ostart, ocount),
-                Range(newer, nstart, ncount)
+                Slice(older, ostart, ocount),
+                Slice(newer, nstart, ncount)
             );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Range
+        /// Slice
         /// 
         /// <summary>
-        /// IList(T) の一部を表すオブジェクトを生成します。
+        /// 配列の一部を表すオブジェクトを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private IList<T> Range(IList<T> src, int start, int count)
+        private IEnumerable<T> Slice(T[] src, int start, int count)
         {
-            var dest = new List<T>(count);
-            for (var i = start; i < count; ++i) dest.Add(src[i]);
+            Debug.Assert(src != null);
+            var n = Math.Min(src.Length - start, count);
+            if (n <= 0) return null;
+
+            var dest = new T[n];
+            Array.Copy(src, start, dest, 0, n);
             return dest;
         }
 
