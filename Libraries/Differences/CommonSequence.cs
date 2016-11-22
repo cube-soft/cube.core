@@ -151,32 +151,34 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, bool diffonly, bool swap)
         {
-            var dest  = new List<Result<T>>();
-            var seq   = this;
-            var oprev = 0;
-            var nprev = 0;
+            var dest   = new List<Result<T>>();
+            var seq    = this;
+            var array0 = swap ? newer : older;
+            var array1 = swap ? older : newer;
+            var prev0  = 0;
+            var prev1  = 0;
 
             while (seq != null)
             {
-                var ostart = swap ? seq.NewerStart : seq.OlderStart;
-                var nstart = swap ? seq.OlderStart : seq.NewerStart;
+                var start0 = swap ? seq.NewerStart : seq.OlderStart;
+                var start1 = swap ? seq.OlderStart : seq.NewerStart;
 
-                if (oprev < ostart || nprev < nstart)
+                if (prev0 < start0 || prev1 < start1)
                 {
-                    var ocount = ostart - oprev;
-                    var ncount = nstart - nprev;
-                    dest.Add(Create(older, oprev, ocount, newer, nprev, ncount));
+                    var ocount = start0 - prev0;
+                    var ncount = start1 - prev1;
+                    dest.Add(Create(array0, prev0, ocount, array1, prev1, ncount));
                 }
 
                 if (seq.Count == 0) break; // End of contents
 
-                oprev = ostart;
-                nprev = nstart;
+                prev0 = start0;
+                prev1 = start1;
 
-                if (!diffonly) dest.Add(Create(Condition.None, older, oprev, seq.Count, newer, nprev, seq.Count));
+                if (!diffonly) dest.Add(Create(Condition.None, array0, prev0, seq.Count, array1, prev1, seq.Count));
 
-                oprev += seq.Count;
-                nprev += seq.Count;
+                prev0 += seq.Count;
+                prev1 += seq.Count;
 
                 seq = seq.Next;
             }
