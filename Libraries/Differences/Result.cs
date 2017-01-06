@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Collections.cs
+/// Result.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -17,94 +17,92 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
-namespace Cube.Collections
+namespace Cube.Differences
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Collections.Operations
-    /// 
-    /// <summary>
-    /// Collection クラスの拡張メソッド用クラスです。
-    /// </summary>
+    /// Condition
     ///
+    /// <summary>
+    /// 差分の状態を表す列挙型です。
+    /// </summary>
+    /// 
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public enum Condition : int
     {
-        #region IEnumerable(T)
+        None,
+        Inserted,
+        Deleted,
+        Changed,
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Result
+    ///
+    /// <summary>
+    /// 比較結果を保持するためのクラスです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public class Result<T>
+    {
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToObservable
+        /// Result
         /// 
         /// <summary>
-        /// ObservableCollection に変換します。
+        /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> src)
-            => new ObservableCollection<T>(src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Difference
-        /// 
-        /// <summary>
-        /// 差分を検出します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
-            this IEnumerable<T> newer, IEnumerable<T> older, bool diffonly = true)
-            => new Cube.Differences.OnpAlgorithm<T>().Compare(older, newer, diffonly);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Difference
-        /// 
-        /// <summary>
-        /// 差分を検出します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
-            this IEnumerable<T> newer, IEnumerable<T> older,
-            IEqualityComparer<T> comparer, bool diffonly = true)
-            => new Cube.Differences.OnpAlgorithm<T>(comparer).Compare(older, newer, diffonly);
+        public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
+        {
+            Condition = condition;
+            Older     = older;
+            Newer     = newer;
+        }
 
         #endregion
 
-        #region IList(T)
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Clamp
+        /// Condition
         /// 
         /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めます。
+        /// 差分の状態を示す値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static int Clamp<T>(this IList<T> src, int index)
-            => Math.Min(Math.Max(index, 0), LastIndex(src));
+        public Condition Condition { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LastIndex
+        /// Older
         /// 
         /// <summary>
-        /// 最後のインデックスを取得します。
+        /// 古いコレクションオブジェクトの対象部分を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static int LastIndex<T>(this IList<T> src)
-        {
-            if (src == null || src.Count == 0) return 0;
-            else return src.Count - 1;
-        }
+        public IEnumerable<T> Older { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Newer
+        /// 
+        /// <summary>
+        /// 新しいコレクションオブジェクトの対象部分を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IEnumerable<T> Newer { get; }
 
         #endregion
     }

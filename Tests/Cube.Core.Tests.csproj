@@ -64,6 +64,7 @@
     <Compile Include="IconFactoryTest.cs" />
     <Compile Include="LogTest.cs" />
     <Compile Include="LooseArgumentsTest.cs" />
+    <Compile Include="OnpAlgorithmTest.cs" />
     <Compile Include="SettingsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
