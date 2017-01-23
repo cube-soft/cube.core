@@ -42,9 +42,21 @@ namespace Cube.Kernel32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        [DllImport(LibName, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
             IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetCurrentThread
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683182.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = false)]
+        public static extern IntPtr GetCurrentThread();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -55,7 +67,7 @@ namespace Cube.Kernel32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport(LibName, SetLastError = true)]
         public static extern bool CloseHandle(IntPtr handle);
 
         /* ----------------------------------------------------------------- */
@@ -67,9 +79,13 @@ namespace Cube.Kernel32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport(LibName, SetLastError = true)]
         public static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
             IntPtr lpInBuffer, uint nInBufferSize,
             IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
+
+        #region Fields
+        const string LibName = "kernel32.dll";
+        #endregion
     }
 }
