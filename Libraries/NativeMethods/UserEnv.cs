@@ -58,7 +58,7 @@ namespace Cube.UserEnv
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("userenv.dll", SetLastError = true)]
+        [DllImport(LibName, SetLastError = true)]
         public static extern bool DestroyEnvironmentBlock(IntPtr lpEnvironment);
 
         #region Fields

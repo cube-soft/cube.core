@@ -42,7 +42,7 @@ namespace Cube.Shell32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
         public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
             ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
@@ -55,7 +55,7 @@ namespace Cube.Shell32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
         public static extern void SHGetStockIconInfo(uint siid, uint uFlags, ref SHSTOCKICONINFO sii);
 
         /* ----------------------------------------------------------------- */
@@ -67,10 +67,11 @@ namespace Cube.Shell32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
         public static extern int SHGetImageList(uint iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
 
         #region Constant fields
+        const string LibName = "shell32.dll";
         public static readonly uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
         public static readonly uint SHGFI_TYPENAME          = 0x00000400;
         public static readonly uint SHGFI_SYSICONINDEX      = 0x00004000;
