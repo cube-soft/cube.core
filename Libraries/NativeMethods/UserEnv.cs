@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// WinMM.cs
+/// UserEnv.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -18,17 +18,16 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Cube.WinMM
+namespace Cube.UserEnv
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WinMM.NativeMethods
+    /// UserEnv.NativeMethods
     /// 
     /// <summary>
-    /// winmm.dll に定義された関数を宣言するためのクラスです。
+    /// userenv.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -36,19 +35,34 @@ namespace Cube.WinMM
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// mciSendString
+        /// CreateEnvironmentBlock
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/dd757161.aspx
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762270.aspx
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern Int32 mciSendString(string command, StringBuilder buffer,
-            int bufferSize, IntPtr hwndCallback);
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool CreateEnvironmentBlock(
+            ref IntPtr lpEnvironment,
+            IntPtr hToken,
+            bool bInherit
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DestroyEnvironmentBlock
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762274.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool DestroyEnvironmentBlock(IntPtr lpEnvironment);
 
         #region Fields
-        const string LibName = "winmm.dll";
+        const string LibName = "userenv.dll";
         #endregion
     }
 }

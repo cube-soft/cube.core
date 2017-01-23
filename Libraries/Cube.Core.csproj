@@ -34,9 +34,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -64,6 +64,9 @@
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueChangedEventArgs.cs" />
     <Compile Include="FileSystem\FileHandler.cs" />
+    <Compile Include="NativeMethods\AdvApi32.cs" />
+    <Compile Include="NativeMethods\UserEnv.cs" />
+    <Compile Include="NativeMethods\Structures\ProcessInformation.cs" />
     <Compile Include="Operations\Numeric.cs" />
     <Compile Include="Operations\Collections.cs" />
     <Compile Include="Operations\Generics.cs" />
@@ -72,15 +75,15 @@
     <Compile Include="FileSystem\Drive.cs" />
     <Compile Include="FileSystem\FileInfo.cs" />
     <Compile Include="FileSystem\VetoException.cs" />
-    <Compile Include="NativeMethods\IImageList.cs" />
-    <Compile Include="NativeMethods\ImageInfo.cs" />
+    <Compile Include="NativeMethods\Structures\IImageList.cs" />
+    <Compile Include="NativeMethods\Structures\ImageInfo.cs" />
     <Compile Include="NativeMethods\Kernel32.cs" />
-    <Compile Include="NativeMethods\Point.cs" />
-    <Compile Include="NativeMethods\Rect.cs" />
+    <Compile Include="NativeMethods\Structures\Point.cs" />
+    <Compile Include="NativeMethods\Structures\Rect.cs" />
     <Compile Include="NativeMethods\SetupApi.cs" />
-    <Compile Include="NativeMethods\SHFileInfo.cs" />
-    <Compile Include="NativeMethods\SHStockIconInfo.cs" />
-    <Compile Include="NativeMethods\SpDevice.cs" />
+    <Compile Include="NativeMethods\Structures\SHFileInfo.cs" />
+    <Compile Include="NativeMethods\Structures\SHStockIconInfo.cs" />
+    <Compile Include="NativeMethods\Structures\SpDevice.cs" />
     <Compile Include="NativeMethods\WinMM.cs" />
     <Compile Include="Notifications\NotifyEventArgs.cs" />
     <Compile Include="Operations\Log.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="Notifications\NotifyItem.cs" />
     <Compile Include="Notifications\NotifyQueue.cs" />
     <Compile Include="AssemblyReader.cs" />
+    <Compile Include="Processes\Process.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,15 +119,14 @@
     <Compile Include="SoftwareVersion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

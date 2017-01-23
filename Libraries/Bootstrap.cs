@@ -243,9 +243,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnActivated(ValueEventArgs<object> e)
-        {
-            if (Activated != null) Activated(this, e);
-        }
+            => Activated?.Invoke(this, e);
 
         #endregion
 
@@ -256,9 +254,7 @@ namespace Cube
             public event EventHandler<ValueEventArgs<object>> Received;
 
             public void Send(object args)
-            {
-                if (Received != null) Received(this, new ValueEventArgs<object>(args));
-            }
+                => Received?.Invoke(this, ValueEventArgs.Create(args));
         }
 
         #endregion
