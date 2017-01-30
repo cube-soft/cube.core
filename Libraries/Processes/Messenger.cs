@@ -43,6 +43,21 @@ namespace Cube.Processes
         /// Messenger
         /// 
         /// <summary>
+        /// 静的オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        static Messenger()
+        {
+            LifetimeServices.LeaseTime = TimeSpan.Zero;
+            LifetimeServices.RenewOnCallTime = TimeSpan.Zero;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Messenger
+        /// 
+        /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
