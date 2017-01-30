@@ -181,7 +181,7 @@ namespace Cube.Tests
         public void Load_File(Settings.FileType type, string name, string expected)
         {
             var src = IoEx.Path.Combine(Examples, name);
-            var settings = Cube.Settings.Load<Person>(src, type);
+            var settings = Cube.Settings.Operations.Load<Person>(src, type);
             Assert.That(
                 settings.Name,
                 Is.EqualTo(expected)
@@ -285,7 +285,7 @@ namespace Cube.Tests
         public void Save_File(Settings.FileType type, string name)
         {
             var dest = IoEx.Path.Combine(Results, name);
-            Cube.Settings.Save(CreatePerson(), dest, type);
+            Cube.Settings.Operations.Save(CreatePerson(), dest, type);
             Assert.That(
                 IoEx.File.Exists(dest),
                 Is.True
@@ -312,11 +312,11 @@ namespace Cube.Tests
         {
             using (var registrar = new Registrar(LoadKeyName))
             {
-                Loaded = Cube.Settings.Load<Person>(registrar.RegistryKey);
+                Loaded = Cube.Settings.Operations.Load<Person>(registrar.RegistryKey);
             }
 
             var saved = Registry.CurrentUser.CreateSubKey(SaveKeyName);
-            Cube.Settings.Save(CreatePerson(), saved);
+            Cube.Settings.Operations.Save(CreatePerson(), saved);
             Saved = saved;
         }
 

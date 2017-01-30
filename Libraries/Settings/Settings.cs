@@ -23,38 +23,37 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 using Cube.Conversions;
-using IoEx = System.IO;
 
-namespace Cube
+namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Settings
+    /// FileType
     /// 
     /// <summary>
-    /// アプリケーション and/or ユーザ設定を扱うためのクラスです。
+    /// Settings クラスで読み込み、および保存可能なファイル形式一覧を
+    /// 表した列挙型です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Settings
+    public enum FileType : int
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileType
-        /// 
-        /// <summary>
-        /// Settings クラスで読み込み、および保存可能なファイル形式一覧を
-        /// 表した列挙型です。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public enum FileType : int
-        {
-            Xml,
-            Json,
-            Unknown = -1
-        }
+        Xml,
+        Json,
+        Unknown = -1
+    }
 
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Settings.Operations
+    /// 
+    /// <summary>
+    /// ユーザ設定を扱うためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class Operations
+    {
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -81,7 +80,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static T Load<T>(string path, FileType type = FileType.Xml)
         {
-            using (var reader = new IoEx.StreamReader(path))
+            using (var reader = new System.IO.StreamReader(path))
             {
                 switch (type)
                 {
@@ -120,7 +119,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Save<T>(T src, string path, FileType type = FileType.Xml)
         {
-            using (var writer = new IoEx.StreamWriter(path))
+            using (var writer = new System.IO.StreamWriter(path))
             {
                 switch (type)
                 {
@@ -185,7 +184,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadXml<T>(IoEx.Stream src)
+        private static T LoadXml<T>(System.IO.Stream src)
         {
             var serializer = new DataContractSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -201,7 +200,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadJson<T>(IoEx.Stream src)
+        private static T LoadJson<T>(System.IO.Stream src)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -238,14 +237,14 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static void SaveRegistry(object src, PropertyInfo info, RegistryKey root)
         {
-            var name = GetDataMemberName(info);
-            if (name == null) return;
-
-            var value = info.GetValue(src, null);
-            var code = Type.GetTypeCode(info.PropertyType);
-
             try
             {
+                var name = GetDataMemberName(info);
+                if (name == null) return;
+
+                var value = info.GetValue(src, null);
+                var code  = Type.GetTypeCode(info.PropertyType);
+
                 if (info.PropertyType.IsEnum) root.SetValue(name, (int)value);
                 else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
                 else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
@@ -255,10 +254,7 @@ namespace Cube
                     SaveRegistry(value, info.PropertyType, subkey);
                 }
             }
-            catch (Exception err)
-            {
-                Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
-            }
+            catch (Exception err) { Cube.Log.Operations.Error(typeof(Operations), err.Message, err); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -270,7 +266,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, IoEx.Stream dest)
+        private static void SaveXml<T>(T src, System.IO.Stream dest)
         {
             var serializer = new DataContractSerializer(typeof(T));
             serializer.WriteObject(dest, src);
@@ -285,7 +281,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, IoEx.Stream dest)
+        private static void SaveJson<T>(T src, System.IO.Stream dest)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             serializer.WriteObject(dest, src);
@@ -330,18 +326,13 @@ namespace Cube
             try
             {
                 if (value == null) return null;
-                if (type.IsEnum) return (int)value;
-                if (Type.GetTypeCode(type) == TypeCode.DateTime)
-                {
-                    return ((long)((int)value)).ToLocalTime();
-                }
-                return System.Convert.ChangeType(value, type);
+                else if (type.IsEnum) return (int)value;
+                else if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToLocalTime();
+                else return System.Convert.ChangeType(value, type);
             }
-            catch (Exception err)
-            {
-                Cube.Log.Operations.Error(typeof(Settings), err.Message, err);
-                return null;
-            }
+            catch (Exception err) { Cube.Log.Operations.Error(typeof(Operations), err.Message, err); }
+
+            return null;
         }
 
         #endregion

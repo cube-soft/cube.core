@@ -50,7 +50,7 @@ namespace Cube.Tests
         {
             var exec = Assembly.GetExecutingAssembly().Location;
             var name = IoEx.Path.GetFileNameWithoutExtension(exec);
-            var startup = new Startup(name);
+            var startup = new Cube.Settings.Startup(name);
             startup.Load();
             Assert.That(startup.Enabled, Is.False);
         }
@@ -71,12 +71,12 @@ namespace Cube.Tests
             var name = IoEx.Path.GetFileNameWithoutExtension(exec);
             var command = '"' + exec + '"';
 
-            var s0 = new Startup(name);
+            var s0 = new Cube.Settings.Startup(name);
             s0.Command = command;
             s0.Enabled = true;
             s0.Save();
 
-            var s1 = new Startup(name);
+            var s1 = new Cube.Settings.Startup(name);
             s1.Load();
             Assert.That(s1.Enabled, Is.True);
             Assert.That(s1.Command, Is.EqualTo(command));
@@ -84,7 +84,7 @@ namespace Cube.Tests
             s1.Enabled = false;
             s1.Save();
 
-            var s2 = new Startup(name);
+            var s2 = new Cube.Settings.Startup(name);
             s2.Load();
             Assert.That(s2.Enabled, Is.False);
         }

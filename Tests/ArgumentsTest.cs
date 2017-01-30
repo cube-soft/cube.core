@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// LooseArgumentsTest.cs
+/// ArgumentsTest.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -24,7 +24,7 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// LooseArgumentsTest
+    /// ArgumentsTest
     /// 
     /// <summary>
     /// プログラムオプション等の引数を解析するためのクラスです。
@@ -33,7 +33,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class LooseArgumentsTest
+    class ArgumentsTest
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -47,10 +47,10 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         #region Parse
 
-        [TestCaseSource(typeof(LooseArgumentsTest), "Parse_Source")]
+        [TestCaseSource(typeof(ArgumentsTest), "Parse_Source")]
         public void Parse(string[] args, int expected)
         {
-            var parser = new LooseArguments(args);
+            var parser = new Arguments(args);
             Assert.That(parser.Get().Count, Is.EqualTo(expected));
         }
 
@@ -94,10 +94,10 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         #region Parse options
 
-        [TestCaseSource(typeof(LooseArgumentsTest), "Parse_Options_Source")]
+        [TestCaseSource(typeof(ArgumentsTest), "Parse_Options_Source")]
         public void Parse_Options(string[] args, string option, string expected)
         {
-            var parser = new LooseArguments(args);
+            var parser = new Arguments(args);
             Assert.That(parser.Get(option), Is.EqualTo(expected));
         }
 

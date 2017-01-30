@@ -58,7 +58,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this int unix)
-            => ToDateTime((long)unix);
+            => ToDateTime((uint)unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,7 +82,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this string time, string format)
-            => ToUniversaltime(time, format);
+            => ToUniversalTime(time, format);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,6 +101,18 @@ namespace Cube.Conversions
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ToUniversalTime
+        /// 
+        /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToUniversalTime(this int unix)
+            => ToUniversalTime((uint)unix);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ToUniversaltime
         /// 
         /// <summary>
@@ -108,7 +120,7 @@ namespace Cube.Conversions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime ToUniversaltime(this string time, string format)
+        public static DateTime ToUniversalTime(this string time, string format)
         {
             if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
             return DateTime.ParseExact(time, format,
@@ -128,6 +140,18 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this long unix)
             => ToUniversalTime(unix).ToLocalTime();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToLocalTime
+        /// 
+        /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToLocalTime(this int unix)
+            => ToLocalTime((uint)unix);
 
         /* ----------------------------------------------------------------- */
         ///

@@ -98,13 +98,13 @@
     <Compile Include="Operations\Numeric.cs" />
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Process.cs" />
-    <Compile Include="Settings\ObservableSettingsValue.cs" />
+    <Compile Include="Settings\ObservableValue.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="LooseArguments.cs" />
+    <Compile Include="Arguments.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />
