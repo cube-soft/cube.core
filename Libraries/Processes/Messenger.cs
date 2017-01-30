@@ -43,21 +43,6 @@ namespace Cube.Processes
         /// Messenger
         /// 
         /// <summary>
-        /// 静的オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        static Messenger()
-        {
-            LifetimeServices.LeaseTime = TimeSpan.Zero;
-            LifetimeServices.RenewOnCallTime = TimeSpan.Zero;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Messenger
-        /// 
-        /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
@@ -260,6 +245,7 @@ namespace Cube.Processes
         {
             public event EventHandler<ValueEventArgs<object>> Received;
             public void Send(object args) => Received?.Invoke(this, ValueEventArgs.Create(args));
+            public override object InitializeLifetimeService() => null;
         }
 
         #endregion
