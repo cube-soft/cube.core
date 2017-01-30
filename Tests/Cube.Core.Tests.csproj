@@ -62,7 +62,7 @@
     <Compile Include="GenericsTest.cs" />
     <Compile Include="IconFactoryTest.cs" />
     <Compile Include="LogTest.cs" />
-    <Compile Include="LooseArgumentsTest.cs" />
+    <Compile Include="ArgumentsTest.cs" />
     <Compile Include="OnpAlgorithmTest.cs" />
     <Compile Include="SettingsTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />

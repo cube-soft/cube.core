@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Bootstrap.cs
+/// Messenger.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -22,39 +22,32 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Remoting.Lifetime;
-using Cube.Log;
 
-namespace Cube
+namespace Cube.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Bootstrap
-    ///
-    /// <summary>
-    /// プロセス間通信 (IPC: Inter-Process Communication) によって
-    /// プロセスの起動およびアクティブ化を行うためのクラスです。
-    /// </summary>
+    /// Messenger
     /// 
-    /// <remarks>
-    /// 二重起動を抑止したい時に、二重起動する代わりに既に起動している
-    /// 同名プロセスをアクティブ化します。
-    /// </remarks>
+    /// <summary>
+    /// プロセス間通信 (IPC: Inter-Process Communication) を行うクラスです。
+    /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Bootstrap : IDisposable
+    public class Messenger : IDisposable
     {
-        #region Constructors and the destructor
+        #region Constructors and destructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// Messenger
         /// 
         /// <summary>
         /// 静的オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        static Bootstrap()
+        static Messenger()
         {
             LifetimeServices.LeaseTime = TimeSpan.Zero;
             LifetimeServices.RenewOnCallTime = TimeSpan.Zero;
@@ -62,32 +55,19 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// Messenger
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Bootstrap(string name)
+        public Messenger(string host, string path)
         {
-            Name = name;
-            _mutex = new System.Threading.Mutex(false, Name);
-            _core.Received += (s, e) => OnActivated(e);
-        }
+            Host = host;
+            Path = path;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Bootstrap
-        /// 
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~Bootstrap()
-        {
-            Dispose(false);
+            Register();
         }
 
         #endregion
@@ -96,25 +76,36 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ActivateCommand
+        /// Host
         /// 
         /// <summary>
-        /// アクティブ化するためのコマンドを取得します。
+        /// プロセス間通信の際のホスト名となる文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ActivateCommand = "activate";
+        public string Host { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Name
+        /// Path
         /// 
         /// <summary>
-        /// プロセス間通信の際の識別子となる名前を取得します。
+        /// プロセス間通信の際のパス名となる文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name { get; private set; }
+        public string Path { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsServer
+        /// 
+        /// <summary>
+        /// サーバとして動作しているかどうかを示す値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IsServer { get; private set; } = false;
 
         #endregion
 
@@ -122,14 +113,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Activated
+        /// Received
         /// 
         /// <summary>
-        /// 他のプロセスからアクティブ化された時に発生するイベントです。
+        /// 他のプロセスからメッセージを受信した時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<object>> Activated;
+        public event EventHandler<ValueEventArgs<object>> Received;
 
         #endregion
 
@@ -137,62 +128,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Exists
+        /// Send
         /// 
         /// <summary>
-        /// 同じ名前を持つプロセスが存在するかどうかを判別します。
+        /// 他のプロセスにメッセージを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists()
-        {
-            return !_mutex.WaitOne(0, false);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Activate
-        /// 
-        /// <summary>
-        /// 既に起動しているプロセスをアクティブ化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Activate(object args = null)
-            => this.LogException(() =>
-        {
-            var client = new IpcClientChannel();
-            ChannelServices.RegisterChannel(client, true);
-            var channel = $"ipc://{Name}/{ActivateCommand}";
-            var proxy = Activator.GetObject(typeof(IpcProxy), channel) as IpcProxy;
-            if (proxy != null)
-            {
-                proxy.Send(args);
-                this.LogDebug(channel);
-            }
-        });
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Register
-        /// 
-        /// <summary>
-        /// 他のプロセスからメッセージを受け取るための登録を行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Register()
-            => this.LogException(() =>
-        {
-            var server = new IpcServerChannel(Name);
-            ChannelServices.RegisterChannel(server, true);
-            RemotingServices.Marshal(_core, ActivateCommand, typeof(IpcProxy));
-            this.LogDebug($"Register:{Name}/{ActivateCommand}");
-        });
+        public void Send(object args) => _core.Send(args);
 
         #endregion
 
-        #region Methods for IDisposable
+        #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
@@ -223,10 +170,7 @@ namespace Cube
             if (_disposed) return;
             _disposed = true;
 
-            if (disposing)
-            {
-                _mutex.Close();
-            }
+            if (disposing) _mutex.Close();
         }
 
         #endregion
@@ -235,26 +179,87 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnActivated
+        /// OnReceived
         /// 
         /// <summary>
-        /// 他のプロセスからアクティブ化された時に発生するイベントです。
+        /// Received イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnActivated(ValueEventArgs<object> e)
-            => Activated?.Invoke(this, e);
+        protected virtual void OnReceived(ValueEventArgs<object> e)
+            => Received?.Invoke(this, e);
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Register
+        /// 
+        /// <summary>
+        /// IPC チャンネルに登録します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Register()
+        {
+            _mutex   = new System.Threading.Mutex(false, Host);
+            IsServer = _mutex.WaitOne(0, false);
+            _core    = IsServer ?
+                       CreateServer() :
+                       CreateServer();
+
+            _core.Received += (s, e) => OnReceived(e);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateServer
+        /// 
+        /// <summary>
+        /// サーバ用 IPC チャンネルを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IpcRemoteObject CreateServer()
+        {
+            var dest    = new IpcRemoteObject();
+            var channel = new IpcServerChannel(Host);
+
+            ChannelServices.RegisterChannel(channel, true);
+            RemotingServices.Marshal(dest, Path, typeof(IpcRemoteObject));
+
+            return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateClient
+        /// 
+        /// <summary>
+        /// クライアント用 IPC チャンネルを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IpcRemoteObject CreateClient()
+        {
+            var channel = new IpcClientChannel();
+            var url     = $"ipc://{Host}/{Path}";
+
+            ChannelServices.RegisterChannel(channel, true);
+
+            return Activator.GetObject(typeof(IpcRemoteObject), url) as IpcRemoteObject;
+        }
 
         #endregion
 
         #region Internal class
 
-        public class IpcProxy : MarshalByRefObject
+        public class IpcRemoteObject : MarshalByRefObject
         {
             public event EventHandler<ValueEventArgs<object>> Received;
-
-            public void Send(object args)
-                => Received?.Invoke(this, ValueEventArgs.Create(args));
+            public void Send(object args) => Received?.Invoke(this, ValueEventArgs.Create(args));
         }
 
         #endregion
@@ -262,7 +267,7 @@ namespace Cube
         #region Fields
         private bool _disposed = false;
         private System.Threading.Mutex _mutex = null;
-        private IpcProxy _core = new IpcProxy();
+        private IpcRemoteObject _core = null;
         #endregion
     }
 }
