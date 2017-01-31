@@ -96,7 +96,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Bootstrap Bootstrap
+        public Cube.Processes.Bootstrap Bootstrap
         {
             get { return _bootstrap; }
             set
@@ -108,7 +108,6 @@ namespace Cube.Forms
                 {
                     _bootstrap.Activated -= Bootstrap_Activated;
                     _bootstrap.Activated += Bootstrap_Activated;
-                    _bootstrap.Register();
                 }
             }
         }
@@ -354,13 +353,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Bootstrap_Activated(object sender, ValueEventArgs<object> e)
+        private void Bootstrap_Activated(object sender, EventArgs e)
         {
             if (InvokeRequired) Invoke(new Action(() => Bootstrap_Activated(sender, e)));
             else
             {
-                if (e.Value != null) OnReceived(e);
-
                 Show();
                 var tmp = TopMost;
                 TopMost = true;
@@ -426,7 +423,7 @@ namespace Cube.Forms
 
         #region Fields
         private double _dpi = 0.0;
-        private Bootstrap _bootstrap = null;
+        private Cube.Processes.Bootstrap _bootstrap = null;
         #endregion
     }
 }
