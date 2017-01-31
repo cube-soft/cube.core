@@ -99,8 +99,8 @@
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\Process.cs" />
-    <Compile Include="Settings\ObservableValue.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\ObservableSettings.cs" />
+    <Compile Include="Settings\SettingsOperations.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="AssemblyReader.cs" />

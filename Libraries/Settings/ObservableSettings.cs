@@ -34,7 +34,7 @@ namespace Cube.Settings
     ///
     /* --------------------------------------------------------------------- */
     [DataContract]
-    public class ObservableValue : INotifyPropertyChanged
+    public class ObservableSettings : INotifyPropertyChanged
     {
         #region Constructor
 
@@ -52,7 +52,7 @@ namespace Cube.Settings
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableValue() { }
+        protected ObservableSettings() { }
 
         #endregion
 
