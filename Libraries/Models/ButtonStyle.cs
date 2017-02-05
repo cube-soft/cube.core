@@ -123,7 +123,7 @@ namespace Cube.Forms
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Normal
+        /// NormalStyle
         ///
         /// <summary>
         /// 通常時の外観を取得または設定します。
@@ -131,11 +131,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle Normal { get; set; } = new ButtonStyle();
+        public ButtonStyle NormalStyle { get; set; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Checked
+        /// CheckedStyle
         ///
         /// <summary>
         /// チェック時の外観を取得または設定します。
@@ -143,11 +143,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle Checked { get; set; } = new ButtonStyle();
+        public ButtonStyle CheckedStyle { get; set; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Disabled
+        /// DisabledStyle
         ///
         /// <summary>
         /// 無効時の外観を取得または設定します。
@@ -155,11 +155,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle Disabled { get; set; } = new ButtonStyle();
+        public ButtonStyle DisabledStyle { get; set; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseOver
+        /// MouseOverStyle
         ///
         /// <summary>
         /// マウスオーバ時の外観を取得または設定します。
@@ -167,11 +167,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle MouseOver { get; set; } = new ButtonStyle();
+        public ButtonStyle MouseOverStyle { get; set; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseDown
+        /// MouseDownStyle
         ///
         /// <summary>
         /// マウス押下時の外観を取得または設定します。
@@ -179,6 +179,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle MouseDown { get; set; } = new ButtonStyle();
+        public ButtonStyle MouseDownStyle { get; set; } = new ButtonStyle();
     }
 }

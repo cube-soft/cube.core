@@ -21,6 +21,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using Cube.Images.Icons;
 
 namespace Cube.Forms
 {
@@ -165,7 +166,7 @@ namespace Cube.Forms
         {
             var reader = new AssemblyReader(Assembly);
             Text = $"{reader.Product} について";
-            Icon = reader.Icon;
+            Icon = reader.GetIcon(IconSize.Small);
             base.OnLoad(e);
         }
 

@@ -37,6 +37,9 @@
     <Reference Include="Cube.Core">
       <HintPath>..\..\lib\net45\Cube.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Cube.Images">
+      <HintPath>..\..\lib\net45\Cube.Images.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -49,7 +52,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\NativeMethods\UrlMon.cs" />
+    <Compile Include="NativeMethods\UrlMon.cs" />
+    <Compile Include="Models\Notifications\NotifyItem.cs" />
+    <Compile Include="Models\Notifications\NotifyQueue.cs" />
     <Compile Include="Views\Controls\Buttons\Button.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -88,10 +93,10 @@
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="Models\WindowTheme.cs" />
-    <Compile Include="Models\NativeMethods\MinMaxInfo.cs" />
-    <Compile Include="Models\NativeMethods\Point.cs" />
-    <Compile Include="Models\NativeMethods\User32.cs" />
-    <Compile Include="Models\NativeMethods\UxTheme.cs" />
+    <Compile Include="NativeMethods\MinMaxInfo.cs" />
+    <Compile Include="NativeMethods\Point.cs" />
+    <Compile Include="NativeMethods\User32.cs" />
+    <Compile Include="NativeMethods\UxTheme.cs" />
     <Compile Include="Views\Controls\Panels\Panel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -101,7 +106,7 @@
     <Compile Include="Models\Operations\Images.cs" />
     <Compile Include="Models\Operations\SelectedIndices.cs" />
     <Compile Include="Presenters\NotifyPresenter.cs" />
-    <Compile Include="Models\NotifyStyle.cs" />
+    <Compile Include="Models\Notifications\NotifyStyle.cs" />
     <Compile Include="Models\Operations\Controls.cs" />
     <Compile Include="Models\Details\Graphics.cs" />
     <Compile Include="Models\NullExpandableObjectConverter.cs" />

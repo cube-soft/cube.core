@@ -139,16 +139,16 @@ namespace Cube.Forms.Demo
             if (Active)
             {
                 BackColor = _backColor;
-                MinimizeButton.Styles.Normal.Image = Properties.Resources.Minimize;
-                MaximizeButton.Styles.Normal.Image = Properties.Resources.Maximize;
-                ExitButton.Styles.Normal.Image     = Properties.Resources.Close;
+                MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.Minimize;
+                MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.Maximize;
+                ExitButton.Styles.NormalStyle.Image     = Properties.Resources.Close;
             }
             else
             {
                 BackColor = Color.White;
-                MinimizeButton.Styles.Normal.Image = Properties.Resources.MinimizeGrey;
-                MaximizeButton.Styles.Normal.Image = Properties.Resources.MaximizeGrey;
-                ExitButton.Styles.Normal.Image     = Properties.Resources.CloseGrey;
+                MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.MinimizeGrey;
+                MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.MaximizeGrey;
+                ExitButton.Styles.NormalStyle.Image     = Properties.Resources.CloseGrey;
             }
         }
 

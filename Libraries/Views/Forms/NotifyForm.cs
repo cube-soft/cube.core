@@ -154,8 +154,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public System.Drawing.Image Image
         {
-            get { return ImageButton.Styles.Normal.Image; }
-            set { ImageButton.Styles.Normal.Image = value; }
+            get { return ImageButton.Styles.NormalStyle.Image; }
+            set { ImageButton.Styles.NormalStyle.Image = value; }
         }
 
         /* --------------------------------------------------------------------- */
@@ -248,7 +248,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event EventHandler<NotifyEventArgs> TextClick;
+        public event EventHandler<ValueEventArgs<NotifyItem>> TextClick;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -259,7 +259,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event EventHandler<NotifyEventArgs> ImageClick;
+        public event EventHandler<ValueEventArgs<NotifyItem>> ImageClick;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -305,7 +305,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnTextClick(NotifyEventArgs e)
+        protected virtual void OnTextClick(ValueEventArgs<NotifyItem> e)
             => TextClick?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
@@ -317,7 +317,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnImageClick(NotifyEventArgs e)
+        protected virtual void OnImageClick(ValueEventArgs<NotifyItem> e)
             => ImageClick?.Invoke(this, e);
 
         /* --------------------------------------------------------------------- */
@@ -562,12 +562,12 @@ namespace Cube.Forms
         private void SetStyle()
         {
             var style = Styles.ContainsKey(Level) ? Styles[Level] : DefaultStyle;
-            ImageButton.Styles.Normal.BackColor = style.BackColor;
+            ImageButton.Styles.NormalStyle.BackColor = style.BackColor;
             Separator.BackColor = style.BorderColor;
             TitleButton.Font = style.Title;
-            TitleButton.Styles.Normal.ContentColor = style.TitleColor;
+            TitleButton.Styles.NormalStyle.ContentColor = style.TitleColor;
             DescriptionButton.Font = style.Description;
-            DescriptionButton.Styles.Normal.ContentColor = style.DescriptionColor;
+            DescriptionButton.Styles.NormalStyle.ContentColor = style.DescriptionColor;
         }
 
         /* ----------------------------------------------------------------- */
@@ -609,7 +609,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         private void RaiseTextClickEvent()
-            => OnTextClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
+            => OnTextClick(CreateEventArgs());
 
         /* --------------------------------------------------------------------- */
         ///
@@ -621,7 +621,26 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         private void RaiseImageClickEvent()
-            => OnImageClick(new NotifyEventArgs(Level, Title, Description, Image, Tag));
+            => OnImageClick(CreateEventArgs());
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// CreateEventArgs
+        /// 
+        /// <summary>
+        /// EventArgs オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private ValueEventArgs<NotifyItem> CreateEventArgs()
+            => ValueEventArgs.Create(new NotifyItem
+            {
+                Level       = Level,
+                Title       = Title,
+                Description = Description,
+                Image       = Image,
+                Data        = Tag
+            });
 
         #endregion
     }
