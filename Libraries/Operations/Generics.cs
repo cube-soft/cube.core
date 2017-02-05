@@ -18,7 +18,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.Runtime.Serialization.Formatters.Binary;
-using IoEx = System.IO;
 
 namespace Cube.Generics
 {
@@ -44,21 +43,15 @@ namespace Cube.Generics
         /* ----------------------------------------------------------------- */
         public static void Assign<T>(this T dest, T src)
         {
-            var type = src.GetType();
+            var t = src.GetType();
 
-            foreach (var property in type.GetProperties())
+            foreach (var p in t.GetProperties())
             {
-                if (property.GetGetMethod() == null ||
-                    property.GetSetMethod() == null) continue;
-                var value = property.GetValue(src, null);
-                property.SetValue(dest, value, null);
+                if (p.GetGetMethod() == null || p.GetSetMethod() == null) continue;
+                p.SetValue(dest, p.GetValue(src, null));
             }
 
-            foreach (var field in type.GetFields())
-            {
-                var value = field.GetValue(src);
-                field.SetValue(dest, value);
-            }
+            foreach (var f in t.GetFields()) f.SetValue(dest, f.GetValue(src));
         }
 
         /* ----------------------------------------------------------------- */
@@ -96,10 +89,10 @@ namespace Cube.Generics
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T CopyWithBinaryFormatter<T>(this T src)
+        private static T CopyWithBinaryFormatter<T>(T src)
         {
             object dest = null;
-            using (var stream = new IoEx.MemoryStream())
+            using (var stream = new System.IO.MemoryStream())
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(stream, src);

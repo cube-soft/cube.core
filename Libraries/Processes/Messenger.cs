@@ -27,14 +27,14 @@ namespace Cube.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Messenger
+    /// Messenger(TValue)
     /// 
     /// <summary>
     /// プロセス間通信 (IPC: Inter-Process Communication) を行うクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Messenger : IDisposable
+    public class Messenger<TValue> : IDisposable
     {
         #region Constructors and destructors
 
@@ -120,7 +120,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<object>> Received;
+        public event EventHandler<ValueEventArgs<TValue>> Received;
 
         #endregion
 
@@ -135,7 +135,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Send(object args) => _core.Send(args);
+        public void Send(TValue args) => _core.Send(args);
 
         #endregion
 
@@ -186,7 +186,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(ValueEventArgs<object> e)
+        protected virtual void OnReceived(ValueEventArgs<TValue> e)
             => Received?.Invoke(this, e);
 
         #endregion
@@ -258,8 +258,8 @@ namespace Cube.Processes
 
         public class IpcRemoteObject : MarshalByRefObject
         {
-            public event EventHandler<ValueEventArgs<object>> Received;
-            public void Send(object args) => Received?.Invoke(this, ValueEventArgs.Create(args));
+            public event EventHandler<ValueEventArgs<TValue>> Received;
+            public void Send(TValue args) => Received?.Invoke(this, ValueEventArgs.Create(args));
             public override object InitializeLifetimeService() => null;
         }
 
@@ -270,5 +270,33 @@ namespace Cube.Processes
         private System.Threading.Mutex _mutex = null;
         private IpcRemoteObject _core = null;
         #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Messenger
+    /// 
+    /// <summary>
+    /// プロセス間通信 (IPC: Inter-Process Communication) を行うクラスです。
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// Messenger(object) で特殊化したクラスです。Send で送信するオブジェクトの
+    /// 型が一意に決定できない場合などに使用します。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Messenger : Messenger<object>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Messenger
+        /// 
+        /// <summary>
+        /// 静的オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Messenger(string host, string path) : base(host, path) { }
     }
 }

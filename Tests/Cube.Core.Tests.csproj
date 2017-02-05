@@ -43,9 +43,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
@@ -53,22 +50,20 @@
     <Compile Include="Details\FileResource.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="ByteFormatTest.cs" />
-    <Compile Include="CollectionsTest.cs" />
-    <Compile Include="DriveTest.cs" />
-    <Compile Include="FileHandlerTest.cs" />
-    <Compile Include="FileInfoTest.cs" />
-    <Compile Include="FileResourceTest.cs" />
-    <Compile Include="GenericsTest.cs" />
-    <Compile Include="IconFactoryTest.cs" />
-    <Compile Include="LogTest.cs" />
+    <Compile Include="Conversions\ByteFormatTest.cs" />
+    <Compile Include="Operations\CollectionsTest.cs" />
+    <Compile Include="FileSystem\DriveTest.cs" />
+    <Compile Include="FileSystem\FileHandlerTest.cs" />
+    <Compile Include="Details\FileResourceTest.cs" />
+    <Compile Include="Operations\GenericsTest.cs" />
+    <Compile Include="Operations\LogTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
-    <Compile Include="OnpAlgorithmTest.cs" />
-    <Compile Include="SettingsTest.cs" />
+    <Compile Include="Differences\OnpAlgorithmTest.cs" />
+    <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
-    <Compile Include="StartupTest.cs" />
-    <Compile Include="UnixTimeTest.cs" />
-    <Compile Include="UriQueryTest.cs" />
+    <Compile Include="Settings\StartupTest.cs" />
+    <Compile Include="Conversions\UnixTimeTest.cs" />
+    <Compile Include="Conversions\UriQueryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

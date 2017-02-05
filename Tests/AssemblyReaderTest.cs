@@ -151,15 +151,6 @@ namespace Cube.Tests
             );
         }
 
-        [TestCase(16, 16)]
-        public void Icon_ExecutingAssembly(int width, int height)
-        {
-            Assert.That(
-                Create().Icon.Size,
-                Is.EqualTo(new Size(width, height))
-            );
-        }
-
         #endregion
 
         #region Helper methods

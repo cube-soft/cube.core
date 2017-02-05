@@ -19,6 +19,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.Conversions
 {
@@ -44,20 +45,14 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, IDictionary<string, string> query)
         {
-            if (uri == null) return uri;
+            if (uri == null || query == null || query.Count <= 0) return uri;
 
-            var builder = new UriBuilder(uri);
-            if (query?.Count > 0)
-            {
-                foreach (var item in query)
-                {
-                    var s = $"{item.Key}={item.Value}";
-                    builder.Query = builder != null && builder.Query.Length > 1 ?
-                                    $"{builder.Query.Substring(1)}&{s}" :
-                                    s;
-                }
-            }
-            return builder.Uri;
+            var dest = new UriBuilder(uri);
+            var str  = string.Join("&", query.Select(x => $"{x.Key}={x.Value}"));
+            dest.Query = dest != null && dest.Query.Length > 1 ?
+                         $"{dest.Query.Substring(1)}&{str}" :
+                         str;
+            return dest.Uri;
         }
 
         /* ----------------------------------------------------------------- */

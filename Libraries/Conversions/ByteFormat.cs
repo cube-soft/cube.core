@@ -72,6 +72,6 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static string ToRoughBytes(this long bytes)
-            => ToPrettyBytes(Math.Max(bytes, 1024));
+            => ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
     }
 }

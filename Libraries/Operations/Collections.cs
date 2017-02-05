@@ -101,10 +101,7 @@ namespace Cube.Collections
         ///
         /* ----------------------------------------------------------------- */
         public static int LastIndex<T>(this IList<T> src)
-        {
-            if (src == null || src.Count == 0) return 0;
-            else return src.Count - 1;
-        }
+            => (src == null || src.Count == 0) ? 0 : src.Count - 1;
 
         #endregion
     }

@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 
 namespace Cube
 {
@@ -76,5 +77,112 @@ namespace Cube
         public TValue Value { get; }
 
         #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// KeyValueCancelEventArgs(TKey, TValue)
+    ///
+    /// <summary>
+    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class KeyValueCancelEventArgs<TKey, TValue> : CancelEventArgs
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs
+        /// 
+        /// <summary>
+        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public KeyValueCancelEventArgs(TKey key, TValue value)
+            : this(key, value, false)
+        { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public KeyValueCancelEventArgs(TKey key, TValue value, bool cancel) : base(cancel)
+        {
+            Key = key;
+            Value = value;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Key
+        /// 
+        /// <summary>
+        /// キーを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TKey Key { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        /// 
+        /// <summary>
+        /// 値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue Value { get; }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// KeyValueEventArgs
+    ///
+    /// <summary>
+    /// KeyValueEventArgs(T, U), KeyValueCancelEventArgs(T, U)
+    /// オブジェクトを生成するための補助クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class KeyValueEventArgs
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// ValueEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static KeyValueEventArgs<T, U> Create<T, U>(T key, U value)
+            => new KeyValueEventArgs<T, U>(key, value);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// ValueCancelEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel)
+            => new KeyValueCancelEventArgs<T, U>(key, value, cancel);
     }
 }

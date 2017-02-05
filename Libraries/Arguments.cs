@@ -149,7 +149,7 @@ namespace Cube
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerable<KeyValuePair<string, string>> GetOptions()
+        public IDictionary<string, string> GetOptions()
             => _options;
 
         /* --------------------------------------------------------------------- */
@@ -162,18 +162,18 @@ namespace Cube
         ///
         /* --------------------------------------------------------------------- */
         public string Get(string option)
-            => Contains(option) ? _options[option] : null;
+            => HasOption(option) ? _options[option] : null;
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Contains
+        /// HasOption
         /// 
         /// <summary>
-        /// オプションが指定されかどうかを判別します。
+        /// 指定されたオプションを保持しているかどうかを判別します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public bool Contains(string option)
+        public bool HasOption(string option)
             => _options.ContainsKey(option);
 
         #endregion

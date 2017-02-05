@@ -308,7 +308,7 @@ namespace Cube.Settings
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                var result = Operations.Load<TValue>(subkey);
+                var result = subkey.Load<TValue>();
                 if (result == null) return;
                 User = result;
                 User.PropertyChanged += User_Changed;
@@ -328,10 +328,7 @@ namespace Cube.Settings
         protected virtual void OnSave()
         {
             var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.CreateSubKey(SubKeyName))
-            {
-                Operations.Save(User, subkey);
-            }
+            using (var subkey = root.CreateSubKey(SubKeyName)) subkey.Save(User);
             Startup.Save();
         }
 

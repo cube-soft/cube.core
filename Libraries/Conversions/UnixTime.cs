@@ -94,10 +94,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this long unix)
-        {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return epoch.AddSeconds(unix);
-        }
+            => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -121,13 +118,12 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this string time, string format)
-        {
-            if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
-            return DateTime.ParseExact(time, format,
+            => string.IsNullOrEmpty(time) ?
+            DateTime.MinValue :
+            DateTime.ParseExact(time, format,
                 System.Globalization.DateTimeFormatInfo.InvariantInfo,
                 System.Globalization.DateTimeStyles.AssumeUniversal
             );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -163,12 +159,11 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this string time, string format)
-        {
-            if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
-            return DateTime.ParseExact(time, format,
+            => string.IsNullOrEmpty(time) ?
+            DateTime.MinValue :
+            DateTime.ParseExact(time, format,
                 System.Globalization.DateTimeFormatInfo.InvariantInfo,
                 System.Globalization.DateTimeStyles.AssumeLocal
             );
-        }
     }
 }

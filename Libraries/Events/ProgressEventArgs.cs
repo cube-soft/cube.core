@@ -77,4 +77,28 @@ namespace Cube
 
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProgressEventArgs
+    ///
+    /// <summary>
+    /// ProgressEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class ProgressEventArgs
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// ProgressEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ProgressEventArgs<T> Create<T>(double percentage, T value)
+            => new ProgressEventArgs<T>(percentage, value);
+    }
 }

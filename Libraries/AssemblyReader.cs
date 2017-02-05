@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Reflection;
 
 namespace Cube
@@ -46,10 +45,9 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public AssemblyReader(Assembly assembly, IconSize size = IconSize.Small)
+        public AssemblyReader(Assembly assembly)
         {
             Assembly = assembly;
-            IconSize = size;
         }
 
         #endregion
@@ -262,31 +260,6 @@ namespace Cube
             Assembly != null ?
             new Version(FileVersionInfo.GetVersionInfo(Assembly.Location).FileVersion) :
             new Version();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Icon
-        ///
-        /// <summary>
-        /// アイコンを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Icon Icon =>
-            Assembly != null ?
-            IconFactory.Create(Location, IconSize) :
-            null;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IconSize
-        ///
-        /// <summary>
-        /// アイコンサイズを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IconSize IconSize { get; set; }
 
         #endregion
     }

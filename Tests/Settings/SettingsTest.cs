@@ -20,6 +20,7 @@
 using System;
 using Microsoft.Win32;
 using NUnit.Framework;
+using Cube.Settings;
 using IoEx = System.IO;
 
 namespace Cube.Tests
@@ -181,7 +182,7 @@ namespace Cube.Tests
         public void Load_File(Settings.FileType type, string name, string expected)
         {
             var src = IoEx.Path.Combine(Examples, name);
-            var settings = Cube.Settings.Operations.Load<Person>(src, type);
+            var settings = type.Load<Person>(src);
             Assert.That(
                 settings.Name,
                 Is.EqualTo(expected)
@@ -285,7 +286,7 @@ namespace Cube.Tests
         public void Save_File(Settings.FileType type, string name)
         {
             var dest = IoEx.Path.Combine(Results, name);
-            Cube.Settings.Operations.Save(CreatePerson(), dest, type);
+            type.Save(dest, CreatePerson());
             Assert.That(
                 IoEx.File.Exists(dest),
                 Is.True
@@ -316,7 +317,7 @@ namespace Cube.Tests
             }
 
             var saved = Registry.CurrentUser.CreateSubKey(SaveKeyName);
-            Cube.Settings.Operations.Save(CreatePerson(), saved);
+            saved.Save(CreatePerson());
             Saved = saved;
         }
 

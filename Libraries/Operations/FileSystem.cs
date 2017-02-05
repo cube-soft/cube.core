@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Shell32.cs
+/// FileSystem.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -20,37 +20,40 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Shell32
+namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Shell32
+    /// FileSystem.Operations
     /// 
     /// <summary>
-    /// shell32.dll に定義された関数を宣言するためのクラスです。
+    /// ファイルやフォルダに対する拡張メソッドを定義するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
+    public static class Operations
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// SHGetFileInfo
+        /// GetTypeName
         ///
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762179.aspx
+        /// ファイルの種類を表す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
-            ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
+        public static string GetTypeName(this System.IO.FileInfo fi)
+        {
+            if (fi == null) return null;
 
-        #region Constant fields
-        private const string LibName = "shell32.dll";
-        public  const uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
-        public  const uint SHGFI_TYPENAME          = 0x00000400;
-        public  const uint FILE_ATTRIBUTE_NORMAL   = 0x00000080;
-        #endregion
+            var attr   = Shell32.NativeMethods.FILE_ATTRIBUTE_NORMAL;
+            var flags  = Shell32.NativeMethods.SHGFI_TYPENAME |
+                         Shell32.NativeMethods.SHGFI_USEFILEATTRIBUTES;
+            var shfi   = new SHFILEINFO();
+            var result = Shell32.NativeMethods.SHGetFileInfo(fi.FullName,
+                attr, ref shfi, (uint)Marshal.SizeOf(shfi), flags);
+
+            return (result != IntPtr.Zero) ? shfi.szTypeName : null;
+        }
     }
 }

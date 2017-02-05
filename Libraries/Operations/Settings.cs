@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// SettingsOperations.cs
+/// Settings.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -28,23 +28,6 @@ namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileType
-    /// 
-    /// <summary>
-    /// Settings クラスで読み込み、および保存可能なファイル形式一覧を
-    /// 表した列挙型です。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum FileType : int
-    {
-        Xml,
-        Json,
-        Unknown = -1
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Settings.Operations
     /// 
     /// <summary>
@@ -66,8 +49,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(RegistryKey root)
-            => (T)LoadRegistry(root, typeof(T));
+        public static T Load<T>(this RegistryKey src)
+            => (T)LoadRegistry(src, typeof(T));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,9 +61,9 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(string path, FileType type = FileType.Xml)
+        public static T Load<T>(this FileType type, string src)
         {
-            using (var reader = new System.IO.StreamReader(path))
+            using (var reader = new System.IO.StreamReader(src))
             {
                 switch (type)
                 {
@@ -105,8 +88,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(T src, RegistryKey root)
-            => SaveRegistry(src, typeof(T), root);
+        public static void Save<T>(this RegistryKey dest, T src)
+            => SaveRegistry(src, typeof(T), dest);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -117,9 +100,9 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(T src, string path, FileType type = FileType.Xml)
+        public static void Save<T>(this FileType type, string dest, T src)
         {
-            using (var writer = new System.IO.StreamWriter(path))
+            using (var writer = new System.IO.StreamWriter(dest))
             {
                 switch (type)
                 {
@@ -136,6 +119,8 @@ namespace Cube.Settings
         }
 
         #endregion
+
+        #region Implementations
 
         #region Load methods
 
@@ -334,6 +319,8 @@ namespace Cube.Settings
 
             return null;
         }
+
+        #endregion
 
         #endregion
     }

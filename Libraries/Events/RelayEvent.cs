@@ -128,4 +128,59 @@ namespace Cube
 
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// RelayValueEvent(TValue)
+    /// 
+    /// <summary>
+    /// 何らかのオブジェクトを中継するイベントを発生させるためのクラスです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public class RelayValueEvent<TValue>
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Raise
+        /// 
+        /// <summary>
+        /// イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Raise(TValue value)
+            => Raise(this, value);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Raise
+        /// 
+        /// <summary>
+        /// イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Raise(object sender, TValue value)
+            => Handle?.Invoke(sender, ValueEventArgs.Create(value));
+
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Handle
+        /// 
+        /// <summary>
+        /// Raise によって発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<ValueEventArgs<TValue>> Handle;
+
+        #endregion
+    }
 }
