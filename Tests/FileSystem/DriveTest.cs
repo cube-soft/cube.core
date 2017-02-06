@@ -18,6 +18,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System.Linq;
 using Cube.FileSystem;
 
 namespace Cube.Tests
@@ -152,7 +153,7 @@ namespace Cube.Tests
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Drives = Drive.GetDrives();
+            Drives = Drive.GetDrives().ToArray();
         }
 
         /* ----------------------------------------------------------------- */
