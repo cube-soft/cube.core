@@ -28,34 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Cube.Forms.ButtonStyle buttonStyle1 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle2 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle3 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle4 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle5 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle6 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle7 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle8 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle9 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle10 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle11 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle12 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle13 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle14 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle15 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle16 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle17 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle18 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle19 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle20 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle21 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle22 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle23 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle24 = new Cube.Forms.ButtonStyle();
-            Cube.Forms.ButtonStyle buttonStyle25 = new Cube.Forms.ButtonStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.LayoutPanel = new Cube.Forms.TableLayoutPanel();
-            this.HeaderControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.Separator = new Cube.Forms.PictureBox();
             this.ContentsControl = new Cube.Forms.FlowLayoutPanel();
             this.DemoButton1 = new Cube.Forms.FlatButton();
@@ -64,6 +38,7 @@
             this.DemoButton4 = new Cube.Forms.FlatButton();
             this.VersionButton = new Cube.Forms.FlatButton();
             this.FooterControl = new Cube.Forms.StatusStrip();
+            this.HeaderCaptionControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.LayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).BeginInit();
             this.ContentsControl.SuspendLayout();
@@ -73,7 +48,7 @@
             // 
             this.LayoutPanel.ColumnCount = 1;
             this.LayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.LayoutPanel.Controls.Add(this.HeaderControl, 0, 0);
+            this.LayoutPanel.Controls.Add(this.HeaderCaptionControl, 0, 0);
             this.LayoutPanel.Controls.Add(this.Separator, 0, 1);
             this.LayoutPanel.Controls.Add(this.ContentsControl, 0, 2);
             this.LayoutPanel.Controls.Add(this.FooterControl, 0, 3);
@@ -87,20 +62,6 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.LayoutPanel.Size = new System.Drawing.Size(350, 280);
             this.LayoutPanel.TabIndex = 0;
-            // 
-            // HeaderControl
-            // 
-            this.HeaderControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.HeaderControl.CloseBox = true;
-            this.HeaderControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HeaderControl.Active = true;
-            this.HeaderControl.Location = new System.Drawing.Point(0, 0);
-            this.HeaderControl.Margin = new System.Windows.Forms.Padding(0);
-            this.HeaderControl.MaximizeBox = true;
-            this.HeaderControl.MinimizeBox = true;
-            this.HeaderControl.Name = "HeaderControl";
-            this.HeaderControl.Size = new System.Drawing.Size(350, 30);
-            this.HeaderControl.TabIndex = 0;
             // 
             // Separator
             // 
@@ -146,39 +107,11 @@
             this.DemoButton1.Margin = new System.Windows.Forms.Padding(0);
             this.DemoButton1.Name = "DemoButton1";
             this.DemoButton1.Size = new System.Drawing.Size(310, 30);
-            buttonStyle1.BackColor = System.Drawing.Color.Empty;
-            buttonStyle1.BackgroundImage = null;
-            buttonStyle1.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle1.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle1.Image = null;
-            this.DemoButton1.Styles.CheckedStyle = buttonStyle1;
-            buttonStyle2.BackColor = System.Drawing.Color.Empty;
-            buttonStyle2.BackgroundImage = null;
-            buttonStyle2.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle2.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle2.Image = null;
-            this.DemoButton1.Styles.DisabledStyle = buttonStyle2;
-            buttonStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            buttonStyle3.BackgroundImage = null;
-            buttonStyle3.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle3.BorderSize = 1;
-            buttonStyle3.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle3.Image = null;
-            this.DemoButton1.Styles.MouseDownStyle = buttonStyle3;
-            buttonStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            buttonStyle4.BackgroundImage = null;
-            buttonStyle4.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle4.BorderSize = 1;
-            buttonStyle4.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle4.Image = null;
-            this.DemoButton1.Styles.MouseOverStyle = buttonStyle4;
-            buttonStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            buttonStyle5.BackgroundImage = null;
-            buttonStyle5.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle5.BorderSize = 1;
-            buttonStyle5.ContentColor = System.Drawing.SystemColors.WindowText;
-            buttonStyle5.Image = null;
-            this.DemoButton1.Styles.NormalStyle = buttonStyle5;
+            this.DemoButton1.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.DemoButton1.Styles.MouseDownStyle.BorderSize = 1;
+            this.DemoButton1.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.DemoButton1.Styles.MouseOverStyle.BorderSize = 1;
+            this.DemoButton1.Styles.NormalStyle.BorderSize = 1;
             this.DemoButton1.TabIndex = 0;
             this.DemoButton1.UseVisualStyleBackColor = false;
             // 
@@ -200,39 +133,11 @@
             this.DemoButton2.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.DemoButton2.Name = "DemoButton2";
             this.DemoButton2.Size = new System.Drawing.Size(310, 30);
-            buttonStyle6.BackColor = System.Drawing.Color.Empty;
-            buttonStyle6.BackgroundImage = null;
-            buttonStyle6.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle6.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle6.Image = null;
-            this.DemoButton2.Styles.CheckedStyle = buttonStyle6;
-            buttonStyle7.BackColor = System.Drawing.Color.Empty;
-            buttonStyle7.BackgroundImage = null;
-            buttonStyle7.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle7.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle7.Image = null;
-            this.DemoButton2.Styles.DisabledStyle = buttonStyle7;
-            buttonStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            buttonStyle8.BackgroundImage = null;
-            buttonStyle8.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle8.BorderSize = 1;
-            buttonStyle8.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle8.Image = null;
-            this.DemoButton2.Styles.MouseDownStyle = buttonStyle8;
-            buttonStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            buttonStyle9.BackgroundImage = null;
-            buttonStyle9.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle9.BorderSize = 1;
-            buttonStyle9.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle9.Image = null;
-            this.DemoButton2.Styles.MouseOverStyle = buttonStyle9;
-            buttonStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            buttonStyle10.BackgroundImage = null;
-            buttonStyle10.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle10.BorderSize = 1;
-            buttonStyle10.ContentColor = System.Drawing.SystemColors.WindowText;
-            buttonStyle10.Image = null;
-            this.DemoButton2.Styles.NormalStyle = buttonStyle10;
+            this.DemoButton2.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.DemoButton2.Styles.MouseDownStyle.BorderSize = 1;
+            this.DemoButton2.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.DemoButton2.Styles.MouseOverStyle.BorderSize = 1;
+            this.DemoButton2.Styles.NormalStyle.BorderSize = 1;
             this.DemoButton2.TabIndex = 1;
             this.DemoButton2.UseVisualStyleBackColor = false;
             // 
@@ -254,39 +159,11 @@
             this.DemoButton3.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.DemoButton3.Name = "DemoButton3";
             this.DemoButton3.Size = new System.Drawing.Size(310, 30);
-            buttonStyle11.BackColor = System.Drawing.Color.Empty;
-            buttonStyle11.BackgroundImage = null;
-            buttonStyle11.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle11.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle11.Image = null;
-            this.DemoButton3.Styles.CheckedStyle = buttonStyle11;
-            buttonStyle12.BackColor = System.Drawing.Color.Empty;
-            buttonStyle12.BackgroundImage = null;
-            buttonStyle12.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle12.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle12.Image = null;
-            this.DemoButton3.Styles.DisabledStyle = buttonStyle12;
-            buttonStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            buttonStyle13.BackgroundImage = null;
-            buttonStyle13.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle13.BorderSize = 1;
-            buttonStyle13.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle13.Image = null;
-            this.DemoButton3.Styles.MouseDownStyle = buttonStyle13;
-            buttonStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            buttonStyle14.BackgroundImage = null;
-            buttonStyle14.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle14.BorderSize = 1;
-            buttonStyle14.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle14.Image = null;
-            this.DemoButton3.Styles.MouseOverStyle = buttonStyle14;
-            buttonStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            buttonStyle15.BackgroundImage = null;
-            buttonStyle15.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle15.BorderSize = 1;
-            buttonStyle15.ContentColor = System.Drawing.SystemColors.WindowText;
-            buttonStyle15.Image = null;
-            this.DemoButton3.Styles.NormalStyle = buttonStyle15;
+            this.DemoButton3.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.DemoButton3.Styles.MouseDownStyle.BorderSize = 1;
+            this.DemoButton3.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.DemoButton3.Styles.MouseOverStyle.BorderSize = 1;
+            this.DemoButton3.Styles.NormalStyle.BorderSize = 1;
             this.DemoButton3.TabIndex = 2;
             this.DemoButton3.UseVisualStyleBackColor = false;
             // 
@@ -308,39 +185,11 @@
             this.DemoButton4.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.DemoButton4.Name = "DemoButton4";
             this.DemoButton4.Size = new System.Drawing.Size(310, 30);
-            buttonStyle16.BackColor = System.Drawing.Color.Empty;
-            buttonStyle16.BackgroundImage = null;
-            buttonStyle16.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle16.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle16.Image = null;
-            this.DemoButton4.Styles.CheckedStyle = buttonStyle16;
-            buttonStyle17.BackColor = System.Drawing.Color.Empty;
-            buttonStyle17.BackgroundImage = null;
-            buttonStyle17.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle17.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle17.Image = null;
-            this.DemoButton4.Styles.DisabledStyle = buttonStyle17;
-            buttonStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            buttonStyle18.BackgroundImage = null;
-            buttonStyle18.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle18.BorderSize = 1;
-            buttonStyle18.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle18.Image = null;
-            this.DemoButton4.Styles.MouseDownStyle = buttonStyle18;
-            buttonStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            buttonStyle19.BackgroundImage = null;
-            buttonStyle19.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle19.BorderSize = 1;
-            buttonStyle19.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle19.Image = null;
-            this.DemoButton4.Styles.MouseOverStyle = buttonStyle19;
-            buttonStyle20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            buttonStyle20.BackgroundImage = null;
-            buttonStyle20.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle20.BorderSize = 1;
-            buttonStyle20.ContentColor = System.Drawing.SystemColors.WindowText;
-            buttonStyle20.Image = null;
-            this.DemoButton4.Styles.NormalStyle = buttonStyle20;
+            this.DemoButton4.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.DemoButton4.Styles.MouseDownStyle.BorderSize = 1;
+            this.DemoButton4.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.DemoButton4.Styles.MouseOverStyle.BorderSize = 1;
+            this.DemoButton4.Styles.NormalStyle.BorderSize = 1;
             this.DemoButton4.TabIndex = 3;
             this.DemoButton4.UseVisualStyleBackColor = false;
             // 
@@ -362,39 +211,11 @@
             this.VersionButton.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.VersionButton.Name = "VersionButton";
             this.VersionButton.Size = new System.Drawing.Size(310, 30);
-            buttonStyle21.BackColor = System.Drawing.Color.Empty;
-            buttonStyle21.BackgroundImage = null;
-            buttonStyle21.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle21.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle21.Image = null;
-            this.VersionButton.Styles.CheckedStyle = buttonStyle21;
-            buttonStyle22.BackColor = System.Drawing.Color.Empty;
-            buttonStyle22.BackgroundImage = null;
-            buttonStyle22.BorderColor = System.Drawing.Color.Empty;
-            buttonStyle22.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle22.Image = null;
-            this.VersionButton.Styles.DisabledStyle = buttonStyle22;
-            buttonStyle23.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            buttonStyle23.BackgroundImage = null;
-            buttonStyle23.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle23.BorderSize = 1;
-            buttonStyle23.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle23.Image = null;
-            this.VersionButton.Styles.MouseDownStyle = buttonStyle23;
-            buttonStyle24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            buttonStyle24.BackgroundImage = null;
-            buttonStyle24.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle24.BorderSize = 1;
-            buttonStyle24.ContentColor = System.Drawing.Color.Empty;
-            buttonStyle24.Image = null;
-            this.VersionButton.Styles.MouseOverStyle = buttonStyle24;
-            buttonStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            buttonStyle25.BackgroundImage = null;
-            buttonStyle25.BorderColor = System.Drawing.SystemColors.ControlDark;
-            buttonStyle25.BorderSize = 1;
-            buttonStyle25.ContentColor = System.Drawing.SystemColors.WindowText;
-            buttonStyle25.Image = null;
-            this.VersionButton.Styles.NormalStyle = buttonStyle25;
+            this.VersionButton.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.VersionButton.Styles.MouseDownStyle.BorderSize = 1;
+            this.VersionButton.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.VersionButton.Styles.MouseOverStyle.BorderSize = 1;
+            this.VersionButton.Styles.NormalStyle.BorderSize = 1;
             this.VersionButton.TabIndex = 4;
             this.VersionButton.UseVisualStyleBackColor = false;
             // 
@@ -405,6 +226,21 @@
             this.FooterControl.Size = new System.Drawing.Size(350, 22);
             this.FooterControl.TabIndex = 3;
             this.FooterControl.Text = "statusStrip1";
+            // 
+            // HeaderCaptionControl
+            // 
+            this.HeaderCaptionControl.Active = true;
+            this.HeaderCaptionControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.HeaderCaptionControl.CloseBox = true;
+            this.HeaderCaptionControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HeaderCaptionControl.Location = new System.Drawing.Point(0, 0);
+            this.HeaderCaptionControl.Margin = new System.Windows.Forms.Padding(0);
+            this.HeaderCaptionControl.MaximizeBox = true;
+            this.HeaderCaptionControl.MinimizeBox = true;
+            this.HeaderCaptionControl.Name = "HeaderCaptionControl";
+            this.HeaderCaptionControl.Size = new System.Drawing.Size(350, 30);
+            this.HeaderCaptionControl.TabIndex = 0;
+            this.HeaderCaptionControl.WindowState = System.Windows.Forms.FormWindowState.Normal;
             // 
             // MainForm
             // 
@@ -430,7 +266,7 @@
         #endregion
 
         private TableLayoutPanel LayoutPanel;
-        private CustomCaptionControl HeaderControl;
+        private CustomCaptionControl HeaderCaptionControl;
         private PictureBox Separator;
         private FlowLayoutPanel ContentsControl;
         private StatusStrip FooterControl;

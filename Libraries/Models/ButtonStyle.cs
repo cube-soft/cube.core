@@ -63,6 +63,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [DefaultValue(null)]
         public Image BackgroundImage
         {
             get { return _backgroundImage; }
@@ -97,7 +98,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(-1)]
+        [DefaultValue(0)]
         public int BorderSize
         {
             get { return _borderSize; }
@@ -114,6 +115,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
+        [DefaultValue(null)]
         public Image Image
         {
             get { return _image; }
@@ -145,7 +147,7 @@ namespace Cube.Forms
         private Color _contentColor = SystemColors.ControlText;
         private Image _backgroundImage = null;
         private Image _image = null;
-        private int _borderSize = -1;
+        private int _borderSize = 0;
         #endregion
     }
 
@@ -159,8 +161,32 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(NullExpandableObjectConverter))]
-    public class ButtonStyleContainer
+    public class ButtonStyleContainer : INotifyPropertyChanged
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ButtonStyleContainer
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ButtonStyleContainer()
+        {
+            NormalStyle.PropertyChanged    += (s, e) => OnPropertyChanged(nameof(NormalStyle));
+            CheckedStyle.PropertyChanged   += (s, e) => OnPropertyChanged(nameof(CheckedStyle));
+            DisabledStyle.PropertyChanged  += (s, e) => OnPropertyChanged(nameof(DisabledStyle));
+            MouseOverStyle.PropertyChanged += (s, e) => OnPropertyChanged(nameof(MouseOverStyle));
+            MouseDownStyle.PropertyChanged += (s, e) => OnPropertyChanged(nameof(MouseDownStyle));
+        }
+
+        #endregion
+
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
         /// NormalStyle
@@ -171,7 +197,8 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle NormalStyle { get; set; } = new ButtonStyle();
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public ButtonStyle NormalStyle { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -183,7 +210,8 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle CheckedStyle { get; set; } = new ButtonStyle();
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public ButtonStyle CheckedStyle { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -195,7 +223,8 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle DisabledStyle { get; set; } = new ButtonStyle();
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public ButtonStyle DisabledStyle { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -207,7 +236,8 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle MouseOverStyle { get; set; } = new ButtonStyle();
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public ButtonStyle MouseOverStyle { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -219,6 +249,52 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [TypeConverter(typeof(NullExpandableObjectConverter))]
-        public ButtonStyle MouseDownStyle { get; set; } = new ButtonStyle();
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public ButtonStyle MouseDownStyle { get; } = new ButtonStyle();
+
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PropertyChanged
+        /// 
+        /// <summary>
+        /// プロパティが変更された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        /// 
+        /// <summary>
+        /// PropertyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+            => PropertyChanged?.Invoke(this, e);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        /// 
+        /// <summary>
+        /// PropertyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPropertyChanged(string name)
+            => OnPropertyChanged(new PropertyChangedEventArgs(name));
+
+        #endregion
     }
 }

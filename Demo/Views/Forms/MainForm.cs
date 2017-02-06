@@ -51,7 +51,7 @@ namespace Cube.Forms.Demo
 
             ContentsControl.Resize += ContentsControl_Resize;
 
-            Caption = HeaderControl;
+            Caption = HeaderCaptionControl;
         }
 
         #endregion
