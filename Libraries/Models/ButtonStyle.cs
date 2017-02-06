@@ -32,8 +32,10 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(NullExpandableObjectConverter))]
-    public class ButtonStyle
+    public class ButtonStyle : ObservableProperty
     {
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
         /// BackColor
@@ -44,7 +46,12 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color BackColor { get; set; }
+        [DefaultValue(typeof(Color), "Control")]
+        public Color BackColor
+        {
+            get { return _backColor; }
+            set { SetProperty(ref _backColor, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,7 +63,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image BackgroundImage { get; set; }
+        public Image BackgroundImage
+        {
+            get { return _backgroundImage; }
+            set { SetProperty(ref _backgroundImage, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -68,7 +79,12 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color BorderColor { get; set; }
+        [DefaultValue(typeof(Color), "ActiveBorder")]
+        public Color BorderColor
+        {
+            get { return _borderColor; }
+            set { SetProperty(ref _borderColor, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,7 +98,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         [DefaultValue(-1)]
-        public int BorderSize { get; set; } = -1;
+        public int BorderSize
+        {
+            get { return _borderSize; }
+            set { SetProperty(ref _borderSize, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,7 +114,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image Image { get; set; }
+        public Image Image
+        {
+            get { return _image; }
+            set { SetProperty(ref _image, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,7 +130,23 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Color ContentColor { get; set; }
+        [DefaultValue(typeof(Color), "ControlText")]
+        public Color ContentColor
+        {
+            get { return _contentColor; }
+            set { SetProperty(ref _contentColor, value); }
+        }
+
+        #endregion
+
+        #region Fields
+        private Color _backColor = SystemColors.Control;
+        private Color _borderColor = SystemColors.ActiveBorder;
+        private Color _contentColor = SystemColors.ControlText;
+        private Image _backgroundImage = null;
+        private Image _image = null;
+        private int _borderSize = -1;
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */
