@@ -1,6 +1,6 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ObservableValue.cs
+/// ObservableProperty.cs
 /// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
@@ -22,25 +22,25 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-namespace Cube.Settings
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableValue
+    /// ObservableProperty
     /// 
     /// <summary>
-    /// 各種 SettingsValue の基底クラスとなります。
+    /// INotifyPropertyChanged の汎用的な実装です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [DataContract]
-    public class ObservableSettings : INotifyPropertyChanged
+    public class ObservableProperty : INotifyPropertyChanged
     {
         #region Constructor
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ObservableValue
+        /// ObservableProperty
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
@@ -52,7 +52,7 @@ namespace Cube.Settings
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableSettings() { }
+        protected ObservableProperty() { }
 
         #endregion
 

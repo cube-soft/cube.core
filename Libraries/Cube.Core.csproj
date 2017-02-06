@@ -82,7 +82,7 @@
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="Settings\FileType.cs" />
-    <Compile Include="Settings\ObservableSettings.cs" />
+    <Compile Include="ObservableSettings.cs" />
     <Compile Include="Operations\Settings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
