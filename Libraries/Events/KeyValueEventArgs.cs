@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// KeyValueEventArgs.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -185,4 +183,28 @@ namespace Cube
         public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel)
             => new KeyValueCancelEventArgs<T, U>(key, value, cancel);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// KeyValueEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void KeyValueEventHandler<TKey, TValue>(object sender, KeyValueEventArgs<TKey, TValue> e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// KeyValueCanelEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void KeyValueCanelEventHandler<TKey, TValue>(object sender, KeyValueCancelEventArgs<TKey, TValue> e);
 }

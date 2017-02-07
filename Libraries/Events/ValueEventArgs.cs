@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ValueEventArgs.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -228,4 +226,40 @@ namespace Cube
         public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel)
             => new ValueCancelEventArgs<T>(value, cancel);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ValueEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void ValueEventHandler<TValue>(object sender, ValueEventArgs<TValue> e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ValueChangedEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void ValueChangedEventHandler<TValue>(object sender, ValueChangedEventArgs<TValue> e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ValueCancelEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void ValueCancelEventHandler<TValue>(object sender, ValueCancelEventArgs<TValue> e);
 }
