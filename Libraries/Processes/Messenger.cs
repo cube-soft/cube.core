@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Messenger.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +34,7 @@ namespace Cube.Processes
     /* --------------------------------------------------------------------- */
     public class Messenger<TValue> : IDisposable
     {
-        #region Constructors and destructors
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
@@ -60,6 +58,14 @@ namespace Cube.Processes
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="host">ホスト名</param>
+        /// <param name="path">パス</param>
+        /// 
+        /// <remarks>
+        /// IPC による通信は "ipc://{host}/{path}" と言う URI を基に
+        /// 実現します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public Messenger(string host, string path)
@@ -122,6 +128,21 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public event EventHandler<ValueEventArgs<TValue>> Received;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReceived
+        /// 
+        /// <summary>
+        /// Received イベントを発生させます。
+        /// </summary>
+        /// 
+        /// <param name="e">
+        /// イベントデータを保持しているオブジェクト
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReceived(ValueEventArgs<TValue> e) => Received?.Invoke(this, e);
+
         #endregion
 
         #region Methods
@@ -136,8 +157,6 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public void Send(TValue args) => _core.Send(args);
-
-        #endregion
 
         #region IDisposable
 
@@ -175,23 +194,9 @@ namespace Cube.Processes
 
         #endregion
 
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnReceived
-        /// 
-        /// <summary>
-        /// Received イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(ValueEventArgs<TValue> e)
-            => Received?.Invoke(this, e);
-
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -252,8 +257,6 @@ namespace Cube.Processes
             return Activator.GetObject(typeof(IpcRemoteObject), url) as IpcRemoteObject;
         }
 
-        #endregion
-
         #region Internal class
 
         public class IpcRemoteObject : MarshalByRefObject
@@ -270,6 +273,8 @@ namespace Cube.Processes
         private System.Threading.Mutex _mutex = null;
         private IpcRemoteObject _core = null;
         #endregion
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */
@@ -281,8 +286,8 @@ namespace Cube.Processes
     /// </summary>
     /// 
     /// <remarks>
-    /// Messenger(object) で特殊化したクラスです。Send で送信するオブジェクトの
-    /// 型が一意に決定できない場合などに使用します。
+    /// Messenger(object) で特殊化したクラスです。Send で送信する
+    /// オブジェクトの型が一意に決定できない場合などに使用します。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -293,10 +298,62 @@ namespace Cube.Processes
         /// Messenger
         /// 
         /// <summary>
-        /// 静的オブジェクトを初期化します。
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="host">ホスト名</param>
+        /// <param name="path">パス</param>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public Messenger(string host, string path) : base(host, path) { }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Bootstrap
+    ///
+    /// <summary>
+    /// プロセス間通信 (IPC: Inter-Process Communication) によって
+    /// プロセスの起動およびアクティブ化を行うためのクラスです。
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// 二重起動を抑止したい時に、二重起動する代わりに既に起動している
+    /// 同名プロセスをアクティブ化します。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Bootstrap : Messenger
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bootstrap
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <param name="name">
+        /// プロセス通信を実行するための識別子
+        /// </param>
+        /// 
+        /// <remarks>
+        /// このクラスは "ipc://{name}/activate" と言う URI を基に
+        /// プロセス間通信を実現します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Bootstrap(string name) : base(name, "activate") { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Exists
+        /// 
+        /// <summary>
+        /// 同じ名前を持つプロセスが既に存在するかどうかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Messenger(string host, string path) : base(host, path) { }
+        public bool Exists => !IsServer;
     }
 }
