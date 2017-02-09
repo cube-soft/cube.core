@@ -18,11 +18,11 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.WtsApi
+namespace Cube.WtsApi32
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WtsApi.NativeMethods
+    /// WtsApi32.NativeMethods
     /// 
     /// <summary>
     /// wtsapi.dll に定義された関数を宣言するためのクラスです。
@@ -44,7 +44,7 @@ namespace Cube.WtsApi
         public static extern bool WTSQueryUserToken(uint sessionId, out IntPtr token);
 
         #region Fields
-        const string LibName = "wtsapi.dll";
+        const string LibName = "wtsapi32.dll";
         #endregion
     }
 }

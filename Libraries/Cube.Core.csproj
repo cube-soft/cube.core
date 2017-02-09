@@ -73,7 +73,7 @@
     <Compile Include="NativeMethods\Shell32.cs" />
     <Compile Include="NativeMethods\UserEnv.cs" />
     <Compile Include="NativeMethods\WinMM.cs" />
-    <Compile Include="NativeMethods\WtsApi.cs" />
+    <Compile Include="NativeMethods\WtsApi32.cs" />
     <Compile Include="Operations\Collections.cs" />
     <Compile Include="Operations\FileSystem.cs" />
     <Compile Include="Operations\Generics.cs" />

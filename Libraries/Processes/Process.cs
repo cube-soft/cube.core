@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Process.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +16,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
 
 namespace Cube.Processes
@@ -35,69 +33,59 @@ namespace Cube.Processes
     /* --------------------------------------------------------------------- */
     public static class Process
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LookupKey
-        ///
-        /// <summary>
-        /// プロセスに関する情報を検索する際に利用するプロセス名を取得
-        /// または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string LookupKey { get; set; } = "explorer";
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StartAs
+        /// StartAsActiveUser
         ///
         /// <summary>
-        /// 指定されたユーザ名でプログラムを実行します。
+        /// アクティブユーザ権限でプログラムを実行します。
         /// </summary>
+        /// 
+        /// <param name="program">実行プログラムのパス</param>
+        /// <param name="arguments">プログラムの引数</param>
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static void StartAs(string program, string[] args, string username)
-            => StartAs(
-            args == null ? $"\"{program}\"" : args.Aggregate($"\"{program}\"", (s, x) => s + " " + $"\"{x}\""),
-            username
-        );
+        public static System.Diagnostics.Process StartAsActiveUser(string program, string[] arguments)
+            => StartAsActiveUser(
+                arguments == null ?
+                $"\"{program}\"" :
+                arguments.Aggregate($"\"{program}\"", (s, x) => s + " " + $"\"{x}\"")
+            );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StartAs
+        /// StartAsActiveUser
         ///
         /// <summary>
-        /// 指定されたユーザ名でコマンドラインを実行します。
+        /// アクティブユーザ権限でプログラムを実行します。
         /// </summary>
+        /// 
+        /// <param name="cmdline">実行するコマンドライン</param>
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static void StartAs(string cmdline, string username)
+        public static System.Diagnostics.Process StartAsActiveUser(string cmdline)
         {
-            var id = GetProcessId(username);
-            if (id < 0) throw new ArgumentException($"{LookupKey}:process not found");
-
-            var token = GetPrimaryToken(id);
+            var token = GetActiveSessionToken();
             if (token == IntPtr.Zero) throw new ArgumentException("PrimaryToken");
 
             var env = GetEnvironmentBlock(token);
             if (env == IntPtr.Zero) throw new ArgumentException("EnvironmentBlock");
 
-            try { CreateProcessAsUser(cmdline, token, env); }
+            try { return CreateProcessAsUser(cmdline, token, env); }
             finally
             {
                 if (env != IntPtr.Zero) UserEnv.NativeMethods.DestroyEnvironmentBlock(env);
+                CloseHandle(token);
             }
         }
 
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,14 +94,14 @@ namespace Cube.Processes
         /// <summary>
         /// Win32 API の CreateProcessAsUser を実行します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        private static void CreateProcessAsUser(string cmdline, IntPtr token, IntPtr env)
+        private static System.Diagnostics.Process CreateProcessAsUser(string cmdline, IntPtr token, IntPtr env)
         {
             var si = new STARTUPINFO();
             si.cb          = (uint)Marshal.SizeOf(si);
             si.lpDesktop   = @"WinSta0\Default";
-            si.wShowWindow = 0x05; // SW_SHOW
+            si.wShowWindow = 0x05;  // SW_SHOW
             si.dwFlags     = 0x01 | // STARTF_USESHOWWINDOW 
                              0x40;  // STARTF_FORCEONFEEDBACK
 
@@ -124,43 +112,48 @@ namespace Cube.Processes
             thread.nLength = (uint)Marshal.SizeOf(thread);
 
             var pi = new PROCESS_INFORMATION();
+            try
+            {
+                if (!AdvApi32.NativeMethods.CreateProcessAsUser(
+                    token,
+                    null,
+                    cmdline,
+                    ref sa,
+                    ref thread,
+                    false,
+                    0x0400, // CREATE_UNICODE_ENVIRONMENT
+                    env,
+                    null,
+                    ref si,
+                    out pi
+                )) Win32Error("CreateProcessAsUser");
 
-            if (!AdvApi32.NativeMethods.CreateProcessAsUser(
-                token,
-                null,
-                cmdline,
-                ref sa,
-                ref thread,
-                false,
-                0x0400, // CREATE_UNICODE_ENVIRONMENT
-                env,
-                null,
-                ref si,
-                out pi
-            )) Win32Error("CreateProcessAsUser");
+                return System.Diagnostics.Process.GetProcessById((int)pi.dwProcessId);
+            }
+            finally
+            {
+                CloseHandle(pi.hProcess);
+                CloseHandle(pi.hThread);
+            }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetProcessId
+        /// GetActiveSessionToken
         ///
         /// <summary>
-        /// LookupKey で指定されたプログラムの内、指定されたユーザ名で
-        /// 実行されているプロセスの ID を取得します。
+        /// アクティブなセッションに対応するトークンを取得します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        private static int GetProcessId(string username)
+        private static IntPtr GetActiveSessionToken()
         {
-            var results = System.Diagnostics.Process.GetProcessesByName(LookupKey);
-            if (results == null || results.Length <= 0) return -1;
+            var id = Kernel32.NativeMethods.WTSGetActiveConsoleSessionId();
+            var token = IntPtr.Zero;
 
-            foreach (var ps in results)
-            {
-                var id = ps.Id;
-                if (GetOwner(id) == username) return id;
-            }
-            return -1;
+            if (!WtsApi32.NativeMethods.WTSQueryUserToken(id, out token)) Win32Error("WTSQueryUserToken");
+            try { return GetPrimaryToken(token, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation); }
+            finally { CloseHandle(token); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -168,21 +161,12 @@ namespace Cube.Processes
         /// GetPrimaryToken
         ///
         /// <summary>
-        /// プロセス ID に対応するトークンを取得します。
+        /// プライマリトークンを取得します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        private static IntPtr GetPrimaryToken(int id)
+        private static IntPtr GetPrimaryToken(IntPtr token, SECURITY_IMPERSONATION_LEVEL level)
         {
-            var token   = IntPtr.Zero;
-            var process = System.Diagnostics.Process.GetProcessById(id);
-
-            if (!AdvApi32.NativeMethods.OpenProcessToken(
-                process.Handle,
-                0x02 /* TOKEN_DUPLICATE */,
-                ref token
-            )) Win32Error("OpenProcessToken");
-
             var dest = IntPtr.Zero;
             var attr = new SECURITY_ATTRIBUTES();
             attr.nLength = (uint)Marshal.SizeOf(attr);
@@ -190,16 +174,17 @@ namespace Cube.Processes
                 token,
                 0x0001 | // TOKEN_ASSIGN_PRIMARY
                 0x0002 | // TOKEN_DUPLICATE
+                0x0004 | // TOKEN_IMPERSONATE
                 0x0008,  // TOKEN_QUERY
                 ref attr,
-                (int)SECURITY_IMPERSONATION_LEVEL.SecurityIdentification,
+                (int)level,
                 (int)TOKEN_TYPE.TokenPrimary,
                 ref dest
             );
 
-            Kernel32.NativeMethods.CloseHandle(token);
-            if (!result) Win32Error("DuplicateTokenEx");
+            AdvApi32.NativeMethods.RevertToSelf();
 
+            if (!result) Win32Error("DuplicateTokenEx");
             return dest;
         }
 
@@ -208,9 +193,9 @@ namespace Cube.Processes
         /// GetEnvironmentBlock
         ///
         /// <summary>
-        /// EnvironmentBlock を取得します。
+        /// 環境ブロックを取得します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
         private static IntPtr GetEnvironmentBlock(IntPtr token)
         {
@@ -222,31 +207,17 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetOwner
+        /// CloseHandle
         ///
         /// <summary>
-        /// プロセスの所有者を取得します。
+        /// ハンドルを閉じます。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        private static string GetOwner(int id)
+        private static void CloseHandle(IntPtr handle)
         {
-            var query = $"Select * From Win32_Process Where ProcessID = {id}";
-            using (var searcher = new ManagementObjectSearcher(query))
-            using (var results = searcher.Get())
-            {
-                foreach (ManagementObject obj in results)
-                {
-                    try
-                    {
-                        var args = new string[] { string.Empty };
-                        int value = Convert.ToInt32(obj.InvokeMethod("GetOwner", args));
-                        if (value == 0) return args[0];
-                    }
-                    catch (Exception err) { Cube.Log.Operations.Error(typeof(Process), err.Message, err); }
-                }
-            }
-            return null;
+            if (handle == IntPtr.Zero) return;
+            Kernel32.NativeMethods.CloseHandle(handle);
         }
 
         /* ----------------------------------------------------------------- */
@@ -256,14 +227,10 @@ namespace Cube.Processes
         /// <summary>
         /// Win32 Error の値を持つ例外を送出します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
         private static void Win32Error(string message)
-        {
-            var s = $"{message}:{Marshal.GetLastWin32Error()}";
-            Cube.Log.Operations.Error(typeof(Process), s);
-            throw new ArgumentException(s);
-        }
+            => throw new Win32Exception(Marshal.GetLastWin32Error(), message);
 
         #endregion
     }
