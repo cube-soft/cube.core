@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// AdvApi32.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,22 +58,6 @@ namespace Cube.AdvApi32
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OpenProcessToken
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa379295.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool OpenProcessToken(
-            IntPtr ProcessHandle,
-            uint DesiredAccess,
-            ref IntPtr TokenHandle
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// DuplicateTokenEx
         /// 
         /// <summary>
@@ -95,41 +77,15 @@ namespace Cube.AdvApi32
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetTokenInformation
-        /// 
+        /// RevertToSelf
+        ///
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa446671.aspx
+        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa379317.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern bool GetTokenInformation(
-            IntPtr TokenHandle,
-            TOKEN_INFORMATION_CLASS TokenInformationClass,
-            IntPtr TokenInformation,
-            uint TokenInformationLength,
-            out uint ReturnLength
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LookupAccountSid
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa379166.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool LookupAccountSid(
-            string lpSystemName,
-            IntPtr Sid, //[MarshalAs(UnmanagedType.LPArray)] byte[] Sid,
-            StringBuilder lpName,
-            ref uint cchName,
-            StringBuilder ReferencedDomainName,
-            ref uint cchReferencedDomainName,
-            out SID_NAME_USE peUse
-        );
+        public static extern bool RevertToSelf();
 
         #region Fields
         private const string LibName = "advapi32.dll";

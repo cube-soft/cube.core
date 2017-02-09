@@ -18,14 +18,14 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.UserEnv
+namespace Cube.WtsApi
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UserEnv.NativeMethods
+    /// WtsApi.NativeMethods
     /// 
     /// <summary>
-    /// userenv.dll に定義された関数を宣言するためのクラスです。
+    /// wtsapi.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -33,34 +33,18 @@ namespace Cube.UserEnv
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateEnvironmentBlock
+        /// WTSQueryUserToken
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762270.aspx
+        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383840.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern bool CreateEnvironmentBlock(
-            ref IntPtr lpEnvironment,
-            IntPtr hToken,
-            bool bInherit
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DestroyEnvironmentBlock
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762274.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool DestroyEnvironmentBlock(IntPtr lpEnvironment);
+        public static extern bool WTSQueryUserToken(uint sessionId, out IntPtr token);
 
         #region Fields
-        const string LibName = "userenv.dll";
+        const string LibName = "wtsapi.dll";
         #endregion
     }
 }
