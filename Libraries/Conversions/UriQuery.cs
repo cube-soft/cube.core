@@ -46,7 +46,7 @@ namespace Cube.Conversions
             if (uri == null || query == null || query.Count <= 0) return uri;
 
             var dest = new UriBuilder(uri);
-            var str  = string.Join("&", query.Select(x => $"{x.Key}={x.Value}"));
+            var str  = string.Join("&", query.Select(x => $"{x.Key}={x.Value}").ToArray());
             dest.Query = dest != null && dest.Query.Length > 1 ?
                          $"{dest.Query.Substring(1)}&{str}" :
                          str;

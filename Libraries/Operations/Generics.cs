@@ -46,7 +46,7 @@ namespace Cube.Generics
             foreach (var p in t.GetProperties())
             {
                 if (p.GetGetMethod() == null || p.GetSetMethod() == null) continue;
-                p.SetValue(dest, p.GetValue(src, null));
+                p.SetValue(dest, p.GetValue(src, null), null);
             }
 
             foreach (var f in t.GetFields()) f.SetValue(dest, f.GetValue(src));
