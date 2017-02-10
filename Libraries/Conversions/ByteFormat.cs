@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormat.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,6 +70,6 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static string ToRoughBytes(this long bytes)
-            => ToPrettyBytes(Math.Max(bytes, 1024));
+            => ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
     }
 }

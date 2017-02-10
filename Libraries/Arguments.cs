@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// LooseArguments.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +21,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// LooseArguments
+    /// Arguments
     /// 
     /// <summary>
     /// コマンドライン等の引数を解析するクラスです。
@@ -38,34 +36,34 @@ namespace Cube
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class LooseArguments
+    public class Arguments
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// LooseArguments
+        /// Arguments
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public LooseArguments(char prefix = '-')
+        public Arguments(char prefix = '-')
         {
             Prefix = prefix;
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// LooseArguments
+        /// Arguments
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public LooseArguments(IEnumerable<string> args, char prefix = '-')
+        public Arguments(IEnumerable<string> args, char prefix = '-')
             : this(prefix)
         {
             Parse(args);
@@ -149,7 +147,7 @@ namespace Cube
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerable<KeyValuePair<string, string>> GetOptions()
+        public IDictionary<string, string> GetOptions()
             => _options;
 
         /* --------------------------------------------------------------------- */
@@ -162,18 +160,18 @@ namespace Cube
         ///
         /* --------------------------------------------------------------------- */
         public string Get(string option)
-            => Contains(option) ? _options[option] : null;
+            => HasOption(option) ? _options[option] : null;
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Contains
+        /// HasOption
         /// 
         /// <summary>
-        /// オプションが指定されかどうかを判別します。
+        /// 指定されたオプションを保持しているかどうかを判別します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public bool Contains(string option)
+        public bool HasOption(string option)
             => _options.ContainsKey(option);
 
         #endregion

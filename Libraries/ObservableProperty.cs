@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NotifyItem.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,120 +15,108 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Drawing;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyLevel
+    /// ObservableProperty
     /// 
     /// <summary>
-    /// 通知した項目の重要度を示す値を定義した列挙体です。
+    /// INotifyPropertyChanged の汎用的な実装です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum NotifyLevel : int
+    [DataContract]
+    public class ObservableProperty : INotifyPropertyChanged
     {
-        None        = 0,
-        Debug       = 1,
-        Information = 2,
-        Important   = 3,
-        Warning     = 4,
-        Error       = 5,
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NotifyItem
-    /// 
-    /// <summary>
-    /// 通知内容を保持するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class NotifyItem
-    {
-        #region Properties
+        #region Constructor
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Level
+        /// ObservableProperty
         /// 
         /// <summary>
-        /// 通知内容の重要度を取得または設定します。
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
+        /// 使用して下さい。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ObservableProperty() { }
+
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PropertyChanged
+        /// 
+        /// <summary>
+        /// プロパティが変更された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NotifyLevel Level { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Virtual methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Title
+        /// OnPropertyChanged
         /// 
         /// <summary>
-        /// 通知内容のタイトルを取得または設定します。
+        /// PropertyChanged イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title { get; set; }
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+            => PropertyChanged?.Invoke(this, e);
 
+        #endregion
+
+        #region Non-virtual protected methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Description
+        /// SetProperty
         /// 
         /// <summary>
-        /// 通知内容の本文を取得または設定します。
+        /// プロパティに値を設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Description { get; set; }
+        protected bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null) =>
+            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Image
+        /// SetProperty
         /// 
         /// <summary>
-        /// 通知内容を表すイメージを取得または設定します。
+        /// プロパティに値を設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Image Image { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisplayTime
-        /// 
-        /// <summary>
-        /// 通知内容の表示時間を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TimeSpan DisplayTime { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InitialDelay
-        /// 
-        /// <summary>
-        /// 通知内容の表示を遅延させる時間を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TimeSpan InitialDelay { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Data
-        /// 
-        /// <summary>
-        /// ユーザデータを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Data { get; set; }
+        protected bool SetProperty<T>(ref T field, T value,
+            IEqualityComparer<T> func, [CallerMemberName] string name = null)
+        {
+            if (func.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
+            return true;
+        }
 
         #endregion
     }

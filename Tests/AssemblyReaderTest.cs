@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// AssemblyReaderTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +16,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Drawing;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -148,15 +145,6 @@ namespace Cube.Tests
             Assert.That(
                 Create().FileVersion,
                 Is.AtLeast(new Version(major, minor, build, revision))
-            );
-        }
-
-        [TestCase(16, 16)]
-        public void Icon_ExecutingAssembly(int width, int height)
-        {
-            Assert.That(
-                Create().Icon.Size,
-                Is.EqualTo(new Size(width, height))
             );
         }
 

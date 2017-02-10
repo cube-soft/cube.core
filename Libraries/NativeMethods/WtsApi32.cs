@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// IconSize.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,23 +15,36 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-namespace Cube
+using System;
+using System.Runtime.InteropServices;
+
+namespace Cube.WtsApi32
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IconSize
+    /// WtsApi32.NativeMethods
     /// 
     /// <summary>
-    /// システムで用意されているアイコンの大きさを定義した列挙型です。
+    /// wtsapi.dll に定義された関数を宣言するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum IconSize : int
+    internal static class NativeMethods
     {
-        Zero        = -1, //   0 x   0 pixel
-        Large       =  0, //  16 x  16 pixel
-        Small       =  1, //  32 x  32 pixel
-        ExtraLarge  =  2, //  48 x  48 pixel
-        Jumbo       =  4  // 256 x 256 pixel
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WTSQueryUserToken
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383840.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool WTSQueryUserToken(uint sessionId, out IntPtr token);
+
+        #region Fields
+        const string LibName = "wtsapi32.dll";
+        #endregion
     }
 }

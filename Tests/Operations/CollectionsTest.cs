@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ObservableSettingsValue.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,107 +15,128 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
+using NUnit.Framework;
+using Cube.Collections;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableSettingsValue
+    /// CollectionsTest
     /// 
     /// <summary>
-    /// 各種 SettingsValue の基底クラスとなります。
+    /// Cube.Collections.Operations のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    public class ObservableSettingsValue : INotifyPropertyChanged
+    [Parallelizable]
+    [TestFixture]
+    class CollectionsTest
     {
-        #region Constructor
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ObservableSettingsValue
+        /// LastIndex
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
-        /// 使用して下さい。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ObservableSettingsValue() { }
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
+        /// 最後のインデックスを取得するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        /// 
-        /// <summary>
-        /// PropertyChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-            => PropertyChanged?.Invoke(this, e);
-
-        #endregion
-
-        #region Non-virtual protected methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        /// 
-        /// <summary>
-        /// プロパティに値を設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        /// 
-        /// <summary>
-        /// プロパティに値を設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
+        [TestCase(9, 10)]
+        [TestCase(0,  1)]
+        [TestCase(0,  0)]
+        public void LastIndex(int expected, int count)
         {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
-            return true;
+            Assert.That(
+                Create(count).LastIndex(),
+                Is.EqualTo(expected)
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LastIndex_Null
+        /// 
+        /// <summary>
+        /// 最後のインデックスを取得するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void LastIndex_Null()
+        {
+            IList<int> collection = null;
+            Assert.That(
+                collection.LastIndex(),
+                Is.EqualTo(0)
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Clamp_Null
+        /// 
+        /// <summary>
+        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めるテストを
+        /// 行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(5,   5, 10)]
+        [TestCase(9,  20, 10)]
+        [TestCase(0,  -1, 10)]
+        [TestCase(0,  10,  0)]
+        [TestCase(0,  -1,  0)]
+        public void Clamp(int expected, int index, int count)
+        {
+            Assert.That(
+                Create(count).Clamp(index),
+                Is.EqualTo(expected)
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Clamp_Null
+        /// 
+        /// <summary>
+        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めるテストを
+        /// 行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Clamp_Null()
+        {
+            IList<int> collection = null;
+            Assert.That(
+                collection.Clamp(100),
+                Is.EqualTo(0)
+            );
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// テスト用のコレクションオブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IList<int> Create(int count)
+        {
+            var dest = new List<int>();
+            for (int i = 0; i < count; ++i) dest.Add(i);
+            return dest;
         }
 
         #endregion

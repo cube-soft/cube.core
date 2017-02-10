@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Startup.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Microsoft.Win32;
 
-namespace Cube
+namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -30,7 +28,7 @@ namespace Cube
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class Startup : ObservableSettingsValue
+    public class Startup : ObservableProperty
     {
         #region Constructors
 
@@ -95,6 +93,19 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// RootKeyName
+        ///
+        /// <summary>
+        /// スタートアップ設定を保持するレジストリのルートに当たる
+        /// サブキー名を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string RootKeyName
+            => @"Software\Microsoft\Windows\CurrentVersion\Run";
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Enabled
         ///
         /// <summary>
@@ -155,7 +166,7 @@ namespace Cube
         {
             if (string.IsNullOrEmpty(Name)) return;
 
-            using (var subkey = Registry.CurrentUser.OpenSubKey(_RegRoot, false))
+            using (var subkey = Open(false))
             {
                 Command = subkey.GetValue(Name, string.Empty) as string;
                 Enabled = !string.IsNullOrEmpty(Command);
@@ -175,7 +186,7 @@ namespace Cube
         {
             if (string.IsNullOrEmpty(Name)) return;
 
-            using (var subkey = Registry.CurrentUser.OpenSubKey(_RegRoot, true))
+            using (var subkey = Open(true))
             {
                 if (Enabled)
                 {
@@ -187,14 +198,26 @@ namespace Cube
 
         #endregion
 
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Open
+        ///
+        /// <summary>
+        /// ルートキーを開きます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private RegistryKey Open(bool writable)
+            => Registry.CurrentUser.OpenSubKey(RootKeyName, writable);
+
+        #endregion
+
         #region Fields
         private bool _enabled = false;
         private string _name = string.Empty;
         private string _command = string.Empty;
-        #endregion
-
-        #region Static fields
-        private static readonly string _RegRoot = @"Software\Microsoft\Windows\CurrentVersion\Run";
         #endregion
     }
 }

@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ValueCancelEventArgs.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,63 +15,60 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using NUnit.Framework;
+using Cube.Conversions;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ValueCancelEventArgs(TValue)
-    ///
+    /// ByteFormatTest
+    /// 
     /// <summary>
-    /// イベントハンドラに特定の型の値を渡すためのクラスです。
+    /// バイトサイズの書式に関するテストを行うためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ValueCancelEventArgs<TValue> : CancelEventArgs
+    [Parallelizable]
+    [TestFixture]
+    class ByteFormatTest
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// ValueCancelEventArgs
+        /// ToPrettyBytes
         /// 
         /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// ToPrettyBytes のテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ValueCancelEventArgs(TValue value) : this(value, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueCancelEventArgs
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ValueCancelEventArgs(TValue value, bool cancel) : base(cancel)
+        [TestCase(1L, "1 Bytes")]
+        [TestCase(1234L, "1.21 KB")]
+        [TestCase(12345L, "12.1 KB")]
+        [TestCase(123456L, "121 KB")]
+        [TestCase(1234567L, "1.18 MB")]
+        [TestCase(1234567890L, "1.15 GB")]
+        [TestCase(1234567890123L, "1.12 TB")]
+        [TestCase(1234567890123456L, "1.1 PB")]
+        [TestCase(1234567890123456789L, "1.07 EB")]
+        public void ToPrettyBytes(long src, string expected)
         {
-            Value = value;
+            Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
         }
 
-        #endregion
-
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Value
+        /// ToRoughBytes
         /// 
         /// <summary>
-        /// 値を取得します。
+        /// ToRoughBytes のテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TValue Value { get; }
-
-        #endregion
+        [TestCase(1L, "1 KB")]
+        public void ToRoughBytes(long src, string expected)
+        {
+            Assert.That(src.ToRoughBytes(), Is.EqualTo(expected));
+        }
     }
 }

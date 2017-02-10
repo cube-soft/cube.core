@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// GenericsTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,129 +16,115 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
-using Cube.Collections;
+using Cube.Log;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CollectionsTest
+    /// GenericsTest
     /// 
     /// <summary>
-    /// Cube.Collections.Operations のテスト用クラスです。
+    /// 拡張メソッドのテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class CollectionsTest
+    class LogTest
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
-        /// LastIndex
-        /// 
+        /// Log_Debug
+        ///
         /// <summary>
-        /// 最後のインデックスを取得するテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(9, 10)]
-        [TestCase(0,  1)]
-        [TestCase(0,  0)]
-        public void LastIndex(int expected, int count)
-        {
-            Assert.That(
-                Create(count).LastIndex(),
-                Is.EqualTo(expected)
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastIndex_Null
-        /// 
-        /// <summary>
-        /// 最後のインデックスを取得するテストを行います。
+        /// LogDebug(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void LastIndex_Null()
+        public void Log_Debug()
         {
-            IList<int> collection = null;
-            Assert.That(
-                collection.LastIndex(),
-                Is.EqualTo(0)
-            );
+            Assert.DoesNotThrow(() => this.LogDebug("Debug"));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Clamp_Null
-        /// 
-        /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めるテストを
-        /// 行います。
-        /// </summary>
+        /// Log_Info
         ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(5,   5, 10)]
-        [TestCase(9,  20, 10)]
-        [TestCase(0,  -1, 10)]
-        [TestCase(0,  10,  0)]
-        [TestCase(0,  -1,  0)]
-        public void Clamp(int expected, int index, int count)
-        {
-            Assert.That(
-                Create(count).Clamp(index),
-                Is.EqualTo(expected)
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Clamp_Null
-        /// 
         /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めるテストを
-        /// 行います。
+        /// LogInfo(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Clamp_Null()
+        public void Log_Info()
         {
-            IList<int> collection = null;
-            Assert.That(
-                collection.Clamp(100),
-                Is.EqualTo(0)
-            );
+            Assert.DoesNotThrow(() => this.LogInfo("Info"));
         }
-
-        #endregion
-
-        #region Helper methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
-        /// 
+        /// Log_Warn
+        ///
         /// <summary>
-        /// テスト用のコレクションオブジェクトを生成します。
+        /// LogWarn(T, string) 拡張メソッドのテストを行います。。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private IList<int> Create(int count)
+        [Test]
+        public void Log_Warn()
         {
-            var dest = new List<int>();
-            for (int i = 0; i < count; ++i) dest.Add(i);
-            return dest;
+            Assert.DoesNotThrow(() => this.LogWarn("Warn"));
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Log_Error
+        ///
+        /// <summary>
+        /// LogError(T, string) 拡張メソッドのテストを行います。。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Log_Error()
+        {
+            Assert.DoesNotThrow(() => this.LogError("Error"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Log_Fatal
+        ///
+        /// <summary>
+        /// LogFatal(T, string) 拡張メソッドのテストを行います。。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Log_Fatal()
+        {
+            Assert.DoesNotThrow(() => this.LogFatal("Fatal"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Log_Exception
+        ///
+        /// <summary>
+        /// LogException(Action) 拡張メソッドのテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Log_Exception()
+        {
+            Assert.DoesNotThrow(() => this.LogException(() =>
+            {
+                throw new ArgumentException("dummy exception");
+            }));
+        }
     }
 }

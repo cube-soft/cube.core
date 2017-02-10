@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Drive.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Management;
 using System.Linq;
 
@@ -253,15 +252,14 @@ namespace Cube.FileSystem {
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Drive[] GetDrives()
+        public static IEnumerable<Drive> GetDrives()
         {
             using (var mos = new ManagementObjectSearcher("Select * From Win32_LogicalDisk"))
             {
                 return mos.Get()
                           .Cast<ManagementObject>()
                           .Select(obj => new Drive(obj))
-                          .Where(drive => !string.IsNullOrEmpty(drive.Letter))
-                          .ToArray();
+                          .Where(drive => !string.IsNullOrEmpty(drive.Letter));
             }
         }
 

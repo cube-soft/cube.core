@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// FileResourceTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,62 +15,43 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
-using IoEx = System.IO;
+using System;
+using System.Runtime.InteropServices;
 
-namespace Cube.Tests
+namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResourceTest
+    /// FileSystem.Operations
     /// 
     /// <summary>
-    /// FileResource をテストするためのクラスです。
+    /// ファイルやフォルダに対する拡張メソッドを定義するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
-    [TestFixture]
-    class FileResourceTest : FileResource
+    public static class Operations
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
-        /// 
+        /// GetTypeName
+        ///
         /// <summary>
-        /// Examples フォルダが存在するかどうかをテストします。
+        /// ファイルの種類を表す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Examples_Exists()
+        public static string GetTypeName(this System.IO.FileInfo fi)
         {
-            Assert.That(
-                IoEx.Directory.Exists(Examples),
-                Is.True
-            );
-        }
+            if (fi == null) return null;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Results_Exists
-        /// 
-        /// <summary>
-        /// Results フォルダが存在するかどうかをテストします。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Results_Exists()
-        {
-            Assert.That(
-                IoEx.Directory.Exists(Results),
-                Is.True
-            );
-        }
+            var attr   = Shell32.NativeMethods.FILE_ATTRIBUTE_NORMAL;
+            var flags  = Shell32.NativeMethods.SHGFI_TYPENAME |
+                         Shell32.NativeMethods.SHGFI_USEFILEATTRIBUTES;
+            var shfi   = new SHFILEINFO();
+            var result = Shell32.NativeMethods.SHGetFileInfo(fi.FullName,
+                attr, ref shfi, (uint)Marshal.SizeOf(shfi), flags);
 
-        #endregion
+            return (result != IntPtr.Zero) ? shfi.szTypeName : null;
+        }
     }
 }

@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DriveTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System.Linq;
 using Cube.FileSystem;
 
 namespace Cube.Tests
@@ -152,7 +151,7 @@ namespace Cube.Tests
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Drives = Drive.GetDrives();
+            Drives = Drive.GetDrives().ToArray();
         }
 
         /* ----------------------------------------------------------------- */

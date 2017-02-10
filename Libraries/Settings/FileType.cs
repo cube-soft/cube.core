@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Rect.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,25 +15,22 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.Runtime.InteropServices;
-
-namespace Cube
+namespace Cube.Settings
 {
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
-    /// RECT
-    ///
+    /// FileType
+    /// 
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/a5ch4fda.aspx
+    /// Settings クラスで読み込み、および保存可能なファイル形式一覧を
+    /// 表した列挙型です。
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct RECT
+    /* --------------------------------------------------------------------- */
+    public enum FileType : int
     {
-        public int left;
-        public int top;
-        public int right;
-        public int bottom;
+        Xml,
+        Json,
+        Unknown = -1
     }
 }

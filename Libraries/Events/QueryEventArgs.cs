@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// QueryEventArgs.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +15,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using System.ComponentModel;
 
 namespace Cube
@@ -101,4 +100,16 @@ namespace Cube
 
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void QueryEventHandler<TQuery, TResult>(object sender, QueryEventArgs<TQuery, TResult> e);
 }

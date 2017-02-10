@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// SettingsFolder.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +22,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Cube.Log;
 
-namespace Cube
+namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -308,7 +306,7 @@ namespace Cube
             var root = Microsoft.Win32.Registry.CurrentUser;
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
-                var result = Settings.Load<TValue>(subkey);
+                var result = subkey.Load<TValue>();
                 if (result == null) return;
                 User = result;
                 User.PropertyChanged += User_Changed;
@@ -328,10 +326,7 @@ namespace Cube
         protected virtual void OnSave()
         {
             var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.CreateSubKey(SubKeyName))
-            {
-                Settings.Save(User, subkey);
-            }
+            using (var subkey = root.CreateSubKey(SubKeyName)) subkey.Save(User);
             Startup.Save();
         }
 

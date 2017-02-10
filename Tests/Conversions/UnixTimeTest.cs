@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ByteFormatTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +15,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using NUnit.Framework;
 using Cube.Conversions;
 
@@ -24,53 +23,38 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ByteFormatTest
+    /// UnixTimeTest
     /// 
     /// <summary>
-    /// バイトサイズの書式に関するテストを行うためのクラスです。
+    /// UnixTime のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class ByteFormatTest
+    class UnixTimeTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ToPrettyBytes
+        /// ToUniversalTime
         /// 
         /// <summary>
-        /// ToPrettyBytes のテストを行います。
+        /// 引数に指定された日時をいったん NTP タイムスタンプに変換し、
+        /// 再度 DateTime オブジェクトに変換するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1L, "1 Bytes")]
-        [TestCase(1234L, "1.21 KB")]
-        [TestCase(12345L, "12.1 KB")]
-        [TestCase(123456L, "121 KB")]
-        [TestCase(1234567L, "1.18 MB")]
-        [TestCase(1234567890L, "1.15 GB")]
-        [TestCase(1234567890123L, "1.12 TB")]
-        [TestCase(1234567890123456L, "1.1 PB")]
-        [TestCase(1234567890123456789L, "1.07 EB")]
-        public void ToPrettyBytes(long src, string expected)
+        [TestCase(1970, 1,  1, 0,  0, 0)]
+        [TestCase(2000, 1,  1, 0,  0, 0)]
+        [TestCase(2038, 1, 19, 3, 14, 7)]
+        [TestCase(2104, 1,  1, 0,  0, 0)]
+        public void ToUniversalTime(int y, int m, int d, int hh, int mm, int ss)
         {
-            Assert.That(src.ToPrettyBytes(), Is.EqualTo(expected));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToRoughBytes
-        /// 
-        /// <summary>
-        /// ToRoughBytes のテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(1L, "1 KB")]
-        public void ToRoughBytes(long src, string expected)
-        {
-            Assert.That(src.ToRoughBytes(), Is.EqualTo(expected));
+            var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            Assert.That(
+                src.ToUnixTime().ToUniversalTime(),
+                Is.EqualTo(src)
+            );
         }
     }
 }

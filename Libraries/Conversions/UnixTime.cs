@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UnixTime.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,7 +56,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this int unix)
-            => ToDateTime((long)unix);
+            => ToDateTime((uint)unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,7 +80,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this string time, string format)
-            => ToUniversaltime(time, format);
+            => ToUniversalTime(time, format);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,10 +92,19 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this long unix)
-        {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return epoch.AddSeconds(unix);
-        }
+            => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unix);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToUniversalTime
+        /// 
+        /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToUniversalTime(this int unix)
+            => ToUniversalTime((uint)unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,14 +115,13 @@ namespace Cube.Conversions
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime ToUniversaltime(this string time, string format)
-        {
-            if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
-            return DateTime.ParseExact(time, format,
+        public static DateTime ToUniversalTime(this string time, string format)
+            => string.IsNullOrEmpty(time) ?
+            DateTime.MinValue :
+            DateTime.ParseExact(time, format,
                 System.Globalization.DateTimeFormatInfo.InvariantInfo,
                 System.Globalization.DateTimeStyles.AssumeUniversal
             );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,17 +140,28 @@ namespace Cube.Conversions
         /// ToLocalTime
         /// 
         /// <summary>
+        /// UNIX 時刻から DateTime オブジェクトへ変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DateTime ToLocalTime(this int unix)
+            => ToLocalTime((uint)unix);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToLocalTime
+        /// 
+        /// <summary>
         /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this string time, string format)
-        {
-            if (string.IsNullOrEmpty(time)) return DateTime.MinValue;
-            return DateTime.ParseExact(time, format,
+            => string.IsNullOrEmpty(time) ?
+            DateTime.MinValue :
+            DateTime.ParseExact(time, format,
                 System.Globalization.DateTimeFormatInfo.InvariantInfo,
                 System.Globalization.DateTimeStyles.AssumeLocal
             );
-        }
     }
 }

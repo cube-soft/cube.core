@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UnixTimeTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,46 +15,62 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using NUnit.Framework;
-using Cube.Conversions;
+using IoEx = System.IO;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UnixTimeTest
+    /// FileResourceTest
     /// 
     /// <summary>
-    /// UnixTime のテスト用クラスです。
+    /// FileResource をテストするためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class UnixTimeTest
+    class FileResourceTest : FileResource
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// ToUniversalTime
+        /// Examples_Exists
         /// 
         /// <summary>
-        /// 引数に指定された日時をいったん NTP タイムスタンプに変換し、
-        /// 再度 DateTime オブジェクトに変換するテストを行います。
+        /// Examples フォルダが存在するかどうかをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1970, 1,  1, 0,  0, 0)]
-        [TestCase(2000, 1,  1, 0,  0, 0)]
-        [TestCase(2038, 1, 19, 3, 14, 7)]
-        [TestCase(2104, 1,  1, 0,  0, 0)]
-        public void ToUniversalTime(int y, int m, int d, int hh, int mm, int ss)
+        [Test]
+        public void Examples_Exists()
         {
-            var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
             Assert.That(
-                src.ToUnixTime().ToUniversalTime(),
-                Is.EqualTo(src)
+                IoEx.Directory.Exists(Examples),
+                Is.True
             );
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Results_Exists
+        /// 
+        /// <summary>
+        /// Results フォルダが存在するかどうかをテストします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Results_Exists()
+        {
+            Assert.That(
+                IoEx.Directory.Exists(Results),
+                Is.True
+            );
+        }
+
+        #endregion
     }
 }

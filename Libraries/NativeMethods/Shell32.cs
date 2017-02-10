@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Shell32.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,39 +44,11 @@ namespace Cube.Shell32
         public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
             ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SHGetStockIconInfo
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762205.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern void SHGetStockIconInfo(uint siid, uint uFlags, ref SHSTOCKICONINFO sii);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SHGetImageList
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762185.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern int SHGetImageList(uint iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
-
         #region Constant fields
-        const string LibName = "shell32.dll";
-        public static readonly uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
-        public static readonly uint SHGFI_TYPENAME          = 0x00000400;
-        public static readonly uint SHGFI_SYSICONINDEX      = 0x00004000;
-        public static readonly uint FILE_ATTRIBUTE_NORMAL   = 0x00000080;
-        public static readonly uint ILD_NORMAL              = 0x00000000;
-        public static readonly uint ILD_TRANSPARENT         = 0x00000001;
-        public static readonly Guid IID_IImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
+        private const string LibName = "shell32.dll";
+        public  const uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
+        public  const uint SHGFI_TYPENAME          = 0x00000400;
+        public  const uint FILE_ATTRIBUTE_NORMAL   = 0x00000080;
         #endregion
     }
 }

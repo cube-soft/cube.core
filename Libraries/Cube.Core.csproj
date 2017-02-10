@@ -46,16 +46,15 @@
       <HintPath>..\..\packages\log4net.2.0.7\lib\net35-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -70,31 +69,18 @@
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
-    <Compile Include="Events\EventArgsFactory.cs" />
-    <Compile Include="Events\KeyValueCancelEventArgs.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
     <Compile Include="Events\ProgressEventArgs.cs" />
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\RelayEvent.cs" />
-    <Compile Include="Events\ValueCancelEventArgs.cs" />
-    <Compile Include="Events\ValueChangedEventArgs.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="FileSystem\FileHandler.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
-    <Compile Include="FileSystem\FileInfo.cs" />
+    <Compile Include="FileSystem\FileHandler.cs" />
     <Compile Include="FileSystem\VetoException.cs" />
-    <Compile Include="Icons\IconFactory.cs" />
-    <Compile Include="Icons\IconSize.cs" />
-    <Compile Include="Icons\StockIcons.cs" />
-    <Compile Include="NativeMethods\Structures\IImageList.cs" />
-    <Compile Include="NativeMethods\Structures\ImageInfo.cs" />
-    <Compile Include="NativeMethods\Structures\Point.cs" />
     <Compile Include="NativeMethods\Structures\ProcessInformation.cs" />
-    <Compile Include="NativeMethods\Structures\Rect.cs" />
     <Compile Include="NativeMethods\Structures\SHFileInfo.cs" />
-    <Compile Include="NativeMethods\Structures\SHStockIconInfo.cs" />
     <Compile Include="NativeMethods\Structures\SpDevice.cs" />
     <Compile Include="NativeMethods\AdvApi32.cs" />
     <Compile Include="NativeMethods\Kernel32.cs" />
@@ -102,22 +88,22 @@
     <Compile Include="NativeMethods\Shell32.cs" />
     <Compile Include="NativeMethods\UserEnv.cs" />
     <Compile Include="NativeMethods\WinMM.cs" />
-    <Compile Include="Notifications\NotifyEventArgs.cs" />
-    <Compile Include="Notifications\NotifyItem.cs" />
-    <Compile Include="Notifications\NotifyQueue.cs" />
+    <Compile Include="NativeMethods\WtsApi32.cs" />
     <Compile Include="Operations\Collections.cs" />
+    <Compile Include="Operations\FileSystem.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Numeric.cs" />
+    <Compile Include="Operations\Settings.cs" />
     <Compile Include="Operations\Tasks.cs" />
+    <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\Process.cs" />
-    <Compile Include="Settings\ObservableSettingsValue.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\FileType.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="AssemblyReader.cs" />
-    <Compile Include="Bootstrap.cs" />
-    <Compile Include="LooseArguments.cs" />
+    <Compile Include="Arguments.cs" />
+    <Compile Include="ObservableProperty.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />
@@ -129,13 +115,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

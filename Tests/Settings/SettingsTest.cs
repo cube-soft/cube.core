@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// SettingsTest.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +18,7 @@
 using System;
 using Microsoft.Win32;
 using NUnit.Framework;
+using Cube.Settings;
 using IoEx = System.IO;
 
 namespace Cube.Tests
@@ -181,7 +180,7 @@ namespace Cube.Tests
         public void Load_File(Settings.FileType type, string name, string expected)
         {
             var src = IoEx.Path.Combine(Examples, name);
-            var settings = Cube.Settings.Load<Person>(src, type);
+            var settings = type.Load<Person>(src);
             Assert.That(
                 settings.Name,
                 Is.EqualTo(expected)
@@ -285,7 +284,7 @@ namespace Cube.Tests
         public void Save_File(Settings.FileType type, string name)
         {
             var dest = IoEx.Path.Combine(Results, name);
-            Cube.Settings.Save(CreatePerson(), dest, type);
+            type.Save(dest, CreatePerson());
             Assert.That(
                 IoEx.File.Exists(dest),
                 Is.True
@@ -312,11 +311,11 @@ namespace Cube.Tests
         {
             using (var registrar = new Registrar(LoadKeyName))
             {
-                Loaded = Cube.Settings.Load<Person>(registrar.RegistryKey);
+                Loaded = Cube.Settings.Operations.Load<Person>(registrar.RegistryKey);
             }
 
             var saved = Registry.CurrentUser.CreateSubKey(SaveKeyName);
-            Cube.Settings.Save(CreatePerson(), saved);
+            saved.Save(CreatePerson());
             Saved = saved;
         }
 

@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Log.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,12 +88,10 @@ namespace Cube.Log
         public static void Info(Type type, Assembly assembly)
         {
             var reader = new AssemblyReader(assembly);
-            var pa = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432");
-            var arch = (pa == null || pa == "x86") ? "32bit" : "64bit";
-            var proc = (IntPtr.Size == 4) ? "x86" : "x64";
+            var proc   = (IntPtr.Size == 4) ? "x86" : "x64";
 
             Info(type, $"{reader.Product} {reader.Version} ({proc})");
-            Info(type, $"{Environment.OSVersion} ({arch} OS)");
+            Info(type, $"{Environment.OSVersion}");
             Info(type, $"Microsoft .NET Framework {Environment.Version}");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
         }

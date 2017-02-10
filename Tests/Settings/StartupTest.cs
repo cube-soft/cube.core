@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// DeviceTester.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,67 +15,76 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
+using System.Reflection;
 using NUnit.Framework;
+using IoEx = System.IO;
 
-namespace Cube.Tests.FileSystem
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Cube.Tests.DeviceTester
+    /// StartupTest
     /// 
     /// <summary>
-    /// Drive クラスのテストを行うためのクラスです。
+    /// Startup のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Parallelizable]
     [TestFixture]
-    public class DeviceTester
+    class StartupTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// TestGet
-        /// 
+        /// Load
+        ///
         /// <summary>
-        /// デバイスに関するプロパティを取得するテストを行います。
+        /// スタートアップ設定の読み込みテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestGet()
+        public void Load()
         {
-            Assert.DoesNotThrow(() =>
-            {
-                var drive = new Cube.FileSystem.Drive("C:");
-                var device = new Cube.FileSystem.Device(drive);
-                Assert.That(device.Index, Is.EqualTo(0));
-                Assert.That(device.Path, Is.Not.Null.Or.Empty);
-                Assert.That(device.Handle, Is.AtLeast(1));
-            });
+            var exec = Assembly.GetExecutingAssembly().Location;
+            var name = IoEx.Path.GetFileNameWithoutExtension(exec);
+            var startup = new Cube.Settings.Startup(name);
+            startup.Load();
+            Assert.That(startup.Enabled, Is.False);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TestDetach
-        /// 
+        /// Save_Delete
+        ///
         /// <summary>
-        /// デバイスを取り外すテストを行います。
+        /// スタートアップ設定の保存テストを行います。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// C: ドライブを取り外そうとして失敗するテストを行います。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TestDetach()
+        public void Save_Delete()
         {
-            Assert.Throws<Cube.FileSystem.VetoException>(() =>
-            {
-                var drive = new Cube.FileSystem.Drive("C:");
-                var device = new Cube.FileSystem.Device(drive);
-                device.Detach();
-            });
+            var exec = Assembly.GetExecutingAssembly().Location;
+            var name = IoEx.Path.GetFileNameWithoutExtension(exec);
+            var command = '"' + exec + '"';
+
+            var s0 = new Cube.Settings.Startup(name);
+            s0.Command = command;
+            s0.Enabled = true;
+            s0.Save();
+
+            var s1 = new Cube.Settings.Startup(name);
+            s1.Load();
+            Assert.That(s1.Enabled, Is.True);
+            Assert.That(s1.Command, Is.EqualTo(command));
+
+            s1.Enabled = false;
+            s1.Save();
+
+            var s2 = new Cube.Settings.Startup(name);
+            s2.Load();
+            Assert.That(s2.Enabled, Is.False);
         }
     }
 }
