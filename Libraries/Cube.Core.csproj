@@ -38,6 +38,8 @@
       <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
@@ -59,10 +61,10 @@
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="FileSystem\FileHandler.cs" />
     <Compile Include="FileSystem\Device.cs" />
     <Compile Include="FileSystem\DeviceNumber.cs" />
     <Compile Include="FileSystem\Drive.cs" />
+    <Compile Include="FileSystem\FileHandler.cs" />
     <Compile Include="FileSystem\VetoException.cs" />
     <Compile Include="NativeMethods\Structures\ProcessInformation.cs" />
     <Compile Include="NativeMethods\Structures\SHFileInfo.cs" />
@@ -79,16 +81,16 @@
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Numeric.cs" />
+    <Compile Include="Operations\Settings.cs" />
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="Settings\FileType.cs" />
-    <Compile Include="ObservableProperty.cs" />
-    <Compile Include="Operations\Settings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Arguments.cs" />
+    <Compile Include="ObservableProperty.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />

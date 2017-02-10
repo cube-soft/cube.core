@@ -38,39 +38,41 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Details\Person.cs" />
-    <Compile Include="Details\FileResource.cs" />
-    <Compile Include="Details\SerializableData.cs" />
-    <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="Conversions\ByteFormatTest.cs" />
-    <Compile Include="Operations\CollectionsTest.cs" />
-    <Compile Include="FileSystem\DriveTest.cs" />
-    <Compile Include="FileSystem\FileHandlerTest.cs" />
-    <Compile Include="Details\FileResourceTest.cs" />
-    <Compile Include="Operations\GenericsTest.cs" />
-    <Compile Include="Operations\LogTest.cs" />
-    <Compile Include="ArgumentsTest.cs" />
-    <Compile Include="Differences\OnpAlgorithmTest.cs" />
-    <Compile Include="Settings\SettingsTest.cs" />
-    <Compile Include="SoftwareVersionTest.cs" />
-    <Compile Include="Settings\StartupTest.cs" />
-    <Compile Include="Conversions\UnixTimeTest.cs" />
-    <Compile Include="Conversions\UriQueryTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.Core.csproj">
       <Project>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</Project>
       <Name>Cube.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conversions\ByteFormatTest.cs" />
+    <Compile Include="Conversions\UnixTimeTest.cs" />
+    <Compile Include="Conversions\UriQueryTest.cs" />
+    <Compile Include="Details\FileResource.cs" />
+    <Compile Include="Details\FileResourceTest.cs" />
+    <Compile Include="Details\Person.cs" />
+    <Compile Include="Details\SerializableData.cs" />
+    <Compile Include="Differences\OnpAlgorithmTest.cs" />
+    <Compile Include="FileSystem\DriveTest.cs" />
+    <Compile Include="FileSystem\FileHandlerTest.cs" />
+    <Compile Include="Operations\CollectionsTest.cs" />
+    <Compile Include="Operations\GenericsTest.cs" />
+    <Compile Include="Operations\LogTest.cs" />
+    <Compile Include="Settings\SettingsTest.cs" />
+    <Compile Include="Settings\StartupTest.cs" />
+    <Compile Include="ArgumentsTest.cs" />
+    <Compile Include="AssemblyReaderTest.cs" />
+    <Compile Include="SoftwareVersionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
