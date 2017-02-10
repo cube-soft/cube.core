@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// ButtonStyle.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TypeConverter(typeof(NullExpandableObjectConverter))]
+    [TypeConverter(typeof(OnlyExpandableConverter))]
     public class ButtonStyle : ObservableProperty
     {
         #region Properties
@@ -160,7 +158,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TypeConverter(typeof(NullExpandableObjectConverter))]
+    [TypeConverter(typeof(OnlyExpandableConverter))]
     public class ButtonStyleContainer : INotifyPropertyChanged
     {
         #region Constructors
@@ -196,7 +194,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TypeConverter(typeof(NullExpandableObjectConverter))]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle NormalStyle { get; } = new ButtonStyle();
 
@@ -209,7 +206,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TypeConverter(typeof(NullExpandableObjectConverter))]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle CheckedStyle { get; } = new ButtonStyle();
 
@@ -222,7 +218,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TypeConverter(typeof(NullExpandableObjectConverter))]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle DisabledStyle { get; } = new ButtonStyle();
 
@@ -235,7 +230,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TypeConverter(typeof(NullExpandableObjectConverter))]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle MouseOverStyle { get; } = new ButtonStyle();
 
@@ -248,7 +242,6 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TypeConverter(typeof(NullExpandableObjectConverter))]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle MouseDownStyle { get; } = new ButtonStyle();
 

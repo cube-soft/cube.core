@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// UrlMon.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +39,7 @@ namespace Cube.Forms.UrlMon
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("urlmon.dll")]
+        [DllImport(LibName)]
         public static extern int CoInternetIsFeatureEnabled(int featureEntry, int dwFlags);
 
         /* ----------------------------------------------------------------- */
@@ -53,7 +51,11 @@ namespace Cube.Forms.UrlMon
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("urlmon.dll")]
+        [DllImport(LibName)]
         public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
+
+        #region Fields
+        const string LibName = "urlmon.dll";
+        #endregion
     }
 }

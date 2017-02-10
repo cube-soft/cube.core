@@ -87,14 +87,13 @@
     </Compile>
     <Compile Include="Models\EventArgs\DeviceEventArgs.cs" />
     <Compile Include="Models\EventArgs\MessageEventArgs.cs" />
-    <Compile Include="Models\EventArgs\NavigatingErrorEventArgs.cs" />
     <Compile Include="Models\EventArgs\NavigatingEventArgs.cs" />
     <Compile Include="Models\Details\FlatButtonPainter.cs" />
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="Models\WindowTheme.cs" />
-    <Compile Include="NativeMethods\MinMaxInfo.cs" />
-    <Compile Include="NativeMethods\Point.cs" />
+    <Compile Include="NativeMethods\Structures\MinMaxInfo.cs" />
+    <Compile Include="NativeMethods\Structures\Point.cs" />
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UxTheme.cs" />
     <Compile Include="Views\Controls\Panels\Panel.cs">
@@ -103,13 +102,12 @@
     <Compile Include="Views\Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Models\Operations\Images.cs" />
     <Compile Include="Models\Operations\SelectedIndices.cs" />
-    <Compile Include="Presenters\NotifyPresenter.cs" />
+    <Compile Include="Models\Notifications\NotifyPresenter.cs" />
     <Compile Include="Models\Notifications\NotifyStyle.cs" />
     <Compile Include="Models\Operations\Controls.cs" />
     <Compile Include="Models\Details\Graphics.cs" />
-    <Compile Include="Models\NullExpandableObjectConverter.cs" />
+    <Compile Include="Models\OnlyExpandableConverter.cs" />
     <Compile Include="Views\Forms\NotifyForm.cs">
       <SubType>Form</SubType>
     </Compile>

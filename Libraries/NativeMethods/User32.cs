@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// User32.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +40,7 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
         public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         /* ----------------------------------------------------------------- */
@@ -54,7 +52,7 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
         public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         /* ----------------------------------------------------------------- */
@@ -66,32 +64,8 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
+        [DllImport(LibName)]
         public static extern bool ReleaseCapture();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetWindowLong
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633584.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
-        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetWindowLong
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633591.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -102,21 +76,9 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
+        [DllImport(LibName)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
             int X, int Y, int cx, int cy, uint uFlags);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetSystemMetrics
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms724385.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
-        public static extern int GetSystemMetrics(int nIndex);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -127,7 +89,7 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
+        [DllImport(LibName)]
         public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
         /* ----------------------------------------------------------------- */
@@ -139,7 +101,7 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
+        [DllImport(LibName)]
         public static extern bool EnableMenuItem(IntPtr hMenu,
             uint uIDEnableItem, uint uEnable);
 
@@ -152,8 +114,12 @@ namespace Cube.Forms.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport("user32.dll")]
+        [DllImport(LibName)]
         public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags,
             int x, int y, IntPtr hwnd, IntPtr lptpm);
+
+        #region Fields
+        const string LibName = "user32.dll";
+        #endregion
     }
 }

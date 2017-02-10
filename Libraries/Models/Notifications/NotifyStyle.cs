@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NotifyStyle.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TypeConverter(typeof(NullExpandableObjectConverter))]
+    [TypeConverter(typeof(OnlyExpandableConverter))]
     public class NotifyStyle
     {
         #region Properties

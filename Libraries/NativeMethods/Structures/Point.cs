@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// MinMaxInfo.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,20 +21,17 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MINMAXINFO
+    /// POINT
     /// 
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms632605.aspx
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162805.aspx
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [StructLayout(LayoutKind.Sequential)]
-    internal struct MINMAXINFO
+    internal struct POINT
     {
-        public POINT ptReserved;
-        public POINT ptMaxSize;
-        public POINT ptMaxPosition;
-        public POINT ptMinTrackSize;
-        public POINT ptMaxTrackSize;
+        public int x;
+        public int y;
     }
 }

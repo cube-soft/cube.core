@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// Form.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,15 +100,179 @@ namespace Cube.Forms
             set
             {
                 if (_bootstrap == value) return;
-                if (_bootstrap != null) _bootstrap.Activated -= Bootstrap_Activated;
+                if (_bootstrap != null) _bootstrap.Received -= Bootstrap_Received;
                 _bootstrap = value;
                 if (_bootstrap != null)
                 {
-                    _bootstrap.Activated -= Bootstrap_Activated;
-                    _bootstrap.Activated += Bootstrap_Activated;
+                    _bootstrap.Received -= Bootstrap_Received;
+                    _bootstrap.Received += Bootstrap_Received;
                 }
             }
         }
+
+        #endregion
+
+        #region Events
+
+        #region Showing
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Showing
+        /// 
+        /// <summary>
+        /// フォームが表示される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event CancelEventHandler Showing;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnShowing
+        /// 
+        /// <summary>
+        /// Showing イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnShowing(CancelEventArgs e) => Showing?.Invoke(this, e);
+
+        #endregion
+
+        #region Hiding
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Hiding
+        /// 
+        /// <summary>
+        /// フォームが非表示になる直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event CancelEventHandler Hiding;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnHiding
+        /// 
+        /// <summary>
+        /// Hiding イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnHiding(CancelEventArgs e) => Hiding?.Invoke(this, e);
+
+        #endregion
+
+        #region Hidden
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Hidden
+        /// 
+        /// <summary>
+        /// フォームが非表示なった直後に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler Hidden;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnHidden
+        /// 
+        /// <summary>
+        /// Hidden イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnHidden(EventArgs e) => Hidden?.Invoke(this, e);
+
+        #endregion
+
+        #region Received
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Received
+        ///
+        /// <summary>
+        /// 他のプロセスからデータを受信した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<ValueEventArgs<object>> Received;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReceived
+        ///
+        /// <summary>
+        /// Received イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReceived(ValueEventArgs<object> e) => Received?.Invoke(this, e);
+
+        #endregion
+
+        #region DpiChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        ///
+        /// <summary>
+        /// DPI の値が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<ValueEventArgs<double>> DpiChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDpiChanged
+        ///
+        /// <summary>
+        /// DpiChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnDpiChanged(ValueEventArgs<double> e) => DpiChanged?.Invoke(this, e);
+
+        #endregion
+
+        #region NcHitTest
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NcHitTest
+        ///
+        /// <summary>
+        /// マウスのヒットテスト時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnNcHitTest
+        ///
+        /// <summary>
+        /// NcHitTest イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
+        {
+            if (NcHitTest != null) NcHitTest(this, e);
+            else e.Cancel = true;
+        }
+
+        #endregion
 
         #endregion
 
@@ -142,154 +304,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Showing
-        /// 
-        /// <summary>
-        /// フォームが表示される直前に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event CancelEventHandler Showing;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Hiding
-        /// 
-        /// <summary>
-        /// フォームが非表示になる直前に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event CancelEventHandler Hiding;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Hidden
-        /// 
-        /// <summary>
-        /// フォームが非表示なった直後に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler Hidden;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Received
-        ///
-        /// <summary>
-        /// 他のプロセスからデータを受信した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<object>> Received;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DpiChanged
-        ///
-        /// <summary>
-        /// DPI の値が変化した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<double>> DpiChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NcHitTest
-        ///
-        /// <summary>
-        /// マウスのヒットテスト時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnShowing
-        /// 
-        /// <summary>
-        /// Showing イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnShowing(CancelEventArgs e)
-            => Showing?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnHiding
-        /// 
-        /// <summary>
-        /// Hiding イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnHiding(CancelEventArgs e)
-            => Hiding?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnHidden
-        /// 
-        /// <summary>
-        /// Hidden イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnHidden(EventArgs e)
-            => Hidden?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnReceived
-        ///
-        /// <summary>
-        /// Received イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(ValueEventArgs<object> e)
-            => Received?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDpiChanged
-        ///
-        /// <summary>
-        /// DpiChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnDpiChanged(ValueEventArgs<double> e)
-            => DpiChanged?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnNcHitTest
-        ///
-        /// <summary>
-        /// NcHitTest イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
-        {
-            if (NcHitTest != null) NcHitTest(this, e);
-            else e.Cancel = true;
-        }
-
-        #endregion
+        #region Implementations
 
         #region Override methods
 
@@ -346,22 +361,26 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// Bootstrap_Received
         /// 
         /// <summary>
-        /// 他プロセスからアクティブ化時に実行されるハンドラです。
+        /// 他プロセスからメッセージを受信（アクティブ化）した時に実行
+        /// されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Bootstrap_Activated(object sender, EventArgs e)
+        private void Bootstrap_Received(object sender, ValueEventArgs<object> e)
         {
-            if (InvokeRequired) Invoke(new Action(() => Bootstrap_Activated(sender, e)));
+            if (InvokeRequired) Invoke(new Action(() => Bootstrap_Received(sender, e)));
             else
             {
                 Show();
+
                 var tmp = TopMost;
                 TopMost = true;
                 TopMost = tmp;
+
+                OnReceived(e);
             }
         }
 
@@ -424,6 +443,8 @@ namespace Cube.Forms
         #region Fields
         private double _dpi = 0.0;
         private Cube.Processes.Bootstrap _bootstrap = null;
+        #endregion
+
         #endregion
     }
 }

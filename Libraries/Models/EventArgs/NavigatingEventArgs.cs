@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NavigatingEventArgs.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,6 +72,53 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public string Frame { get; private set; }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NavigateErrorEventArgs
+    /// 
+    /// <summary>
+    /// ウェブブラウザにおいて、移動中にエラーが発生した時の引数を保持する
+    /// ためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class NavigatingErrorEventArgs : NavigatingEventArgs
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NavigatingErrorEventArgs
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NavigatingErrorEventArgs(string url, string frame, int code)
+            : base(url, frame)
+        {
+            StatusCode = code;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StatusCode
+        /// 
+        /// <summary>
+        /// ステータスコードを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int StatusCode { get; }
 
         #endregion
     }

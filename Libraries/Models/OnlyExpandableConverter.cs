@@ -1,7 +1,5 @@
 ﻿/* ------------------------------------------------------------------------- */
 ///
-/// NullExpandableObjectConverter.cs
-/// 
 /// Copyright (c) 2010 CubeSoft, Inc.
 /// 
 /// Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +22,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NullExpandableObjectConverter
+    /// OnlyExpandableConverter
     /// 
     /// <summary>
     /// プロパティエディタにおいて、ネストされたプロパティを展開可能に
@@ -38,7 +36,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class NullExpandableObjectConverter : ExpandableObjectConverter
+    public class OnlyExpandableConverter : ExpandableObjectConverter
     {
         /* ----------------------------------------------------------------- */
         ///
