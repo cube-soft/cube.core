@@ -15,27 +15,6 @@
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
@@ -61,27 +40,27 @@
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationManifest>App.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cube.Core">
-      <HintPath>..\..\lib\net45\Cube.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Cube.Core">
+      <HintPath>..\..\lib\net45\Cube.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Views\Controls\CustomCaptionControl.cs">
@@ -96,54 +75,55 @@
     <Compile Include="Views\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
-      <DependentUpon>CustomCaptionControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="App.config" />
-    <None Include="App.manifest" />
-    <None Include="Packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+     <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
+      <DependentUpon>CustomCaptionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
-    <None Include="Resources\Logos\CubeLarge.png" />
-    <None Include="Resources\Buttons\Refresh.png" />
-    <None Include="Resources\Buttons\NormalizeGrey.png" />
-    <None Include="Resources\Buttons\Normalize.png" />
-    <None Include="Resources\Buttons\MinimizeGrey.png" />
-    <None Include="Resources\Buttons\Minimize.png" />
-    <None Include="Resources\Buttons\MaximizeGrey.png" />
-    <None Include="Resources\Buttons\Maximize.png" />
-    <None Include="Resources\Buttons\CloseGrey.png" />
+    <None Include="App.config" />
+    <None Include="App.manifest" />
+    <None Include="Packages.config" />
     <None Include="Resources\Buttons\Close.png" />
-    <None Include="Resources\Logos\Title.png" />
-    <None Include="Resources\Logos\CubeSmall.png" />
-    <None Include="Resources\Logos\CubePdf.png" />
-    <None Include="Resources\Logos\CubeIce.png" />
+    <None Include="Resources\Buttons\CloseGrey.png" />
+    <None Include="Resources\Buttons\Normalize.png" />
+    <None Include="Resources\Buttons\NormalizeGrey.png" />
+    <None Include="Resources\Buttons\Maximize.png" />
+    <None Include="Resources\Buttons\MaximizeGrey.png" />
+    <None Include="Resources\Buttons\Minimize.png" />
+    <None Include="Resources\Buttons\MinimizeGrey.png" />
+    <None Include="Resources\Buttons\Refresh.png" />
     <None Include="Resources\Logos\Cube.png" />
+    <None Include="Resources\Logos\CubeIce.png" />
+    <None Include="Resources\Logos\CubeLarge.png" />
+    <None Include="Resources\Logos\CubePdf.png" />
+    <None Include="Resources\Logos\CubeSmall.png" />
+    <None Include="Resources\Logos\Title.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.Forms.csproj">
