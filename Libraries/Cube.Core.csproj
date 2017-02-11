@@ -42,6 +42,9 @@
       <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Cube.Backwards">
+      <HintPath>..\..\lib\net35\Cube.Backwards.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -60,11 +63,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Missing\IProgress.cs" />
-    <Compile Include="Missing\IReadOnlyCollection.cs" />
-    <Compile Include="Missing\Progress.cs" />
-    <Compile Include="Missing\Streams.cs" />
-    <Compile Include="Missing\Task35.cs" />
     <Compile Include="Conversions\ByteFormat.cs" />
     <Compile Include="Conversions\UnixTime.cs" />
     <Compile Include="Conversions\UriQuery.cs" />
