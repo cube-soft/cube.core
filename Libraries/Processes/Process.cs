@@ -230,7 +230,9 @@ namespace Cube.Processes
         /// 
         /* ----------------------------------------------------------------- */
         private static void Win32Error(string message)
-            => throw new Win32Exception(Marshal.GetLastWin32Error(), message);
+        {
+            throw new Win32Exception(Marshal.GetLastWin32Error(), message);
+        }
 
         #endregion
     }
