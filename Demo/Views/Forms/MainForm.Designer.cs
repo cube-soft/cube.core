@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.LayoutPanel = new Cube.Forms.TableLayoutPanel();
+            this.HeaderCaptionControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.Separator = new Cube.Forms.PictureBox();
             this.ContentsControl = new Cube.Forms.FlowLayoutPanel();
             this.DemoButton1 = new Cube.Forms.FlatButton();
@@ -38,7 +39,6 @@
             this.DemoButton4 = new Cube.Forms.FlatButton();
             this.VersionButton = new Cube.Forms.FlatButton();
             this.FooterControl = new Cube.Forms.StatusStrip();
-            this.HeaderCaptionControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.LayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).BeginInit();
             this.ContentsControl.SuspendLayout();
@@ -62,6 +62,21 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.LayoutPanel.Size = new System.Drawing.Size(350, 280);
             this.LayoutPanel.TabIndex = 0;
+            // 
+            // HeaderCaptionControl
+            // 
+            this.HeaderCaptionControl.Active = true;
+            this.HeaderCaptionControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.HeaderCaptionControl.CloseBox = true;
+            this.HeaderCaptionControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HeaderCaptionControl.Location = new System.Drawing.Point(0, 0);
+            this.HeaderCaptionControl.Margin = new System.Windows.Forms.Padding(0);
+            this.HeaderCaptionControl.MaximizeBox = true;
+            this.HeaderCaptionControl.MinimizeBox = true;
+            this.HeaderCaptionControl.Name = "HeaderCaptionControl";
+            this.HeaderCaptionControl.Size = new System.Drawing.Size(350, 30);
+            this.HeaderCaptionControl.TabIndex = 0;
+            this.HeaderCaptionControl.WindowState = System.Windows.Forms.FormWindowState.Normal;
             // 
             // Separator
             // 
@@ -227,27 +242,13 @@
             this.FooterControl.TabIndex = 3;
             this.FooterControl.Text = "statusStrip1";
             // 
-            // HeaderCaptionControl
-            // 
-            this.HeaderCaptionControl.Active = true;
-            this.HeaderCaptionControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.HeaderCaptionControl.CloseBox = true;
-            this.HeaderCaptionControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HeaderCaptionControl.Location = new System.Drawing.Point(0, 0);
-            this.HeaderCaptionControl.Margin = new System.Windows.Forms.Padding(0);
-            this.HeaderCaptionControl.MaximizeBox = true;
-            this.HeaderCaptionControl.MinimizeBox = true;
-            this.HeaderCaptionControl.Name = "HeaderCaptionControl";
-            this.HeaderCaptionControl.Size = new System.Drawing.Size(350, 30);
-            this.HeaderCaptionControl.TabIndex = 0;
-            this.HeaderCaptionControl.WindowState = System.Windows.Forms.FormWindowState.Normal;
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(350, 280);
             this.Controls.Add(this.LayoutPanel);
+            this.CornerRadius = 5;
             this.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(0, 0);

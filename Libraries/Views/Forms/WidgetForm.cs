@@ -119,6 +119,28 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CornerRadius
+        /// 
+        /// <summary>
+        /// 四隅の角の丸みを表す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(0)]
+        public int CornerRadius
+        {
+            get { return _cornerRadius; }
+            set
+            {
+                if (_cornerRadius == value) return;
+                _cornerRadius = value;
+                Region = CreateNewRegion();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SystemMenu
         /// 
         /// <summary>
@@ -354,6 +376,25 @@ namespace Cube.Forms
             e.Cancel = e.Result == Position.Caption ? false :
                        e.Result == Position.NoWhere ? true  :
                        (!Sizable || !normal);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnResize
+        /// 
+        /// <summary>
+        /// リサイズ時に実行されます。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// サイズ変更用のマウスカーソルを描画するかどうかを決定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (Region != null) Region = CreateNewRegion();
         }
 
         /* ----------------------------------------------------------------- */
@@ -677,11 +718,26 @@ namespace Cube.Forms
             caption.Close    -= OnClose;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateNewRegion
+        ///
+        /// <summary>
+        /// Region オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Region CreateNewRegion()
+            => Region.FromHrgn(Gdi32.NativeMethods.CreateRoundRectRgn(
+                0, 0, Width, Height, CornerRadius, CornerRadius
+            ));
+
         #endregion
 
         #region Fields
         private bool _sizable = true;
         private bool _fakeMode = false;
+        private int _cornerRadius = 0;
         private CaptionControl _caption = null;
         #endregion
     }
