@@ -65,7 +65,7 @@ namespace Cube.Tests
         {
             var actual = 0;
             10.Times(i => actual += i);
-            Assert.That(actual, Is.EqualTo(55));
+            Assert.That(actual, Is.EqualTo(45));
         }
     }
 }
