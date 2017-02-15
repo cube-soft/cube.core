@@ -15,75 +15,57 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using NUnit.Framework;
-using IoEx = System.IO;
+using Cube.Numeric;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHandlerTest
+    /// NumericTest
     /// 
     /// <summary>
-    /// FileHandler のテスト用クラスです。
+    /// Cube.Numeric.Operations のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class FileHandlerTest : FileResource
+    class NumericTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Move_Overwrite
+        /// Times
         ///
         /// <summary>
-        /// 上書き移動のテストを実行します。
+        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
         /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Sample.txt")]
-        public void Move_Overwrite(string filename)
-            => Assert.DoesNotThrow(() =>
-        {
-            var op = new Cube.FileSystem.FileHandler();
-            op.Failed += (s, e) => Assert.Fail($"{e.Key}: {e.Value}");
-
-            var name = IoEx.Path.GetFileNameWithoutExtension(filename);
-            var ext  = IoEx.Path.GetExtension(filename);
-            var src  = IoEx.Path.Combine(Results, filename);
-            var dest = IoEx.Path.Combine(Results, $"{name}-Move{ext}");
-
-            op.Copy(IoEx.Path.Combine(Examples, filename), src, false);
-            op.Copy(src, dest, false);
-            op.Move(src, dest, true);
-        });
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Move_Failed
-        ///
-        /// <summary>
-        /// 移動操作に失敗するテストを実行します。
-        /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Move_Failed()
+        public void Times()
         {
-            var failed = false;
-            var op = new Cube.FileSystem.FileHandler();
-            op.Failed += (s, e) =>
-            {
-                failed   = true;
-                e.Cancel = true;
-            };
+            var actual = 0;
+            10.Times(() => actual++);
+            Assert.That(actual, Is.EqualTo(10));
+        }
 
-            var src  = IoEx.Path.Combine(Results, "FileNotFound.txt");
-            var dest = IoEx.Path.Combine(Results, "Moved.txt");
-            op.Move(src, dest, true);
-
-            Assert.That(failed, Is.True);
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Times_WithIndex
+        ///
+        /// <summary>
+        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Times_WithIndex()
+        {
+            var actual = 0;
+            10.Times(i => actual += i);
+            Assert.That(actual, Is.EqualTo(55));
         }
     }
 }

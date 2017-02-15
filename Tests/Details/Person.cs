@@ -48,8 +48,6 @@ namespace Cube.Tests
     [DataContract]
     internal class Address
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// Type
@@ -73,8 +71,6 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [DataMember]
         public string Value { get; set; }
-
-        #endregion
     }
 
     /* ----------------------------------------------------------------- */
@@ -89,8 +85,6 @@ namespace Cube.Tests
     [DataContract]
     internal class Person
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// Identification
@@ -197,7 +191,5 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         public string Secret { get; set; } = "secret message";
-
-        #endregion
     }
 }

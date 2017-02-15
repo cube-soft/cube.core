@@ -56,10 +56,7 @@ namespace Cube.Tests
             version.Prefix = "begin-";
             version.Suffix = "-end";
 
-            Assert.That(
-                version.ToString(),
-                Is.EqualTo($"begin-{major}.{minor}-end ({arch})")
-            );
+            Assert.That(version.ToString(), Is.EqualTo($"begin-{major}.{minor}-end ({arch})"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -79,15 +76,10 @@ namespace Cube.Tests
         [TestCase("v1.0.0.0-p21")]
         [TestCase("p21-v1.0.0.0-suffix")]
         public void Parse_DoesNotThrow(string src)
+            => Assert.DoesNotThrow(() =>
         {
-            Assert.DoesNotThrow(() =>
-            {
-                var version = new SoftwareVersion(src);
-                Assert.That(
-                    version.ToString(false),
-                    Is.EqualTo(src)
-                );
-            });
-        }
+            var version = new SoftwareVersion(src);
+            Assert.That(version.ToString(false), Is.EqualTo(src));
+        });
     }
 }

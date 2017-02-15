@@ -23,10 +23,10 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericsTest
+    /// LogTest
     /// 
     /// <summary>
-    /// 拡張メソッドのテスト用クラスです。
+    /// Cube.Log.Oprations のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -45,9 +45,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Debug()
-        {
-            Assert.DoesNotThrow(() => this.LogDebug("Debug"));
-        }
+            => Assert.DoesNotThrow(() => this.LogDebug("Debug"));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -60,9 +58,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Info()
-        {
-            Assert.DoesNotThrow(() => this.LogInfo("Info"));
-        }
+            => Assert.DoesNotThrow(() => this.LogInfo("Info"));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -75,9 +71,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Warn()
-        {
-            Assert.DoesNotThrow(() => this.LogWarn("Warn"));
-        }
+            => Assert.DoesNotThrow(() => this.LogWarn("Warn"));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,9 +84,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Error()
-        {
-            Assert.DoesNotThrow(() => this.LogError("Error"));
-        }
+            => Assert.DoesNotThrow(() => this.LogError("Error"));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -105,9 +97,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Fatal()
-        {
-            Assert.DoesNotThrow(() => this.LogFatal("Fatal"));
-        }
+            => Assert.DoesNotThrow(() => this.LogFatal("Fatal"));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -120,11 +110,9 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Exception()
-        {
-            Assert.DoesNotThrow(() => this.LogException(() =>
+            => Assert.DoesNotThrow(() => this.LogException(() =>
             {
                 throw new ArgumentException("dummy exception");
             }));
-        }
     }
 }

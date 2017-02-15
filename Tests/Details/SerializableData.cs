@@ -31,8 +31,6 @@ namespace Cube.Tests
     [Serializable]
     internal class SerializableData
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// Identification
@@ -87,7 +85,5 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         public bool Reserved { get; set; } = false;
-
-        #endregion
     }
 }

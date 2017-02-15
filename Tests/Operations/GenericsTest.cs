@@ -43,7 +43,8 @@ namespace Cube.Tests
         /// Copy_Serializable
         ///
         /// <summary>
-        /// Serializable 属性が付与されているオブジェクトのコピーをテストします。
+        /// Serializable 属性が付与されているオブジェクトのコピーを
+        /// テストします。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -70,7 +71,8 @@ namespace Cube.Tests
         /// Copy_NonSerializable
         ///
         /// <summary>
-        /// Serializable 属性が付与されていないオブジェクトのコピーをテストします。
+        /// Serializable 属性が付与されていないオブジェクトのコピーを
+        /// テストします。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -107,7 +109,8 @@ namespace Cube.Tests
         /// Modify_Integer_NotEqual
         ///
         /// <summary>
-        /// コピー後、コピー元オブジェクトの int の値を変更するテストを行います。
+        /// コピー後、コピー元オブジェクトの int の値を変更するテストを
+        /// 行います。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -119,10 +122,7 @@ namespace Cube.Tests
             var copy = src.Copy();
             src.Identification = 20;
 
-            Assert.That(
-                copy.Identification,
-                Is.Not.EqualTo(src.Identification)
-            );
+            Assert.That(copy.Identification, Is.Not.EqualTo(src.Identification));
         }
 
         /* ----------------------------------------------------------------- */
@@ -130,7 +130,8 @@ namespace Cube.Tests
         /// Modify_String_NotEqual
         ///
         /// <summary>
-        /// コピー後、コピー元オブジェクトの string の値を変更するテストを行います。
+        /// コピー後、コピー元オブジェクトの string の値を変更するテストを
+        /// 行います。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -142,10 +143,7 @@ namespace Cube.Tests
             var copy = src.Copy();
             src.Name = "Re-assign";
 
-            Assert.That(
-                copy.Name,
-                Is.Not.EqualTo(src.Name)
-            );
+            Assert.That(copy.Name, Is.Not.EqualTo(src.Name));
         }
 
         /* ----------------------------------------------------------------- */
@@ -153,7 +151,8 @@ namespace Cube.Tests
         /// Modify_Reference_Equal
         ///
         /// <summary>
-        /// コピー後、コピー元オブジェクトのクラスの値を変更するテストを行います。
+        /// コピー後、コピー元オブジェクトのクラスの値を変更するテストを
+        /// 行います。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -165,10 +164,7 @@ namespace Cube.Tests
             var copy = src.Copy();
             src.Phone.Value = "98-7654-3210";
 
-            Assert.That(
-                copy.Phone.Value,
-                Is.EqualTo(src.Phone.Value)
-            );
+            Assert.That(copy.Phone.Value, Is.EqualTo(src.Phone.Value));
         }
 
         #endregion

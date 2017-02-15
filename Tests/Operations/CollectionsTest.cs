@@ -15,7 +15,6 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Cube.Collections;
@@ -46,16 +45,11 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(9, 10)]
-        [TestCase(0,  1)]
-        [TestCase(0,  0)]
-        public void LastIndex(int expected, int count)
-        {
-            Assert.That(
-                Create(count).LastIndex(),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(10, ExpectedResult = 9)]
+        [TestCase( 1, ExpectedResult = 0)]
+        [TestCase( 0, ExpectedResult = 0)]
+        public int LastIndex(int count)
+            => Create(count).LastIndex();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -66,14 +60,11 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void LastIndex_Null()
+        [TestCase(ExpectedResult = 0)]
+        public int LastIndex_Null()
         {
             IList<int> collection = null;
-            Assert.That(
-                collection.LastIndex(),
-                Is.EqualTo(0)
-            );
+            return collection.LastIndex();
         }
 
         /* ----------------------------------------------------------------- */
@@ -81,42 +72,51 @@ namespace Cube.Tests
         /// Clamp_Null
         /// 
         /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めるテストを
-        /// 行います。
+        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸める
+        /// テストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(5,   5, 10)]
-        [TestCase(9,  20, 10)]
-        [TestCase(0,  -1, 10)]
-        [TestCase(0,  10,  0)]
-        [TestCase(0,  -1,  0)]
-        public void Clamp(int expected, int index, int count)
-        {
-            Assert.That(
-                Create(count).Clamp(index),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(10,  5, ExpectedResult = 5)]
+        [TestCase(10, 20, ExpectedResult = 9)]
+        [TestCase(10, -1, ExpectedResult = 0)]
+        [TestCase( 0, 10, ExpectedResult = 0)]
+        [TestCase( 0, -1, ExpectedResult = 0)]
+        public int Clamp(int count, int index)
+            => Create(count).Clamp(index);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Clamp_Null
         /// 
         /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めるテストを
+        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸める
+        /// テストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(ExpectedResult = 0)]
+        public int Clamp_Null()
+        {
+            IList<int> collection = null;
+            return collection.Clamp(100);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToObservable
+        /// 
+        /// <summary>
+        /// IList(int) を ObservableCollection(int) に変換するテストを
         /// 行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Clamp_Null()
+        [TestCase(100)]
+        public void ToObservable(int count)
         {
-            IList<int> collection = null;
-            Assert.That(
-                collection.Clamp(100),
-                Is.EqualTo(0)
-            );
+            var src = Create(count);
+            Assert.That(src.ToObservable(), Is.EquivalentTo(src));
         }
 
         #endregion

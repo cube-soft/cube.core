@@ -90,7 +90,7 @@ namespace Cube.Tests
 
         #endregion
 
-        #region Other private methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -130,10 +130,10 @@ namespace Cube.Tests
             }
         }
 
-        #endregion
-
         #region Fields
         private string _folder = string.Empty;
+        #endregion
+
         #endregion
     }
 }

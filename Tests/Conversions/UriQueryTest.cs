@@ -49,12 +49,10 @@ namespace Cube.Tests
         [TestCase("int", 5)]
         [TestCase("double", 3.14)]
         public void With_Value<T>(string key, T value)
-        {
-            Assert.That(
+            => Assert.That(
                 Create().With(key, value).ToString,
                 Is.EqualTo($"{Create()}?{key}={value}")
             );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,13 +65,10 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
         public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
-        {
-            var time = new DateTime(y, m, d, hh, mm, ss);
-            Assert.That(
-                Create().With(time).ToString(),
+            => Assert.That(
+                Create().With(new DateTime(y, m, d, hh, mm, ss)).ToString(),
                 Is.EqualTo($"{Create()}?t={unix}")
             );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,12 +81,10 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void With_MultiQuery()
-        {
-            Assert.That(
+            => Assert.That(
                 Create().With("key1", "value1").With("key2", "value2").ToString(),
                 Is.EqualTo($"{Create()}?key1=value1&key2=value2")
             );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -104,8 +97,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void With_SoftwareVersion()
-        {
-            Assert.That(
+            => Assert.That(
                 Create().With(new SoftwareVersion
                 {
                     Number = new Version(1, 2, 0, 0),
@@ -114,7 +106,6 @@ namespace Cube.Tests
                 }).ToString(),
                 Is.EqualTo($"{Create()}?ver=1.2beta")
             );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -127,19 +118,17 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void With_Utm()
-        {
-            Assert.That(
+            => Assert.That(
                 Create().With(new UtmQuery
                 {
                     Source   = "cube",
                     Medium   = "tests",
                     Campaign = "january",
                     Term     = "dummy",
-                    Content  = "content"
+                    Content = "content"
                 }).ToString(),
                 Is.EqualTo($"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content")
             );
-        }
 
         #endregion
 
