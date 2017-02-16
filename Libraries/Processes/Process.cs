@@ -49,11 +49,7 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string program, string[] arguments)
-            => StartAsActiveUser(
-                arguments == null ?
-                $"\"{program}\"" :
-                arguments.Aggregate($"\"{program}\"", (s, x) => s + " " + $"\"{x}\"")
-            );
+            => StartAsActiveUser(CreateCmdLine(program, arguments));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -68,14 +64,52 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string cmdline)
+            => StartAs(GetActiveSessionToken(), cmdline);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StartAsActiveUser
+        ///
+        /// <summary>
+        /// 指定されたトークンの権限でプログラムを実行します。
+        /// </summary>
+        /// 
+        /// <param name="token">実行ユーザのトークン</param>
+        /// <param name="program">実行プログラムのパス</param>
+        /// <param name="arguments">プログラムの引数</param>
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static System.Diagnostics.Process StartAs(IntPtr token,
+            string program, string[] arguments)
+            => StartAs(token, CreateCmdLine(program, arguments));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StartAsActiveUser
+        ///
+        /// <summary>
+        /// 指定されたトークンの権限でプログラムを実行します。
+        /// </summary>
+        /// 
+        /// <param name="token">実行ユーザのトークン</param>
+        /// <param name="cmdline">実行するコマンドライン</param>
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static System.Diagnostics.Process StartAs(IntPtr token, string cmdline)
         {
-            var token = GetActiveSessionToken();
-            if (token == IntPtr.Zero) throw new ArgumentException("PrimaryToken");
+            var env = IntPtr.Zero;
 
-            var env = GetEnvironmentBlock(token);
-            if (env == IntPtr.Zero) throw new ArgumentException("EnvironmentBlock");
+            try
+            {
+                if (token == IntPtr.Zero) throw new ArgumentException("PrimaryToken");
 
-            try { return CreateProcessAsUser(cmdline, token, env); }
+                env = GetEnvironmentBlock(token);
+                if (env == IntPtr.Zero) throw new ArgumentException("EnvironmentBlock");
+
+                return CreateProcessAsUser(cmdline, token, env);
+            }
             finally
             {
                 if (env != IntPtr.Zero) UserEnv.NativeMethods.DestroyEnvironmentBlock(env);
@@ -86,6 +120,20 @@ namespace Cube.Processes
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateCmdLine
+        ///
+        /// <summary>
+        /// コマンドライン用の文字列を生成します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static string CreateCmdLine(string program, string[] arguments)
+            => arguments == null ?
+            $"\"{program}\"" :
+            arguments.Aggregate($"\"{program}\"", (s, x) => s + " " + $"\"{x}\"");
 
         /* ----------------------------------------------------------------- */
         ///
