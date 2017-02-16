@@ -73,6 +73,7 @@
     <Compile Include="NativeMethods\Kernel32.cs" />
     <Compile Include="NativeMethods\SetupApi.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
+    <Compile Include="NativeMethods\Structures\WtsSessionInfo.cs" />
     <Compile Include="NativeMethods\UserEnv.cs" />
     <Compile Include="NativeMethods\WinMM.cs" />
     <Compile Include="NativeMethods\WtsApi32.cs" />

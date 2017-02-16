@@ -187,6 +187,45 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
+        /// GetActiveSessionId
+        ///
+        /// <summary>
+        /// 現在ログオン中のユーザに対応するセッション ID を取得します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static uint GetActiveSessionId()
+        {
+            var ptr = IntPtr.Zero;
+            var count = 0u;
+
+            try
+            {
+                if (!WtsApi32.NativeMethods.WTSEnumerateSessions(
+                    (IntPtr)0, // WTS_CURRENT_SERVER_HANDLE
+                    0,
+                    1,
+                    ref ptr,
+                    ref count
+                )) Win32Error("WTSEnumerateSessions");
+
+                for (var i = 0; i < count; ++i)
+                {
+                    var info = (WTS_SESSION_INFO)Marshal.PtrToStructure(
+                        ptr + i * Marshal.SizeOf(typeof(WTS_SESSION_INFO)),
+                        typeof(WTS_SESSION_INFO)
+                    );
+
+                    if (info.State == WTS_CONNECTSTATE_CLASS.WTSActive) return info.SessionID;
+                }
+
+                throw new ArgumentException("Active session not found");
+            }
+            finally { if (ptr != IntPtr.Zero) WtsApi32.NativeMethods.WTSFreeMemory(ptr); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetActiveSessionToken
         ///
         /// <summary>
@@ -196,7 +235,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         private static IntPtr GetActiveSessionToken()
         {
-            var id = Kernel32.NativeMethods.WTSGetActiveConsoleSessionId();
+            var id = GetActiveSessionId();
             var token = IntPtr.Zero;
 
             if (!WtsApi32.NativeMethods.WTSQueryUserToken(id, out token)) Win32Error("WTSQueryUserToken");
