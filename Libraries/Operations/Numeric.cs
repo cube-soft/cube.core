@@ -37,11 +37,31 @@ namespace Cube.Numeric
         /// <summary>
         /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
+        /// 
+        /// <param name="n">繰り返し回数</param>
+        /// <param name="action">操作内容</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Times(this int n, Action action)
         {
             for (var i = 0; i < n; ++i) action();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Times
+        ///
+        /// <summary>
+        /// 指定回数だけ同じ操作を繰り返します。
+        /// </summary>
+        /// 
+        /// <param name="n">繰り返し回数</param>
+        /// <param name="action">操作内容</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Times(this int n, Action<int> action)
+        {
+            for (var i = 0; i < n; ++i) action(i);
         }
     }
 }

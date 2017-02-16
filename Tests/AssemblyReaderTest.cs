@@ -50,103 +50,48 @@ namespace Cube.Tests
         #region Properties
 
         [Test]
-        public void Location_ExecutingAssembly_IsNotNullOrEmpty()
-        {
-            Assert.That(
-                Create().Location,
-                Is.Not.Null.Or.Empty
-            );
-        }
+        public void Assembly_Location_IsNotNullOrEmpty()
+            => Assert.That(Create().Location, Is.Not.Null.Or.Empty);
 
-        [TestCase("Cube.Core testing project")]
-        public void Title_ExecutingAssembly(string expected)
-        {
-            Assert.That(
-                Create().Title,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "Cube.Core testing project")]
+        public string Assembly_Title()
+            => Create().Title;
 
-        [TestCase("NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
-        public void Description_ExecutingAssembly(string expected)
-        {
-            Assert.That(
-                Create().Description,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
+        public string Assembly_Description()
+            => Create().Description;
 
-        [TestCase("CubeSoft")]
-        public void Company_ExecutingAssembly(string expected)
-        {
-            Assert.That(
-                Create().Company,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "CubeSoft")]
+        public string Assembly_Company()
+            => Create().Company;
 
-        [TestCase("Cube.Core.Tests")]
-        public void Product_ExecutingAssembly(string expected)
-        {
-            Assert.That(
-                Create().Product,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "Cube.Core.Tests")]
+        public string Assembly_Product()
+            => Create().Product;
 
-        [TestCase("Copyright © 2010 CubeSoft, Inc.")]
-        public void Copyright_ExecutingAssembly(string expected)
-        {
-            Assert.That(
-                Create().Copyright,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "Copyright © 2010 CubeSoft, Inc.")]
+        public string Assembly_Copyright()
+            => Create().Copyright;
 
-        [TestCase("ここに商標を設定します。")]
-        public void Trademark_ExecutingAssembly(string expected)
-        {
-            Assert.That(
-                Create().Trademark,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "ここに商標を設定します。")]
+        public string Assembly_Trademark()
+            => Create().Trademark;
 
         [Test]
-        public void Configuration_ExecutingAssembly_IsNullOrEmpty()
-        {
-            Assert.That(
-                Create().Configuration,
-                Is.Null.Or.Empty
-            );
-        }
+        public void Assembly_Configuration_IsNullOrEmpty()
+            => Assert.That(Create().Configuration, Is.Null.Or.Empty);
 
         [Test]
-        public void Culture_ExecutingAssembly_IsNullOrEmpty()
-        {
-            Assert.That(
-                Create().Culture,
-                Is.Null.Or.Empty
-            );
-        }
+        public void Assembly_Culture_IsNullOrEmpty()
+            => Assert.That(Create().Culture, Is.Null.Or.Empty);
 
         [TestCase(1, 2, 0, 0)]
-        public void Version_ExecutingAssembly_IsAtLeast(int major, int minor, int build, int revision)
-        {
-            Assert.That(
-                Create().Version,
-                Is.AtLeast(new Version(major, minor, build, revision))
-            );
-        }
+        public void Assembly_Version_IsAtLeast(int major, int minor, int build, int revision)
+            => Assert.That(Create().Version, Is.AtLeast(new Version(major, minor, build, revision)));
 
         [TestCase(1, 2, 0, 0)]
-        public void FileVersion_ExecutingAssembly_IsAtLeast(int major, int minor, int build, int revision)
-        {
-            Assert.That(
-                Create().FileVersion,
-                Is.AtLeast(new Version(major, minor, build, revision))
-            );
-        }
+        public void Assembly_FileVersion_IsAtLeast(int major, int minor, int build, int revision)
+            => Assert.That(Create().FileVersion, Is.AtLeast(new Version(major, minor, build, revision)));
 
         #endregion
 

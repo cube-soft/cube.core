@@ -16,65 +16,56 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.InteropServices;
+using NUnit.Framework;
+using Cube.Numeric;
 
-namespace Cube.WtsApi32
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WtsApi32.NativeMethods
+    /// NumericTest
     /// 
     /// <summary>
-    /// wtsapi32.dll に定義された関数を宣言するためのクラスです。
+    /// Cube.Numeric.Operations のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
+    [Parallelizable]
+    [TestFixture]
+    class NumericTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// WTSEnumerateSessions
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383833.aspx
-        /// </summary>
+        /// Times
         ///
+        /// <summary>
+        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// </summary>
+        /// 
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool WTSEnumerateSessions(
-            IntPtr hServer,
-            uint Reserved,
-            uint Version,
-            ref IntPtr ppSessionInfo,
-            ref uint pSessionInfoCount
-        );
+        [Test]
+        public void Times()
+        {
+            var actual = 0;
+            10.Times(() => actual++);
+            Assert.That(actual, Is.EqualTo(10));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WTSQueryUserToken
-        /// 
+        /// Times_WithIndex
+        ///
         /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383840.aspx
+        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
         /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool WTSQueryUserToken(uint sessionId, out IntPtr token);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WTSFreeMemory
         /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383834.aspx
-        /// </summary>
-        ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern void WTSFreeMemory(IntPtr pMemory);
-
-        #region Fields
-        const string LibName = "wtsapi32.dll";
-        #endregion
+        [Test]
+        public void Times_WithIndex()
+        {
+            var actual = 0;
+            10.Times(i => actual += i);
+            Assert.That(actual, Is.EqualTo(45));
+        }
     }
 }

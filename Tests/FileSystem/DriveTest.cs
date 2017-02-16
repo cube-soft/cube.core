@@ -34,106 +34,47 @@ namespace Cube.Tests
     [TestFixture]
     class DriveTest
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Drives
-        ///
-        /// <summary>
-        /// ドライブ情報を取得するテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        #region Drives
+        #region Tests for Drive properties
 
         [TestCase(1)]
-        public void Drives_Length_IsAtLeast(int expected)
-        {
-            Assert.That(
-                Drives.Length,
-                Is.AtLeast(expected)
-            );
-        }
+        public void Drives_Length(int atleast)
+            => Assert.That(Drives.Length, Is.AtLeast(atleast));
 
-        [TestCase(0, 0)]
-        public void Drives_Index(int index, int expected)
-        {
-            Assert.That(
-                Drives[index].Index,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(0, ExpectedResult = 0)]
+        public uint Drive_Index(int index)
+            => Drives[index].Index;
 
-        [TestCase(0, "C:")]
-        public void Drives_Letter(int index, string expected)
-        {
-            Assert.That(
-                Drives[index].Letter,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(0, ExpectedResult = "C:")]
+        public string Drive_Letter(int index)
+            => Drives[index].Letter;
 
-        [TestCase(0, DriveType.HardDisk)]
-        public void Drives_Type(int index, DriveType expected)
-        {
-            Assert.That(
-                Drives[index].Type,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(0, ExpectedResult = DriveType.HardDisk)]
+        public DriveType Drive_Type(int index)
+            => Drives[index].Type;
 
-        [TestCase(0, "NTFS")]
-        public void Drives_Format(int index, string expected)
-        {
-            Assert.That(
-                Drives[index].Format,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(0, ExpectedResult = "NTFS")]
+        public string Drive_Format(int index)
+            => Drives[index].Format;
 
-        [TestCase(0, "IDE")]
-        public void Drives_Interface(int index, string expected)
-        {
-            Assert.That(
-                Drives[index].Interface,
-                Is.EqualTo(expected)
-            );
-        }
-
-        [TestCase(0)]
-        public void Drives_VolumeLabel_IsNotNullOrEmpty(int index)
-        {
-            Assert.That(
-                Drives[index].VolumeLabel,
-                Is.Not.Null.Or.Empty
-            );
-        }
-
-        [TestCase(0)]
-        public void Drives_Model_IsNotNullOrEmpty(int index)
-        {
-            Assert.That(
-                Drives[index].Model,
-                Is.Not.Null.Or.Empty
-            );
-        }
+        [TestCase(0, ExpectedResult = "IDE")]
+        public string Drive_Interface(int index)
+            => Drives[index].Interface;
 
         [TestCase(0, 100000000UL)]
-        public void Drives_Size_IsAtLeast(int index, ulong expected)
-        {
-            Assert.That(
-                Drives[index].Size,
-                Is.AtLeast(expected)
-            );
-        }
+        public void Drive_Size(int index, ulong atleast)
+            => Assert.That(Drives[index].Size, Is.AtLeast(atleast));
 
         [TestCase(0)]
-        public void Drives_FreeSpace_IsLessThanSize(int index)
-        {
-            Assert.That(
-                Drives[index].FreeSpace,
-                Is.LessThan(Drives[index].Size)
-            );
-        }
+        public void Drive_FreeSpace_IsLessThanSize(int index)
+            => Assert.That(Drives[index].FreeSpace, Is.LessThan(Drives[index].Size));
+
+        [TestCase(0)]
+        public void Drive_VolumeLabel_IsNotNullOrEmpty(int index)
+            => Assert.That(Drives[index].VolumeLabel, Is.Not.Null.Or.Empty);
+
+        [TestCase(0)]
+        public void Drive_Model_IsNotNullOrEmpty(int index)
+            => Assert.That(Drives[index].Model, Is.Not.Null.Or.Empty);
 
         #endregion
 
@@ -163,7 +104,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Drive[] Drives { get; set; }
+        private Drive[] Drives { get; set; }
 
         #endregion
     }

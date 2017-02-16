@@ -59,10 +59,8 @@ namespace Cube.Tests
         {
             get
             {
-                yield return TestCase("Hello, world.", "Hello, sunset.",
-                    Condition.Changed, "world", "sunset");
-                yield return TestCase("Hello, sunset.", "Hello, world.",
-                    Condition.Changed, "sunset", "world");
+                yield return TestCase("Hello, world.", "Hello, sunset.", Condition.Changed, "world", "sunset");
+                yield return TestCase("Hello, sunset.", "Hello, world.", Condition.Changed, "sunset", "world");
             }
         }
 
@@ -76,7 +74,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Compare_Older_IsNull()
+        public void Compare_OlderIsNull()
         {
             var actual = Actual("", "empty").First();
             Assert.That(actual.Condition, Is.EqualTo(Condition.Inserted));
@@ -94,7 +92,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Compare_Newer_IsNull()
+        public void Compare_NewerIsNull()
         {
             var actual = Actual("empty", "").First();
             Assert.That(actual.Condition, Is.EqualTo(Condition.Deleted));

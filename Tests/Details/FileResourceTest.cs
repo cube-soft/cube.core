@@ -33,8 +33,6 @@ namespace Cube.Tests
     [TestFixture]
     class FileResourceTest : FileResource
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
         /// Examples_Exists
@@ -44,14 +42,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Examples_Exists()
-        {
-            Assert.That(
-                IoEx.Directory.Exists(Examples),
-                Is.True
-            );
-        }
+        [TestCase(ExpectedResult = true)]
+        public bool Examples_Exists()
+            => IoEx.Directory.Exists(Examples);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -62,15 +55,8 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Results_Exists()
-        {
-            Assert.That(
-                IoEx.Directory.Exists(Results),
-                Is.True
-            );
-        }
-
-        #endregion
+        [TestCase(ExpectedResult = true)]
+        public bool Results_Exists()
+            => IoEx.Directory.Exists(Results);
     }
 }

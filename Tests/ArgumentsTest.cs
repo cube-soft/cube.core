@@ -15,6 +15,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -45,39 +46,20 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         #region Parse
 
-        [TestCaseSource(typeof(ArgumentsTest), "Parse_Source")]
-        public void Parse(string[] args, int expected)
+        [TestCaseSource(nameof(Parse_TestCases))]
+        public int Parse(IEnumerable<string> args)
+            => new Arguments(args).Get().Count();
+
+        public static IEnumerable<TestCaseData> Parse_TestCases
         {
-            var parser = new Arguments(args);
-            Assert.That(parser.Get().Count, Is.EqualTo(expected));
-        }
-
-        private static object Parse_Source = new[]
-        {
-            new object[]
+            get
             {
-                new string[] { "foo", "bar", "bas" },
-                3
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar", "--", "bas" },
-                2
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--", "bar", "hoge", "fuga" },
-                4
-            },
-
-            new object[]
-            {
-                new string[] { },
-                0
+                yield return new TestCaseData(new List<string> { "foo", "bar", "bas" }).Returns(3);
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
+                yield return new TestCaseData(new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
+                yield return new TestCaseData(new List<string>()).Returns(0);
             }
-        };
+        }
 
         #endregion
 
@@ -92,57 +74,23 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         #region Parse options
 
-        [TestCaseSource(typeof(ArgumentsTest), "Parse_Options_Source")]
-        public void Parse_Options(string[] args, string option, string expected)
+        [TestCaseSource(nameof(Parse_Options_TestCases))]
+        public string Parse_Options(IEnumerable<string> args, string option)
+            => new Arguments(args).Get(option);
+
+        public static IEnumerable<TestCaseData> Parse_Options_TestCases
         {
-            var parser = new Arguments(args);
-            Assert.That(parser.Get(option), Is.EqualTo(expected));
-        }
-
-        private static object[] Parse_Options_Source = new[]
-        {
-            new object[]
+            get
             {
-                new string[] { "foo", "--bar", "bas" },
-                "bar", "bas"
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar", "bas" },
-                "bas", null
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar" },
-                "bar", null
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar", "bas", "--bar", "hoge" },
-                "bar", "hoge"
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar", "--hoge", "fuga" },
-                "bar", null
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar", "--hoge", "fuga" },
-                "hoge", "fuga"
-            },
-
-            new object[]
-            {
-                new string[] { "foo", "--bar", "--", "bas" },
-                "bar", null
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas" }, "bar").Returns("bas");
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas" }, "bas").Returns(null);
+                yield return new TestCaseData(new List<string> { "foo", "--bar" }, "bar").Returns(null);
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, "bar").Returns("hoge");
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "--hoge", "fuga" }, "bar").Returns(null);
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "--hoge", "fuga" }, "hoge").Returns("fuga");
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
             }
-        };
+        }
 
         #endregion
     }

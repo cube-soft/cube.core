@@ -36,57 +36,7 @@ namespace Cube.Tests
     [TestFixture]
     class SettingsTest : FileResource
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Loaded
-        /// 
-        /// <summary>
-        /// Registrar クラスを用いてロードした Person オブジェクトを
-        /// 取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Person Loaded { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadKeyName
-        /// 
-        /// <summary>
-        /// ロードテスト用のレジストリのサブキー名を生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string LoadKeyName => @"Software\CubeSoft\Settings_SaveTest";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Saved
-        /// 
-        /// <summary>
-        /// Settings クラスを用いて Person オブジェクトを保存した後の
-        /// RegistryKey オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public RegistryKey Saved { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveKeyName
-        /// 
-        /// <summary>
-        /// 保存テスト用のレジストリのサブキー名を生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string SaveKeyName => @"Software\CubeSoft\Settings_SaveTest";
-
-        #endregion
-
-        #region Test methods
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
@@ -99,70 +49,36 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         #region Load
 
-        [TestCase("佐藤栄作")]
-        public void Load_Registry_String(string expected)
-        {
-            Assert.That(
-                Loaded.Name,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "佐藤栄作")]
+        public string Load_Registry_String()
+            => Loaded.Name;
 
-        [TestCase(52)]
-        public void Load_Registry_Integer(int expected)
-        {
-            Assert.That(
-                Loaded.Age,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 52)]
+        public int Load_Registry_Integer()
+            => Loaded.Age;
 
-        [TestCase(Sex.Male)]
-        public void Load_Registry_Enum(Sex expected)
-        {
-            Assert.That(
-                Loaded.Sex,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = Sex.Male)]
+        public Sex Load_Registry_Enum()
+            => Loaded.Sex;
 
-        [TestCase(true)]
-        public void Load_Registry_Boolean(bool expected)
-        {
-            Assert.That(
-                Loaded.Reserved,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = true)]
+        public bool Load_Registry_Boolean()
+            => Loaded.Reserved;
 
         [TestCase(2015, 3, 16, 2, 32, 26)]
         public void Load_Registry_DateTime(int y, int m, int d, int hh, int mm, int ss)
-        {
-            var utc = new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc);
-
-            Assert.That(
+            => Assert.That(
                 Loaded.Creation,
-                Is.EqualTo(utc.ToLocalTime())
+                Is.EqualTo(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc).ToLocalTime())
             );
-        }
 
-        [TestCase(1357)]
-        public void Load_Registry_Alias(int expected)
-        {
-            Assert.That(
-                Loaded.Identification,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 1357)]
+        public int Load_Registry_Alias()
+            => Loaded.Identification;
 
-        [TestCase("secret message")]
-        public void Load_Registry_NonMember(string expected)
-        {
-            Assert.That(
-                Loaded.Secret,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "secret message")]
+        public string Load_Registry_NonMember()
+            => Loaded.Secret;
 
         [Test]
         public void Load_Registry_Class()
@@ -173,19 +89,12 @@ namespace Cube.Tests
             Assert.That(Loaded.Email.Value, Is.Null.Or.Empty);
         }
 
-        [TestCase(Settings.FileType.Xml,  "Settings.xml", "John Lennon")]
-        [TestCase(Settings.FileType.Json, "Settings.json", "Mike Davis")]
-        [TestCase(Settings.FileType.Xml,  "SettingsJapanese.xml", "鈴木一朗")]
-        [TestCase(Settings.FileType.Json, "SettingsJapanese.json", "山田太郎")]
-        public void Load_File(Settings.FileType type, string name, string expected)
-        {
-            var src = IoEx.Path.Combine(Examples, name);
-            var settings = type.Load<Person>(src);
-            Assert.That(
-                settings.Name,
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(FileType.Xml, "Settings.xml", ExpectedResult = "John Lennon")]
+        [TestCase(FileType.Json, "Settings.json", ExpectedResult = "Mike Davis")]
+        [TestCase(FileType.Xml, "SettingsJapanese.xml", ExpectedResult = "鈴木一朗")]
+        [TestCase(FileType.Json, "SettingsJapanese.json", ExpectedResult = "山田太郎")]
+        public string Load_File(FileType type, string filename)
+            => type.Load<Person>(IoEx.Path.Combine(Examples, filename)).Name;
 
         #endregion
 
@@ -200,68 +109,33 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         #region Save
 
-        [TestCase("山田花子")]
-        public void Save_Registry_String(string expected)
-        {
-            Assert.That(
-                Saved.GetValue("Name"),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = "山田花子")]
+        public string Save_Registry_String()
+            => Saved.GetValue("Name") as string;
 
-        [TestCase(15)]
-        public void Save_Registry_Integer(int expected)
-        {
-            Assert.That(
-                Saved.GetValue("Age"),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 15)]
+        public int Save_Registry_Integer()
+            => (int)Saved.GetValue("Age");
 
-        [TestCase(1)]
-        public void Save_Registry_Enum(int expected)
-        {
-            Assert.That(
-                Saved.GetValue("Sex"),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 1)]
+        public int Save_Registry_Enum()
+            => (int)Saved.GetValue("Sex");
 
-        [TestCase(1)]
-        public void Save_Registry_Boolean(int expected)
-        {
-            Assert.That(
-                Saved.GetValue("Reserved"),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 1)]
+        public int Save_Registry_Boolean()
+            => (int)Saved.GetValue("Reserved");
 
-        [TestCase(1420035930)]
-        public void Save_Registry_DateTime(int expected)
-        {
-            Assert.That(
-                Saved.GetValue("Creation"),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 1420035930)]
+        public int Save_Registry_DateTime()
+            => (int)Saved.GetValue("Creation");
 
-        [TestCase(123)]
-        public void Save_Registry_Alias(int expected)
-        {
-            Assert.That(
-                Saved.GetValue("ID"),
-                Is.EqualTo(expected)
-            );
-        }
+        [TestCase(ExpectedResult = 123)]
+        public int Save_Registry_Alias()
+            => (int)Saved.GetValue("ID");
 
         [Test]
         public void Save_Registry_NonMember()
-        {
-            Assert.That(
-                Saved.GetValue("Secred"),
-                Is.Null
-            );
-        }
+            => Assert.That(Saved.GetValue("Secred"), Is.Null);
 
         [Test]
         public void Save_Registry_Class()
@@ -279,16 +153,13 @@ namespace Cube.Tests
             }
         }
 
-        [TestCase(Settings.FileType.Xml, "Person.xml")]
-        [TestCase(Settings.FileType.Json, "Person.json")]
-        public void Save_File(Settings.FileType type, string name)
+        [TestCase(FileType.Xml, "Person.xml")]
+        [TestCase(FileType.Json, "Person.json")]
+        public void Save_File_Exists(FileType type, string filename)
         {
-            var dest = IoEx.Path.Combine(Results, name);
+            var dest = IoEx.Path.Combine(Results, filename);
             type.Save(dest, CreatePerson());
-            Assert.That(
-                IoEx.File.Exists(dest),
-                Is.True
-            );
+            Assert.That(IoEx.File.Exists(dest), Is.True);
         }
 
         #endregion
@@ -357,9 +228,53 @@ namespace Cube.Tests
             Secret         = "dummy data"
         };
 
-        #endregion
-
         #region Internal resources
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Loaded
+        /// 
+        /// <summary>
+        /// Registrar クラスを用いてロードした Person オブジェクトを
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Person Loaded { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadKeyName
+        /// 
+        /// <summary>
+        /// ロードテスト用のレジストリのサブキー名を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string LoadKeyName => @"Software\CubeSoft\Settings_SaveTest";
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Saved
+        /// 
+        /// <summary>
+        /// Settings クラスを用いて Person オブジェクトを保存した後の
+        /// RegistryKey オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private RegistryKey Saved { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveKeyName
+        /// 
+        /// <summary>
+        /// 保存テスト用のレジストリのサブキー名を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string SaveKeyName => @"Software\CubeSoft\Settings_SaveTest";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -420,6 +335,8 @@ namespace Cube.Tests
             private bool _disposed = false;
             #endregion
         }
+
+        #endregion
 
         #endregion
     }

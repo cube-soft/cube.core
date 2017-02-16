@@ -33,8 +33,6 @@ namespace Cube.Tests
     [TestFixture]
     class FileHandlerTest : FileResource
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
         /// Move_Overwrite
@@ -81,13 +79,11 @@ namespace Cube.Tests
                 e.Cancel = true;
             };
 
-            var src = IoEx.Path.Combine(Results, "FileNotFound.txt");
+            var src  = IoEx.Path.Combine(Results, "FileNotFound.txt");
             var dest = IoEx.Path.Combine(Results, "Moved.txt");
             op.Move(src, dest, true);
 
             Assert.That(failed, Is.True);
         }
-
-        #endregion
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="NativeMethods\Structures\ProcessInformation.cs" />
     <Compile Include="NativeMethods\Structures\SHFileInfo.cs" />
     <Compile Include="NativeMethods\Structures\SpDevice.cs" />
+    <Compile Include="NativeMethods\Structures\WtsSessionInfo.cs" />
     <Compile Include="NativeMethods\AdvApi32.cs" />
     <Compile Include="NativeMethods\Kernel32.cs" />
     <Compile Include="NativeMethods\SetupApi.cs" />
