@@ -62,6 +62,8 @@
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="Differences\OnpAlgorithmTest.cs" />
+    <Compile Include="Events\KeyValueEventArgsTests.cs" />
+    <Compile Include="Events\ValueEventArgsTests.cs" />
     <Compile Include="FileSystem\DriveTest.cs" />
     <Compile Include="FileSystem\FileHandlerTest.cs" />
     <Compile Include="Operations\NumericTest.cs" />

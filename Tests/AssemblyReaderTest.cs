@@ -50,6 +50,10 @@ namespace Cube.Tests
         #region Properties
 
         [Test]
+        public void Assembly_IsNotNull()
+            => Assert.That(Create().Assembly, Is.Not.Null);
+
+        [Test]
         public void Assembly_Location_IsNotNullOrEmpty()
             => Assert.That(Create().Location, Is.Not.Null.Or.Empty);
 
