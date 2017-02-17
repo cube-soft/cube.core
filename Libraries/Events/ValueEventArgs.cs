@@ -67,63 +67,6 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ValueChangedEventArgs(TValue)
-    /// 
-    /// <summary>
-    /// 値の変更に関連するイベントに使用するクラスです。
-    /// </summary>
-    /// 
-    /* --------------------------------------------------------------------- */
-    public class ValueChangedEventArgs<TValue> : EventArgs
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueChangedEventArgs
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ValueChangedEventArgs(TValue oldvalue, TValue newvalue)
-        {
-            OldValue = oldvalue;
-            NewValue = newvalue;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OldValue
-        /// 
-        /// <summary>
-        /// 変更前のオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue OldValue { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewValue
-        /// 
-        /// <summary>
-        /// 変更後のオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue NewValue { get; }
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// ValueCancelEventArgs(TValue)
     ///
     /// <summary>
@@ -180,6 +123,68 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
+    /// ValueChangedEventArgs(TValue)
+    /// 
+    /// <summary>
+    /// 値の変更に関連するイベントに使用するクラスです。
+    /// </summary>
+    /// 
+    /// <remarks>
+    /// ValueChangedEventArgs に関しては、ValueEventArgs.Createメソッドや
+    /// イベントハンドラ用の delegate 関数は定義されていません。
+    /// </remarks>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public class ValueChangedEventArgs<TValue> : EventArgs
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ValueChangedEventArgs
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public ValueChangedEventArgs(TValue oldvalue, TValue newvalue)
+        {
+            OldValue = oldvalue;
+            NewValue = newvalue;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OldValue
+        /// 
+        /// <summary>
+        /// 変更前のオブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue OldValue { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NewValue
+        /// 
+        /// <summary>
+        /// 変更後のオブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue NewValue { get; }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// ValueEventArgs
     ///
     /// <summary>
@@ -207,18 +212,6 @@ namespace Cube
         /// Create
         /// 
         /// <summary>
-        /// ValueChangedEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ValueChangedEventArgs<T> Create<T>(T oldvalue, T newvalue)
-            => new ValueChangedEventArgs<T>(oldvalue, newvalue);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        /// 
-        /// <summary>
         /// ValueCancelEventArgs(T) オブジェクトを生成します。
         /// </summary>
         ///
@@ -238,18 +231,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void ValueEventHandler<TValue>(object sender, ValueEventArgs<TValue> e);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ValueChangedEventHandler(TValue)
-    /// 
-    /// <summary>
-    /// イベントを処理するメソッドを表します。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Serializable]
-    public delegate void ValueChangedEventHandler<TValue>(object sender, ValueChangedEventArgs<TValue> e);
 
     /* --------------------------------------------------------------------- */
     ///
