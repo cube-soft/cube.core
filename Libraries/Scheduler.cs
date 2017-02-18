@@ -168,6 +168,8 @@ namespace Cube
 
         #region Events
 
+        #region Execute
+
         /* ----------------------------------------------------------------- */
         ///
         /// Execute
@@ -181,6 +183,27 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnExecute
+        /// 
+        /// <summary>
+        /// Execute イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnExecute(EventArgs e)
+        {
+            LastExecuted = DateTime.Now;
+            var delta = Math.Abs(_core.Interval - Interval.TotalMilliseconds);
+            if (delta > 1.0) _core.Interval = Interval.TotalMilliseconds;
+            Execute?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region PowerModeChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// PowerModeChanged
         /// 
         /// <summary>
@@ -189,6 +212,24 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public event EventHandler<PowerModeChangedEventArgs> PowerModeChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPowerModeChanged
+        /// 
+        /// <summary>
+        /// PowerModeChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
+        {
+            if (e.Mode != PowerModes.StatusChange) PowerMode = e.Mode;
+            ChangeState(e.Mode);
+            PowerModeChanged?.Invoke(this, e);
+        }
+
+        #endregion
 
         #endregion
 
@@ -270,9 +311,24 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Reset() => OnReset();
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReset
+        /// 
+        /// <summary>
+        /// リセット処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReset()
+        {
+            LastExecuted = DateTime.Now;
+            _core.Interval = Interval.TotalMilliseconds;
+        }
+
         #endregion
 
-        #region Methods for IDisposable
+        #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
@@ -307,59 +363,7 @@ namespace Cube
 
         #endregion
 
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnReset
-        /// 
-        /// <summary>
-        /// リセット処理を実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnReset()
-        {
-            LastExecuted = DateTime.Now;
-            _core.Interval = Interval.TotalMilliseconds;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnExecute
-        /// 
-        /// <summary>
-        /// 操作を実行するタイミングになった時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnExecute(EventArgs e)
-        {
-            LastExecuted = DateTime.Now;
-            var delta = Math.Abs(_core.Interval - Interval.TotalMilliseconds);
-            if (delta > 1.0) _core.Interval = Interval.TotalMilliseconds;
-            Execute?.Invoke(this, e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPowerModeChanged
-        /// 
-        /// <summary>
-        /// 電源の状態が変化した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
-        {
-            if (e.Mode != PowerModes.StatusChange) PowerMode = e.Mode;
-            ChangeState(e.Mode);
-            PowerModeChanged?.Invoke(this, e);
-        }
-
-        #endregion
-
-        #region Non-virtual methods
+        #region Protected methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -428,7 +432,7 @@ namespace Cube
 
         #endregion
 
-        #region Other private methods
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
