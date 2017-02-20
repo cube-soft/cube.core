@@ -34,6 +34,35 @@ namespace Cube.Tests
     [TestFixture]
     class DriveTest
     {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive_Detach_Throws
+        ///
+        /// <summary>
+        /// Device.Detach() のテストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// システムドライブを指定するため VetoException が発生します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(0)]
+        public void Drive_Detach_Throws(int index)
+            => Assert.That(
+            () => Drives[index].Detach(),
+            Throws.TypeOf<VetoException>()
+                  .And.Property("Reason").EqualTo(VetoType.IllegalDeviceRequest)
+                  .And.Property("Name").Not.Null.Or.Empty
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// <summary>
+        /// Drive の各種プロパティの内容をテストします。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
         #region Tests for Drive properties
 
         [TestCase(1)]

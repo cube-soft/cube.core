@@ -44,12 +44,14 @@ namespace Cube.Tests
         [Test]
         public void State()
         {
-            var scheduler = new Scheduler();
-            Assert.That(scheduler.State, Is.EqualTo(SchedulerState.Stop));
-            scheduler.Start();
-            Assert.That(scheduler.State, Is.EqualTo(SchedulerState.Run));
-            scheduler.Stop();
-            Assert.That(scheduler.State, Is.EqualTo(SchedulerState.Stop));
+            using (var scheduler = new Scheduler())
+            {
+                Assert.That(scheduler.State, Is.EqualTo(SchedulerState.Stop));
+                scheduler.Start();
+                Assert.That(scheduler.State, Is.EqualTo(SchedulerState.Run));
+                scheduler.Stop();
+                Assert.That(scheduler.State, Is.EqualTo(SchedulerState.Stop));
+            }
         }
     }
 }

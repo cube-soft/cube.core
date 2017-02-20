@@ -21,52 +21,33 @@ namespace Cube.Tests.Events
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueEventArgsTests
+    /// ProgressEventArgsTest
     /// 
     /// <summary>
-    /// KeyValueEventArgs のテスト用クラスです。
+    /// ProgressEventArgs のテスト用クラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class KeyValueEventArgsTests
+    class ProgressEventArgsTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_KeyValueEventArgs
+        /// Create_ProgressEventArgs
         ///
         /// <summary>
-        /// KeyValueEventArgs.Create(T, U) のテストを実行します。
+        /// ProgressEventArgs.Create(double, T) のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1, "foo")]
-        [TestCase("pi", 3.1415926)]
-        [TestCase(1, true)]
-        public void Create_KeyValueEventArgs<T, U>(T key, U value)
+        [TestCase(10.0, "Progress")]
+        [TestCase(-25.67890, false)]
+        [TestCase(0.0, 3.1415926)]
+        public void Create_ProgressEventArgs<T>(double percentage, T value)
         {
-            var args = KeyValueEventArgs.Create(key, value);
-            Assert.That(args.Key, Is.EqualTo(key));
-            Assert.That(args.Value, Is.EqualTo(value));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_KeyValueCancelEventArgs
-        ///
-        /// <summary>
-        /// KeyValueEventArgs.Create(T, U, bool) のテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(5, "cancel", true)]
-        [TestCase("No cancel", 1.7320508, false)]
-        [TestCase(true, false, false)]
-        public void Create_KeyValueCancelEventArgs<T, U>(T key, U value, bool cancel)
-        {
-            var args = KeyValueEventArgs.Create(key, value, cancel);
-            Assert.That(args.Key, Is.EqualTo(key));
+            var args = ProgressEventArgs.Create(percentage, value);
+            Assert.That(args.Percentage, Is.EqualTo(percentage));
             Assert.That(args.Value, Is.EqualTo(value));
         }
     }

@@ -21,7 +21,7 @@ namespace Cube.Tests.Events
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ValueEventArgsTests
+    /// ValueEventArgsTest
     /// 
     /// <summary>
     /// ValueEventArgs のテスト用クラスです。
@@ -30,7 +30,7 @@ namespace Cube.Tests.Events
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class ValueEventArgsTests
+    class ValueEventArgsTest
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -49,7 +49,6 @@ namespace Cube.Tests.Events
             var args = ValueEventArgs.Create(value);
             Assert.That(args.Value, Is.EqualTo(value));
         }
-
 
         /* ----------------------------------------------------------------- */
         ///

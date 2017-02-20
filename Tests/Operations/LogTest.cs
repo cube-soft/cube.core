@@ -39,65 +39,148 @@ namespace Cube.Tests
         /// Log_Debug
         ///
         /// <summary>
-        /// LogDebug(T, string) 拡張メソッドのテストを行います。。
+        /// Debug 系メソッドのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Debug()
-            => Assert.DoesNotThrow(() => this.LogDebug("Debug"));
+            => Assert.DoesNotThrow(() =>
+        {
+            var message = nameof(Cube.Log.Operations.Debug);
+
+            try
+            {
+                Cube.Log.Operations.Debug(typeof(LogTest), message);
+                this.LogDebug($"{message} (extension)");
+                throw new ArgumentException($"{message} (throw)");
+            }
+            catch (ArgumentException err)
+            {
+                Assert.That(err.Message, Does.StartWith(message));
+                Cube.Log.Operations.Debug(typeof(LogTest), err.Message, err);
+                this.LogDebug(err.Message, err);
+            }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Log_Info
         ///
         /// <summary>
-        /// LogInfo(T, string) 拡張メソッドのテストを行います。。
+        /// Info 系メソッドのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Info()
-            => Assert.DoesNotThrow(() => this.LogInfo("Info"));
+            => Assert.DoesNotThrow(() =>
+        {
+            var message = nameof(Cube.Log.Operations.Info);
+
+            try
+            {
+                var asm = System.Reflection.Assembly.GetExecutingAssembly();
+                Cube.Log.Operations.Info(typeof(LogTest), message);
+                Cube.Log.Operations.Info(typeof(LogTest), asm);
+                this.LogInfo($"{message} (extension)");
+                this.LogInfo(asm);
+                throw new ArgumentException($"{message} (throw)");
+            }
+            catch (ArgumentException err)
+            {
+                Assert.That(err.Message, Does.StartWith(message));
+                Cube.Log.Operations.Info(typeof(LogTest), err.Message, err);
+                this.LogInfo(err.Message, err);
+            }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Log_Warn
         ///
         /// <summary>
-        /// LogWarn(T, string) 拡張メソッドのテストを行います。。
+        /// Warn 系メソッドのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Warn()
-            => Assert.DoesNotThrow(() => this.LogWarn("Warn"));
+            => Assert.DoesNotThrow(() =>
+        {
+            var message = nameof(Cube.Log.Operations.Warn);
+
+            try
+            {
+                Cube.Log.Operations.Warn(typeof(LogTest), message);
+                this.LogWarn($"{message} (extension)");
+                throw new ArgumentException($"{message} (throw)");
+            }
+            catch (ArgumentException err)
+            {
+                Assert.That(err.Message, Does.StartWith(message));
+                Cube.Log.Operations.Warn(typeof(LogTest), err.Message, err);
+                this.LogWarn(err.Message, err);
+            }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Log_Error
         ///
         /// <summary>
-        /// LogError(T, string) 拡張メソッドのテストを行います。。
+        /// Error 系メソッドのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Error()
-            => Assert.DoesNotThrow(() => this.LogError("Error"));
+            => Assert.DoesNotThrow(() =>
+        {
+            var message = nameof(Cube.Log.Operations.Error);
+
+            try
+            {
+                Cube.Log.Operations.Error(typeof(LogTest), message);
+                this.LogError($"{message} (extension)");
+                throw new ArgumentException($"{message} (throw)");
+            }
+            catch (ArgumentException err)
+            {
+                Assert.That(err.Message, Does.StartWith(message));
+                Cube.Log.Operations.Error(typeof(LogTest), err.Message, err);
+                this.LogError(err.Message, err);
+            }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Log_Fatal
         ///
         /// <summary>
-        /// LogFatal(T, string) 拡張メソッドのテストを行います。。
+        /// Fatal 系メソッドのテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Log_Fatal()
-            => Assert.DoesNotThrow(() => this.LogFatal("Fatal"));
+            => Assert.DoesNotThrow(() =>
+        {
+            var message = nameof(Cube.Log.Operations.Fatal);
+
+            try
+            {
+                Cube.Log.Operations.Fatal(typeof(LogTest), message);
+                this.LogFatal($"{message} (extension)");
+                throw new ArgumentException($"{message} (throw)");
+            }
+            catch (ArgumentException err)
+            {
+                Assert.That(err.Message, Does.StartWith(message));
+                Cube.Log.Operations.Fatal(typeof(LogTest), err.Message, err);
+                this.LogFatal(err.Message, err);
+            }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -111,8 +194,8 @@ namespace Cube.Tests
         [Test]
         public void Log_Exception()
             => Assert.DoesNotThrow(() => this.LogException(() =>
-            {
-                throw new ArgumentException("dummy exception");
-            }));
+        {
+            throw new ArgumentException("dummy exception");
+        }));
     }
 }
