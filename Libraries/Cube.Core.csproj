@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormat.cs" />
-    <Compile Include="Conversions\UnixTime.cs" />
+    <Compile Include="Conversions\Time.cs" />
     <Compile Include="Conversions\UriQuery.cs" />
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
