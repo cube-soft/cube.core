@@ -40,103 +40,234 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Load
+        /// Load_Registry_String
         /// 
         /// <summary>
-        /// 設定を読み込むテストを行います。
+        /// string オブジェクトを読み込むテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        #region Load
-
         [TestCase(ExpectedResult = "佐藤栄作")]
         public string Load_Registry_String()
-            => Loaded.Name;
+            => Loaded.User.Name;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_Registry_Integer
+        /// 
+        /// <summary>
+        /// int オブジェクトを読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 52)]
         public int Load_Registry_Integer()
-            => Loaded.Age;
+            => Loaded.User.Age;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Enum
+        /// 
+        /// <summary>
+        /// Enum オブジェクトを読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = Sex.Male)]
         public Sex Load_Registry_Enum()
-            => Loaded.Sex;
+            => Loaded.User.Sex;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_Registry_Boolean
+        /// 
+        /// <summary>
+        /// bool オブジェクトを読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = true)]
         public bool Load_Registry_Boolean()
-            => Loaded.Reserved;
+            => Loaded.User.Reserved;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_Registry_DateTime
+        /// 
+        /// <summary>
+        /// DateTime オブジェクトを読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(2015, 3, 16, 2, 32, 26)]
         public void Load_Registry_DateTime(int y, int m, int d, int hh, int mm, int ss)
             => Assert.That(
-                Loaded.Creation,
+                Loaded.User.Creation,
                 Is.EqualTo(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc).ToLocalTime())
             );
 
-        [TestCase(ExpectedResult = 1357)]
-        public int Load_Registry_Alias()
-            => Loaded.Identification;
-
-        [TestCase(ExpectedResult = "secret message")]
-        public string Load_Registry_NonMember()
-            => Loaded.Secret;
-
-        [Test]
-        public void Load_Registry_Class()
-        {
-            Assert.That(Loaded.Phone.Type,  Is.EqualTo("Mobile"));
-            Assert.That(Loaded.Phone.Value, Is.EqualTo("090-1234-5678"));
-            Assert.That(Loaded.Email.Type,  Is.EqualTo("Email"));
-            Assert.That(Loaded.Email.Value, Is.Null.Or.Empty);
-        }
-
-        [TestCase(FileType.Xml, "Settings.xml", ExpectedResult = "John Lennon")]
-        [TestCase(FileType.Json, "Settings.json", ExpectedResult = "Mike Davis")]
-        [TestCase(FileType.Xml, "SettingsJapanese.xml", ExpectedResult = "鈴木一朗")]
-        [TestCase(FileType.Json, "SettingsJapanese.json", ExpectedResult = "山田太郎")]
-        public string Load_File(FileType type, string filename)
-            => type.Load<Person>(IoEx.Path.Combine(Examples, filename)).Name;
-
-        #endregion
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Save
+        /// Load_Registry_Alias
         /// 
         /// <summary>
-        /// 設定を保存するテストを行います。
+        /// Name 属性で別名を付けられたオブジェクトを読み込むテストを
+        /// 実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        #region Save
+        [TestCase(ExpectedResult = 1357)]
+        public int Load_Registry_Alias()
+            => Loaded.User.Identification;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_Registry_NoMember
+        /// 
+        /// <summary>
+        /// DataMember 属性のないプロパティは読み込まれない事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(ExpectedResult = "secret message")]
+        public string Load_Registry_NoMember()
+            => Loaded.User.Secret;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_Registry_Class
+        /// 
+        /// <summary>
+        /// ユーザ定義クラスのオブジェクトを読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Load_Registry_Class()
+        {
+            Assert.That(Loaded.User.Phone.Type,  Is.EqualTo("Mobile"));
+            Assert.That(Loaded.User.Phone.Value, Is.EqualTo("090-1234-5678"));
+            Assert.That(Loaded.User.Email.Type,  Is.EqualTo("Email"));
+            Assert.That(Loaded.User.Email.Value, Is.Null.Or.Empty);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_File
+        /// 
+        /// <summary>
+        /// ファイルから読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(FileType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(FileType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(FileType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(FileType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
+        public string Load_File(FileType type, string filename)
+            => type.Load<Person>(IoEx.Path.Combine(Examples, filename)).Name;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_String
+        /// 
+        /// <summary>
+        /// string オブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = "山田花子")]
         public string Save_Registry_String()
             => Saved.GetValue("Name") as string;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_Integer
+        /// 
+        /// <summary>
+        /// int オブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 15)]
         public int Save_Registry_Integer()
             => (int)Saved.GetValue("Age");
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_Enum
+        /// 
+        /// <summary>
+        /// Enum オブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 1)]
         public int Save_Registry_Enum()
             => (int)Saved.GetValue("Sex");
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_Boolean
+        /// 
+        /// <summary>
+        /// bool オブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 1)]
         public int Save_Registry_Boolean()
             => (int)Saved.GetValue("Reserved");
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_DateTime
+        /// 
+        /// <summary>
+        /// DateTime オブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 1420035930)]
         public int Save_Registry_DateTime()
             => (int)Saved.GetValue("Creation");
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_Alias
+        /// 
+        /// <summary>
+        /// Name 属性を持つオブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 123)]
         public int Save_Registry_Alias()
             => (int)Saved.GetValue("ID");
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_NonMember
+        /// 
+        /// <summary>
+        /// DataMember 属性のないプロパティの内容は書き込まれなかった事を
+        /// 確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Test]
         public void Save_Registry_NonMember()
             => Assert.That(Saved.GetValue("Secred"), Is.Null);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Registry_Class
+        /// 
+        /// <summary>
+        /// ユーザ定義クラスのオブジェクトが書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Test]
         public void Save_Registry_Class()
         {
@@ -153,7 +284,16 @@ namespace Cube.Tests
             }
         }
 
-        [TestCase(FileType.Xml, "Person.xml")]
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_File_Exists
+        /// 
+        /// <summary>
+        /// オブジェクトの内容がファイルに書き込まれた事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(FileType.Xml,  "Person.xml")]
         [TestCase(FileType.Json, "Person.json")]
         public void Save_File_Exists(FileType type, string filename)
         {
@@ -161,8 +301,6 @@ namespace Cube.Tests
             type.Save(dest, CreatePerson());
             Assert.That(IoEx.File.Exists(dest), Is.True);
         }
-
-        #endregion
 
         #endregion
 
@@ -180,14 +318,11 @@ namespace Cube.Tests
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            using (var registrar = new Registrar(LoadKeyName))
-            {
-                Loaded = Cube.Settings.Operations.Load<Person>(registrar.RegistryKey);
-            }
+            Loaded = new SettingsFolder<Person>(Company, Product);
+            using (var _ = new Registrar(LoadKeyName)) Loaded.Load();
 
-            var saved = Registry.CurrentUser.CreateSubKey(SaveKeyName);
-            saved.Save(CreatePerson());
-            Saved = saved;
+            Saved = Registry.CurrentUser.CreateSubKey(SaveKeyName);
+            Saved.Save(CreatePerson());
         }
 
         /* ----------------------------------------------------------------- */
@@ -235,23 +370,12 @@ namespace Cube.Tests
         /// Loaded
         /// 
         /// <summary>
-        /// Registrar クラスを用いてロードした Person オブジェクトを
-        /// 取得します。
+        /// Registrar クラスを用いてロードした SettingsFolder(Person)
+        /// オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Person Loaded { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadKeyName
-        /// 
-        /// <summary>
-        /// ロードテスト用のレジストリのサブキー名を生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string LoadKeyName => @"Software\CubeSoft\Settings_SaveTest";
+        private SettingsFolder<Person> Loaded { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -267,14 +391,15 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SaveKeyName
-        /// 
         /// <summary>
-        /// 保存テスト用のレジストリのサブキー名を生成します。
+        /// レジストリに関する情報を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string SaveKeyName => @"Software\CubeSoft\Settings_SaveTest";
+        private string Company => "CubeSoft";
+        private string Product => "Settings_SaveTest";
+        private string LoadKeyName => $@"Software\{Company}\{Product}";
+        private string SaveKeyName => $@"Software\{Company}\{Product}";
 
         /* ----------------------------------------------------------------- */
         ///
