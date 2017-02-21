@@ -338,6 +338,7 @@ namespace Cube.Tests
         public void OneTimeTearDown()
         {
             Saved.Close();
+            Loaded.Dispose();
             Registry.CurrentUser.DeleteSubKeyTree(SaveKeyName);
         }
 
