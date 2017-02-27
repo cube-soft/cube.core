@@ -56,6 +56,7 @@
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
+    <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
     <Compile Include="Events\ProgressEventArgs.cs" />
     <Compile Include="Events\QueryEventArgs.cs" />
