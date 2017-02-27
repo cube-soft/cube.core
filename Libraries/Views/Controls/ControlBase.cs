@@ -16,20 +16,25 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UserControl
+    /// ControlBase
     /// 
     /// <summary>
-    /// System.Windows.Forms.UserControl を拡張したクラスです。
+    /// 各種コントロールの基底となるクラスです。
     /// </summary>
+    /// 
+    /// <remarks>
+    /// System.Windows.Forms.UserControl をベースに実装されています。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class UserControl : System.Windows.Forms.UserControl
+    public class ControlBase : System.Windows.Forms.UserControl
     {
         #region Constructors
 
@@ -42,12 +47,29 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public UserControl()
+        public ControlBase()
             : base()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventAggregator
+        /// 
+        /// <summary>
+        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEventAggregator EventAggregator { get; set; }
 
         #endregion
 
@@ -63,10 +85,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
-
-        #endregion
-
-        #region Virtual methods
 
         /* ----------------------------------------------------------------- */
         ///

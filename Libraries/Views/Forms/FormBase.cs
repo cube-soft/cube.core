@@ -24,14 +24,18 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Form
+    /// FormBase
     /// 
     /// <summary>
-    /// System.Windows.Forms.Form の拡張クラスです。
+    /// 各種フォームの基底となるクラスです。
     /// </summary>
+    /// 
+    /// <remarks>
+    /// System.Windows.Forms.Form をベースに実装されています。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Form : System.Windows.Forms.Form
+    public class FormBase : System.Windows.Forms.Form
     {
         #region Constructors
 
@@ -44,7 +48,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Form() : base()
+        public FormBase() : base()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
@@ -109,6 +113,19 @@ namespace Cube.Forms
                 }
             }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventAggregator
+        /// 
+        /// <summary>
+        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEventAggregator EventAggregator { get; set; }
 
         #endregion
 

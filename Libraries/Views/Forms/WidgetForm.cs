@@ -38,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class WidgetForm : Form
+    public class WidgetForm : FormBase
     {
         #region Constructors
 

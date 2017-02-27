@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CaptionControl : UserControl, INotifyPropertyChanged
+    public class CaptionControl : ControlBase, INotifyPropertyChanged
     {
         #region Properties
 

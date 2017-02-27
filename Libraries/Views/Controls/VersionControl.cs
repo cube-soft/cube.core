@@ -33,7 +33,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class VersionControl : UserControl
+    public partial class VersionControl : ControlBase
     {
         #region Constructors
 

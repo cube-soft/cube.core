@@ -131,7 +131,7 @@
     <Compile Include="Views\Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\UserControl.cs">
+    <Compile Include="Views\Controls\ControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\Controls\VersionControl.cs">
@@ -146,7 +146,7 @@
     <Compile Include="Views\Forms\DeviceAwareForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\Form.cs">
+    <Compile Include="Views\Forms\FormBase.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\NotifyForm.cs">
