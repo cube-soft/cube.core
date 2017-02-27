@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 
 namespace Cube
 {
@@ -34,151 +35,80 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Raise
+        /// Publish
         /// 
         /// <summary>
-        /// イベントを発生させます。
+        /// 購読者にイベントを配信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Raise() => Raise(this);
+        public void Publish()
+        {
+            foreach (var action in _subscriptions) action();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Raise
+        /// Subscribe
         /// 
         /// <summary>
-        /// イベントを発生させます。
+        /// イベント発生時に実行する Action を登録します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Raise(object sender) => Handle?.Invoke(sender, EventArgs.Empty);
+        public void Subscribe(Action action)
+            => _subscriptions.Add(action);
 
         #endregion
 
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Handle
-        /// 
-        /// <summary>
-        /// Raise によって発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler Handle;
-
+        #region Fields
+        private ICollection<Action> _subscriptions = new List<Action>();
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// RelayEvent(TArgs)
+    /// RelayEvent(TPayload)
     /// 
     /// <summary>
     /// イベントを中継するためのクラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public class RelayEvent<TArgs> where TArgs : EventArgs
+    public class RelayEvent<TPayload>
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Raise
+        /// Publish
         /// 
         /// <summary>
-        /// イベントを発生させます。
+        /// 購読者にイベントを配信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Raise(TArgs args)
-            => Raise(this, args);
+        public void Publish(TPayload payload)
+        {
+            foreach (var action in _subscriptions) action(payload);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Raise
+        /// Subscribe
         /// 
         /// <summary>
-        /// イベントを発生させます。
+        /// イベント発生時に実行する Action を登録します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Raise(object sender, TArgs args)
-            => Handle?.Invoke(sender, args);
+        public void Subscribe(Action<TPayload> action)
+            => _subscriptions.Add(action);
 
         #endregion
 
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Handle
-        /// 
-        /// <summary>
-        /// Raise によって発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<TArgs> Handle;
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// RelayValueEvent(TValue)
-    /// 
-    /// <summary>
-    /// 何らかのオブジェクトを中継するイベントを発生させるためのクラスです。
-    /// </summary>
-    /// 
-    /* --------------------------------------------------------------------- */
-    public class RelayValueEvent<TValue>
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Raise
-        /// 
-        /// <summary>
-        /// イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Raise(TValue value)
-            => Raise(this, value);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Raise
-        /// 
-        /// <summary>
-        /// イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Raise(object sender, TValue value)
-            => Handle?.Invoke(sender, ValueEventArgs.Create(value));
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Handle
-        /// 
-        /// <summary>
-        /// Raise によって発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<TValue>> Handle;
-
+        #region Fields
+        private ICollection<Action<TPayload>> _subscriptions = new List<Action<TPayload>>();
         #endregion
     }
 }
