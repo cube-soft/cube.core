@@ -33,8 +33,7 @@ namespace Cube.Settings
     /// </summary>
     /// 
     /// <remarks>
-    /// このクラスでは、原則として各種設定をレジストリで保持する事を想定
-    /// しています。
+    /// このクラスでは、各種設定をレジストリで保持する事を想定しています。
     /// </remarks>
     /// 
     /* --------------------------------------------------------------------- */
@@ -61,6 +60,10 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">
+        /// 設定対象となる <c>Assembly</c> オブジェクト
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly)
@@ -76,6 +79,9 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="company">会社名</param>
+        /// <param name="product">製品名</param>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(string company, string product)
@@ -88,6 +94,18 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        ///
+        /// <param name="assembly">
+        /// 設定対象となる <c>Assembly</c> オブジェクト
+        /// </param>
+        /// 
+        /// <param name="company">会社名</param>
+        /// <param name="product">製品名</param>
+        /// 
+        /// <remarks>
+        /// SettingsFolder は HKCU\Software\(company)\(product) の
+        /// レジストリ・サブキー下から各種設定を読み込みます。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, string company, string product)
@@ -107,27 +125,6 @@ namespace Cube.Settings
         ~SettingsFolder()
         {
             Dispose(false);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Initialize
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Initialize(Assembly assembly, string company, string product)
-        {
-            Assembly = assembly;
-            Company  = company;
-            Product  = product;
-            Version  = new SoftwareVersion(Assembly);
-
-            _autosaver.AutoReset = false;
-            _autosaver.Interval  = 1000;
-            _autosaver.Elapsed  += AutoSaver_Elapsed;
         }
 
         #endregion
@@ -224,6 +221,33 @@ namespace Cube.Settings
 
         #endregion
 
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AutoSaved
+        ///
+        /// <summary>
+        /// 自動保存機能が実行された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler AutoSaved;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnAutoSaved
+        ///
+        /// <summary>
+        /// AutoSaved イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnAutoSaved(EventArgs e)
+            => AutoSaved?.Invoke(this, e);
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -249,9 +273,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public void Load() => OnLoad();
 
-        #endregion
-
-        #region Methods for IDisposable
+        #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
@@ -284,6 +306,8 @@ namespace Cube.Settings
 
             if (disposing) _autosaver.Dispose();
         }
+
+        #endregion
 
         #endregion
 
@@ -332,6 +356,33 @@ namespace Cube.Settings
 
         #endregion
 
+        #region Implementations
+
+        #region Initialize methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Initialize
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Initialize(Assembly assembly, string company, string product)
+        {
+            Assembly = assembly;
+            Company = company;
+            Product = product;
+            Version = new SoftwareVersion(Assembly);
+
+            _autosaver.AutoReset = false;
+            _autosaver.Interval = 1000;
+            _autosaver.Elapsed += AutoSaver_Elapsed;
+        }
+
+        #endregion
+
         #region Event handlers
 
         /* ----------------------------------------------------------------- */
@@ -359,16 +410,20 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
-            => await Task.Run(() =>
+            => await Task.Run(()
+            => this.LogException(() =>
         {
-            this.LogException(() => Save());
-        });
+            Save();
+            OnAutoSaved(EventArgs.Empty);
+        }));
 
         #endregion
 
         #region Fields
         private bool _disposed = false;
         private Timer _autosaver = new Timer();
+        #endregion
+
         #endregion
     }
 }
