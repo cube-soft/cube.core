@@ -325,16 +325,21 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoad()
         {
-            if (User != null) User.PropertyChanged -= User_Changed;
+            if (User != null) User.PropertyChanged -= AutoSaver_Restart;
 
+            var prev = User as ObservableProperty;
             var root = Microsoft.Win32.Registry.CurrentUser;
+
             using (var subkey = root.OpenSubKey(SubKeyName, false))
             {
                 var result = subkey.Load<TValue>();
                 if (result == null) return;
+
+                prev?.MoveEvents(result);
                 User = result;
-                User.PropertyChanged += User_Changed;
+                User.PropertyChanged += AutoSaver_Restart;
             }
+
             Startup.Load();
         }
 
@@ -387,14 +392,14 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// User_Changed
+        /// AutoSaver_Restart
         ///
         /// <summary>
         /// ユーザ設定が変更された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void User_Changed(object sender, PropertyChangedEventArgs e)
+        private void AutoSaver_Restart(object sender, PropertyChangedEventArgs e)
         {
             _autosaver.Stop();
             if (AutoSave) _autosaver.Start();
