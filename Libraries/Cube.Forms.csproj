@@ -81,6 +81,7 @@
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UxTheme.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
+    <Compile Include="Views\IControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Views\Controls\Buttons\Button.cs">

@@ -35,7 +35,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class FormBase : System.Windows.Forms.Form
+    public class FormBase : System.Windows.Forms.Form, IForm
     {
         #region Constructors
 
