@@ -153,7 +153,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnShowing(CancelEventArgs e) => Showing?.Invoke(this, e);
+        protected virtual void OnShowing(CancelEventArgs e)
+        {
+            AdjustDesktopLocation();
+            Showing?.Invoke(this, e);
+        }
 
         #endregion
 
