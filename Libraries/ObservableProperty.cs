@@ -81,33 +81,6 @@ namespace Cube
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MoveEvents
-        /// 
-        /// <summary>
-        /// PropertyChanged に関連付けられたハンドラを移動します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void MoveEvents(INotifyPropertyChanged dest)
-        {
-            var handlers = PropertyChanged?.GetInvocationList();
-            if (handlers == null) return;
-
-            foreach (PropertyChangedEventHandler handler in handlers)
-            {
-                PropertyChanged -= handler;
-
-                dest.PropertyChanged -= handler;
-                dest.PropertyChanged += handler;
-            }
-        }
-
-        #endregion
-
         #region Protected methods
 
         /* ----------------------------------------------------------------- */

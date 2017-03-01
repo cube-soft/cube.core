@@ -327,7 +327,6 @@ namespace Cube.Settings
         {
             if (User != null) User.PropertyChanged -= AutoSaver_Restart;
 
-            var prev = User as ObservableProperty;
             var root = Microsoft.Win32.Registry.CurrentUser;
 
             using (var subkey = root.OpenSubKey(SubKeyName, false))
@@ -335,7 +334,6 @@ namespace Cube.Settings
                 var result = subkey.Load<TValue>();
                 if (result == null) return;
 
-                prev?.MoveEvents(result);
                 User = result;
                 User.PropertyChanged += AutoSaver_Restart;
             }
