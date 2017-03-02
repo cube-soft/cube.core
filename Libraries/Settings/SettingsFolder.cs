@@ -39,7 +39,7 @@ namespace Cube.Settings
     /// 
     /* --------------------------------------------------------------------- */
     public class SettingsFolder<TValue> : IDisposable, INotifyPropertyChanged
-        where TValue : INotifyPropertyChanged
+        where TValue : INotifyPropertyChanged, new()
     {
         #region Constructors and destructors
 
@@ -163,7 +163,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TValue Value { get; private set; } = default(TValue);
+        public TValue Value { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -402,6 +402,9 @@ namespace Cube.Settings
             Company  = company;
             Product  = product;
             Version  = new SoftwareVersion(Assembly);
+            Value    = new TValue();
+
+            Value.PropertyChanged += Value_PropertyChanged;
 
             _autosaver.AutoReset = false;
             _autosaver.Interval  = 1000;
@@ -441,11 +444,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
             => await Task.Run(()
-            => this.LogException(() =>
-        {
-            Save();
-            OnSaved(EventArgs.Empty);
-        }));
+            => this.LogException(() => Save()));
 
         #endregion
 
