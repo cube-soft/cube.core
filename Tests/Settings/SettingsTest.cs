@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 using NUnit.Framework;
 using Cube.Settings;
@@ -65,33 +66,6 @@ namespace Cube.Tests
             Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
             Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
             Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ReLoad
-        /// 
-        /// <summary>
-        /// レジストリから設定を 2 回以上読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ReLoad()
-        {
-            var count = 0;
-
-            var settings = new SettingsFolder<Person>(Company, Product);
-            settings.AutoSave = false;
-
-            settings.Load();
-            settings.PropertyChanged += (s, e) => count++;
-            settings.Value.Name = "Before ReLoad";
-            Assert.That(count, Is.EqualTo(1));
-
-            settings.Load();
-            settings.Value.Name = "After ReLoad";
-            Assert.That(count, Is.EqualTo(2));
         }
 
         /* ----------------------------------------------------------------- */
@@ -163,6 +137,66 @@ namespace Cube.Tests
             var dest = IoEx.Path.Combine(Results, filename);
             type.Save(dest, CreatePerson());
             Assert.That(IoEx.File.Exists(dest), Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AutoSave
+        /// 
+        /// <summary>
+        /// 自動保存機能のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public async Task AutoSave()
+        {
+            var count = 0;
+
+            var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest");
+            settings.Saved += (s, e) => count++;
+            settings.AutoSave = true;
+            settings.Value.Name = "AutoSave";
+            settings.Value.Age  = 77;
+            settings.Value.Sex  = Sex.Female;
+
+            // NOTE: 自動保存機能が実行されるのは最後の値変更から 1 秒後
+            await Task.Delay(TimeSpan.FromMilliseconds(1050));
+
+            using (var key = OpenSaveKey())
+            {
+                Assert.That(count, Is.EqualTo(1));
+                Assert.That(key.GetValue("Name"), Is.EqualTo("AutoSave"));
+                Assert.That(key.GetValue("Age"),  Is.EqualTo(77));
+                Assert.That(key.GetValue("Sex"),  Is.EqualTo(1));
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ReLoad
+        /// 
+        /// <summary>
+        /// レジストリから設定を 2 回以上読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void ReLoad()
+        {
+            var count = 0;
+
+            var settings = new SettingsFolder<Person>(Company, Product);
+            settings.AutoSave = false;
+
+            settings.Load();
+            settings.PropertyChanged += (s, e) => count++;
+            settings.Value.Name = "Before ReLoad";
+            Assert.That(count, Is.EqualTo(1));
+
+            settings.Load();
+            settings.Value.Name = "After ReLoad";
+            Assert.That(count, Is.EqualTo(2));
         }
 
         #endregion
