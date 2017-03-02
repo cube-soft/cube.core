@@ -40,115 +40,58 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Load_Registry_String
+        /// Load_Registry
         /// 
         /// <summary>
-        /// string オブジェクトを読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = "佐藤栄作")]
-        public string Load_Registry_String()
-            => Loaded.Value.Name;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Registry_Integer
-        /// 
-        /// <summary>
-        /// int オブジェクトを読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 52)]
-        public int Load_Registry_Integer()
-            => Loaded.Value.Age;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Enum
-        /// 
-        /// <summary>
-        /// Enum オブジェクトを読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = Sex.Male)]
-        public Sex Load_Registry_Enum()
-            => Loaded.Value.Sex;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Registry_Boolean
-        /// 
-        /// <summary>
-        /// bool オブジェクトを読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = true)]
-        public bool Load_Registry_Boolean()
-            => Loaded.Value.Reserved;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Registry_DateTime
-        /// 
-        /// <summary>
-        /// DateTime オブジェクトを読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(2015, 3, 16, 2, 32, 26)]
-        public void Load_Registry_DateTime(int y, int m, int d, int hh, int mm, int ss)
-            => Assert.That(
-                Loaded.Value.Creation,
-                Is.EqualTo(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc).ToLocalTime())
-            );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Registry_Alias
-        /// 
-        /// <summary>
-        /// Name 属性で別名を付けられたオブジェクトを読み込むテストを
-        /// 実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 1357)]
-        public int Load_Registry_Alias()
-            => Loaded.Value.Identification;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Registry_NoMember
-        /// 
-        /// <summary>
-        /// DataMember 属性のないプロパティは読み込まれない事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = "secret message")]
-        public string Load_Registry_NoMember()
-            => Loaded.Value.Secret;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Registry_Class
-        /// 
-        /// <summary>
-        /// ユーザ定義クラスのオブジェクトを読み込むテストを実行します。
+        /// レジストリから設定を読み込むテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Load_Registry_Class()
+        public void Load_Registry()
         {
-            Assert.That(Loaded.Value.Phone.Type,  Is.EqualTo("Mobile"));
-            Assert.That(Loaded.Value.Phone.Value, Is.EqualTo("090-1234-5678"));
-            Assert.That(Loaded.Value.Email.Type,  Is.EqualTo("Email"));
-            Assert.That(Loaded.Value.Email.Value, Is.Null.Or.Empty);
+            var s = new SettingsFolder<Person>(Company, Product);
+            s.AutoSave = false;
+            s.Load();
+
+            Assert.That(s.Value.Name,           Is.EqualTo("佐藤栄作"));
+            Assert.That(s.Value.Age,            Is.EqualTo(52));
+            Assert.That(s.Value.Sex,            Is.EqualTo(Sex.Male));
+            Assert.That(s.Value.Reserved,       Is.EqualTo(true));
+            Assert.That(s.Value.Creation,       Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
+            Assert.That(s.Value.Identification, Is.EqualTo(1357));
+            Assert.That(s.Value.Secret,         Is.EqualTo("secret message"));
+            Assert.That(s.Value.Phone.Type,     Is.EqualTo("Mobile"));
+            Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
+            Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
+            Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ReLoad
+        /// 
+        /// <summary>
+        /// レジストリから設定を 2 回以上読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void ReLoad()
+        {
+            var count = 0;
+
+            var settings = new SettingsFolder<Person>(Company, Product);
+            settings.AutoSave = false;
+
+            settings.Load();
+            settings.PropertyChanged += (s, e) => count++;
+            settings.Value.Name = "Before ReLoad";
+            Assert.That(count, Is.EqualTo(1));
+
+            settings.Load();
+            settings.Value.Name = "After ReLoad";
+            Assert.That(count, Is.EqualTo(2));
         }
 
         /* ----------------------------------------------------------------- */
@@ -156,7 +99,7 @@ namespace Cube.Tests
         /// Load_File
         /// 
         /// <summary>
-        /// ファイルから読み込むテストを実行します。
+        /// ファイルから設定を読み込むテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -169,124 +112,44 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Save_Registry_String
+        /// Save_Registry
         /// 
         /// <summary>
-        /// string オブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = "山田花子")]
-        public string Save_Registry_String()
-            => Saved.GetValue("Name") as string;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_Integer
-        /// 
-        /// <summary>
-        /// int オブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 15)]
-        public int Save_Registry_Integer()
-            => (int)Saved.GetValue("Age");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_Enum
-        /// 
-        /// <summary>
-        /// Enum オブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 1)]
-        public int Save_Registry_Enum()
-            => (int)Saved.GetValue("Sex");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_Boolean
-        /// 
-        /// <summary>
-        /// bool オブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 1)]
-        public int Save_Registry_Boolean()
-            => (int)Saved.GetValue("Reserved");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_DateTime
-        /// 
-        /// <summary>
-        /// DateTime オブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 1420035930)]
-        public int Save_Registry_DateTime()
-            => (int)Saved.GetValue("Creation");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_Alias
-        /// 
-        /// <summary>
-        /// Name 属性を持つオブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 123)]
-        public int Save_Registry_Alias()
-            => (int)Saved.GetValue("ID");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_NonMember
-        /// 
-        /// <summary>
-        /// DataMember 属性のないプロパティの内容は書き込まれなかった事を
-        /// 確認します。
+        /// レジストリに設定を保存するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Save_Registry_NonMember()
-            => Assert.That(Saved.GetValue("Secred"), Is.Null);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Registry_Class
-        /// 
-        /// <summary>
-        /// ユーザ定義クラスのオブジェクトが書き込まれた事を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Save_Registry_Class()
+        public void Save_Registry()
         {
-            using (var subkey = Saved.OpenSubKey("Phone"))
+            using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());
+            using (var key = OpenSaveKey())
             {
-                Assert.That(subkey.GetValue("Type"),  Is.EqualTo("Mobile"));
-                Assert.That(subkey.GetValue("Value"), Is.EqualTo("080-9876-5432"));
-            }
+                Assert.That(key.GetValue("Name"),     Is.EqualTo("山田花子"));
+                Assert.That(key.GetValue("Age"),      Is.EqualTo(15));
+                Assert.That(key.GetValue("Sex"),      Is.EqualTo(1));
+                Assert.That(key.GetValue("Reserved"), Is.EqualTo(1));
+                Assert.That(key.GetValue("Creation"), Is.EqualTo(1420035930));
+                Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
+                Assert.That(key.GetValue("Secret"),   Is.Null);
 
-            using (var subkey = Saved.OpenSubKey("Email"))
-            {
-                Assert.That(subkey.GetValue("Type"),  Is.EqualTo("PC"));
-                Assert.That(subkey.GetValue("Value"), Is.EqualTo("dummy@example.com"));
+                using (var subkey = key.OpenSubKey("Phone"))
+                {
+                    Assert.That(subkey.GetValue("Type"),  Is.EqualTo("Mobile"));
+                    Assert.That(subkey.GetValue("Value"), Is.EqualTo("080-9876-5432"));
+                }
+
+                using (var subkey = key.OpenSubKey("Email"))
+                {
+                    Assert.That(subkey.GetValue("Type"),  Is.EqualTo("PC"));
+                    Assert.That(subkey.GetValue("Value"), Is.EqualTo("dummy@example.com"));
+                }
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Save_File_Exists
+        /// Save_File
         /// 
         /// <summary>
         /// オブジェクトの内容がファイルに書き込まれた事を確認します。
@@ -295,7 +158,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(FileType.Xml,  "Person.xml")]
         [TestCase(FileType.Json, "Person.json")]
-        public void Save_File_Exists(FileType type, string filename)
+        public void Save_File(FileType type, string filename)
         {
             var dest = IoEx.Path.Combine(Results, filename);
             type.Save(dest, CreatePerson());
@@ -305,6 +168,21 @@ namespace Cube.Tests
         #endregion
 
         #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Setup
+        ///
+        /// <summary>
+        /// 各テスト前に実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [SetUp]
+        public void Setup()
+        {
+            Registry.CurrentUser.DeleteSubKeyTree(SaveKeyName, false);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -318,11 +196,21 @@ namespace Cube.Tests
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Loaded = new SettingsFolder<Person>(Company, Product);
-            using (var _ = new Registrar(LoadKeyName)) Loaded.Load();
+            using (var key = CreateLoadKey())
+            {
+                key.SetValue("ID", 1357);
+                key.SetValue("Name", "佐藤栄作");
+                key.SetValue("Sex", 0);
+                key.SetValue("Age", 52);
+                key.SetValue("Creation", 0x550640ba);
+                key.SetValue("Reserved", 1);
 
-            Saved = Registry.CurrentUser.CreateSubKey(SaveKeyName);
-            Saved.Save(CreatePerson());
+                using (var subkey = key.CreateSubKey("Phone"))
+                {
+                    subkey.SetValue("Type", "Mobile");
+                    subkey.SetValue("Value", "090-1234-5678");
+                }
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -337,9 +225,8 @@ namespace Cube.Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            Saved.Close();
-            Loaded.Dispose();
-            Registry.CurrentUser.DeleteSubKeyTree(SaveKeyName);
+            Registry.CurrentUser.DeleteSubKeyTree(LoadKeyName, true);
+            Registry.CurrentUser.DeleteSubKeyTree(SaveKeyName, false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -364,104 +251,14 @@ namespace Cube.Tests
             Secret         = "dummy data"
         };
 
-        #region Internal resources
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Loaded
-        /// 
-        /// <summary>
-        /// Registrar クラスを用いてロードした SettingsFolder(Person)
-        /// オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private SettingsFolder<Person> Loaded { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Saved
-        /// 
-        /// <summary>
-        /// Settings クラスを用いて Person オブジェクトを保存した後の
-        /// RegistryKey オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private RegistryKey Saved { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// <summary>
-        /// レジストリに関する情報を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
+        #region Registry information
         private string Company => "CubeSoft";
-        private string Product => "Settings_SaveTest";
+        private string Product => "Settings_LoadTest";
         private string LoadKeyName => $@"Software\{Company}\{Product}";
-        private string SaveKeyName => $@"Software\{Company}\{Product}";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Registrar
-        /// 
-        /// <summary>
-        /// レジストリにテスト用のデータを登録・削除するためのクラスです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        internal class Registrar : IDisposable
-        {
-            public Registrar(string name)
-            {
-                RegistryKeyName = name;
-                Register();
-            }
-
-            public RegistryKey RegistryKey { get; private set; }
-
-            public string RegistryKeyName { get; }
-
-            ~Registrar() { Dispose(false); }
-
-            public void Dispose()
-            {
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-
-            protected virtual void Dispose(bool diposing)
-            {
-                if (_disposed) return;
-                _disposed = true;
-                if (!diposing) return;
-                RegistryKey.Close();
-                Registry.CurrentUser.DeleteSubKeyTree(RegistryKeyName);
-            }
-
-            private void Register()
-            {
-                RegistryKey = Registry.CurrentUser.CreateSubKey(RegistryKeyName);
-                RegistryKey.SetValue("ID", 1357);
-                RegistryKey.SetValue("Name", "佐藤栄作");
-                RegistryKey.SetValue("Sex", 0);
-                RegistryKey.SetValue("Age", 52);
-                RegistryKey.SetValue("Creation", 0x550640ba);
-                RegistryKey.SetValue("Reserved", 1);
-
-                using (var subkey = RegistryKey.CreateSubKey("Phone"))
-                {
-                    subkey.SetValue("Type", "Mobile");
-                    subkey.SetValue("Value", "090-1234-5678");
-                }
-            }
-
-            #region Fields
-            private bool _disposed = false;
-            #endregion
-        }
-
+        private string SaveKeyName => $@"Software\{Company}\Settings_SaveTest";
+        private RegistryKey CreateLoadKey() => Registry.CurrentUser.CreateSubKey(LoadKeyName);
+        private RegistryKey CreateSaveKey() => Registry.CurrentUser.CreateSubKey(SaveKeyName);
+        private RegistryKey OpenSaveKey() => Registry.CurrentUser.OpenSubKey(SaveKeyName, false);
         #endregion
 
         #endregion
