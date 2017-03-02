@@ -243,4 +243,16 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void ValueCancelEventHandler<TValue>(object sender, ValueCancelEventArgs<TValue> e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ValueChangedEventHandler(TValue)
+    /// 
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void ValueChangedEventHandler<TValue>(object sender, ValueChangedEventArgs<TValue> e);
 }

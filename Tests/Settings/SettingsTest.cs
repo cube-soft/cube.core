@@ -49,7 +49,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = "佐藤栄作")]
         public string Load_Registry_String()
-            => Loaded.User.Name;
+            => Loaded.Value.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -62,7 +62,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 52)]
         public int Load_Registry_Integer()
-            => Loaded.User.Age;
+            => Loaded.Value.Age;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -75,7 +75,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = Sex.Male)]
         public Sex Load_Registry_Enum()
-            => Loaded.User.Sex;
+            => Loaded.Value.Sex;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,7 +88,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = true)]
         public bool Load_Registry_Boolean()
-            => Loaded.User.Reserved;
+            => Loaded.Value.Reserved;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -102,7 +102,7 @@ namespace Cube.Tests
         [TestCase(2015, 3, 16, 2, 32, 26)]
         public void Load_Registry_DateTime(int y, int m, int d, int hh, int mm, int ss)
             => Assert.That(
-                Loaded.User.Creation,
+                Loaded.Value.Creation,
                 Is.EqualTo(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc).ToLocalTime())
             );
 
@@ -118,7 +118,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = 1357)]
         public int Load_Registry_Alias()
-            => Loaded.User.Identification;
+            => Loaded.Value.Identification;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,7 +131,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = "secret message")]
         public string Load_Registry_NoMember()
-            => Loaded.User.Secret;
+            => Loaded.Value.Secret;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -145,10 +145,10 @@ namespace Cube.Tests
         [Test]
         public void Load_Registry_Class()
         {
-            Assert.That(Loaded.User.Phone.Type,  Is.EqualTo("Mobile"));
-            Assert.That(Loaded.User.Phone.Value, Is.EqualTo("090-1234-5678"));
-            Assert.That(Loaded.User.Email.Type,  Is.EqualTo("Email"));
-            Assert.That(Loaded.User.Email.Value, Is.Null.Or.Empty);
+            Assert.That(Loaded.Value.Phone.Type,  Is.EqualTo("Mobile"));
+            Assert.That(Loaded.Value.Phone.Value, Is.EqualTo("090-1234-5678"));
+            Assert.That(Loaded.Value.Email.Type,  Is.EqualTo("Email"));
+            Assert.That(Loaded.Value.Email.Value, Is.Null.Or.Empty);
         }
 
         /* ----------------------------------------------------------------- */
