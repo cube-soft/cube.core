@@ -160,8 +160,8 @@ namespace Cube.Tests
             settings.Value.Age  = 77;
             settings.Value.Sex  = Sex.Female;
 
-            // NOTE: 自動保存機能が実行されるのは最後の値変更から 1 秒後
-            await Task.Delay(TimeSpan.FromMilliseconds(1050));
+            // NOTE: 自動保存機能が実行されるのは最後の値変更から 100ms 後
+            await Task.Delay(TimeSpan.FromMilliseconds(150));
 
             using (var key = OpenSaveKey())
             {

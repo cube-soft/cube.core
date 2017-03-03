@@ -407,7 +407,7 @@ namespace Cube.Settings
             Value.PropertyChanged += Value_PropertyChanged;
 
             _autosaver.AutoReset = false;
-            _autosaver.Interval  = 1000;
+            _autosaver.Interval  = 100;
             _autosaver.Elapsed  += AutoSaver_Elapsed;
         }
 
