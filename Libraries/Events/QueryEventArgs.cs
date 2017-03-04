@@ -40,10 +40,12 @@ namespace Cube
         /// <summary>
         /// Cancel の値を false に設定してオブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="query">クエリーデータ</param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(TQuery query) : this(query, false) { }
-        
+
         /* ----------------------------------------------------------------- */
         ///
         /// QueryEventArgs
@@ -52,6 +54,9 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         ///
+        /// <param name="query">クエリーデータ</param>
+        /// <param name="cancel">操作をキャンセルするかどうかの初期値</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(TQuery query, bool cancel)
             : this(query, default(TResult), cancel)
@@ -99,6 +104,47 @@ namespace Cube
         public TResult Result { get; set; }
 
         #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryEventArgs
+    /// 
+    /// <summary>
+    /// QueryEventArgs(TQuery, TResult) を生成するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class QueryEventArgs
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// <c>QueryEventArgs(TQuery, TResult)</c> オブジェクトを生成します。
+        /// </summary>
+        /// 
+        /// <param name="query">クエリーデータ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static QueryEventArgs<TQuery, TResult> Create<TQuery, TResult>(TQuery query)
+            => new QueryEventArgs<TQuery, TResult>(query);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        /// 
+        /// <summary>
+        /// <c>QueryEventArgs(TQuery, TResult)</c> オブジェクトを生成します。
+        /// </summary>
+        /// 
+        /// <param name="query">クエリーデータ</param>
+        /// <param name="cancel">操作をキャンセルするかどうかの初期値</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static QueryEventArgs<TQuery, TResult> Create<TQuery, TResult>(TQuery query, bool cancel)
+            => new QueryEventArgs<TQuery, TResult>(query, cancel);
     }
 
     /* --------------------------------------------------------------------- */
