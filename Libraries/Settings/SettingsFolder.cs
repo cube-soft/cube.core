@@ -134,6 +134,17 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Value
+        ///
+        /// <summary>
+        /// 設定内容を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue Value { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Assembly
         ///
         /// <summary>
@@ -153,17 +164,6 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion Version { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// 設定内容を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue Value { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -264,8 +264,8 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoaded(ValueChangedEventArgs<TValue> e)
         {
-            if (e.OldValue != null) e.OldValue.PropertyChanged -= Value_PropertyChanged;
-            if (e.NewValue != null) e.NewValue.PropertyChanged += Value_PropertyChanged;
+            if (e.OldValue != null) e.OldValue.PropertyChanged -= Value_Changed;
+            if (e.NewValue != null) e.NewValue.PropertyChanged += Value_Changed;
 
             Value = e.NewValue;
             Startup.Load();
@@ -404,7 +404,7 @@ namespace Cube.Settings
             Version  = new SoftwareVersion(Assembly);
             Value    = new TValue();
 
-            Value.PropertyChanged += Value_PropertyChanged;
+            Value.PropertyChanged += Value_Changed;
 
             _autosaver.AutoReset = false;
             _autosaver.Interval  = 100;
@@ -417,7 +417,7 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Value_PropertyChanged
+        /// Value_Changed
         ///
         /// <summary>
         /// Value.PropertyChanged イベントが発生した時に実行される
@@ -425,7 +425,7 @@ namespace Cube.Settings
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        private void Value_PropertyChanged(object sener, PropertyChangedEventArgs e)
+        private void Value_Changed(object sener, PropertyChangedEventArgs e)
         {
             _autosaver.Stop();
             if (AutoSave) _autosaver.Start();

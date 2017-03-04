@@ -211,7 +211,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<PowerModeChangedEventArgs> PowerModeChanged;
+        public event PowerModeChangedEventHandler PowerModeChanged;
 
         /* ----------------------------------------------------------------- */
         ///
