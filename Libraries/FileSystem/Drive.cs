@@ -67,9 +67,9 @@ namespace Cube.FileSystem {
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <remarks>
-        /// 引数には、A-Z の英文字を指定します。
-        /// </remarks>
+        /// <param name="letter">
+        /// ドライブレターを表す A-Z のアルファベット
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public Drive(char letter) : this($"{letter}:") { }
@@ -81,7 +81,9 @@ namespace Cube.FileSystem {
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
+        /// <param name="letter">ドライブレター</param>
+        ///
         /// <remarks>
         /// 引数には、C: のようにコロン付ドライブレターを指定します。
         /// </remarks>
@@ -99,6 +101,8 @@ namespace Cube.FileSystem {
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        ///
+        /// <param name="obj">ドライブを表すオブジェクト</param>
         /// 
         /// <remarks>
         /// 引数には、Win32_LogicalDisk から取得したオブジェクトを指定
@@ -265,7 +269,7 @@ namespace Cube.FileSystem {
 
         #endregion
 
-        #region Initialize methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -375,10 +379,6 @@ namespace Cube.FileSystem {
                 break;
             }
         }
-
-        #endregion
-
-        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
