@@ -90,7 +90,7 @@ namespace Cube.Generics
         /// </summary>
         /// 
         /// <param name="src">キャストするオブジェクト</param>
-        /// <param name="failed">キャストに失敗した時に返される値</param>
+        /// <param name="failed">キャスト失敗時に返される値</param>
         /// 
         /// <returns>キャスト結果</returns>
         /// 
