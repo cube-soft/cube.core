@@ -108,47 +108,6 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryEventArgs
-    /// 
-    /// <summary>
-    /// QueryEventArgs(TQuery, TResult) を生成するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class QueryEventArgs
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        /// 
-        /// <summary>
-        /// <c>QueryEventArgs(TQuery, TResult)</c> オブジェクトを生成します。
-        /// </summary>
-        /// 
-        /// <param name="query">クエリーデータ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static QueryEventArgs<TQuery, TResult> Create<TQuery, TResult>(TQuery query)
-            => new QueryEventArgs<TQuery, TResult>(query);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        /// 
-        /// <summary>
-        /// <c>QueryEventArgs(TQuery, TResult)</c> オブジェクトを生成します。
-        /// </summary>
-        /// 
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="cancel">操作をキャンセルするかどうかの初期値</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static QueryEventArgs<TQuery, TResult> Create<TQuery, TResult>(TQuery query, bool cancel)
-            => new QueryEventArgs<TQuery, TResult>(query, cancel);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// QueryEventHandler(TValue)
     /// 
     /// <summary>
