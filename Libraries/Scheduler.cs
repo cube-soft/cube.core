@@ -122,7 +122,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastExecuted { get; private set; } = DateTime.Now;
+        public DateTime LastExecuted { get; private set; } = DateTime.MinValue;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -322,7 +322,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnReset()
         {
-            LastExecuted = DateTime.Now;
+            LastExecuted = DateTime.MinValue;
             _core.Interval = Interval.TotalMilliseconds;
         }
 
