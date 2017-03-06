@@ -44,7 +44,6 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase("Sample.txt")]
         public void Move_Overwrite(string filename)
-            => Assert.DoesNotThrow(() =>
         {
             var op = new Cube.FileSystem.FileHandler();
             op.Failed += (s, e) => Assert.Fail($"{e.Key}: {e.Value}");
@@ -57,7 +56,11 @@ namespace Cube.Tests
             op.Copy(IoEx.Path.Combine(Examples, filename), src, false);
             op.Copy(src, dest, false);
             op.Move(src, dest, true);
-        });
+            Assert.That(IoEx.File.Exists(dest), Is.True);
+
+            op.Delete(dest);
+            Assert.That(IoEx.File.Exists(dest), Is.False);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
