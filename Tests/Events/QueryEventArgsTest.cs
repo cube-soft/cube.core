@@ -21,34 +21,38 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ProgressEventArgsTest
+    /// QueryEventArgs
     /// 
     /// <summary>
-    /// ProgressEventArgs のテスト用クラスです。
+    /// QueryEventArgs のテスト用クラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class ProgressEventArgsTest
+    class QueryEventArgsTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ProgressEventArgs
+        /// Create_QueryEventArgs
         ///
         /// <summary>
-        /// ProgressEventArgs.Create(double, T) のテストを実行します。
+        /// QueryEventArgs(T, U) オブジェクトを生成するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(10.0, "Progress")]
-        [TestCase(-25.67890, false)]
-        [TestCase(0.0, 3.1415926)]
-        public void Create_ProgressEventArgs<T>(double percentage, T value)
+        [TestCase(1)]
+        [TestCase("pi")]
+        [TestCase(true)]
+        public void Create_QueryEventArgs<T>(T query)
         {
-            var args = ProgressEventArgs.Create(percentage, value);
-            Assert.That(args.Percentage, Is.EqualTo(percentage));
-            Assert.That(args.Value, Is.EqualTo(value));
+            var args = new QueryEventArgs<T, string>(query);
+            Assert.That(args.Query, Is.EqualTo(query));
+            Assert.That(args.Result, Is.Null);
+            Assert.That(args.Cancel, Is.False);
+
+            args.Result = nameof(Create_QueryEventArgs);
+            Assert.That(args.Result, Is.EqualTo(nameof(Create_QueryEventArgs)));
         }
     }
 }

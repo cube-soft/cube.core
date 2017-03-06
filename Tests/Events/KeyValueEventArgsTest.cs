@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
 
-namespace Cube.Tests.Events
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -69,5 +69,18 @@ namespace Cube.Tests.Events
             Assert.That(args.Key, Is.EqualTo(key));
             Assert.That(args.Value, Is.EqualTo(value));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs_Cancel
+        ///
+        /// <summary>
+        /// Cancel プロパティの初期値を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(ExpectedResult = false)]
+        public bool KeyValueCancelEventArgs_Cancel()
+            => new KeyValueCancelEventArgs<int, int>(1, 2).Cancel;
     }
 }

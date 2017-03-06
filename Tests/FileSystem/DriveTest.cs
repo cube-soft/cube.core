@@ -15,8 +15,9 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
+using System;
 using System.Linq;
+using NUnit.Framework;
 using Cube.FileSystem;
 
 namespace Cube.Tests
@@ -50,7 +51,7 @@ namespace Cube.Tests
         [TestCase(0)]
         public void Drive_Detach_Throws(int index)
             => Assert.That(
-            () => Drives[index].Detach(),
+            () => Drive.GetDrives().First().Detach(),
             Throws.TypeOf<VetoException>()
                   .And.Property("Reason").EqualTo(VetoType.IllegalDeviceRequest)
                   .And.Property("Name").Not.Null.Or.Empty
@@ -58,83 +59,72 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// GetDrives_Count
+        ///
         /// <summary>
-        /// Drive の各種プロパティの内容をテストします。
+        /// Drive.GetDrives() のテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        #region Tests for Drive properties
-
         [TestCase(1)]
-        public void Drives_Length(int atleast)
-            => Assert.That(Drives.Length, Is.AtLeast(atleast));
-
-        [TestCase(0, ExpectedResult = 0)]
-        public uint Drive_Index(int index)
-            => Drives[index].Index;
-
-        [TestCase(0, ExpectedResult = "C:")]
-        public string Drive_Letter(int index)
-            => Drives[index].Letter;
-
-        [TestCase(0, ExpectedResult = DriveType.HardDisk)]
-        public DriveType Drive_Type(int index)
-            => Drives[index].Type;
-
-        [TestCase(0, ExpectedResult = "NTFS")]
-        public string Drive_Format(int index)
-            => Drives[index].Format;
-
-        [TestCase(0, ExpectedResult = "IDE")]
-        public string Drive_Interface(int index)
-            => Drives[index].Interface;
-
-        [TestCase(0, 100000000UL)]
-        public void Drive_Size(int index, ulong atleast)
-            => Assert.That(Drives[index].Size, Is.AtLeast(atleast));
-
-        [TestCase(0)]
-        public void Drive_FreeSpace_IsLessThanSize(int index)
-            => Assert.That(Drives[index].FreeSpace, Is.LessThan(Drives[index].Size));
-
-        [TestCase(0)]
-        public void Drive_VolumeLabel_IsNotNullOrEmpty(int index)
-            => Assert.That(Drives[index].VolumeLabel, Is.Not.Null.Or.Empty);
-
-        [TestCase(0)]
-        public void Drive_Model_IsNotNullOrEmpty(int index)
-            => Assert.That(Drives[index].Model, Is.Not.Null.Or.Empty);
-
-        #endregion
-
-        #region Helper methods
+        public void GetDrives_Count(int atleast)
+            => Assert.That(Drive.GetDrives().Count(), Is.AtLeast(atleast));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OneTimeSetup
+        /// GetDrives_Count
         ///
         /// <summary>
-        /// 初期化処理を一度だけ実行します。
+        /// Drive.GetDrives() のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        [Test]
+        public void Drive_Properties()
         {
-            Drives = Drive.GetDrives().ToArray();
+            var drive = Drive.GetDrives().First();
+            Assert.That(drive.Index,       Is.EqualTo(0));
+            Assert.That(drive.Letter,      Is.EqualTo("C:"));
+            Assert.That(drive.Type,        Is.EqualTo(DriveType.HardDisk));
+            Assert.That(drive.Format,      Is.EqualTo("NTFS"));
+            Assert.That(drive.Interface,   Is.EqualTo("IDE"));
+            Assert.That(drive.Size,        Is.AtLeast(100000000UL));
+            Assert.That(drive.FreeSpace,   Is.GreaterThan(1).And.LessThan(drive.Size));
+            Assert.That(drive.VolumeLabel, Is.Not.Null.Or.Empty);
+            Assert.That(drive.Model,       Is.Not.Null.Or.Empty);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Drives
+        /// Drive_Found
         ///
         /// <summary>
-        /// ドライブ情報一覧を取得または設定します。
+        /// ドライブレターを基にドライブ情報を取得するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Drive[] Drives { get; set; }
+        [Test]
+        public void Drive_Found()
+        {
+            var drive = new Drive('c');
+            Assert.That(drive.Letter, Is.EqualTo("C:"));
+            Assert.That(drive.Type,   Is.EqualTo(DriveType.HardDisk));
+        }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive_NotFound
+        ///
+        /// <summary>
+        /// 無効なドライブレターを設定した時のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Drive_NotFound()
+            => Assert.That(
+            () => new Drive("InvalidLettter"),
+            Throws.TypeOf<ArgumentException>()
+        );
     }
 }

@@ -64,6 +64,8 @@
     <Compile Include="Differences\OnpAlgorithmTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
     <Compile Include="Events\ProgressEventArgsTest.cs" />
+    <Compile Include="Events\QueryEventArgsTest.cs" />
+    <Compile Include="Events\RelayEventTest.cs" />
     <Compile Include="Events\ValueEventArgsTest.cs" />
     <Compile Include="FileSystem\DriveTest.cs" />
     <Compile Include="FileSystem\FileHandlerTest.cs" />

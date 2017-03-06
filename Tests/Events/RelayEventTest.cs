@@ -17,69 +17,61 @@
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Events
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ValueEventArgsTest
+    /// RelayEventTest
     /// 
     /// <summary>
-    /// ValueEventArgs のテスト用クラスです。
+    /// RelayEvent のテスト用クラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class ValueEventArgsTest
+    class RelayEventTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ValueEventArgs
+        /// Publish_Subscribe
         ///
         /// <summary>
-        /// ValueEventArgs.Create(T) のテストを実行します。
+        /// Publish/Subscribe のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(10)]
-        [TestCase(3.1415926)]
-        [TestCase("Hello, world")]
-        public void Create_ValueEventArgs<T>(T value)
+        [Test]
+        public void Publish_Subscribe()
         {
-            var args = ValueEventArgs.Create(value);
-            Assert.That(args.Value, Is.EqualTo(value));
+            var count = 0;
+            var ev = new RelayEvent();
+            ev.Subscribe(() => ++count);
+            ev.Publish();
+            ev.Publish();
+            ev.Publish();
+            Assert.That(count, Is.EqualTo(3));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ValueCancelEventArgs
+        /// Publish_Subscribe
         ///
         /// <summary>
-        /// ValueEventArgs.Create(T, bool) のテストを実行します。
+        /// Publish/Subscribe のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(-1, true)]
-        [TestCase(1.41421356, false)]
-        [TestCase("Cancel!Cancel!", true)]
-        public void Create_ValueCancelEventArgs<T>(T value, bool cancel)
+        [TestCase(1)]
+        [TestCase("pi")]
+        [TestCase(true)]
+        public void Publish_Subscribe<T>(T value)
         {
-            var args = ValueEventArgs.Create(value, cancel);
-            Assert.That(args.Value, Is.EqualTo(value));
-            Assert.That(args.Cancel, Is.EqualTo(cancel));
+            var result = default(T);
+            var ev = new RelayEvent<T>();
+            ev.Subscribe(x => { result = x; });
+            ev.Publish(value);
+            Assert.That(result, Is.EqualTo(value));
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueCancelEventArgs_Cancel
-        ///
-        /// <summary>
-        /// Cancel プロパティの初期値を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = false)]
-        public bool ValueCancelEventArgs_Cancel()
-            => new ValueCancelEventArgs<int>(1).Cancel;
     }
 }
