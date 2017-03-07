@@ -45,7 +45,7 @@ namespace Cube.Forms
             : base(view)
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
-            InitializeSurface();
+            DisableSystemStyles();
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InitializeSurface
+        /// DisableSystemStyles
         /// 
         /// <summary>
         /// 外観の描画に関して RadioButton オブジェクトと競合するプロパティを
@@ -84,10 +84,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void InitializeSurface()
+        private void DisableSystemStyles()
         {
-            var radio = View as System.Windows.Forms.RadioButton;
-            if (radio != null) radio.Appearance = System.Windows.Forms.Appearance.Button;
+            var control = View as System.Windows.Forms.RadioButton;
+            if (control == null) return;
+
+            control.Appearance = System.Windows.Forms.Appearance.Button;
         }
 
         #endregion

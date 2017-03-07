@@ -54,7 +54,7 @@ namespace Cube.Forms
             View.MouseDown  += (s, e) => OnMouseDown(e);
             View.MouseUp    += (s, e) => OnMouseUp(e);
 
-            InitializeSurface();
+            DisableSystemStyles();
         }
 
         #endregion
@@ -211,7 +211,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InitializeSurface
+        /// DisableSystemStyles
         /// 
         /// <summary>
         /// 外観の描画に関して ButtonBase オブジェクトと競合するプロパティを
@@ -219,21 +219,21 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void InitializeSurface()
+        private void DisableSystemStyles()
         {
             var transparent = Color.FromArgb(0, 255, 255, 255);
 
-            View.BackColor = transparent;
-            View.ForeColor = transparent;
+            View.BackColor = Color.Empty;
+            View.ForeColor = Color.Empty;
             View.BackgroundImage = null;
             View.Image = null;
             View.Text = string.Empty;
             View.FlatStyle = FlatStyle.Flat;
-            View.FlatAppearance.BorderColor = transparent;
+            View.FlatAppearance.BorderColor = Color.Empty;
             View.FlatAppearance.BorderSize = 0;
-            View.FlatAppearance.CheckedBackColor = transparent;
-            View.FlatAppearance.MouseDownBackColor = transparent;
-            View.FlatAppearance.MouseOverBackColor = transparent;
+            View.FlatAppearance.CheckedBackColor = Color.Empty;
+            View.FlatAppearance.MouseDownBackColor = Color.Empty;
+            View.FlatAppearance.MouseOverBackColor = Color.Empty;
             View.UseVisualStyleBackColor = false;
         }
 
