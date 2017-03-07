@@ -45,32 +45,15 @@ namespace Cube.Forms.Demo
         public CustomCaptionControl()
         {
             InitializeComponent();
-            InitializeEvents();
+
+            MaximizeControl = MaximizeButton;
+            MinimizeControl = MinimizeButton;
+            CloseControl    = ExitButton;
         }
 
         #endregion
 
-        #region Initialize methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// InitializeEvents
-        /// 
-        /// <summary>
-        /// 各種イベントを初期化します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void InitializeEvents()
-        {
-            MinimizeButton.Click += (s, e) => OnMinimize(e);
-            MaximizeButton.Click += (s, e) => OnMaximize(e);
-            ExitButton.Click     += (s, e) => OnClose(e);
-        }
-
-        #endregion
-
-        #region Override methods
+        #region Implementations
 
         /* --------------------------------------------------------------------- */
         ///
@@ -99,29 +82,8 @@ namespace Cube.Forms.Demo
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
-
-            switch (e.PropertyName)
-            {
-                case nameof(MaximizeBox):
-                    MaximizeButton.Visible = MaximizeBox;
-                    break;
-                case nameof(MinimizeBox):
-                    MinimizeButton.Visible = MinimizeBox;
-                    break;
-                case nameof(CloseBox):
-                    ExitButton.Visible = CloseBox;
-                    break;
-                case nameof(Active):
-                    UpdateLayout();
-                    break;
-                default:
-                    break;
-            }
+            if (e.PropertyName == nameof(Active)) UpdateLayout();
         }
-
-        #endregion
-
-        #region Others
 
         /* --------------------------------------------------------------------- */
         ///
@@ -144,16 +106,17 @@ namespace Cube.Forms.Demo
             else
             {
                 BackColor = Color.White;
-                MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.MinimizeGrey;
-                MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.MaximizeGrey;
-                ExitButton.Styles.NormalStyle.Image     = Properties.Resources.CloseGrey;
+                MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.MinimizeGray;
+                MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.MaximizeGray;
+                ExitButton.Styles.NormalStyle.Image     = Properties.Resources.CloseGray;
             }
         }
 
-        #endregion
 
         #region Fields
         private Color _backColor = Color.Empty;
+        #endregion
+
         #endregion
     }
 }

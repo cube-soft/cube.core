@@ -65,54 +65,52 @@
             // 
             // ExitButton
             // 
-            this.ExitButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ExitButton.Content = "";
             this.ExitButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ExitButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ExitButton.FlatAppearance.BorderSize = 0;
-            this.ExitButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ExitButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ExitButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ExitButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ExitButton.Image = null;
             this.ExitButton.Location = new System.Drawing.Point(370, 0);
             this.ExitButton.Margin = new System.Windows.Forms.Padding(0);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(30, 30);
+            this.ExitButton.Styles.DisabledStyle.BackColor = System.Drawing.SystemColors.Control;
+            this.ExitButton.Styles.DisabledStyle.BorderColor = System.Drawing.SystemColors.InactiveBorder;
+            this.ExitButton.Styles.DisabledStyle.ContentColor = System.Drawing.SystemColors.GrayText;
             this.ExitButton.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.ExitButton.Styles.MouseDownStyle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ExitButton.Styles.MouseDownStyle.BorderSize = 1;
             this.ExitButton.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.ExitButton.Styles.MouseOverStyle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
-            this.ExitButton.Styles.NormalStyle.BackColor = System.Drawing.Color.Empty;
+            this.ExitButton.Styles.MouseOverStyle.BorderSize = 1;
+            this.ExitButton.Styles.NormalStyle.BorderSize = 0;
             this.ExitButton.Styles.NormalStyle.Image = global::Cube.Forms.Demo.Properties.Resources.Close;
-            this.ExitButton.TabIndex = 5;
+            this.ExitButton.TabIndex = 8;
             this.ExitButton.UseVisualStyleBackColor = false;
             // 
             // MaximizeButton
             // 
-            this.MaximizeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MaximizeButton.Content = "";
             this.MaximizeButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MaximizeButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MaximizeButton.FlatAppearance.BorderSize = 0;
-            this.MaximizeButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.MaximizeButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.MaximizeButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MaximizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MaximizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MaximizeButton.Image = null;
             this.MaximizeButton.Location = new System.Drawing.Point(340, 0);
             this.MaximizeButton.Margin = new System.Windows.Forms.Padding(0);
             this.MaximizeButton.Name = "MaximizeButton";
             this.MaximizeButton.Size = new System.Drawing.Size(30, 30);
+            this.MaximizeButton.Styles.DisabledStyle.BackColor = System.Drawing.SystemColors.Control;
+            this.MaximizeButton.Styles.DisabledStyle.BorderColor = System.Drawing.SystemColors.InactiveBorder;
+            this.MaximizeButton.Styles.DisabledStyle.ContentColor = System.Drawing.SystemColors.GrayText;
             this.MaximizeButton.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.MaximizeButton.Styles.MouseDownStyle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MaximizeButton.Styles.MouseDownStyle.BorderSize = 1;
             this.MaximizeButton.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.MaximizeButton.Styles.MouseOverStyle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
-            this.MaximizeButton.Styles.NormalStyle.BackColor = System.Drawing.Color.Empty;
+            this.MaximizeButton.Styles.MouseOverStyle.BorderSize = 1;
+            this.MaximizeButton.Styles.NormalStyle.BorderSize = 0;
             this.MaximizeButton.Styles.NormalStyle.Image = global::Cube.Forms.Demo.Properties.Resources.Maximize;
-            this.MaximizeButton.TabIndex = 4;
+            this.MaximizeButton.TabIndex = 7;
             this.MaximizeButton.UseVisualStyleBackColor = false;
             // 
             // LogoPictureBox
@@ -150,28 +148,28 @@
             // 
             // MinimizeButton
             // 
-            this.MinimizeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MinimizeButton.Content = "";
             this.MinimizeButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MinimizeButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MinimizeButton.FlatAppearance.BorderSize = 0;
-            this.MinimizeButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.MinimizeButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.MinimizeButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MinimizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MinimizeButton.Image = null;
             this.MinimizeButton.Location = new System.Drawing.Point(310, 0);
             this.MinimizeButton.Margin = new System.Windows.Forms.Padding(0);
             this.MinimizeButton.Name = "MinimizeButton";
             this.MinimizeButton.Size = new System.Drawing.Size(30, 30);
+            this.MinimizeButton.Styles.DisabledStyle.BackColor = System.Drawing.SystemColors.Control;
+            this.MinimizeButton.Styles.DisabledStyle.BorderColor = System.Drawing.SystemColors.InactiveBorder;
+            this.MinimizeButton.Styles.DisabledStyle.ContentColor = System.Drawing.SystemColors.GrayText;
             this.MinimizeButton.Styles.MouseDownStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.MinimizeButton.Styles.MouseDownStyle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MinimizeButton.Styles.MouseDownStyle.BorderSize = 1;
             this.MinimizeButton.Styles.MouseOverStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.MinimizeButton.Styles.MouseOverStyle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
-            this.MinimizeButton.Styles.NormalStyle.BackColor = System.Drawing.Color.Empty;
+            this.MinimizeButton.Styles.MouseOverStyle.BorderSize = 1;
+            this.MinimizeButton.Styles.NormalStyle.BorderSize = 0;
+            this.MinimizeButton.Styles.NormalStyle.ContentColor = System.Drawing.SystemColors.ControlText;
             this.MinimizeButton.Styles.NormalStyle.Image = global::Cube.Forms.Demo.Properties.Resources.Minimize;
-            this.MinimizeButton.TabIndex = 3;
+            this.MinimizeButton.TabIndex = 9;
             this.MinimizeButton.UseVisualStyleBackColor = false;
             // 
             // CustomCaptionControl
@@ -194,8 +192,8 @@
         private PictureBox LogoPictureBox;
         private PictureBox TitlePictureBox;
         private Panel PaddingPanel;
-        private FlatButton ExitButton;
         private FlatButton MaximizeButton;
+        private FlatButton ExitButton;
         private FlatButton MinimizeButton;
     }
 }
