@@ -44,7 +44,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(typeof(Color), "Control")]
+        [DefaultValue(typeof(Color), "")]
         public Color BackColor
         {
             get { return _backColor; }
@@ -78,7 +78,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(typeof(Color), "ActiveBorder")]
+        [DefaultValue(typeof(Color), "")]
         public Color BorderColor
         {
             get { return _borderColor; }
@@ -130,7 +130,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(typeof(Color), "ControlText")]
+        [DefaultValue(typeof(Color), "")]
         public Color ContentColor
         {
             get { return _contentColor; }
@@ -195,7 +195,13 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle NormalStyle { get; } = new ButtonStyle();
+        public ButtonStyle NormalStyle { get; } = new ButtonStyle
+        {
+            BackColor    = SystemColors.Control,
+            ContentColor = SystemColors.ControlText,
+            BorderColor  = SystemColors.ActiveBorder,
+            BorderSize   = 1
+        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -219,7 +225,12 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle DisabledStyle { get; } = new ButtonStyle();
+        public ButtonStyle DisabledStyle { get; } = new ButtonStyle()
+        {
+            BackColor    = SystemColors.Control,
+            ContentColor = SystemColors.GrayText,
+            BorderColor  = SystemColors.InactiveBorder
+        };
 
         /* ----------------------------------------------------------------- */
         ///
