@@ -140,9 +140,9 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private Color _backColor = SystemColors.Control;
-        private Color _borderColor = SystemColors.ActiveBorder;
-        private Color _contentColor = SystemColors.ControlText;
+        private Color _backColor = Color.Empty;
+        private Color _borderColor = Color.Empty;
+        private Color _contentColor = Color.Empty;
         private Image _backgroundImage = null;
         private Image _image = null;
         private int _borderSize = 0;

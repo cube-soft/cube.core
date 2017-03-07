@@ -45,7 +45,8 @@ namespace Cube.Forms
             : base(view)
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
-            DisableSystemStyles();
+            view.Appearance = System.Windows.Forms.Appearance.Button;
+            view.TextAlign  = System.Drawing.ContentAlignment.MiddleCenter;
         }
 
         #endregion
@@ -68,28 +69,6 @@ namespace Cube.Forms
             if (control == null) return;
             IsChecked = control.Checked;
             control.Invalidate();
-        }
-
-        #endregion
-
-        #region Initialize methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisableSystemStyles
-        /// 
-        /// <summary>
-        /// 外観の描画に関して RadioButton オブジェクトと競合するプロパティを
-        /// 無効にします。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void DisableSystemStyles()
-        {
-            var control = View as System.Windows.Forms.RadioButton;
-            if (control == null) return;
-
-            control.Appearance = System.Windows.Forms.Appearance.Button;
         }
 
         #endregion

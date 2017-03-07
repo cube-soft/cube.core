@@ -47,7 +47,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public FlatButtonPainter(ButtonBase view)
         {
-            View = view;
+            View    = view;
+            Content = view?.GetType().Name;
+
             View.Paint      += (s, e) => OnPaint(e);
             View.MouseEnter += (s, e) => OnMouseEnter(e);
             View.MouseLeave += (s, e) => OnMouseLeave(e);
@@ -85,7 +87,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Surface
+        /// Styles
         /// 
         /// <summary>
         /// ボタンの基本となる外観を定義したオブジェクトを取得します。
@@ -221,7 +223,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void DisableSystemStyles()
         {
-            var color = Color.FromArgb(0, 255, 255, 255);
+            var color = Color.Empty;
 
             View.BackColor = color;
             View.ForeColor = color;
