@@ -110,13 +110,13 @@
     <None Include="App.manifest" />
     <None Include="Packages.config" />
     <None Include="Resources\Buttons\Close.png" />
-    <None Include="Resources\Buttons\CloseGrey.png" />
+    <None Include="Resources\Buttons\CloseGray.png" />
     <None Include="Resources\Buttons\Normalize.png" />
-    <None Include="Resources\Buttons\NormalizeGrey.png" />
+    <None Include="Resources\Buttons\NormalizeGray.png" />
     <None Include="Resources\Buttons\Maximize.png" />
-    <None Include="Resources\Buttons\MaximizeGrey.png" />
+    <None Include="Resources\Buttons\MaximizeGray.png" />
     <None Include="Resources\Buttons\Minimize.png" />
-    <None Include="Resources\Buttons\MinimizeGrey.png" />
+    <None Include="Resources\Buttons\MinimizeGray.png" />
     <None Include="Resources\Buttons\Refresh.png" />
     <None Include="Resources\Logos\Cube.png" />
     <None Include="Resources\Logos\CubeIce.png" />

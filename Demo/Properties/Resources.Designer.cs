@@ -73,9 +73,9 @@ namespace Cube.Forms.Demo.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap CloseGrey {
+        internal static System.Drawing.Bitmap CloseGray {
             get {
-                object obj = ResourceManager.GetObject("CloseGrey", resourceCulture);
+                object obj = ResourceManager.GetObject("CloseGray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace Cube.Forms.Demo.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap MaximizeGrey {
+        internal static System.Drawing.Bitmap MaximizeGray {
             get {
-                object obj = ResourceManager.GetObject("MaximizeGrey", resourceCulture);
+                object obj = ResourceManager.GetObject("MaximizeGray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace Cube.Forms.Demo.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap MinimizeGrey {
+        internal static System.Drawing.Bitmap MinimizeGray {
             get {
-                object obj = ResourceManager.GetObject("MinimizeGrey", resourceCulture);
+                object obj = ResourceManager.GetObject("MinimizeGray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace Cube.Forms.Demo.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap NormalizeGrey {
+        internal static System.Drawing.Bitmap NormalizeGray {
             get {
-                object obj = ResourceManager.GetObject("NormalizeGrey", resourceCulture);
+                object obj = ResourceManager.GetObject("NormalizeGray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

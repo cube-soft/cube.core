@@ -121,8 +121,8 @@
   <data name="Close" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buttons\Close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CloseGrey" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Buttons\CloseGrey.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CloseGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Buttons\CloseGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Cube" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Logos\Cube.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -142,20 +142,20 @@
   <data name="Maximize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buttons\Maximize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MaximizeGrey" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Buttons\MaximizeGrey.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MaximizeGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Buttons\MaximizeGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Minimize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buttons\Minimize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MinimizeGrey" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Buttons\MinimizeGrey.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MinimizeGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Buttons\MinimizeGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Normalize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buttons\Normalize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="NormalizeGrey" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Buttons\NormalizeGrey.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="NormalizeGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Buttons\NormalizeGray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buttons\Refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
