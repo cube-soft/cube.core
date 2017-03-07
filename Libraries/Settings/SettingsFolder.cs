@@ -240,6 +240,18 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        ///
+        /// <summary>
+        /// PropertyChangd イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+            => PropertyChanged?.Invoke(this, e);
+
         #region Loaded
 
         /* ----------------------------------------------------------------- */
