@@ -221,19 +221,19 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void DisableSystemStyles()
         {
-            var transparent = Color.FromArgb(0, 255, 255, 255);
+            var color = Color.FromArgb(0, 255, 255, 255);
 
-            View.BackColor = Color.Empty;
-            View.ForeColor = Color.Empty;
+            View.BackColor = color;
+            View.ForeColor = color;
             View.BackgroundImage = null;
             View.Image = null;
             View.Text = string.Empty;
             View.FlatStyle = FlatStyle.Flat;
-            View.FlatAppearance.BorderColor = Color.Empty;
+            View.FlatAppearance.BorderColor = color;
             View.FlatAppearance.BorderSize = 0;
-            View.FlatAppearance.CheckedBackColor = Color.Empty;
-            View.FlatAppearance.MouseDownBackColor = Color.Empty;
-            View.FlatAppearance.MouseOverBackColor = Color.Empty;
+            View.FlatAppearance.CheckedBackColor = color;
+            View.FlatAppearance.MouseDownBackColor = color;
+            View.FlatAppearance.MouseOverBackColor = color;
             View.UseVisualStyleBackColor = false;
         }
 
