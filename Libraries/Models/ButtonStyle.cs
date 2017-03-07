@@ -96,7 +96,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        [DefaultValue(0)]
+        [DefaultValue(-1)]
         public int BorderSize
         {
             get { return _borderSize; }
@@ -145,7 +145,7 @@ namespace Cube.Forms
         private Color _contentColor = Color.Empty;
         private Image _backgroundImage = null;
         private Image _image = null;
-        private int _borderSize = 0;
+        private int _borderSize = -1;
         #endregion
     }
 
