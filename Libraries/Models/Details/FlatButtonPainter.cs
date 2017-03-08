@@ -209,7 +209,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Initialize methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -238,10 +238,6 @@ namespace Cube.Forms
             View.FlatAppearance.MouseOverBackColor = color;
             View.UseVisualStyleBackColor = false;
         }
-
-        #endregion
-
-        #region Others
 
         /* ----------------------------------------------------------------- */
         ///

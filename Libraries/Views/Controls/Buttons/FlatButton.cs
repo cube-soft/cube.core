@@ -44,7 +44,7 @@ namespace Cube.Forms
         public FlatButton() : base()
         {
             _painter = new FlatButtonPainter(this);
-            Styles.PropertyChanged += (s, e) => Invalidate();
+            _painter.Styles.PropertyChanged += (s, e) => Invalidate();
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Surface
+        /// Styles
         ///
         /// <summary>
         /// ボタンの外観を取得または設定します。

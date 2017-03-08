@@ -54,20 +54,21 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを末尾に追加します。
         /// </summary>
+        /// 
+        /// <param name="item">追加するオブジェクト</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Enqueue(NotifyItem item)
-        {
-            Add(item);
-        }
+        public void Enqueue(NotifyItem item) => Add(item);
 
         /* --------------------------------------------------------------------- */
         ///
         /// Dequeue
         /// 
         /// <summary>
-        /// 先頭のオブジェクトを削除して取得します。
+        /// 先頭のオブジェクトを取得します。
         /// </summary>
+        /// 
+        /// <returns>先頭のオブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
         public NotifyItem Dequeue()
@@ -86,12 +87,10 @@ namespace Cube.Forms
         /// 先頭のオブジェクトを削除せずに取得します。
         /// </summary>
         ///
+        /// <returns>先頭のオブジェクト</returns>
+        ///
         /* --------------------------------------------------------------------- */
-        public NotifyItem Peek()
-        {
-            if (Count <= 0) return null;
-            return base[0];
-        }
+        public NotifyItem Peek() => Count > 0 ? base[0] : null;
 
         #endregion
     }
