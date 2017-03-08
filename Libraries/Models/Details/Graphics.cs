@@ -43,14 +43,9 @@ namespace Cube.Forms.Drawing
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void FillBackground(this Graphics gs, Rectangle bounds, Color color)
+        public static void FillBackground(this Graphics gs, Color color)
         {
-            if (color == Color.Empty) return;
-
-            using (var brush = new SolidBrush(color))
-            {
-                gs.FillRectangle(brush, bounds);
-            }
+            if (color != Color.Empty) gs.Clear(color);
         }
 
         /* ----------------------------------------------------------------- */

@@ -149,7 +149,7 @@ namespace Cube.Forms
             var gs = e.Graphics;
             var client = View.ClientRectangle;
             var bounds = GetDrawBounds(client, View.Padding);
-            gs.FillBackground(client, GetBackColor());
+            gs.FillBackground(GetBackColor());
             gs.DrawImage(client, GetBackgroundImage(), View.BackgroundImageLayout);
             gs.DrawImage(bounds, GetImage(), View.ImageAlign);
             gs.DrawText(bounds, Content, View.Font, GetContentColor(), View.TextAlign);
