@@ -63,9 +63,9 @@ namespace Cube.Forms.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap ButtonClose {
+        internal static System.Drawing.Bitmap CloseButton {
             get {
-                object obj = ResourceManager.GetObject("ButtonClose", resourceCulture);
+                object obj = ResourceManager.GetObject("CloseButton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

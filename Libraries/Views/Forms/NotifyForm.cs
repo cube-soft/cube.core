@@ -16,8 +16,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Threading.Tasks;
 using Cube.Log;
 
@@ -28,11 +28,11 @@ namespace Cube.Forms
     /// NotifyForm
     /// 
     /// <summary>
-    /// 通知用フォームを作成するためのクラスです。
+    /// 通知用フォームを表すクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class NotifyForm : BorderlessForm
+    public class NotifyForm : BorderlessForm, INotifyView
     {
         #region Constructors
 
@@ -45,34 +45,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyForm()
+        public NotifyForm() : base()
         {
-            InitializeComponent();
-            InitializeStyles();
-            SetTopMost();
-            IsBusy = false;
-            base.Text = string.Empty;
-            HideButton.Click += (s, e) => OnHideClick(e);
-            TitleButton.Click += (s, e) => RaiseTextClickEvent();
-            DescriptionButton.Click += (s, e) => RaiseTextClickEvent();
-            ImageButton.Click += (s, e) => RaiseImageClickEvent();
+            InitializeLayout();
         }
 
         #endregion
 
         #region Properties
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Level
-        /// 
-        /// <summary>
-        /// 重要度を取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public NotifyLevel Level { get; set; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -86,12 +66,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Title
         {
-            get { return TitleButton.Text; }
-            set
-            {
-                TitleButton.Text = value;
-                base.Text = value;
-            }
+            get { return _title.Content; }
+            set { _title.Content = value; }
         }
 
         /* --------------------------------------------------------------------- */
@@ -106,8 +82,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Description
         {
-            get { return DescriptionButton.Text; }
-            set { DescriptionButton.Text = value; }
+            get { return _text.Content; }
+            set { _text.Content = value; }
         }
 
         /* --------------------------------------------------------------------- */
@@ -123,50 +99,9 @@ namespace Cube.Forms
         [Browsable(true)]
         public bool AutoEllipsis
         {
-            get { return DescriptionButton.AutoEllipsis; }
-            set { DescriptionButton.AutoEllipsis = value; }
+            get { return _text.AutoEllipsis; }
+            set { _text.AutoEllipsis = value; }
         }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// DefaultStyle
-        /// 
-        /// <summary>
-        /// 規定スタイルを取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public NotifyStyle DefaultStyle { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Image
-        /// 
-        /// <summary>
-        /// イメージを取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public System.Drawing.Image Image
-        {
-            get { return ImageButton.Styles.NormalStyle.Image; }
-            set { ImageButton.Styles.NormalStyle.Image = value; }
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// InitialDelay
-        /// 
-        /// <summary>
-        /// 表示する際の遅延時間 (ミリ秒) を取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public int InitialDelay { get; set; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -179,25 +114,6 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         public bool IsBusy { get; private set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Styles
-        /// 
-        /// <summary>
-        /// 通知レベル毎のスタイルを取得または設定します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Styles に存在しない通知レベルが指定された場合、DefaultStyle が
-        /// 適用されます。
-        /// </remarks>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDictionary<NotifyLevel, NotifyStyle> Styles { get; }
-            = new Dictionary<NotifyLevel, NotifyStyle>();
 
         /* --------------------------------------------------------------------- */
         ///
@@ -236,260 +152,131 @@ namespace Cube.Forms
 
         #region Events
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// TextClick
+        /// Selected
         /// 
         /// <summary>
-        /// テキスト部分（タイトルおよび本文）がクリックされた時に発生する
-        /// イベントです。
+        /// ユーザの選択時に発生します。
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<NotifyItem>> TextClick;
+        /* ----------------------------------------------------------------- */
+        public event ValueEventHandler<NotifyComponents> Selected;
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// ImageClick
+        /// OnSelected
         /// 
         /// <summary>
-        /// イメージ部分がクリックされた時に発生するイベントです。
+        /// Selected イベントを発生させます。
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<NotifyItem>> ImageClick;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// HideClick
-        /// 
-        /// <summary>
-        /// Hide ボタンがクリックされた時に発生するイベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public event EventHandler HideClick;
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnSelected(ValueEventArgs<NotifyComponents> e)
+            => Selected?.Invoke(this, e);
 
         #endregion
 
         #region Methods
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
         /// Show
         /// 
         /// <summary>
-        /// 指定された時間だけフォームを表示します。
+        /// フォームを表示します。
         /// </summary>
+        /// 
+        /// <param name="item">表示内容</param>
         ///
-        /* --------------------------------------------------------------------- */
-        public void Show(int msec)
+        /* ----------------------------------------------------------------- */
+        public void Show(NotifyItem item) => Show(item, null);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Show
+        /// 
+        /// <summary>
+        /// フォームを表示します。
+        /// </summary>
+        /// 
+        /// <param name="item">表示内容</param>
+        /// <param name="style">表示スタイル</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Show(NotifyItem item, NotifyStyle style)
         {
-            Show();
-            var _ = RunAsync(() => Hide(), InitialDelay + msec);
+            Title       = item.Title;
+            Description = item.Description;
+
+            SetStyle(style);
+            Show(item.DisplayTime, item.InitialDelay);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Show
+        /// 
+        /// <summary>
+        /// フォームを表示します。
+        /// </summary>
+        /// 
+        /// <param name="time">表示時間</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Show(TimeSpan time) => Show(time, TimeSpan.Zero);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Show
+        /// 
+        /// <summary>
+        /// フォームを表示します。
+        /// </summary>
+        /// 
+        /// <param name="time">表示時間</param>
+        /// <param name="delay">表示されるまでの時間</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Show(TimeSpan time, TimeSpan delay)
+        {
+            var _ = ShowAsync(time, delay);
         }
 
         #endregion
 
-        #region Vritual methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnTextClick
-        /// 
-        /// <summary>
-        /// テキスト部分（タイトルおよび本文）がクリックされた時に発生する
-        /// イベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnTextClick(ValueEventArgs<NotifyItem> e)
-            => TextClick?.Invoke(this, e);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnImageClick
-        /// 
-        /// <summary>
-        /// イメージ部分がクリックされた時に発生するイベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnImageClick(ValueEventArgs<NotifyItem> e)
-            => ImageClick?.Invoke(this, e);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// HideClick
-        /// 
-        /// <summary>
-        /// Hide ボタンがクリックされた時に発生するイベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnHideClick(EventArgs e)
-        {
-            HideClick?.Invoke(this, e);
-            Hide();
-        }
-
-        #endregion
-
-        #region Override methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetVisibleCore
+        /// OnBackColorChanged
         /// 
         /// <summary>
-        /// コントロールを指定した表示状態に設定します。
+        /// 背景色が変化した時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void SetVisibleCore(bool value)
+        protected override void OnBackColorChanged(EventArgs e)
         {
-            var current = Visible;
-            var showing = value && !current;
-            if (showing) IsBusy = true;
-            if (showing && InitialDelay > 0)
-            {
-                var _ = RunAsync(() => base.SetVisibleCore(value), InitialDelay);
-                base.SetVisibleCore(current);
-            }
-            else base.SetVisibleCore(value);
+            base.OnBackColorChanged(e);
+
+            _panel.BackColor                    =
+            _close.Styles.NormalStyle.BackColor =
+            _image.Styles.NormalStyle.BackColor =
+            _title.Styles.NormalStyle.BackColor =
+            _text.Styles.NormalStyle.BackColor  = BackColor;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnShowing
+        /// ShowAsync
         /// 
         /// <summary>
-        /// フォームが表示される直前に発生するイベントです。
+        /// 指定時間フォームを表示します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnShowing(CancelEventArgs e)
-        {
-            SetLocation();
-            SetStyle();
-            base.OnShowing(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnHidden
-        /// 
-        /// <summary>
-        /// フォームが非表示になった直後に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnHidden(EventArgs e)
-        {
-            IsBusy = false;
-            base.OnHidden(e);
-        }
-
-        #endregion
-
-        #region Style definitions
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// InitializeStyles
-        /// 
-        /// <summary>
-        /// スタイルを初期化します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void InitializeStyles()
-        {
-            DefaultStyle = new NotifyStyle
-            {
-                BackColor        = System.Drawing.Color.FromArgb(242, 242, 242),
-                BorderColor      = System.Drawing.Color.FromArgb(230, 230, 230),
-                Title            = new System.Drawing.Font(Font, System.Drawing.FontStyle.Bold),
-                TitleColor       = System.Drawing.Color.DimGray,
-                Description      = Font,
-                DescriptionColor = System.Drawing.SystemColors.ControlText
-            };
-
-            Styles.Add(NotifyLevel.None, new NotifyStyle
-            {
-                BackColor        = System.Drawing.Color.Empty,
-                BorderColor      = System.Drawing.Color.Empty,
-                Title            = Font,
-                TitleColor       = System.Drawing.SystemColors.ControlText,
-                Description      = Font,
-                DescriptionColor = System.Drawing.SystemColors.ControlText
-            });
-
-            Styles.Add(NotifyLevel.Debug, new NotifyStyle
-            {
-                BackColor        = DefaultStyle.BackColor,
-                BorderColor      = DefaultStyle.BorderColor,
-                Title            = Font,
-                TitleColor       = System.Drawing.SystemColors.ControlText,
-                Description      = Font,
-                DescriptionColor = System.Drawing.SystemColors.ControlText
-            });
-
-            Styles.Add(NotifyLevel.Information, new NotifyStyle
-            {
-                BackColor        = DefaultStyle.BackColor,
-                BorderColor      = DefaultStyle.BorderColor,
-                Title            = DefaultStyle.Title,
-                TitleColor       = DefaultStyle.TitleColor,
-                Description      = DefaultStyle.Description,
-                DescriptionColor = DefaultStyle.DescriptionColor
-            });
-
-            Styles.Add(NotifyLevel.Important, new NotifyStyle
-            {
-                BackColor        = DefaultStyle.BackColor,
-                BorderColor      = DefaultStyle.BorderColor,
-                Title            = DefaultStyle.Title,
-                TitleColor       = DefaultStyle.TitleColor,
-                Description      = DefaultStyle.Description,
-                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
-            });
-
-            Styles.Add(NotifyLevel.Warning, new NotifyStyle
-            {
-                BackColor        = DefaultStyle.BackColor,
-                BorderColor      = DefaultStyle.BorderColor,
-                Title            = DefaultStyle.Title,
-                TitleColor       = System.Drawing.SystemColors.ControlText,
-                Description      = DefaultStyle.Description,
-                DescriptionColor = System.Drawing.Color.FromArgb(192, 0, 0)
-            });
-
-            Styles.Add(NotifyLevel.Error, new NotifyStyle
-            {
-                BackColor        = DefaultStyle.BackColor,
-                BorderColor      = DefaultStyle.BorderColor,
-                Title            = DefaultStyle.Title,
-                TitleColor       = System.Drawing.SystemColors.ControlText,
-                Description      = DefaultStyle.Description,
-                DescriptionColor = System.Drawing.Color.Red
-            });
-        }
-
-        #endregion
-
-        #region Others
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// RunAsync
-        /// 
-        /// <summary>
-        /// 指定された時間 (ミリ秒) だけ処理を遅延させて実行します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private async Task RunAsync(Action action, int msec)
+        private async Task ShowAsync(TimeSpan time, TimeSpan delay)
         {
             var source = new System.Threading.CancellationTokenSource();
             EventHandler m = (s, e) => source.Cancel();
@@ -497,28 +284,46 @@ namespace Cube.Forms
 
             try
             {
-                await Task.Delay(msec, source.Token);
-                action();
+                IsBusy = true;
+
+                var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
+                SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
+
+                if (delay > TimeSpan.Zero) await Task.Delay(delay);
+                SetTopMost();
+                Show();
+                if (time > TimeSpan.Zero) await Task.Delay(time, source.Token);
+                Hide();
             }
-            catch (TaskCanceledException /* err */) { /* ignore user's cancel */ }
-            catch (OperationCanceledException /* err */) { /* ignore user's cancel */ }
+            catch (TaskCanceledException /* err */) { }
+            catch (OperationCanceledException /* err */) { }
             catch (Exception err) { this.LogError(err.Message, err); }
-            finally { Hidden -= m; }
+            finally
+            {
+                Hidden -= m;
+                IsBusy = false;
+            }
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SetLocation
+        /// SetStyle
         /// 
         /// <summary>
-        /// 表示位置を設定します。
+        /// 表示スタイルを適用します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void SetLocation()
+        private void SetStyle(NotifyStyle style)
         {
-            var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
-            SetDesktopLocation(screen.Width - Width - 2, screen.Height - Height - 2);
+            if (style == null) return;
+            if (style.BackColor != Color.Empty) BackColor = style.BackColor;
+            if (style.ImageColor != Color.Empty) _image.Styles.NormalStyle.BackColor = style.ImageColor;
+            if (style.Image != null) _image.Styles.NormalStyle.Image = style.Image;
+            if (style.Title != null) _title.Font = style.Title;
+            if (style.TitleColor != Color.Empty) _title.Styles.NormalStyle.ContentColor = style.TitleColor;
+            if (style.Description != null) _text.Font = style.Description;
+            if (style.DescriptionColor != Color.Empty) _text.Styles.NormalStyle.ContentColor = style.DescriptionColor;
         }
 
         /* --------------------------------------------------------------------- */
@@ -550,95 +355,101 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SetStyle
+        /// InitializeLayout
         /// 
         /// <summary>
-        /// スタイルを設定します。
+        /// レイアウトを初期化します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void SetStyle()
+        private void InitializeLayout()
         {
-            var style = Styles.ContainsKey(Level) ? Styles[Level] : DefaultStyle;
-            ImageButton.Styles.NormalStyle.BackColor = style.BackColor;
-            Separator.BackColor = style.BorderColor;
-            TitleButton.Font = style.Title;
-            TitleButton.Styles.NormalStyle.ContentColor = style.TitleColor;
-            DescriptionButton.Font = style.Description;
-            DescriptionButton.Styles.NormalStyle.ContentColor = style.DescriptionColor;
+            SuspendLayout();
+
+            _image = new FlatButton();
+            _image.Content = string.Empty;
+            _image.Dock = System.Windows.Forms.DockStyle.Fill;
+            _image.Margin = new System.Windows.Forms.Padding(0);
+            _image.Styles.NormalStyle.BorderSize = 0;
+            _image.Styles.NormalStyle.BackColor = Color.FromArgb(230, 230, 230);
+            _image.Styles.NormalStyle.Image = Properties.Resources.LogoLarge;
+            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Image));
+
+            _title = new FlatButton();
+            _title.Content = string.Empty;
+            _title.Dock = System.Windows.Forms.DockStyle.Fill;
+            _title.Font = new Font(Font, FontStyle.Bold);
+            _title.Margin = new System.Windows.Forms.Padding(0);
+            _title.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _title.TextAlign = ContentAlignment.MiddleLeft;
+            _title.Styles.NormalStyle.BackColor = Color.White;
+            _title.Styles.NormalStyle.BorderSize = 0;
+            _title.Styles.NormalStyle.ContentColor = Color.DimGray;
+            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Title));
+
+            _text = new FlatButton();
+            _text.AutoEllipsis = true;
+            _text.Content = string.Empty;
+            _text.Cursor = System.Windows.Forms.Cursors.Hand;
+            _text.Dock = System.Windows.Forms.DockStyle.Fill;
+            _text.Margin = new System.Windows.Forms.Padding(0);
+            _text.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _text.TextAlign = ContentAlignment.TopLeft;
+            _text.Styles.NormalStyle.BackColor = Color.White;
+            _text.Styles.NormalStyle.BorderSize = 0;
+            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Description));
+
+            _close = new FlatButton();
+            _close.Content = string.Empty;
+            _close.Dock = System.Windows.Forms.DockStyle.Fill;
+            _close.Margin = new System.Windows.Forms.Padding(0);
+            _close.Styles.NormalStyle.BackColor = Color.White;
+            _close.Styles.NormalStyle.BorderSize = 0;
+            _close.Styles.NormalStyle.Image = Properties.Resources.CloseButton;
+            _close.Styles.MouseOverStyle.BackColor = Color.FromArgb(240, 240, 240);
+            _close.Styles.MouseOverStyle.BorderColor = Color.FromArgb(230, 230, 230);
+            _close.Styles.MouseOverStyle.BorderSize = 1;
+            _close.Styles.MouseDownStyle.BackColor = Color.FromArgb(236, 236, 236);
+            _close.Click += (s, e) => Hide();
+
+            _panel = new TableLayoutPanel();
+            _panel.SuspendLayout();
+            _panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            _panel.ColumnCount = 3;
+            _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            _panel.RowCount = 2;
+            _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            _panel.Controls.Add(_image, 0, 0);
+            _panel.Controls.Add(_title, 1, 0);
+            _panel.Controls.Add(_text,  1, 1);
+            _panel.Controls.Add(_close, 2, 0);
+            _panel.SetRowSpan(_image, 2);
+
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = SystemColors.Window;
+            ClientSize = new Size(350, 64);
+            Font = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
+            IsBusy = false;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+            Sizable = false;
+            Controls.Add(_panel);
+
+            _panel.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseChangingVisibleEvent
-        /// 
-        /// <summary>
-        /// 表示状態の変更に関するイベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RaiseChangingVisibleEvent(bool current, bool ahead, CancelEventArgs e)
-        {
-            if (!current && ahead) OnShowing(e);
-            else if (current && !ahead) OnHiding(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseVisibleChangedEvent
-        /// 
-        /// <summary>
-        /// 表示状態が変更された事を通知するイベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RaiseVisibleChangedEvent(bool current, bool behind, EventArgs e)
-        {
-            if (!current && behind) OnHidden(e);
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// RaiseTextClickEvent
-        /// 
-        /// <summary>
-        /// TextClick イベントを発生させます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void RaiseTextClickEvent()
-            => OnTextClick(CreateEventArgs());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// RaiseImageClickEvent
-        /// 
-        /// <summary>
-        /// ImageClick イベントを発生させます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void RaiseImageClickEvent()
-            => OnImageClick(CreateEventArgs());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// CreateEventArgs
-        /// 
-        /// <summary>
-        /// EventArgs オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private ValueEventArgs<NotifyItem> CreateEventArgs()
-            => ValueEventArgs.Create(new NotifyItem
-            {
-                Level       = Level,
-                Title       = Title,
-                Description = Description,
-                Image       = Image,
-                Data        = Tag
-            });
+        #region Fields
+        private TableLayoutPanel _panel;
+        private FlatButton _image;
+        private FlatButton _title;
+        private FlatButton _text;
+        private FlatButton _close;
+        #endregion
 
         #endregion
     }

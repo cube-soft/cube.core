@@ -62,10 +62,8 @@
     <Compile Include="Models\EventArgs\DeviceEventArgs.cs" />
     <Compile Include="Models\EventArgs\MessageEventArgs.cs" />
     <Compile Include="Models\EventArgs\NavigatingEventArgs.cs" />
-    <Compile Include="Models\Notifications\NotifyItem.cs" />
-    <Compile Include="Models\Notifications\NotifyPresenter.cs" />
-    <Compile Include="Models\Notifications\NotifyQueue.cs" />
-    <Compile Include="Models\Notifications\NotifyStyle.cs" />
+    <Compile Include="Models\NotifyItem.cs" />
+    <Compile Include="Models\NotifyStyle.cs" />
     <Compile Include="Models\Operations\Controls.cs" />
     <Compile Include="Models\Operations\SelectedIndices.cs" />
     <Compile Include="Models\ButtonStyle.cs" />
@@ -81,7 +79,11 @@
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UxTheme.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
+    <Compile Include="Views\Forms\NotifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Views\IControl.cs" />
+    <Compile Include="Views\INotifyView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Views\Controls\Buttons\Button.cs">
@@ -150,12 +152,6 @@
     <Compile Include="Views\Forms\FormBase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\NotifyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\NotifyForm.Designer.cs">
-      <DependentUpon>NotifyForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Forms\BorderlessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,9 +168,6 @@
     <EmbeddedResource Include="Views\Controls\VersionControl.resx">
       <DependentUpon>VersionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\NotifyForm.resx">
-      <DependentUpon>NotifyForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -182,9 +175,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Resources\ButtonClose.png" />
     <None Include="Resources\LogoLarge.png" />
     <None Include="Resources\LogoSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
