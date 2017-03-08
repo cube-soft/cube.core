@@ -32,7 +32,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class NotifyForm : WidgetForm
+    public partial class NotifyForm : BorderlessForm
     {
         #region Constructors
 

@@ -30,7 +30,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainForm : WidgetForm
+    public partial class MainForm : BorderlessForm
     {
         #region Constructors
 

@@ -26,10 +26,10 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WidgetForm
+    /// BorderlessForm
     /// 
     /// <summary>
-    /// Widget アプリケーション用のフォームを作成するためのクラスです。
+    /// 枠線やタイトルバーのないフォームを作成するためのクラスです。
     /// </summary>
     /// 
     /// <remarks>
@@ -38,20 +38,20 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class WidgetForm : FormBase
+    public class BorderlessForm : FormBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WidgetForm
+        /// BorderlessForm
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public WidgetForm()
+        public BorderlessForm()
             : base()
         {
             SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
@@ -259,7 +259,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Non-virtual protected methods
+        #region Methods for subclass
 
         /* ----------------------------------------------------------------- */
         ///
@@ -299,6 +299,8 @@ namespace Cube.Forms
         }
 
         #endregion
+
+        #region Implementations
 
         #region Override methods
 
@@ -673,6 +675,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void UpdateMaximumSize()
         {
+            if (DesignMode) return;
+
             var size = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
             if (MaximumSize == size) return;
             MaximumSize = size;
@@ -739,6 +743,8 @@ namespace Cube.Forms
         private bool _fakeMode = false;
         private int _cornerRadius = 0;
         private CaptionControl _caption = null;
+        #endregion
+
         #endregion
     }
 }

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
@@ -67,7 +68,6 @@
     <Compile Include="Models\Notifications\NotifyStyle.cs" />
     <Compile Include="Models\Operations\Controls.cs" />
     <Compile Include="Models\Operations\SelectedIndices.cs" />
-    <Compile Include="Models\BrowserVersion.cs" />
     <Compile Include="Models\ButtonStyle.cs" />
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\OnlyExpandableConverter.cs" />
@@ -156,13 +156,7 @@
     <Compile Include="Views\Forms\NotifyForm.Designer.cs">
       <DependentUpon>NotifyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Forms\VersionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\VersionForm.Designer.cs">
-      <DependentUpon>VersionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Forms\WidgetForm.cs">
+    <Compile Include="Views\Forms\BorderlessForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -180,10 +174,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\NotifyForm.resx">
       <DependentUpon>NotifyForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\VersionForm.resx">
-      <DependentUpon>VersionForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
