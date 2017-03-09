@@ -197,7 +197,6 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle NormalStyle { get; } = new ButtonStyle
         {
-            BackColor    = SystemColors.Control,
             ContentColor = SystemColors.ControlText,
             BorderColor  = SystemColors.ActiveBorder,
             BorderSize   = 1
