@@ -18,11 +18,10 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Diagnostics;
 using System.Reflection;
 using Cube.Log;
 
-namespace Cube.Forms
+namespace Cube.Forms.Views.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -33,7 +32,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class VersionControl : ControlBase
+    public class VersionControl : ControlBase
     {
         #region Constructors
 
@@ -44,9 +43,16 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionControl() : this(Assembly.GetExecutingAssembly()) { }
+        public VersionControl(Assembly assembly) : base()
+        {
+            Size = new Size(340, 120);
+            InitializeLayout();
+            Update(assembly);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -57,12 +63,9 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionControl(Assembly assembly)
-        {
-            InitializeComponent();
-            Assembly = assembly;
-            CopyrightLinkLabel.LinkClicked += LinkLabel_LinkClicked;
-        }
+        public VersionControl()
+            : this(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly())
+        { }
 
         #endregion
 
@@ -70,36 +73,63 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Version
+        /// Image
         ///
         /// <summary>
-        /// バージョン情報を取得または設定します。
+        /// バージョン画面に表示するイメージオブジェクトを取得
+        /// または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        public SoftwareVersion Version { get; private set; }
+        [Browsable(true)]
+        public Image Image
+        {
+            get { return _image.Image; }
+            set
+            {
+                if (_image.Image == value) return;
+                _panel.SplitterDistance = value?.Width ?? 1;
+                _image.Image = value;
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Assembly
+        /// Product
         ///
         /// <summary>
-        /// バージョン情報等を保持する Assembly オブジェクトを取得します。
+        /// 製品名を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Assembly Assembly
+        [Browsable(true)]
+        public string Product
         {
-            get { return _reader.Assembly; }
+            get { return _product.Text; }
             set
             {
-                if (_reader != null && _reader.Assembly == value) return;
-                _reader = new AssemblyReader(value);
-                UpdateVersion(value);
-                Refresh();
+                if (_product.Text == value) return;
+                _product.Text = value;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Version
+        ///
+        /// <summary>
+        /// バージョンを表す文字列を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        public string Version
+        {
+            get { return _version.Text; }
+            set
+            {
+                if (_version.Text == value) return;
+                _version.Text = value;
             }
         }
 
@@ -108,198 +138,205 @@ namespace Cube.Forms
         /// Description
         ///
         /// <summary>
-        /// バージョン情報画面で表示する情報を取得または設定します。
+        /// バージョン画面に表示するその他の情報を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         public string Description
         {
-            get { return DescriptionLabel.Text; }
+            get { return _others.Text; }
             set
             {
-                if (DescriptionLabel.Text == value) return;
-                DescriptionLabel.Text = value;
-                Refresh();
+                if (_others.Text == value) return;
+                _others.Text = value;
+                _others.Visible = !string.IsNullOrEmpty(value);
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Logo
+        /// Copyright
         ///
         /// <summary>
-        /// ロゴ画像を取得または設定します。
+        /// コピーライト表記を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public Image Logo
+        public string Copyright
         {
-            get { return LogoPanel.Image; }
+            get { return _copyright.Text; }
             set
             {
-                if (LogoPanel.Image != value)
-                {
-                    if (LogoPanel.Image == value) return;
-                    LogoPanel.Image = value;
-                    Refresh();
-                }
+                if (_copyright.Text == value) return;
+                _copyright.Text = value;
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Url
+        /// Uri
         ///
         /// <summary>
-        /// Web ページの URL を取得または設定します。
+        /// コピーライト表記をクリックした時に表示する Web ページの
+        /// URL を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
-        public string Url { get; set; }
+        public Uri Uri { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Spacing
+        /// Platform
         ///
         /// <summary>
-        /// 項目間のスペースを取得または設定します。
+        /// プラットフォームのバージョンを表す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DefaultValue(16)]
-        public int Spacing
-        {
-            get { return _spacing; }
-            set
-            {
-                if (_spacing == value) return;
-                _spacing = value;
-                Refresh();
-            }
-        }
+        [Browsable(false)]
+        public string Platform => string.Format("{0}{1}Microsoft .NET Framework {2}{3}",
+            Environment.OSVersion,
+            Environment.NewLine,
+            Environment.Version,
+            Environment.NewLine
+        );
 
         #endregion
 
-        #region Override methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Refresh
+        /// Update
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override void Refresh()
-        {
-            try
-            {
-                SuspendLayout();
-
-                ProductLabel.Text = _reader.Product;
-                VersionLabel.Text = $"Version {Version}";
-
-                PlatformLabel.Text = GetFrameworkVersion();
-                PlatformLabel.Margin = PaddingTop();
-
-                var visible = !string.IsNullOrEmpty(Description);
-                DescriptionLabel.Margin = PaddingTop(visible ? Spacing : 0);
-                DescriptionLabel.Visible = visible;
-
-                CopyrightLinkLabel.Text = _reader.Copyright;
-                CopyrightLinkLabel.Margin = PaddingTop();
-
-                LayoutPanel.ColumnStyles[0].Width = LogoPanel?.Image?.Width ?? 1;
-            }
-            finally
-            {
-                ResumeLayout();
-                base.Refresh();
-            }
-        }
-
-        #endregion
-
-        #region Event handlers
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LinkLabel_LinkClicked
-        ///
-        /// <summary>
-        /// リンクがクリックされた時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void LinkLabel_LinkClicked(object sender,
-            System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-            => this.LogException(() => Process.Start(Url));
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateVersion
-        ///
-        /// <summary>
-        /// Assembly の内容にしたがって Version プロパティを更新します。
+        /// アセンブリ情報を基に表示内容を更新します。
         /// </summary>
         /// 
+        /// <param name="assembly">アセンブリ情報</param>
+        ///
         /* ----------------------------------------------------------------- */
-        private void UpdateVersion(Assembly assembly)
+        public void Update(Assembly assembly)
         {
-            var previous = Version;
-            Version = new SoftwareVersion(assembly);
-            if (previous == null) return;
+            if (assembly == null) return;
+            var reader = new AssemblyReader(assembly);
 
-            Version.Digit  = previous.Digit;
-            Version.Prefix = previous.Prefix;
-            Version.Suffix = previous.Suffix;
+            Product   = reader.Product;
+            Version   = $"Version {reader.Version.ToString()}";
+            Copyright = reader.Copyright;
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFrameworkVersion
-        ///
-        /// <summary>
-        /// 使用するフレームワークのバージョンを表す文字列を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string GetFrameworkVersion()
-        {
-            var ss = new System.Text.StringBuilder();
-            ss.Append(Environment.OSVersion.ToString());
-            ss.AppendLine();
-            ss.Append($"Microsoft .NET Framework {Environment.Version}");
-            return ss.ToString();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PaddingTop
-        ///
-        /// <summary>
-        /// Top の値を設定した Padding オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private System.Windows.Forms.Padding PaddingTop() => PaddingTop(Spacing);
-        private System.Windows.Forms.Padding PaddingTop(int value)
-            => new System.Windows.Forms.Padding(0, value, 0, 0);
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitializeLayout
+        ///
+        /// <summary>
+        /// レイアウトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void InitializeLayout()
+        {
+            SuspendLayout();
+
+            _panel = new System.Windows.Forms.SplitContainer();
+            _panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            _panel.Margin = new System.Windows.Forms.Padding(0);
+            _panel.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            _panel.IsSplitterFixed = true;
+            _panel.Panel1MinSize = 0;
+            _panel.Panel2MinSize = 0;
+            _panel.SplitterDistance = 48;
+            _panel.SplitterWidth = 4;
+            _panel.Size = Size;
+            _panel.SuspendLayout();
+
+            _image = new PictureBox();
+            _image.Dock = System.Windows.Forms.DockStyle.Fill;
+            _image.Image = Properties.Resources.LogoLarge;
+            _image.Margin = new System.Windows.Forms.Padding(0);
+
+            _contents = new FlowLayoutPanel();
+            _contents.Dock = System.Windows.Forms.DockStyle.Fill;
+            _contents.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            _contents.Margin = new System.Windows.Forms.Padding(0);
+            _contents.SuspendLayout();
+
+            _product = new System.Windows.Forms.Label();
+            _product.AutoEllipsis = true;
+            _product.AutoSize = true;
+            _product.Margin = new System.Windows.Forms.Padding(0);
+            _product.TabIndex = 0;
+
+            _version = new System.Windows.Forms.Label();
+            _version.AutoEllipsis = true;
+            _version.AutoSize = true;
+            _version.Margin = new System.Windows.Forms.Padding(0);
+            _version.TabIndex = 1;
+
+            _platform = new System.Windows.Forms.Label();
+            _platform.AutoEllipsis = true;
+            _platform.AutoSize = true;
+            _platform.ForeColor = SystemColors.GrayText;
+            _platform.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
+            _platform.TabIndex = 2;
+            _platform.Text = Platform;
+
+            _others = new System.Windows.Forms.Label();
+            _others.AutoEllipsis = true;
+            _others.AutoSize = true;
+            _others.ForeColor = SystemColors.GrayText;
+            _others.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
+            _others.TabIndex = 3;
+            _others.Text = string.Empty;
+            _others.Visible = false;
+
+            _copyright = new System.Windows.Forms.LinkLabel();
+            _copyright.AutoSize = true;
+            _copyright.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
+            _copyright.TabIndex = 4;
+            _copyright.LinkClicked += (s, e) =>
+            {
+                if (Uri == null) return;
+                try { System.Diagnostics.Process.Start(Uri.ToString()); }
+                catch (Exception err) { this.LogError(err.Message, err); }
+            };
+
+            _contents.Controls.Add(_product);
+            _contents.Controls.Add(_version);
+            _contents.Controls.Add(_platform);
+            _contents.Controls.Add(_others);
+            _contents.Controls.Add(_copyright);
+
+            _panel.Panel1.Controls.Add(_image);
+            _panel.Panel2.Controls.Add(_contents);
+
+            Controls.Add(_panel);
+
+            _contents.ResumeLayout(false);
+            _panel.ResumeLayout(false);
+            ResumeLayout(false);
+        }
+
         #region Fields
-        private AssemblyReader _reader;
-        private int _spacing = 16;
+        private System.Windows.Forms.SplitContainer _panel;
+        private System.Windows.Forms.FlowLayoutPanel _contents;
+        private System.Windows.Forms.PictureBox _image;
+        private System.Windows.Forms.Label _product;
+        private System.Windows.Forms.Label _version;
+        private System.Windows.Forms.Label _platform;
+        private System.Windows.Forms.Label _others;
+        private System.Windows.Forms.LinkLabel _copyright;
+        private readonly int _margin = 16;
+        #endregion
+
         #endregion
     }
 }

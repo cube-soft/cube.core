@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -68,6 +69,12 @@
     </Compile>
     <Compile Include="Views\Controls\CustomCaptionControl.Designer.cs">
       <DependentUpon>CustomCaptionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\VersionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\VersionForm.Designer.cs">
+      <DependentUpon>VersionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -92,8 +99,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-     <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
+    <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
       <DependentUpon>CustomCaptionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\VersionForm.resx">
+      <DependentUpon>VersionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

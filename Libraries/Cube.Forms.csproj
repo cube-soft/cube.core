@@ -57,8 +57,6 @@
     <Compile Include="Models\Details\ButtonPainter.cs" />
     <Compile Include="Models\Details\FontFactory.cs" />
     <Compile Include="Models\Details\Graphics.cs" />
-    <Compile Include="Models\Details\RadioButtonPainter.cs" />
-    <Compile Include="Models\Details\ToggleButtonPainter.cs" />
     <Compile Include="Models\EventArgs\DeviceEventArgs.cs" />
     <Compile Include="Models\EventArgs\MessageEventArgs.cs" />
     <Compile Include="Models\EventArgs\NavigatingEventArgs.cs" />
@@ -79,6 +77,9 @@
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UxTheme.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
+    <Compile Include="Views\Controls\VersionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Views\Forms\NotifyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,12 +138,6 @@
     <Compile Include="Views\Controls\ControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\VersionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\Controls\VersionControl.Designer.cs">
-      <DependentUpon>VersionControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Controls\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -165,9 +160,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Controls\VersionControl.resx">
-      <DependentUpon>VersionControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

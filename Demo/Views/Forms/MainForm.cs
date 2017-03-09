@@ -48,6 +48,7 @@ namespace Cube.Forms.Demo
             InitializeComponent();
 
             ContentsControl.Resize += ContentsControl_Resize;
+            DemoButton1.Click += (s, e) => new VersionForm().ShowDialog();
 
             Caption = HeaderCaptionControl;
         }
