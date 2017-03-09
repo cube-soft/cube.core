@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Collections.Generic;
 using Cube.Forms.Drawing;
 
@@ -45,7 +44,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonPainter(ButtonBase view)
+        public ButtonPainter(System.Windows.Forms.ButtonBase view)
         {
             View    = view;
             Content = view?.GetType().Name;
@@ -72,7 +71,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonBase View { get; private set; } = null;
+        public System.Windows.Forms.ButtonBase View { get; private set; } = null;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -142,7 +141,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPaint(PaintEventArgs e)
+        protected virtual void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             if (e == null || e.Graphics == null) return;
 
@@ -189,8 +188,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseDown(MouseEventArgs e)
-            => IsMouseDown = (e.Button == MouseButtons.Left);
+        protected virtual void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+            => IsMouseDown = (e.Button == System.Windows.Forms.MouseButtons.Left);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -201,7 +200,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseUp(MouseEventArgs e)
+        protected virtual void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
         {
             IsMouseDown = false;
             View.Invalidate();
@@ -230,7 +229,7 @@ namespace Cube.Forms
             View.BackgroundImage = null;
             View.Image = null;
             View.Text = string.Empty;
-            View.FlatStyle = FlatStyle.Flat;
+            View.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             View.FlatAppearance.BorderColor = color;
             View.FlatAppearance.BorderSize = 0;
             View.FlatAppearance.CheckedBackColor = color;
@@ -406,7 +405,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Rectangle GetDrawBounds(Rectangle client, Padding padding)
+        private Rectangle GetDrawBounds(Rectangle client, System.Windows.Forms.Padding padding)
         {
             var x = client.Left + padding.Left;
             var y = client.Top + padding.Top;
@@ -414,6 +413,115 @@ namespace Cube.Forms
             var height = client.Bottom - padding.Bottom - y;
 
             return new Rectangle(x, y, width, height);
+        }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// RadioButtonPainter
+    /// 
+    /// <summary>
+    /// ラジオボタンの外観を描画するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal class RadioButtonPainter : ButtonPainter
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RadioButtonPainter
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public RadioButtonPainter(System.Windows.Forms.RadioButton view)
+            : base(view)
+        {
+            view.CheckedChanged += (s, e) => OnCheckedChanged(e);
+            view.Appearance = System.Windows.Forms.Appearance.Button;
+            view.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+        }
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnCheckedChanged
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの CheckedChanged イベントを捕捉する
+        /// ハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnCheckedChanged(EventArgs e)
+        {
+            var control = View as System.Windows.Forms.RadioButton;
+            if (control == null) return;
+            IsChecked = control.Checked;
+            control.Invalidate();
+        }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ToggleButtonPainter
+    /// 
+    /// <summary>
+    /// トグルボタンの外観を描画するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal class ToggleButtonPainter : ButtonPainter
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToggleButtonPainter
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ToggleButtonPainter(System.Windows.Forms.CheckBox view)
+            : base(view)
+        {
+            view.CheckedChanged += (s, e) => OnCheckedChanged(e);
+            view.Appearance = System.Windows.Forms.Appearance.Button;
+            view.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+        }
+
+        #endregion
+
+        #region Virtual methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnCheckedChanged
+        /// 
+        /// <summary>
+        /// 描画対象となるボタンの CheckedChanged イベントを捕捉する
+        /// ハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnCheckedChanged(EventArgs e)
+        {
+            var control = View as System.Windows.Forms.CheckBox;
+            if (control == null) return;
+            IsChecked = control.Checked;
         }
 
         #endregion
