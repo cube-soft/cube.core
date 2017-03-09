@@ -43,7 +43,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public FlatButton() : base()
         {
-            _painter = new FlatButtonPainter(this);
+            _painter = new ButtonPainter(this);
             _painter.Styles.PropertyChanged += (s, e) => Invalidate();
         }
 
@@ -198,7 +198,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private FlatButtonPainter _painter = null;
+        private ButtonPainter _painter = null;
         #endregion
     }
 }

@@ -25,14 +25,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FlatButtonPainter
+    /// ButtonPainter
     /// 
     /// <summary>
     /// ボタンの外観を描画するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal class FlatButtonPainter
+    internal class ButtonPainter
     {
         #region Constructors
 
@@ -45,7 +45,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FlatButtonPainter(ButtonBase view)
+        public ButtonPainter(ButtonBase view)
         {
             View    = view;
             Content = view?.GetType().Name;
@@ -323,14 +323,31 @@ namespace Cube.Forms
         /// <summary>
         /// 現在の背景色を取得します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// 背景色の描画を行わない場合、FocusCue 等の意図しないものが描画
+        /// される可能性があるため、可能な限り Color.Empty 以外の値を返す
+        /// ようにしています。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private Color GetBackColor() => Select(
-            Styles.NormalStyle.BackColor,
-            Styles.CheckedStyle.BackColor,
-            Styles.MouseOverStyle.BackColor,
-            Styles.MouseDownStyle.BackColor
-        );
+        private Color GetBackColor()
+        {
+            var dest = Select(
+                Styles.NormalStyle.BackColor,
+                Styles.CheckedStyle.BackColor,
+                Styles.MouseOverStyle.BackColor,
+                Styles.MouseDownStyle.BackColor
+            );
+
+            if (dest != Color.Empty) return dest;
+
+            for (var c = View.Parent; c != null; c = c.Parent)
+            {
+                if (c.BackColor != Color.Empty) return c.BackColor;
+            }
+            return Color.Empty;
+        }
 
         /* ----------------------------------------------------------------- */
         ///

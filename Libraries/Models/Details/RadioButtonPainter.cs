@@ -28,7 +28,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal class RadioButtonPainter : FlatButtonPainter
+    internal class RadioButtonPainter : ButtonPainter
     {
         #region Constructors
 

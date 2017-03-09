@@ -112,7 +112,6 @@ namespace Cube.Forms.Demo
             }
         }
 
-
         #region Fields
         private Color _backColor = Color.Empty;
         #endregion

@@ -28,7 +28,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal class ToggleButtonPainter : FlatButtonPainter
+    internal class ToggleButtonPainter : ButtonPainter
     {
         #region Constructors
 

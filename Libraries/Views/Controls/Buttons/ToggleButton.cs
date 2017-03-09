@@ -220,7 +220,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private FlatButtonPainter _painter = null;
+        private ButtonPainter _painter = null;
         #endregion
     }
 }
