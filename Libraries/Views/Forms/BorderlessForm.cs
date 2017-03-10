@@ -369,15 +369,14 @@ namespace Cube.Forms
             base.OnNcHitTest(e);
             if (!e.Cancel) return;
 
-            var normal = WindowState == System.Windows.Forms.FormWindowState.Normal;
-            var result = this.HitTest(PointToClient(e.Query), SizeGrip);
+            var result = this.HitTest(PointToClient(e.Query), Sizable ? SizeGrip : 0);
             var others = result == Position.NoWhere || result == Position.Client;
             if (others && IsCaption(e.Query)) result = Position.Caption;
 
             e.Result = result;
             e.Cancel = e.Result == Position.Caption ? false :
-                       e.Result == Position.NoWhere ? true  :
-                       (!Sizable || !normal);
+                       e.Result == Position.NoWhere ? true :
+                       WindowState != System.Windows.Forms.FormWindowState.Normal;
         }
 
         /* ----------------------------------------------------------------- */
