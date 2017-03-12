@@ -259,47 +259,6 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Methods for subclass
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Maximize
-        ///
-        /// <summary>
-        /// 最大化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Maximize()
-        {
-            if (!Sizable || !MaximizeBox) return;
-
-            WindowState  = WindowState == System.Windows.Forms.FormWindowState.Normal ?
-                           System.Windows.Forms.FormWindowState.Maximized :
-                           System.Windows.Forms.FormWindowState.Normal;
-
-            if (Caption != null) Caption.WindowState = WindowState;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Minimize
-        ///
-        /// <summary>
-        /// 最小化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Minimize()
-        {
-            var state = System.Windows.Forms.FormWindowState.Minimized;
-            if (WindowState == state) return;
-            WindowState = state;
-            if (Caption != null) Caption.WindowState = WindowState;
-        }
-
-        #endregion
-
         #region Implementations
 
         #region Override methods
@@ -451,7 +410,7 @@ namespace Cube.Forms
                     }
                     break;
                 case 0x0024: // WM_GETMINMAXINFO
-                    if (OnGetMinMaxInfo(ref m)) return;
+                    if (WhenGetMinMaxInfo(ref m)) return;
                     break;
                 case 0x0083: // WM_NCCALCSIZE
                     m.Result = IntPtr.Zero;
@@ -460,13 +419,13 @@ namespace Cube.Forms
                     m.Result = new IntPtr(1);
                     break;
                 case 0x0086: // WM_NCACTIVE
-                    if (OnNcActive(ref m)) return;
+                    if (WhenNcActive(ref m)) return;
                     break;
                 case 0x00a3: // WM_NCLBUTTONDBLCLK:
-                    if (OnSystemMaximize(ref m)) return;
+                    if (WhenSystemMaximize(ref m)) return;
                     break;
                 case 0x00a5: // WM_NCRBUTTONUP
-                    if (OnSystemMenu(ref m)) return;
+                    if (WhenSystemMenu(ref m)) return;
                     break;
                 case 0x0047: // WM_WINDOWPOSCHANGED
                     try
@@ -488,14 +447,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnNcActive
+        /// WhenNcActive
         ///
         /// <summary>
         /// 非クライアント領域のアクティブ状態が変更された時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool OnNcActive(ref System.Windows.Forms.Message m)
+        private bool WhenNcActive(ref System.Windows.Forms.Message m)
         {
             if (WindowState != System.Windows.Forms.FormWindowState.Minimized)
             {
@@ -507,14 +466,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnSystemMenu
+        /// WhenSystemMenu
         ///
         /// <summary>
         /// システムメニューの表示コマンドを受信した時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool OnSystemMenu(ref System.Windows.Forms.Message m)
+        private bool WhenSystemMenu(ref System.Windows.Forms.Message m)
         {
             var point = new Point(
                 (int)m.LParam & 0xffff,
@@ -528,35 +487,35 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnSystemMaximize
+        /// WhenSystemMaximize
         ///
         /// <summary>
         /// 最大化ボタンのクリック以外で最大化要求が発生した時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool OnSystemMaximize(ref System.Windows.Forms.Message m)
+        private bool WhenSystemMaximize(ref System.Windows.Forms.Message m)
         {
             var point = new Point(
                 (int)m.LParam & 0xffff,
                 (int)m.LParam >> 16 & 0xffff);
             if (!Sizable || !MaximizeBox || !IsCaption(point)) return false;
 
-            Maximize();
+            DoMaximize();
             m.Result = IntPtr.Zero;
             return true;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnGetMinMaxInfo
+        /// WhenGetMinMaxInfo
         ///
         /// <summary>
         /// 最小値・最大値を決定する時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool OnGetMinMaxInfo(ref System.Windows.Forms.Message m)
+        private bool WhenGetMinMaxInfo(ref System.Windows.Forms.Message m)
         {
             if (MaximumSize.Width <= 0 || MaximumSize.Height <= 0) return false;
 
@@ -578,43 +537,80 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnMaximize
+        /// WhenMaximize
         ///
         /// <summary>
         /// 最大化要求時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnMaximize(object sender, EventArgs e)
-            => Maximize();
+        private void WhenMaximize(object sender, EventArgs e)
+            => DoMaximize();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnMinimize
+        /// WhenMinimize
         ///
         /// <summary>
         /// 最小化要求時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnMinimize(object sender, EventArgs e)
-            => Minimize();
+        private void WhenMinimize(object sender, EventArgs e)
+            => DoMinimize();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnClose
+        /// WhenClose
         ///
         /// <summary>
         /// 画面を閉じる操作が要求された時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnClose(object sender, EventArgs e)
+        private void WhenClose(object sender, EventArgs e)
             => Close();
 
         #endregion
 
         #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Maximize
+        ///
+        /// <summary>
+        /// 最大化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void DoMaximize()
+        {
+            if (!Sizable || !MaximizeBox) return;
+
+            WindowState = WindowState == System.Windows.Forms.FormWindowState.Normal ?
+                           System.Windows.Forms.FormWindowState.Maximized :
+                           System.Windows.Forms.FormWindowState.Normal;
+
+            if (Caption != null) Caption.WindowState = WindowState;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Minimize
+        ///
+        /// <summary>
+        /// 最小化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void DoMinimize()
+        {
+            var state = System.Windows.Forms.FormWindowState.Minimized;
+            if (WindowState == state) return;
+            WindowState = state;
+            if (Caption != null) Caption.WindowState = WindowState;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -698,9 +694,9 @@ namespace Cube.Forms
             caption.CloseBox    = true;
 
             if (!CaptionMonitoring) return;
-            caption.Maximize += OnMaximize;
-            caption.Minimize += OnMinimize;
-            caption.Close    += OnClose;
+            caption.Maximize += WhenMaximize;
+            caption.Minimize += WhenMinimize;
+            caption.Close    += WhenClose;
         }
 
         /* ----------------------------------------------------------------- */
@@ -716,9 +712,9 @@ namespace Cube.Forms
         {
             if (caption == null) return;
 
-            caption.Maximize -= OnMaximize;
-            caption.Minimize -= OnMinimize;
-            caption.Close    -= OnClose;
+            caption.Maximize -= WhenMaximize;
+            caption.Minimize -= WhenMinimize;
+            caption.Close    -= WhenClose;
         }
 
         /* ----------------------------------------------------------------- */

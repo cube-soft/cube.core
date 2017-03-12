@@ -279,9 +279,9 @@ namespace Cube.Forms
         private async Task ShowAsync(TimeSpan time, TimeSpan delay)
         {
             var source = new System.Threading.CancellationTokenSource();
-            EventHandler m = (s, e) => source.Cancel();
-            Hidden += m;
-
+            EventHandler m = (s, e) => { if (!Visible) source.Cancel(); };
+            VisibleChanged += m;
+            
             try
             {
                 IsBusy = true;
@@ -300,7 +300,7 @@ namespace Cube.Forms
             catch (Exception err) { this.LogError(err.Message, err); }
             finally
             {
-                Hidden -= m;
+                VisibleChanged -= m;
                 IsBusy = false;
             }
         }

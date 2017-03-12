@@ -131,85 +131,33 @@ namespace Cube.Forms
 
         #region Events
 
-        #region Showing
+        #region VisibleChanging
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Showing
+        /// VisibleChanging
         /// 
         /// <summary>
-        /// フォームが表示される直前に発生するイベントです。
+        /// Visible プロパティの値が変更される直前に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event CancelEventHandler Showing;
+        public event CancelEventHandler VisibleChanging;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnShowing
+        /// OnVisibleChanging
         /// 
         /// <summary>
-        /// Showing イベントを発生させます。
+        /// VisibleChanging イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnShowing(CancelEventArgs e)
+        protected virtual void OnVisibleChanging(CancelEventArgs e)
         {
-            AdjustDesktopLocation();
-            Showing?.Invoke(this, e);
+            if (Visible != false) AdjustDesktopLocation();
+            VisibleChanging?.Invoke(this, e);
         }
-
-        #endregion
-
-        #region Hiding
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Hiding
-        /// 
-        /// <summary>
-        /// フォームが非表示になる直前に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event CancelEventHandler Hiding;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnHiding
-        /// 
-        /// <summary>
-        /// Hiding イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnHiding(CancelEventArgs e) => Hiding?.Invoke(this, e);
-
-        #endregion
-
-        #region Hidden
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Hidden
-        /// 
-        /// <summary>
-        /// フォームが非表示なった直後に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler Hidden;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnHidden
-        /// 
-        /// <summary>
-        /// Hidden イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnHidden(EventArgs e) => Hidden?.Invoke(this, e);
 
         #endregion
 
@@ -224,7 +172,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<object>> Received;
+        public event ValueEventHandler<object> Received;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -250,7 +198,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<ValueEventArgs<double>> DpiChanged;
+        public event ValueEventHandler<double> DpiChanged;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -276,7 +224,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
+        public event QueryEventHandler<Point, Position> NcHitTest;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -312,10 +260,16 @@ namespace Cube.Forms
         {
             var screen = System.Windows.Forms.Screen.FromPoint(DesktopLocation) ??
                          System.Windows.Forms.Screen.PrimaryScreen;
+            var x      = DesktopLocation.X;
+            var y      = DesktopLocation.Y;
+
             var left   = screen.WorkingArea.Left;
             var top    = screen.WorkingArea.Top;
             var right  = screen.WorkingArea.Right;
             var bottom = screen.WorkingArea.Bottom;
+
+            if (x >= left && x +  Width <=  right &&
+                y >=  top && y + Height <= bottom) return;
 
             SetDesktopLocation(
                 Math.Min(Math.Max(DesktopLocation.X, left), right - Width),
@@ -341,11 +295,9 @@ namespace Cube.Forms
         protected override void SetVisibleCore(bool value)
         {
             var prev = Visible;
-            var ev = new CancelEventArgs();
-            RaiseChangingVisibleEvent(prev, value, ev);
-            base.SetVisibleCore(ev.Cancel ? prev : value);
-            if (prev == value || ev.Cancel) return;
-            RaiseVisibleChangedEvent(value, prev, EventArgs.Empty);
+            var args = new CancelEventArgs();
+            OnVisibleChanging(args);
+            base.SetVisibleCore(args.Cancel ? prev : value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -408,40 +360,6 @@ namespace Cube.Forms
         #endregion
 
         #region Other private methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseChangingVisibleEvent
-        /// 
-        /// <summary>
-        /// 表示状態の変更に関するイベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RaiseChangingVisibleEvent(bool current, bool ahead, CancelEventArgs e)
-        {
-            if (!current && ahead) OnShowing(e);
-            else if (current && !ahead) OnHiding(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseVisibleChangedEvent
-        /// 
-        /// <summary>
-        /// 表示状態が変更された事を通知するイベントを発生させます。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// TODO: システムによる Shown イベントは最初の 1 度しか発生しない
-        /// 模様。Showing イベント等との整合性をどうするか検討する。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RaiseVisibleChangedEvent(bool current, bool behind, EventArgs e)
-        {
-            if (!current && behind) OnHidden(e);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
