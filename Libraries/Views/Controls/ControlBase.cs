@@ -84,7 +84,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
+        public event QueryEventHandler<Point, Position> NcHitTest;
 
         /* ----------------------------------------------------------------- */
         ///
