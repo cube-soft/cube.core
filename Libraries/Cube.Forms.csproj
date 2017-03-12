@@ -54,12 +54,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Details\ButtonPainter.cs" />
-    <Compile Include="Models\Details\FontFactory.cs" />
-    <Compile Include="Models\Details\Graphics.cs" />
-    <Compile Include="Models\EventArgs\DeviceEventArgs.cs" />
-    <Compile Include="Models\EventArgs\MessageEventArgs.cs" />
-    <Compile Include="Models\EventArgs\NavigatingEventArgs.cs" />
+    <Compile Include="Models\ButtonPainter.cs" />
+    <Compile Include="Models\FontFactory.cs" />
+    <Compile Include="Models\Operations\Graphics.cs" />
+    <Compile Include="Events\DeviceEventArgs.cs" />
+    <Compile Include="Events\MessageEventArgs.cs" />
+    <Compile Include="Events\NavigatingEventArgs.cs" />
     <Compile Include="Models\NotifyItem.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
     <Compile Include="Models\Operations\Controls.cs" />
