@@ -21,7 +21,7 @@ using System.Drawing;
 using System.Reflection;
 using Cube.Log;
 
-namespace Cube.Forms.Views.Controls
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -254,7 +254,7 @@ namespace Cube.Forms.Views.Controls
             _panel.Panel1MinSize = 0;
             _panel.Panel2MinSize = 0;
             _panel.SplitterDistance = 48;
-            _panel.SplitterWidth = 4;
+            _panel.SplitterWidth = 8;
             _panel.Size = Size;
             _panel.SuspendLayout();
 
@@ -319,6 +319,7 @@ namespace Cube.Forms.Views.Controls
             _panel.Panel2.Controls.Add(_contents);
 
             Controls.Add(_panel);
+            SetStyle(System.Windows.Forms.ControlStyles.Selectable, false);
 
             _contents.ResumeLayout(false);
             _panel.ResumeLayout(false);

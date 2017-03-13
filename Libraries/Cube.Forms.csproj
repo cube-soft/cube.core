@@ -83,6 +83,9 @@
     <Compile Include="Views\Forms\NotifyForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Views\Forms\VersionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Views\IControl.cs" />
     <Compile Include="Views\INotifyView.cs" />
   </ItemGroup>
