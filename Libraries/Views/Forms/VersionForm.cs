@@ -214,7 +214,7 @@ namespace Cube.Forms
             _control.BackColor = SystemColors.Window;
             _control.Dock = System.Windows.Forms.DockStyle.Fill;
             _control.Margin = new System.Windows.Forms.Padding(0);
-            _control.Padding = new System.Windows.Forms.Padding(20);
+            _control.Padding = new System.Windows.Forms.Padding(20, 20, 0, 0);
 
             _button = new Button();
             _button.Anchor = System.Windows.Forms.AnchorStyles.None;
