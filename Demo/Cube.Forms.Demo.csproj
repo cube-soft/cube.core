@@ -70,12 +70,6 @@
     <Compile Include="Views\Controls\CustomCaptionControl.Designer.cs">
       <DependentUpon>CustomCaptionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Forms\VersionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\VersionForm.Designer.cs">
-      <DependentUpon>VersionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,9 +95,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
       <DependentUpon>CustomCaptionControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\VersionForm.resx">
-      <DependentUpon>VersionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
