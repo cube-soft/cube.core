@@ -56,14 +56,14 @@
   <ItemGroup>
     <Compile Include="Models\ButtonPainter.cs" />
     <Compile Include="Models\FontFactory.cs" />
-    <Compile Include="Models\Operations\Graphics.cs" />
+    <Compile Include="Operations\Graphics.cs" />
     <Compile Include="Events\DeviceEventArgs.cs" />
     <Compile Include="Events\MessageEventArgs.cs" />
     <Compile Include="Events\NavigatingEventArgs.cs" />
     <Compile Include="Models\NotifyItem.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
-    <Compile Include="Models\Operations\Controls.cs" />
-    <Compile Include="Models\Operations\SelectedIndices.cs" />
+    <Compile Include="Operations\Controls.cs" />
+    <Compile Include="Operations\SelectedIndices.cs" />
     <Compile Include="Models\ButtonStyle.cs" />
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\OnlyExpandableConverter.cs" />
@@ -169,7 +169,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Resources\LogoLarge.png" />
     <None Include="Resources\LogoSmall.png" />
   </ItemGroup>
