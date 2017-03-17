@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Models\ButtonPainter.cs" />
     <Compile Include="Models\FontFactory.cs" />
-    <Compile Include="Operations\Collections.cs" />
+    <Compile Include="Operations\Bindings.cs" />
     <Compile Include="Operations\Graphics.cs" />
     <Compile Include="Events\DeviceEventArgs.cs" />
     <Compile Include="Events\MessageEventArgs.cs" />
