@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using Cube.Log;
@@ -66,6 +67,34 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Bootstrap
+        /// 
+        /// <summary>
+        /// プロセス間通信を介した起動およびアクティブ化を制御するための
+        /// オブジェクトを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Cube.Processes.Bootstrap Bootstrap
+        {
+            get { return _bootstrap; }
+            set
+            {
+                if (_bootstrap == value) return;
+                if (_bootstrap != null) _bootstrap.Received -= WhenReceived;
+                _bootstrap = value;
+                if (_bootstrap != null)
+                {
+                    _bootstrap.Received -= WhenReceived;
+                    _bootstrap.Received += WhenReceived;
+                }
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Dpi
         /// 
         /// <summary>
@@ -88,44 +117,54 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// EventAggregator
         /// 
         /// <summary>
-        /// プロセス間通信を介した起動およびアクティブ化を制御するための
-        /// オブジェクトを取得または設定します。
+        /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// Controls に登録されている ControlBase オブジェクトに対して、
+        /// 再帰的に設定します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Cube.Processes.Bootstrap Bootstrap
+        public IEventAggregator EventAggregator
         {
-            get { return _bootstrap; }
+            get { return _events; }
             set
             {
-                if (_bootstrap == value) return;
-                if (_bootstrap != null) _bootstrap.Received -= Bootstrap_Received;
-                _bootstrap = value;
-                if (_bootstrap != null)
+                if (_events == value) return;
+                _events = value;
+                foreach (var obj in Controls)
                 {
-                    _bootstrap.Received -= Bootstrap_Received;
-                    _bootstrap.Received += Bootstrap_Received;
+                    var control = obj as ControlBase;
+                    if (control == null) continue;
+                    control.EventAggregator = value;
                 }
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EventAggregator
+        /// ShortcutKeys
         /// 
         /// <summary>
-        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// ショートカットキーの一覧を取得します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// ShortcutKeys に登録された動作が ProcessCmdKey(Message, Keys)
+        /// にて実行されます。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEventAggregator EventAggregator { get; set; }
+        public IDictionary<System.Windows.Forms.Keys, Action> ShortcutKeys { get; }
+            = new Dictionary<System.Windows.Forms.Keys, Action>();
 
         #endregion
 
@@ -183,7 +222,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(ValueEventArgs<object> e) => Received?.Invoke(this, e);
+        protected virtual void OnReceived(ValueEventArgs<object> e)
+            => Received?.Invoke(this, e);
 
         #endregion
 
@@ -209,7 +249,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnDpiChanged(ValueEventArgs<double> e) => DpiChanged?.Invoke(this, e);
+        protected virtual void OnDpiChanged(ValueEventArgs<double> e)
+            => DpiChanged?.Invoke(this, e);
 
         #endregion
 
@@ -281,8 +322,6 @@ namespace Cube.Forms
 
         #region Implementations
 
-        #region Override methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// SetVisibleCore
@@ -298,6 +337,26 @@ namespace Cube.Forms
             var args = new CancelEventArgs();
             OnVisibleChanging(args);
             base.SetVisibleCore(args.Cancel ? prev : value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ProcessCmdKey
+        ///
+        /// <summary>
+        /// ショートカットキーを処理します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg,
+            System.Windows.Forms.Keys keys)
+        {
+            if (ShortcutKeys.ContainsKey(keys))
+            {
+                ShortcutKeys[keys]();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keys);
         }
 
         /* ----------------------------------------------------------------- */
@@ -328,13 +387,9 @@ namespace Cube.Forms
             }
         }
 
-        #endregion
-
-        #region Event handlers
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap_Received
+        /// WhenReceived
         /// 
         /// <summary>
         /// 他プロセスからメッセージを受信（アクティブ化）した時に実行
@@ -342,9 +397,9 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Bootstrap_Received(object sender, ValueEventArgs<object> e)
+        private void WhenReceived(object sender, ValueEventArgs<object> e)
         {
-            if (InvokeRequired) Invoke(new Action(() => Bootstrap_Received(sender, e)));
+            if (InvokeRequired) Invoke(new Action(() => WhenReceived(sender, e)));
             else
             {
                 Show();
@@ -356,10 +411,6 @@ namespace Cube.Forms
                 OnReceived(e);
             }
         }
-
-        #endregion
-
-        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -377,11 +428,10 @@ namespace Cube.Forms
             return new Point(x, y);
         }
 
-        #endregion
-
         #region Fields
         private double _dpi = 0.0;
         private Cube.Processes.Bootstrap _bootstrap = null;
+        private IEventAggregator _events;
         #endregion
 
         #endregion
