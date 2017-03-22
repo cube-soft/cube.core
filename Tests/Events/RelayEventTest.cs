@@ -15,6 +15,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using NUnit.Framework;
 
 namespace Cube.Tests.Events
@@ -55,6 +56,29 @@ namespace Cube.Tests.Events
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// Unsubscribe のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Unsubscribe()
+        {
+            var count = 0;
+            Action action = () => count++;
+            var ev = new RelayEvent();
+            ev.Subscribe(action);
+            ev.Publish();
+            ev.Publish();
+            ev.Unsubscribe(action);
+            ev.Publish();
+            Assert.That(count, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Publish_Subscribe
         ///
         /// <summary>
@@ -72,6 +96,29 @@ namespace Cube.Tests.Events
             ev.Subscribe(x => { result = x; });
             ev.Publish(value);
             Assert.That(result, Is.EqualTo(value));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// Unsubscribe のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(2)]
+        public void Unsubscribe(int value)
+        {
+            var count = 0;
+            Action<int> action = (n) => count += n;
+            var ev = new RelayEvent<int>();
+            ev.Subscribe(action);
+            ev.Publish(value);
+            ev.Publish(value);
+            ev.UnSubscribe(action);
+            ev.Publish(value);
+            Assert.That(count, Is.EqualTo(value * 2));
         }
     }
 }
