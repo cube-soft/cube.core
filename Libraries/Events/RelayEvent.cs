@@ -52,12 +52,31 @@ namespace Cube
         /// Subscribe
         /// 
         /// <summary>
-        /// イベント発生時に実行する Action を登録します。
+        /// イベント発生時に実行する Action オブジェクトを登録します。
         /// </summary>
+        /// 
+        /// <param name="action">登録する Action オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Subscribe(Action action)
             => _subscriptions.Add(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        /// 
+        /// <summary>
+        /// 登録されている Action オブジェクトを削除します。
+        /// </summary>
+        /// 
+        /// <param name="action">削除する Action オブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action action)
+        {
+            if (!_subscriptions.Contains(action)) return;
+            _subscriptions.Remove(action);
+        }
 
         #endregion
 
@@ -98,12 +117,31 @@ namespace Cube
         /// Subscribe
         /// 
         /// <summary>
-        /// イベント発生時に実行する Action を登録します。
+        /// イベント発生時に実行する Action オブジェクトを登録します。
         /// </summary>
+        /// 
+        /// <param name="action">登録する Action オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Subscribe(Action<TPayload> action)
             => _subscriptions.Add(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        /// 
+        /// <summary>
+        /// 登録されている Action オブジェクトを削除します。
+        /// </summary>
+        /// 
+        /// <param name="action">削除する Action オブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void UnSubscribe(Action<TPayload> action)
+        {
+            if (!_subscriptions.Contains(action)) return;
+            _subscriptions.Remove(action);
+        }
 
         #endregion
 
