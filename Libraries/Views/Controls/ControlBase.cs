@@ -65,11 +65,30 @@ namespace Cube.Forms
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// Controls に登録されている ControlBase オブジェクトに対して、
+        /// 再帰的に設定します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventAggregator EventAggregator
+        {
+            get { return _events; }
+            set
+            {
+                if (_events == value) return;
+                _events = value;
+                foreach (var obj in Controls)
+                {
+                    var control = obj as ControlBase;
+                    if (control == null) continue;
+                    control.EventAggregator = value;
+                }
+            }
+        }
 
         #endregion
 
@@ -131,6 +150,10 @@ namespace Cube.Forms
             }
         }
 
+        #endregion
+
+        #region Fields
+        private IEventAggregator _events;
         #endregion
     }
 }
