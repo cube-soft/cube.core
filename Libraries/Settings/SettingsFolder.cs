@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Reflection;
+using Microsoft.Win32;
 using Cube.Log;
 
 namespace Cube.Settings
@@ -33,13 +34,12 @@ namespace Cube.Settings
     /// </summary>
     /// 
     /// <remarks>
-    /// このクラスでは、原則として各種設定をレジストリで保持する事を想定
-    /// しています。
+    /// このクラスでは、各種設定をレジストリで保持する事を想定しています。
     /// </remarks>
     /// 
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<TValue> : IDisposable
-        where TValue : INotifyPropertyChanged
+    public class SettingsFolder<TValue> : IDisposable, INotifyPropertyChanged
+        where TValue : INotifyPropertyChanged, new()
     {
         #region Constructors and destructors
 
@@ -61,6 +61,10 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">
+        /// 設定対象となる <c>Assembly</c> オブジェクト
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly)
@@ -76,6 +80,9 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="company">会社名</param>
+        /// <param name="product">製品名</param>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(string company, string product)
@@ -88,6 +95,18 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        ///
+        /// <param name="assembly">
+        /// 設定対象となる <c>Assembly</c> オブジェクト
+        /// </param>
+        /// 
+        /// <param name="company">会社名</param>
+        /// <param name="product">製品名</param>
+        /// 
+        /// <remarks>
+        /// SettingsFolder は HKCU\Software\(company)\(product) の
+        /// レジストリ・サブキー下から各種設定を読み込みます。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, string company, string product)
@@ -109,30 +128,20 @@ namespace Cube.Settings
             Dispose(false);
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Initialize
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Initialize(Assembly assembly, string company, string product)
-        {
-            Assembly = assembly;
-            Company  = company;
-            Product  = product;
-            Version  = new SoftwareVersion(Assembly);
-
-            _autosaver.AutoReset = false;
-            _autosaver.Interval  = 1000;
-            _autosaver.Elapsed  += AutoSaver_Elapsed;
-        }
-
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// 設定内容を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue Value { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,17 +164,6 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion Version { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// User
-        ///
-        /// <summary>
-        /// ユーザ毎の設定を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue User { get; private set; } = default(TValue);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -224,6 +222,108 @@ namespace Cube.Settings
 
         #endregion
 
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PropertyChanged
+        ///
+        /// <summary>
+        /// プロパティの内容が変更された時に発生するイベントです。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// この PropertyChanged イベントは Value.PropertyChanged
+        /// イベントを補足して中継するために使用されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        ///
+        /// <summary>
+        /// PropertyChangd イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+            => PropertyChanged?.Invoke(this, e);
+
+        #region Loaded
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Loaded
+        ///
+        /// <summary>
+        /// 読み込み時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<TValue> Loaded;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnLoaded
+        ///
+        /// <summary>
+        /// Loaded イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnLoaded(ValueChangedEventArgs<TValue> e)
+        {
+            if (e.OldValue != null) e.OldValue.PropertyChanged -= Value_Changed;
+            if (e.NewValue != null) e.NewValue.PropertyChanged += Value_Changed;
+
+            Value = e.NewValue;
+            Startup.Load();
+
+            Loaded?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region Saved
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Saved
+        ///
+        /// <summary>
+        /// 自動保存機能が実行された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler Saved;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSaved
+        ///
+        /// <summary>
+        /// Saved イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnSaved(EventArgs e)
+        {
+            using (var key = Registry.CurrentUser.CreateSubKey(SubKeyName))
+            {
+                key.Save(Value);
+            }
+
+            Startup.Save();
+            Saved?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -235,7 +335,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() => OnSave();
+        public void Save() => OnSaved(EventArgs.Empty);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -247,11 +347,17 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() => OnLoad();
+        public void Load()
+        {
+            using (var key = Registry.CurrentUser.OpenSubKey(SubKeyName, false))
+            {
+                var dest = key.Load<TValue>();
+                if (dest == null) return;
+                OnLoaded(new ValueChangedEventArgs<TValue>(Value, dest));
+            }
+        }
 
-        #endregion
-
-        #region Methods for IDisposable
+        #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
@@ -287,47 +393,34 @@ namespace Cube.Settings
 
         #endregion
 
-        #region Virtual methods
+        #endregion
+
+        #region Implementations
+
+        #region Initialize methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnLoad
+        /// Initialize
         ///
         /// <summary>
-        /// アプリケーション設定、およびユーザ設定をレジストリから
-        /// 読み込みます。
+        /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnLoad()
+        private void Initialize(Assembly assembly, string company, string product)
         {
-            if (User != null) User.PropertyChanged -= User_Changed;
+            Assembly = assembly;
+            Company  = company;
+            Product  = product;
+            Version  = new SoftwareVersion(Assembly);
+            Value    = new TValue();
 
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.OpenSubKey(SubKeyName, false))
-            {
-                var result = subkey.Load<TValue>();
-                if (result == null) return;
-                User = result;
-                User.PropertyChanged += User_Changed;
-            }
-            Startup.Load();
-        }
+            Value.PropertyChanged += Value_Changed;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSave
-        ///
-        /// <summary>
-        /// ユーザ設定をレジストリへ保存します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnSave()
-        {
-            var root = Microsoft.Win32.Registry.CurrentUser;
-            using (var subkey = root.CreateSubKey(SubKeyName)) subkey.Save(User);
-            Startup.Save();
+            _autosaver.AutoReset = false;
+            _autosaver.Interval  = 100;
+            _autosaver.Elapsed  += AutoSaver_Elapsed;
         }
 
         #endregion
@@ -336,17 +429,20 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// User_Changed
+        /// Value_Changed
         ///
         /// <summary>
-        /// ユーザ設定が変更された時に実行されるハンドラです。
+        /// Value.PropertyChanged イベントが発生した時に実行される
+        /// ハンドラです。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        private void User_Changed(object sender, PropertyChangedEventArgs e)
+        private void Value_Changed(object sener, PropertyChangedEventArgs e)
         {
             _autosaver.Stop();
             if (AutoSave) _autosaver.Start();
+
+            PropertyChanged?.Invoke(this, e);
         }
 
         /* ----------------------------------------------------------------- */
@@ -359,16 +455,16 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
-            => await Task35.Run(() =>
-        {
-            this.LogException(() => Save());
-        });
+            => await Task35.Run(()
+            => this.LogException(() => Save()));
 
         #endregion
 
         #region Fields
         private bool _disposed = false;
         private Timer _autosaver = new Timer();
+        #endregion
+
         #endregion
     }
 }

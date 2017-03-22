@@ -40,10 +40,12 @@ namespace Cube
         /// <summary>
         /// Cancel の値を false に設定してオブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="query">クエリーデータ</param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(TQuery query) : this(query, false) { }
-        
+
         /* ----------------------------------------------------------------- */
         ///
         /// QueryEventArgs
@@ -52,6 +54,9 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         ///
+        /// <param name="query">クエリーデータ</param>
+        /// <param name="cancel">操作をキャンセルするかどうかの初期値</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(TQuery query, bool cancel)
             : this(query, default(TResult), cancel)

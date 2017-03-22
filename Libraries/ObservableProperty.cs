@@ -67,10 +67,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
-
-        #region Virtual methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnPropertyChanged
@@ -85,7 +81,7 @@ namespace Cube
 
         #endregion
 
-        #region Non-virtual protected methods
+        #region Protected methods
 
         /* ----------------------------------------------------------------- */
         ///

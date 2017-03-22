@@ -39,15 +39,16 @@ namespace Cube.Tests
         /// ToUniversalTime
         /// 
         /// <summary>
-        /// 指定された日時を UTC 時刻としていったん NTP タイムスタンプに
-        /// 変換し、再度 DateTime オブジェクトに変換するテストを行います。
+        /// 指定された日時をいったん UNIX 時刻に変換し、
+        /// 再度 DateTime オブジェクトに変換するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1970, 1,  1, 0,  0, 0)]
-        [TestCase(2000, 1,  1, 0,  0, 0)]
-        [TestCase(2038, 1, 19, 3, 14, 7)]
-        [TestCase(2104, 1,  1, 0,  0, 0)]
+        [TestCase(1970,  1,  1,  0,  0,  0)]
+        [TestCase(2000,  1,  1,  0,  0,  0)]
+        [TestCase(2038,  1, 19,  3, 14,  7)]
+        [TestCase(2104,  1,  1,  0,  0,  0)]
+        [TestCase(2999, 12, 31, 23, 59, 59)]
         public void ToUniversalTime(int y, int m, int d, int hh, int mm, int ss)
         {
             var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
@@ -60,20 +61,60 @@ namespace Cube.Tests
         /// ToLocalTime
         /// 
         /// <summary>
-        /// 指定された日時をローカル時刻としていったん NTP タイムスタンプに
-        /// 変換し、再度 DateTime オブジェクトに変換するテストを行います。
+        /// 指定された日時をいったん UNIX 時刻に変換し、
+        /// 再度 DateTime オブジェクトに変換するテストを行います。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(1970, 1,  1, 0,  0, 0)]
-        [TestCase(2000, 1,  1, 0,  0, 0)]
-        [TestCase(2038, 1, 19, 3, 14, 7)]
-        [TestCase(2104, 1,  1, 0,  0, 0)]
+        [TestCase(1970,  1,  1,  0,  0,  0)]
+        [TestCase(2000,  1,  1,  0,  0,  0)]
+        [TestCase(2038,  1, 19,  3, 14,  7)]
+        [TestCase(2104,  1,  1,  0,  0,  0)]
+        [TestCase(2999, 12, 31, 23, 59, 59)]
         public void ToLocalTime(int y, int m, int d, int hh, int mm, int ss)
         {
             var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
             var actual = src.ToUnixTime().ToLocalTime();
             Assert.That(actual, Is.EqualTo(src));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToUniversalTime
+        /// 
+        /// <summary>
+        /// 指定された日時をいったん UNIX 時刻に変換し、
+        /// 再度 DateTime オブジェクトに変換するテストを行います。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1970,  1,  1,  0,  0,  0)]
+        [TestCase(2999, 12, 31, 23, 59, 59)]
+        public void ToDateTime(int y, int m, int d, int hh, int mm, int ss)
+        {
+            var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            var actual = src.ToUnixTime().ToDateTime();
+            Assert.That(actual, Is.EqualTo(src));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToDateTime
+        /// 
+        /// <summary>
+        /// int 型で表された UNIX 時刻を DateTime オブジェクトに変換する
+        /// テストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(0x7fffffffu, 2038, 1, 19, 3, 14,  7)]
+        [TestCase(0x80000000u, 2038, 1, 19, 3, 14,  8)]
+        [TestCase(0xffffffffu, 2106, 2,  7, 6, 28, 15)]
+        public void ToDateTime(uint unix, int y, int m, int d, int hh, int mm, int ss)
+        {
+            var src = (int)unix;
+            var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            Assert.That(src.ToDateTime(), Is.EqualTo(expected));
         }
     }
 }

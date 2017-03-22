@@ -39,6 +39,13 @@ namespace Cube.Conversions
         /// <summary>
         /// Uri オブジェクトに指定したクエリーを付与します。
         /// </summary>
+        /// 
+        /// <param name="uri"><c>Uri</c> オブジェクト</param>
+        /// <param name="query">クエリー一覧</param>
+        /// 
+        /// <returns>
+        /// クエリーが付与された <c>Uri</c> オブジェクト
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, IDictionary<string, string> query)
@@ -61,6 +68,14 @@ namespace Cube.Conversions
         /// Uri オブジェクトに指定したクエリーを付与します。
         /// </summary>
         ///
+        /// <param name="uri"><c>Uri</c> オブジェクト</param>
+        /// <param name="key">クエリーのキー</param>
+        /// <param name="value">クエリーの値</param>
+        /// 
+        /// <returns>
+        /// クエリーが付与された <c>Uri</c> オブジェクト
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
         public static Uri With<T>(this Uri uri, string key, T value)
         {
@@ -76,6 +91,13 @@ namespace Cube.Conversions
         /// <summary>
         /// Uri オブジェクトに指定した時刻を付与します。
         /// </summary>
+        /// 
+        /// <param name="uri"><c>Uri</c> オブジェクト</param>
+        /// <param name="time">時刻</param>
+        /// 
+        /// <returns>
+        /// クエリーが付与された <c>Uri</c> オブジェクト
+        /// </returns>
         /// 
         /// <remarks>
         /// 時刻は UnixTime に変換した上で、t=(unix) と言う形で
@@ -94,6 +116,13 @@ namespace Cube.Conversions
         /// Uri オブジェクトにバージョン情報を付与します。
         /// </summary>
         ///
+        /// <param name="uri"><c>Uri</c> オブジェクト</param>
+        /// <param name="version">バージョン情報</param>
+        /// 
+        /// <returns>
+        /// クエリーが付与された <c>Uri</c> オブジェクト
+        /// </returns>
+        /// 
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, SoftwareVersion version)
             => With(uri, Properties.Resources.KeyVersion, version.ToString(false));
@@ -103,9 +132,16 @@ namespace Cube.Conversions
         /// With
         /// 
         /// <summary>
-        /// Uri オブジェクトに UTM クエリの情報を付与します。
+        /// Uri オブジェクトに UTM クエリーの情報を付与します。
         /// </summary>
         ///
+        /// <param name="uri"><c>Uri</c> オブジェクト</param>
+        /// <param name="utm">UTM クエリー</param>
+        /// 
+        /// <returns>
+        /// クエリーが付与された <c>Uri</c> オブジェクト
+        /// </returns>
+        /// 
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, UtmQuery utm)
         {

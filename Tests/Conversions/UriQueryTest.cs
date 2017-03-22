@@ -66,7 +66,7 @@ namespace Cube.Tests
         [TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
         public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
             => Assert.That(
-                Create().With(new DateTime(y, m, d, hh, mm, ss)).ToString(),
+                Create().With(new System.DateTime(y, m, d, hh, mm, ss)).ToString(),
                 Is.EqualTo($"{Create()}?t={unix}")
             );
 

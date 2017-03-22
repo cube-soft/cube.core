@@ -21,14 +21,14 @@ namespace Cube.Conversions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UnixTime
+    /// Time
     /// 
     /// <summary>
-    /// DateTiem と UnixTime の相互変換を行う拡張メソッド用クラスです。
+    /// DateTiem オブジェクトの変換を行う拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class UnixTime
+    public static class Time
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -37,6 +37,12 @@ namespace Cube.Conversions
         /// <summary>
         /// DateTime オブジェクトから UNIX 時刻へ変換します。
         /// </summary>
+        /// 
+        /// <param name="time">
+        /// 変換対象となる <c>Datetime</c> オブジェクト
+        /// </param>
+        /// 
+        /// <returns>変換後の UNIX 時刻</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static long ToUnixTime(this DateTime time)
@@ -53,10 +59,21 @@ namespace Cube.Conversions
         /// <summary>
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
+        /// 
+        /// <param name="unix">変換対象となる UNIX 時刻</param>
+        /// 
+        /// <returns>
+        /// 変換後の <c>DateTime</c> オブジェクト
+        /// </returns>
+        /// 
+        /// <remarks>
+        /// int の性質上、2106/02/07T06:28:15+0:00 までの日時しか表現
+        /// する事ができません。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this int unix)
-            => ToDateTime((uint)unix);
+            => ToUniversalTime(unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -65,6 +82,12 @@ namespace Cube.Conversions
         /// <summary>
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
+        /// 
+        /// <param name="unix">変換対象となる UNIX 時刻</param>
+        /// 
+        /// <returns>
+        /// 変換後の <c>DateTime</c> オブジェクト
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this long unix)
@@ -77,6 +100,9 @@ namespace Cube.Conversions
         /// <summary>
         /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
         /// </summary>
+        /// 
+        /// <param name="time">変換対象となる文字列</param>
+        /// <param name="format">変換書式</param>
         ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToDateTime(this string time, string format)
@@ -90,6 +116,12 @@ namespace Cube.Conversions
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
+        /// <param name="unix">変換対象となる UNIX 時刻</param>
+        /// 
+        /// <returns>
+        /// 変換後の <c>DateTime</c> オブジェクト
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this long unix)
             => new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unix);
@@ -102,6 +134,17 @@ namespace Cube.Conversions
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
+        /// <param name="unix">変換対象となる UNIX 時刻</param>
+        /// 
+        /// <returns>
+        /// 変換後の <c>DateTime</c> オブジェクト
+        /// </returns>
+        ///
+        /// <remarks>
+        /// int の性質上、2106/02/07T06:28:15+0:00 までの日時しか表現
+        /// する事ができません。
+        /// </remarks>
+        /// 
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this int unix)
             => ToUniversalTime((uint)unix);
@@ -114,6 +157,9 @@ namespace Cube.Conversions
         /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
         /// </summary>
         ///
+        /// <param name="time">変換対象となる文字列</param>
+        /// <param name="format">変換書式</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this string time, string format)
             => string.IsNullOrEmpty(time) ?
@@ -131,6 +177,12 @@ namespace Cube.Conversions
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
+        /// <param name="unix">変換対象となる UNIX 時刻</param>
+        /// 
+        /// <returns>
+        /// 変換後の <c>DateTime</c> オブジェクト
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this long unix)
             => ToUniversalTime(unix).ToLocalTime();
@@ -143,6 +195,17 @@ namespace Cube.Conversions
         /// UNIX 時刻から DateTime オブジェクトへ変換します。
         /// </summary>
         ///
+        /// <param name="unix">変換対象となる UNIX 時刻</param>
+        /// 
+        /// <returns>
+        /// 変換後の <c>DateTime</c> オブジェクト
+        /// </returns>
+        ///
+        /// <remarks>
+        /// int の性質上、2106/02/07T06:28:15+0:00 までの日時しか表現
+        /// する事ができません。
+        /// </remarks>
+        /// 
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this int unix)
             => ToLocalTime((uint)unix);
@@ -155,6 +218,9 @@ namespace Cube.Conversions
         /// 文字列からフォーマットに従って DateTime オブジェクトへ変換します。
         /// </summary>
         ///
+        /// <param name="time">変換対象となる文字列</param>
+        /// <param name="format">変換書式</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this string time, string format)
             => string.IsNullOrEmpty(time) ?

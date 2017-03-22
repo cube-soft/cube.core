@@ -16,77 +16,71 @@
 ///
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using IoEx = System.IO;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHandlerTest
+    /// KeyValueEventArgsTest
     /// 
     /// <summary>
-    /// FileHandler のテスト用クラスです。
+    /// KeyValueEventArgs のテスト用クラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class FileHandlerTest : FileResource
+    class KeyValueEventArgsTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Move_Overwrite
+        /// Create_KeyValueEventArgs
         ///
         /// <summary>
-        /// 上書き移動のテストを実行します。
+        /// KeyValueEventArgs.Create(T, U) のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Sample.txt")]
-        public void Move_Overwrite(string filename)
+        [TestCase(1, "foo")]
+        [TestCase("pi", 3.1415926)]
+        [TestCase(1, true)]
+        public void Create_KeyValueEventArgs<T, U>(T key, U value)
         {
-            var op = new Cube.FileSystem.FileHandler();
-            op.Failed += (s, e) => Assert.Fail($"{e.Key}: {e.Value}");
-
-            var name = IoEx.Path.GetFileNameWithoutExtension(filename);
-            var ext  = IoEx.Path.GetExtension(filename);
-            var src  = IoEx.Path.Combine(Results, filename);
-            var dest = IoEx.Path.Combine(Results, $"{name}-Move{ext}");
-
-            op.Copy(IoEx.Path.Combine(Examples, filename), src, false);
-            op.Copy(src, dest, false);
-            op.Move(src, dest, true);
-            Assert.That(IoEx.File.Exists(dest), Is.True);
-
-            op.Delete(dest);
-            Assert.That(IoEx.File.Exists(dest), Is.False);
+            var args = KeyValueEventArgs.Create(key, value);
+            Assert.That(args.Key, Is.EqualTo(key));
+            Assert.That(args.Value, Is.EqualTo(value));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Move_Failed
+        /// Create_KeyValueCancelEventArgs
         ///
         /// <summary>
-        /// 移動操作に失敗するテストを実行します。
+        /// KeyValueEventArgs.Create(T, U, bool) のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Move_Failed()
+        [TestCase(5, "cancel", true)]
+        [TestCase("No cancel", 1.7320508, false)]
+        [TestCase(true, false, false)]
+        public void Create_KeyValueCancelEventArgs<T, U>(T key, U value, bool cancel)
         {
-            var failed = false;
-            var op = new Cube.FileSystem.FileHandler();
-            op.Failed += (s, e) =>
-            {
-                failed   = true;
-                e.Cancel = true;
-            };
-
-            var src  = IoEx.Path.Combine(Results, "FileNotFound.txt");
-            var dest = IoEx.Path.Combine(Results, "Moved.txt");
-            op.Move(src, dest, true);
-
-            Assert.That(failed, Is.True);
+            var args = KeyValueEventArgs.Create(key, value, cancel);
+            Assert.That(args.Key, Is.EqualTo(key));
+            Assert.That(args.Value, Is.EqualTo(value));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs_Cancel
+        ///
+        /// <summary>
+        /// Cancel プロパティの初期値を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(ExpectedResult = false)]
+        public bool KeyValueCancelEventArgs_Cancel()
+            => new KeyValueCancelEventArgs<int, int>(1, 2).Cancel;
     }
 }

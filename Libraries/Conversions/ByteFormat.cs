@@ -37,6 +37,10 @@ namespace Cube.Conversions
         /// <summary>
         /// バイトサイズを読みやすい文字列に変換します。
         /// </summary>
+        /// 
+        /// <param name="bytes">バイト数</param>
+        /// 
+        /// <remarks>バイト数を表す文字列</remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static string ToPrettyBytes(this long bytes)
@@ -63,6 +67,10 @@ namespace Cube.Conversions
         /// バイトサイズの概算値を文字列に変換します。
         /// </summary>
         /// 
+        /// <param name="bytes">バイト数</param>
+        /// 
+        /// <remarks>バイト数を表す文字列</remarks>
+        ///
         /// <remarks>
         /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
         /// 出力します。

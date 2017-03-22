@@ -83,7 +83,7 @@ namespace Cube.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person
+    internal class Person : Cube.ObservableProperty
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -95,7 +95,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember(Name = "ID")]
-        public int Identification { get; set; } = -1;
+        public int Identification
+        {
+            get { return _identification; }
+            set { SetProperty(ref _identification, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -107,7 +111,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public string Name { get; set; } = string.Empty;
+        public string Name
+        {
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -119,7 +127,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Sex Sex { get; set; } = Sex.Unknown;
+        public Sex Sex
+        {
+            get { return _sex; }
+            set { SetProperty(ref _sex, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,7 +143,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public int Age { get; set; } = 0;
+        public int Age
+        {
+            get { return _age; }
+            set { SetProperty(ref _age, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -143,7 +159,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public DateTime Creation { get; set; } = DateTime.MinValue;
+        public DateTime Creation
+        {
+            get { return _creation; }
+            set { SetProperty(ref _creation, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,7 +175,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Phone { get; set; } = new Address { Type = "Phone", Value = string.Empty };
+        public Address Phone
+        {
+            get { return _phone; }
+            set { SetProperty(ref _phone, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -167,7 +191,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Email { get; set; } = new Address { Type = "Email", Value = string.Empty };
+        public Address Email
+        {
+            get { return _email; }
+            set { SetProperty(ref _email, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,7 +207,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public bool Reserved { get; set; } = false;
+        public bool Reserved
+        {
+            get { return _reserved; }
+            set { SetProperty(ref _reserved, value); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -190,6 +222,22 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Secret { get; set; } = "secret message";
+        public string Secret
+        {
+            get { return _secret; }
+            set { SetProperty(ref _secret, value); }
+        }
+
+        #region Fields
+        private int _identification = -1;
+        private string _name = string.Empty;
+        private Sex _sex = Sex.Unknown;
+        private int _age = 0;
+        private DateTime _creation = DateTime.MinValue;
+        private Address _phone = new Address { Type = "Phone", Value = string.Empty };
+        private Address _email = new Address { Type = "Email", Value = string.Empty };
+        private bool _reserved = false;
+        private string _secret = "secret message";
+        #endregion
     }
 }

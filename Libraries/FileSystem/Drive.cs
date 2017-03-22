@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Management;
 using System.Linq;
+using Cube.Generics;
 
 namespace Cube.FileSystem {
     /* --------------------------------------------------------------------- */
@@ -67,9 +68,9 @@ namespace Cube.FileSystem {
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <remarks>
-        /// 引数には、A-Z の英文字を指定します。
-        /// </remarks>
+        /// <param name="letter">
+        /// ドライブレターを表す A-Z のアルファベット
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public Drive(char letter) : this($"{letter}:") { }
@@ -81,7 +82,9 @@ namespace Cube.FileSystem {
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
+        /// <param name="letter">ドライブレター</param>
+        ///
         /// <remarks>
         /// 引数には、C: のようにコロン付ドライブレターを指定します。
         /// </remarks>
@@ -99,6 +102,8 @@ namespace Cube.FileSystem {
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        ///
+        /// <param name="obj">ドライブを表すオブジェクト</param>
         /// 
         /// <remarks>
         /// 引数には、Win32_LogicalDisk から取得したオブジェクトを指定
@@ -265,7 +270,7 @@ namespace Cube.FileSystem {
 
         #endregion
 
-        #region Initialize methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -280,10 +285,15 @@ namespace Cube.FileSystem {
         {
             var query = $"Select * From Win32_LogicalDisk Where DeviceID = '{letter}'";
             using (var mos = new ManagementObjectSearcher(query))
-            foreach (ManagementObject drive in mos.Get())
             {
-                GetInfo(drive);
-                break;
+                var results = mos.Get();
+                if (results.Count <= 0) throw new ArgumentException("Drive not found");
+
+                foreach (ManagementObject drive in results)
+                {
+                    GetInfo(drive);
+                    break;
+                }
             }
         }
 
@@ -317,8 +327,8 @@ namespace Cube.FileSystem {
             VolumeLabel = ToVolumeLabel(drive["VolumeName"], drive["Description"]);
             Type        = ToDriveType(drive["DriveType"], drive["MediaType"]);
             Format      = drive["FileSystem"] as string;
-            Size        = TryCast<ulong>(drive["Size"]);
-            FreeSpace   = TryCast<ulong>(drive["FreeSpace"]);
+            Size        = drive["Size"].TryCast<ulong>();
+            FreeSpace   = drive["FreeSpace"].TryCast<ulong>();
         }
 
         /* ----------------------------------------------------------------- */
@@ -368,17 +378,13 @@ namespace Cube.FileSystem {
             foreach (ManagementObject partition in drive.GetRelated("Win32_DiskPartition"))
             foreach (ManagementObject device in partition.GetRelated("Win32_DiskDrive"))
             {
-                Index     = TryCast(device["Index"], uint.MaxValue);
+                Index     = device["Index"].TryCast(uint.MaxValue);
                 Model     = device["Model"] as string;
                 Interface = device["InterfaceType"] as string;
                 if (Type == DriveType.HardDisk && Interface == "USB") Type = DriveType.RemovableDisk;
                 break;
             }
         }
-
-        #endregion
-
-        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -413,7 +419,7 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         private DriveType ToDriveType(object drive, object media)
         {
-            var index = TryCast<uint>(drive, 0);
+            var index = drive.TryCast(0u);
 
             switch (index)
             {
@@ -448,7 +454,7 @@ namespace Cube.FileSystem {
         /* ----------------------------------------------------------------- */
         private DriveType ToDriveType(object obj)
         {
-            var index = TryCast<uint>(obj);
+            var index = obj.TryCast(0u);
 
             switch (index)
             {
@@ -483,39 +489,6 @@ namespace Cube.FileSystem {
                 default:
                     return DriveType.Unknown;
             }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryCast
-        ///
-        /// <summary>
-        /// オブジェクトを T 型にキャストします。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// 失敗した場合、デフォルト値が返ります。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        private T TryCast<T>(object src)
-        {
-            return TryCast(src, default(T));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryCast
-        ///
-        /// <summary>
-        /// オブジェクトを T 型にキャストします。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        private T TryCast<T>(object src, T alternative)
-        {
-            try { return (T)src; }
-            catch (Exception /* err */) { return alternative; }
         }
 
         #endregion

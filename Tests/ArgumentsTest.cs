@@ -78,6 +78,10 @@ namespace Cube.Tests
         public string Parse_Options(IEnumerable<string> args, string option)
             => new Arguments(args).Get(option);
 
+        [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
+        public int Parse_Options_Count(IEnumerable<string> args)
+            => new Arguments(args).GetOptions().Count;
+
         public static IEnumerable<TestCaseData> Parse_Options_TestCases
         {
             get
@@ -91,7 +95,19 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
             }
         }
-
+        public static IEnumerable<TestCaseData> Parse_Options_Count_TestCases
+        {
+            get
+            {
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas" }).Returns(1);
+                yield return new TestCaseData(new List<string> { "foo", "--bar" }).Returns(1);
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }).Returns(1);
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "--hoge", "fuga" }).Returns(2);
+                yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }).Returns(1);
+                yield return new TestCaseData(new List<string> { "foo", "bas" }).Returns(0);
+                yield return new TestCaseData(new List<string> { "foo", "--", "bas" }).Returns(0);
+            }
+        }
         #endregion
     }
 }

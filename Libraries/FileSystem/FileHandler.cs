@@ -56,6 +56,10 @@ namespace Cube.FileSystem
         /// ファイルを移動します。
         /// </summary>
         /// 
+        /// <param name="src">移動前のパス</param>
+        /// <param name="dest">移動後のパス</param>
+        /// <param name="overwrite">上書きするかどうかを表す値</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public void Move(string src, string dest, bool overwrite = false)
             => Execute(nameof(Move), () =>
@@ -76,6 +80,10 @@ namespace Cube.FileSystem
         /// ファイルをコピーします。
         /// </summary>
         /// 
+        /// <param name="src">コピー元のパス</param>
+        /// <param name="dest">コピー先のパス</param>
+        /// <param name="overwrite">上書きするかどうかを示す値</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public void Copy(string src, string dest, bool overwrite = false)
             => Execute(nameof(Copy), () => IoEx.File.Copy(src, dest, overwrite));
@@ -87,6 +95,8 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルを削除します。
         /// </summary>
+        /// 
+        /// <param name="src">削除するファイルのパス</param>
         /// 
         /* ----------------------------------------------------------------- */
         public void Delete(string src)
@@ -110,7 +120,7 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler<KeyValueCancelEventArgs<string, Exception>> Failed;
+        public event KeyValueCanelEventHandler<string, Exception> Failed;
 
         #endregion
 

@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.7\lib\net35-full\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -64,11 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormat.cs" />
-    <Compile Include="Conversions\UnixTime.cs" />
+    <Compile Include="Conversions\Time.cs" />
     <Compile Include="Conversions\UriQuery.cs" />
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
+    <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
     <Compile Include="Events\ProgressEventArgs.cs" />
     <Compile Include="Events\QueryEventArgs.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="NativeMethods\WinMM.cs" />
     <Compile Include="NativeMethods\WtsApi32.cs" />
     <Compile Include="Operations\Collections.cs" />
+    <Compile Include="Operations\GenericEqualityComparer.cs" />
     <Compile Include="Operations\FileSystem.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
@@ -102,12 +104,14 @@
     <Compile Include="Settings\FileType.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
-    <Compile Include="AssemblyReader.cs" />
     <Compile Include="Arguments.cs" />
+    <Compile Include="AssemblyReader.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

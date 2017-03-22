@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Cube.Collections;
 using Cube.Differences;
 
 namespace Cube.Tests
@@ -49,7 +50,7 @@ namespace Cube.Tests
         [TestCaseSource(nameof(Compare_TestCases))]
         public void Compare(string older, string newer, Result<char> expected)
         {
-            var actual = Actual(older, newer).First();
+            var actual = newer.Difference(older).First();
             Assert.That(actual.Condition, Is.EqualTo(expected.Condition));
             Assert.That(actual.Older, Is.EquivalentTo(expected.Older));
             Assert.That(actual.Newer, Is.EquivalentTo(expected.Newer));
@@ -76,7 +77,7 @@ namespace Cube.Tests
         [Test]
         public void Compare_OlderIsNull()
         {
-            var actual = Actual("", "empty").First();
+            var actual = "empty".Difference("").First();
             Assert.That(actual.Condition, Is.EqualTo(Condition.Inserted));
             Assert.That(actual.Older, Is.Null);
             Assert.That(actual.Newer, Is.EquivalentTo("empty"));
@@ -94,10 +95,22 @@ namespace Cube.Tests
         [Test]
         public void Compare_NewerIsNull()
         {
-            var actual = Actual("empty", "").First();
+            var actual = "".Difference("empty").First();
             Assert.That(actual.Condition, Is.EqualTo(Condition.Deleted));
             Assert.That(actual.Older, Is.EquivalentTo("empty"));
             Assert.That(actual.Newer, Is.Null);
+        }
+
+        [Test]
+        public void Compare_IgnoreCase()
+        {
+            var actual = "AbCdEfG".Difference(
+                "aBcDeFg",
+                (x, y) => char.ToLower(x) == char.ToLower(y),
+                true
+            );
+
+            Assert.That(actual.Count(), Is.EqualTo(0));
         }
 
         #endregion
@@ -116,18 +129,6 @@ namespace Cube.Tests
         private static TestCaseData TestCase(string older, string newer,
             Condition cond, string oresult, string nresult)
             => new TestCaseData(older, newer, new Result<char>(cond, oresult, nresult));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Actual
-        /// 
-        /// <summary>
-        /// OnpAlgorithm の実行結果を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static IEnumerable<Result<char>> Actual(string older, string newer)
-            => new OnpAlgorithm<char>().Compare(older, newer);
 
         #endregion
     }

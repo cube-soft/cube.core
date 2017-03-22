@@ -37,6 +37,9 @@ namespace Cube.Generics
         /// <summary>
         /// public なプロパティおよびフィールドの値を代入します。
         /// </summary>
+        /// 
+        /// <param name="dest">代入先オブジェクト</param>
+        /// <param name="src">代入元オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Assign<T>(this T dest, T src)
@@ -60,6 +63,8 @@ namespace Cube.Generics
         /// public なプロパティおよびフィールドの値をコピーした
         /// オブジェクトを生成します。
         /// </summary>
+        ///
+        /// <param name="src">コピーするオブジェクト</param>
         /// 
         /// <remarks>
         /// Serializable 属性を持つクラスの場合、BinaryFormatter を
@@ -74,6 +79,26 @@ namespace Cube.Generics
             var dest = new T();
             Assign(dest, src);
             return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast
+        ///
+        /// <summary>
+        /// オブジェクトを T 型にキャストします。
+        /// </summary>
+        /// 
+        /// <param name="src">キャストするオブジェクト</param>
+        /// <param name="failed">キャスト失敗時に返される値</param>
+        /// 
+        /// <returns>キャスト結果</returns>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public static T TryCast<T>(this object src, T failed = default(T))
+        {
+            try { return (T)src; }
+            catch (System.Exception /* err */) { return failed; }
         }
 
         #region Implementations
