@@ -54,18 +54,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ButtonPainter.cs" />
-    <Compile Include="Models\FontFactory.cs" />
-    <Compile Include="Operations\Bindings.cs" />
-    <Compile Include="Operations\Graphics.cs" />
     <Compile Include="Events\DeviceEventArgs.cs" />
     <Compile Include="Events\MessageEventArgs.cs" />
     <Compile Include="Events\NavigatingEventArgs.cs" />
+    <Compile Include="Models\ButtonPainter.cs" />
+    <Compile Include="Models\ButtonStyle.cs" />
+    <Compile Include="Models\FontFactory.cs" />
     <Compile Include="Models\NotifyItem.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
-    <Compile Include="Operations\Controls.cs" />
-    <Compile Include="Operations\SelectedIndices.cs" />
-    <Compile Include="Models\ButtonStyle.cs" />
     <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\OnlyExpandableConverter.cs" />
     <Compile Include="Models\Position.cs" />
@@ -77,16 +73,11 @@
     <Compile Include="NativeMethods\UrlMon.cs" />
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UxTheme.cs" />
+    <Compile Include="Operations\Bindings.cs" />
+    <Compile Include="Operations\Controls.cs" />
+    <Compile Include="Operations\Graphics.cs" />
+    <Compile Include="Operations\SelectedIndices.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
-    <Compile Include="Views\Controls\VersionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\NotifyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\VersionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Views\IControl.cs" />
     <Compile Include="Views\INotifyView.cs" />
   </ItemGroup>
@@ -121,6 +112,9 @@
     <Compile Include="Views\Controls\CaptionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Views\Controls\ControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Views\Controls\FeatureControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -139,11 +133,14 @@
     <Compile Include="Views\Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\ControlBase.cs">
+    <Compile Include="Views\Controls\VersionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\Controls\WebBrowser.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\BorderlessForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\DeviceAwareForm.cs">
       <SubType>Form</SubType>
@@ -151,7 +148,10 @@
     <Compile Include="Views\Forms\FormBase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\BorderlessForm.cs">
+    <Compile Include="Views\Forms\NotifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -170,11 +170,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\CloseButton.png" />
     <None Include="Resources\LogoLarge.png" />
     <None Include="Resources\LogoSmall.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CloseButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
