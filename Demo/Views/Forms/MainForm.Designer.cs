@@ -214,7 +214,6 @@
             this.Controls.Add(this.LayoutPanel);
             this.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MaximumSize = new System.Drawing.Size(1920, 1160);
             this.MinimumSize = new System.Drawing.Size(300, 0);
             this.Name = "MainForm";
