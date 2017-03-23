@@ -166,6 +166,19 @@ namespace Cube.Forms
         public IDictionary<System.Windows.Forms.Keys, Action> ShortcutKeys { get; }
             = new Dictionary<System.Windows.Forms.Keys, Action>();
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ProductPlatform
+        /// 
+        /// <summary>
+        /// 実行中のプロセスのプラットフォームを表す文字列を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string ProductPlatform => (IntPtr.Size == 4) ? "x86" : "x64";
+
         #endregion
 
         #region Events
