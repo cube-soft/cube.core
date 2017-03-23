@@ -16,7 +16,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace Cube.Forms.Demo
@@ -47,49 +46,30 @@ namespace Cube.Forms.Demo
         {
             InitializeComponent();
 
-            ContentsControl.Resize += ContentsControl_Resize;
-            DemoButton1.Click += (s, e) => new VersionForm().ShowDialog();
+            ContentsControl.Resize += WhenResize;
+            DemoButton1.Click += (s, e) => new VersionForm()
+            {
+                Icon = Icon,
+                Text = Text,
+            }.ShowDialog();
 
             Caption = HeaderCaptionControl;
         }
 
         #endregion
 
-        #region Override methods
+        #region Implementations
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnLoad
-        /// 
-        /// <summary>
-        /// ロード時に実行されます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            var area = Screen.FromControl(this).WorkingArea;
-            var x = (int)(area.Left + area.Width * 0.1);
-            var y = (int)(area.Top + area.Height * 0.1);
-            Location = new Point(x, y);
-        }
-
-        #endregion
-
-        #region Event handlers
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// ContentsControl_Resize
+        /// WhenResize
         /// 
         /// <summary>
         /// リサイズ時に実行されるハンドラです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void ContentsControl_Resize(object sender, EventArgs e)
+        private void WhenResize(object sender, EventArgs e)
         {
             var control = sender as Control;
             if (control == null) return;
