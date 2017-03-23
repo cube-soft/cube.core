@@ -16,11 +16,11 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using NUnit.Framework;
 using Cube.Settings;
-using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -82,7 +82,7 @@ namespace Cube.Tests
         [TestCase(FileType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
         [TestCase(FileType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
         public string Load_File(FileType type, string filename)
-            => type.Load<Person>(IoEx.Path.Combine(Examples, filename)).Name;
+            => type.Load<Person>(Example(filename)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,9 +134,9 @@ namespace Cube.Tests
         [TestCase(FileType.Json, "Person.json")]
         public void Save_File(FileType type, string filename)
         {
-            var dest = IoEx.Path.Combine(Results, filename);
+            var dest = Result(filename);
             type.Save(dest, CreatePerson());
-            Assert.That(IoEx.File.Exists(dest), Is.True);
+            Assert.That(File.Exists(dest), Is.True);
         }
 
         /* ----------------------------------------------------------------- */
@@ -186,8 +186,7 @@ namespace Cube.Tests
         {
             var count = 0;
 
-            var settings = new SettingsFolder<Person>(Company, Product);
-            settings.AutoSave = false;
+            var settings = new SettingsFolder<Person>(Company, Product) { AutoSave = false };
 
             settings.Load();
             settings.PropertyChanged += (s, e) => count++;

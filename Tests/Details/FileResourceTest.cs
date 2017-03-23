@@ -16,7 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using IoEx = System.IO;
+using System.IO;
 
 namespace Cube.Tests
 {
@@ -44,7 +44,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = true)]
         public bool Examples_Exists()
-            => IoEx.Directory.Exists(Examples);
+            => Directory.Exists(Examples);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -57,6 +57,6 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = true)]
         public bool Results_Exists()
-            => IoEx.Directory.Exists(Results);
+            => Directory.Exists(Results);
     }
 }

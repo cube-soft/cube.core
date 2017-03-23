@@ -15,9 +15,9 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.IO;
 using NUnit.Framework;
 using Cube.FileSystem;
-using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -46,8 +46,7 @@ namespace Cube.Tests
         [TestCase("Sample.txt")]
         public void GetTypeName(string filename)
         {
-            var src  = IoEx.Path.Combine(Examples, filename);
-            var info = new IoEx.FileInfo(src);
+            var info = new FileInfo(Example(filename));
             Assert.That(info.GetTypeName(), Is.Not.Null.Or.Empty);
         }
     }
