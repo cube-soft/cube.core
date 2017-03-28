@@ -301,13 +301,13 @@ namespace Cube.Forms
             switch (e.PropertyName)
             {
                 case nameof(MaximizeBox):
-                    MaximizeControl.Visible = MaximizeBox;
+                    if (MaximizeControl != null) MaximizeControl.Visible = MaximizeBox;
                     break;
                 case nameof(MinimizeBox):
-                    MinimizeControl.Visible = MinimizeBox;
+                    if (MinimizeControl != null) MinimizeControl.Visible = MinimizeBox;
                     break;
                 case nameof(CloseBox):
-                    CloseControl.Visible = CloseBox;
+                    if (CloseControl != null) CloseControl.Visible = CloseBox;
                     break;
                 default:
                     break;
