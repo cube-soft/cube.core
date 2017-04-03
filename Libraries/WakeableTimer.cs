@@ -23,14 +23,14 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SchedulerState
+    /// TimerState
     /// 
     /// <summary>
-    /// Scheduler オブジェクトの状態を表すための列挙型です。
+    /// 各種 Timer オブジェクトの状態を表すための列挙型です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum SchedulerState : int
+    public enum TimerState : int
     {
         Run     =  0,
         Stop    =  1,
@@ -40,44 +40,30 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Scheduler
+    /// WakeableTimer
     /// 
     /// <summary>
-    /// 特定の操作を定期的に実行するためのクラスです。
+    /// 端末の電源状態に応じて一時停止、再起動を行うタイマーです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Scheduler : IDisposable
+    public class WakeableTimer : IDisposable
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Scheduler
+        /// WakeableTimer
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Scheduler()
+        public WakeableTimer()
         {
             _core.Elapsed += (s, e) => OnExecute(e);
             SystemEvents.PowerModeChanged += (s, e) => OnPowerModeChanged(e);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~Scheduler
-        /// 
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~Scheduler()
-        {
-            Dispose(false);
         }
 
         #endregion
@@ -94,24 +80,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(1);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InitialDelay
-        /// 
-        /// <summary>
-        /// 最初の実行を遅延させる時間を取得または設定します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// この値は、Start が実行されてから最初に操作が実行されるまでの
-        /// 時間に適用されます。したがってStop and Start 操作を行う度に
-        /// この値が適用されます。ただし、Suspend and Resume 操作では
-        /// この値は適用されません。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TimeSpan InitialDelay { get; set; } = TimeSpan.Zero;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,7 +101,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SchedulerState State { get; private set; } = SchedulerState.Stop;
+        public TimerState State { get; private set; } = TimerState.Stop;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -152,18 +120,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public PowerModes PowerMode { get; private set; } = PowerModes.Resume;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PowerModeAware
-        /// 
-        /// <summary>
-        /// 電源の状態に反応してスケジュール機能を停止、再開するかどうかを
-        /// 示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool PowerModeAware { get; set; } = true;
-
         #endregion
 
         #region Events
@@ -175,7 +131,7 @@ namespace Cube
         /// Execute
         /// 
         /// <summary>
-        /// 操作を実行するタイミングになった時に発生するイベントです。
+        /// 操作実行時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -225,7 +181,7 @@ namespace Cube
         protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
         {
             if (e.Mode != PowerModes.StatusChange) PowerMode = e.Mode;
-            ChangeState(e.Mode);
+            UpdateState(e.Mode);
             PowerModeChanged?.Invoke(this, e);
         }
 
@@ -240,16 +196,29 @@ namespace Cube
         /// Start
         /// 
         /// <summary>
-        /// スケジューリングを開始します。
+        /// タイマーを開始します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Start()
-        {
-            if (State != SchedulerState.Stop) return;
+        public void Start() => Start(TimeSpan.Zero);
 
-            State = SchedulerState.Run;
-            if (InitialDelay > TimeSpan.Zero) _core.Interval = InitialDelay.TotalMilliseconds;
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Start
+        /// 
+        /// <summary>
+        /// タイマーを開始します。
+        /// </summary>
+        ///
+        /// <param name="delay">初期遅延時間</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Start(TimeSpan delay)
+        {
+            if (State != TimerState.Stop) return;
+
+            State = TimerState.Run;
+            if (delay > TimeSpan.Zero) _core.Interval = delay.TotalMilliseconds;
             else
             {
                 OnExecute(EventArgs.Empty);
@@ -257,7 +226,7 @@ namespace Cube
             }
             _core.Start();
 
-            this.LogDebug($"Start\tInterval:{Interval}\tInitialDelay:{InitialDelay}");
+            this.LogDebug($"Start\tInterval:{Interval}\tInitialDelay:{delay}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -271,28 +240,12 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Stop()
         {
-            if (State == SchedulerState.Stop) return;
+            if (State == TimerState.Stop) return;
 
             if (_core.Enabled) _core.Stop();
-            State = SchedulerState.Stop;
+            State = TimerState.Stop;
 
             this.LogDebug($"Stop\tLastExecuted:{LastExecuted}");
-            LastExecuted = DateTime.Now;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Restart
-        /// 
-        /// <summary>
-        /// スケジューリングを再起動します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Restart()
-        {
-            Stop();
-            Start();
         }
 
         /* ----------------------------------------------------------------- */
@@ -300,12 +253,12 @@ namespace Cube
         /// Reset
         /// 
         /// <summary>
-        /// リセットします。
+        /// 内部状態をリセットします。
         /// </summary>
         /// 
         /// <remarks>
         /// 派生クラスでリセット処理が必要な場合、OnReset メソッドを
-        /// オーバーライドして実装して下さい。
+        /// オーバーライドして下さい。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -322,13 +275,26 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnReset()
         {
-            LastExecuted = DateTime.MinValue;
             _core.Interval = Interval.TotalMilliseconds;
         }
 
         #endregion
 
         #region IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~WakeableTimer
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~WakeableTimer()
+        {
+            Dispose(false);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -380,7 +346,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected void RaiseExecute()
         {
-            if (State != SchedulerState.Run) return;
+            if (State != TimerState.Run) return;
 
             this.LogDebug($"RaiseExecute");
             OnExecute(EventArgs.Empty);
@@ -392,16 +358,16 @@ namespace Cube
         /// Suspend
         /// 
         /// <summary>
-        /// スケジューリングを一時停止します。
+        /// タイマーを一時停止します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected void Suspend()
         {
-            if (State != SchedulerState.Run) return;
+            if (State != TimerState.Run) return;
 
             _core.Stop();
-            State = SchedulerState.Suspend;
+            State = TimerState.Suspend;
             this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
         }
 
@@ -410,20 +376,20 @@ namespace Cube
         /// Resume
         /// 
         /// <summary>
-        /// 一時停止していたスケジューリングを再開します。
+        /// 一時停止していたタイマーを再開します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected void Resume()
         {
-            if (State != SchedulerState.Suspend) return;
+            if (State != TimerState.Suspend) return;
 
             var passed   = DateTime.Now - LastExecuted;
             var interval = Interval > passed ?
                            Interval - passed :
                            TimeSpan.FromMilliseconds(1);
 
-            State = SchedulerState.Run;
+            State = TimerState.Run;
             _core.Interval = interval.TotalMilliseconds;
             _core.Start();
 
@@ -436,28 +402,26 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ChangeState
+        /// UpdateState
         /// 
         /// <summary>
         /// PowerMode に応じて State を変更します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ChangeState(PowerModes mode)
+        private void UpdateState(PowerModes mode)
         {
-            if (!PowerModeAware) return;
-
             var previous = State;
 
             switch (mode)
             {
                 case PowerModes.Resume:
-                    if (State == SchedulerState.Suspend) Resume();
+                    if (State == TimerState.Suspend) Resume();
                     break;
                 case PowerModes.StatusChange:
                     break;
                 case PowerModes.Suspend:
-                    if (State == SchedulerState.Run) Suspend();
+                    if (State == TimerState.Run) Suspend();
                     break;
                 default:
                     break;

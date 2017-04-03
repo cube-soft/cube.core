@@ -75,7 +75,7 @@
     <Compile Include="Operations\GenericsTest.cs" />
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
-    <Compile Include="SchedulerTest.cs" />
+    <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />

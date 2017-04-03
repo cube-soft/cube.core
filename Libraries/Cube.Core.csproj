@@ -93,7 +93,7 @@
     <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="ObservableProperty.cs" />
-    <Compile Include="Scheduler.cs" />
+    <Compile Include="WakeableTimer.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />
   </ItemGroup>
