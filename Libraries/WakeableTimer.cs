@@ -60,8 +60,22 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public WakeableTimer()
+        public WakeableTimer() : this(TimeSpan.FromSeconds(1)) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WakeableTimer
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <param name="interval">実行周期</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public WakeableTimer(TimeSpan interval)
         {
+            Interval = interval;
             _core.Elapsed += (s, e) => OnExecute(e);
             SystemEvents.PowerModeChanged += (s, e) => OnPowerModeChanged(e);
         }
@@ -79,7 +93,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(1);
+        public TimeSpan Interval { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -278,8 +292,6 @@ namespace Cube
             _core.Interval = Interval.TotalMilliseconds;
         }
 
-        #endregion
-
         #region IDisposable
 
         /* ----------------------------------------------------------------- */
@@ -329,7 +341,7 @@ namespace Cube
 
         #endregion
 
-        #region Protected methods
+        #region Protected
 
         /* ----------------------------------------------------------------- */
         ///
@@ -398,7 +410,9 @@ namespace Cube
 
         #endregion
 
-        #region Others
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -430,11 +444,11 @@ namespace Cube
             this.LogDebug($"PowerMode:{mode}\tState:{previous}->{State}");
         }
 
-        #endregion
-
         #region Fields
         private bool _disposed = false;
         private System.Timers.Timer _core = new System.Timers.Timer();
+        #endregion
+
         #endregion
     }
 }
