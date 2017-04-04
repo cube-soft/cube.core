@@ -78,11 +78,12 @@
     <Compile Include="NativeMethods\WinMM.cs" />
     <Compile Include="NativeMethods\WtsApi32.cs" />
     <Compile Include="Operations\Collections.cs" />
-    <Compile Include="Operations\GenericEqualityComparer.cs" />
+    <Compile Include="GenericEqualityComparer.cs" />
     <Compile Include="Operations\FileSystem.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Numeric.cs" />
+    <Compile Include="Operations\Processes.cs" />
     <Compile Include="Operations\Settings.cs" />
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Messenger.cs" />
@@ -113,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NativeMethods\User32.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
