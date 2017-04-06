@@ -45,8 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -69,18 +68,18 @@
     <Compile Include="Events\ValueEventArgsTest.cs" />
     <Compile Include="FileSystem\DriveTest.cs" />
     <Compile Include="FileSystem\FileHandlerTest.cs" />
-    <Compile Include="Operations\FileInfoTest.cs" />
-    <Compile Include="Operations\NumericTest.cs" />
     <Compile Include="Operations\CollectionsTest.cs" />
+    <Compile Include="Operations\FileInfoTest.cs" />
     <Compile Include="Operations\GenericsTest.cs" />
     <Compile Include="Operations\LogTest.cs" />
+    <Compile Include="Operations\NumericTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
-    <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
+    <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
