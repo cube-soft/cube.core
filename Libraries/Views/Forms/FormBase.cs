@@ -140,7 +140,7 @@ namespace Cube.Forms
                 _events = value;
                 foreach (var obj in Controls)
                 {
-                    var control = obj as ControlBase;
+                    var control = obj as IControl;
                     if (control == null) continue;
                     control.EventAggregator = value;
                 }
