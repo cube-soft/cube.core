@@ -455,7 +455,7 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
-            => await Task35.Run(()
+            => await TaskEx.Run(()
             => this.LogException(() => Save()));
 
         #endregion

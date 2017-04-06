@@ -16,52 +16,41 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading.Tasks;
 
-namespace Cube.Tasks
+namespace Cube.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Tasks.Operations
+    /// Processes.Operations
     /// 
     /// <summary>
-    /// Task の拡張メソッド用クラスです。
+    /// Process クラスの拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public static class Operations
     {
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// Timeout
+        /// Activate
         /// 
         /// <summary>
-        /// タスクにタイムアウトを設定します。
+        /// プロセスのメイン画面をアクティブ化します。
         /// </summary>
+        /// 
+        /// <param name="process">Process オブジェクト</param>
         ///
-        /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task task, TimeSpan timeout)
+        /* ----------------------------------------------------------------- */
+        public static void Activate(this System.Diagnostics.Process process)
         {
-            var delay = TaskEx.Delay(timeout);
-            if (await TaskEx.WhenAny(task, delay) == delay)
-            {
-                throw new TimeoutException();
-            }
-        }
+            if (process == null || process.MainWindowHandle == IntPtr.Zero) return;
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Timeout
-        /// 
-        /// <summary>
-        /// タスクにタイムアウトを設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
-        {
-            await ((Task)task).Timeout(timeout);
-            return await task;
+            var handle = process.MainWindowHandle;
+            if (User32.NativeMethods.IsIconic(handle))
+            {
+                User32.NativeMethods.ShowWindowAsync(handle, 9 /* SW_RESTORE */);
+            }
+            User32.NativeMethods.SetForegroundWindow(handle);
         }
     }
 }

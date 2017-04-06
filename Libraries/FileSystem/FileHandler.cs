@@ -16,7 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using IoEx = System.IO;
+using System.IO;
 
 namespace Cube.FileSystem
 {
@@ -31,21 +31,6 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     public class FileHandler
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileHandler
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileHandler() { }
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -64,11 +49,11 @@ namespace Cube.FileSystem
         public void Move(string src, string dest, bool overwrite = false)
             => Execute(nameof(Move), () =>
         {
-            if (!overwrite || !IoEx.File.Exists(dest)) IoEx.File.Move(src, dest);
+            if (!overwrite || !File.Exists(dest)) File.Move(src, dest);
             else
             {
-                IoEx.File.Copy(src, dest, true);
-                IoEx.File.Delete(src);
+                File.Copy(src, dest, true);
+                File.Delete(src);
             }
         });
 
@@ -86,7 +71,7 @@ namespace Cube.FileSystem
         /// 
         /* ----------------------------------------------------------------- */
         public void Copy(string src, string dest, bool overwrite = false)
-            => Execute(nameof(Copy), () => IoEx.File.Copy(src, dest, overwrite));
+            => Execute(nameof(Copy), () => File.Copy(src, dest, overwrite));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,7 +85,7 @@ namespace Cube.FileSystem
         /// 
         /* ----------------------------------------------------------------- */
         public void Delete(string src)
-            => Execute(nameof(Delete), () => IoEx.File.Delete(src));
+            => Execute(nameof(Delete), () => File.Delete(src));
 
         #endregion
 
@@ -122,10 +107,6 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public event KeyValueCanelEventHandler<string, Exception> Failed;
 
-        #endregion
-
-        #region Virtual methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnFailed
@@ -135,15 +116,15 @@ namespace Cube.FileSystem
         /// </summary>
         /// 
         /// <remarks>
-        /// Failed イベントにハンドラが設定されていない場合、Cancel を true に
-        /// 設定します。
+        /// Failed イベントにハンドラが設定されていない場合、
+        /// 例外をそのまま送出します。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnFailed(KeyValueCancelEventArgs<string, Exception> e)
         {
             if (Failed != null) Failed(this, e);
-            else e.Cancel = true;
+            else throw e.Value;
         }
 
         #endregion

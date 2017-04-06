@@ -15,8 +15,8 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.IO;
 using NUnit.Framework;
-using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -48,18 +48,18 @@ namespace Cube.Tests
             var op = new Cube.FileSystem.FileHandler();
             op.Failed += (s, e) => Assert.Fail($"{e.Key}: {e.Value}");
 
-            var name = IoEx.Path.GetFileNameWithoutExtension(filename);
-            var ext  = IoEx.Path.GetExtension(filename);
-            var src  = IoEx.Path.Combine(Results, filename);
-            var dest = IoEx.Path.Combine(Results, $"{name}-Move{ext}");
+            var name = Path.GetFileNameWithoutExtension(filename);
+            var ext  = Path.GetExtension(filename);
+            var src  = Result(filename);
+            var dest = Result($"{name}-Move{ext}");
 
-            op.Copy(IoEx.Path.Combine(Examples, filename), src, false);
+            op.Copy(Example(filename), src, false);
             op.Copy(src, dest, false);
             op.Move(src, dest, true);
-            Assert.That(IoEx.File.Exists(dest), Is.True);
+            Assert.That(File.Exists(dest), Is.True);
 
             op.Delete(dest);
-            Assert.That(IoEx.File.Exists(dest), Is.False);
+            Assert.That(File.Exists(dest), Is.False);
         }
 
         /* ----------------------------------------------------------------- */
@@ -82,8 +82,8 @@ namespace Cube.Tests
                 e.Cancel = true;
             };
 
-            var src  = IoEx.Path.Combine(Results, "FileNotFound.txt");
-            var dest = IoEx.Path.Combine(Results, "Moved.txt");
+            var src  = Result("FileNotFound.txt");
+            var dest = Result("Moved.txt");
             op.Move(src, dest, true);
 
             Assert.That(failed, Is.True);

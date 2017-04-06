@@ -88,15 +88,16 @@
     <Compile Include="NativeMethods\Kernel32.cs" />
     <Compile Include="NativeMethods\SetupApi.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
+    <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UserEnv.cs" />
     <Compile Include="NativeMethods\WinMM.cs" />
     <Compile Include="NativeMethods\WtsApi32.cs" />
     <Compile Include="Operations\Collections.cs" />
-    <Compile Include="Operations\GenericEqualityComparer.cs" />
     <Compile Include="Operations\FileSystem.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Numeric.cs" />
+    <Compile Include="Operations\Processes.cs" />
     <Compile Include="Operations\Settings.cs" />
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Messenger.cs" />
@@ -106,27 +107,24 @@
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
+    <Compile Include="GenericEqualityComparer.cs" />
     <Compile Include="ObservableProperty.cs" />
-    <Compile Include="Scheduler.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />
+    <Compile Include="WakeableTimer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Packages.config" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,48 +15,51 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
-using System.IO;
+using System;
+using System.Runtime.InteropServices;
 
-namespace Cube.Tests
+namespace Cube.User32
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// FileResourceTest
-    /// 
-    /// <summary>
-    /// FileResource をテストするためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Parallelizable]
-    [TestFixture]
-    class FileResourceTest : FileResource
+    internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
+        /// SetForegroundWindow
         /// 
         /// <summary>
-        /// Examples フォルダが存在するかどうかをテストします。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = true)]
-        public bool Examples_Exists()
-            => Directory.Exists(Examples);
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Results_Exists
+        /// SetForegroundWindow
         /// 
         /// <summary>
-        /// Results フォルダが存在するかどうかをテストします。
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = true)]
-        public bool Results_Exists()
-            => Directory.Exists(Results);
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsIconic
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633527.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName)]
+        public static extern bool IsIconic(IntPtr hWnd);
+
+        #region Fields
+        const string LibName = "user32.dll";
+        #endregion
     }
 }

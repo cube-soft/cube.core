@@ -15,9 +15,9 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using IoEx = System.IO;
 
 namespace Cube.Tests
 {
@@ -47,7 +47,7 @@ namespace Cube.Tests
         public void Load()
         {
             var exec = Assembly.GetExecutingAssembly().Location;
-            var name = IoEx.Path.GetFileNameWithoutExtension(exec);
+            var name = Path.GetFileNameWithoutExtension(exec);
             var startup = new Cube.Settings.Startup(name);
             startup.Load();
             Assert.That(startup.Enabled, Is.False);
@@ -66,12 +66,14 @@ namespace Cube.Tests
         public void Save_Delete()
         {
             var exec = Assembly.GetExecutingAssembly().Location;
-            var name = IoEx.Path.GetFileNameWithoutExtension(exec);
+            var name = Path.GetFileNameWithoutExtension(exec);
             var command = '"' + exec + '"';
 
-            var s0 = new Cube.Settings.Startup(name);
-            s0.Command = command;
-            s0.Enabled = true;
+            var s0 = new Cube.Settings.Startup(name)
+            {
+                Command = command,
+                Enabled = true
+            };
             s0.Save();
 
             var s1 = new Cube.Settings.Startup(name);
