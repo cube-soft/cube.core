@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Runtime.Serialization.Json;
@@ -62,26 +63,6 @@ namespace Cube.Processes
     /* --------------------------------------------------------------------- */
     internal class MessengerServiceCallback<TValue> : IMessengerServiceCallback where TValue : class
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MessengerServiceCallback
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        /// 
-        /// <param name="callback">コールバック時に実行される処理</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public MessengerServiceCallback(Action<TValue> callback)
-        {
-            _callback = callback;
-        }
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -89,7 +70,8 @@ namespace Cube.Processes
         /// SendCallback
         ///
         /// <summary>
-        /// データ送信時に実行されるメソッドです。
+        /// 相手（サーバ or クライアント）からデータが送信された時に
+        /// 実行されます。
         /// </summary>
         /// 
         /// <param name="bytes">送信データ</param>
@@ -97,17 +79,49 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public void SendCallback(byte[] bytes)
         {
+            if (_subscriptions.Count <= 0) return;
             using (var ms = new MemoryStream(bytes))
             {
                 var json = new DataContractJsonSerializer(typeof(TValue));
-                if (json.ReadObject(ms) is TValue value) _callback(value);
+                if (json.ReadObject(ms) is TValue value)
+                {
+                    foreach (var f in _subscriptions) f(value);
+                }
             }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// SendCallback で実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Subscribe(Action<TValue> action)
+            => _subscriptions.Add(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action<TValue> action)
+            => _subscriptions.Remove(action);
 
         #endregion
 
         #region Fields
-        private Action<TValue> _callback;
+        private List<Action<TValue>> _subscriptions = new List<Action<TValue>>();
         #endregion
     }
 }

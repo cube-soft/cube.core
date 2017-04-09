@@ -25,18 +25,71 @@ namespace Cube.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
+    /// IMessenger(TValue)
+    /// 
+    /// <summary>
+    /// 相互通信を表すインターフェースです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public interface IMessenger<TValue> : IDisposable
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        /// 
+        /// <summary>
+        /// 相手にデータを送信します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Send(TValue value);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// 相手からのデータ送信時に実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Subscribe(Action<TValue> action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Unsubscribe(Action<TValue> action);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// Messenger(TValue)
     /// 
     /// <summary>
-    /// プロセス間通信を実現するためのクラスです。
+    /// プロセス間等で通信を実現するためのクラスです。
+    /// 最初に初期化されたオブジェクトがサーバ、それ以降のオブジェクト
+    /// がクライアントとして機能します。
     /// </summary>
     /// 
     /// <remarks>
-    /// TValue には DataContract 属性が指定されている必要があります。
+    /// サーバが既に存在しているかどうかを Mutex を用いて判別しているため、
+    /// 同じスレッドで Messenger オブジェクトを複数作成するとエラーが
+    /// 発生する場合があります。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Messenger<TValue> : IDisposable where TValue : class
+    public class Messenger<TValue> : IMessenger<TValue> where TValue : class
     {
         #region Constructors
 
@@ -49,18 +102,15 @@ namespace Cube.Processes
         /// </summary>
         /// 
         /// <param name="id">識別子</param>
-        /// <param name="callback">データ受信時に実行される処理</param>
         /// 
         /* ----------------------------------------------------------------- */
-        public Messenger(string id, Action<TValue> callback)
+        public Messenger(string id)
         {
-            _callback = callback;
-            _address  = new Uri($"net.pipe://localhost/{id}");
-            _mutex    = new Mutex(false, id);
-            IsServer  = _mutex.WaitOne(0, false);
+            _mutex = new Mutex(false, id);
+            IsServer = _mutex.WaitOne(0, false);
 
-            if (IsServer) CreateServer();
-            else CreateClient();
+            if (IsServer) _core = new MessengerServer<TValue>(id);
+            else _core = new MessengerClient<TValue>(id);
         }
 
         #endregion
@@ -87,22 +137,37 @@ namespace Cube.Processes
         /// Send
         /// 
         /// <summary>
-        /// 他のプロセスにメッセージを送信します。
+        /// 相手にデータを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Send(TValue value)
-        {
-            using (var ms = new MemoryStream())
-            {
-                var json = new DataContractJsonSerializer(typeof(TValue));
-                json.WriteObject(ms, value);
+        public void Send(TValue value) => _core?.Send(value);
 
-                var bytes = ms.ToArray();
-                if (IsServer) _service.SendToClient(bytes);
-                else _service.SendToServer(bytes);
-            }
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// 相手からのデータ送信時に実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Subscribe(Action<TValue> action) => _core?.Subscribe(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action<TValue> action) => _core?.Unsubscribe(action);
 
         #region IDisposable
 
@@ -136,16 +201,7 @@ namespace Cube.Processes
 
             if (disposing)
             {
-                if (IsServer)
-                {
-                    if (_context is ServiceHost s) s.Close();
-                }
-                else
-                {
-                    _service?.Disconnect();
-                    if (_context is InstanceContext c) c.Close();
-                }
-                _context = null;
+                _core?.Dispose();
                 _mutex?.Close();
             }
 
@@ -156,103 +212,316 @@ namespace Cube.Processes
 
         #endregion
 
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateServer
-        /// 
-        /// <summary>
-        /// サーバ用 IPC チャンネルを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void CreateServer()
-        {
-            var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
-            _service = new MessengerService<TValue>(_callback);
-
-            var context = new ServiceHost(_service);
-            context.AddServiceEndpoint(typeof(IMessengerService), binding, _address);
-            context.Open();
-
-            _context = context;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateClient
-        /// 
-        /// <summary>
-        /// クライアント用 IPC チャンネルを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void CreateClient()
-        {
-            var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
-            var context = new InstanceContext(new MessengerServiceCallback<TValue>(_callback));
-
-            _service = DuplexChannelFactory<IMessengerService>
-                       .CreateChannel(context, binding, new EndpointAddress(_address));
-            _service.Connect();
-            _context = context;
-        }
-
         #region Fields
         private bool _disposed = false;
         private Mutex _mutex = null;
-        private object _context = null;
-        private IMessengerService _service = null;
-        private Action<TValue> _callback;
-        private Uri _address = null;
-        #endregion
-
+        private IMessenger<TValue> _core;
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Bootstrap
-    ///
-    /// <summary>
-    /// プロセス間通信によってプロセスの起動確認およびアクティブ化を
-    /// 行うためのクラスです。
-    /// </summary>
+    /// MessengerServer(TValue)
     /// 
+    /// <summary>
+    /// プロセス間等で通信を実現するためのサーバクラスです。
+    /// </summary>
+    ///
     /* --------------------------------------------------------------------- */
-    public class Bootstrap : Messenger<string[]>
+    public class MessengerServer<TValue> : IMessenger<TValue> where TValue : class
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// MessengerServer
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <param name="id">
-        /// プロセス通信を実行するための識別子
-        /// </param>
+        /// <param name="id">識別子</param>
         /// 
-        /// <remarks>
-        /// このクラスは "ipc://{name}/activate" と言う URI を基に
-        /// プロセス間通信を実現します。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
-        public Bootstrap(string id, Action<string[]> callback)
-            : base($"{id}/activate", callback) { }
+        public MessengerServer(string id)
+        {
+            var address = new Uri($"net.pipe://localhost/{id}");
+            var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
+            _service = new MessengerService<TValue>();
+
+            _host = new ServiceHost(_service);
+            _host.AddServiceEndpoint(typeof(IMessengerService), binding, address);
+            _host.Open();
+        }
+
+        #endregion
+
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Exists
+        /// Send
         /// 
         /// <summary>
-        /// 同じ名前を持つプロセスが既に存在するかどうかを判別します。
+        /// クライアントにデータを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => !IsServer;
+        public void Send(TValue value)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var json = new DataContractJsonSerializer(typeof(TValue));
+                json.WriteObject(ms, value);
+                _service.SendToClient(ms.ToArray());
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// クライアントからのデータ送信時に実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Subscribe(Action<TValue> action)
+            => _service.Subscribe(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action<TValue> action)
+            => _service.Unsubscribe(action);
+
+        #region IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~MessengerServer
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~MessengerServer()
+        {
+            Dispose(false);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// リソースを解放します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// リソースを解放します。
+        /// </summary>
+        /// 
+        /// <param name="disposing">
+        /// マネージリソースを解放するかどうかを示す値
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing) _host?.Abort();
+
+            _disposed = true;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Fields
+        private bool _disposed = false;
+        private MessengerService<TValue> _service;
+        private ServiceHost _host;
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MessengerClient(TValue)
+    /// 
+    /// <summary>
+    /// プロセス間等で通信を実現するためのクライアントクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class MessengerClient<TValue> : IMessenger<TValue> where TValue : class
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MessengerClient
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <param name="id">識別子</param>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public MessengerClient(string id)
+        {
+            var address = new Uri($"net.pipe://localhost/{id}");
+            var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
+
+            _callback = new MessengerServiceCallback<TValue>();
+            _context = new InstanceContext(_callback);
+            _service  = DuplexChannelFactory<IMessengerService>
+                        .CreateChannel(_context, binding, new EndpointAddress(address));
+            _service.Connect();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        /// 
+        /// <summary>
+        /// クライアントにデータを送信します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Send(TValue value)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var json = new DataContractJsonSerializer(typeof(TValue));
+                json.WriteObject(ms, value);
+                _service.Send(ms.ToArray());
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// サーバからのデータ送信時に実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Subscribe(Action<TValue> action)
+            => _callback.Subscribe(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action<TValue> action)
+            => _callback.Unsubscribe(action);
+
+        #region IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~MessengerServer
+        /// 
+        /// <summary>
+        /// オブジェクトを破棄します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~MessengerClient()
+        {
+            Dispose(false);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// リソースを解放します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// リソースを解放します。
+        /// </summary>
+        /// 
+        /// <param name="disposing">
+        /// マネージリソースを解放するかどうかを示す値
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                _service?.Disconnect();
+                _context?.Abort();
+            }
+
+            _disposed = true;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Fields
+        private bool _disposed = false;
+        private IMessengerService _service;
+        private InstanceContext _context;
+        private MessengerServiceCallback<TValue> _callback;
+        #endregion
     }
 }

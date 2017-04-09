@@ -17,9 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.ServiceModel;
-using System.Runtime.Serialization.Json;
 
 namespace Cube.Processes
 {
@@ -36,34 +34,6 @@ namespace Cube.Processes
     [ServiceContract(CallbackContract = typeof(IMessengerServiceCallback))]
     internal interface IMessengerService
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SendToServer
-        ///
-        /// <summary>
-        /// サーバにメッセージを送信します。
-        /// </summary>
-        /// 
-        /// <param name="bytes">送信データ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OperationContract(IsOneWay = true)]
-        void SendToServer(byte[] bytes);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SendToClient
-        ///
-        /// <summary>
-        /// クライアントにメッセージを送信します。
-        /// </summary>
-        /// 
-        /// <param name="bytes">送信データ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OperationContract(IsOneWay = true)]
-        void SendToClient(byte[] bytes);
-
         /* ----------------------------------------------------------------- */
         ///
         /// Connect
@@ -87,6 +57,34 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         [OperationContract(IsOneWay = true)]
         void Disconnect();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// サーバにデータを送信します。
+        /// </summary>
+        /// 
+        /// <param name="bytes">送信データ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OperationContract(IsOneWay = true)]
+        void Send(byte[] bytes);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SendToClient
+        ///
+        /// <summary>
+        /// クライアントにデータを送信します。
+        /// </summary>
+        /// 
+        /// <param name="bytes">送信データ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OperationContract(IsOneWay = true)]
+        void SendToClient(byte[] bytes);
     }
 
     /* --------------------------------------------------------------------- */
@@ -101,71 +99,7 @@ namespace Cube.Processes
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     internal class MessengerService<TValue> : IMessengerService where TValue : class
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MessengerServiceCallback
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        /// 
-        /// <param name="callback">コールバック時に実行される処理</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public MessengerService(Action<TValue> callback)
-        {
-            _callback = callback;
-        }
-
-        #endregion
-
         #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SendToServer
-        ///
-        /// <summary>
-        /// サーバにメッセージを送信します。
-        /// </summary>
-        /// 
-        /// <param name="bytes">送信データ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void SendToServer(byte[] bytes)
-        {
-            using (var ms = new MemoryStream(bytes))
-            {
-                var json = new DataContractJsonSerializer(typeof(TValue));
-                if (json.ReadObject(ms) is TValue value) _callback(value);
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SendToClient
-        ///
-        /// <summary>
-        /// クライアントにメッセージを送信します。
-        /// </summary>
-        /// 
-        /// <param name="bytes">送信データ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void SendToClient(byte[] bytes)
-        {
-            var aborts = new List<IMessengerServiceCallback>();
-            foreach (var x in _subscriptions)
-            {
-                try { x.SendCallback(bytes); }
-                catch (CommunicationObjectAbortedException /* err */) { aborts.Add(x); }
-                catch (Exception err) { System.Diagnostics.Trace.WriteLine(err.ToString()); }
-            }
-
-            foreach (var c in aborts) _subscriptions.Remove(c);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,8 +113,8 @@ namespace Cube.Processes
         public void Connect()
         {
             var channel = OperationContext.Current.GetCallbackChannel<IMessengerServiceCallback>();
-            if (channel == null || _subscriptions.Contains(channel)) return;
-            _subscriptions.Add(channel);
+            if (channel == null || _clients.Contains(channel)) return;
+            _clients.Add(channel);
         }
 
         /* ----------------------------------------------------------------- */
@@ -196,14 +130,79 @@ namespace Cube.Processes
         {
             var channel = OperationContext.Current.GetCallbackChannel<IMessengerServiceCallback>();
             if (channel == null) return;
-            _subscriptions.Remove(channel);
+            _clients.Remove(channel);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// サーバにデータを送信します。
+        /// </summary>
+        /// 
+        /// <param name="bytes">送信データ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Send(byte[] bytes) => _callback.SendCallback(bytes);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SendToClient
+        ///
+        /// <summary>
+        /// クライアントにデータを送信します。
+        /// </summary>
+        /// 
+        /// <param name="bytes">送信データ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void SendToClient(byte[] bytes)
+        {
+            var aborts = new List<IMessengerServiceCallback>();
+            foreach (var x in _clients)
+            {
+                try { x.SendCallback(bytes); }
+                catch (CommunicationObjectAbortedException /* err */) { aborts.Add(x); }
+                catch (Exception err) { System.Diagnostics.Trace.WriteLine(err.ToString()); }
+            }
+
+            foreach (var c in aborts) _clients.Remove(c);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Send で実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Subscribe(Action<TValue> action)
+            => _callback.Subscribe(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action<TValue> action)
+            => _callback.Unsubscribe(action);
 
         #endregion
 
         #region Fields
-        private Action<TValue> _callback;
-        private List<IMessengerServiceCallback> _subscriptions = new List<IMessengerServiceCallback>();
+        private MessengerServiceCallback<TValue> _callback = new MessengerServiceCallback<TValue>();
+        private List<IMessengerServiceCallback> _clients = new List<IMessengerServiceCallback>();
         #endregion
     }
 }
