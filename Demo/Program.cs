@@ -40,11 +40,22 @@ namespace Cube.Forms.Demo
         /// 
         /* ----------------------------------------------------------------- */
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(new MainForm());
+            var app = System.Windows.Forms.Application.ProductName;
+            using (var m = new Cube.Processes.Messenger<string[]>(app))
+            {
+                if (!m.IsServer) m.Publish(args);
+                else
+                {
+                    System.Windows.Forms.Application.EnableVisualStyles();
+                    System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+
+                    var view = new MainForm();
+                    view.Activator = m;
+                    System.Windows.Forms.Application.Run(view);
+                }
+            }
         }
     }
 }
