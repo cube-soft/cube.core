@@ -18,7 +18,7 @@
 using System;
 using System.IO;
 using System.ServiceModel;
-using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 using System.Threading;
 
 namespace Cube.Processes
@@ -36,14 +36,14 @@ namespace Cube.Processes
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Publish
         /// 
         /// <summary>
-        /// 相手にデータを送信します。
+        /// データを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        void Send(TValue value);
+        void Publish(TValue value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,14 +134,14 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Publish
         /// 
         /// <summary>
-        /// 相手にデータを送信します。
+        /// データを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Send(TValue value) => _core?.Send(value);
+        public void Publish(TValue value) => _core?.Publish(value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -260,18 +260,18 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Publish
         /// 
         /// <summary>
         /// クライアントにデータを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Send(TValue value)
+        public void Publish(TValue value)
         {
             using (var ms = new MemoryStream())
             {
-                var json = new DataContractJsonSerializer(typeof(TValue));
+                var json = new DataContractSerializer(typeof(TValue));
                 json.WriteObject(ms, value);
                 _service.SendToClient(ms.ToArray());
             }
@@ -411,18 +411,18 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Publish
         /// 
         /// <summary>
         /// クライアントにデータを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Send(TValue value)
+        public void Publish(TValue value)
         {
             using (var ms = new MemoryStream())
             {
-                var json = new DataContractJsonSerializer(typeof(TValue));
+                var json = new DataContractSerializer(typeof(TValue));
                 json.WriteObject(ms, value);
                 _service.Send(ms.ToArray());
             }

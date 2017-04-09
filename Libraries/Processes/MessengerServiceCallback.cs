@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
-using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 
 namespace Cube.Processes
 {
@@ -82,7 +82,7 @@ namespace Cube.Processes
             if (_subscriptions.Count <= 0) return;
             using (var ms = new MemoryStream(bytes))
             {
-                var json = new DataContractJsonSerializer(typeof(TValue));
+                var json = new DataContractSerializer(typeof(TValue));
                 if (json.ReadObject(ms) is TValue value)
                 {
                     foreach (var f in _subscriptions) f(value);
