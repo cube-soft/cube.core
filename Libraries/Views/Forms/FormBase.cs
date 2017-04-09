@@ -67,7 +67,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bootstrap
+        /// Activator
         /// 
         /// <summary>
         /// プロセス間通信を介した起動およびアクティブ化を制御するための
@@ -77,18 +77,19 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Cube.Processes.Bootstrap Bootstrap
+        public Cube.Processes.IMessenger<string[]> Activator
         {
-            get { return _bootstrap; }
+            get { return _activator; }
             set
             {
-                if (_bootstrap == value) return;
-                if (_bootstrap != null) _bootstrap.Received -= WhenReceived;
-                _bootstrap = value;
-                if (_bootstrap != null)
+                if (_activator == value) return;
+                if (_activator != null) _activator.Unsubscribe(WhenActivated);
+
+                _activator = value;
+                if (_activator != null)
                 {
-                    _bootstrap.Received -= WhenReceived;
-                    _bootstrap.Received += WhenReceived;
+                    _activator.Unsubscribe(WhenActivated);
+                    _activator.Subscribe(WhenActivated);
                 }
             }
         }
@@ -402,7 +403,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenReceived
+        /// WhenActivated
         /// 
         /// <summary>
         /// 他プロセスからメッセージを受信（アクティブ化）した時に実行
@@ -410,18 +411,22 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenReceived(object sender, ValueEventArgs<object> e)
+        private void WhenActivated(string[] args)
         {
-            if (InvokeRequired) Invoke(new Action(() => WhenReceived(sender, e)));
+            if (InvokeRequired) Invoke(new Action(() => WhenActivated(args)));
             else
             {
-                Show();
+                if (!Visible) Show();
+                if (WindowState == System.Windows.Forms.FormWindowState.Minimized)
+                {
+                    WindowState = System.Windows.Forms.FormWindowState.Normal;
+                }
+
+                Activate();
 
                 var tmp = TopMost;
                 TopMost = true;
                 TopMost = tmp;
-
-                OnReceived(e);
             }
         }
 
@@ -443,7 +448,7 @@ namespace Cube.Forms
 
         #region Fields
         private double _dpi = 0.0;
-        private Cube.Processes.Bootstrap _bootstrap = null;
+        private Cube.Processes.IMessenger<string[]> _activator = null;
         private IEventAggregator _events;
         #endregion
 
