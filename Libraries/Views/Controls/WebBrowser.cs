@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
+using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -31,6 +33,52 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public partial class WebBrowser : System.Windows.Forms.WebBrowser
     {
+        #region Properties
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// UserAgent
+        ///
+        /// <summary>
+        /// UserAgent を取得または設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public string UserAgent
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_agent))
+                {
+                    var buffer = new StringBuilder(2048);
+                    var length = 0;
+                    var result = UrlMon.NativeMethods.UrlMkGetSessionOption(
+                        0x10000001, // URLMON_OPTION_USERAGENT,
+                        buffer, buffer.Capacity, ref length, 0
+                    );
+
+                    if (result == 0) _agent = buffer.ToString();
+                    else this.LogWarn($"UrlMkGetSessionOption:{result}");
+                }
+                return _agent;
+            }
+
+            set
+            {
+                if (_agent == value) return;
+
+                var result = UrlMon.NativeMethods.UrlMkSetSessionOption(
+                    0x10000001, // URLMON_OPTION_USERAGENT,
+                    value, value.Length, 0
+                );
+
+                if (result == 0) _agent = value;
+                else this.LogWarn($"UrlMkSetSessionOption:{result}");
+            }
+        }
+
+        #endregion
+
         #region Events
 
         #region BeforeNavigating
@@ -564,6 +612,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
+        private string _agent = string.Empty;
         private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie = null;
         private ActiveXControlEvents _events = null;
         #endregion

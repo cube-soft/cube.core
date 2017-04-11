@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Cube.Forms.UrlMon
 {
@@ -53,6 +54,32 @@ namespace Cube.Forms.UrlMon
         /* ----------------------------------------------------------------- */
         [DllImport(LibName)]
         public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UrlMkSetSessionOption
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/ms775125.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, CharSet = CharSet.Ansi)]
+        public static extern int UrlMkSetSessionOption(int dwOption, string pBuffer,
+            int dwBufferLength, int dwReserved);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UrlMkGetSessionOption
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/ms775124.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, CharSet = CharSet.Ansi)]
+        public static extern int UrlMkGetSessionOption(int dwOption, StringBuilder pBuffer,
+            int dwBufferLength, ref int pdwBufferLength, int dwReserved);
 
         #region Fields
         const string LibName = "urlmon.dll";
