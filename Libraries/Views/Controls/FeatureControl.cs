@@ -35,6 +35,7 @@ namespace Cube.Forms
         IE9    = 9000,
         IE10   = 10000,
         IE11   = 11000,
+        Edge   = 11001,
         Latest = -1
     }
 
@@ -375,7 +376,7 @@ namespace Cube.Forms
                         if (value == null) return BrowserVersion.IE7;
 
                         var version = int.Parse(value.Substring(0, value.IndexOf('.'))) * 1000;
-                        return (BrowserVersion)version;
+                        return (version == 11000) ? BrowserVersion.Edge : (BrowserVersion)version;
                     }
                 }
                 catch (Exception err)
