@@ -31,22 +31,9 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public partial class WebBrowser : System.Windows.Forms.WebBrowser
     {
-        #region Constructors
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// WebBrowser
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public WebBrowser() : base() { }
-
-        #endregion
-
         #region Events
+
+        #region BeforeNavigating
 
         /* --------------------------------------------------------------------- */
         ///
@@ -61,6 +48,22 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// OnBeforeNavigating
+        /// 
+        /// <summary>
+        /// BeforeNavigating を発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnBeforeNavigating(NavigatingEventArgs e)
+            => BeforeNavigating?.Invoke(this, e);
+
+        #endregion
+
+        #region BeforeNewWindow
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// BeforeNewWindow
         /// 
         /// <summary>
@@ -69,6 +72,22 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public event EventHandler<NavigatingEventArgs> BeforeNewWindow;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnBeforeNewWindow
+        /// 
+        /// <summary>
+        /// BeforeNewWindow を発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnBeforeNewWindow(NavigatingEventArgs e)
+            => BeforeNewWindow?.Invoke(this, e);
+
+        #endregion
+
+        #region NavigatingError
 
         /* --------------------------------------------------------------------- */
         ///
@@ -83,45 +102,6 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// MessageShowing
-        /// 
-        /// <summary>
-        /// メッセージボックスが表示される直前に発生するイベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public event EventHandler<MessageEventArgs> MessageShowing;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnBeforeNavigating
-        /// 
-        /// <summary>
-        /// ページ遷移が発生する直前に実行されます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnBeforeNavigating(NavigatingEventArgs e)
-            => BeforeNavigating?.Invoke(this, e);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnBeforeNewWindow
-        /// 
-        /// <summary>
-        /// 新しいウィンドウでページを開く直前に実行されます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnBeforeNewWindow(NavigatingEventArgs e)
-            => BeforeNewWindow?.Invoke(this, e);
-
-        /* --------------------------------------------------------------------- */
-        ///
         /// OnNavigatingError
         /// 
         /// <summary>
@@ -131,6 +111,21 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         protected virtual void OnNavigatingError(NavigatingErrorEventArgs e)
             => NavigatingError?.Invoke(this, e);
+
+        #endregion
+
+        #region MessageShowing
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// MessageShowing
+        /// 
+        /// <summary>
+        /// メッセージボックスが表示される直前に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler<MessageEventArgs> MessageShowing;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -146,7 +141,9 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #endregion
+
+        #region Implementations
 
         /* --------------------------------------------------------------------- */
         ///
@@ -234,10 +231,6 @@ namespace Cube.Forms
             base.DetachSink();
         }
 
-        #endregion
-
-        #region Implementations
-
         /* --------------------------------------------------------------------- */
         ///
         /// CloseForm
@@ -317,9 +310,7 @@ namespace Cube.Forms
             result = e.Handled ? e.Result : 0;
         }
 
-        #endregion
-
-        #region Internal or protected classes for events
+        #region Internal classes
 
         /* --------------------------------------------------------------------- */
         ///
@@ -409,7 +400,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected class ShowUIWebBrowserSite : WebBrowser.WebBrowserSite, IDocHostShowUI
+        protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
         {
             /* ----------------------------------------------------------------- */
             ///
@@ -575,6 +566,8 @@ namespace Cube.Forms
         #region Fields
         private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie = null;
         private ActiveXControlEvents _events = null;
+        #endregion
+
         #endregion
     }
 }
