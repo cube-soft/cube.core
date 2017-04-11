@@ -410,7 +410,11 @@ namespace Cube.Forms
             _close.Styles.MouseOverStyle.BorderColor = Color.FromArgb(230, 230, 230);
             _close.Styles.MouseOverStyle.BorderSize = 1;
             _close.Styles.MouseDownStyle.BackColor = Color.FromArgb(236, 236, 236);
-            _close.Click += (s, e) => Hide();
+            _close.Click += (s, e) =>
+            {
+                Hide();
+                OnSelected(ValueEventArgs.Create(NotifyComponents.Others));
+            };
 
             _panel = new TableLayoutPanel();
             _panel.SuspendLayout();
@@ -418,9 +422,9 @@ namespace Cube.Forms
             _panel.ColumnCount = 3;
             _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             _panel.RowCount = 2;
-            _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             _panel.Controls.Add(_image, 0, 0);
             _panel.Controls.Add(_title, 1, 0);
@@ -430,7 +434,7 @@ namespace Cube.Forms
 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = SystemColors.Window;
-            ClientSize = new Size(350, 64);
+            ClientSize = new Size(350, 70);
             Font = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
             IsBusy = false;
             MaximizeBox = false;
