@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using Microsoft.Win32;
 using Cube.Log;
 
@@ -76,7 +77,7 @@ namespace Cube
         public WakeableTimer(TimeSpan interval)
         {
             Interval = interval;
-            _core.Elapsed += (s, e) => OnExecute(e);
+            _core.Elapsed += (s, e) => Publish();
             SystemEvents.PowerModeChanged += (s, e) => OnPowerModeChanged(e);
         }
 
@@ -134,43 +135,20 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public PowerModes PowerMode { get; private set; } = PowerModes.Resume;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscriptions
+        /// 
+        /// <summary>
+        /// 購読者一覧を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected IList<Action> Subscriptions { get; } = new List<Action>();
+
         #endregion
 
         #region Events
-
-        #region Execute
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
-        /// 
-        /// <summary>
-        /// 操作実行時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler Execute;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnExecute
-        /// 
-        /// <summary>
-        /// Execute イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnExecute(EventArgs e)
-        {
-            LastExecuted = DateTime.Now;
-            var delta = Math.Abs(_core.Interval - Interval.TotalMilliseconds);
-            if (delta > 1.0) _core.Interval = Interval.TotalMilliseconds;
-            Execute?.Invoke(this, e);
-        }
-
-        #endregion
-
-        #region PowerModeChanged
 
         /* ----------------------------------------------------------------- */
         ///
@@ -198,8 +176,6 @@ namespace Cube
             UpdateState(e.Mode);
             PowerModeChanged?.Invoke(this, e);
         }
-
-        #endregion
 
         #endregion
 
@@ -235,7 +211,7 @@ namespace Cube
             if (delay > TimeSpan.Zero) _core.Interval = delay.TotalMilliseconds;
             else
             {
-                OnExecute(EventArgs.Empty);
+                Publish();
                 _core.Interval = Interval.TotalMilliseconds;
             }
             _core.Start();
@@ -264,30 +240,42 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// 一定間隔毎に実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Subscribe(Action action)
+            => Subscriptions.Add(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe
+        ///
+        /// <summary>
+        /// 登録した処理を解除します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Unsubscribe(Action action)
+            => Subscriptions.Remove(action);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Reset
         /// 
         /// <summary>
         /// 内部状態をリセットします。
         /// </summary>
         /// 
-        /// <remarks>
-        /// 派生クラスでリセット処理が必要な場合、OnReset メソッドを
-        /// オーバーライドして下さい。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
-        public void Reset() => OnReset();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnReset
-        /// 
-        /// <summary>
-        /// リセット処理を実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnReset()
+        public virtual void Reset()
         {
             _core.Interval = Interval.TotalMilliseconds;
         }
@@ -345,24 +333,19 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseExecute
+        /// Publish
         /// 
         /// <summary>
-        /// 直ちに Execute イベントを発生させます。
+        /// イベントを発行します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// State が Run 以外の場合、RaiseExecute は無視されます。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected void RaiseExecute()
+        protected virtual void Publish()
         {
-            if (State != TimerState.Run) return;
-
-            this.LogDebug($"RaiseExecute");
-            OnExecute(EventArgs.Empty);
-            _core.Interval = Interval.TotalMilliseconds;
+            LastExecuted = DateTime.Now;
+            var delta = Math.Abs(_core.Interval - Interval.TotalMilliseconds);
+            if (delta > 1.0) _core.Interval = Interval.TotalMilliseconds;
+            foreach (var action in Subscriptions) action();
         }
 
         /* ----------------------------------------------------------------- */

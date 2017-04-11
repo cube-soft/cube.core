@@ -71,7 +71,7 @@ namespace Cube.Tests
 
             using (var timer = new WakeableTimer())
             {
-                timer.Execute += (s, e) => ++count;
+                timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.FromSeconds(1));
                 timer.Stop();
             }
@@ -95,7 +95,7 @@ namespace Cube.Tests
 
             using (var timer = new WakeableTimer())
             {
-                timer.Execute += (s, e) => ++count;
+                timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.Zero);
                 timer.Stop();
             }
