@@ -193,7 +193,7 @@ namespace Cube.Forms
         public void Enqueue(NotifyItem item)
         {
             var key = item.Priority;
-            if (_inner.ContainsKey(key)) _inner.Add(key, new Queue<NotifyItem>());
+            if (!_inner.ContainsKey(key)) _inner.Add(key, new Queue<NotifyItem>());
             _inner[key].Enqueue(item);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Add, item));
