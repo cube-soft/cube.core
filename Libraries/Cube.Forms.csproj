@@ -137,6 +137,10 @@
     <Compile Include="Views\Controls\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Views\Controls\WebBrowser.Subclass.cs">
+      <DependentUpon>WebBrowser.cs</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Views\Forms\BorderlessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,7 +169,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
- <ItemGroup>
+  <ItemGroup>
     <None Include="Resources\CloseButton.png" />
     <None Include="Resources\LogoLarge.png" />
     <None Include="Resources\LogoSmall.png" />

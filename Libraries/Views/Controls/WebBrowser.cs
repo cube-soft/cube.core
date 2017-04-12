@@ -16,7 +16,6 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.InteropServices;
 using System.Text;
 using Cube.Log;
 
@@ -48,32 +47,14 @@ namespace Cube.Forms
         {
             get
             {
-                if (string.IsNullOrEmpty(_agent))
-                {
-                    var buffer = new StringBuilder(2048);
-                    var length = 0;
-                    var result = UrlMon.NativeMethods.UrlMkGetSessionOption(
-                        0x10000001, // URLMON_OPTION_USERAGENT,
-                        buffer, buffer.Capacity, ref length, 0
-                    );
-
-                    if (result == 0) _agent = buffer.ToString();
-                    else this.LogWarn($"UrlMkGetSessionOption:{result}");
-                }
+                if (string.IsNullOrEmpty(_agent)) _agent = GetUserAgent();
                 return _agent;
             }
 
             set
             {
                 if (_agent == value) return;
-
-                var result = UrlMon.NativeMethods.UrlMkSetSessionOption(
-                    0x10000001, // URLMON_OPTION_USERAGENT,
-                    value, value.Length, 0
-                );
-
-                if (result == 0) _agent = value;
-                else this.LogWarn($"UrlMkSetSessionOption:{result}");
+                SetUserAgent(ref _agent, value);
             }
         }
 
@@ -281,6 +262,48 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// GetUserAgent
+        /// 
+        /// <summary>
+        /// UserAgent を取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private string GetUserAgent()
+        {
+            var sb     = new StringBuilder(2048);
+            var size   = 0;
+            var result = UrlMon.NativeMethods.UrlMkGetSessionOption(
+                0x10000001, // URLMON_OPTION_USERAGENT,
+                sb, sb.Capacity, ref size, 0
+            );
+
+            if (result != 0) this.LogWarn($"UrlMkGetSessionOption:{result}");
+            return result == 0 ? sb.ToString() : string.Empty;
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SetUserAgent
+        /// 
+        /// <summary>
+        /// UserAgent を設定します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private void SetUserAgent(ref string dest, string value)
+        {
+            var result = UrlMon.NativeMethods.UrlMkSetSessionOption(
+                0x10000001, // URLMON_OPTION_USERAGENT,
+                value, value.Length, 0
+            );
+
+            if (result == 0) dest = value;
+            else this.LogWarn($"UrlMkSetSessionOption:{result}");
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// CloseForm
         /// 
         /// <summary>
@@ -357,259 +380,6 @@ namespace Cube.Forms
             OnMessageShowing(e);
             result = e.Handled ? e.Result : 0;
         }
-
-        #region Internal classes
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// ActiveXControlEvents
-        ///
-        /// <summary>
-        /// ActiveX コントロールで発生するイベントを WebBrowser に伝播させる
-        /// ためのクラスです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        internal class ActiveXControlEvents
-            : StandardOleMarshalObject, DWebBrowserEvents2
-        {
-            /* ----------------------------------------------------------------- */
-            ///
-            /// ActiveXControlEvents
-            /// 
-            /// <summary>
-            /// オブジェクトを初期化します。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public ActiveXControlEvents(WebBrowser target)
-            {
-                Target = target;
-            }
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// WebBrowser
-            /// 
-            /// <summary>
-            /// 関連付けられた WebBrowser オブジェクトを取得します。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public WebBrowser Target { get; private set; }
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// BeforeNavigate2
-            /// 
-            /// <summary>
-            /// ページ遷移が発生する直前に実行されます。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public void BeforeNavigate2(object pDisp, ref object URL, ref object flags,
-                ref object targetFrameName, ref object postData, ref object headers, ref bool cancel)
-                => Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// NewWindow3
-            /// 
-            /// <summary>
-            /// 新しいウィンドウが開く直前に実行されます。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public void NewWindow3(object pDisp, ref bool cancel, ref object flags,
-                ref object URLContext, ref object URL)
-                => Target.RaiseBeforeNewWindow((string)URL, out cancel);
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// NavigateError
-            /// 
-            /// <summary>
-            /// ページ遷移時にエラーが発生した時に実行されます。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public void NavigateError(object pDisp, ref object URL, ref object targetFrameName,
-                ref object statusCode, ref bool cancel)
-                => Target.RaiseNavigatingError((string)URL, (string)targetFrameName, (int)statusCode, out cancel);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowUIWebBrowserSite
-        ///
-        /// <summary>
-        /// WebBrowser 上で表示されるメッセージダイアログ等を処理する
-        /// ためのクラスです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
-        {
-            /* ----------------------------------------------------------------- */
-            ///
-            /// ShowUIWebBrowserSite
-            /// 
-            /// <summary>
-            /// オブジェクトを初期化します。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public ShowUIWebBrowserSite(WebBrowser host)
-                : base(host)
-            {
-                Host = host;
-            }
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// Host
-            /// 
-            /// <summary>
-            /// 関連付ける WebBrowser オブジェクトを取得します。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public WebBrowser Host { get; private set; }
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// ShowMessage
-            /// 
-            /// <summary>
-            /// メッセージを表示します。
-            /// </summary>
-            ///
-            /* ----------------------------------------------------------------- */
-            public int ShowMessage(IntPtr hwnd, string text, string caption, int type, string file, int context, out int result)
-            {
-                Host.RaiseMessageShowing(text, caption, type, file, context, out result);
-                return (result != 0) ? 0 : 1;
-            }
-
-            /* ----------------------------------------------------------------- */
-            ///
-            /// ShowHelp
-            /// 
-            /// <summary>
-            /// ヘルプを表示します。
-            /// </summary>
-            /// 
-            /// <remarks>
-            /// 現在は常にキャンセルされます。
-            /// </remarks>
-            ///
-            /* ----------------------------------------------------------------- */
-            public int ShowHelp(IntPtr hwnd, string file, int command, int data, POINT mouse, object hit) => 1;
-        }
-
-        #endregion
-
-        #region COM Interfaces and/or Win32 APIs
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// DWebBrowserEvents2
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/aa768283.aspx
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [ComImport,
-         Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"),
-         InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
-         TypeLibType(TypeLibTypeFlags.FHidden)]
-        internal interface DWebBrowserEvents2
-        {
-            [DispId(250)]
-            void BeforeNavigate2(
-                [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-                [In] ref object URL,
-                [In] ref object flags,
-                [In] ref object targetFrameName,
-                [In] ref object postData,
-                [In] ref object headers,
-                [In, Out] ref bool cancel
-            );
-
-            [DispId(273)]
-            void NewWindow3(
-                [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-                [In, Out] ref bool cancel,
-                [In] ref object flags,
-                [In] ref object URLContext,
-                [In] ref object URL
-            );
-
-            [DispId(271)]
-            void NavigateError(
-                [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-                [In] ref object URL,
-                [In] ref object frame,
-                [In] ref object statusCode,
-                [In, Out] ref bool cancel
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IDocHostShowUI
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/aa753269.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [ComImport,
-         Guid("C4D244B0-D43E-11CF-893B-00AA00BDCE1A"),
-         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        protected interface IDocHostShowUI
-        {
-            [return: MarshalAs(UnmanagedType.U4)]
-            [PreserveSig]
-            int ShowMessage(IntPtr hwnd,
-                [MarshalAs(UnmanagedType.LPWStr)] string lpstrText,
-                [MarshalAs(UnmanagedType.LPWStr)] string lpstrCaption,
-                int dwType,
-                [MarshalAs(UnmanagedType.LPWStr)] string lpstrHelpFile,
-                int dwHelpContext,
-                out int lpResult
-            );
-
-            [return: MarshalAs(UnmanagedType.U4)]
-            [PreserveSig]
-            int ShowHelp(
-                IntPtr hwnd,
-                [MarshalAs(UnmanagedType.LPWStr)] string pszHelpFile,
-                int uCommand,
-                int dwData,
-                POINT ptMouse,
-                [MarshalAs(UnmanagedType.IDispatch)] object pDispatchObjectHit
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// POINT
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162805.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [StructLayout(LayoutKind.Sequential)]
-        protected struct POINT
-        {
-            public int x;
-            public int y;
-        }
-
-        #endregion
 
         #region Fields
         private string _agent = string.Empty;
