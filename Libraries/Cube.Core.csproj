@@ -95,7 +95,7 @@
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
-    <Compile Include="GenericEqualityComparer.cs" />
+    <Compile Include="GenericComparer.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="UtmQuery.cs" />

@@ -22,14 +22,66 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericEqualityComparer
+    /// GenericComparer
     /// 
     /// <summary>
-    /// Func(T, T, bool) を EqualityCompaer(T) に変換するためのクラスです。
+    /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal class GenericEqualityComparer<T> : EqualityComparer<T>
+    public class GenericComparer<T> : Comparer<T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GenericComparer
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public GenericComparer(Func<T, T, int> func)
+        {
+            _comparer = func;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compare
+        /// 
+        /// <summary>
+        /// 2 つのオブジェクトを比較します。
+        /// </summary>
+        /// 
+        /// <param name="x">比較する最初のオブジェクト</param>
+        /// <param name="y">比較する 2 番目のオブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override int Compare(T x, T y) => _comparer(x, y);
+
+        #endregion
+
+        #region Fields
+        private Func<T, T, int> _comparer;
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GenericEqualityComparer
+    /// 
+    /// <summary>
+    /// Func(T, T, bool) を EqualityComparer(T) に変換するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class GenericEqualityComparer<T> : EqualityComparer<T>
     {
         #region Constructors
 
