@@ -16,27 +16,29 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.ObjectModel;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyLevel
+    /// NotifyPriority
     /// 
     /// <summary>
-    /// 通知した項目の重要度を示す値を定義した列挙体です。
+    /// 通知項目の優先度を示す値を定義した列挙体です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum NotifyLevel : int
+    public enum NotifyPriority
     {
-        None        = 0,
-        Debug       = 1,
-        Information = 2,
-        Important   = 3,
-        Warning     = 4,
-        Error       = 5,
+        Highest = 40,
+        High    = 30,
+        Normal  = 20,
+        Low     = 10,
+        Lowest  =  0,
     }
 
     /* --------------------------------------------------------------------- */
@@ -54,14 +56,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Level
+        /// Priority
         /// 
         /// <summary>
-        /// 通知内容の重要度を取得または設定します。
+        /// 通知内容の優先度を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NotifyLevel Level { get; set; }
+        public NotifyPriority Priority { get; set; } = NotifyPriority.Normal;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,14 +112,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Data
+        /// Value
         /// 
         /// <summary>
         /// ユーザデータを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public object Data { get; set; }
+        public object Value { get; set; }
 
         #endregion
     }
@@ -131,20 +133,47 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NotifyQueue : ObservableCollection<NotifyItem>
+    public class NotifyQueue : IEnumerable<NotifyItem>, INotifyCollectionChanged
     {
-        #region Constructor
+        #region Properties
 
         /* --------------------------------------------------------------------- */
         ///
-        /// NotifyQueue
+        /// Count
         /// 
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// 要素数を取得します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyQueue() : base() { }
+        public int Count => _inner.Values.Aggregate(0, (n, q) => n += q.Count);
+
+        #endregion
+
+        #region Events
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// CollectionChanged
+        /// 
+        /// <summary>
+        /// コレクションの内容が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnCollectionChanged
+        /// 
+        /// <summary>
+        /// CollectionChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+            => CollectionChanged?.Invoke(this, e);
 
         #endregion
 
@@ -161,7 +190,14 @@ namespace Cube.Forms
         /// <param name="item">追加するオブジェクト</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Enqueue(NotifyItem item) => Add(item);
+        public void Enqueue(NotifyItem item)
+        {
+            var key = item.Priority;
+            if (_inner.ContainsKey(key)) _inner.Add(key, new Queue<NotifyItem>());
+            _inner[key].Enqueue(item);
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Add, item));
+        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -176,9 +212,15 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public NotifyItem Dequeue()
         {
-            if (Count <= 0) return null;
-            var dest = base[0];
-            RemoveAt(0);
+            if (_inner.Count <= 0) return null;
+
+            var pair = _inner.First();
+            var dest = pair.Value.Dequeue();
+
+            if (pair.Value.Count <= 0) _inner.Remove(pair.Key);
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Remove, dest));
+
             return dest;
         }
 
@@ -193,8 +235,65 @@ namespace Cube.Forms
         /// <returns>先頭のオブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyItem Peek() => Count > 0 ? base[0] : null;
+        public NotifyItem Peek()
+            => _inner.Count > 0 ? _inner.First().Value.Peek() : null;
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Clear
+        /// 
+        /// <summary>
+        /// コレクションの要素をすべて削除します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Clear()
+        {
+            _inner.Clear();
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Reset));
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetEnumerator
+        /// 
+        /// <summary>
+        /// 反復子を取得します。
+        /// </summary>
+        ///
+        /// <returns>反復子</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IEnumerator<NotifyItem> GetEnumerator()
+        {
+            foreach (var queue in _inner.Values)
+            foreach (var value in queue)
+            {
+                yield return value;
+            }
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetEnumerator
+        /// 
+        /// <summary>
+        /// 反復子を取得します。
+        /// </summary>
+        ///
+        /// <returns>反復子</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        #endregion
+
+        #region Fields
+        private SortedDictionary<NotifyPriority, Queue<NotifyItem>> _inner
+            = new SortedDictionary<NotifyPriority, Queue<NotifyItem>>(
+              new GenericComparer<NotifyPriority>((x, y) => y.CompareTo(x))
+            );
         #endregion
     }
 }
