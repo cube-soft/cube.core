@@ -63,27 +63,19 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public string Title
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public NotifyItem Value
         {
-            get { return _title.Content; }
-            set { _title.Content = value; }
-        }
+            get { return _value; }
+            set
+            {
+                if (_value == value) return;
+                _value = value;
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Description
-        /// 
-        /// <summary>
-        /// 本文を取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public string Description
-        {
-            get { return _text.Content; }
-            set { _text.Content = value; }
+                _title.Content = value?.Title ?? string.Empty;
+                _text.Content  = value?.Description ?? string.Empty;
+            }
         }
 
         /* --------------------------------------------------------------------- */
@@ -206,8 +198,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Show(NotifyItem item, NotifyStyle style)
         {
-            Title       = item.Title;
-            Description = item.Description;
+            Value = item;
 
             SetStyle(style);
             Show(item.DisplayTime, item.InitialDelay);
@@ -449,6 +440,7 @@ namespace Cube.Forms
         }
 
         #region Fields
+        private NotifyItem _value;
         private TableLayoutPanel _panel;
         private FlatButton _image;
         private FlatButton _title;
