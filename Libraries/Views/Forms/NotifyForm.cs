@@ -286,7 +286,7 @@ namespace Cube.Forms
             {
                 IsBusy = true;
 
-                var screen = System.Windows.Forms.Screen.GetWorkingArea(this);
+                var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
                 SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
 
                 if (delay > TimeSpan.Zero) await Task.Delay(delay);
@@ -434,9 +434,10 @@ namespace Cube.Forms
 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = SystemColors.Window;
-            ClientSize = new Size(350, 70);
+            Size = new Size(350, 70);
             Font = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
             IsBusy = false;
+            Location = new Point(0, 0);
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
