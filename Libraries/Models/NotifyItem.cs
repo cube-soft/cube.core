@@ -240,6 +240,25 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// Remove
+        /// 
+        /// <summary>
+        /// 指定された優先度に設定されている通知を削除します。
+        /// </summary>
+        /// 
+        /// <param name="priority">優先度</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public bool Remove(NotifyPriority priority)
+        {
+            var result = _inner.Remove(priority);
+            if (result) OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Reset));
+            return result;
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Clear
         /// 
         /// <summary>
