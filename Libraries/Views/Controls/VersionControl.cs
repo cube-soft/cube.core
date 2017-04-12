@@ -306,7 +306,7 @@ namespace Cube.Forms
             {
                 if (Uri == null) return;
                 try { System.Diagnostics.Process.Start(Uri.ToString()); }
-                catch (Exception err) { this.LogError(err.Message, err); }
+                catch (Exception err) { this.LogWarn(err.ToString()); }
             };
 
             _contents.Controls.Add(_product);

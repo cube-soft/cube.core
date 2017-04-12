@@ -398,7 +398,7 @@ namespace Cube.Forms
 
             /* ----------------------------------------------------------------- */
             ///
-            /// LogError
+            /// LogWarn
             /// 
             /// <summary>
             /// 例外情報をログに出力します。
@@ -406,7 +406,7 @@ namespace Cube.Forms
             ///
             /* ----------------------------------------------------------------- */
             private static void LogWarn(Exception err)
-                => Cube.Log.Operations.Warn(typeof(WebBrowser), err.Message, err);
+                => Cube.Log.Operations.Warn(typeof(WebBrowser), err.ToString());
 
             #endregion
 

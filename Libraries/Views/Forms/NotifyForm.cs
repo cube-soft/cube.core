@@ -297,7 +297,7 @@ namespace Cube.Forms
             }
             catch (TaskCanceledException /* err */) { }
             catch (OperationCanceledException /* err */) { }
-            catch (Exception err) { this.LogError(err.Message, err); }
+            catch (Exception err) { this.LogWarn(err.ToString()); }
             finally
             {
                 VisibleChanged -= m;

@@ -205,7 +205,7 @@ namespace Cube.Forms
         {
             TResult result = default(TResult);
             try { SynchronizationContext.Send(_ => { result = func(); }, null); }
-            catch (Exception err) { this.LogError(err.Message, err); }
+            catch (Exception err) { this.LogWarn(err.ToString()); }
             return result;
         }
 
