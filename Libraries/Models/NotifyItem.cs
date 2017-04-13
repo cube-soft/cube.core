@@ -192,9 +192,13 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Enqueue(NotifyItem item)
         {
-            var key = item.Priority;
-            if (!_inner.ContainsKey(key)) _inner.Add(key, new Queue<NotifyItem>());
-            _inner[key].Enqueue(item);
+            lock (_lock)
+            {
+                var key = item.Priority;
+                if (!_inner.ContainsKey(key)) _inner.Add(key, new Queue<NotifyItem>());
+                _inner[key].Enqueue(item);
+            }
+
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Add, item));
         }
@@ -214,10 +218,15 @@ namespace Cube.Forms
         {
             if (_inner.Count <= 0) return null;
 
-            var pair = _inner.First();
-            var dest = pair.Value.Dequeue();
+            var dest = default(NotifyItem);
 
-            if (pair.Value.Count <= 0) _inner.Remove(pair.Key);
+            lock (_lock)
+            {
+                var pair = _inner.First();
+                dest = pair.Value.Dequeue();
+                if (pair.Value.Count <= 0) _inner.Remove(pair.Key);
+            }
+
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Remove, dest));
 
@@ -240,25 +249,6 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Remove
-        /// 
-        /// <summary>
-        /// 指定された優先度に設定されている通知を削除します。
-        /// </summary>
-        /// 
-        /// <param name="priority">優先度</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public bool Remove(NotifyPriority priority)
-        {
-            var result = _inner.Remove(priority);
-            if (result) OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Reset));
-            return result;
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
         /// Clear
         /// 
         /// <summary>
@@ -268,8 +258,27 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Clear()
         {
-            _inner.Clear();
+            lock (_lock) _inner.Clear();
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                NotifyCollectionChangedAction.Reset));
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Clear
+        /// 
+        /// <summary>
+        /// 指定された優先度に設定されている通知をすべて削除します。
+        /// </summary>
+        /// 
+        /// <param name="priority">優先度</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Clear(NotifyPriority priority)
+        {
+            var result = false;
+            lock (_lock) _inner.Remove(priority);
+            if (result) OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Reset));
         }
 
@@ -309,6 +318,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
+        private object _lock = new object();
         private SortedDictionary<NotifyPriority, Queue<NotifyItem>> _inner
             = new SortedDictionary<NotifyPriority, Queue<NotifyItem>>(
               new GenericComparer<NotifyPriority>((x, y) => y.CompareTo(x))
