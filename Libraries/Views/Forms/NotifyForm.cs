@@ -253,7 +253,6 @@ namespace Cube.Forms
 
             _panel.BackColor                    =
             _close.Styles.NormalStyle.BackColor =
-            _image.Styles.NormalStyle.BackColor =
             _title.Styles.NormalStyle.BackColor =
             _text.Styles.NormalStyle.BackColor  = BackColor;
         }
@@ -424,15 +423,16 @@ namespace Cube.Forms
             _panel.SetRowSpan(_image, 2);
 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            BackColor = SystemColors.Window;
-            Size = new Size(350, 70);
-            Font = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            IsBusy = false;
-            Location = new Point(0, 0);
-            MaximizeBox = false;
-            MinimizeBox = false;
+            BackColor     = SystemColors.Window;
+            Size          = new Size(350, 80);
+            Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
+            IsBusy        = false;
+            Location      = new Point(0, 0);
+            MaximizeBox   = false;
+            MinimizeBox   = false;
             ShowInTaskbar = false;
-            Sizable = false;
+            Sizable       = false;
+
             Controls.Add(_panel);
 
             _panel.ResumeLayout(false);
