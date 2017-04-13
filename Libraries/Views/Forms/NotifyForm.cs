@@ -97,7 +97,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// IsBusy
+        /// Busy
         /// 
         /// <summary>
         /// 実行中かどうかを取得します。
@@ -105,7 +105,17 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
-        public bool IsBusy { get; private set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool Busy
+        {
+            get { return _busy; }
+            private set
+            {
+                if (_busy == value) return;
+                _busy = value;
+                OnBusyChanged(EventArgs.Empty);
+            }
+        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -144,6 +154,8 @@ namespace Cube.Forms
 
         #region Events
 
+        #region Selected
+
         /* ----------------------------------------------------------------- */
         ///
         /// Selected
@@ -165,7 +177,39 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnSelected(ValueEventArgs<NotifyComponents> e)
-            => Selected?.Invoke(this, e);
+        {
+            Selected?.Invoke(this, e);
+            Hide();
+        }
+
+        #endregion
+
+        #region BusyChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BusyChanged
+        /// 
+        /// <summary>
+        /// Busy の状態が変更された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler BusyChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnBusyChanged
+        /// 
+        /// <summary>
+        /// BusyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnBusyChanged(EventArgs e)
+            => BusyChanged?.Invoke(this, e);
+
+        #endregion
 
         #endregion
 
@@ -274,7 +318,7 @@ namespace Cube.Forms
             
             try
             {
-                IsBusy = true;
+                Busy = true;
 
                 var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
                 SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
@@ -291,7 +335,7 @@ namespace Cube.Forms
             finally
             {
                 VisibleChanged -= m;
-                IsBusy = false;
+                Busy = false;
             }
         }
 
@@ -400,11 +444,7 @@ namespace Cube.Forms
             _close.Styles.MouseOverStyle.BorderColor = Color.FromArgb(230, 230, 230);
             _close.Styles.MouseOverStyle.BorderSize = 1;
             _close.Styles.MouseDownStyle.BackColor = Color.FromArgb(236, 236, 236);
-            _close.Click += (s, e) =>
-            {
-                Hide();
-                OnSelected(ValueEventArgs.Create(NotifyComponents.Others));
-            };
+            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Others));
 
             _panel = new TableLayoutPanel();
             _panel.SuspendLayout();
@@ -426,7 +466,7 @@ namespace Cube.Forms
             BackColor     = SystemColors.Window;
             Size          = new Size(350, 80);
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            IsBusy        = false;
+            Busy          = false;
             Location      = new Point(0, 0);
             MaximizeBox   = false;
             MinimizeBox   = false;
@@ -440,6 +480,7 @@ namespace Cube.Forms
         }
 
         #region Fields
+        private bool _busy = false;
         private NotifyItem _value;
         private TableLayoutPanel _panel;
         private FlatButton _image;
