@@ -68,7 +68,7 @@ namespace Cube.Forms
         public NotifyItem Value
         {
             get { return _value; }
-            set
+            private set
             {
                 if (_value == value) return;
                 _value = value;
@@ -243,39 +243,8 @@ namespace Cube.Forms
         public void Show(NotifyItem item, NotifyStyle style)
         {
             Value = item;
-
             SetStyle(style);
-            Show(item.DisplayTime, item.InitialDelay);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Show
-        /// 
-        /// <summary>
-        /// フォームを表示します。
-        /// </summary>
-        /// 
-        /// <param name="time">表示時間</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Show(TimeSpan time) => Show(time, TimeSpan.Zero);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Show
-        /// 
-        /// <summary>
-        /// フォームを表示します。
-        /// </summary>
-        /// 
-        /// <param name="time">表示時間</param>
-        /// <param name="delay">表示されるまでの時間</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Show(TimeSpan time, TimeSpan delay)
-        {
-            var _ = ShowAsync(time, delay);
+            var _ = ShowAsync(item.DisplayTime, item.InitialDelay);
         }
 
         #endregion
@@ -300,6 +269,21 @@ namespace Cube.Forms
             _title.Styles.NormalStyle.BackColor =
             _text.Styles.NormalStyle.BackColor  = BackColor;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Show
+        /// 
+        /// <summary>
+        /// 画面を表示します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 外部から実行できないように private で再定義します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private new void Show() => base.Show();
 
         /* ----------------------------------------------------------------- */
         ///
