@@ -194,14 +194,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set
+        /// Start
         /// 
         /// <summary>
-        /// コントロールに表示する内容を URL で設定します。
+        /// URL で示されたコンテンツの表示を開始します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Set(Uri uri)
+        public void Start(Uri uri)
         {
             Stop();
             Url = uri;
@@ -209,14 +209,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set
+        /// Start
         /// 
         /// <summary>
-        /// コントロールに表示する内容を HTML で設定します。
+        /// HTML で示されたコンテンツの表示を開始します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Set(string html)
+        public void Start(string html)
         {
             Stop();
             DocumentText = html;
