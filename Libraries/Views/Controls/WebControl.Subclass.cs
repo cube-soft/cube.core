@@ -29,7 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    partial class WebBrowser
+    partial class WebControl
     {
         #region ActiveXControlEvents
 
@@ -55,7 +55,7 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            public ActiveXControlEvents(WebBrowser target)
+            public ActiveXControlEvents(WebControl target)
             {
                 Target = target;
             }
@@ -69,7 +69,7 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            public WebBrowser Target { get; private set; }
+            public WebControl Target { get; private set; }
 
             /* ------------------------------------------------------------- */
             ///
@@ -140,7 +140,7 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            public ShowUIWebBrowserSite(WebBrowser host) : base(host)
+            public ShowUIWebBrowserSite(WebControl host) : base(host)
             {
                 Host = host;
             }
@@ -154,7 +154,7 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            public WebBrowser Host { get; private set; }
+            public WebControl Host { get; private set; }
 
             /* ------------------------------------------------------------- */
             ///

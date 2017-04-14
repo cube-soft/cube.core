@@ -42,7 +42,7 @@ namespace Cube.Forms
         Latest        =    -1,
     }
 
-    public partial class WebBrowser
+    public partial class WebControl
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -406,7 +406,7 @@ namespace Cube.Forms
             ///
             /* ----------------------------------------------------------------- */
             private static void LogWarn(Exception err)
-                => Cube.Log.Operations.Warn(typeof(WebBrowser), err.ToString());
+                => Cube.Log.Operations.Warn(typeof(WebControl), err.ToString());
 
             #endregion
 

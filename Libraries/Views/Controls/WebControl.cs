@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Text;
 using Cube.Log;
 
@@ -23,14 +24,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WebBrowser
+    /// WebControl
     /// 
     /// <summary>
-    /// Web ページを表示するためのクラスです。
+    /// Web ページを表示するためのコントロールです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class WebBrowser : System.Windows.Forms.WebBrowser
+    public partial class WebControl : System.Windows.Forms.WebBrowser, IWebView
     {
         #region Properties
 
@@ -57,6 +58,23 @@ namespace Cube.Forms
                 SetUserAgent(ref _agent, value);
             }
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventAggregator
+        /// 
+        /// <summary>
+        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEventAggregator EventAggregator { get; set; }
 
         #endregion
 
@@ -169,6 +187,40 @@ namespace Cube.Forms
             => MessageShowing?.Invoke(this, e);
 
         #endregion
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Set
+        /// 
+        /// <summary>
+        /// コントロールに表示する内容を URL で設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Set(Uri uri)
+        {
+            Stop();
+            Url = uri;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Set
+        /// 
+        /// <summary>
+        /// コントロールに表示する内容を HTML で設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Set(string html)
+        {
+            Stop();
+            DocumentText = html;
+        }
 
         #endregion
 
