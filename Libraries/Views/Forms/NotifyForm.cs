@@ -97,7 +97,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Busy
+        /// IsBusy
         /// 
         /// <summary>
         /// 実行中かどうかを取得します。
@@ -106,7 +106,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Busy
+        public bool IsBusy
         {
             get { return _busy; }
             private set
@@ -302,7 +302,7 @@ namespace Cube.Forms
             
             try
             {
-                Busy = true;
+                IsBusy = true;
 
                 var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
                 SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
@@ -319,7 +319,7 @@ namespace Cube.Forms
             finally
             {
                 VisibleChanged -= m;
-                Busy = false;
+                IsBusy = false;
             }
         }
 
@@ -450,7 +450,7 @@ namespace Cube.Forms
             BackColor     = SystemColors.Window;
             Size          = new Size(350, 80);
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            Busy          = false;
+            IsBusy          = false;
             Location      = new Point(0, 0);
             MaximizeBox   = false;
             MinimizeBox   = false;
