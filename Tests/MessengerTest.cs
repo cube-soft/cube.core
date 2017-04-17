@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Cube.Tests
@@ -44,7 +45,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Publish_Server()
+        public async Task Publish_Server()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ClientToServer";
@@ -55,6 +56,7 @@ namespace Cube.Tests
             {
                 server.Subscribe(x => result = x);
                 client.Publish(msg);
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
             }
 
             Assert.That(result, Is.EqualTo(msg));
@@ -70,7 +72,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Publish_Client()
+        public async Task Publish_Client()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ServerToClient";
@@ -81,6 +83,7 @@ namespace Cube.Tests
             {
                 client.Subscribe(x => result = x);
                 server.Publish(msg);
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
             }
 
             Assert.That(result, Is.EqualTo(msg));
