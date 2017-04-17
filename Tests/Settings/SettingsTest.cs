@@ -33,7 +33,6 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
     class SettingsTest : FileResource
     {
@@ -161,7 +160,7 @@ namespace Cube.Tests
             settings.Value.Sex  = Sex.Female;
 
             // NOTE: 自動保存機能が実行されるのは最後の値変更から 100ms 後
-            await Task.Delay(TimeSpan.FromMilliseconds(150));
+            await Task.Delay(TimeSpan.FromMilliseconds(200));
 
             using (var key = OpenSaveKey())
             {
