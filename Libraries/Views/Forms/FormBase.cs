@@ -132,21 +132,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEventAggregator EventAggregator
-        {
-            get { return _events; }
-            set
-            {
-                if (_events == value) return;
-                _events = value;
-                foreach (var obj in Controls)
-                {
-                    var control = obj as IControl;
-                    if (control == null) continue;
-                    control.EventAggregator = value;
-                }
-            }
-        }
+        public IEventAggregator EventAggregator { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -449,7 +435,6 @@ namespace Cube.Forms
         #region Fields
         private double _dpi = 0.0;
         private Cube.Processes.IMessenger<string[]> _activator = null;
-        private IEventAggregator _events;
         #endregion
 
         #endregion
