@@ -106,16 +106,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsBusy
-        {
-            get { return _busy; }
-            private set
-            {
-                if (_busy == value) return;
-                _busy = value;
-                OnBusyChanged(EventArgs.Empty);
-            }
-        }
+        public bool IsBusy { get; private set; } = false;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -184,30 +175,30 @@ namespace Cube.Forms
 
         #endregion
 
-        #region BusyChanged
+        #region Completed
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BusyChanged
+        /// Completed
         /// 
         /// <summary>
-        /// Busy の状態が変更された時に発生するイベントです。
+        /// 通知完了時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler BusyChanged;
+        public event EventHandler Completed;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnBusyChanged
+        /// OnCompleted
         /// 
         /// <summary>
-        /// BusyChanged イベントを発生させます。
+        /// Completed イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnBusyChanged(EventArgs e)
-            => BusyChanged?.Invoke(this, e);
+        protected virtual void OnCompleted(EventArgs e)
+            => Completed?.Invoke(this, e);
 
         #endregion
 
@@ -250,25 +241,6 @@ namespace Cube.Forms
         #endregion
 
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnBackColorChanged
-        /// 
-        /// <summary>
-        /// 背景色が変化した時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnBackColorChanged(EventArgs e)
-        {
-            base.OnBackColorChanged(e);
-
-            _panel.BackColor                    =
-            _close.Styles.NormalStyle.BackColor =
-            _title.Styles.NormalStyle.BackColor =
-            _text.Styles.NormalStyle.BackColor  = BackColor;
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -319,7 +291,7 @@ namespace Cube.Forms
             finally
             {
                 VisibleChanged -= m;
-                IsBusy = false;
+                OnCompleted(EventArgs.Empty);
             }
         }
 
@@ -335,13 +307,20 @@ namespace Cube.Forms
         private void SetStyle(NotifyStyle style)
         {
             if (style == null) return;
-            if (style.BackColor != Color.Empty) BackColor = style.BackColor;
             if (style.ImageColor != Color.Empty) _image.Styles.NormalStyle.BackColor = style.ImageColor;
             if (style.Image != null) _image.Styles.NormalStyle.Image = style.Image;
             if (style.Title != null) _title.Font = style.Title;
             if (style.TitleColor != Color.Empty) _title.Styles.NormalStyle.ContentColor = style.TitleColor;
             if (style.Description != null) _text.Font = style.Description;
             if (style.DescriptionColor != Color.Empty) _text.Styles.NormalStyle.ContentColor = style.DescriptionColor;
+            if (style.BackColor != Color.Empty)
+            {
+                BackColor                           = 
+                _panel.BackColor                    =
+                _close.Styles.NormalStyle.BackColor =
+                _title.Styles.NormalStyle.BackColor =
+                _text.Styles.NormalStyle.BackColor  = style.BackColor;
+            }
         }
 
         /* --------------------------------------------------------------------- */
@@ -400,7 +379,7 @@ namespace Cube.Forms
             _title.Margin = new System.Windows.Forms.Padding(0);
             _title.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
             _title.TextAlign = ContentAlignment.MiddleLeft;
-            _title.Styles.NormalStyle.BackColor = Color.White;
+            _title.Styles.NormalStyle.BackColor = SystemColors.Window;
             _title.Styles.NormalStyle.BorderSize = 0;
             _title.Styles.NormalStyle.ContentColor = Color.DimGray;
             _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Title));
@@ -413,7 +392,7 @@ namespace Cube.Forms
             _text.Margin = new System.Windows.Forms.Padding(0);
             _text.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
             _text.TextAlign = ContentAlignment.TopLeft;
-            _text.Styles.NormalStyle.BackColor = Color.White;
+            _text.Styles.NormalStyle.BackColor = SystemColors.Window;
             _text.Styles.NormalStyle.BorderSize = 0;
             _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Description));
 
@@ -421,7 +400,7 @@ namespace Cube.Forms
             _close.Content = string.Empty;
             _close.Dock = System.Windows.Forms.DockStyle.Fill;
             _close.Margin = new System.Windows.Forms.Padding(0);
-            _close.Styles.NormalStyle.BackColor = Color.White;
+            _close.Styles.NormalStyle.BackColor = SystemColors.Window;
             _close.Styles.NormalStyle.BorderSize = 0;
             _close.Styles.NormalStyle.Image = Properties.Resources.CloseButton;
             _close.Styles.MouseOverStyle.BackColor = Color.FromArgb(240, 240, 240);
@@ -450,7 +429,7 @@ namespace Cube.Forms
             BackColor     = SystemColors.Window;
             Size          = new Size(350, 80);
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            IsBusy          = false;
+            IsBusy        = false;
             Location      = new Point(0, 0);
             MaximizeBox   = false;
             MinimizeBox   = false;
@@ -464,7 +443,6 @@ namespace Cube.Forms
         }
 
         #region Fields
-        private bool _busy = false;
         private NotifyItem _value;
         private TableLayoutPanel _panel;
         private FlatButton _image;

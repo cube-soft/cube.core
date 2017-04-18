@@ -79,13 +79,13 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BusyChanged
+        /// Completed
         /// 
         /// <summary>
-        /// Busy 状態が変更された時に発生するイベントです。
+        /// 通知完了時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        event EventHandler BusyChanged;
+        event EventHandler Completed;
     }
 }
