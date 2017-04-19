@@ -148,25 +148,28 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private void RaiseDeviceChangeEvent(Message m)
-            => this.LogException(() =>
         {
-            const int DBT_DEVICEARRIVAL = 0x8000;
-            const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+            try
+            {
+                const int DBT_DEVICEARRIVAL = 0x8000;
+                const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
 
-            var action = m.WParam.ToInt32();
-            if (action != DBT_DEVICEARRIVAL && action != DBT_DEVICEREMOVECOMPLETE) return;
+                var action = m.WParam.ToInt32();
+                if (action != DBT_DEVICEARRIVAL && action != DBT_DEVICEREMOVECOMPLETE) return;
 
-            var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
-            if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
+                var checker = (DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_HDR));
+                if (checker.dbcv_devicetype != 0x0002 /* DBT_DEVTYP_VOLUME */) return;
 
-            var device = (DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_VOLUME));
-            var letter = ToDriveLetter(device.dbcv_unitmask);
-            var type = (DeviceType)device.dbcv_flags;
-            var args = new DeviceEventArgs(letter, type);
+                var device = (DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(DEV_BROADCAST_VOLUME));
+                var letter = ToDriveLetter(device.dbcv_unitmask);
+                var type = (DeviceType)device.dbcv_flags;
+                var args = new DeviceEventArgs(letter, type);
 
-            if (action == DBT_DEVICEARRIVAL) OnAttached(args);
-            else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
-        });
+                if (action == DBT_DEVICEARRIVAL) OnAttached(args);
+                else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
+            }
+            catch (Exception err) { this.LogWarn(err.ToString()); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///

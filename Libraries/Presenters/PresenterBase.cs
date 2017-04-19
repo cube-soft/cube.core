@@ -168,7 +168,10 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public void Sync(Action action)
-            => this.LogException(() => SynchronizationContext.Post(_ => action(), null));
+        {
+            try { SynchronizationContext.Post(_ => action(), null); }
+            catch (Exception err) { this.LogWarn(err.ToString()); }
+        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -185,7 +188,10 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
-            => this.LogException(() => SynchronizationContext.Send(_ => action(), null));
+        {
+            try { SynchronizationContext.Send(_ => action(), null); }
+            catch (Exception err) { this.LogWarn(err.ToString()); }
+        }
 
         /* --------------------------------------------------------------------- */
         ///
