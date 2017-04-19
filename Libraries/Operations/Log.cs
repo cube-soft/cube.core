@@ -48,6 +48,24 @@ namespace Cube.Log
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ObserveTaskException
+        ///
+        /// <summary>
+        /// UnobservedTaskException を監視し、取得した例外をログに
+        /// 出力します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public static void ObserveTaskException()
+        {
+            System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                Error(s.GetType(), e.Exception.ToString());
+            };
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Debug
         ///
         /// <summary>
