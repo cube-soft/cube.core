@@ -38,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class BorderlessForm : FormBase
+    public class BorderlessForm : FormBase, IBorderlessForm
     {
         #region Constructors
 
@@ -261,7 +261,7 @@ namespace Cube.Forms
 
         #region Implementations
 
-        #region Override methods
+        #region Overrides
 
         /* ----------------------------------------------------------------- */
         ///
@@ -443,7 +443,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Event handlers
+        #region Handlers
 
         /* ----------------------------------------------------------------- */
         ///
