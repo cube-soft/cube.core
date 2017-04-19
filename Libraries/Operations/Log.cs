@@ -223,21 +223,6 @@ namespace Cube.Log
         public static void LogFatal<T>(this T src, string message, Exception err)
             => src.Logger().Fatal(message, err);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogException
-        ///
-        /// <summary>
-        /// 実行時に例外が発生した場合、その例外をログに出力します。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        public static void LogException<T>(this T src, Action action)
-        {
-            try { action(); }
-            catch (Exception err) { src.Logger().Error(err.Message, err); }
-        }
-
         #endregion
 
         #region Others
