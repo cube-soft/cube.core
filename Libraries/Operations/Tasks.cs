@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading.Tasks;
+using Cube.Log;
 
 namespace Cube.Tasks
 {
@@ -33,12 +34,38 @@ namespace Cube.Tasks
     {
         /* --------------------------------------------------------------------- */
         ///
+        /// Forget
+        /// 
+        /// <summary>
+        /// 実行されたタスクを待たずに終了します。
+        /// </summary>
+        /// 
+        /// <param name="task">Task オブジェクト</param>
+        /// 
+        /// <remarks>
+        /// 例外発生時にログを出力します。
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        public static void Forget(this Task task)
+            => task.ContinueWith(x =>
+            {
+                x.LogWarn(x.Exception.ToString());
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Timeout
         /// 
         /// <summary>
         /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
+        /// <param name="task">Task オブジェクト</param>
+        /// <param name="timeout">タイムアウト時間</param>
+        /// 
+        /// <returns>Task オブジェクト</returns>
+        /// 
         /* --------------------------------------------------------------------- */
         public static async Task Timeout(this Task task, TimeSpan timeout)
         {
@@ -57,6 +84,11 @@ namespace Cube.Tasks
         /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
+        /// <param name="task">Task(T) オブジェクト</param>
+        /// <param name="timeout">タイムアウト時間</param>
+        /// 
+        /// <returns>Task(T) オブジェクト</returns>
+        /// 
         /* --------------------------------------------------------------------- */
         public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
         {
