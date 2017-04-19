@@ -21,7 +21,7 @@ using System.Timers;
 using System.Threading.Tasks;
 using System.Reflection;
 using Microsoft.Win32;
-using Cube.Log;
+using Cube.Tasks;
 
 namespace Cube.Settings
 {
@@ -439,7 +439,6 @@ namespace Cube.Settings
             Value.PropertyChanged += WhenChanged;
 
             _autosaver.AutoReset = false;
-            _autosaver.Interval  = AutoSaveDelay.TotalMilliseconds;
             _autosaver.Elapsed  += WhenElapsed;
         }
 
@@ -456,7 +455,11 @@ namespace Cube.Settings
         private void WhenChanged(object sener, PropertyChangedEventArgs e)
         {
             _autosaver.Stop();
-            if (AutoSave) _autosaver.Start();
+            if (AutoSave && AutoSaveDelay > TimeSpan.Zero)
+            {
+                _autosaver.Interval = AutoSaveDelay.TotalMilliseconds;
+                _autosaver.Start();
+            }
 
             PropertyChanged?.Invoke(this, e);
         }
@@ -470,9 +473,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private async void WhenElapsed(object sender, ElapsedEventArgs e)
-            => await Task.Run(()
-            => this.LogException(() => Save()));
+        private void WhenElapsed(object sender, ElapsedEventArgs e)
+            => Task.Run(() => Save()).Forget();
 
         #region Fields
         private bool _disposed = false;

@@ -151,16 +151,17 @@ namespace Cube.Tests
         public async Task AutoSave()
         {
             var count = 0;
+            var delay = TimeSpan.FromMilliseconds(100);
 
             var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest");
             settings.Saved += (s, e) => count++;
             settings.AutoSave = true;
+            settings.AutoSaveDelay = delay;
             settings.Value.Name = "AutoSave";
             settings.Value.Age  = 77;
             settings.Value.Sex  = Sex.Female;
 
-            // NOTE: 自動保存機能が実行されるのは最後の値変更から 100ms 後
-            await Task.Delay(TimeSpan.FromMilliseconds(200));
+            await Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2));
 
             using (var key = OpenSaveKey())
             {
