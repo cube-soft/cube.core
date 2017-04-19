@@ -78,11 +78,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With<T>(this Uri uri, string key, T value)
-        {
-            var query = new Dictionary<string, string>();
-            query.Add(key, value.ToString());
-            return With(uri, query);
-        }
+            => With(uri, new Dictionary<string, string> {{ key, value.ToString() }});
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,7 +102,7 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, DateTime time)
-            => With(uri, Properties.Resources.keyTime, time.ToUnixTime());
+            => With(uri, Properties.Resources.KeyTimestamp, time.ToUnixTime());
 
         /* ----------------------------------------------------------------- */
         ///

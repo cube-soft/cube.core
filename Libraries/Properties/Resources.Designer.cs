@@ -61,11 +61,11 @@ namespace Cube.Properties {
         }
         
         /// <summary>
-        ///   t に類似しているローカライズされた文字列を検索します。
+        ///   ts に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string keyTime {
+        internal static string KeyTimestamp {
             get {
-                return ResourceManager.GetString("keyTime", resourceCulture);
+                return ResourceManager.GetString("KeyTimestamp", resourceCulture);
             }
         }
         
