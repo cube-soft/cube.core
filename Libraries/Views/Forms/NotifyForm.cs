@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading.Tasks;
 using Cube.Log;
+using Cube.Tasks;
 
 namespace Cube.Forms
 {
@@ -235,7 +236,7 @@ namespace Cube.Forms
         {
             Value = item;
             SetStyle(style);
-            var _ = ShowAsync(item.DisplayTime, item.InitialDelay);
+            ShowAsync(item.DisplayTime, item.InitialDelay).Forget();
         }
 
         #endregion
