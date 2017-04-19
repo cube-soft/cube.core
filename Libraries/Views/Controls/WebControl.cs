@@ -199,12 +199,14 @@ namespace Cube.Forms
         /// <summary>
         /// URL で示されたコンテンツの表示を開始します。
         /// </summary>
+        /// 
+        /// <param name="uri">URL</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Start(Uri uri)
         {
-            Stop();
-            Url = uri;
+            if (IsBusy) Stop();
+            Navigate(uri);
         }
 
         /* ----------------------------------------------------------------- */
@@ -214,12 +216,31 @@ namespace Cube.Forms
         /// <summary>
         /// HTML で示されたコンテンツの表示を開始します。
         /// </summary>
+        /// 
+        /// <param name="html">HTML</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Start(string html)
         {
-            Stop();
+            if (IsBusy) Stop();
             DocumentText = html;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Start
+        /// 
+        /// <summary>
+        /// HTML で示されたコンテンツの表示を開始します。
+        /// </summary>
+        /// 
+        /// <param name="stream">HTML コンテンツを含むストリーム</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Start(System.IO.Stream stream)
+        {
+            if (IsBusy) Stop();
+            DocumentStream = stream;
         }
 
         #endregion
