@@ -60,7 +60,8 @@ namespace Cube.Log
         {
             System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                Error(s.GetType(), e.Exception.ToString());
+                var type = typeof(System.Threading.Tasks.TaskScheduler);
+                Error(type, e.Exception.ToString());
             };
         }
 
