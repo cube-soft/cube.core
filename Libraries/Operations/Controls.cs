@@ -43,6 +43,13 @@ namespace Cube.Forms.Controls
         /// 指定されたイベントに対して、イベントハンドラが設定されているか
         /// どうかを判別します。
         /// </summary>
+        /// 
+        /// <param name="control">判別するコントロール</param>
+        /// <param name="name">イベント名</param>
+        /// 
+        /// <returns>
+        /// イベントハンドラが設定されているかどうかを示す値
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public static bool HasEventHandler(this System.Windows.Forms.Control control, string name)
@@ -60,6 +67,12 @@ namespace Cube.Forms.Controls
         /// <summary>
         /// コントロール中のどの位置にいるのかヒットテストを行います。
         /// </summary>
+        /// 
+        /// <param name="control">コントロール</param>
+        /// <param name="point">コントロールを基準とした座標</param>
+        /// <param name="grip">グリップサイズ</param>
+        /// 
+        /// <returns>コントロール中の位置</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static Position HitTest(this System.Windows.Forms.Control control,
@@ -93,8 +106,12 @@ namespace Cube.Forms.Controls
         /// UpdateText
         /// 
         /// <summary>
-        /// フォームのタイトルを "message - ProductName" と言う表記で更新します。
+        /// フォームのタイトルを "message - ProductName" と言う表記で
+        /// 更新します。
         /// </summary>
+        /// 
+        /// <param name="form">フォーム</param>
+        /// <param name="message">タイトルに表示するメッセージ</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void UpdateText(this System.Windows.Forms.Form form, string message)
@@ -106,8 +123,13 @@ namespace Cube.Forms.Controls
         /// UpdateText
         /// 
         /// <summary>
-        /// フォームのタイトルを "message - ProductName" と言う表記で更新します。
+        /// フォームのタイトルを "message - ProductName" と言う表記で
+        /// 更新します。
         /// </summary>
+        ///
+        /// <param name="form">フォーム</param>
+        /// <param name="message">タイトルに表示するメッセージ</param>
+        /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void UpdateText(this System.Windows.Forms.Form form,
@@ -122,9 +144,27 @@ namespace Cube.Forms.Controls
             form.Text = ss.ToString();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BringToFront
+        /// 
+        /// <summary>
+        /// フォームを最前面に表示します。
+        /// </summary>
+        /// 
+        /// <param name="form">フォーム</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void BringToFront(this System.Windows.Forms.Form form)
+        {
+            var tmp = form.TopMost;
+            form.TopMost = true;
+            form.TopMost = tmp;
+        }
+
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///

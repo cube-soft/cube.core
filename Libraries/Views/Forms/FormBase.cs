@@ -409,10 +409,7 @@ namespace Cube.Forms
                 }
 
                 Activate();
-
-                var tmp = TopMost;
-                TopMost = true;
-                TopMost = tmp;
+                BringToFront();
             }
         }
 
