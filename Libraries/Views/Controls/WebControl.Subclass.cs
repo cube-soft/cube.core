@@ -169,7 +169,7 @@ namespace Cube.Forms
                 int type, string file, int context, out int result)
             {
                 Host.RaiseMessageShowing(text, caption, type, file, context, out result);
-                return (result != 0) ? 0 : 1;
+                return (result != -1) ? 0 : 1;
             }
 
             /* ------------------------------------------------------------- */

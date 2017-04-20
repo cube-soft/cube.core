@@ -451,7 +451,7 @@ namespace Cube.Forms
         {
             var e = new MessageEventArgs(text, caption, type, file, context);
             OnMessageShowing(e);
-            result = e.Handled ? e.Result : 0;
+            result = e.Handled ? e.Result : -1;
         }
 
         #region Fields
