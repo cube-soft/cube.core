@@ -211,7 +211,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event ValueEventHandler<object> Received;
+        public event ValueEventHandler<string[]> Received;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -222,7 +222,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(ValueEventArgs<object> e)
+        protected virtual void OnReceived(ValueEventArgs<string[]> e)
             => Received?.Invoke(this, e);
 
         #endregion
@@ -410,6 +410,7 @@ namespace Cube.Forms
 
                 Activate();
                 BringToFront();
+                OnReceived(ValueEventArgs.Create(args));
             }
         }
 
