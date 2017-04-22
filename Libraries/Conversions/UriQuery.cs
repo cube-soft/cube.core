@@ -151,5 +151,23 @@ namespace Cube.Conversions
             if (!string.IsNullOrEmpty(utm.Content)) query.Add("utm_content", utm.Content);
             return With(uri, query);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WithoutQuery
+        /// 
+        /// <summary>
+        /// クエリー部分を除去した Uri オブジェクトを取得します。
+        /// </summary>
+        ///
+        /// <param name="uri"><c>Uri</c> オブジェクト</param>
+        /// 
+        /// <returns>
+        /// クエリーが除去された <c>Uri</c> オブジェクト
+        /// </returns>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public static Uri WithoutQuery(this Uri uri)
+            => new Uri(uri.GetLeftPart(UriPartial.Path));
     }
 }
