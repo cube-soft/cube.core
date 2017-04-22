@@ -215,8 +215,6 @@ namespace Cube
                 _core.Interval = Interval.TotalMilliseconds;
             }
             _core.Start();
-
-            this.LogDebug($"Start\tInterval:{Interval}\tInitialDelay:{delay}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -231,11 +229,8 @@ namespace Cube
         public void Stop()
         {
             if (State == TimerState.Stop) return;
-
             if (_core.Enabled) _core.Stop();
             State = TimerState.Stop;
-
-            this.LogDebug($"Stop\tLastExecuted:{LastExecuted}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -349,7 +344,7 @@ namespace Cube
 
             _core.Stop();
             State = TimerState.Suspend;
-            this.LogDebug($"Suspend\tLastExecuted:{LastExecuted}");
+            this.LogDebug($"Suspend");
         }
 
         /* ----------------------------------------------------------------- */
@@ -365,16 +360,21 @@ namespace Cube
         {
             if (State != TimerState.Suspend) return;
 
-            var passed   = DateTime.Now - LastExecuted;
-            var interval = Interval > passed ?
-                           Interval - passed :
-                           TimeSpan.FromMilliseconds(1);
+            var passed = DateTime.Now - LastExecuted;
+            var time   = Interval > passed ?
+                         Interval - passed :
+                         TimeSpan.FromMilliseconds(1);
+
+            this.LogDebug(string.Format(
+                "Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
+                LastExecuted,
+                LastExecuted + time,
+                Interval
+            ));
 
             State = TimerState.Run;
-            _core.Interval = interval.TotalMilliseconds;
+            _core.Interval = time.TotalMilliseconds;
             _core.Start();
-
-            this.LogDebug($"Resume\tLastExecuted:{LastExecuted}\tInterval:{interval}");
         }
 
         #endregion
