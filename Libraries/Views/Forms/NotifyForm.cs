@@ -376,7 +376,7 @@ namespace Cube.Forms
             _title = new FlatButton();
             _title.Content = string.Empty;
             _title.Dock = System.Windows.Forms.DockStyle.Fill;
-            _title.Font = new Font(Font, FontStyle.Bold);
+            _title.Font = FontFactory.Create(12, FontStyle.Bold, GraphicsUnit.Pixel);
             _title.Margin = new System.Windows.Forms.Padding(0);
             _title.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
             _title.TextAlign = ContentAlignment.MiddleLeft;
