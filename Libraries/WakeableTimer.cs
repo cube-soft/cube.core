@@ -344,7 +344,7 @@ namespace Cube
 
             _core.Stop();
             State = TimerState.Suspend;
-            this.LogDebug($"Suspend");
+            this.LogDebug($"Suspend\tInterval:{Interval}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -360,17 +360,14 @@ namespace Cube
         {
             if (State != TimerState.Suspend) return;
 
-            var passed = DateTime.Now - LastExecuted;
-            var time   = Interval > passed ?
-                         Interval - passed :
-                         TimeSpan.FromMilliseconds(1);
+            var now  = DateTime.Now;
+            var pass = now - LastExecuted;
+            var time = Interval > pass ?
+                       Interval - pass :
+                       TimeSpan.FromMilliseconds(1);
 
-            this.LogDebug(string.Format(
-                "Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
-                LastExecuted,
-                LastExecuted + time,
-                Interval
-            ));
+            this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
+                LastExecuted, now + time, Interval));
 
             State = TimerState.Run;
             _core.Interval = time.TotalMilliseconds;
@@ -409,8 +406,6 @@ namespace Cube
                 default:
                     break;
             }
-
-            this.LogDebug($"PowerMode:{mode}\tState:{previous}->{State}");
         }
 
         #region Fields
