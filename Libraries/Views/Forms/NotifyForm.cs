@@ -19,6 +19,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading.Tasks;
+using Cube.Forms.Controls;
 using Cube.Log;
 using Cube.Tasks;
 
@@ -199,7 +200,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnCompleted(EventArgs e)
-            => Completed?.Invoke(this, e);
+        {
+            IsBusy = false;
+            Completed?.Invoke(this, e);
+        }
 
         #endregion
 
@@ -265,7 +269,7 @@ namespace Cube.Forms
         /// <summary>
         /// 指定時間フォームを表示します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
         private async Task ShowAsync(TimeSpan time, TimeSpan delay)
         {
@@ -280,11 +284,13 @@ namespace Cube.Forms
                 var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
                 SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
 
-                if (delay > TimeSpan.Zero) await Task.Delay(delay);
-                SetTopMost();
-                Show();
-                if (time > TimeSpan.Zero) await Task.Delay(time, source.Token);
-                Hide();
+                this.SetTopMost(false);
+                if (delay > TimeSpan.Zero) await Task.Delay(delay).ConfigureAwait(false);
+                if (InvokeRequired) Invoke((Action)(() => Show()));
+                else Show();
+                if (time > TimeSpan.Zero) await Task.Delay(time, source.Token).ConfigureAwait(false);
+                if (InvokeRequired) Invoke((Action)(() => Hide()));
+                else Hide();
             }
             catch (TaskCanceledException /* err */) { }
             catch (OperationCanceledException /* err */) { }
@@ -322,33 +328,6 @@ namespace Cube.Forms
                 _title.Styles.NormalStyle.BackColor =
                 _text.Styles.NormalStyle.BackColor  = style.BackColor;
             }
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// SetTopMost
-        /// 
-        /// <summary>
-        /// 最前面に表示するように設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void SetTopMost()
-        {
-            const uint SWP_NOSIZE         = 0x0001;
-            const uint SWP_NOMOVE         = 0x0002;
-            const uint SWP_NOACTIVATE     = 0x0010;
-            const uint SWP_NOSENDCHANGING = 0x0400;
-
-            User32.NativeMethods.SetWindowPos(
-                Handle,
-                (IntPtr)(-1), /* HWND_TOPMOST */
-                0,
-                0,
-                0,
-                0,
-                SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
-            );
         }
 
         /* --------------------------------------------------------------------- */
