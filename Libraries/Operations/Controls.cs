@@ -162,6 +162,46 @@ namespace Cube.Forms.Controls
             form.TopMost = tmp;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetTopMost
+        /// 
+        /// <summary>
+        /// フォームを最前面に表示します。
+        /// </summary>
+        /// 
+        /// <param name="form">フォーム</param>
+        /// <param name="active">アクティブ状態にするかどうか</param>
+        /// 
+        /// <remarks>
+        /// SetTopMost は主に、フォーカスを奪わずに最前面に表示する時に
+        /// 使用します。この場合、最前面に表示された状態でも TopMost
+        /// プロパティは false となります。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SetTopMost(this System.Windows.Forms.Form form, bool active)
+        {
+            if (active)
+            {
+                form.TopMost = true;
+                form.Activate();
+            }
+            else
+            {
+                const uint SWP_NOSIZE         = 0x0001;
+                const uint SWP_NOMOVE         = 0x0002;
+                const uint SWP_NOACTIVATE     = 0x0010;
+                const uint SWP_NOSENDCHANGING = 0x0400;
+
+                User32.NativeMethods.SetWindowPos(form.Handle,
+                    (IntPtr)(-1), /* HWND_TOPMOST */
+                    0, 0, 0, 0,
+                    SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
+                );
+            }
+        }
+
         #endregion
 
         #region Implementations
