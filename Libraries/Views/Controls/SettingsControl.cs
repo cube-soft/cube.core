@@ -18,9 +18,6 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Control = System.Windows.Forms.Control;
 
 namespace Cube.Forms
 {
@@ -29,7 +26,7 @@ namespace Cube.Forms
     /// SettingsControl
     /// 
     /// <summary>
-    /// 設定フォームを補助するためのコントロールクラスです。
+    /// 設定フォームを補助するためのコントロールです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -55,9 +52,16 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="ok">OK ボタン</param>
+        /// <param name="cancel">キャンセルボタン</param>
+        /// <param name="apply">適用ボタン</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsControl(Control ok, Control cancel, Control apply = null) : base()
+        public SettingsControl(
+            System.Windows.Forms.Control ok,
+            System.Windows.Forms.Control cancel,
+            System.Windows.Forms.Control apply = null) : base()
         {
             OKButton     = ok;
             CancelButton = cancel;
@@ -79,18 +83,18 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Control OKButton
+        public System.Windows.Forms.Control OKButton
         {
             get { return _ok; }
             set
             {
                 if (_ok == value) return;
-                if (_ok != null) _ok.Click -= OKButton_Click;
+                if (_ok != null) _ok.Click -= WhenOK;
                 _ok = value;
                 if (_ok != null)
                 {
-                    _ok.Click -= OKButton_Click;
-                    _ok.Click += OKButton_Click;
+                    _ok.Click -= WhenOK;
+                    _ok.Click += WhenOK;
                 }
             }
         }
@@ -106,18 +110,18 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Control ApplyButton
+        public System.Windows.Forms.Control ApplyButton
         {
             get { return _apply; }
             set
             {
                 if (_apply == value) return;
-                if (_apply != null) _apply.Click -= ApplyButton_Click;
+                if (_apply != null) _apply.Click -= WhenApply;
                 _apply = value;
                 if (_apply != null)
                 {
-                    _apply.Click -= ApplyButton_Click;
-                    _apply.Click += ApplyButton_Click;
+                    _apply.Click -= WhenApply;
+                    _apply.Click += WhenApply;
                 }
             }
         }
@@ -133,18 +137,18 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Control CancelButton
+        public System.Windows.Forms.Control CancelButton
         {
             get { return _cancel; }
             set
             {
                 if (_cancel == value) return;
-                if (_cancel != null) _cancel.Click -= CancelButton_Click;
+                if (_cancel != null) _cancel.Click -= WhenCancel;
                 _cancel = value;
                 if (_cancel != null)
                 {
-                    _cancel.Click -= CancelButton_Click;
-                    _cancel.Click += CancelButton_Click;
+                    _cancel.Click -= WhenCancel;
+                    _cancel.Click += WhenCancel;
                 }
             }
         }
@@ -160,7 +164,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnumerable<Control> MonitoredControls => _monitor;
+        public IEnumerable<System.Windows.Forms.Control> MonitoredControls => _controls;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -190,28 +194,11 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public bool UseCustomColors { get; set; } = true;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetName
-        ///
-        /// <summary>
-        /// Control オブジェクトから対応する Model の名前を返す関数を
-        /// 取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Func<Control, string, string> GetName { get; set; } = (control, prefix) =>
-        {
-            var dest = control.Name.Replace(control.GetType().Name, string.Empty);
-            if (string.IsNullOrEmpty(dest) || string.IsNullOrEmpty(prefix)) return dest;
-            return dest.Contains(prefix) ? dest.Replace(prefix, string.Empty) : string.Empty;
-        };
-
         #endregion
 
         #region Events
+
+        #region Apply
 
         /* ----------------------------------------------------------------- */
         ///
@@ -226,83 +213,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Cancel
-        ///
-        /// <summary>
-        /// キャンセルボタンが押下された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler Cancel;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        ///
-        /// <summary>
-        /// 各種コントロールの内容が変化した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<KeyValueEventArgs<string, object>> PropertyChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ControlUpdate
-        ///
-        /// <summary>
-        /// Update(object) メソッドを通じてコントロールの内容が更新された
-        /// 時に発生するイベントです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Cancel を true に設定した場合、SettingsControl 側で行われる
-        /// UpdateControl の処理をスキップします。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler<KeyValueCancelEventArgs<Control, object>> UpdateControl;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Update
-        ///
-        /// <summary>
-        /// 指定されたオブジェクトのプロパティ値を用いて各種コントロールの
-        /// 内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Update<T>(T model) => Update(model, string.Empty);
-        public void Update<T>(T model, string prefix)
-        {
-            var type = model.GetType();
-            var list = string.IsNullOrEmpty(prefix) ?
-                       MonitoredControls :
-                       MonitoredControls.Where(x => x.Name.Contains(prefix));
-
-            foreach (var control in list)
-            {
-                var name = GetName?.Invoke(control, prefix);
-                if (string.IsNullOrEmpty(name)) continue;
-
-                var value = type.GetProperty(name)?.GetValue(model, null);
-                if (value == null) continue;
-
-                RaiseUpdateControl(control, value);
-            }
-        }
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// OnApply
         ///
         /// <summary>
@@ -311,6 +221,21 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnApply(EventArgs e) => Apply?.Invoke(this, e);
+
+        #endregion
+
+        #region Cancel
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Cancel
+        ///
+        /// <summary>
+        /// キャンセルボタンが押下された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler Cancel;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -323,242 +248,41 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnCancel(EventArgs e) => Cancel?.Invoke(this, e);
 
+        #endregion
+
+        #region ControlChanged
+
         /* ----------------------------------------------------------------- */
         ///
-        /// OnPropertyChanged
+        /// ControlChanged
+        ///
+        /// <summary>
+        /// 監視中のコントロールの状態が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event EventHandler ControlChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnControlChanged
         ///
         /// <summary>
         /// PropertyChanged イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(KeyValueEventArgs<string, object> e)
-            => PropertyChanged?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnUpdateControl
-        ///
-        /// <summary>
-        /// Update(object) メソッドを通じてコントロールの内容が更新された
-        /// 時に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnUpdateControl(KeyValueCancelEventArgs<Control, object> e)
+        protected virtual void OnControlChanged(object control, EventArgs e)
         {
-            UpdateControl?.Invoke(this, e);
-            if (e.Cancel) return;
-
-            switch (e.Key.GetType().Name)
-            {
-                case nameof(ColorButton):
-                    UpdateColorButton(e.Key as ColorButton, e.Value as Color?);
-                    break;
-                case nameof(FontButton):
-                    UpdateFontButton(e.Key as FontButton, e.Value as Font);
-                    break;
-                case nameof(System.Windows.Forms.CheckBox):
-                    UpdateCheckBox(e.Key as System.Windows.Forms.CheckBox, e.Value as bool?);
-                    break;
-                case nameof(System.Windows.Forms.ComboBox):
-                    UpdateComboBox(e.Key as System.Windows.Forms.ComboBox, e.Value as int?);
-                    break;
-                case nameof(System.Windows.Forms.NumericUpDown):
-                    UpdateNumericUpDown(e.Key as System.Windows.Forms.NumericUpDown, e.Value as int?);
-                    break;
-                case nameof(System.Windows.Forms.RadioButton):
-                    UpdateRadioButton(e.Key as System.Windows.Forms.RadioButton, e.Value as bool?);
-                    break;
-                case nameof(System.Windows.Forms.TextBox):
-                    UpdateTextBox(e.Key as System.Windows.Forms.TextBox, e.Value as string);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        #region Event handlers
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CheckBoxChanged
-        ///
-        /// <summary>
-        /// チェックボックスの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には CheckBox.Checked が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void CheckBoxChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.CheckBox;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Checked);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ComboBoxChanged
-        ///
-        /// <summary>
-        /// コンボボックスの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には ComboBox.SelectedIndex が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void ComboBoxChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.ComboBox;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.SelectedIndex);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NumericUpDownChanged
-        ///
-        /// <summary>
-        /// NumericUpDown の状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には NumericUpDown.Value が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void NumericUpDownChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.NumericUpDown;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RadioButtonChanged
-        ///
-        /// <summary>
-        /// ラジオボタンの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には RadioButton.Checked が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void RadioButtonChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.RadioButton;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Checked);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TextBoxChanged
-        ///
-        /// <summary>
-        /// テキストボックスの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には TextBox.Text が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void TextBoxChanged(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.TextBox;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Text);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ColorButtonChanged
-        ///
-        /// <summary>
-        /// 色選択用ボタンの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には TextBox.BackColor が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void ColorButtonChanged(object sender, EventArgs e)
-        {
-            var control = sender as ColorButton;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.BackColor);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FontButtonChanged
-        ///
-        /// <summary>
-        /// フォント選択用ボタンの状態が変化した時に実行されるハンドラです。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// Value には TextBox.Font が設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void FontButtonChanged(object sender, EventArgs e)
-        {
-            var control = sender as FontButton;
-            if (control == null) return;
-            RaisePropertyChanged(control, control.Font);
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Non-virtual protected methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaisePropertyChanged
-        ///
-        /// <summary>
-        /// PropertyChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged(Control control, object value)
-        {
-            var name = GetName?.Invoke(control, string.Empty);
-            if (string.IsNullOrEmpty(name)) return;
-
-            OnPropertyChanged(KeyValueEventArgs.Create(name, value));
+            ControlChanged?.Invoke(control, e);
             if (ApplyButton != null) ApplyButton.Enabled = true;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseUpdateControl
-        ///
-        /// <summary>
-        /// UpdateControl イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaiseUpdateControl(Control control, object value)
-            => OnUpdateControl(KeyValueEventArgs.Create(control, value, false));
+        #endregion
 
         #endregion
 
-        #region Override methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -605,20 +329,16 @@ namespace Cube.Forms
             Detach(e.Control);
         }
 
-        #endregion
-
-        #region Private event handlers
-
         /* ----------------------------------------------------------------- */
         ///
-        /// OKButton_Click
+        /// WhenOK
         ///
         /// <summary>
-        /// OK ボタンが押下された時に実行されるハンドラです。
+        /// OK ボタンのクリック時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OKButton_Click(object sender, EventArgs e)
+        private void WhenOK(object sender, EventArgs e)
         {
             OnApply(e);
             FindForm()?.Close();
@@ -626,16 +346,16 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ApplyButton_Click
+        /// WhenApply
         ///
         /// <summary>
-        /// 適用ボタンが押下された時に実行されるハンドラです。
+        /// 適用ボタンのクリック時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ApplyButton_Click(object sender, EventArgs e)
+        private void WhenApply(object sender, EventArgs e)
         {
-            var control = sender as Control;
+            var control = sender as System.Windows.Forms.Control;
             if (control == null) return;
 
             OnApply(e);
@@ -644,14 +364,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CancelButton_Click
+        /// WhenCancel
         ///
         /// <summary>
-        /// キャンセルボタンが押下された時に実行されるハンドラです。
+        /// キャンセルボタンのクリック時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void WhenCancel(object sender, EventArgs e)
         {
             OnCancel(e);
             FindForm()?.Close();
@@ -659,143 +379,27 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Control_ControlAdded
+        /// WhenAdded
         ///
         /// <summary>
-        /// コントロールに子コントロールが追加された時に実行される
-        /// ハンドラです。
+        /// 子コントロールが追加された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Control_ControlAdded(object sender, System.Windows.Forms.ControlEventArgs e)
+        private void WhenAdded(object sender, System.Windows.Forms.ControlEventArgs e)
             => Attach(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Control_ControlRemoved
+        /// WhenRemoved
         ///
         /// <summary>
-        /// コントロールから子コントロールが削除された時に実行される
-        /// ハンドラです。
+        /// 子コントロールが削除された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Control_ControlRemoved(object sender, System.Windows.Forms.ControlEventArgs e)
+        private void WhenRemoved(object sender, System.Windows.Forms.ControlEventArgs e)
             => Detach(e.Control);
-
-        #endregion
-
-        #region Update control methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateColorButton
-        ///
-        /// <summary>
-        /// ColorButton の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateColorButton(ColorButton control, Color? value)
-        {
-            if (control == null || !value.HasValue) return;
-            control.BackColor = value.Value;
-            control.ForeColor = value.Value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateFontButton
-        ///
-        /// <summary>
-        /// FontButton の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateFontButton(FontButton control, Font value)
-        {
-            if (control == null || value == null) return;
-            control.Font = value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateCheckBox
-        ///
-        /// <summary>
-        /// CheckBox の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateCheckBox(System.Windows.Forms.CheckBox control, bool? value)
-        {
-            if (control == null || !value.HasValue) return;
-            control.Checked = value.Value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateComboBox
-        ///
-        /// <summary>
-        /// ComboBox の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateComboBox(System.Windows.Forms.ComboBox control, int? value)
-        {
-            if (control == null || !value.HasValue) return;
-            control.SelectedIndex = value.Value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateNumericUpDown
-        ///
-        /// <summary>
-        /// NumericUpDown の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateNumericUpDown(System.Windows.Forms.NumericUpDown control, int? value)
-        {
-            if (control == null || !value.HasValue) return;
-            control.Value = value.Value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateRadioButton
-        ///
-        /// <summary>
-        /// RadioButton の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateRadioButton(System.Windows.Forms.RadioButton control, bool? value)
-        {
-            if (control == null || !value.HasValue) return;
-            control.Checked = value.Value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateTextBox
-        ///
-        /// <summary>
-        /// TextBox の内容を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateTextBox(System.Windows.Forms.TextBox control, string value)
-        {
-            if (control == null || value == null) return;
-            control.Text = value;
-        }
-
-        #endregion
-
-        #region Attach and detach methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -807,56 +411,56 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Attach(Control control)
+        private void Attach(System.Windows.Forms.Control control)
         {
-            control.ControlAdded   -= Control_ControlAdded;
-            control.ControlAdded   += Control_ControlAdded;
-            control.ControlRemoved -= Control_ControlRemoved;
-            control.ControlRemoved += Control_ControlRemoved;
+            control.ControlAdded   -= WhenAdded;
+            control.ControlAdded   += WhenAdded;
+            control.ControlRemoved -= WhenRemoved;
+            control.ControlRemoved += WhenRemoved;
 
             switch (control.GetType().Name)
             {
                 case nameof(ColorButton):
                     var color = control as ColorButton;
-                    color.BackColorChanged -= ColorButtonChanged;
-                    color.BackColorChanged += ColorButtonChanged;
+                    color.BackColorChanged -= OnControlChanged;
+                    color.BackColorChanged += OnControlChanged;
                     if (UseCustomColors && CustomColors != null) color.CustomColors = CustomColors;
                     break;
                 case nameof(FontButton):
                     var font = control as FontButton;
-                    font.FontChanged -= FontButtonChanged;
-                    font.FontChanged += FontButtonChanged;
+                    font.FontChanged -= OnControlChanged;
+                    font.FontChanged += OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.CheckBox):
                     var check = control as System.Windows.Forms.CheckBox;
-                    check.CheckedChanged -= CheckBoxChanged;
-                    check.CheckedChanged += CheckBoxChanged;
+                    check.CheckedChanged -= OnControlChanged;
+                    check.CheckedChanged += OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.ComboBox):
                     var combo = control as System.Windows.Forms.ComboBox;
-                    combo.SelectedIndexChanged -= ComboBoxChanged;
-                    combo.SelectedIndexChanged += ComboBoxChanged;
+                    combo.SelectedIndexChanged -= OnControlChanged;
+                    combo.SelectedIndexChanged += OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.NumericUpDown):
                     var num = control as System.Windows.Forms.NumericUpDown;
-                    num.ValueChanged -= NumericUpDownChanged;
-                    num.ValueChanged += NumericUpDownChanged;
+                    num.ValueChanged -= OnControlChanged;
+                    num.ValueChanged += OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.RadioButton):
                     var radio = control as System.Windows.Forms.RadioButton;
-                    radio.CheckedChanged -= RadioButtonChanged;
-                    radio.CheckedChanged += RadioButtonChanged;
+                    radio.CheckedChanged -= OnControlChanged;
+                    radio.CheckedChanged += OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.TextBox):
                     var text = control as System.Windows.Forms.TextBox;
-                    text.TextChanged -= TextBoxChanged;
-                    text.TextChanged += TextBoxChanged;
+                    text.TextChanged -= OnControlChanged;
+                    text.TextChanged += OnControlChanged;
                     break;
                 default:
                     return;
             }
 
-            _monitor.Add(control);
+            _controls.Add(control);
         }
 
         /* ----------------------------------------------------------------- */
@@ -869,56 +473,56 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Detach(Control control)
+        private void Detach(System.Windows.Forms.Control control)
         {
-            _monitor.Remove(control);
+            _controls.Remove(control);
 
-            control.ControlAdded   -= Control_ControlAdded;
-            control.ControlRemoved -= Control_ControlRemoved;
+            control.ControlAdded   -= WhenAdded;
+            control.ControlRemoved -= WhenRemoved;
 
             switch (control.GetType().Name)
             {
                 case nameof(ColorButton):
                     var color = control as ColorButton;
-                    color.BackColorChanged -= ColorButtonChanged;
+                    color.BackColorChanged -= OnControlChanged;
                     if (CustomColors == color.CustomColors) color.CustomColors = null;
                     break;
                 case nameof(FontButton):
                     var font = control as FontButton;
-                    font.FontChanged -= FontButtonChanged;
+                    font.FontChanged -= OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.CheckBox):
                     var check = control as System.Windows.Forms.CheckBox;
-                    check.CheckedChanged -= CheckBoxChanged;
+                    check.CheckedChanged -= OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.ComboBox):
                     var combo = control as System.Windows.Forms.ComboBox;
-                    combo.SelectedIndexChanged -= ComboBoxChanged;
+                    combo.SelectedIndexChanged -= OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.NumericUpDown):
                     var num = control as System.Windows.Forms.NumericUpDown;
-                    num.ValueChanged -= NumericUpDownChanged;
+                    num.ValueChanged -= OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.RadioButton):
                     var radio = control as System.Windows.Forms.RadioButton;
-                    radio.CheckedChanged -= RadioButtonChanged;
+                    radio.CheckedChanged -= OnControlChanged;
                     break;
                 case nameof(System.Windows.Forms.TextBox):
                     var text = control as System.Windows.Forms.TextBox;
-                    text.TextChanged -= TextBoxChanged;
+                    text.TextChanged -= OnControlChanged;
                     break;
                 default:
                     break;
             }
         }
 
+        #region Fields
+        private System.Windows.Forms.Control _ok;
+        private System.Windows.Forms.Control _cancel;
+        private System.Windows.Forms.Control _apply;
+        private IList<System.Windows.Forms.Control> _controls = new List<System.Windows.Forms.Control>();
         #endregion
 
-        #region Fields
-        private Control _ok     = null;
-        private Control _cancel = null;
-        private Control _apply  = null;
-        private IList<Control> _monitor = new List<Control>();
         #endregion
     }
 }
