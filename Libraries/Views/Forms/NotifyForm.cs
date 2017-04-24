@@ -275,7 +275,7 @@ namespace Cube.Forms
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private new DialogResult ShowDialog() => base.ShowDialog();
+        private new System.Windows.Forms.DialogResult ShowDialog() => base.ShowDialog();
 
         /* ----------------------------------------------------------------- */
         ///
