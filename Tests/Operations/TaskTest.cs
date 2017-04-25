@@ -38,6 +38,26 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
+        /// Forget
+        ///
+        /// <summary>
+        /// Task の Fire&Forget をテストします。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 例外発生時にはログに出力されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Forget()
+        {
+            TaskEx.Run(() => throw new InvalidOperationException()).Forget();
+            Assert.Pass();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Timeout
         ///
         /// <summary>

@@ -192,7 +192,7 @@ namespace Cube.Settings
                 {
                     if (!string.IsNullOrEmpty(Command)) subkey.SetValue(Name, Command);
                 }
-                else subkey.DeleteValue(Name);
+                else subkey.DeleteValue(Name, false);
             }
         }
 

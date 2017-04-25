@@ -181,21 +181,5 @@ namespace Cube.Tests
                 this.LogFatal(err.Message, err);
             }
         });
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Log_Exception
-        ///
-        /// <summary>
-        /// LogException(Action) 拡張メソッドのテストを行います。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Log_Exception()
-            => Assert.DoesNotThrow(() => this.LogException(() =>
-        {
-            throw new ArgumentException("dummy exception");
-        }));
     }
 }

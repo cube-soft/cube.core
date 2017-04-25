@@ -41,7 +41,7 @@ namespace Cube.Tests
         /// With_Value
         /// 
         /// <summary>
-        /// 様々な型を With に指定した時のテストを行います。
+        /// 様々な型を指定した時のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,8 +66,8 @@ namespace Cube.Tests
         [TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
         public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
             => Assert.That(
-                Create().With(new System.DateTime(y, m, d, hh, mm, ss)).ToString(),
-                Is.EqualTo($"{Create()}?t={unix}")
+                Create().With(new DateTime(y, m, d, hh, mm, ss)).ToString(),
+                Is.EqualTo($"{Create()}?ts={unix}")
             );
 
         /* ----------------------------------------------------------------- */
@@ -75,7 +75,7 @@ namespace Cube.Tests
         /// With_MultiQuery
         /// 
         /// <summary>
-        /// 複数個のクエリーを With で結合した時のテストを行います。
+        /// 複数個のクエリーを結合するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -91,7 +91,7 @@ namespace Cube.Tests
         /// With_SoftwareVersion
         /// 
         /// <summary>
-        /// SoftwareVersion オブジェクトを With で結合した時のテストを行います。
+        /// SoftwareVersion オブジェクトを結合するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -112,7 +112,7 @@ namespace Cube.Tests
         /// With_Utm
         /// 
         /// <summary>
-        /// UTM クエリーを With で結合した時のテストを行います。
+        /// UTM クエリーを結合するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -129,6 +129,25 @@ namespace Cube.Tests
                 }).ToString(),
                 Is.EqualTo($"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content")
             );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WithoutQuery
+        /// 
+        /// <summary>
+        /// クエリーを除去するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("http://www.example.com/index.html?foo&bar=bas")]
+        [TestCase("http://www.example.net/")]
+        [TestCase("http://www.example.net")]
+        public void WithoutQuery(string url)
+        {
+            var src = new Uri(url);
+            var expected = new Uri($"{src.Scheme}://{src.Host}{src.AbsolutePath}");
+            Assert.That(src.WithoutQuery(), Is.EqualTo(expected));
+        }
 
         #endregion
 

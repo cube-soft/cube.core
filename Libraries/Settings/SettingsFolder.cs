@@ -21,7 +21,7 @@ using System.Timers;
 using System.Threading.Tasks;
 using System.Reflection;
 using Microsoft.Win32;
-using Cube.Log;
+using Cube.Tasks;
 
 namespace Cube.Settings
 {
@@ -181,11 +181,29 @@ namespace Cube.Settings
         /// AutoSave
         ///
         /// <summary>
-        /// ユーザ毎の設定を自動的に保存するかどうかを示す値を取得または設定します。
+        /// ユーザ毎の設定を自動的に保存するかどうかを示す値を取得または
+        /// 設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public bool AutoSave { get; set; } = false;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AutoSaveDelay
+        ///
+        /// <summary>
+        /// 自動的保存の実行遅延時間を取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// AutoSave モードの場合、短時間に大量の保存処理が実行される
+        /// 可能性があります。SettingsFolder では、直前のプロパティの
+        /// 変更から一定時間保存を保留する事で、これらの問題を回避します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TimeSpan AutoSaveDelay { get; set; } = TimeSpan.FromSeconds(1);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -224,6 +242,8 @@ namespace Cube.Settings
 
         #region Events
 
+        #region PropertyChanged
+
         /* ----------------------------------------------------------------- */
         ///
         /// PropertyChanged
@@ -252,6 +272,8 @@ namespace Cube.Settings
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
             => PropertyChanged?.Invoke(this, e);
 
+        #endregion
+
         #region Loaded
 
         /* ----------------------------------------------------------------- */
@@ -276,8 +298,8 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoaded(ValueChangedEventArgs<TValue> e)
         {
-            if (e.OldValue != null) e.OldValue.PropertyChanged -= Value_Changed;
-            if (e.NewValue != null) e.NewValue.PropertyChanged += Value_Changed;
+            if (e.OldValue != null) e.OldValue.PropertyChanged -= WhenChanged;
+            if (e.NewValue != null) e.NewValue.PropertyChanged += WhenChanged;
 
             Value = e.NewValue;
             Startup.Load();
@@ -397,8 +419,6 @@ namespace Cube.Settings
 
         #region Implementations
 
-        #region Initialize methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// Initialize
@@ -416,20 +436,15 @@ namespace Cube.Settings
             Version  = new SoftwareVersion(Assembly);
             Value    = new TValue();
 
-            Value.PropertyChanged += Value_Changed;
+            Value.PropertyChanged += WhenChanged;
 
             _autosaver.AutoReset = false;
-            _autosaver.Interval  = 100;
-            _autosaver.Elapsed  += AutoSaver_Elapsed;
+            _autosaver.Elapsed  += WhenElapsed;
         }
-
-        #endregion
-
-        #region Event handlers
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Value_Changed
+        /// WhenChanged
         ///
         /// <summary>
         /// Value.PropertyChanged イベントが発生した時に実行される
@@ -437,28 +452,29 @@ namespace Cube.Settings
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        private void Value_Changed(object sener, PropertyChangedEventArgs e)
+        private void WhenChanged(object sener, PropertyChangedEventArgs e)
         {
             _autosaver.Stop();
-            if (AutoSave) _autosaver.Start();
+            if (AutoSave && AutoSaveDelay > TimeSpan.Zero)
+            {
+                _autosaver.Interval = AutoSaveDelay.TotalMilliseconds;
+                _autosaver.Start();
+            }
 
             PropertyChanged?.Invoke(this, e);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AutoSaver_Elapsed
+        /// WhenElapsed
         ///
         /// <summary>
         /// Start() 実行後、一度だけ実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private async void AutoSaver_Elapsed(object sender, ElapsedEventArgs e)
-            => await TaskEx.Run(()
-            => this.LogException(() => Save()));
-
-        #endregion
+        private void WhenElapsed(object sender, ElapsedEventArgs e)
+            => TaskEx.Run(() => Save()).Forget();
 
         #region Fields
         private bool _disposed = false;
