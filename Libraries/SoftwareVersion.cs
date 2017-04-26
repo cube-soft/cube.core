@@ -147,8 +147,10 @@ namespace Cube
         /// バージョンを表す文字列を取得します。
         /// </summary>
         ///
+        /// <returns>バージョンを表す文字列</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public override string ToString() => ToString(true);
+        public override string ToString() => ToString(false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -157,6 +159,12 @@ namespace Cube
         /// <summary>
         /// バージョンを表す文字列を取得します。
         /// </summary>
+        /// 
+        /// <param name="platform">
+        /// Platform を付与するかどうかを示す値
+        /// </param>
+        /// 
+        /// <returns>バージョンを表す文字列</returns>
         ///
         /* ----------------------------------------------------------------- */
         public string ToString(bool platform)

@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
-using Cube.Conversions;
 
 namespace Cube.Settings
 {
@@ -222,22 +221,31 @@ namespace Cube.Settings
         {
             try
             {
-                var name = GetDataMemberName(info);
-                if (name == null) return;
-
+                var name  = GetDataMemberName(info);
                 var value = info.GetValue(src, null);
-                var code  = Type.GetTypeCode(info.PropertyType);
+                if (name == null || value == null) return;
 
                 if (info.PropertyType.IsEnum) root.SetValue(name, (int)value);
-                else if (code == TypeCode.Boolean) root.SetValue(name, ((bool)value) ? 1 : 0);
-                else if (code == TypeCode.DateTime) root.SetValue(name, ((int)((DateTime)value).ToUnixTime()));
-                else if (code != TypeCode.Object) root.SetValue(name, value);
-                else using (var subkey = root.CreateSubKey(name))
+                else switch (Type.GetTypeCode(info.PropertyType))
                 {
-                    SaveRegistry(value, info.PropertyType, subkey);
+                    case TypeCode.Boolean:
+                        root.SetValue(name, ((bool)value) ? 1 : 0);
+                        break;
+                    case TypeCode.DateTime:
+                        root.SetValue(name, (((DateTime)value).ToUniversalTime().ToString()));
+                        break;
+                    case TypeCode.Object:
+                        using (var subkey = root.CreateSubKey(name))
+                        {
+                            SaveRegistry(value, info.PropertyType, subkey);
+                        }
+                        break;
+                    default:
+                        root.SetValue(name, value);
+                        break;
                 }
             }
-            catch (Exception err) { Cube.Log.Operations.Error(typeof(Operations), err.Message, err); }
+            catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -309,11 +317,16 @@ namespace Cube.Settings
             try
             {
                 if (value == null) return null;
-                else if (type.IsEnum) return (int)value;
-                else if (Type.GetTypeCode(type) == TypeCode.DateTime) return ((int)value).ToLocalTime();
-                else return System.Convert.ChangeType(value, type);
+                if (type.IsEnum) return (int)value;
+                else switch(Type.GetTypeCode(type))
+                {
+                    case TypeCode.DateTime:
+                        return DateTime.Parse(value as string).ToLocalTime();
+                    default:
+                        return System.Convert.ChangeType(value, type);
+                }
             }
-            catch (Exception err) { Cube.Log.Operations.Error(typeof(Operations), err.Message, err); }
+            catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
 
             return null;
         }

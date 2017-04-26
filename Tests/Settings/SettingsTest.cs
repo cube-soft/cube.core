@@ -102,7 +102,7 @@ namespace Cube.Tests
                 Assert.That(key.GetValue("Age"),      Is.EqualTo(15));
                 Assert.That(key.GetValue("Sex"),      Is.EqualTo(1));
                 Assert.That(key.GetValue("Reserved"), Is.EqualTo(1));
-                Assert.That(key.GetValue("Creation"), Is.EqualTo(1420035930));
+                Assert.That(key.GetValue("Creation"), Is.EqualTo("2014/12/31 14:25:30"));
                 Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(key.GetValue("Secret"),   Is.Null);
 
@@ -235,7 +235,7 @@ namespace Cube.Tests
                 key.SetValue("Name", "佐藤栄作");
                 key.SetValue("Sex", 0);
                 key.SetValue("Age", 52);
-                key.SetValue("Creation", 0x550640ba);
+                key.SetValue("Creation", "2015/03/16 02:32:26");
                 key.SetValue("Reserved", 1);
 
                 using (var subkey = key.CreateSubKey("Phone"))
