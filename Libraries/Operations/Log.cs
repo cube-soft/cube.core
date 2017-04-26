@@ -106,10 +106,10 @@ namespace Cube.Log
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Assembly assembly)
         {
-            var reader = new AssemblyReader(assembly);
-            var proc   = (IntPtr.Size == 4) ? "x86" : "x64";
+            var asm = new AssemblyReader(assembly);
+            var pf  = (IntPtr.Size == 4) ? "x86" : "x64";
 
-            Info(type, $"{reader.Product} {reader.Version} ({proc})");
+            Info(type, $"{asm.Product} {asm.Version} ({pf})");
             Info(type, $"{Environment.OSVersion}");
             Info(type, $"Microsoft .NET Framework {Environment.Version}");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
