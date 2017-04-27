@@ -340,7 +340,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void WhenOK(object sender, EventArgs e)
         {
-            OnApply(e);
+            if (ApplyButton == null || ApplyButton.Enabled) OnApply(e);
             FindForm()?.Close();
         }
 
