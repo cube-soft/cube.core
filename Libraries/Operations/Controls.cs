@@ -160,6 +160,7 @@ namespace Cube.Forms.Controls
             var tmp = form.TopMost;
             form.TopMost = true;
             form.TopMost = tmp;
+            form.Activate();
         }
 
         /* ----------------------------------------------------------------- */
