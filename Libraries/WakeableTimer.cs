@@ -94,7 +94,16 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TimeSpan Interval { get; set; }
+        public TimeSpan Interval
+        {
+            get { return _interval; }
+            set
+            {
+                if (_interval == value) return;
+                _interval = value;
+                Reset();
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,6 +115,21 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public DateTime LastExecuted { get; private set; } = DateTime.MinValue;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Next
+        /// 
+        /// <summary>
+        /// 次回の実行予定日時を取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 主にスリープモード復帰時に利用します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected DateTime Next { get; set; } = DateTime.Now;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -208,12 +232,12 @@ namespace Cube
             if (State != TimerState.Stop) return;
 
             State = TimerState.Run;
-            if (delay > TimeSpan.Zero) _core.Interval = delay.TotalMilliseconds;
-            else
-            {
-                Publish();
-                _core.Interval = Interval.TotalMilliseconds;
-            }
+
+            var time = delay > TimeSpan.Zero ? delay : Interval;
+            Next = DateTime.Now + time;
+            _core.Interval = time.TotalMilliseconds;
+
+            if (delay <= TimeSpan.Zero) Publish();
             _core.Start();
         }
 
@@ -258,6 +282,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public virtual void Reset()
         {
+            Next = DateTime.Now + Interval;
             _core.Interval = Interval.TotalMilliseconds;
         }
 
@@ -324,8 +349,13 @@ namespace Cube
         protected virtual void Publish()
         {
             LastExecuted = DateTime.Now;
-            var delta = Math.Abs(_core.Interval - Interval.TotalMilliseconds);
-            if (delta > 1.0) _core.Interval = Interval.TotalMilliseconds;
+
+            var ms    = Interval.TotalMilliseconds;
+            var delta = Math.Abs(_core.Interval - ms);
+            if (delta > 1.0) _core.Interval = ms;
+
+            Next = LastExecuted + TimeSpan.FromMilliseconds(_core.Interval);
+
             foreach (var action in Subscriptions) action();
         }
 
@@ -361,15 +391,14 @@ namespace Cube
             if (State != TimerState.Suspend) return;
 
             var now  = DateTime.Now;
-            var pass = now - LastExecuted;
-            var time = Interval > pass ?
-                       Interval - pass :
-                       TimeSpan.FromMilliseconds(1);
-
-            this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
-                LastExecuted, now + time, Interval));
+            var time = now < Next ? Next - now : TimeSpan.FromMilliseconds(1);
 
             State = TimerState.Run;
+            Next  = now + time;
+
+            this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
+                LastExecuted, Next, Interval));
+
             _core.Interval = time.TotalMilliseconds;
             _core.Start();
         }
@@ -410,6 +439,7 @@ namespace Cube
 
         #region Fields
         private bool _disposed = false;
+        private TimeSpan _interval;
         private System.Timers.Timer _core = new System.Timers.Timer();
         #endregion
 

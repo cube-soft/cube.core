@@ -20,6 +20,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Threading;
+using Cube.Log;
 
 namespace Cube.Processes
 {
@@ -395,14 +396,15 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public MessengerClient(string id)
         {
-            var address = new Uri($"net.pipe://localhost/{id}");
+            var uri     = new Uri($"net.pipe://localhost/{id}");
+            var address = new EndpointAddress(uri);
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
 
             _callback = new MessengerServiceCallback<TValue>();
-            _context = new InstanceContext(_callback);
-            _service  = DuplexChannelFactory<IMessengerService>
-                        .CreateChannel(_context, binding, new EndpointAddress(address));
-            _service.Connect();
+            _context  = new InstanceContext(_callback);
+            _factory  = new DuplexChannelFactory<IMessengerService>(_callback, binding, address);
+
+            Recreate();
         }
 
         #endregion
@@ -420,6 +422,9 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public void Publish(TValue value)
         {
+            var channel = _service as IClientChannel;
+            if (channel.State != CommunicationState.Opened) Recreate();
+
             using (var ms = new MemoryStream())
             {
                 var json = new DataContractSerializer(typeof(TValue));
@@ -506,8 +511,10 @@ namespace Cube.Processes
 
             if (disposing)
             {
-                _service?.Disconnect();
+                (_service as IClientChannel)?.Abort();
+                _service = null;
                 _context?.Abort();
+                _factory?.Abort();
             }
 
             _disposed = true;
@@ -517,11 +524,59 @@ namespace Cube.Processes
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenRecreate
+        ///
+        /// <summary>
+        /// チャンネル再生成時に実行されるハンドラです。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void WhenRecreate(object s, EventArgs e) => Recreate();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Recreate
+        ///
+        /// <summary>
+        /// チャンネルを再生成します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void Recreate()
+        {
+            try
+            {
+                if (_service != null)
+                {
+                    var ch0 = _service as IClientChannel;
+                    ch0.Faulted -= WhenRecreate;
+                    ch0.Closed  -= WhenRecreate;
+                    ch0.Abort();
+                }
+
+                _service = _factory.CreateChannel();
+
+                var ch1 = _service as IClientChannel;
+                ch1.Faulted += WhenRecreate;
+                ch1.Closed  += WhenRecreate;
+
+                _service.Connect();
+            }
+            catch (Exception err) { this.LogWarn(err.ToString()); }
+        }
+
         #region Fields
         private bool _disposed = false;
+        private ChannelFactory<IMessengerService> _factory;
         private IMessengerService _service;
         private InstanceContext _context;
         private MessengerServiceCallback<TValue> _callback;
+        #endregion
+
         #endregion
     }
 }

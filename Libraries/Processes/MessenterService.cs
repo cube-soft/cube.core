@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Cube.Log;
 
 namespace Cube.Processes
 {
@@ -45,18 +46,6 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         [OperationContract(IsOneWay = true)]
         void Connect();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Disconnect
-        ///
-        /// <summary>
-        /// サーバとの接続を解除します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OperationContract(IsOneWay = true)]
-        void Disconnect();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -113,24 +102,9 @@ namespace Cube.Processes
         public void Connect()
         {
             var channel = OperationContext.Current.GetCallbackChannel<IMessengerServiceCallback>();
-            if (channel == null || _clients.Contains(channel)) return;
-            _clients.Add(channel);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Disconnect
-        ///
-        /// <summary>
-        /// 接続を解除します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Disconnect()
-        {
-            var channel = OperationContext.Current.GetCallbackChannel<IMessengerServiceCallback>();
             if (channel == null) return;
             _clients.Remove(channel);
+            _clients.Add(channel);
         }
 
         /* ----------------------------------------------------------------- */
@@ -164,7 +138,8 @@ namespace Cube.Processes
             {
                 try { x.SendCallback(bytes); }
                 catch (CommunicationObjectAbortedException /* err */) { aborts.Add(x); }
-                catch (Exception err) { System.Diagnostics.Trace.WriteLine(err.ToString()); }
+                catch (CommunicationObjectFaultedException /* err */) { aborts.Add(x); }
+                catch (Exception err) { this.LogWarn(err.ToString()); }
             }
 
             foreach (var c in aborts) _clients.Remove(c);
