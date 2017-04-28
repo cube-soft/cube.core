@@ -65,9 +65,9 @@
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="Models\WindowTheme.cs" />
-    <Compile Include="NativeMethods\Gdi32.cs" />
     <Compile Include="NativeMethods\Structures\MinMaxInfo.cs" />
     <Compile Include="NativeMethods\Structures\Point.cs" />
+    <Compile Include="NativeMethods\Gdi32.cs" />
     <Compile Include="NativeMethods\UrlMon.cs" />
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="NativeMethods\UxTheme.cs" />
