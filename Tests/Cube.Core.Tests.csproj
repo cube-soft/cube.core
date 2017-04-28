@@ -68,7 +68,6 @@
     <Compile Include="Events\ValueEventArgsTest.cs" />
     <Compile Include="FileSystem\DriveTest.cs" />
     <Compile Include="FileSystem\FileHandlerTest.cs" />
-    <Compile Include="MessengerTest.cs" />
     <Compile Include="Operations\CollectionsTest.cs" />
     <Compile Include="Operations\FileInfoTest.cs" />
     <Compile Include="Operations\GenericsTest.cs" />
@@ -79,6 +78,7 @@
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
+    <Compile Include="MessengerTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
