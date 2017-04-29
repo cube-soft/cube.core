@@ -318,6 +318,22 @@ namespace Cube.Forms
             );
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DoShortcutKeys
+        /// 
+        /// <summary>
+        /// ショートカットキーを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool DoShortcutKeys(System.Windows.Forms.Keys keys)
+        {
+            if (!ShortcutKeys.ContainsKey(keys)) return false;
+            ShortcutKeys[keys]();
+            return true;
+        }
+
         #endregion
 
         #region Implementations
