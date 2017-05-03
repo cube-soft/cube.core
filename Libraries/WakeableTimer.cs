@@ -391,7 +391,7 @@ namespace Cube
             if (State != TimerState.Suspend) return;
 
             var now  = DateTime.Now;
-            var time = now < Next ? Next - now : TimeSpan.FromMilliseconds(1);
+            var time = now < Next ? Next - now : TimeSpan.FromSeconds(1);
 
             State = TimerState.Run;
             Next  = now + time;
