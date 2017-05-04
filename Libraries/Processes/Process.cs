@@ -48,10 +48,14 @@ namespace Cube.Processes
         /// <param name="arguments">プログラムの引数</param>
         /// 
         /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        /// 
+        /// <remarks>
+        /// アクティブユーザが複数存在する場合、操作は失敗します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string program, string[] arguments)
-            => StartAsActiveUser(string.Empty, program, arguments);
+            => StartAs(string.Empty, program, arguments);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -59,6 +63,26 @@ namespace Cube.Processes
         ///
         /// <summary>
         /// アクティブユーザ権限でプログラムを実行します。
+        /// </summary>
+        /// 
+        /// <param name="cmdline">実行するコマンドライン</param>
+        /// 
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        ///
+        /// <remarks>
+        /// アクティブユーザが複数存在する場合、操作は失敗します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static System.Diagnostics.Process StartAsActiveUser(string cmdline)
+            => StartAs(string.Empty, cmdline);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StartAs
+        ///
+        /// <summary>
+        /// 指定されたユーザでプログラムを実行します。
         /// </summary>
         /// 
         /// <param name="username">ユーザ名</param>
@@ -66,34 +90,22 @@ namespace Cube.Processes
         /// <param name="arguments">プログラムの引数</param>
         /// 
         /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        /// 
+        /// <remarks>
+        /// 指定されたユーザがアクティブである必要があります。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static System.Diagnostics.Process StartAsActiveUser(
+        public static System.Diagnostics.Process StartAs(
             string username, string program, string[] arguments)
-            => StartAsActiveUser(username, CreateCmdLine(program, arguments));
+            => StartAs(username, CreateCmdLine(program, arguments));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StartAsActiveUser
+        /// StartAs
         ///
         /// <summary>
-        /// アクティブユーザ権限でプログラムを実行します。
-        /// </summary>
-        /// 
-        /// <param name="cmdline">実行するコマンドライン</param>
-        /// 
-        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static System.Diagnostics.Process StartAsActiveUser(string cmdline)
-            => StartAsActiveUser(string.Empty, cmdline);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// StartAsActiveUser
-        ///
-        /// <summary>
-        /// アクティブユーザ権限でプログラムを実行します。
+        /// 指定されたユーザでプログラムを実行します。
         /// </summary>
         /// 
         /// <param name="username">ユーザ名</param>
@@ -101,8 +113,12 @@ namespace Cube.Processes
         /// 
         /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
         ///
+        /// <remarks>
+        /// 指定されたユーザがアクティブである必要があります。
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        public static System.Diagnostics.Process StartAsActiveUser(string username, string cmdline)
+        public static System.Diagnostics.Process StartAs(string username, string cmdline)
             => StartAs(GetActiveSessionToken(username), cmdline);
 
         /* ----------------------------------------------------------------- */
@@ -126,7 +142,7 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StartAsActiveUser
+        /// StartAs
         ///
         /// <summary>
         /// 指定されたトークンの権限でプログラムを実行します。
