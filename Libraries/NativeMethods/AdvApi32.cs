@@ -58,6 +58,22 @@ namespace Cube.AdvApi32
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OpenProcessToken
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa379295.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool OpenProcessToken(
+            IntPtr ProcessHandle,
+            uint DesiredAccess,
+            out IntPtr TokenHandle
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// DuplicateTokenEx
         /// 
         /// <summary>

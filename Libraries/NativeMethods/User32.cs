@@ -58,6 +58,30 @@ namespace Cube.User32
         [DllImport(LibName)]
         public static extern bool IsIconic(IntPtr hWnd);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetShellWindow
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633512.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName)]
+        public static extern IntPtr GetShellWindow();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetWindowThreadProcessId
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633512.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
         #region Fields
         const string LibName = "user32.dll";
         #endregion

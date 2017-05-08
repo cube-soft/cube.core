@@ -41,8 +41,31 @@ namespace Cube.Kernel32
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
-            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+        public static extern IntPtr CreateFile(
+            string lpFileName,
+            uint dwDesiredAccess,
+            uint dwShareMode,
+            IntPtr lpSecurityAttributes,
+            uint dwCreationDisposition,
+            uint dwFlagsAndAttributes,
+            IntPtr hTemplateFile
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OpenProcess
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684320.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern IntPtr OpenProcess(
+            uint dwDesiredAccess,
+            bool bInheritHandle,
+            uint dwProcessId
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,9 +101,16 @@ namespace Cube.Kernel32
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
-            IntPtr lpInBuffer, uint nInBufferSize,
-            IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
+        public static extern bool DeviceIoControl(
+            IntPtr hDevice,
+            uint dwIoControlCode,
+            IntPtr lpInBuffer,
+            uint nInBufferSize,
+            IntPtr lpOutBuffer,
+            uint nOutBufferSize,
+            out uint lpBytesReturned,
+            IntPtr lpOverlapped
+        );
 
         #region Fields
         const string LibName = "kernel32.dll";

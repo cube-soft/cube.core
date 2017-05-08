@@ -55,7 +55,7 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string program, string[] arguments)
-            => StartAs(string.Empty, program, arguments);
+            => StartAsActiveUser(CreateCmdLine(program, arguments));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -75,7 +75,7 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string cmdline)
-            => StartAs(string.Empty, cmdline);
+            => StartAs(GetShellWindowToken(), cmdline);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -308,6 +308,44 @@ namespace Cube.Processes
             if (!WtsApi32.NativeMethods.WTSQueryUserToken(id, out token)) Win32Error("WTSQueryUserToken");
             try { return GetPrimaryToken(token, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation); }
             finally { CloseHandle(token); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetShellWindowToken
+        ///
+        /// <summary>
+        /// シェルウィンドウに対応するトークンを取得します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static IntPtr GetShellWindowToken()
+        {
+            var hwnd = User32.NativeMethods.GetShellWindow();
+            if (hwnd == IntPtr.Zero) Win32Error("GetShellWindow");
+
+            var pid = 0u;
+            User32.NativeMethods.GetWindowThreadProcessId(hwnd, out pid);
+
+            var token = IntPtr.Zero;
+            var hproc = Kernel32.NativeMethods.OpenProcess(0x2000000 /* MAXIMUM_ALLOWED */, false, pid);
+            if (hproc == IntPtr.Zero) Win32Error("OpenProcess");
+
+            try
+            {
+                if (!AdvApi32.NativeMethods.OpenProcessToken(
+                    hproc,
+                    0xf00ff /* TOKEN_ALL_ACCESS */,
+                    out token
+                )) Win32Error("OpenProcessToken");
+
+                return GetPrimaryToken(token, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
+            }
+            finally
+            {
+                CloseHandle(hproc);
+                CloseHandle(token);
+            }
         }
 
         /* ----------------------------------------------------------------- */
