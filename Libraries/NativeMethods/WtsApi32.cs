@@ -51,6 +51,20 @@ namespace Cube.WtsApi32
 
         /* ----------------------------------------------------------------- */
         ///
+        /// WTSQuerySessionInformation
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383838.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool WTSQuerySessionInformation(
+            IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass,
+            out IntPtr ppBuffer, out uint pBytesReturned);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// WTSQueryUserToken
         /// 
         /// <summary>
