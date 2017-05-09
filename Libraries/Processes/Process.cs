@@ -249,9 +249,14 @@ namespace Cube.Processes
                     );
 
                     if (info.State == WTS_CONNECTSTATE_CLASS.WTSActive) sessions.Add(info);
+
+                    Cube.Log.Operations.Debug(typeof(Process),
+                        string.Format("SessionID:{0}\tState:{1}\tName:{2}",
+                        info.SessionID, info.State, info.pWinStationName
+                    ));
                 }
 
-                if (sessions.Count <= 0) throw new ArgumentException("Active session not found");
+                if (sessions.Count <= 0) throw new ArgumentException("Session not found");
                 else if (sessions.Count == 1) return sessions[0].SessionID;
                 else return sessions.Select(x => x.SessionID).First(x => GetUserName(x) == username);
             }
