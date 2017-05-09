@@ -20,6 +20,15 @@ using System.Runtime.InteropServices;
 
 namespace Cube.User32
 {
+    /* --------------------------------------------------------------------- */
+    ///
+    /// User32.NativeMethods
+    /// 
+    /// <summary>
+    /// user32.dll に定義された関数を宣言するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
     internal static class NativeMethods
     {
         /* ----------------------------------------------------------------- */
@@ -57,30 +66,6 @@ namespace Cube.User32
         /* ----------------------------------------------------------------- */
         [DllImport(LibName)]
         public static extern bool IsIconic(IntPtr hWnd);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetShellWindow
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633512.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern IntPtr GetShellWindow();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetWindowThreadProcessId
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633512.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         #region Fields
         const string LibName = "user32.dll";

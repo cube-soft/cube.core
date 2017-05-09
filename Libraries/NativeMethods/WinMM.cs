@@ -42,8 +42,12 @@ namespace Cube.WinMM
         /// 
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern Int32 mciSendString(string command, StringBuilder buffer,
-            int bufferSize, IntPtr hwndCallback);
+        public static extern Int32 mciSendString(
+            string command,
+            StringBuilder buffer,
+            int bufferSize,
+            IntPtr hwndCallback
+        );
 
         #region Fields
         const string LibName = "winmm.dll";

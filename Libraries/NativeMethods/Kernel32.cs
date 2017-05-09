@@ -53,31 +53,19 @@ namespace Cube.Kernel32
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OpenProcess
+        /// OpenThread
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684320.aspx
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684335.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern IntPtr OpenProcess(
+        public static extern IntPtr OpenThread(
             uint dwDesiredAccess,
             bool bInheritHandle,
-            uint dwProcessId
+            uint dwThreadId
         );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WTSGetActiveConsoleSessionId
-        /// 
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383835.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = false)]
-        public static extern uint WTSGetActiveConsoleSessionId();
 
         /* ----------------------------------------------------------------- */
         ///
