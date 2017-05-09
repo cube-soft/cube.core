@@ -75,7 +75,7 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string cmdline)
-            => StartAs(GetShellWindowToken(), cmdline);
+            => StartAs(string.Empty, cmdline);
 
         /* ----------------------------------------------------------------- */
         ///

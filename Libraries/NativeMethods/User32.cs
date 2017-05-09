@@ -67,7 +67,7 @@ namespace Cube.User32
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
+        [DllImport(LibName, SetLastError = true)]
         public static extern IntPtr GetShellWindow();
 
         /* ----------------------------------------------------------------- */
