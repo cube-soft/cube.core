@@ -58,6 +58,23 @@ namespace Cube.AdvApi32
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OpenThreadToken
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa379296.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool OpenThreadToken(
+            IntPtr ThreadHandle,
+            uint DesiredAccess,
+            bool OpenAsSelf,
+            ref IntPtr TokenHandle
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// DuplicateTokenEx
         /// 
         /// <summary>

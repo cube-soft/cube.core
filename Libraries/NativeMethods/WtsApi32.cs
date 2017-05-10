@@ -60,8 +60,12 @@ namespace Cube.WtsApi32
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
         public static extern bool WTSQuerySessionInformation(
-            IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass,
-            out IntPtr ppBuffer, out uint pBytesReturned);
+            IntPtr hServer,
+            int sessionId,
+            WTS_INFO_CLASS wtsInfoClass,
+            out IntPtr ppBuffer,
+            out uint pBytesReturned
+        );
 
         /* ----------------------------------------------------------------- */
         ///

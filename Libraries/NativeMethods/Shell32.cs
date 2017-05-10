@@ -22,7 +22,7 @@ namespace Cube.Shell32
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Shell32
+    /// Shell32.NativeMethods
     /// 
     /// <summary>
     /// shell32.dll に定義された関数を宣言するためのクラスです。
@@ -41,10 +41,15 @@ namespace Cube.Shell32
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
-            ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
+        public static extern IntPtr SHGetFileInfo(
+            string pszPath,
+            uint dwFileAttributes,
+            ref SHFILEINFO psfi,
+            uint cbFileInfo,
+            uint uFlags
+        );
 
-        #region Constant fields
+        #region Fields
         private const string LibName = "shell32.dll";
         public  const uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
         public  const uint SHGFI_TYPENAME          = 0x00000400;

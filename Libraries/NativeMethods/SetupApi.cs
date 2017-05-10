@@ -42,8 +42,12 @@ namespace Cube.SetupApi
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern IntPtr SetupDiGetClassDevs(ref Guid classGuid, IntPtr enumerator,
-            IntPtr hwndParent, uint flags);
+        public static extern IntPtr SetupDiGetClassDevs(
+            ref Guid classGuid,
+            IntPtr enumerator,
+            IntPtr hwndParent,
+            uint flags
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,8 +71,13 @@ namespace Cube.SetupApi
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern bool SetupDiEnumDeviceInterfaces(IntPtr deviceInfoSet, IntPtr deviceInfoData,
-            ref Guid interfaceClassGuid, uint memberIndex, SP_DEVICE_INTERFACE_DATA deviceInterfaceData);
+        public static extern bool SetupDiEnumDeviceInterfaces(
+            IntPtr deviceInfoSet,
+            IntPtr deviceInfoData,
+            ref Guid interfaceClassGuid,
+            uint memberIndex,
+            SP_DEVICE_INTERFACE_DATA deviceInterfaceData
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -80,10 +89,14 @@ namespace Cube.SetupApi
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern bool SetupDiGetDeviceInterfaceDetail(IntPtr deviceInfoSet,
+        public static extern bool SetupDiGetDeviceInterfaceDetail(
+            IntPtr deviceInfoSet,
             SP_DEVICE_INTERFACE_DATA deviceInterfaceData,
-            IntPtr deviceInterfaceDetailData, uint deviceInterfaceDetailDataSize,
-            ref uint requiredSize, SP_DEVINFO_DATA deviceInfoData);
+            IntPtr deviceInterfaceDetailData,
+            uint deviceInterfaceDetailDataSize,
+            ref uint requiredSize,
+            SP_DEVINFO_DATA deviceInfoData
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -95,7 +108,11 @@ namespace Cube.SetupApi
         /// 
         /* ----------------------------------------------------------------- */
         [DllImport(LibName)]
-        public static extern int CM_Get_Parent(ref int pdnDevInst, int dnDevInst, uint ulFlags);
+        public static extern int CM_Get_Parent(
+            ref int pdnDevInst,
+            int dnDevInst,
+            uint ulFlags
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -107,8 +124,13 @@ namespace Cube.SetupApi
         /// 
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern int CM_Request_Device_Eject(int dnDevInst, out Cube.FileSystem.VetoType pVetoType,
-            StringBuilder pszVetoName, uint ulNameLength, uint ulFlags);
+        public static extern int CM_Request_Device_Eject(
+            int dnDevInst,
+            out Cube.FileSystem.VetoType pVetoType,
+            StringBuilder pszVetoName,
+            uint ulNameLength,
+            uint ulFlags
+        );
 
         #region Fields
         const string LibName = "setupapi.dll";

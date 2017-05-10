@@ -55,7 +55,7 @@ namespace Cube.Processes
         ///
         /* ----------------------------------------------------------------- */
         public static System.Diagnostics.Process StartAsActiveUser(string program, string[] arguments)
-            => StartAs(string.Empty, program, arguments);
+            => StartAsActiveUser(CreateCmdLine(program, arguments));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -174,75 +174,44 @@ namespace Cube.Processes
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StartAs
+        ///
+        /// <summary>
+        /// 指定されたスレッド ID の権限でプログラムを実行します。
+        /// </summary>
+        /// 
+        /// <param name="tid">スレッド ID</param>
+        /// <param name="program">実行プログラムのパス</param>
+        /// <param name="arguments">プログラムの引数</param>
+        /// 
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static System.Diagnostics.Process StartAs(uint tid, string program, string[] arguments)
+            => StartAs(tid, CreateCmdLine(program, arguments));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StartAs
+        ///
+        /// <summary>
+        /// 指定されたスレッド ID の権限でプログラムを実行します。
+        /// </summary>
+        /// 
+        /// <param name="tid">スレッド ID</param>
+        /// <param name="cmdline">実行するコマンドライン</param>
+        /// 
+        /// <returns>実行に成功した <c>Process</c> オブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static System.Diagnostics.Process StartAs(uint tid, string cmdline)
+            => StartAs(GetThreadToken(tid), cmdline);
+
         #endregion
 
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateCmdLine
-        ///
-        /// <summary>
-        /// コマンドライン用の文字列を生成します。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        private static string CreateCmdLine(string program, string[] arguments)
-            => arguments == null ?
-            $"\"{program}\"" :
-            arguments.Aggregate($"\"{program}\"", (s, x) => s + " " + $"\"{x}\"");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateProcessAsUser
-        ///
-        /// <summary>
-        /// Win32 API の CreateProcessAsUser を実行します。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        private static System.Diagnostics.Process CreateProcessAsUser(string cmdline, IntPtr token, IntPtr env)
-        {
-            var si = new STARTUPINFO
-            {
-                lpDesktop   = @"WinSta0\Default",
-                wShowWindow = 0x05,  // SW_SHOW
-                dwFlags     = 0x01 | // STARTF_USESHOWWINDOW 
-                              0x40,  // STARTF_FORCEONFEEDBACK
-            };
-            si.cb = (uint)Marshal.SizeOf(si);
-
-            var sa = new SECURITY_ATTRIBUTES();
-            sa.nLength = (uint)Marshal.SizeOf(sa);
-
-            var thread = new SECURITY_ATTRIBUTES();
-            thread.nLength = (uint)Marshal.SizeOf(thread);
-
-            var pi = new PROCESS_INFORMATION();
-            try
-            {
-                if (!AdvApi32.NativeMethods.CreateProcessAsUser(
-                    token,
-                    null,
-                    cmdline,
-                    ref sa,
-                    ref thread,
-                    false,
-                    0x0400, // CREATE_UNICODE_ENVIRONMENT
-                    env,
-                    null,
-                    ref si,
-                    out pi
-                )) Win32Error("CreateProcessAsUser");
-
-                return System.Diagnostics.Process.GetProcessById((int)pi.dwProcessId);
-            }
-            finally
-            {
-                CloseHandle(pi.hProcess);
-                CloseHandle(pi.hThread);
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -280,9 +249,14 @@ namespace Cube.Processes
                     );
 
                     if (info.State == WTS_CONNECTSTATE_CLASS.WTSActive) sessions.Add(info);
+
+                    Cube.Log.Operations.Debug(typeof(Process),
+                        string.Format("SessionID:{0}\tState:{1}\tName:{2}",
+                        info.SessionID, info.State, info.pWinStationName
+                    ));
                 }
 
-                if (sessions.Count <= 0) throw new ArgumentException("Active session not found");
+                if (sessions.Count <= 0) throw new ArgumentException("Session not found");
                 else if (sessions.Count == 1) return sessions[0].SessionID;
                 else return sessions.Select(x => x.SessionID).First(x => GetUserName(x) == username);
             }
@@ -308,6 +282,41 @@ namespace Cube.Processes
             if (!WtsApi32.NativeMethods.WTSQueryUserToken(id, out token)) Win32Error("WTSQueryUserToken");
             try { return GetPrimaryToken(token, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation); }
             finally { CloseHandle(token); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetThreadToken
+        ///
+        /// <summary>
+        /// スレッド ID に対応するトークンを取得します。
+        /// </summary>
+        /// 
+        /// <param name="tid">スレッド ID</param>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static IntPtr GetThreadToken(uint tid)
+        {
+            var token = IntPtr.Zero;
+            var ht = Kernel32.NativeMethods.OpenThread(0x40 /* QUERY_INFORMATION */, false, tid);
+            if (ht == IntPtr.Zero) Win32Error("OpenThread");
+
+            try
+            {
+                if (!AdvApi32.NativeMethods.OpenThreadToken(
+                    ht,
+                    0x02 /* TOKEN_DUPLICATE */,
+                    true,
+                    ref token
+                )) Win32Error("OpenThreadToken");
+
+                return GetPrimaryToken(token, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation);
+            }
+            finally
+            {
+                CloseHandle(ht);
+                CloseHandle(token);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -401,6 +410,72 @@ namespace Cube.Processes
             if (handle == IntPtr.Zero) return;
             Kernel32.NativeMethods.CloseHandle(handle);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateProcessAsUser
+        ///
+        /// <summary>
+        /// Win32 API の CreateProcessAsUser を実行します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static System.Diagnostics.Process CreateProcessAsUser(string cmdline, IntPtr token, IntPtr env)
+        {
+            var si = new STARTUPINFO
+            {
+                lpDesktop   = @"WinSta0\Default",
+                wShowWindow = 0x05,  // SW_SHOW
+                dwFlags     = 0x01 | // STARTF_USESHOWWINDOW 
+                              0x40,  // STARTF_FORCEONFEEDBACK
+            };
+            si.cb = (uint)Marshal.SizeOf(si);
+
+            var sa = new SECURITY_ATTRIBUTES();
+            sa.nLength = (uint)Marshal.SizeOf(sa);
+
+            var thread = new SECURITY_ATTRIBUTES();
+            thread.nLength = (uint)Marshal.SizeOf(thread);
+
+            var pi = new PROCESS_INFORMATION();
+            try
+            {
+                if (!AdvApi32.NativeMethods.CreateProcessAsUser(
+                    token,
+                    null,
+                    cmdline,
+                    ref sa,
+                    ref thread,
+                    false,
+                    0x0400, // CREATE_UNICODE_ENVIRONMENT
+                    env,
+                    null,
+                    ref si,
+                    out pi
+                )) Win32Error("CreateProcessAsUser");
+
+                return System.Diagnostics.Process.GetProcessById((int)pi.dwProcessId);
+            }
+            finally
+            {
+                CloseHandle(pi.hProcess);
+                CloseHandle(pi.hThread);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateCmdLine
+        ///
+        /// <summary>
+        /// コマンドライン用の文字列を生成します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static string CreateCmdLine(string program, string[] arguments)
+            => arguments == null ?
+            $"\"{program}\"" :
+            arguments.Aggregate($"\"{program}\"", (s, x) => s + " " + $"\"{x}\"");
 
         /* ----------------------------------------------------------------- */
         ///

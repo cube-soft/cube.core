@@ -41,20 +41,31 @@ namespace Cube.Kernel32
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode,
-            IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+        public static extern IntPtr CreateFile(
+            string lpFileName,
+            uint dwDesiredAccess,
+            uint dwShareMode,
+            IntPtr lpSecurityAttributes,
+            uint dwCreationDisposition,
+            uint dwFlagsAndAttributes,
+            IntPtr hTemplateFile
+        );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WTSGetActiveConsoleSessionId
+        /// OpenThread
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa383835.aspx
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms684335.aspx
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = false)]
-        public static extern uint WTSGetActiveConsoleSessionId();
+        [DllImport(LibName, SetLastError = true)]
+        public static extern IntPtr OpenThread(
+            uint dwDesiredAccess,
+            bool bInheritHandle,
+            uint dwThreadId
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,9 +89,16 @@ namespace Cube.Kernel32
         ///
         /* ----------------------------------------------------------------- */
         [DllImport(LibName, SetLastError = true)]
-        public static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode,
-            IntPtr lpInBuffer, uint nInBufferSize,
-            IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
+        public static extern bool DeviceIoControl(
+            IntPtr hDevice,
+            uint dwIoControlCode,
+            IntPtr lpInBuffer,
+            uint nInBufferSize,
+            IntPtr lpOutBuffer,
+            uint nOutBufferSize,
+            out uint lpBytesReturned,
+            IntPtr lpOverlapped
+        );
 
         #region Fields
         const string LibName = "kernel32.dll";
