@@ -95,6 +95,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
             }
         }
+
         public static IEnumerable<TestCaseData> Parse_Options_Count_TestCases
         {
             get
@@ -108,6 +109,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "--", "bas" }).Returns(0);
             }
         }
+
         #endregion
     }
 }
