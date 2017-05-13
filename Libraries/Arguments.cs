@@ -47,6 +47,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="prefix">オプションを示す接頭辞</param>
         ///
         /* --------------------------------------------------------------------- */
         public Arguments(char prefix = '-')
@@ -61,6 +63,9 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="args">引数一覧</param>
+        /// <param name="prefix">オプションを示す接頭辞</param>
         ///
         /* --------------------------------------------------------------------- */
         public Arguments(IEnumerable<string> args, char prefix = '-')
@@ -95,6 +100,8 @@ namespace Cube
         /// <summary>
         /// コマンドライン等の引数を解析します。
         /// </summary>
+        /// 
+        /// <param name="args">引数一覧</param>
         ///
         /* --------------------------------------------------------------------- */
         public void Parse(IEnumerable<string> args)
@@ -129,6 +136,8 @@ namespace Cube
         /// 引数一覧を取得します。
         /// </summary>
         /// 
+        /// <returns>引数一覧</returns>
+        /// 
         /// <remarks>
         /// 各種オプションに対応する引数を取得する場合は
         /// GetOptions() または Get(string) を実行して下さい。
@@ -145,6 +154,8 @@ namespace Cube
         /// <summary>
         /// オプション引数一覧を取得します。
         /// </summary>
+        /// 
+        /// <returns>オプション引数一覧</returns>
         ///
         /* --------------------------------------------------------------------- */
         public IDictionary<string, string> GetOptions()
@@ -157,6 +168,10 @@ namespace Cube
         /// <summary>
         /// 各種オプションに対応する引数を取得します。
         /// </summary>
+        /// 
+        /// <param name="option">オプション・キー</param>
+        /// 
+        /// <returns>キーに対応する値</returns>
         ///
         /* --------------------------------------------------------------------- */
         public string Get(string option)
@@ -169,6 +184,10 @@ namespace Cube
         /// <summary>
         /// 指定されたオプションを保持しているかどうかを判別します。
         /// </summary>
+        /// 
+        /// <param name="option">オプション・キー</param>
+        /// 
+        /// <returns>オプションを保持しているかどうかを示す値</returns>
         ///
         /* --------------------------------------------------------------------- */
         public bool HasOption(string option)
@@ -183,7 +202,8 @@ namespace Cube
         /// TrimLeft
         /// 
         /// <summary>
-        /// 文字列から先頭の "-" および空白文字を除去します。
+        /// 文字の先頭から Prefix で指定されている文字および空白文字を
+        /// 除去します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */

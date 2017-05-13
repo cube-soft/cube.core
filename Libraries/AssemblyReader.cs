@@ -41,6 +41,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public AssemblyReader(Assembly assembly)

@@ -54,6 +54,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(Assembly assembly)
@@ -69,6 +71,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="version">バージョンを表す文字列</param>
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(string version)
