@@ -44,6 +44,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("Sample.txt")]
+        [TestCase("NotExist.dummy")]
         public void GetTypeName(string filename)
         {
             var info = new FileInfo(Example(filename));
