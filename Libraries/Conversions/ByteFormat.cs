@@ -40,7 +40,7 @@ namespace Cube.Conversions
         /// 
         /// <param name="bytes">バイト数</param>
         /// 
-        /// <remarks>バイト数を表す文字列</remarks>
+        /// <returns>バイト数を表す文字列</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string ToPrettyBytes(this long bytes)
@@ -69,7 +69,7 @@ namespace Cube.Conversions
         /// 
         /// <param name="bytes">バイト数</param>
         /// 
-        /// <remarks>バイト数を表す文字列</remarks>
+        /// <returns>バイト数を表す文字列</returns>
         ///
         /// <remarks>
         /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
