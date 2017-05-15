@@ -1,9 +1,44 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.4.1.{build}
+
+# branches to build
+branches:
+  only:
+    - master
+
+# Do not build on tags (GitHub and BitBucket)
 skip_tags: true
 
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
 image: Visual Studio 2017
 
+# clone directory
+clone_folder: c:\cube\cube.core
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+
+# to add several platforms to build matrix:
+#platform:
+#  - x86
+#  - Any CPU
+
+# build Configuration, i.e. Debug, Release, etc.
 configuration: Release
 
+# scripts to run before build
 before_build:
     - nuget restore Cube.Core.sln
 
@@ -11,6 +46,10 @@ build:
   parallel: true
   project: Cube.Core.sln
   verbosity: normal
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
 
 after_test:
     - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files (x86)\NUnit.org\nunit-console\nunit3-console.exe" -targetargs:"Cube.Core.Tests.dll" -targetdir:".\Tests\bin\Release" -hideskipped:All -output:CoverResult.xml
