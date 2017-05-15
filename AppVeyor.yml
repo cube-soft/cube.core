@@ -19,6 +19,7 @@ before_build:
 build: 
   parallel: true
   project: Cube.Core.sln
+  publish_nuget: true
   verbosity: normal
 
 # --------------------------------------------------------------------------- #
