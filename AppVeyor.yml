@@ -13,7 +13,6 @@ skip_tags: true
 clone_folder: c:\cube\cube.core
 image: Visual Studio 2017
 nuget:
-  account_feed: true
   project_feed: true
   disable_publish_on_pr: true
 
