@@ -42,6 +42,9 @@ build:
   project: Cube.Core.sln
   verbosity: normal
 
+artifacts:
+  - path: ..\lib\net45\Cube.Core.dll
+
 # --------------------------------------------------------------------------- #
 # tests configuration
 # --------------------------------------------------------------------------- #
