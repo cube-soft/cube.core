@@ -232,7 +232,7 @@ namespace Cube.Settings
                         root.SetValue(name, ((bool)value) ? 1 : 0);
                         break;
                     case TypeCode.DateTime:
-                        root.SetValue(name, (((DateTime)value).ToUniversalTime().ToString()));
+                        root.SetValue(name, (((DateTime)value).ToUniversalTime().ToString("o")));
                         break;
                     case TypeCode.Object:
                         using (var subkey = root.CreateSubKey(name))
