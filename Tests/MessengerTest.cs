@@ -47,7 +47,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public async Task Publish_Server()
+        public async Task Publish()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ClientToServer";
@@ -65,47 +65,6 @@ namespace Cube.Tests
                         cts.Cancel();
                     });
                     Task.Run(() => client.Publish(msg)).Forget();
-                    await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
-                }
-                catch (TaskCanceledException /* err */) { /* ignore */ }
-            }
-
-            Assert.That(result, Is.EqualTo(msg));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Publish_Client
-        /// 
-        /// <summary>
-        /// クライアントにメッセージを送信するテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public async Task Publish_Client()
-        {
-            var id     = nameof(MessengerTest);
-            var msg    = "ServerToClient";
-            var result = string.Empty;
-
-            using (var server = new Cube.Processes.MessengerServer<string>(id))
-            using (var client = new Cube.Processes.MessengerClient<string>(id))
-            {
-                var cts = new CancellationTokenSource();
-
-                Task.Run(() =>
-                {
-                    client.Subscribe(x =>
-                    {
-                        result = x;
-                        cts.Cancel();
-                    });
-                }).Forget();
-
-                try
-                {
-                    Task.Run(() => server.Publish(msg)).Forget();
                     await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                 }
                 catch (TaskCanceledException /* err */) { /* ignore */ }
