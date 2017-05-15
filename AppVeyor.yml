@@ -8,10 +8,18 @@ branches:
 skip_tags: true
 
 # --------------------------------------------------------------------------- #
-# build configuration
+# environment configuration
 # --------------------------------------------------------------------------- #
 clone_folder: c:\cube\cube.core
 image: Visual Studio 2017
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true
+
+# --------------------------------------------------------------------------- #
+# build configuration
+# --------------------------------------------------------------------------- #
 platform: Any CPU
 configuration: Release
 before_build:
