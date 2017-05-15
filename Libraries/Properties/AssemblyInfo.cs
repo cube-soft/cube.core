@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("Cube.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Common library for Cube.* projects.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CubeSoft")]
 [assembly: AssemblyProduct("Cube.Core")]

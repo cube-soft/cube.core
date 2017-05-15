@@ -27,6 +27,7 @@
 *.dll
 *.sh
 *.VisualState.xml
+*.nupkg
 ipch/
 obj/
 [Bb]in
