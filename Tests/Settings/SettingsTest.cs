@@ -98,11 +98,13 @@ namespace Cube.Tests
             using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());
             using (var key = OpenSaveKey())
             {
+                var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
+
                 Assert.That(key.GetValue("Name"),     Is.EqualTo("山田花子"));
                 Assert.That(key.GetValue("Age"),      Is.EqualTo(15));
                 Assert.That(key.GetValue("Sex"),      Is.EqualTo(1));
                 Assert.That(key.GetValue("Reserved"), Is.EqualTo(1));
-                Assert.That(key.GetValue("Creation"), Is.EqualTo("2014-12-31T14:25:30.0000000Z"));
+                Assert.That(key.GetValue("Creation"), Is.EqualTo(time.ToString("o")));
                 Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(key.GetValue("Secret"),   Is.Null);
 
