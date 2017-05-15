@@ -274,7 +274,7 @@ namespace Cube.FileSystem
             var dest  = SetupApi.NativeMethods.SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             var errno = Marshal.GetLastWin32Error();
-            if (dest.ToInt32() == -1) throw new Win32Exception(errno);
+            if (dest.ToInt64() == -1) throw new Win32Exception(errno);
 
             return dest;
         }
@@ -287,10 +287,6 @@ namespace Cube.FileSystem
         /// デバイスのパスを取得します。
         /// </summary>
         /// 
-        /// <remarks>
-        /// TODO: x64 時の処理を（動作してはいるが）再考する。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         private string GetDevicePath(IntPtr handle, SP_DEVICE_INTERFACE_DATA data, SP_DEVINFO_DATA devinfo)
         {
@@ -308,7 +304,7 @@ namespace Cube.FileSystem
                 var status = SetupApi.NativeMethods.SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
                 if (!status) throw new Win32Exception(Marshal.GetLastWin32Error());
 
-                var pos = (IntPtr)((int)buffer + Marshal.SizeOf(typeof(int)));
+                var pos = new IntPtr(buffer.ToInt64() + Marshal.SizeOf(typeof(uint)));
                 return Marshal.PtrToStringAuto(pos);
             }
             finally { if (buffer != IntPtr.Zero) Marshal.FreeHGlobal(buffer); }
