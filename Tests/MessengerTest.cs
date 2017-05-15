@@ -19,6 +19,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Cube.Tasks;
 
 namespace Cube.Tests
 {
@@ -63,7 +64,7 @@ namespace Cube.Tests
                         result = x;
                         cts.Cancel();
                     });
-                    client.Publish(msg);
+                    Task.Run(() => client.Publish(msg)).Forget();
                     await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                 }
                 catch (TaskCanceledException /* err */) { /* ignore */ }
@@ -99,7 +100,7 @@ namespace Cube.Tests
                         result = x;
                         cts.Cancel();
                     });
-                    server.Publish(msg);
+                    Task.Run(() => server.Publish(msg)).Forget();
                     await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                 }
                 catch (TaskCanceledException /* err */) { /* ignore */ }
