@@ -44,7 +44,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
+        //[Test]
         public async Task Publish_Server()
         {
             var id     = nameof(MessengerTest);
@@ -71,7 +71,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
+        //[Test]
         public async Task Publish_Client()
         {
             var id     = nameof(MessengerTest);

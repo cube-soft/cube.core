@@ -92,7 +92,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
+        //[Test]
         public void Save_Registry()
         {
             using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());

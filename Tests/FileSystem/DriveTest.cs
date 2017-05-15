@@ -65,7 +65,7 @@ namespace Cube.Tests
             Assert.That(drive.Letter,      Is.EqualTo("C:"));
             Assert.That(drive.Type,        Is.EqualTo(DriveType.HardDisk));
             Assert.That(drive.Format,      Is.EqualTo("NTFS"));
-            Assert.That(drive.Interface,   Is.EqualTo("IDE"));
+            Assert.That(drive.Interface, Is.Not.Null.And.Not.Empty);
             Assert.That(drive.Size,        Is.AtLeast(100000000UL));
             Assert.That(drive.FreeSpace,   Is.GreaterThan(1).And.LessThan(drive.Size));
             Assert.That(drive.VolumeLabel, Is.Not.Null.And.Not.Empty);
