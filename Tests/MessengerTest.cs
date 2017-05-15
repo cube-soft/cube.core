@@ -64,13 +64,8 @@ namespace Cube.Tests
                             result = x;
                             cts.Cancel();
                         });
-
                         client.Publish(msg);
-
-                        if (string.IsNullOrEmpty(result))
-                        {
-                            await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
-                        }
+                        await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                     },
                     Throws.TypeOf<TaskCanceledException>()
                 );
@@ -107,13 +102,8 @@ namespace Cube.Tests
                             result = x;
                             cts.Cancel();
                         });
-
                         server.Publish(msg);
-
-                        if (string.IsNullOrEmpty(result))
-                        {
-                            await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
-                        }
+                        await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                     },
                     Throws.TypeOf<TaskCanceledException>()
                 );
