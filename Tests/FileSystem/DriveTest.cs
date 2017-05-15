@@ -37,28 +37,6 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Drive_Detach_Throws
-        ///
-        /// <summary>
-        /// Device.Detach() のテストを実行します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// システムドライブを指定するため VetoException が発生します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(0)]
-        public void Drive_Detach_Throws(int index)
-            => Assert.That(
-            () => Drive.GetDrives().First().Detach(),
-            Throws.TypeOf<VetoException>()
-                  .And.Property("Reason").EqualTo(VetoType.IllegalDeviceRequest)
-                  .And.Property("Name").Not.Null.Or.Empty
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// GetDrives_Count
         ///
         /// <summary>
@@ -72,10 +50,10 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDrives_Count
+        /// Drive_Properties
         ///
         /// <summary>
-        /// Drive.GetDrives() のテストを実行します。
+        /// 最初の Drive オブジェクトのプロパティを確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -90,9 +68,49 @@ namespace Cube.Tests
             Assert.That(drive.Interface,   Is.EqualTo("IDE"));
             Assert.That(drive.Size,        Is.AtLeast(100000000UL));
             Assert.That(drive.FreeSpace,   Is.GreaterThan(1).And.LessThan(drive.Size));
-            Assert.That(drive.VolumeLabel, Is.Not.Null.Or.Empty);
-            Assert.That(drive.Model,       Is.Not.Null.Or.Empty);
+            Assert.That(drive.VolumeLabel, Is.Not.Null.And.Not.Empty);
+            Assert.That(drive.Model,       Is.Not.Null.And.Not.Empty);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive_ToDevice
+        ///
+        /// <summary>
+        /// Drive オブジェクトから Device オブジェクトを生成するテストを
+        /// 実行します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Drive_ToDevice()
+        {
+            var device = new Device(Drive.GetDrives().First());
+            Assert.That(device.Index, Is.EqualTo(0));
+            Assert.That(device.Path, Does.StartWith("\\\\?\\"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive_Detach_Throws
+        ///
+        /// <summary>
+        /// Device.Detach() のテストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// システムドライブを指定するため VetoException が発生します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Drive_Detach_Throws()
+            => Assert.That(
+            () => Drive.GetDrives().First().Detach(),
+            Throws.TypeOf<VetoException>()
+                  .And.Property("Reason").EqualTo(VetoType.IllegalDeviceRequest)
+                  .And.Property("Name").Not.Null.Or.Empty
+        );
 
         /* ----------------------------------------------------------------- */
         ///

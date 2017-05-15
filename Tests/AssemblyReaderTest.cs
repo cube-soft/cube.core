@@ -55,7 +55,7 @@ namespace Cube.Tests
 
         [Test]
         public void Assembly_Location_IsNotNullOrEmpty()
-            => Assert.That(Create().Location, Is.Not.Null.Or.Empty);
+            => Assert.That(Create().Location, Is.Not.Null.And.Not.Empty);
 
         [TestCase(ExpectedResult = "Cube.Core testing project")]
         public string Assembly_Title()

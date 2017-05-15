@@ -48,7 +48,7 @@ namespace Cube.Tests
         public void GetTypeName(string filename)
         {
             var info = new FileInfo(Example(filename));
-            Assert.That(info.GetTypeName(), Is.Not.Null.Or.Empty);
+            Assert.That(info.GetTypeName(), Is.Not.Null.And.Not.Empty);
         }
     }
 }
