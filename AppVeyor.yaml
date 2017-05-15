@@ -1,0 +1,19 @@
+skip_tags: true
+
+image: Visual Studio 2017
+
+configuration: Release
+
+before_build:
+    - nuget restore Cube.Core.sln
+
+build: 
+  parallel: true
+  project: Cube.Core.sln
+  verbosity: normal
+
+after_test:
+    - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files (x86)\NUnit.org\nunit-console\nunit3-console.exe" -targetargs:"Cube.Core.Tests.dll" -targetdir:".\Tests\bin\Release" -hideskipped:All -output:CoverResult.xml
+    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+    - pip install codecov
+    - codecov -f "CoverResult.xml"
