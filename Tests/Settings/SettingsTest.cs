@@ -92,7 +92,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        //[Test]
+        [Test]
         public void Save_Registry()
         {
             using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());
@@ -102,7 +102,7 @@ namespace Cube.Tests
                 Assert.That(key.GetValue("Age"),      Is.EqualTo(15));
                 Assert.That(key.GetValue("Sex"),      Is.EqualTo(1));
                 Assert.That(key.GetValue("Reserved"), Is.EqualTo(1));
-                Assert.That(key.GetValue("Creation"), Is.EqualTo("2014/12/31 14:25:30"));
+                Assert.That(key.GetValue("Creation"), Is.EqualTo("2014-12-31T14:25:30.0000000Z"));
                 Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(key.GetValue("Secret"),   Is.Null);
 

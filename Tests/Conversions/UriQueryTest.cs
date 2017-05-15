@@ -63,10 +63,10 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        //[TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
+        [TestCase(2015, 3, 19, 14, 57, 57, 1426777077)]
         public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
             => Assert.That(
-                Create().With(new DateTime(y, m, d, hh, mm, ss)).ToString(),
+                Create().With(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc)).ToString(),
                 Is.EqualTo($"{Create()}?ts={unix}")
             );
 

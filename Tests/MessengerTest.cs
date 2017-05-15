@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -44,8 +45,8 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        //[Test]
-        public async Task Publish_Server()
+        [Test]
+        public void Publish_Server()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ClientToServer";
@@ -54,9 +55,25 @@ namespace Cube.Tests
             using (var server = new Cube.Processes.MessengerServer<string>(id))
             using (var client = new Cube.Processes.MessengerClient<string>(id))
             {
-                server.Subscribe(x => result = x);
-                client.Publish(msg);
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
+                Assert.That(
+                    async () =>
+                    {
+                        var cts = new CancellationTokenSource();
+                        server.Subscribe(x =>
+                        {
+                            result = x;
+                            cts.Cancel();
+                        });
+
+                        client.Publish(msg);
+
+                        if (string.IsNullOrEmpty(result))
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
+                        }
+                    },
+                    Throws.TypeOf<TaskCanceledException>()
+                );
             }
 
             Assert.That(result, Is.EqualTo(msg));
@@ -71,8 +88,8 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        //[Test]
-        public async Task Publish_Client()
+        [Test]
+        public void Publish_Client()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ServerToClient";
@@ -81,9 +98,25 @@ namespace Cube.Tests
             using (var server = new Cube.Processes.MessengerServer<string>(id))
             using (var client = new Cube.Processes.MessengerClient<string>(id))
             {
-                client.Subscribe(x => result = x);
-                server.Publish(msg);
-                await Task.Delay(TimeSpan.FromMilliseconds(100));
+                Assert.That(
+                    async() =>
+                    {
+                        var cts = new CancellationTokenSource();
+                        client.Subscribe(x =>
+                        {
+                            result = x;
+                            cts.Cancel();
+                        });
+
+                        server.Publish(msg);
+
+                        if (string.IsNullOrEmpty(result))
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
+                        }
+                    },
+                    Throws.TypeOf<TaskCanceledException>()
+                );
             }
 
             Assert.That(result, Is.EqualTo(msg));
