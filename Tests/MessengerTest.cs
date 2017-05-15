@@ -92,14 +92,19 @@ namespace Cube.Tests
             using (var server = new Cube.Processes.MessengerServer<string>(id))
             using (var client = new Cube.Processes.MessengerClient<string>(id))
             {
-                try
+                var cts = new CancellationTokenSource();
+
+                Task.Run(() =>
                 {
-                    var cts = new CancellationTokenSource();
                     client.Subscribe(x =>
                     {
                         result = x;
                         cts.Cancel();
                     });
+                }).Forget();
+
+                try
+                {
                     Task.Run(() => server.Publish(msg)).Forget();
                     await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                 }
