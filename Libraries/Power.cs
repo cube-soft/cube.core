@@ -43,7 +43,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static Power()
         {
-            SystemEvents.PowerModeChanged += RaiseModeChanged;
+            SystemEvents.PowerModeChanged += WhenChanged;
         }
 
         #endregion
@@ -59,13 +59,31 @@ namespace Cube
         /// </summary>
         ///
         /// <remarks>
-        /// このプロパティは Resume または Suspend どちらかの値を示します。
-        /// そのため、PowerModeChanged イベントの Mode プロパティの値とは
-        /// 必ずしも一致しません。
+        /// 
+        /// <para>
+        /// Mode プロパティは通常、値の取得用途のみに使用されます。
+        /// 値の設定は、動作検証やテスト等の時に使用して下さい。
+        /// </para>
+        /// 
+        /// <para>
+        /// このプロパティは通常 Resume または Suspend どちらかの値を
+        /// 示します。そのため、PowerModeChanged イベントの
+        /// Mode プロパティの値とは必ずしも一致しません。
+        /// </para>
+        /// 
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static PowerModes Mode { get; private set; } = PowerModes.Resume;
+        public static PowerModes Mode
+        {
+            get { return _mode; }
+            set
+            {
+                if (_mode == value) return;
+                _mode = value;
+                ModeChanged?.Invoke(null, new PowerModeChangedEventArgs(value));
+            }
+        }
 
         #endregion
 
@@ -78,31 +96,15 @@ namespace Cube
         /// <summary>
         /// 電源状態が変化した時に発生するイベントです。
         /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static PowerModeChangedEventHandler ModeChanged;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Raise
-        /// 
-        /// <summary>
-        /// ModeChanged イベントを手動で発生させます。
-        /// </summary>
-        /// 
-        /// <param name="mode">電源状態</param>
         /// 
         /// <remarks>
-        /// 主に動作検証やテスト等で使用されるメソッドです。
+        /// SystemEvents.PowerModeChanged とは異なり、Mode プロパティに
+        /// 明示的に設定しない限り、PowerModes.StatusChanged への変化時には
+        /// イベントは発生しません。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Raise(PowerModes mode)
-            => RaiseModeChanged(null, new PowerModeChangedEventArgs(mode));
+        public static PowerModeChangedEventHandler ModeChanged;
 
         #endregion
 
@@ -110,19 +112,23 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseModeChanged
+        /// WhenChanged
         /// 
         /// <summary>
-        /// ModeChanged イベントを発生させます。
+        /// SystemEvents.PowerModeChanged イベント発生時に実行される
+        /// ハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void RaiseModeChanged(object sender, PowerModeChangedEventArgs e)
+        private static void WhenChanged(object sender, PowerModeChangedEventArgs e)
         {
             if (e.Mode != PowerModes.StatusChange) Mode = e.Mode;
-            ModeChanged?.Invoke(sender, e);
         }
 
+        #endregion
+
+        #region Fields
+        private static PowerModes _mode = PowerModes.Resume;
         #endregion
     }
 }
