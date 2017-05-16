@@ -10,7 +10,7 @@ skip_tags: true
 # --------------------------------------------------------------------------- #
 # environment configuration
 # --------------------------------------------------------------------------- #
-clone_folder: c:\cube\cube.core
+clone_folder: C:\Cube\Cube.Core
 image: Visual Studio 2017
 nuget:
   project_feed: true
