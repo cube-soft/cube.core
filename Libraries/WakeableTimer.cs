@@ -384,7 +384,7 @@ namespace Cube
             if (State != TimerState.Suspend) return;
 
             var now  = DateTime.Now;
-            var time = now < Next ? Next - now : TimeSpan.FromSeconds(1);
+            var time = now < Next ? Next - now : TimeSpan.FromMilliseconds(100);
 
             State = TimerState.Run;
             Next  = now + time;
@@ -416,12 +416,12 @@ namespace Cube
             switch (mode)
             {
                 case PowerModes.Resume:
-                    if (State == TimerState.Suspend) Resume();
+                    Resume();
                     break;
                 case PowerModes.StatusChange:
                     break;
                 case PowerModes.Suspend:
-                    if (State == TimerState.Run) Suspend();
+                    Suspend();
                     break;
                 default:
                     break;
