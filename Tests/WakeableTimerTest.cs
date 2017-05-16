@@ -139,7 +139,7 @@ namespace Cube.Tests
         {
             using (var timer = new WakeableTimer())
             {
-                var ms = 50;
+                var ms = 100;
 
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
                 timer.Start();
@@ -152,6 +152,41 @@ namespace Cube.Tests
                 timer.Reset();
                 Assert.That(timer.LastExecuted, Is.EqualTo(last));
                 Assert.That(timer.Interval.TotalMilliseconds, Is.EqualTo(ms).Within(1.0));
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resume
+        /// 
+        /// <summary>
+        /// Suspend/Resume のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase( 0, 2)]
+        [TestCase(50, 1)]
+        public async Task Resume(int delay, int expected)
+        {
+            using (var timer = new WakeableTimer())
+            {
+                var ms = Math.Max(delay, 100);
+                var actual = 0;
+
+                timer.Interval = TimeSpan.FromMilliseconds(ms);
+                timer.Subscribe(() => ++actual);
+                timer.Start(TimeSpan.FromMilliseconds(delay));
+
+                // force change
+                Cube.Power.Mode = PowerModes.Suspend;
+                await Task.Delay(ms * 2);
+                Cube.Power.Mode = PowerModes.Resume;
+                await Task.Delay(150);
+
+                timer.Stop();
+
+                Assert.That(timer.PowerMode, Is.EqualTo(PowerModes.Resume));
+                Assert.That(actual, Is.EqualTo(expected));
             }
         }
     }
