@@ -86,6 +86,7 @@
     <Compile Include="Operations\Processes.cs" />
     <Compile Include="Operations\Settings.cs" />
     <Compile Include="Operations\Tasks.cs" />
+    <Compile Include="Power.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessenterService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />

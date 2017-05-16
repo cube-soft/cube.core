@@ -78,7 +78,7 @@ namespace Cube
         {
             Interval = interval;
             _core.Elapsed += (s, e) => Publish();
-            SystemEvents.PowerModeChanged += (s, e) => OnPowerModeChanged(e);
+            Power.ModeChanged += (s, e) => OnPowerModeChanged(e);
         }
 
         #endregion
@@ -150,14 +150,8 @@ namespace Cube
         /// 電源の状態を取得します。
         /// </summary>
         /// 
-        /// <remarks>
-        /// このプロパティは Resume または Suspend どちらかの値を示します。
-        /// そのため、PowerModeChanged イベントの Mode プロパティの値とは
-        /// 必ずしも一致しません。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
-        public PowerModes PowerMode { get; private set; } = PowerModes.Resume;
+        public PowerModes PowerMode => Power.Mode;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -196,7 +190,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
         {
-            if (e.Mode != PowerModes.StatusChange) PowerMode = e.Mode;
             UpdateState(e.Mode);
             PowerModeChanged?.Invoke(this, e);
         }
@@ -420,8 +413,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private void UpdateState(PowerModes mode)
         {
-            var previous = State;
-
             switch (mode)
             {
                 case PowerModes.Resume:
