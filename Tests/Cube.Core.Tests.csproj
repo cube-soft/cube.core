@@ -74,6 +74,7 @@
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\NumericTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
+    <Compile Include="PowerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />

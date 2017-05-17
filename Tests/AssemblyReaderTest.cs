@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -29,90 +30,107 @@ namespace Cube.Tests
     /// AssemblyReader のテスト用クラスです。
     /// </summary>
     /// 
-    /// <remarks>
-    /// TODO: Parallelizable 属性を付与すると Icon_ExecutingAssembly() の
-    /// テストに失敗する場合がある。要調査。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
+    [Parallelizable]
     class AssemblyReaderTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
-        ///
+        /// Assembly_Properties
+        /// 
         /// <summary>
-        /// 各種プロパティのテストを行います。
+        /// 各種プロパティの内容を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        #region Properties
-
-        [Test]
-        public void Assembly_IsNotNull()
-            => Assert.That(Create().Assembly, Is.Not.Null);
-
-        [Test]
-        public void Assembly_Location_IsNotNullOrEmpty()
-            => Assert.That(Create().Location, Is.Not.Null.And.Not.Empty);
-
-        [TestCase(ExpectedResult = "Cube.Core testing project")]
-        public string Assembly_Title()
-            => Create().Title;
-
-        [TestCase(ExpectedResult = "NUnit framework を用いて Cube.Core プロジェクトをテストします。")]
-        public string Assembly_Description()
-            => Create().Description;
-
-        [TestCase(ExpectedResult = "CubeSoft")]
-        public string Assembly_Company()
-            => Create().Company;
-
-        [TestCase(ExpectedResult = "Cube.Core.Tests")]
-        public string Assembly_Product()
-            => Create().Product;
-
-        [TestCase(ExpectedResult = "Copyright © 2010 CubeSoft, Inc.")]
-        public string Assembly_Copyright()
-            => Create().Copyright;
-
-        [TestCase(ExpectedResult = "ここに商標を設定します。")]
-        public string Assembly_Trademark()
-            => Create().Trademark;
-
-        [Test]
-        public void Assembly_Configuration_IsNullOrEmpty()
-            => Assert.That(Create().Configuration, Is.Null.Or.Empty);
-
-        [Test]
-        public void Assembly_Culture_IsNullOrEmpty()
-            => Assert.That(Create().Culture, Is.Null.Or.Empty);
-
-        [TestCase(1, 2, 0, 0)]
-        public void Assembly_Version_IsAtLeast(int major, int minor, int build, int revision)
-            => Assert.That(Create().Version, Is.AtLeast(new Version(major, minor, build, revision)));
-
-        [TestCase(1, 2, 0, 0)]
-        public void Assembly_FileVersion_IsAtLeast(int major, int minor, int build, int revision)
-            => Assert.That(Create().FileVersion, Is.AtLeast(new Version(major, minor, build, revision)));
-
-        #endregion
-
-        #region Helper methods
+        [TestCaseSource(nameof(TestCases))]
+        public void Assembly_Properties(Assembly src, Result expected) {
+            var actual = new AssemblyReader(src);
+            Assert.That(!string.IsNullOrEmpty(actual.Location), Is.EqualTo(expected.Location));
+            Assert.That(actual.Assembly,      Is.EqualTo(expected.Assembly));
+            Assert.That(actual.Title,         Is.EqualTo(expected.Title));
+            Assert.That(actual.Description,   Is.EqualTo(expected.Description));
+            Assert.That(actual.Company,       Is.EqualTo(expected.Company));
+            Assert.That(actual.Product,       Is.EqualTo(expected.Product));
+            Assert.That(actual.Copyright,     Is.EqualTo(expected.Copyright));
+            Assert.That(actual.Trademark,     Is.EqualTo(expected.Trademark));
+            Assert.That(actual.Configuration, Is.EqualTo(expected.Configuration));
+            Assert.That(actual.Culture,       Is.EqualTo(expected.Culture));
+            Assert.That(actual.Version,       Is.EqualTo(expected.Version));
+            Assert.That(actual.FileVersion,   Is.EqualTo(expected.FileVersion));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
-        ///
+        /// TestCases
+        /// 
         /// <summary>
-        /// AssemblyReader オブジェクトを生成します。
+        /// テストケースを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public AssemblyReader Create()
-            => new AssemblyReader(Assembly.GetExecutingAssembly());
+        public static IEnumerable<TestCaseData> TestCases
+        {
+            get
+            {
+                yield return new TestCaseData(Assembly.GetExecutingAssembly(), new Result
+                {
+                    Assembly      = Assembly.GetExecutingAssembly(),
+                    Location      = true,
+                    Title         = "Cube.Core testing project",
+                    Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
+                    Company       = "CubeSoft",
+                    Product       = "Cube.Core.Tests",
+                    Copyright     = "Copyright © 2010 CubeSoft, Inc.",
+                    Trademark     = "ここに商標を設定します。",
+                    Configuration = string.Empty,
+                    Culture       = string.Empty,
+                    Version       = new Version(1, 4, 0, 0),
+                    FileVersion   = new Version(1, 4, 0, 0)
+                });
 
-        #endregion
+                yield return new TestCaseData(null, new Result
+                {
+                    Assembly      = null,
+                    Location      = false,
+                    Title         = string.Empty,
+                    Description   = string.Empty,
+                    Company       = string.Empty,
+                    Product       = string.Empty,
+                    Copyright     = string.Empty,
+                    Trademark     = string.Empty,
+                    Configuration = string.Empty,
+                    Culture       = string.Empty,
+                    Version       = new Version(),
+                    FileVersion   = new Version()
+                });
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Result
+        /// 
+        /// <summary>
+        /// 期待される結果を保持するための構造体です。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public struct Result
+        {
+            public Assembly Assembly;
+            public bool Location;
+            public string Title;
+            public string Description;
+            public string Company;
+            public string Product;
+            public string Copyright;
+            public string Trademark;
+            public string Configuration;
+            public string Culture;
+            public Version Version;
+            public Version FileVersion;
+        }
     }
 }
