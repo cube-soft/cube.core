@@ -23,16 +23,16 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UnixTimeTest
+    /// TimeTest
     /// 
     /// <summary>
-    /// UnixTime のテスト用クラスです。
+    /// DateTime に関するテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class UnixTimeTest
+    class TimeTest
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -80,7 +80,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToUniversalTime
+        /// ToDateTime
         /// 
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
@@ -115,6 +115,66 @@ namespace Cube.Tests
             var src = (int)unix;
             var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
             Assert.That(src.ToDateTime(), Is.EqualTo(expected));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToLocalTime
+        /// 
+        /// <summary>
+        /// int 型で表された UNIX 時刻を現地時刻で DateTime オブジェクトに
+        /// 変換するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(0x7fffffffu, 2038, 1, 19, 12, 14,  7)]
+        [TestCase(0x80000000u, 2038, 1, 19, 12, 14,  8)]
+        [TestCase(0xffffffffu, 2106, 2,  7, 15, 28, 15)]
+        public void ToLocalTime(uint unix, int y, int m, int d, int hh, int mm, int ss)
+        {
+            var src = (int)unix;
+            var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
+            Assert.That(src.ToLocalTime(), Is.EqualTo(expected));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_UniversalTime
+        /// 
+        /// <summary>
+        /// 指定された文字列を UTC 時刻として解析します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("2017/02/03 12:34:55", "yyyy/MM/dd HH:mm:ss", 2017, 2, 3, 12, 34, 55)]
+        [TestCase("", "", 1, 1, 1, 0, 0, 0)]
+        public void Parse_UniversalTime(string src, string fmt, int y, int m, int d, int hh, int mm, int ss)
+        {
+            var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            var actual   = src.ToDateTime(fmt);
+
+            Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Utc));
+            Assert.That(actual,      Is.EqualTo(expected));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_LocalTime
+        /// 
+        /// <summary>
+        /// 指定された文字列をローカル時刻として解析します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("2017/02/03 12:34:55", "yyyy/MM/dd HH:mm:ss", 2017, 2, 3, 12, 34, 55)]
+        [TestCase("", "", 1, 1, 1, 0, 0, 0)]
+        public void Parse_LocalTime(string src, string fmt, int y, int m, int d, int hh, int mm, int ss)
+        {
+            var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
+            var actual   = src.ToLocalTime(fmt);
+
+            Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Local));
+            Assert.That(actual,      Is.EqualTo(expected));
         }
     }
 }

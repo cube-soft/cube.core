@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormatTest.cs" />
-    <Compile Include="Conversions\UnixTimeTest.cs" />
+    <Compile Include="Conversions\TimeTest.cs" />
     <Compile Include="Conversions\UriQueryTest.cs" />
     <Compile Include="Details\FileResource.cs" />
     <Compile Include="Details\FileResourceTest.cs" />
