@@ -89,10 +89,10 @@ namespace Cube
         {
             get
             {
-                if (Assembly == null) return null;
+                if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyTitleAttribute)) as AssemblyTitleAttribute;
-                return obj?.Title;
+                return obj?.Title ?? string.Empty;
             }
         }
 
@@ -112,7 +112,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
-                return obj?.Description;
+                return obj?.Description ?? string.Empty;
             }
         }
 
@@ -132,7 +132,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyConfigurationAttribute)) as AssemblyConfigurationAttribute;
-                return obj?.Configuration;
+                return obj?.Configuration ?? string.Empty;
             }
         }
 
@@ -152,7 +152,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
-                return obj?.Company;
+                return obj?.Company ?? string.Empty;
             }
         }
 
@@ -172,7 +172,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyProductAttribute)) as AssemblyProductAttribute;
-                return obj?.Product;
+                return obj?.Product ?? string.Empty;
             }
         }
 
@@ -192,7 +192,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
-                return obj?.Copyright;
+                return obj?.Copyright ?? string.Empty;
             }
         }
 
@@ -212,7 +212,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyTrademarkAttribute)) as AssemblyTrademarkAttribute;
-                return obj?.Trademark;
+                return obj?.Trademark ?? string.Empty;
             }
         }
 
@@ -232,7 +232,7 @@ namespace Cube
                 if (Assembly == null) return string.Empty;
                 var obj = Attribute.GetCustomAttribute(Assembly,
                     typeof(AssemblyCultureAttribute)) as AssemblyCultureAttribute;
-                return obj?.Culture;
+                return obj?.Culture ?? string.Empty;
             }
         }
 
