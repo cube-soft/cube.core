@@ -76,11 +76,12 @@
     <Compile Include="Operations\NumericTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
     <Compile Include="PowerTest.cs" />
+    <Compile Include="Processes\ProcessTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="MessengerTest.cs" />
+    <Compile Include="Processes\MessengerTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
