@@ -162,12 +162,16 @@ namespace Cube.Conversions
         /// 
         /* ----------------------------------------------------------------- */
         public static DateTime ToUniversalTime(this string time, string format)
-            => string.IsNullOrEmpty(time) ?
-            DateTime.MinValue :
-            DateTime.ParseExact(time, format,
-                System.Globalization.DateTimeFormatInfo.InvariantInfo,
-                System.Globalization.DateTimeStyles.AssumeUniversal
-            );
+        {
+            var dest = string.IsNullOrEmpty(time) ?
+                       DateTime.MinValue :
+                       DateTime.ParseExact(time, format,
+                           System.Globalization.DateTimeFormatInfo.InvariantInfo,
+                           System.Globalization.DateTimeStyles.AssumeUniversal |
+                           System.Globalization.DateTimeStyles.AdjustToUniversal
+                       );
+            return new DateTime(dest.Ticks, DateTimeKind.Utc);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -223,11 +227,14 @@ namespace Cube.Conversions
         /// 
         /* ----------------------------------------------------------------- */
         public static DateTime ToLocalTime(this string time, string format)
-            => string.IsNullOrEmpty(time) ?
-            DateTime.MinValue :
-            DateTime.ParseExact(time, format,
-                System.Globalization.DateTimeFormatInfo.InvariantInfo,
-                System.Globalization.DateTimeStyles.AssumeLocal
-            );
+        {
+            var dest = string.IsNullOrEmpty(time) ?
+                       DateTime.MinValue :
+                       DateTime.ParseExact(time, format,
+                           System.Globalization.DateTimeFormatInfo.InvariantInfo,
+                           System.Globalization.DateTimeStyles.AssumeLocal
+                       );
+            return new DateTime(dest.Ticks, DateTimeKind.Local);
+        }
     }
 }
