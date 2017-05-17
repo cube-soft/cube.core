@@ -68,6 +68,7 @@
     <Compile Include="Events\ValueEventArgsTest.cs" />
     <Compile Include="FileSystem\DriveTest.cs" />
     <Compile Include="FileSystem\FileHandlerTest.cs" />
+    <Compile Include="GenericComparerTest.cs" />
     <Compile Include="Operations\CollectionsTest.cs" />
     <Compile Include="Operations\FileInfoTest.cs" />
     <Compile Include="Operations\GenericsTest.cs" />
