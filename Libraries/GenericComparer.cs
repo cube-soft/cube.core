@@ -130,18 +130,13 @@ namespace Cube
         /// GetHashCode
         /// 
         /// <summary>
-        /// ハッシュアルゴリズムやハッシュテーブルなどのデータに指定した
-        /// 時に使用するハッシュ関数として機能します。
+        /// GenericEqualityComparer(T) は GetHashcode(T) を必要とする
+        /// 操作を許可しません。
         /// </summary>
-        /// 
-        /// <param name="obj">
-        /// ハッシュコードを取得する対象となるオブジェクト
-        /// </param>
-        /// 
-        /// <returns>ハッシュ値</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public override int GetHashCode(T obj) => obj.GetHashCode();
+        public override int GetHashCode(T obj)
+            => throw new InvalidOperationException();
 
         #endregion
 

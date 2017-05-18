@@ -66,5 +66,33 @@ namespace Cube.Tests
             Assert.That(src[2], Is.EqualTo(x0));
             Assert.That(src[3], Is.EqualTo(x2));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GenericEqualityComparer_Throws
+        ///
+        /// <summary>
+        /// GetHashCode の必要な操作を実行した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GenericEqualityComparer_Throws()
+        {
+            var key = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
+            var dic = new Dictionary<Person, object>(
+                new GenericEqualityComparer<Person>((x, y) =>
+                {
+                    return x.Name == y.Name &&
+                           x.Age  == y.Age &&
+                           x.Sex  == y.Sex;
+                })
+            );
+
+            Assert.That(
+                () => dic.Add(key, new object()),
+                Throws.TypeOf<System.InvalidOperationException>()
+            );
+        }
     }
 }
