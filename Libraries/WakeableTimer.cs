@@ -418,8 +418,6 @@ namespace Cube
                 case PowerModes.Resume:
                     Resume();
                     break;
-                case PowerModes.StatusChange:
-                    break;
                 case PowerModes.Suspend:
                     Suspend();
                     break;
