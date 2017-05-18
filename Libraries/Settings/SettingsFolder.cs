@@ -461,7 +461,7 @@ namespace Cube.Settings
                 _autosaver.Start();
             }
 
-            PropertyChanged?.Invoke(this, e);
+            OnPropertyChanged(e);
         }
 
         /* ----------------------------------------------------------------- */

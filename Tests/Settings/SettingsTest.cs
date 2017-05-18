@@ -56,7 +56,12 @@ namespace Cube.Tests
         [Test]
         public void SettingsFolder()
         {
+            var count    = 0;
             var settings = new SettingsFolder<Person>();
+            settings.Loaded += (s, e) => ++count;
+            settings.Load();
+
+            Assert.That(count, Is.EqualTo(1));
             Assert.That(settings.Company, Is.EqualTo(""));
             Assert.That(settings.Product, Is.EqualTo(""));
             Assert.That(settings.Version.ToString(false), Is.EqualTo("1.0.0.0"));
@@ -245,14 +250,14 @@ namespace Cube.Tests
         [Test]
         public async Task AutoSave()
         {
-            var count   = 0;
-            var changed = 0;
-            var delay   = TimeSpan.FromMilliseconds(100);
+            var count  = 0;
+            var change = 0;
+            var delay  = TimeSpan.FromMilliseconds(100);
 
             using (var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest"))
             {
                 settings.Saved           += (s, e) => ++count;
-                settings.PropertyChanged += (s, e) => ++changed;
+                settings.PropertyChanged += (s, e) => ++change;
 
                 settings.AutoSave      = true;
                 settings.AutoSaveDelay = delay;
@@ -265,8 +270,8 @@ namespace Cube.Tests
 
             using (var key = OpenSaveKey())
             {
-                Assert.That(count,   Is.EqualTo(1));
-                Assert.That(changed, Is.EqualTo(3));
+                Assert.That(count,  Is.EqualTo(1));
+                Assert.That(change, Is.EqualTo(3));
                 Assert.That(key.GetValue("Name"), Is.EqualTo("AutoSave"));
                 Assert.That(key.GetValue("Age"),  Is.EqualTo(77));
                 Assert.That(key.GetValue("Sex"),  Is.EqualTo(1));
@@ -288,15 +293,14 @@ namespace Cube.Tests
             var count = 0;
 
             var settings = new SettingsFolder<Person>(Company, Product) { AutoSave = false };
+            settings.Loaded += (s, e) => ++count;
 
             settings.Load();
-            settings.PropertyChanged += (s, e) => count++;
             settings.Value.Name = "Before ReLoad";
-            Assert.That(count, Is.EqualTo(1));
-
             settings.Load();
-            settings.Value.Name = "After ReLoad";
+            
             Assert.That(count, Is.EqualTo(2));
+            Assert.That(settings.Value.Name, Is.EqualTo("佐藤栄作"));
         }
 
         #endregion
