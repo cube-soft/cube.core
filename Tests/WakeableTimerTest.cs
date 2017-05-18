@@ -120,6 +120,10 @@ namespace Cube.Tests
                 Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
                 timer.Start();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Start();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Stop();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
                 timer.Stop();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
             }
@@ -139,9 +143,10 @@ namespace Cube.Tests
         {
             using (var timer = new WakeableTimer())
             {
-                var ms = 100;
+                var ms = 50;
 
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
+                timer.Interval = TimeSpan.FromMilliseconds(ms); // ignore
                 timer.Start();
                 await Task.Delay(ms * 2);
                 timer.Stop();
@@ -170,11 +175,13 @@ namespace Cube.Tests
         {
             using (var timer = new WakeableTimer())
             {
-                var ms = Math.Max(delay, 100);
-                var actual = 0;
+                var ms      = Math.Max(delay, 100);
+                var count   = 0;
+                var chagned = 0;
 
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
-                timer.Subscribe(() => ++actual);
+                timer.Subscribe(() => ++count);
+                timer.PowerModeChanged += (s, e) => ++chagned;
                 timer.Start(TimeSpan.FromMilliseconds(delay));
 
                 // force change
@@ -186,7 +193,8 @@ namespace Cube.Tests
                 timer.Stop();
 
                 Assert.That(timer.PowerMode, Is.EqualTo(PowerModes.Resume));
-                Assert.That(actual, Is.EqualTo(expected));
+                Assert.That(chagned, Is.EqualTo(2));
+                Assert.That(count, Is.EqualTo(expected));
             }
         }
     }

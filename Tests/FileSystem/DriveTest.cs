@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Linq;
+using System.Management;
+using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Cube.FileSystem;
 
@@ -33,7 +35,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class DriveTest
+    class DriveTest : FileResource
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -105,12 +107,20 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Drive_Detach_Throws()
-            => Assert.That(
-            () => Drive.GetDrives().First().Detach(),
-            Throws.TypeOf<VetoException>()
-                  .And.Property("Reason").EqualTo(VetoType.IllegalDeviceRequest)
-                  .And.Property("Name").Not.Null.Or.Empty
-        );
+        {
+            try { Drive.GetDrives().First().Detach(); }
+            catch (Exception err)
+            {
+                var dest = Result("VetoException.dat");
+                using (var fs = System.IO.File.Create(dest))
+                {
+                    new BinaryFormatter().Serialize(fs, err);
+                }
+
+                Assert.That(System.IO.File.Exists(dest), Is.True);
+                Assert.That(err, Is.TypeOf<VetoException>());
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -142,6 +152,22 @@ namespace Cube.Tests
         public void Drive_NotFound()
             => Assert.That(
             () => new Drive("InvalidLettter"),
+            Throws.TypeOf<ArgumentException>()
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Drive_Null
+        ///
+        /// <summary>
+        /// 無効な ManagementObject を設定した時のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Drive_Null()
+            => Assert.That(
+            () => new Drive(default(ManagementObject)),
             Throws.TypeOf<ArgumentException>()
         );
     }

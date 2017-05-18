@@ -56,20 +56,21 @@ namespace Cube.Tests
             using (var server = new Cube.Processes.MessengerServer<string>(id))
             using (var client = new Cube.Processes.MessengerClient<string>(id))
             {
+                var cts = new CancellationTokenSource();
+                Action<string> h = (x) =>
+                {
+                    actual = x;
+                    server.Publish(x);
+                    cts.Cancel();
+                };
+
                 try
                 {
-                    var cts = new CancellationTokenSource();
-                    Action<string> h = (x) =>
-                    {
-                        actual = x;
-                        server.Publish(x);
-                        cts.Cancel();
-                    };
                     server.Subscribe(h);
                     Task.Run(() => client.Publish(msg)).Forget();
                     await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                 }
-                catch (TaskCanceledException /* err */) { /* ignore */ }
+                catch (TaskCanceledException /* err */) { server.Unsubscribe(h); }
             }
 
             Assert.That(actual, Is.EqualTo(msg));

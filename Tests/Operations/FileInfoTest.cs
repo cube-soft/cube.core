@@ -50,5 +50,18 @@ namespace Cube.Tests
             var info = new FileInfo(Example(filename));
             Assert.That(info.GetTypeName(), Is.Not.Null.And.Not.Empty);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetTypeName_Null
+        ///
+        /// <summary>
+        /// Null が指定された時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetTypeName_Null()
+            => Assert.That(Operations.GetTypeName(null), Is.Null);
     }
 }

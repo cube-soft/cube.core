@@ -76,12 +76,13 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(FileType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(FileType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(FileType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(FileType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
+        [TestCase(FileType.Xml,     "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(FileType.Json,    "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(FileType.Xml,     "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(FileType.Json,    "Settings.ja.json", ExpectedResult = "山田太郎")]
+        [TestCase(FileType.Unknown, "Settings.xml",     ExpectedResult = null)]
         public string Load_File(FileType type, string filename)
-            => type.Load<Person>(Example(filename)).Name;
+            => type.Load<Person>(Example(filename))?.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,13 +132,33 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(FileType.Xml,  "Person.xml")]
-        [TestCase(FileType.Json, "Person.json")]
+        [TestCase(FileType.Xml,     "Person.xml")]
+        [TestCase(FileType.Json,    "Person.json")]
         public void Save_File(FileType type, string filename)
         {
             var dest = Result(filename);
             type.Save(dest, CreatePerson());
             Assert.That(File.Exists(dest), Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Unknown
+        /// 
+        /// <summary>
+        /// 無効な FileType を指定して保存した時のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Save_Unknown()
+        {
+            var dest = Result("Person.txt");
+            Assert.That(
+                () => FileType.Unknown.Save(dest, CreatePerson()),
+                Throws.TypeOf<ArgumentException>()
+            );
+            Assert.That(File.Exists(dest), Is.False);
         }
 
         /* ----------------------------------------------------------------- */
