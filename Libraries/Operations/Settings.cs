@@ -68,8 +68,6 @@ namespace Cube.Settings
                         return LoadXml<T>(reader.BaseStream);
                     case FileType.Json:
                         return LoadJson<T>(reader.BaseStream);
-                    case FileType.Unknown:
-                        return default(T);
                     default:
                         return default(T);
                 }
