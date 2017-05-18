@@ -74,7 +74,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public VetoException(VetoType reason, string name)
-            : this(reason, name, string.Empty, null) { }
+            : this(reason, name, string.Empty) { }
 
         /* ----------------------------------------------------------------- */
         ///
