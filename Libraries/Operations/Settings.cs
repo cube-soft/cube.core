@@ -97,19 +97,28 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public static void Save<T>(this FileType type, string dest, T src)
         {
-            using (var writer = new System.IO.StreamWriter(dest))
+            try
             {
-                switch (type)
+                using (var writer = new System.IO.StreamWriter(dest))
                 {
-                    case FileType.Xml:
-                        SaveXml(src, writer.BaseStream);
-                        break;
-                    case FileType.Json:
-                        SaveJson(src, writer.BaseStream);
-                        break;
-                    default:
-                        break;
+                    switch (type)
+                    {
+                        case FileType.Xml:
+                            SaveXml(src, writer.BaseStream);
+                            break;
+                        case FileType.Json:
+                            SaveJson(src, writer.BaseStream);
+                            break;
+                        default:
+                            throw new ArgumentException($"{type}:Unknown FileType");
+                    }
                 }
+            }
+            catch (Exception err)
+            {
+                try { System.IO.File.Delete(dest); }
+                catch (Exception /* err */) { /* ignore */ }
+                throw err;
             }
         }
 
