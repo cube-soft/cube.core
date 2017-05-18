@@ -43,6 +43,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void Log_Configure()
             => Assert.DoesNotThrow(() =>
         {
