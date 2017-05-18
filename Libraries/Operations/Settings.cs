@@ -116,8 +116,7 @@ namespace Cube.Settings
             }
             catch (Exception err)
             {
-                try { System.IO.File.Delete(dest); }
-                catch (Exception /* err */) { /* ignore */ }
+                System.IO.File.Delete(dest);
                 throw err;
             }
         }
