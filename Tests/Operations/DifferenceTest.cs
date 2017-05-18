@@ -25,30 +25,30 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OnpAlgorithmTest
+    /// DifferenceTest
     /// 
     /// <summary>
-    /// Cube.Differences.OnpAlgorithm のテスト用クラスです。
+    /// Cube.Collections.Operations.Difference のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class OnpAlgorithmTest
+    class DifferenceTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compare_Newer
+        /// Difference
         /// 
         /// <summary>
-        /// 差分検出のテストを行います。
+        /// 差分検出のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Compare_TestCases))]
-        public void Compare(string older, string newer, Result<char> expected)
+        public void Difference(string older, string newer, Result<char> expected)
         {
             var actual = newer.Difference(older).First();
             Assert.That(actual.Condition, Is.EqualTo(expected.Condition));
@@ -67,17 +67,18 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compare_Older_IsNull
+        /// Difference_OlderIsEmpty
         /// 
         /// <summary>
-        /// 変更前のテキストが空の場合のテストを行います。
+        /// 変更前のテキストが空の場合のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Compare_OlderIsNull()
+        [TestCase("")]
+        [TestCase(null)]
+        public void Difference_OlderIsEmpty(string older)
         {
-            var actual = "empty".Difference("").First();
+            var actual = "empty".Difference(older).First();
             Assert.That(actual.Condition, Is.EqualTo(Condition.Inserted));
             Assert.That(actual.Older, Is.Null);
             Assert.That(actual.Newer, Is.EquivalentTo("empty"));
@@ -85,24 +86,34 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compare_Newer_IsNull
+        /// Difference_NewerIsEmpty
         /// 
         /// <summary>
-        /// 変更後のテキストが空の場合のテストを行います。
+        /// 変更後のテキストが空の場合のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Compare_NewerIsNull()
+        [TestCase("")]
+        [TestCase(null)]
+        public void Difference_NewerIsEmpty(string newer)
         {
-            var actual = "".Difference("empty").First();
+            var actual = newer.Difference("empty").First();
             Assert.That(actual.Condition, Is.EqualTo(Condition.Deleted));
             Assert.That(actual.Older, Is.EquivalentTo("empty"));
             Assert.That(actual.Newer, Is.Null);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Difference_IgnoreCase
+        /// 
+        /// <summary>
+        /// 大文字・小文字を無視した比較のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Test]
-        public void Compare_IgnoreCase()
+        public void Difference_IgnoreCase()
         {
             var actual = "AbCdEfG".Difference(
                 "aBcDeFg",

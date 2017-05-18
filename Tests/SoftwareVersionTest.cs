@@ -36,6 +36,23 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
+        /// Digit
+        ///
+        /// <summary>
+        /// Digit プロパティの設定テストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1, ExpectedResult = 2)]
+        [TestCase(2, ExpectedResult = 2)]
+        [TestCase(3, ExpectedResult = 3)]
+        [TestCase(4, ExpectedResult = 4)]
+        [TestCase(5, ExpectedResult = 4)]
+        public int Digit(int digit)
+            => new SoftwareVersion { Digit = digit }.Digit;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ToString_Assembly
         ///
         /// <summary>
@@ -80,11 +97,27 @@ namespace Cube.Tests
         [TestCase("v1.0.0.0-p21")]
         [TestCase("p21-v1.0.0.0-suffix")]
         public void Parse(string src)
-            => Assert.DoesNotThrow(() =>
         {
             var version = new SoftwareVersion(src);
             Assert.That(version.ToString(false), Is.EqualTo(src));
-        });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_Invalid
+        ///
+        /// <summary>
+        /// 無効な文字列を設定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("1")]
+        [TestCase("InvalidVersionNumber")]
+        public void Parse_Invalid(string src)
+        {
+            var version = new SoftwareVersion(src);
+            Assert.That(version.ToString(false), Is.EqualTo("1.0.0.0"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///

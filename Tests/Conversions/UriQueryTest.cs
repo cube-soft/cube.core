@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Cube.Conversions;
 
@@ -88,6 +89,22 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// With_Null
+        /// 
+        /// <summary>
+        /// 引数に null が設定された時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Null()
+        {
+            Assert.That(default(Uri).With("key", "value"), Is.Null);
+            Assert.That(Create().With(default(Dictionary<string, string>)), Is.EqualTo(Create()));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// With_SoftwareVersion
         /// 
         /// <summary>
@@ -128,6 +145,22 @@ namespace Cube.Tests
                     Content = "content"
                 }).ToString(),
                 Is.EqualTo($"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content")
+            );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With_Utm_Null
+        /// 
+        /// <summary>
+        /// 無効な UTM クエリーを設定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Utm_Null()
+            => Assert.That(
+                Create().With(default(UtmQuery)),
+                Is.EqualTo(Create())
             );
 
         /* ----------------------------------------------------------------- */

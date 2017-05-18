@@ -50,21 +50,23 @@ namespace Cube.Tests
         [Test]
         public void Load_Registry()
         {
-            var s = new SettingsFolder<Person>(Company, Product);
-            s.AutoSave = false;
-            s.Load();
+            using (var s = new SettingsFolder<Person>(Company, Product))
+            {
+                s.AutoSave = false;
+                s.Load();
 
-            Assert.That(s.Value.Name,           Is.EqualTo("佐藤栄作"));
-            Assert.That(s.Value.Age,            Is.EqualTo(52));
-            Assert.That(s.Value.Sex,            Is.EqualTo(Sex.Male));
-            Assert.That(s.Value.Reserved,       Is.EqualTo(true));
-            Assert.That(s.Value.Creation,       Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
-            Assert.That(s.Value.Identification, Is.EqualTo(1357));
-            Assert.That(s.Value.Secret,         Is.EqualTo("secret message"));
-            Assert.That(s.Value.Phone.Type,     Is.EqualTo("Mobile"));
-            Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
-            Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
-            Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
+                Assert.That(s.Value.Name,           Is.EqualTo("佐藤栄作"));
+                Assert.That(s.Value.Age,            Is.EqualTo(52));
+                Assert.That(s.Value.Sex,            Is.EqualTo(Sex.Male));
+                Assert.That(s.Value.Reserved,       Is.EqualTo(true));
+                Assert.That(s.Value.Creation,       Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
+                Assert.That(s.Value.Identification, Is.EqualTo(1357));
+                Assert.That(s.Value.Secret,         Is.EqualTo("secret message"));
+                Assert.That(s.Value.Phone.Type,     Is.EqualTo("Mobile"));
+                Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
+                Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
+                Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -176,15 +178,17 @@ namespace Cube.Tests
             var count = 0;
             var delay = TimeSpan.FromMilliseconds(100);
 
-            var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest");
-            settings.Saved += (s, e) => count++;
-            settings.AutoSave = true;
-            settings.AutoSaveDelay = delay;
-            settings.Value.Name = "AutoSave";
-            settings.Value.Age  = 77;
-            settings.Value.Sex  = Sex.Female;
+            using (var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest"))
+            {
+                settings.Saved        += (s, e) => count++;
+                settings.AutoSave      = true;
+                settings.AutoSaveDelay = delay;
+                settings.Value.Name    = "AutoSave";
+                settings.Value.Age     = 77;
+                settings.Value.Sex     = Sex.Female;
 
-            await Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2));
+                await Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2));
+            }
 
             using (var key = OpenSaveKey())
             {

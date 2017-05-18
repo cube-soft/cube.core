@@ -88,5 +88,30 @@ namespace Cube.Tests
 
             Assert.That(failed, Is.True);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Move_Throws
+        ///
+        /// <summary>
+        /// 移動操作に失敗するテストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Failed イベントにハンドラを登録していない場合、File.Move を
+        /// 実行した時と同様の例外が発生します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Move_Throws()
+            => Assert.That(() =>
+            {
+                var op   = new Cube.FileSystem.FileHandler();
+                var src  = Result("FileNotFound.txt");
+                var dest = Result("Moved.txt");
+                op.Move(src, dest, true);
+            },
+            Throws.TypeOf<FileNotFoundException>());
     }
 }

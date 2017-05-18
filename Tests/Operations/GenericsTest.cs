@@ -169,6 +169,23 @@ namespace Cube.Tests
 
         #endregion
 
+        #region TryCast
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast_Failed
+        ///
+        /// <summary>
+        /// TryCast に失敗した時の挙動を確認します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TryCast_Failed()
+            => Assert.That(10.TryCast("failed"), Is.EqualTo("failed"));
+
+        #endregion
+
         #endregion
     }
 }

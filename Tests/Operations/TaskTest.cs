@@ -49,11 +49,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Forget()
+        public void Forget() => Assert.DoesNotThrow(() =>
         {
             Task.Run(() => throw new InvalidOperationException()).Forget();
-            Assert.Pass();
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
