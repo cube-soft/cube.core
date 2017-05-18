@@ -373,9 +373,7 @@ namespace Cube.Settings
         {
             using (var key = Registry.CurrentUser.OpenSubKey(SubKeyName, false))
             {
-                var dest = key.Load<TValue>();
-                if (dest == null) return;
-                OnLoaded(new ValueChangedEventArgs<TValue>(Value, dest));
+                OnLoaded(new ValueChangedEventArgs<TValue>(Value, key.Load<TValue>()));
             }
         }
 
