@@ -40,6 +40,31 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// SettingsFolder
+        /// 
+        /// <summary>
+        /// SettingsFolder を規定値で初期化するテストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 通常は実行時の Assembly オブジェクトを基に初期化されますが、
+        /// NUnit 経由では Assembly オブジェクトが見つからないため、
+        /// null で初期化されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void SettingsFolder()
+        {
+            var settings = new SettingsFolder<Person>();
+            Assert.That(settings.Company, Is.EqualTo(""));
+            Assert.That(settings.Product, Is.EqualTo(""));
+            Assert.That(settings.Version.ToString(false), Is.EqualTo("1.0.0.0"));
+            Assert.That(settings.Value, Is.Not.Null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Load_Registry
         /// 
         /// <summary>
@@ -67,6 +92,34 @@ namespace Cube.Tests
                 Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
                 Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_RegistryIsNull
+        /// 
+        /// <summary>
+        /// 無効なレジストリキーを設定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Load_RegistryIsNull()
+        {
+            var actual   = default(RegistryKey).Load<Person>();
+            var expected = new Person();
+
+            Assert.That(actual.Identification, Is.EqualTo(expected.Identification));
+            Assert.That(actual.Name,           Is.EqualTo(expected.Name));
+            Assert.That(actual.Age,            Is.EqualTo(expected.Age));
+            Assert.That(actual.Sex,            Is.EqualTo(expected.Sex));
+            Assert.That(actual.Reserved,       Is.EqualTo(expected.Reserved));
+            Assert.That(actual.Creation,       Is.EqualTo(expected.Creation));
+            Assert.That(actual.Secret,         Is.EqualTo(expected.Secret));
+            Assert.That(actual.Phone.Type,     Is.EqualTo(expected.Phone.Type));
+            Assert.That(actual.Phone.Value,    Is.EqualTo(expected.Phone.Value));
+            Assert.That(actual.Email.Type,     Is.EqualTo(expected.Email.Type));
+            Assert.That(actual.Email.Value,    Is.EqualTo(expected.Email.Value));
         }
 
         /* ----------------------------------------------------------------- */
@@ -175,12 +228,15 @@ namespace Cube.Tests
         [Test]
         public async Task AutoSave()
         {
-            var count = 0;
-            var delay = TimeSpan.FromMilliseconds(100);
+            var count   = 0;
+            var changed = 0;
+            var delay   = TimeSpan.FromMilliseconds(100);
 
             using (var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest"))
             {
-                settings.Saved        += (s, e) => count++;
+                settings.Saved           += (s, e) => ++count;
+                settings.PropertyChanged += (s, e) => ++changed;
+
                 settings.AutoSave      = true;
                 settings.AutoSaveDelay = delay;
                 settings.Value.Name    = "AutoSave";
@@ -192,7 +248,8 @@ namespace Cube.Tests
 
             using (var key = OpenSaveKey())
             {
-                Assert.That(count, Is.EqualTo(1));
+                Assert.That(count,   Is.EqualTo(1));
+                Assert.That(changed, Is.EqualTo(3));
                 Assert.That(key.GetValue("Name"), Is.EqualTo("AutoSave"));
                 Assert.That(key.GetValue("Age"),  Is.EqualTo(77));
                 Assert.That(key.GetValue("Sex"),  Is.EqualTo(1));
