@@ -180,6 +180,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Save_RegistryIsNull
+        /// 
+        /// <summary>
+        /// 無効なレジストリに保存した時の挙動を確認します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// RegistryKey が null の場合、処理は無視されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Save_RegistryIsNull()
+            => Assert.DoesNotThrow(() => default(RegistryKey).Save(CreatePerson()));
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Save_File
         /// 
         /// <summary>
