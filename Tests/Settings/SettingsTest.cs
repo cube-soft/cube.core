@@ -157,6 +157,7 @@ namespace Cube.Tests
         public void Save_Registry()
         {
             using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());
+            using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, default(Person)); // ignore
             using (var key = OpenSaveKey())
             {
                 var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
