@@ -16,9 +16,11 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
+using Cube.Processes;
 
 namespace Cube.Tests
 {
@@ -38,7 +40,29 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StartAsCurrentUser
+        /// StartAsActiveUser
+        ///
+        /// <summary>
+        /// ログオン中のユーザでプロセスを実行するテストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: 現在、通常ユーザからの実行には失敗するので要検証。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void StartAsActiveUser()
+            => Assert.That(() =>
+            {
+                var exec = "explorer.exe";
+                var proc = Cube.Processes.Process.StartAsActiveUser(exec, null);
+                proc.Kill();
+            },
+            Throws.TypeOf<Win32Exception>().And.Message.EqualTo("WTSQueryUserToken"));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// StartAs_UserName
         ///
         /// <summary>
         /// ログオン中のユーザでプロセスを実行するテストを実行します。
@@ -50,7 +74,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void StartAsCurrentUser()
+        public void StartAs_UserName()
             => Assert.That(() =>
             {
                 var user = Environment.UserName;
@@ -62,7 +86,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StartAsCurrentThread
+        /// StartAs_ThreadID
         ///
         /// <summary>
         /// 現在のスレッド上でプロセスを実行するテストを実行します。
@@ -74,7 +98,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void StartAsCurrentThread()
+        public void StartAs_ThreadID()
             => Assert.That(() =>
             {
                 var tid  = GetCurrentThreadId();
@@ -83,6 +107,33 @@ namespace Cube.Tests
                 proc.Kill();
             },
             Throws.TypeOf<Win32Exception>().And.Message.EqualTo("OpenThreadToken"));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Activate
+        ///
+        /// <summary>
+        /// 指定されたプロセスのウィンドウをアクティブ化するテストを
+        /// 実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: 成功するテストケースを作成できていないので要検討。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(Activate_TestCases))]
+        public void Activate(System.Diagnostics.Process process)
+            => Assert.DoesNotThrow(() => process.Activate());
+
+        private static IEnumerable<TestCaseData> Activate_TestCases
+        {
+            get
+            {
+                yield return new TestCaseData(System.Diagnostics.Process.GetCurrentProcess());
+                yield return new TestCaseData(null);
+            }
+        }
 
         #endregion
 

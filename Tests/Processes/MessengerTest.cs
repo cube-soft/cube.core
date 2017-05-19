@@ -53,7 +53,7 @@ namespace Cube.Tests
             var msg    = "ClientToServer";
             var actual = string.Empty;
 
-            using (var server = new Cube.Processes.MessengerServer<string>(id))
+            using (var server = new Cube.Processes.Messenger<string>(id))
             using (var client = new Cube.Processes.MessengerClient<string>(id))
             {
                 var cts = new CancellationTokenSource();
@@ -97,9 +97,12 @@ namespace Cube.Tests
             {
                 var id = nameof(MessengerTest);
                 using (var s1 = new Cube.Processes.Messenger<string>(id))
-                using (var s2 = new Cube.Processes.Messenger<string>(id))
                 {
-                    Assert.Fail("never reached");
+                    Assert.That(s1.IsServer, Is.True);
+                    using (var s2 = new Cube.Processes.Messenger<string>(id))
+                    {
+                        Assert.Fail("never reached");
+                    }
                 }
             }, Throws.TypeOf<InvalidOperationException>());
 
