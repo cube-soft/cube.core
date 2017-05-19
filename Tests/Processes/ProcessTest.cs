@@ -123,18 +123,9 @@ namespace Cube.Tests
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Activate_TestCases))]
-        public void Activate(System.Diagnostics.Process process)
-            => Assert.DoesNotThrow(() => process.Activate());
-
-        private static IEnumerable<TestCaseData> Activate_TestCases
-        {
-            get
-            {
-                yield return new TestCaseData(System.Diagnostics.Process.GetCurrentProcess());
-                yield return new TestCaseData(null);
-            }
-        }
+        [Test]
+        public void Activate()
+            => Assert.DoesNotThrow(() => System.Diagnostics.Process.GetCurrentProcess().Activate());
 
         #endregion
 

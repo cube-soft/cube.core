@@ -79,7 +79,6 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public void SendCallback(byte[] bytes)
         {
-            if (_subscriptions.Count <= 0) return;
             using (var ms = new MemoryStream(bytes))
             {
                 var json = new DataContractSerializer(typeof(TValue));
