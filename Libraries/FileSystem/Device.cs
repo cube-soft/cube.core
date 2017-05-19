@@ -177,9 +177,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         private void DetachMedia()
-        {
-            WinMM.NativeMethods.mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
-        }
+            => WinMM.NativeMethods.mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -212,7 +210,7 @@ namespace Cube.FileSystem
 
                     var devinfo = new SP_DEVINFO_DATA();
                     var path = GetDevicePath(handle, data, devinfo);
-                    var index = Cube.FileSystem.DeviceNumber.Get(path);
+                    var index = DeviceNumber.Get(path);
                     if (Drive.Index == index)
                     {
                         Path = path;
@@ -273,7 +271,7 @@ namespace Cube.FileSystem
 
             var dest  = SetupApi.NativeMethods.SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            if (dest == IntPtr.Zero) Win32Error("SetupDiGetClassDevs");
+            if (dest == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error(), "SetupDiGetClassDevs");
             return dest;
         }
 
@@ -300,7 +298,7 @@ namespace Cube.FileSystem
                 Marshal.StructureToPtr(detail, buffer, false);
 
                 var status = SetupApi.NativeMethods.SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
-                if (!status) Win32Error("SetupDiGetDeviceInterfaceDetail");
+                if (!status) throw new Win32Exception(Marshal.GetLastWin32Error(), "SetupDiGetDeviceInterfaceDetail");
 
                 var pos = new IntPtr(buffer.ToInt64() + Marshal.SizeOf(typeof(uint)));
                 return Marshal.PtrToStringAuto(pos);
@@ -330,20 +328,6 @@ namespace Cube.FileSystem
                 }
             }
             return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Win32Error
-        ///
-        /// <summary>
-        /// Win32 Error の値を持つ例外を送出します。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        private static void Win32Error(string message)
-        {
-            throw new Win32Exception(Marshal.GetLastWin32Error(), message);
         }
 
         #endregion
