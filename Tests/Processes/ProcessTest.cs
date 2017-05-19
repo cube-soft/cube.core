@@ -51,6 +51,7 @@ namespace Cube.Tests
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void StartAsActiveUser()
             => Assert.That(() =>
             {
