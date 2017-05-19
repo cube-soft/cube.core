@@ -354,7 +354,7 @@ namespace Cube.Processes
         {
             if (_disposed) return;
 
-            if (disposing) _host?.Abort();
+            if (disposing) _host.Abort();
 
             _disposed = true;
         }
@@ -513,8 +513,8 @@ namespace Cube.Processes
             {
                 (_service as IClientChannel)?.Abort();
                 _service = null;
-                _context?.Abort();
-                _factory?.Abort();
+                _context.Abort();
+                _factory.Abort();
             }
 
             _disposed = true;

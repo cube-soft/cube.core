@@ -53,10 +53,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public static uint Get(string deviceName)
-        {
-            if (string.IsNullOrEmpty(deviceName)) return uint.MaxValue;
-            return GetDeviceNumber(deviceName);
-        }
+            => GetDeviceNumber(deviceName);
 
         #endregion
 
@@ -82,12 +79,11 @@ namespace Cube.FileSystem
             {
                 handle = Kernel32.NativeMethods.CreateFile(deviceName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
                     IntPtr.Zero, 3 /* OPEN_EXISTING */, 0, IntPtr.Zero);
-                var errno = Marshal.GetLastWin32Error();
-                if (handle.ToInt32() <= 0) throw new Win32Exception(errno);
+                if (handle.ToInt64() <= 0) throw new Win32Exception("CreateFile");
                 return GetDeviceNumber(handle);
                 
             }
-            finally { if (handle.ToInt32() > 0) Kernel32.NativeMethods.CloseHandle(handle); }
+            finally { if (handle.ToInt64() > 0) Kernel32.NativeMethods.CloseHandle(handle); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -112,7 +108,7 @@ namespace Cube.FileSystem
                 var result = Kernel32.NativeMethods.DeviceIoControl(handle,
                     0x002D1080 /* IOCTL_STORAGE_GET_DEVICE_NUMBER */,
                     IntPtr.Zero, 0, buffer, (uint)capacity, out size, IntPtr.Zero);
-                if (!result || size == 0) throw new Win32Exception(Marshal.GetLastWin32Error());
+                if (!result || size == 0) throw new Win32Exception("DeviceIoControl");
 
                 var dest = (STORAGE_DEVICE_NUMBER)Marshal.PtrToStructure(buffer, typeof(STORAGE_DEVICE_NUMBER));
                 return dest.DeviceNumber;

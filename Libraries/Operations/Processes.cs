@@ -43,14 +43,10 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public static void Activate(this System.Diagnostics.Process process)
         {
-            if (process == null || process.MainWindowHandle == IntPtr.Zero) return;
-
-            var handle = process.MainWindowHandle;
-            if (User32.NativeMethods.IsIconic(handle))
-            {
-                User32.NativeMethods.ShowWindowAsync(handle, 9 /* SW_RESTORE */);
-            }
-            User32.NativeMethods.SetForegroundWindow(handle);
+            var h = process?.MainWindowHandle ?? IntPtr.Zero;
+            if (h == IntPtr.Zero) return;
+            if (User32.NativeMethods.IsIconic(h)) User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
+            User32.NativeMethods.SetForegroundWindow(h);
         }
     }
 }
