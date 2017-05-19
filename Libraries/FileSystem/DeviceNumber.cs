@@ -79,7 +79,7 @@ namespace Cube.FileSystem
             {
                 handle = Kernel32.NativeMethods.CreateFile(deviceName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
                     IntPtr.Zero, 3 /* OPEN_EXISTING */, 0, IntPtr.Zero);
-                if (handle.ToInt64() <= 0) throw new Win32Exception("CreateFile");
+                if (handle.ToInt64() <= 0) Win32Error("CreateFile");
                 return GetDeviceNumber(handle);
                 
             }
@@ -108,12 +108,26 @@ namespace Cube.FileSystem
                 var result = Kernel32.NativeMethods.DeviceIoControl(handle,
                     0x002D1080 /* IOCTL_STORAGE_GET_DEVICE_NUMBER */,
                     IntPtr.Zero, 0, buffer, (uint)capacity, out size, IntPtr.Zero);
-                if (!result || size == 0) throw new Win32Exception("DeviceIoControl");
+                if (!result || size == 0) Win32Error("DeviceIoControl");
 
                 var dest = (STORAGE_DEVICE_NUMBER)Marshal.PtrToStructure(buffer, typeof(STORAGE_DEVICE_NUMBER));
                 return dest.DeviceNumber;
             }
             finally { if (buffer != IntPtr.Zero) Marshal.FreeHGlobal(buffer); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Win32Error
+        ///
+        /// <summary>
+        /// Win32 Error の値を持つ例外を送出します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static void Win32Error(string message)
+        {
+            throw new Win32Exception(Marshal.GetLastWin32Error(), message);
         }
 
         #endregion

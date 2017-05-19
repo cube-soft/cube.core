@@ -205,9 +205,9 @@ namespace Cube.FileSystem
                     var data = new SP_DEVICE_INTERFACE_DATA();
                     if (!SetupApi.NativeMethods.SetupDiEnumDeviceInterfaces(handle, IntPtr.Zero, ref guid, i, data))
                     {
-                        var code = Marshal.GetLastWin32Error();
-                        if (code == 259 /* ERROR_NO_MORE_ITEMS */) break;
-                        throw new Win32Exception(code);
+                        var errno = Marshal.GetLastWin32Error();
+                        if (errno == 259 /* ERROR_NO_MORE_ITEMS */) break;
+                        throw new Win32Exception(errno, "SetupDiEnumDeviceInterfaces");
                     }
 
                     var devinfo = new SP_DEVINFO_DATA();
@@ -273,9 +273,7 @@ namespace Cube.FileSystem
 
             var dest  = SetupApi.NativeMethods.SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-            var errno = Marshal.GetLastWin32Error();
-            if (dest.ToInt64() == -1) throw new Win32Exception(errno);
-
+            if (dest == IntPtr.Zero) Win32Error("SetupDiGetClassDevs");
             return dest;
         }
 
@@ -302,7 +300,7 @@ namespace Cube.FileSystem
                 Marshal.StructureToPtr(detail, buffer, false);
 
                 var status = SetupApi.NativeMethods.SetupDiGetDeviceInterfaceDetail(handle, data, buffer, size, ref size, devinfo);
-                if (!status) throw new Win32Exception(Marshal.GetLastWin32Error());
+                if (!status) Win32Error("SetupDiGetDeviceInterfaceDetail");
 
                 var pos = new IntPtr(buffer.ToInt64() + Marshal.SizeOf(typeof(uint)));
                 return Marshal.PtrToStringAuto(pos);
@@ -325,10 +323,27 @@ namespace Cube.FileSystem
             var dest = 0u;
             if (!SetupApi.NativeMethods.SetupDiGetDeviceInterfaceDetail(handle, data, IntPtr.Zero, 0, ref dest, devinfo))
             {
-                var code = Marshal.GetLastWin32Error();
-                if (code != 122 /* ERROR_INSUFFICIENT_BUFFER */) throw new Win32Exception(code);
+                var errno = Marshal.GetLastWin32Error();
+                if (errno != 122 /* ERROR_INSUFFICIENT_BUFFER */)
+                {
+                    throw new Win32Exception(errno, "SetupDiGetDeviceInterfaceDetail");
+                }
             }
             return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Win32Error
+        ///
+        /// <summary>
+        /// Win32 Error の値を持つ例外を送出します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private static void Win32Error(string message)
+        {
+            throw new Win32Exception(Marshal.GetLastWin32Error(), message);
         }
 
         #endregion
