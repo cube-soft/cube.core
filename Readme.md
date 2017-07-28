@@ -13,5 +13,5 @@ Cube.Core is a common library for CubeSoft applications.
 
 ## License
 
-Copyright (c) 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)  
+Copyright (c) 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Core/blob/master/License.txt).
