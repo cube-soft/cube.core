@@ -1,41 +1,26 @@
-# --------------------------------------------------------------------------- #
-# general configuration
-# --------------------------------------------------------------------------- #
 version: 1.4.2.{build}
 branches:
-  except:
-    - net35
+    except:
+        - net35
 skip_tags: true
-
-# --------------------------------------------------------------------------- #
-# environment configuration
-# --------------------------------------------------------------------------- #
 clone_folder: C:\Cube\Cube.Core
 image: Visual Studio 2017
 nuget:
-  project_feed: true
-  disable_publish_on_pr: true
-
-# --------------------------------------------------------------------------- #
-# build configuration
-# --------------------------------------------------------------------------- #
+    project_feed: true
+    disable_publish_on_pr: true
 platform: Any CPU
 configuration: Release
 before_build:
     - nuget restore Cube.Core.sln
 build: 
-  parallel: true
-  project: Cube.Core.sln
-  publish_nuget: true
-  verbosity: normal
-
-# --------------------------------------------------------------------------- #
-# tests configuration
-# --------------------------------------------------------------------------- #
+    parallel: true
+    project: Cube.Core.sln
+    publish_nuget: true
+    verbosity: normal
 test_script:
-    - ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"nunit3-console.exe" -targetargs:"Cube.Core.Tests.dll" -targetdir:".\Tests\bin\Release" -hideskipped:All -output:CoverResult.xml
+    - ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:nunit3-console.exe -targetargs:Cube.Core.Tests.dll -targetdir:Tests\bin\Release -hideskipped:All -output:CoverResult.xml -filter:"+[*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
-    - codecov -f "CoverResult.xml"
+    - codecov -f CoverResult.xml
     
