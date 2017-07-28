@@ -45,12 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
@@ -61,31 +60,30 @@
     <Compile Include="Details\FileResourceTest.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
-    <Compile Include="Operations\DifferenceTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
     <Compile Include="Events\ProgressEventArgsTest.cs" />
     <Compile Include="Events\QueryEventArgsTest.cs" />
     <Compile Include="Events\RelayEventTest.cs" />
     <Compile Include="Events\ValueEventArgsTest.cs" />
-    <Compile Include="GenericComparerTest.cs" />
+    <Compile Include="Operations\DifferenceTest.cs" />
     <Compile Include="Operations\CollectionsTest.cs" />
     <Compile Include="Operations\GenericsTest.cs" />
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\NumericTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
-    <Compile Include="PowerTest.cs" />
-    <Compile Include="Processes\ProcessTest.cs" />
+    <Compile Include="Processes\MessengerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="Processes\MessengerTest.cs" />
+    <Compile Include="GenericComparerTest.cs" />
+    <Compile Include="PowerTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
