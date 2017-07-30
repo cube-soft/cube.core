@@ -1,24 +1,13 @@
-# --------------------------------------------------------------------------- #
-# general configuration
-# --------------------------------------------------------------------------- #
-version: 1.4.1.{build}
+version: 1.4.2.{build}
 branches:
-  except:
-    - net35
+    except:
+        - net35
 skip_tags: true
-
-# --------------------------------------------------------------------------- #
-# environment configuration
-# --------------------------------------------------------------------------- #
 clone_folder: C:\Cube\Cube.Forms
 image: Visual Studio 2017
 nuget:
-  project_feed: true
-  disable_publish_on_pr: true
-
-# --------------------------------------------------------------------------- #
-# build configuration
-# --------------------------------------------------------------------------- #
+    project_feed: true
+    disable_publish_on_pr: true
 platform: Any CPU
 configuration: Release
 before_build:
