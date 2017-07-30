@@ -31,8 +31,8 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     internal enum Sex : int
     {
-        Male = 0,
-        Female = 1,
+        Male    =  0,
+        Female  =  1,
         Unknown = -1
     }
 
@@ -227,6 +227,17 @@ namespace Cube.Tests
             get { return _secret; }
             set { SetProperty(ref _secret, value); }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Guid
+        /// 
+        /// <summary>
+        /// Guid オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Guid Guid { get; } = Guid.NewGuid();
 
         #region Fields
         private int _identification = -1;
