@@ -8,7 +8,6 @@ Cube.Forms is a WinForms based GUI library for CubeSoft applications.
 ## Requirement
 
 * [log4net](https://logging.apache.org/log4net/)
-* [NUnit](http://nunit.org/)
 
 ## License
 
