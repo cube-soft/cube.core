@@ -72,6 +72,7 @@
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessenterService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="Settings\FileType.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\Startup.cs" />
