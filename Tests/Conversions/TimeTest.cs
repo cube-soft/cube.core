@@ -127,13 +127,13 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(0x7fffffffu, 2038, 1, 19, 12, 14,  7)]
-        [TestCase(0x80000000u, 2038, 1, 19, 12, 14,  8)]
-        [TestCase(0xffffffffu, 2106, 2,  7, 15, 28, 15)]
+        [TestCase(0x7fffffffu, 2038, 1, 19, 3, 14,  7)]
+        [TestCase(0x80000000u, 2038, 1, 19, 3, 14,  8)]
+        [TestCase(0xffffffffu, 2106, 2,  7, 6, 28, 15)]
         public void ToLocalTime(uint unix, int y, int m, int d, int hh, int mm, int ss)
         {
             var src = (int)unix;
-            var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
+            var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc).ToLocalTime();
             Assert.That(src.ToLocalTime(), Is.EqualTo(expected));
         }
 

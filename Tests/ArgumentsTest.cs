@@ -57,6 +57,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "bar", "bas" }).Returns(3);
                 yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
                 yield return new TestCaseData(new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
+                yield return new TestCaseData(new List<string> { "foo", "", "--bar" }).Returns(1);
                 yield return new TestCaseData(new List<string>()).Returns(0);
             }
         }
