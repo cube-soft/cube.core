@@ -22,16 +22,16 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileResourceTest
+    /// FileHandlerTest
     /// 
     /// <summary>
-    /// FileResource をテストするためのクラスです。
+    /// FileHandler をテストするためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Parallelizable]
     [TestFixture]
-    class FileResourceTest : FileResource
+    class FileHandlerTest : FileHandler
     {
         /* ----------------------------------------------------------------- */
         ///

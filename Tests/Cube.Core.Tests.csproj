@@ -56,8 +56,8 @@
     <Compile Include="Conversions\ByteFormatTest.cs" />
     <Compile Include="Conversions\TimeTest.cs" />
     <Compile Include="Conversions\UriQueryTest.cs" />
-    <Compile Include="Details\FileResource.cs" />
-    <Compile Include="Details\FileResourceTest.cs" />
+    <Compile Include="Details\FileHandler.cs" />
+    <Compile Include="Details\FileHandlerTest.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
@@ -81,17 +81,30 @@
     <Compile Include="PowerTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Packages.config" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <None Include="Packages.config" />
+    <None Include="Examples\Sample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.ja.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.ja.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /I /S "$(ProjectDir)Examples" "$(TargetDir)\Examples"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

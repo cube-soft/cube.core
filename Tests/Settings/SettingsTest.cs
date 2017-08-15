@@ -34,7 +34,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsTest : FileResource
+    class SettingsTest : FileHandler
     {
         #region Tests
 
