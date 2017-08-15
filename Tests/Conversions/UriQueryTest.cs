@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Cube.Conversions;
 
@@ -63,10 +64,10 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(2015, 3, 19, 23, 57, 57, 1426777077)]
+        [TestCase(2015, 3, 19, 14, 57, 57, 1426777077)]
         public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
             => Assert.That(
-                Create().With(new DateTime(y, m, d, hh, mm, ss)).ToString(),
+                Create().With(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc)).ToString(),
                 Is.EqualTo($"{Create()}?ts={unix}")
             );
 
@@ -85,6 +86,22 @@ namespace Cube.Tests
                 Create().With("key1", "value1").With("key2", "value2").ToString(),
                 Is.EqualTo($"{Create()}?key1=value1&key2=value2")
             );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With_Null
+        /// 
+        /// <summary>
+        /// 引数に null が設定された時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Null()
+        {
+            Assert.That(default(Uri).With("key", "value"), Is.Null);
+            Assert.That(Create().With(default(Dictionary<string, string>)), Is.EqualTo(Create()));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -128,6 +145,22 @@ namespace Cube.Tests
                     Content = "content"
                 }).ToString(),
                 Is.EqualTo($"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content")
+            );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With_Utm_Null
+        /// 
+        /// <summary>
+        /// 無効な UTM クエリーを設定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Utm_Null()
+            => Assert.That(
+                Create().With(default(UtmQuery)),
+                Is.EqualTo(Create())
             );
 
         /* ----------------------------------------------------------------- */

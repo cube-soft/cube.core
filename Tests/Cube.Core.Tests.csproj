@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\net35\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\net35\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -44,21 +44,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Cube.Backwards">
+      <HintPath>..\..\packages\Cube.Backwards.1.4.0\lib\net35\Cube.Backwards.dll</HintPath>
+    </Reference>
     <Reference Include="AsyncBridge.Net35">
       <HintPath>..\..\packages\AsyncBridge.Net35.0.2.0\lib\net35-Client\AsyncBridge.Net35.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Cube.Backwards">
-      <HintPath>..\..\lib\net35\Cube.Backwards.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.6.1\lib\net20\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.7.1\lib\net20\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -68,45 +66,57 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormatTest.cs" />
-    <Compile Include="Conversions\UnixTimeTest.cs" />
+    <Compile Include="Conversions\TimeTest.cs" />
     <Compile Include="Conversions\UriQueryTest.cs" />
-    <Compile Include="Details\FileResource.cs" />
-    <Compile Include="Details\FileResourceTest.cs" />
+    <Compile Include="Details\FileHandler.cs" />
+    <Compile Include="Details\FileHandlerTest.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
-    <Compile Include="Differences\OnpAlgorithmTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
     <Compile Include="Events\ProgressEventArgsTest.cs" />
     <Compile Include="Events\QueryEventArgsTest.cs" />
     <Compile Include="Events\RelayEventTest.cs" />
     <Compile Include="Events\ValueEventArgsTest.cs" />
-    <Compile Include="FileSystem\DriveTest.cs" />
-    <Compile Include="FileSystem\FileHandlerTest.cs" />
+    <Compile Include="Operations\DifferenceTest.cs" />
     <Compile Include="Operations\CollectionsTest.cs" />
-    <Compile Include="Operations\FileInfoTest.cs" />
     <Compile Include="Operations\GenericsTest.cs" />
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\NumericTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
+    <Compile Include="Processes\MessengerTest.cs" />
+    <Compile Include="QueryTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="MessengerTest.cs" />
+    <Compile Include="GenericComparerTest.cs" />
+    <Compile Include="PowerTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
+    <None Include="Examples\Sample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.ja.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.ja.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Settings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /I /S "$(ProjectDir)Examples" "$(TargetDir)\Examples"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -96,13 +96,13 @@ namespace Cube.Conversions
         /// </returns>
         /// 
         /// <remarks>
-        /// 時刻は UnixTime に変換した上で、t=(unix) と言う形で
+        /// 時刻は UnixTime に変換した上で、ts=(unix) と言う形で
         /// Uri オブジェクトに付与されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, DateTime time)
-            => With(uri, Properties.Resources.KeyTimestamp, time.ToUnixTime());
+            => With(uri, "ts", time.ToUnixTime());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -121,7 +121,7 @@ namespace Cube.Conversions
         /// 
         /* ----------------------------------------------------------------- */
         public static Uri With(this Uri uri, SoftwareVersion version)
-            => With(uri, Properties.Resources.KeyVersion, version.ToString(false));
+            => With(uri, "ver", version.ToString(false));
 
         /* ----------------------------------------------------------------- */
         ///

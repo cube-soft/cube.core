@@ -26,7 +26,7 @@ namespace Cube.Tests
     /// ArgumentsTest
     /// 
     /// <summary>
-    /// プログラムオプション等の引数を解析するためのクラスです。
+    /// Arguments のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -57,6 +57,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "bar", "bas" }).Returns(3);
                 yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
                 yield return new TestCaseData(new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
+                yield return new TestCaseData(new List<string> { "foo", "", "--bar" }).Returns(1);
                 yield return new TestCaseData(new List<string>()).Returns(0);
             }
         }
@@ -95,6 +96,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
             }
         }
+
         public static IEnumerable<TestCaseData> Parse_Options_Count_TestCases
         {
             get
@@ -108,6 +110,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(new List<string> { "foo", "--", "bas" }).Returns(0);
             }
         }
+
         #endregion
     }
 }

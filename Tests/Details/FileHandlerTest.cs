@@ -15,45 +15,48 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Runtime.InteropServices;
+using NUnit.Framework;
+using System.IO;
 
-namespace Cube.Shell32
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Shell32.NativeMethods
+    /// FileHandlerTest
     /// 
     /// <summary>
-    /// shell32.dll に定義された関数を宣言するためのクラスです。
+    /// FileHandler をテストするためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
+    [Parallelizable]
+    [TestFixture]
+    class FileHandlerTest : FileHandler
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// SHGetFileInfo
-        ///
+        /// Examples_Exists
+        /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762179.aspx
+        /// Examples フォルダが存在するかどうかをテストします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(
-            string pszPath,
-            uint dwFileAttributes,
-            ref SHFILEINFO psfi,
-            uint cbFileInfo,
-            uint uFlags
-        );
+        [TestCase(ExpectedResult = true)]
+        public bool Examples_Exists()
+            => Directory.Exists(Examples);
 
-        #region Fields
-        private const string LibName = "shell32.dll";
-        public  const uint SHGFI_USEFILEATTRIBUTES = 0x00000010;
-        public  const uint SHGFI_TYPENAME          = 0x00000400;
-        public  const uint FILE_ATTRIBUTE_NORMAL   = 0x00000080;
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Results_Exists
+        /// 
+        /// <summary>
+        /// Results フォルダが存在するかどうかをテストします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(ExpectedResult = true)]
+        public bool Results_Exists()
+            => Directory.Exists(Results);
     }
 }

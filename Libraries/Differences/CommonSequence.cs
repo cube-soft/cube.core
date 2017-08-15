@@ -43,17 +43,6 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public CommonSequence() : this(0, 0, 0, null) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CommonSequence
-        /// 
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
         public CommonSequence(int older, int newer, int count, CommonSequence<T> next)
         {
             OlderStart = older;

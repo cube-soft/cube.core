@@ -68,8 +68,6 @@ namespace Cube.Settings
                         return LoadXml<T>(reader.BaseStream);
                     case FileType.Json:
                         return LoadJson<T>(reader.BaseStream);
-                    case FileType.Unknown:
-                        return default(T);
                     default:
                         return default(T);
                 }
@@ -99,19 +97,27 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public static void Save<T>(this FileType type, string dest, T src)
         {
-            using (var writer = new System.IO.StreamWriter(dest))
+            try
             {
-                switch (type)
+                using (var writer = new System.IO.StreamWriter(dest))
                 {
-                    case FileType.Xml:
-                        SaveXml(src, writer.BaseStream);
-                        break;
-                    case FileType.Json:
-                        SaveJson(src, writer.BaseStream);
-                        break;
-                    default:
-                        break;
+                    switch (type)
+                    {
+                        case FileType.Xml:
+                            SaveXml(src, writer.BaseStream);
+                            break;
+                        case FileType.Json:
+                            SaveJson(src, writer.BaseStream);
+                            break;
+                        default:
+                            throw new ArgumentException($"{type}:Unknown FileType");
+                    }
                 }
+            }
+            catch (Exception err)
+            {
+                System.IO.File.Delete(dest);
+                throw err;
             }
         }
 
@@ -232,7 +238,7 @@ namespace Cube.Settings
                         root.SetValue(name, ((bool)value) ? 1 : 0);
                         break;
                     case TypeCode.DateTime:
-                        root.SetValue(name, (((DateTime)value).ToUniversalTime().ToString()));
+                        root.SetValue(name, (((DateTime)value).ToUniversalTime().ToString("o")));
                         break;
                     case TypeCode.Object:
                         using (var subkey = root.CreateSubKey(name))

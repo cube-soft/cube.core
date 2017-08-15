@@ -54,6 +54,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(Assembly assembly)
@@ -69,6 +71,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="version">バージョンを表す文字列</param>
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(string version)
@@ -98,9 +102,21 @@ namespace Cube
         /// <summary>
         /// Number プロパティの有効桁数を取得または設定します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// 指定可能な値は 2, 3, 4 の 3 種類です。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public int Digit { get; set; } = 4;
+        public int Digit
+        {
+            get { return _digit; }
+            set
+            {
+                if (_digit == value) return;
+                _digit = Math.Min(Math.Max(value, 2), 4);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -194,17 +210,10 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private void AppendNumber(StringBuilder ss)
         {
-            if (Number == null) return;
-
-            ss.Append(Number.Major);
-            if (Digit <= 1) return;
-
-            ss.Append($".{Number.Minor}");
+            ss.Append($"{Number.Major}.{Number.Minor}");
             if (Digit <= 2) return;
-
             ss.Append($".{Number.Build}");
             if (Digit <= 3) return;
-
             ss.Append($".{Number.Revision}");
         }
 
@@ -252,6 +261,10 @@ namespace Cube
             catch { return null; }
         }
 
+        #endregion
+
+        #region Fields
+        private int _digit = 4;
         #endregion
     }
 }

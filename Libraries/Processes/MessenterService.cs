@@ -102,7 +102,6 @@ namespace Cube.Processes
         public void Connect()
         {
             var channel = OperationContext.Current.GetCallbackChannel<IMessengerServiceCallback>();
-            if (channel == null) return;
             _clients.Remove(channel);
             _clients.Add(channel);
         }

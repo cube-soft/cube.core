@@ -73,6 +73,7 @@ namespace Cube.Tests.Events
             ev.Publish();
             ev.Publish();
             ev.Unsubscribe(action);
+            ev.Unsubscribe(action); // ignore
             ev.Publish();
             Assert.That(count, Is.EqualTo(2));
         }
@@ -116,7 +117,8 @@ namespace Cube.Tests.Events
             ev.Subscribe(action);
             ev.Publish(value);
             ev.Publish(value);
-            ev.UnSubscribe(action);
+            ev.Unsubscribe(action);
+            ev.Unsubscribe(action); // ignore
             ev.Publish(value);
             Assert.That(count, Is.EqualTo(value * 2));
         }

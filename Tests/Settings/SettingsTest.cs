@@ -34,9 +34,39 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsTest : FileResource
+    class SettingsTest : FileHandler
     {
         #region Tests
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder
+        /// 
+        /// <summary>
+        /// SettingsFolder を規定値で初期化するテストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 通常は実行時の Assembly オブジェクトを基に初期化されますが、
+        /// NUnit 経由では Assembly オブジェクトが見つからないため、
+        /// null で初期化されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void SettingsFolder()
+        {
+            var count    = 0;
+            var settings = new SettingsFolder<Person>();
+            settings.Loaded += (s, e) => ++count;
+            settings.Load();
+
+            Assert.That(count, Is.EqualTo(1));
+            Assert.That(settings.Company, Is.EqualTo(""));
+            Assert.That(settings.Product, Is.EqualTo(""));
+            Assert.That(settings.Version.ToString(false), Is.EqualTo("1.0.0.0"));
+            Assert.That(settings.Value, Is.Not.Null);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -50,21 +80,51 @@ namespace Cube.Tests
         [Test]
         public void Load_Registry()
         {
-            var s = new SettingsFolder<Person>(Company, Product);
-            s.AutoSave = false;
-            s.Load();
+            using (var s = new SettingsFolder<Person>(Company, Product))
+            {
+                s.AutoSave = false;
+                s.Load();
 
-            Assert.That(s.Value.Name,           Is.EqualTo("佐藤栄作"));
-            Assert.That(s.Value.Age,            Is.EqualTo(52));
-            Assert.That(s.Value.Sex,            Is.EqualTo(Sex.Male));
-            Assert.That(s.Value.Reserved,       Is.EqualTo(true));
-            Assert.That(s.Value.Creation,       Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
-            Assert.That(s.Value.Identification, Is.EqualTo(1357));
-            Assert.That(s.Value.Secret,         Is.EqualTo("secret message"));
-            Assert.That(s.Value.Phone.Type,     Is.EqualTo("Mobile"));
-            Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
-            Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
-            Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
+                Assert.That(s.Value.Name,           Is.EqualTo("佐藤栄作"));
+                Assert.That(s.Value.Age,            Is.EqualTo(52));
+                Assert.That(s.Value.Sex,            Is.EqualTo(Sex.Male));
+                Assert.That(s.Value.Reserved,       Is.EqualTo(true));
+                Assert.That(s.Value.Creation,       Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
+                Assert.That(s.Value.Identification, Is.EqualTo(1357));
+                Assert.That(s.Value.Secret,         Is.EqualTo("secret message"));
+                Assert.That(s.Value.Phone.Type,     Is.EqualTo("Mobile"));
+                Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
+                Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
+                Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_RegistryIsNull
+        /// 
+        /// <summary>
+        /// 無効なレジストリキーを設定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Load_RegistryIsNull()
+        {
+            var actual   = default(RegistryKey).Load<Person>();
+            var expected = new Person();
+
+            Assert.That(actual.Identification, Is.EqualTo(expected.Identification));
+            Assert.That(actual.Name,           Is.EqualTo(expected.Name));
+            Assert.That(actual.Age,            Is.EqualTo(expected.Age));
+            Assert.That(actual.Sex,            Is.EqualTo(expected.Sex));
+            Assert.That(actual.Reserved,       Is.EqualTo(expected.Reserved));
+            Assert.That(actual.Creation,       Is.EqualTo(expected.Creation));
+            Assert.That(actual.Secret,         Is.EqualTo(expected.Secret));
+            Assert.That(actual.Phone.Type,     Is.EqualTo(expected.Phone.Type));
+            Assert.That(actual.Phone.Value,    Is.EqualTo(expected.Phone.Value));
+            Assert.That(actual.Email.Type,     Is.EqualTo(expected.Email.Type));
+            Assert.That(actual.Email.Value,    Is.EqualTo(expected.Email.Value));
         }
 
         /* ----------------------------------------------------------------- */
@@ -76,12 +136,13 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(FileType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(FileType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(FileType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(FileType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
+        [TestCase(FileType.Xml,     "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(FileType.Json,    "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(FileType.Xml,     "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(FileType.Json,    "Settings.ja.json", ExpectedResult = "山田太郎")]
+        [TestCase(FileType.Unknown, "Settings.xml",     ExpectedResult = null)]
         public string Load_File(FileType type, string filename)
-            => type.Load<Person>(Example(filename)).Name;
+            => type.Load<Person>(Example(filename))?.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -96,13 +157,16 @@ namespace Cube.Tests
         public void Save_Registry()
         {
             using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());
+            using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, default(Person)); // ignore
             using (var key = OpenSaveKey())
             {
+                var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
+
                 Assert.That(key.GetValue("Name"),     Is.EqualTo("山田花子"));
                 Assert.That(key.GetValue("Age"),      Is.EqualTo(15));
                 Assert.That(key.GetValue("Sex"),      Is.EqualTo(1));
                 Assert.That(key.GetValue("Reserved"), Is.EqualTo(1));
-                Assert.That(key.GetValue("Creation"), Is.EqualTo("2014/12/31 14:25:30"));
+                Assert.That(key.GetValue("Creation"), Is.EqualTo(time.ToString("o")));
                 Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(key.GetValue("Secret"),   Is.Null);
 
@@ -122,6 +186,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Save_RegistryIsNull
+        /// 
+        /// <summary>
+        /// 無効なレジストリに保存した時の挙動を確認します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// RegistryKey が null の場合、処理は無視されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Save_RegistryIsNull()
+            => Assert.DoesNotThrow(() => default(RegistryKey).Save(CreatePerson()));
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Save_File
         /// 
         /// <summary>
@@ -129,13 +210,33 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(FileType.Xml,  "Person.xml")]
-        [TestCase(FileType.Json, "Person.json")]
+        [TestCase(FileType.Xml,     "Person.xml")]
+        [TestCase(FileType.Json,    "Person.json")]
         public void Save_File(FileType type, string filename)
         {
             var dest = Result(filename);
             type.Save(dest, CreatePerson());
             Assert.That(File.Exists(dest), Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Unknown
+        /// 
+        /// <summary>
+        /// 無効な FileType を指定して保存した時のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Save_Unknown()
+        {
+            var dest = Result("Person.txt");
+            Assert.That(
+                () => FileType.Unknown.Save(dest, CreatePerson()),
+                Throws.TypeOf<ArgumentException>()
+            );
+            Assert.That(File.Exists(dest), Is.False);
         }
 
         /* ----------------------------------------------------------------- */
@@ -150,22 +251,28 @@ namespace Cube.Tests
         [Test]
         public async void AutoSave()
         {
-            var count = 0;
-            var delay = TimeSpan.FromMilliseconds(100);
+            var count  = 0;
+            var change = 0;
+            var delay  = TimeSpan.FromMilliseconds(100);
 
-            var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest");
-            settings.Saved += (s, e) => count++;
-            settings.AutoSave = true;
-            settings.AutoSaveDelay = delay;
-            settings.Value.Name = "AutoSave";
-            settings.Value.Age  = 77;
-            settings.Value.Sex  = Sex.Female;
+            using (var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest"))
+            {
+                settings.Saved           += (s, e) => ++count;
+                settings.PropertyChanged += (s, e) => ++change;
 
-            await TaskEx.Delay(TimeSpan.FromTicks(delay.Ticks * 2));
+                settings.AutoSave      = true;
+                settings.AutoSaveDelay = delay;
+                settings.Value.Name    = "AutoSave";
+                settings.Value.Age     = 77;
+                settings.Value.Sex     = Sex.Female;
+
+                await TaskEx.Delay(TimeSpan.FromTicks(delay.Ticks * 2));
+            }
 
             using (var key = OpenSaveKey())
             {
-                Assert.That(count, Is.EqualTo(1));
+                Assert.That(count,  Is.EqualTo(1));
+                Assert.That(change, Is.EqualTo(3));
                 Assert.That(key.GetValue("Name"), Is.EqualTo("AutoSave"));
                 Assert.That(key.GetValue("Age"),  Is.EqualTo(77));
                 Assert.That(key.GetValue("Sex"),  Is.EqualTo(1));
@@ -187,15 +294,14 @@ namespace Cube.Tests
             var count = 0;
 
             var settings = new SettingsFolder<Person>(Company, Product) { AutoSave = false };
+            settings.Loaded += (s, e) => ++count;
 
             settings.Load();
-            settings.PropertyChanged += (s, e) => count++;
             settings.Value.Name = "Before ReLoad";
-            Assert.That(count, Is.EqualTo(1));
-
             settings.Load();
-            settings.Value.Name = "After ReLoad";
+            
             Assert.That(count, Is.EqualTo(2));
+            Assert.That(settings.Value.Name, Is.EqualTo("佐藤栄作"));
         }
 
         #endregion

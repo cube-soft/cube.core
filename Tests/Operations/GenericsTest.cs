@@ -51,19 +51,20 @@ namespace Cube.Tests
         [Test]
         public void Copy_Serializable()
         {
-            var src = new SerializableData();
-            src.Identification = 10;
-            src.Name = "Copy Serializable";
-            src.Sex = Sex.Male;
-            src.Creation = DateTime.Now;
-            src.Reserved = true;
-
+            var src = new SerializableData()
+            {
+                Identification = 10,
+                Name           = "Copy Serializable",
+                Sex            = Sex.Male,
+                Creation       = DateTime.Now,
+                Reserved       = true
+            };
             var copy = src.Copy();
             Assert.That(copy.Identification, Is.EqualTo(src.Identification));
-            Assert.That(copy.Name, Is.EqualTo(src.Name));
-            Assert.That(copy.Sex, Is.EqualTo(src.Sex));
-            Assert.That(copy.Creation, Is.EqualTo(src.Creation));
-            Assert.That(copy.Reserved, Is.EqualTo(src.Reserved));
+            Assert.That(copy.Name,           Is.EqualTo(src.Name));
+            Assert.That(copy.Sex,            Is.EqualTo(src.Sex));
+            Assert.That(copy.Creation,       Is.EqualTo(src.Creation));
+            Assert.That(copy.Reserved,       Is.EqualTo(src.Reserved));
         }
 
         /* ----------------------------------------------------------------- */
@@ -79,25 +80,28 @@ namespace Cube.Tests
         [Test]
         public void Copy_NonSerializable()
         {
-            var src = new Person();
-            src.Identification = 10;
-            src.Name = "Copy Serializable";
-            src.Sex = Sex.Male;
-            src.Age = 25;
-            src.Creation = DateTime.Now;
-            src.Reserved = true;
+            var src = new Person()
+            {
+                Identification = 10,
+                Name           = "Copy Serializable",
+                Sex            = Sex.Male,
+                Age            = 25,
+                Creation       = DateTime.Now,
+                Reserved       = true
+            };
             src.Phone.Value = "01-2345-6789";
-            src.Secret = "Non-DataMember";
+            src.Secret      = "Non-DataMember";
 
             var copy = src.Copy();
             Assert.That(copy.Identification, Is.EqualTo(src.Identification));
-            Assert.That(copy.Name, Is.EqualTo(src.Name));
-            Assert.That(copy.Sex, Is.EqualTo(src.Sex));
-            Assert.That(copy.Age, Is.EqualTo(src.Age));
-            Assert.That(copy.Creation, Is.EqualTo(src.Creation));
-            Assert.That(copy.Reserved, Is.EqualTo(src.Reserved));
-            Assert.That(copy.Phone.Value, Is.EqualTo(src.Phone.Value));
-            Assert.That(copy.Secret, Is.EqualTo(src.Secret));
+            Assert.That(copy.Name,           Is.EqualTo(src.Name));
+            Assert.That(copy.Sex,            Is.EqualTo(src.Sex));
+            Assert.That(copy.Age,            Is.EqualTo(src.Age));
+            Assert.That(copy.Creation,       Is.EqualTo(src.Creation));
+            Assert.That(copy.Reserved,       Is.EqualTo(src.Reserved));
+            Assert.That(copy.Phone.Value,    Is.EqualTo(src.Phone.Value));
+            Assert.That(copy.Secret,         Is.EqualTo(src.Secret));
+            Assert.That(copy.Guid,           Is.Not.EqualTo(src.Guid));
         }
 
         #endregion
@@ -166,6 +170,23 @@ namespace Cube.Tests
 
             Assert.That(copy.Phone.Value, Is.EqualTo(src.Phone.Value));
         }
+
+        #endregion
+
+        #region TryCast
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast_Failed
+        ///
+        /// <summary>
+        /// TryCast に失敗した時の挙動を確認します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TryCast_Failed()
+            => Assert.That(10.TryCast("failed"), Is.EqualTo("failed"));
 
         #endregion
 

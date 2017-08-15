@@ -16,8 +16,10 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Cube.Tasks;
 
 namespace Cube.Tests
 {
@@ -37,7 +39,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Publish_Server
+        /// Publish
         /// 
         /// <summary>
         /// サーバにメッセージを送信するテストを実行します。
@@ -45,48 +47,33 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public async void Publish_Server()
+        public async void Publish()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ClientToServer";
-            var result = string.Empty;
+            var actual = string.Empty;
 
-            using (var server = new Cube.Processes.MessengerServer<string>(id))
+            using (var server = new Cube.Processes.Messenger<string>(id))
             using (var client = new Cube.Processes.MessengerClient<string>(id))
             {
-                server.Subscribe(x => result = x);
-                client.Publish(msg);
-                await TaskEx.Delay(TimeSpan.FromMilliseconds(100));
+                var cts = new CancellationTokenSource();
+                Action<string> h = (x) =>
+                {
+                    actual = x;
+                    server.Publish(x);
+                    cts.Cancel();
+                };
+
+                try
+                {
+                    server.Subscribe(h);
+                    TaskEx.Run(() => client.Publish(msg)).Forget();
+                    await TaskEx.Delay(TimeSpan.FromSeconds(5), cts.Token);
+                }
+                catch (TaskCanceledException /* err */) { server.Unsubscribe(h); }
             }
 
-            Assert.That(result, Is.EqualTo(msg));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Publish_Client
-        /// 
-        /// <summary>
-        /// クライアントにメッセージを送信するテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public async void Publish_Client()
-        {
-            var id     = nameof(MessengerTest);
-            var msg    = "ServerToClient";
-            var result = string.Empty;
-
-            using (var server = new Cube.Processes.MessengerServer<string>(id))
-            using (var client = new Cube.Processes.MessengerClient<string>(id))
-            {
-                client.Subscribe(x => result = x);
-                server.Publish(msg);
-                await TaskEx.Delay(TimeSpan.FromMilliseconds(100));
-            }
-
-            Assert.That(result, Is.EqualTo(msg));
+            Assert.That(actual, Is.EqualTo(msg));
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,9 +97,12 @@ namespace Cube.Tests
             {
                 var id = nameof(MessengerTest);
                 using (var s1 = new Cube.Processes.Messenger<string>(id))
-                using (var s2 = new Cube.Processes.Messenger<string>(id))
                 {
-                    Assert.Fail("never reached");
+                    Assert.That(s1.IsServer, Is.True);
+                    using (var s2 = new Cube.Processes.Messenger<string>(id))
+                    {
+                        Assert.Fail("never reached");
+                    }
                 }
             }, Throws.TypeOf<InvalidOperationException>());
 

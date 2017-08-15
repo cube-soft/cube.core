@@ -81,7 +81,7 @@ namespace Cube
 
         #endregion
 
-        #region Protected methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,6 +90,12 @@ namespace Cube
         /// <summary>
         /// プロパティに値を設定します。
         /// </summary>
+        /// 
+        /// <param name="field">設定先の参照</param>
+        /// <param name="value">設定値</param>
+        /// <param name="name">設定するプロパティの名前</param>
+        /// 
+        /// <returns>設定したかどうかを示す値</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected bool SetProperty<T>(ref T field, T value,
@@ -103,6 +109,13 @@ namespace Cube
         /// <summary>
         /// プロパティに値を設定します。
         /// </summary>
+        ///
+        /// <param name="field">設定先の参照</param>
+        /// <param name="value">設定値</param>
+        /// <param name="func">比較用オブジェクト</param>
+        /// <param name="name">設定するプロパティの名前</param>
+        /// 
+        /// <returns>設定したかどうかを示す値</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected bool SetProperty<T>(ref T field, T value,

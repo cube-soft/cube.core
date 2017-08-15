@@ -137,7 +137,7 @@ namespace Cube
         /// <param name="action">削除する Action オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void UnSubscribe(Action<TPayload> action)
+        public void Unsubscribe(Action<TPayload> action)
         {
             if (!_subscriptions.Contains(action)) return;
             _subscriptions.Remove(action);

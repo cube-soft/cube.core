@@ -15,43 +15,51 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Runtime.InteropServices;
+using Microsoft.Win32;
+using NUnit.Framework;
 
-namespace Cube.FileSystem
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileSystem.Operations
+    /// PowerTest
     /// 
     /// <summary>
-    /// ファイルやフォルダに対する拡張メソッドを定義するためのクラスです。
+    /// Power のテスト用クラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    [TestFixture]
+    [Parallelizable]
+    class PowerTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// GetTypeName
-        ///
+        /// ModeChanged
+        /// 
         /// <summary>
-        /// ファイルの種類を表す文字列を取得します。
+        /// ModeChanged イベントの発生状況を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this System.IO.FileInfo fi)
+        [Test]
+        public void ModeChanged()
         {
-            if (fi == null) return null;
+            var count = 0;
+            PowerModeChangedEventHandler handler = (s, e) => ++count;
 
-            var attr   = Shell32.NativeMethods.FILE_ATTRIBUTE_NORMAL;
-            var flags  = Shell32.NativeMethods.SHGFI_TYPENAME |
-                         Shell32.NativeMethods.SHGFI_USEFILEATTRIBUTES;
-            var shfi   = new SHFILEINFO();
-            var result = Shell32.NativeMethods.SHGetFileInfo(fi.FullName,
-                attr, ref shfi, (uint)Marshal.SizeOf(shfi), flags);
+            Cube.Power.ModeChanged += handler;
+            Cube.Power.Mode = PowerModes.Resume;       // Resume -> Resume
+            Cube.Power.Mode = PowerModes.StatusChange; // Resume -> StatusChange
+            Cube.Power.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
+            Cube.Power.Mode = PowerModes.Suspend;      // Suspend -> Suspend
+            Cube.Power.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
+            Cube.Power.Mode = PowerModes.Resume;       // StatusChange -> Resume
+            Cube.Power.ModeChanged -= handler;
+            Cube.Power.Mode = PowerModes.Suspend;
+            Cube.Power.Mode = PowerModes.Resume;
 
-            return (result != IntPtr.Zero) ? shfi.szTypeName : null;
+            Assert.That(count, Is.EqualTo(4));
         }
     }
 }

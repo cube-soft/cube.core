@@ -120,6 +120,10 @@ namespace Cube.Tests
                 Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
                 timer.Start();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Start();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Stop();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
                 timer.Stop();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
             }
@@ -142,6 +146,7 @@ namespace Cube.Tests
                 var ms = 50;
 
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
+                timer.Interval = TimeSpan.FromMilliseconds(ms); // ignore
                 timer.Start();
                 await TaskEx.Delay(ms * 2);
                 timer.Stop();
@@ -152,6 +157,44 @@ namespace Cube.Tests
                 timer.Reset();
                 Assert.That(timer.LastExecuted, Is.EqualTo(last));
                 Assert.That(timer.Interval.TotalMilliseconds, Is.EqualTo(ms).Within(1.0));
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resume
+        /// 
+        /// <summary>
+        /// Suspend/Resume のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase( 0, 2)]
+        [TestCase(50, 1)]
+        public async void Resume(int delay, int expected)
+        {
+            using (var timer = new WakeableTimer())
+            {
+                var ms      = Math.Max(delay, 100);
+                var count   = 0;
+                var chagned = 0;
+
+                timer.Interval = TimeSpan.FromMilliseconds(ms);
+                timer.Subscribe(() => ++count);
+                timer.PowerModeChanged += (s, e) => ++chagned;
+                timer.Start(TimeSpan.FromMilliseconds(delay));
+
+                // force change
+                Cube.Power.Mode = PowerModes.Suspend;
+                await TaskEx.Delay(ms * 2);
+                Cube.Power.Mode = PowerModes.Resume;
+                await TaskEx.Delay(150);
+
+                timer.Stop();
+
+                Assert.That(timer.PowerMode, Is.EqualTo(PowerModes.Resume));
+                Assert.That(chagned, Is.EqualTo(2));
+                Assert.That(count, Is.EqualTo(expected));
             }
         }
     }

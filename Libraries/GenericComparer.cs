@@ -40,6 +40,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="func">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public GenericComparer(Func<T, T, int> func)
@@ -61,6 +63,8 @@ namespace Cube
         /// 
         /// <param name="x">比較する最初のオブジェクト</param>
         /// <param name="y">比較する 2 番目のオブジェクト</param>
+        /// 
+        /// <returns>比較結果</returns>
         ///
         /* ----------------------------------------------------------------- */
         public override int Compare(T x, T y) => _comparer(x, y);
@@ -92,6 +96,8 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="func">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public GenericEqualityComparer(Func<T, T, bool> func)
@@ -113,6 +119,8 @@ namespace Cube
         /// 
         /// <param name="x">比較する最初のオブジェクト</param>
         /// <param name="y">比較する 2 番目のオブジェクト</param>
+        /// 
+        /// <returns>比較結果</returns>
         ///
         /* ----------------------------------------------------------------- */
         public override bool Equals(T x, T y) => _comparer(x, y);
@@ -122,16 +130,13 @@ namespace Cube
         /// GetHashCode
         /// 
         /// <summary>
-        /// ハッシュアルゴリズムやハッシュテーブルなどのデータに指定した
-        /// 時に使用するハッシュ関数として機能します。
+        /// GenericEqualityComparer(T) は GetHashcode(T) を必要とする
+        /// 操作を許可しません。
         /// </summary>
-        /// 
-        /// <param name="obj">
-        /// ハッシュコードを取得する対象となるオブジェクト
-        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public override int GetHashCode(T obj) => obj.GetHashCode();
+        public override int GetHashCode(T obj)
+            => throw new InvalidOperationException();
 
         #endregion
 

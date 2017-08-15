@@ -142,7 +142,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Publish(TValue value) => _core?.Publish(value);
+        public void Publish(TValue value) => _core.Publish(value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,7 +155,7 @@ namespace Cube.Processes
         /// <param name="action">処理を表すオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Subscribe(Action<TValue> action) => _core?.Subscribe(action);
+        public void Subscribe(Action<TValue> action) => _core.Subscribe(action);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -168,7 +168,7 @@ namespace Cube.Processes
         /// <param name="action">処理を表すオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Unsubscribe(Action<TValue> action) => _core?.Unsubscribe(action);
+        public void Unsubscribe(Action<TValue> action) => _core.Unsubscribe(action);
 
         #region IDisposable
 
@@ -202,8 +202,8 @@ namespace Cube.Processes
 
             if (disposing)
             {
-                _core?.Dispose();
-                _mutex?.Close();
+                _core.Dispose();
+                _mutex.Close();
             }
 
             _disposed = true;
@@ -354,7 +354,7 @@ namespace Cube.Processes
         {
             if (_disposed) return;
 
-            if (disposing) _host?.Abort();
+            if (disposing) _host.Abort();
 
             _disposed = true;
         }
@@ -513,8 +513,8 @@ namespace Cube.Processes
             {
                 (_service as IClientChannel)?.Abort();
                 _service = null;
-                _context?.Abort();
-                _factory?.Abort();
+                _context.Abort();
+                _factory.Abort();
             }
 
             _disposed = true;
