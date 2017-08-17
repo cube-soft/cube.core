@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Microsoft.Win32;
 using NUnit.Framework;
 using Cube.Settings;
+using Cube.Registries;
 
 namespace Cube.Tests
 {
@@ -401,41 +402,5 @@ namespace Cube.Tests
         #endregion
 
         #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Net35Ex
-    /// 
-    /// <summary>
-    /// .NET 3.5 用の拡張クラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class Net35Ex
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeleteSubKeyTree
-        /// 
-        /// <summary>
-        /// 指定されたサブキーとその子サブキーを再帰的に削除します。
-        /// サブキーが見つからなかった場合に例外を発生させるかどうかを指定します。
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// .NET 3.5 に該当メソッドが存在しないため、拡張メソッドで対応。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void DeleteSubKeyTree(this RegistryKey key,
-            string subkey, bool throwOnMissingSubKey)
-        {
-            try { key.DeleteSubKeyTree(subkey); }
-            catch (Exception err)
-            {
-                if (throwOnMissingSubKey) throw err;
-            }
-        }
     }
 }
