@@ -56,26 +56,14 @@ namespace Cube
         /// </summary>
         /// 
         /// <param name="action">登録する Action オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Subscribe(Action action)
-            => _subscriptions.Add(action);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Unsubscribe
         /// 
-        /// <summary>
-        /// 登録されている Action オブジェクトを削除します。
-        /// </summary>
-        /// 
-        /// <param name="action">削除する Action オブジェクト</param>
+        /// <returns>購読解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public void Unsubscribe(Action action)
+        public IDisposable Subscribe(Action action)
         {
-            if (!_subscriptions.Contains(action)) return;
-            _subscriptions.Remove(action);
+            _subscriptions.Add(action);
+            return Disposable.Create(() => _subscriptions.Remove(action));
         }
 
         #endregion
@@ -121,26 +109,14 @@ namespace Cube
         /// </summary>
         /// 
         /// <param name="action">登録する Action オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Subscribe(Action<TPayload> action)
-            => _subscriptions.Add(action);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Unsubscribe
         /// 
-        /// <summary>
-        /// 登録されている Action オブジェクトを削除します。
-        /// </summary>
-        /// 
-        /// <param name="action">削除する Action オブジェクト</param>
+        /// <returns>購読解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public void Unsubscribe(Action<TPayload> action)
+        public IDisposable Subscribe(Action<TPayload> action)
         {
-            if (!_subscriptions.Contains(action)) return;
-            _subscriptions.Remove(action);
+            _subscriptions.Add(action);
+            return Disposable.Create(() => _subscriptions.Remove(action));
         }
 
         #endregion
@@ -149,4 +125,15 @@ namespace Cube
         private ICollection<Action<TPayload>> _subscriptions = new List<Action<TPayload>>();
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IEventAggregator
+    /// 
+    /// <summary>
+    /// イベントを集約するためのインターフェースです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public interface IEventAggregator { }
 }

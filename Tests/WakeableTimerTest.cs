@@ -95,7 +95,10 @@ namespace Cube.Tests
 
             using (var timer = new WakeableTimer())
             {
-                timer.Subscribe(() => ++count);
+                var disposable = timer.Subscribe(() => ++count);
+                timer.Start(TimeSpan.Zero);
+                timer.Stop();
+                disposable.Dispose();
                 timer.Start(TimeSpan.Zero);
                 timer.Stop();
             }

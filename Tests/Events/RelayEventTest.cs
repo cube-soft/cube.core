@@ -67,13 +67,12 @@ namespace Cube.Tests.Events
         public void Unsubscribe()
         {
             var count = 0;
-            Action action = () => count++;
             var ev = new RelayEvent();
-            ev.Subscribe(action);
+            var disposable = ev.Subscribe(() => count++);
             ev.Publish();
             ev.Publish();
-            ev.Unsubscribe(action);
-            ev.Unsubscribe(action); // ignore
+            disposable.Dispose();
+            disposable.Dispose(); // ignore
             ev.Publish();
             Assert.That(count, Is.EqualTo(2));
         }
@@ -112,13 +111,12 @@ namespace Cube.Tests.Events
         public void Unsubscribe(int value)
         {
             var count = 0;
-            Action<int> action = (n) => count += n;
             var ev = new RelayEvent<int>();
-            ev.Subscribe(action);
+            var disposable = ev.Subscribe(n => count += n);
             ev.Publish(value);
             ev.Publish(value);
-            ev.Unsubscribe(action);
-            ev.Unsubscribe(action); // ignore
+            disposable.Dispose();
+            disposable.Dispose(); // ignore
             ev.Publish(value);
             Assert.That(count, Is.EqualTo(value * 2));
         }

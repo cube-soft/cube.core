@@ -261,8 +261,11 @@ namespace Cube
         /// <param name="action">処理を表すオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Subscribe(Action action)
-            => Subscriptions.Add(action);
+        public IDisposable Subscribe(Action action)
+        {
+            Subscriptions.Add(action);
+            return Disposable.Create(() => Subscriptions.Remove(action));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
