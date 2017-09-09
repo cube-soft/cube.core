@@ -19,16 +19,17 @@ namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileType
+    /// SettingsType
     /// 
     /// <summary>
-    /// Settings クラスで読み込み、および保存可能なファイル形式一覧を
+    /// Settings クラスで読み込み、および保存可能なデータ形式一覧を
     /// 表した列挙型です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum FileType : int
+    public enum SettingsType : int
     {
+        Registry,
         Xml,
         Json,
         Unknown = -1

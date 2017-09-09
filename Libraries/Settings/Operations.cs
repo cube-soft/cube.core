@@ -58,19 +58,18 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this FileType type, string src)
+        public static T Load<T>(this SettingsType type, string src)
         {
-            using (var reader = new System.IO.StreamReader(src))
+            switch (type)
             {
-                switch (type)
-                {
-                    case FileType.Xml:
-                        return LoadXml<T>(reader.BaseStream);
-                    case FileType.Json:
-                        return LoadJson<T>(reader.BaseStream);
-                    default:
-                        return default(T);
-                }
+                case SettingsType.Registry:
+                    using (var k = Registry.CurrentUser.OpenSubKey(src, false)) return k.Load<T>();
+                case SettingsType.Xml:
+                    return LoadXml<T>(src);
+                case SettingsType.Json:
+                    return LoadJson<T>(src);
+                default:
+                    return default(T);
             }
         }
 
@@ -95,29 +94,21 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(this FileType type, string dest, T src)
+        public static void Save<T>(this SettingsType type, string dest, T src)
         {
-            try
+            switch (type)
             {
-                using (var writer = new System.IO.StreamWriter(dest))
-                {
-                    switch (type)
-                    {
-                        case FileType.Xml:
-                            SaveXml(src, writer.BaseStream);
-                            break;
-                        case FileType.Json:
-                            SaveJson(src, writer.BaseStream);
-                            break;
-                        default:
-                            throw new ArgumentException($"{type}:Unknown FileType");
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                System.IO.File.Delete(dest);
-                throw err;
+                case SettingsType.Registry:
+                    using (var k = Registry.CurrentUser.CreateSubKey(dest)) k.Save(src);
+                    break;
+                case SettingsType.Xml:
+                    SaveXml(src, dest);
+                    break;
+                case SettingsType.Json:
+                    SaveJson(src, dest);
+                    break;
+                default:
+                    throw new ArgumentException($"{type}:Unknown SettingsType");
             }
         }
 
@@ -172,11 +163,14 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadXml<T>(System.IO.Stream src)
+        private static T LoadXml<T>(string src)
         {
-            var serializer = new DataContractSerializer(typeof(T));
-            var dest = (T)serializer.ReadObject(src);
-            return dest;
+            using (var reader = new System.IO.StreamReader(src))
+            {
+                var serializer = new DataContractSerializer(typeof(T));
+                var dest = (T)serializer.ReadObject(reader.BaseStream);
+                return dest;
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -188,11 +182,14 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadJson<T>(System.IO.Stream src)
+        private static T LoadJson<T>(string src)
         {
-            var serializer = new DataContractJsonSerializer(typeof(T));
-            var dest = (T)serializer.ReadObject(src);
-            return dest;
+            using (var reader = new System.IO.StreamReader(src))
+            {
+                var serializer = new DataContractJsonSerializer(typeof(T));
+                var dest = (T)serializer.ReadObject(reader.BaseStream);
+                return dest;
+            }
         }
 
         #endregion
@@ -263,10 +260,13 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, System.IO.Stream dest)
+        private static void SaveXml<T>(T src, string dest)
         {
-            var serializer = new DataContractSerializer(typeof(T));
-            serializer.WriteObject(dest, src);
+            using (var writer = new System.IO.StreamWriter(dest))
+            {
+                var serializer = new DataContractSerializer(typeof(T));
+                serializer.WriteObject(writer.BaseStream, src);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -278,10 +278,13 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, System.IO.Stream dest)
+        private static void SaveJson<T>(T src, string dest)
         {
-            var serializer = new DataContractJsonSerializer(typeof(T));
-            serializer.WriteObject(dest, src);
+            using (var writer = new System.IO.StreamWriter(dest))
+            {
+                var serializer = new DataContractJsonSerializer(typeof(T));
+                serializer.WriteObject(writer.BaseStream, src);
+            }
         }
 
         #endregion
