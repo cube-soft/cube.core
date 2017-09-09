@@ -70,6 +70,7 @@
     <Compile Include="Processes\MessengerServiceCallback.cs" />
     <Compile Include="Processes\Operations.cs" />
     <Compile Include="Settings\Operations.cs" />
+    <Compile Include="Settings\RegistrySettings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
     <Compile Include="Settings\SettingsType.cs" />
     <Compile Include="Settings\Startup.cs" />
