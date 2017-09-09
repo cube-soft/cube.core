@@ -369,13 +369,10 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load()
-        {
-            using (var key = Registry.CurrentUser.OpenSubKey(SubKeyName, false))
-            {
-                OnLoaded(new ValueChangedEventArgs<TValue>(Value, key.Load<TValue>()));
-            }
-        }
+        public void Load() => OnLoaded(new ValueChangedEventArgs<TValue>(
+            Value,
+            SettingsType.Registry.Load<TValue>(SubKeyName)
+        ));
 
         #region IDisposable
 
