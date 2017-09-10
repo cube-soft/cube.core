@@ -102,11 +102,6 @@ namespace Cube.Settings
         /// <param name="company">会社名</param>
         /// <param name="product">製品名</param>
         /// 
-        /// <remarks>
-        /// SettingsFolder は HKCU\Software\(company)\(product) の
-        /// レジストリ・サブキー下から各種設定を読み込みます。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, string company, string product)
         {
@@ -334,8 +329,7 @@ namespace Cube.Settings
         /// Load
         ///
         /// <summary>
-        /// アプリケーション設定、およびユーザ設定をレジストリから
-        /// 読み込みます。
+        /// ユーザ設定をレジストリから読み込みます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -348,6 +342,9 @@ namespace Cube.Settings
         /// <summary>
         /// ユーザ設定を読み込みます。
         /// </summary>
+        /// 
+        /// <param name="type">データ形式</param>
+        /// <param name="src">読み込み先パス</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Load(SettingsType type, string src) => OnLoaded(
@@ -372,6 +369,9 @@ namespace Cube.Settings
         /// <summary>
         /// ユーザ設定を保存します。
         /// </summary>
+        /// 
+        /// <param name="type">保存形式</param>
+        /// <param name="dest">保存先パス</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Save(SettingsType type, string dest)
