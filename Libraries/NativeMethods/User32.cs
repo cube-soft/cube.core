@@ -118,6 +118,42 @@ namespace Cube.Forms.User32
         public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags,
             int x, int y, IntPtr hwnd, IntPtr lptpm);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetForegroundWindow
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowWindowAsync
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, SetLastError = true)]
+        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsIconic
+        /// 
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633527.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName)]
+        public static extern bool IsIconic(IntPtr hWnd);
+
         #region Fields
         const string LibName = "user32.dll";
         #endregion
