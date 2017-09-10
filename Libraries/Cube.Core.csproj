@@ -59,7 +59,6 @@
     <Compile Include="Events\ProgressEventArgs.cs" />
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="Operations\Collections.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessenterService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
-    <Compile Include="Processes\Operations.cs" />
     <Compile Include="Settings\Operations.cs" />
     <Compile Include="Settings\RegistrySettings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
