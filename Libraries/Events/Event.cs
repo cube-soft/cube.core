@@ -128,12 +128,12 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IEventAggregator
+    /// IEventHub
     /// 
     /// <summary>
     /// イベントを集約するためのインターフェースです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    public interface IEventAggregator { }
+    public interface IEventHub { }
 }
