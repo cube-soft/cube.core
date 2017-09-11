@@ -60,7 +60,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EventAggregator
+        /// EventHub
         /// 
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
@@ -74,7 +74,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEventAggregator EventAggregator
+        public IEventHub EventHub
         {
             get { return _events; }
             set
@@ -85,7 +85,7 @@ namespace Cube.Forms
                 {
                     var control = obj as ControlBase;
                     if (control == null) continue;
-                    control.EventAggregator = value;
+                    control.EventHub = value;
                 }
             }
         }
@@ -153,7 +153,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private IEventAggregator _events;
+        private IEventHub _events;
         #endregion
     }
 }
