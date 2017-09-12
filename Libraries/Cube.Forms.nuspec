@@ -16,7 +16,7 @@
     <tags>Cube Windows Forms</tags>
     <dependencies>
       <dependency id="Cube.Core" version="1.5.0" />
-      <dependency id="Cube.Images" version="1.4.2" />
+      <dependency id="Cube.Images" version="1.5.0" />
       <dependency id="log4net" version="2.0.8" />
     </dependencies>
   </metadata>
