@@ -29,7 +29,6 @@ namespace Cube.Tests.Events
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
     class RelayEventTest
     {

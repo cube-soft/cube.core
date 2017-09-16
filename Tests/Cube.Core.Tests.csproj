@@ -61,6 +61,7 @@
     <Compile Include="Conversions\UriQueryTest.cs" />
     <Compile Include="Details\FileHandler.cs" />
     <Compile Include="Details\FileHandlerTest.cs" />
+    <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
