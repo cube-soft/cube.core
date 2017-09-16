@@ -30,28 +30,10 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
     class LogTest
     {
         #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Log_Configure
-        ///
-        /// <summary>
-        /// Configure のテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Log_Configure()
-            => Assert.DoesNotThrow(() =>
-        {
-            Cube.Log.Operations.Configure();
-            Cube.Log.Operations.ObserveTaskException();
-        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -200,22 +182,6 @@ namespace Cube.Tests
                 this.LogFatal(err.Message, err);
             }
         });
-
-        #endregion
-
-        #region Helper
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OneTimeSetUp
-        ///
-        /// <summary>
-        /// 一度だけ実行される初期化処理です。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetUp() => Cube.Log.Operations.Configure();
 
         #endregion
     }
