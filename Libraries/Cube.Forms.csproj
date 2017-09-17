@@ -86,6 +86,7 @@
     <Compile Include="Operations\Processes.cs" />
     <Compile Include="Operations\SelectedIndices.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
+    <Compile Include="Views\Mocks\MockView.cs" />
     <Compile Include="Views\IControl.cs" />
     <Compile Include="Views\INotifyView.cs" />
     <Compile Include="Views\IWebView.cs" />
