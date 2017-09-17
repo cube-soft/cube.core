@@ -29,7 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    class MockView : IForm
+    public class MockView : IForm
     {
         #region Properties
 
