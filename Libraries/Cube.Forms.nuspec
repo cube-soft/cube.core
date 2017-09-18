@@ -6,18 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
+    <copyright>$copyright$</copyright>
+    <description>Cube forms library.</description>
+    <releaseNotes>Private release.</releaseNotes>
+    <tags>Cube Windows Forms</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/cube-soft/Cube.Forms/blob/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/cube-soft/Cube.Forms</projectUrl>
     <iconUrl>https://github.com/cube-soft/Cube.Forms/blob/master/Icon.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Cube forms library.</description>
-    <releaseNotes>Private release.</releaseNotes>
-    <copyright>$copyright$</copyright>
-    <tags>Cube Windows Forms</tags>
-    <dependencies>
-      <dependency id="Cube.Core" version="1.5.0" />
-      <dependency id="Cube.Images" version="1.5.0" />
-      <dependency id="log4net" version="2.0.8" />
-    </dependencies>
   </metadata>
 </package>
