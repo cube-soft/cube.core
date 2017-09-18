@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cube.Backwards">
       <HintPath>..\..\packages\Cube.Backwards.1.4.0\lib\net35\Cube.Backwards.dll</HintPath>
@@ -43,8 +49,6 @@
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
     </Reference>
@@ -66,28 +70,27 @@
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
-    <Compile Include="Events\IEventAggregator.cs" />
+    <Compile Include="Events\Event.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
     <Compile Include="Events\ProgressEventArgs.cs" />
     <Compile Include="Events\QueryEventArgs.cs" />
-    <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="Operations\Collections.cs" />
     <Compile Include="Operations\Generics.cs" />
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Numeric.cs" />
-    <Compile Include="Operations\Processes.cs" />
-    <Compile Include="Operations\Settings.cs" />
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessenterService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
-    <Compile Include="Settings\FileType.cs" />
+    <Compile Include="Settings\Operations.cs" />
+    <Compile Include="Settings\RegistrySettings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
+    <Compile Include="Settings\SettingsType.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="GenericComparer.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="Power.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Cube.snk" />
     <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

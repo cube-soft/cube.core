@@ -15,16 +15,23 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-namespace Cube
+namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IEventAggregator
+    /// SettingsType
     /// 
     /// <summary>
-    /// イベントを集約するためのインターフェースです。
+    /// Settings クラスで読み込み、および保存可能なデータ形式一覧を
+    /// 表した列挙型です。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public interface IEventAggregator { }
+    public enum SettingsType : int
+    {
+        Registry,
+        Xml,
+        Json,
+        Unknown = -1
+    }
 }

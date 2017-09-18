@@ -20,7 +20,6 @@ using System.ComponentModel;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Reflection;
-using Microsoft.Win32;
 using Cube.Tasks;
 
 namespace Cube.Settings
@@ -103,29 +102,10 @@ namespace Cube.Settings
         /// <param name="company">会社名</param>
         /// <param name="product">製品名</param>
         /// 
-        /// <remarks>
-        /// SettingsFolder は HKCU\Software\(company)\(product) の
-        /// レジストリ・サブキー下から各種設定を読み込みます。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, string company, string product)
         {
             Initialize(assembly, company, product);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~SettingsFolder
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~SettingsFolder()
-        {
-            Dispose(false);
         }
 
         #endregion
@@ -236,7 +216,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string SubKeyName => $@"Software\{Company}\{Product}";
+        protected string SubKeyName => $@"Software\{Company}\{Product}";
 
         #endregion
 
@@ -320,7 +300,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EventHandler Saved;
+        public event KeyValueEventHandler<SettingsType, string> Saved;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -331,13 +311,9 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnSaved(EventArgs e)
+        protected virtual void OnSaved(KeyValueEventArgs<SettingsType, string> e)
         {
-            using (var key = Registry.CurrentUser.CreateSubKey(SubKeyName))
-            {
-                key.Save(Value);
-            }
-
+            e.Key.Save(e.Value, Value);
             Startup.Save();
             Saved?.Invoke(this, e);
         }
@@ -350,6 +326,33 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Load
+        ///
+        /// <summary>
+        /// ユーザ設定をレジストリから読み込みます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Load() => Load(SettingsType.Registry, SubKeyName);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load
+        ///
+        /// <summary>
+        /// ユーザ設定を読み込みます。
+        /// </summary>
+        /// 
+        /// <param name="type">データ形式</param>
+        /// <param name="src">読み込み先パス</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Load(SettingsType type, string src) => OnLoaded(
+            new ValueChangedEventArgs<TValue>(Value, type.Load<TValue>(src))
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Save
         ///
         /// <summary>
@@ -357,34 +360,45 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() => OnSaved(EventArgs.Empty);
+        public void Save() => Save(SettingsType.Registry, SubKeyName);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Load
+        /// Save
         ///
         /// <summary>
-        /// アプリケーション設定、およびユーザ設定をレジストリから
-        /// 読み込みます。
+        /// ユーザ設定を保存します。
+        /// </summary>
+        /// 
+        /// <param name="type">保存形式</param>
+        /// <param name="dest">保存先パス</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Save(SettingsType type, string dest)
+            => OnSaved(KeyValueEventArgs.Create(type, dest));
+
+        #region IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~SettingsFolder
+        ///
+        /// <summary>
+        /// オブジェクトを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load()
+        ~SettingsFolder()
         {
-            using (var key = Registry.CurrentUser.OpenSubKey(SubKeyName, false))
-            {
-                OnLoaded(new ValueChangedEventArgs<TValue>(Value, key.Load<TValue>()));
-            }
+            Dispose(false);
         }
-
-        #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
         /// 
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// リソースを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -399,16 +413,15 @@ namespace Cube.Settings
         /// Dispose
         /// 
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// リソースを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
-            _disposed = true;
-
             if (disposing) _autosaver.Dispose();
+            _disposed = true;
         }
 
         #endregion

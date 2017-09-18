@@ -32,7 +32,6 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
     class DifferenceTest
     {

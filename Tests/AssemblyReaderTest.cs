@@ -32,7 +32,6 @@ namespace Cube.Tests
     /// 
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    [Parallelizable]
     class AssemblyReaderTest
     {
         /* ----------------------------------------------------------------- */
@@ -86,8 +85,8 @@ namespace Cube.Tests
                     Trademark     = "ここに商標を設定します。",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 4, 3, 0),
-                    FileVersion   = new Version(1, 4, 3, 0)
+                    Version       = new Version(1, 5, 0, 0),
+                    FileVersion   = new Version(1, 5, 0, 0)
                 });
 
                 yield return new TestCaseData(null, new Result

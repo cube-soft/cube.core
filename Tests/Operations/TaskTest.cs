@@ -31,7 +31,6 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
     [Ignore("NUnit for .NET 3.5 does not support async/await")]
     class TaskTest

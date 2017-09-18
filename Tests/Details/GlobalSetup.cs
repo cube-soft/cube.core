@@ -15,38 +15,38 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
+using System.Reflection;
+using NUnit.Framework;
 
-namespace Cube.Processes
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Processes.Operations
+    /// GlobalSetup
     /// 
     /// <summary>
-    /// Process クラスの拡張メソッド用クラスです。
+    /// NUnit で最初に実行する処理を記述するテストです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    [SetUpFixture]
+    public class GlobalSetup
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Activate
-        /// 
+        /// OneTimeSetup
+        ///
         /// <summary>
-        /// プロセスのメイン画面をアクティブ化します。
+        /// 一度だけ実行される初期化処理です。
         /// </summary>
-        /// 
-        /// <param name="process">Process オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Activate(this System.Diagnostics.Process process)
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
-            var h = process?.MainWindowHandle ?? IntPtr.Zero;
-            if (h == IntPtr.Zero) return;
-            if (User32.NativeMethods.IsIconic(h)) User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
-            User32.NativeMethods.SetForegroundWindow(h);
+            Cube.Log.Operations.Configure();
+            Cube.Log.Operations.ObserveTaskException();
+            Cube.Log.Operations.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
         }
     }
 }

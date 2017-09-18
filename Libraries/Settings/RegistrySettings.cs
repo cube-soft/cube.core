@@ -18,21 +18,20 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
 
 namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Settings.Operations
+    /// RegistrySettings
     /// 
     /// <summary>
-    /// ユーザ設定を扱うためのクラスです。
+    /// ユーザ設定をレジストリ上で管理するためのクラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    internal static class RegistrySettings
     {
         #region Methods
 
@@ -44,33 +43,33 @@ namespace Cube.Settings
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
         /// オブジェクトに設定します。
         /// </summary>
+        /// 
+        /// <param name="src">レジストリ・サブキー</param>
+        /// 
+        /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this RegistryKey src)
-            => (T)LoadRegistry(src, typeof(T));
+        public static T Load<T>(RegistryKey src) => (T)Load(src, typeof(T));
 
         /* ----------------------------------------------------------------- */
         ///
         /// Load
         /// 
         /// <summary>
-        /// 指定されたファイルから値を読み込み、オブジェクトに設定します。
+        /// HKEY_CURRENT_USER 下の指定されたサブキーに存在する値を
+        /// 読み込み、オブジェクトに設定します。
         /// </summary>
+        /// 
+        /// <param name="src">レジストリ・サブキー名</param>
+        /// 
+        /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this FileType type, string src)
+        public static T Load<T>(string src)
         {
-            using (var reader = new System.IO.StreamReader(src))
+            using (var key = Registry.CurrentUser.OpenSubKey(src, false))
             {
-                switch (type)
-                {
-                    case FileType.Xml:
-                        return LoadXml<T>(reader.BaseStream);
-                    case FileType.Json:
-                        return LoadJson<T>(reader.BaseStream);
-                    default:
-                        return default(T);
-                }
+                return Load<T>(key);
             }
         }
 
@@ -79,45 +78,34 @@ namespace Cube.Settings
         /// Save
         /// 
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
+        /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存
+        /// します。
         /// </summary>
+        /// 
+        /// <param name="dest">レジストリ・サブキー</param>
+        /// <param name="src">保存オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(this RegistryKey dest, T src)
-            => SaveRegistry(src, typeof(T), dest);
+        public static void Save<T>(RegistryKey dest, T src) => Save(src, typeof(T), dest);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save
         /// 
         /// <summary>
-        /// 指定されたファイルに、オブジェクトの値を保存します。
+        /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存
+        /// します。
         /// </summary>
+        /// 
+        /// <param name="dest">レジストリ・サブキー名</param>
+        /// <param name="src">保存オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(this FileType type, string dest, T src)
+        public static void Save<T>(string dest, T src)
         {
-            try
+            using (var key = Registry.CurrentUser.CreateSubKey(dest))
             {
-                using (var writer = new System.IO.StreamWriter(dest))
-                {
-                    switch (type)
-                    {
-                        case FileType.Xml:
-                            SaveXml(src, writer.BaseStream);
-                            break;
-                        case FileType.Json:
-                            SaveJson(src, writer.BaseStream);
-                            break;
-                        default:
-                            throw new ArgumentException($"{type}:Unknown FileType");
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                System.IO.File.Delete(dest);
-                throw err;
+                Save(key, src);
             }
         }
 
@@ -125,11 +113,9 @@ namespace Cube.Settings
 
         #region Implementations
 
-        #region Load methods
-
         /* ----------------------------------------------------------------- */
         ///
-        /// LoadRegistry
+        /// Load
         /// 
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
@@ -137,7 +123,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static object LoadRegistry(RegistryKey root, Type type)
+        private static object Load(RegistryKey root, Type type)
         {
             var dest = Activator.CreateInstance(type);
             if (root == null) return dest;
@@ -147,15 +133,16 @@ namespace Cube.Settings
                 var name = GetDataMemberName(info);
                 if (string.IsNullOrEmpty(name)) continue;
 
-                if (Type.GetTypeCode(info.PropertyType) != TypeCode.Object)
+                var pt = info.PropertyType;
+                if (Type.GetTypeCode(pt) != TypeCode.Object)
                 {
-                    var value = Convert(root.GetValue(name, null), info.PropertyType);
+                    var value = Convert(root.GetValue(name, null), pt);
                     if (value != null) info.SetValue(dest, value, null);
                 }
                 else using (var subkey = root.OpenSubKey(name))
                 {
                     if (subkey == null) continue;
-                    var value = LoadRegistry(subkey, info.PropertyType);
+                    var value = Load(subkey, pt);
                     if (value != null) info.SetValue(dest, value, null);
                 }
             }
@@ -165,86 +152,48 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LoadXml
-        /// 
-        /// <summary>
-        /// XML 形式のストリームから値を読み込み、オブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static T LoadXml<T>(System.IO.Stream src)
-        {
-            var serializer = new DataContractSerializer(typeof(T));
-            var dest = (T)serializer.ReadObject(src);
-            return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadJson
-        /// 
-        /// <summary>
-        /// JSON 形式のストリームから値を読み込み、オブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static T LoadJson<T>(System.IO.Stream src)
-        {
-            var serializer = new DataContractJsonSerializer(typeof(T));
-            var dest = (T)serializer.ReadObject(src);
-            return dest;
-        }
-
-        #endregion
-
-        #region Save methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveRegistry
+        /// Save
         /// 
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveRegistry(object src, Type type, RegistryKey root)
+        private static void Save(object src, Type type, RegistryKey root)
         {
             if (src == null || root == null) return;
-            foreach (var info in type.GetProperties()) SaveRegistry(src, info, root);
+            foreach (var info in type.GetProperties()) Save(src, info, root);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SaveRegistry
+        /// Save
         /// 
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveRegistry(object src, PropertyInfo info, RegistryKey root)
+        private static void Save(object src, PropertyInfo info, RegistryKey root)
         {
             try
             {
-                var name  = GetDataMemberName(info);
+                var name = GetDataMemberName(info);
                 var value = info.GetValue(src, null);
                 if (name == null || value == null) return;
 
-                if (info.PropertyType.IsEnum) root.SetValue(name, (int)value);
-                else switch (Type.GetTypeCode(info.PropertyType))
+                var pt = info.PropertyType;
+                if (pt.IsEnum) root.SetValue(name, (int)value);
+                else switch (Type.GetTypeCode(pt))
                 {
                     case TypeCode.Boolean:
                         root.SetValue(name, ((bool)value) ? 1 : 0);
                         break;
                     case TypeCode.DateTime:
-                        root.SetValue(name, (((DateTime)value).ToUniversalTime().ToString("o")));
+                        root.SetValue(name, Convert((DateTime)value));
                         break;
                     case TypeCode.Object:
-                        using (var subkey = root.CreateSubKey(name))
-                        {
-                            SaveRegistry(value, info.PropertyType, subkey);
-                        }
+                        using (var k = root.CreateSubKey(name)) Save(value, pt, k);
                         break;
                     default:
                         root.SetValue(name, value);
@@ -253,40 +202,6 @@ namespace Cube.Settings
             }
             catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveXml
-        /// 
-        /// <summary>
-        /// ストリームに XML 形式で保存します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, System.IO.Stream dest)
-        {
-            var serializer = new DataContractSerializer(typeof(T));
-            serializer.WriteObject(dest, src);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveJson
-        /// 
-        /// <summary>
-        /// ストリームに JSON 形式で保存します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, System.IO.Stream dest)
-        {
-            var serializer = new DataContractJsonSerializer(typeof(T));
-            serializer.WriteObject(dest, src);
-        }
-
-        #endregion
-
-        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
@@ -313,8 +228,8 @@ namespace Cube.Settings
         /// Convert
         /// 
         /// <summary>
-        /// 指定した型で、指定したオブジェクトと同じ内容を表すを持つオブジェクトを
-        /// 返します。
+        /// 指定した型で、指定したオブジェクトと同じ内容を表すを持つ
+        /// オブジェクトを返します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -324,7 +239,7 @@ namespace Cube.Settings
             {
                 if (value == null) return null;
                 if (type.IsEnum) return (int)value;
-                else switch(Type.GetTypeCode(type))
+                else switch (Type.GetTypeCode(type))
                 {
                     case TypeCode.DateTime:
                         return DateTime.Parse(value as string).ToLocalTime();
@@ -337,7 +252,17 @@ namespace Cube.Settings
             return null;
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        /// 
+        /// <summary>
+        /// DateTime オブジェクトをレジストリに保存する形式に変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static object Convert(DateTime value)
+            => value.ToUniversalTime().ToString("o");
 
         #endregion
     }

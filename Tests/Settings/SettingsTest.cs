@@ -137,12 +137,12 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(FileType.Xml,     "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(FileType.Json,    "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(FileType.Xml,     "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(FileType.Json,    "Settings.ja.json", ExpectedResult = "山田太郎")]
-        [TestCase(FileType.Unknown, "Settings.xml",     ExpectedResult = null)]
-        public string Load_File(FileType type, string filename)
+        [TestCase(SettingsType.Xml,     "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(SettingsType.Json,    "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(SettingsType.Xml,     "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(SettingsType.Json,    "Settings.ja.json", ExpectedResult = "山田太郎")]
+        [TestCase(SettingsType.Unknown, "Settings.xml",     ExpectedResult = null)]
+        public string Load_File(SettingsType type, string filename)
             => type.Load<Person>(Example(filename))?.Name;
 
         /* ----------------------------------------------------------------- */
@@ -157,8 +157,8 @@ namespace Cube.Tests
         [Test]
         public void Save_Registry()
         {
-            using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, CreatePerson());
-            using (var key = CreateSaveKey()) Cube.Settings.Operations.Save(key, default(Person)); // ignore
+            SettingsType.Registry.Save(SaveKeyName, CreatePerson());
+            SettingsType.Registry.Save(SaveKeyName, default(Person)); // ignore
             using (var key = OpenSaveKey())
             {
                 var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
@@ -211,9 +211,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(FileType.Xml,     "Person.xml")]
-        [TestCase(FileType.Json,    "Person.json")]
-        public void Save_File(FileType type, string filename)
+        [TestCase(SettingsType.Xml,   "Person.xml")]
+        [TestCase(SettingsType.Json,  "Person.json")]
+        public void Save_File(SettingsType type, string filename)
         {
             var dest = Result(filename);
             type.Save(dest, CreatePerson());
@@ -234,7 +234,7 @@ namespace Cube.Tests
         {
             var dest = Result("Person.txt");
             Assert.That(
-                () => FileType.Unknown.Save(dest, CreatePerson()),
+                () => SettingsType.Unknown.Save(dest, CreatePerson()),
                 Throws.TypeOf<ArgumentException>()
             );
             Assert.That(File.Exists(dest), Is.False);
@@ -397,7 +397,6 @@ namespace Cube.Tests
         private string LoadKeyName => $@"Software\{Company}\{Product}";
         private string SaveKeyName => $@"Software\{Company}\Settings_SaveTest";
         private RegistryKey CreateLoadKey() => Registry.CurrentUser.CreateSubKey(LoadKeyName);
-        private RegistryKey CreateSaveKey() => Registry.CurrentUser.CreateSubKey(SaveKeyName);
         private RegistryKey OpenSaveKey() => Registry.CurrentUser.OpenSubKey(SaveKeyName, false);
         #endregion
 

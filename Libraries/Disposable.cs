@@ -16,59 +16,90 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.InteropServices;
+using System.Threading;
 
-namespace Cube.User32
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// User32.NativeMethods
+    /// Disposable
     /// 
     /// <summary>
-    /// user32.dll に定義された関数を宣言するためのクラスです。
+    /// IDisposable オブジェクトを生成するためのクラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
+    public static class Disposable
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// SetForegroundWindow
+        /// Create
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539.aspx
+        /// IDisposable オブジェクトを生成します。
         /// </summary>
+        /// 
+        /// <param name="dispose">Dispose 時に実行する動作</param>
+        /// 
+        /// <returns>IDisposable オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        public static IDisposable Create(Action dispose)
+        {
+            if (dispose == null) throw new ArgumentException(nameof(dispose));
+            return new AnonymousDisposable(dispose);
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// AnonymousDisposable
+    /// 
+    /// <summary>
+    /// Dispose 時に特定の動作を実行するためのクラスです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    internal sealed class AnonymousDisposable : IDisposable
+    {
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetForegroundWindow
+        /// AnonymousDisposable
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549.aspx
+        /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="dispose">Dispose 時に実行する動作</param>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        public AnonymousDisposable(Action dispose)
+        {
+            System.Diagnostics.Debug.Assert(dispose != null);
+            _dispose = dispose;
+        }
+
+        #endregion
+
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsIconic
+        /// Dispose
         /// 
         /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633527.aspx
+        /// 設定された動作を実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern bool IsIconic(IntPtr hWnd);
+        public void Dispose() => Interlocked.Exchange(ref _dispose, null)?.Invoke();
+
+        #endregion
 
         #region Fields
-        const string LibName = "user32.dll";
+        private Action _dispose;
         #endregion
     }
 }
