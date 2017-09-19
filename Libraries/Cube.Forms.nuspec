@@ -15,4 +15,7 @@
     <projectUrl>https://github.com/cube-soft/Cube.Forms</projectUrl>
     <iconUrl>https://github.com/cube-soft/Cube.Forms/blob/master/Icon.png</iconUrl>
   </metadata>
+  <files>
+    <file src="bin\Release\Cube.Forms.dll" target="lib\net45" />
+  </files>
 </package>
