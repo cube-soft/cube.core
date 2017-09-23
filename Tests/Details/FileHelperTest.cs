@@ -22,16 +22,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHandlerTest
+    /// FileHelperTest
     /// 
     /// <summary>
-    /// FileHandler をテストするためのクラスです。
+    /// FileHelper のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Parallelizable]
     [TestFixture]
-    class FileHandlerTest : FileHandler
+    class FileHelperTest : FileHelper
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -43,8 +42,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = true)]
-        public bool Examples_Exists()
-            => Directory.Exists(Examples);
+        public bool Examples_Exists() => Directory.Exists(Examples);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,7 +54,6 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = true)]
-        public bool Results_Exists()
-            => Directory.Exists(Results);
+        public bool Results_Exists() => Directory.Exists(Results);
     }
 }
