@@ -21,31 +21,31 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHandler
+    /// FileHelper
     /// 
     /// <summary>
     /// テストでファイルを使用するためのクラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    class FileHandler
+    class FileHelper
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
+        /// FileHelper
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHandler() : this(new Operator()) { }
+        protected FileHelper() : this(new Operator()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
+        /// FileHelper
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -54,7 +54,7 @@ namespace Cube.FileSystem.Tests
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHandler(Operator io)
+        protected FileHelper(Operator io)
         {
             var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
             IO = io;
