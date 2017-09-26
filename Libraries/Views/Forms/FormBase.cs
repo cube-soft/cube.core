@@ -83,14 +83,10 @@ namespace Cube.Forms
             set
             {
                 if (_activator == value) return;
-                if (_activator != null) _activator.Unsubscribe(WhenActivated);
 
+                _remover?.Dispose();
                 _activator = value;
-                if (_activator != null)
-                {
-                    _activator.Unsubscribe(WhenActivated);
-                    _activator.Subscribe(WhenActivated);
-                }
+                if (_activator != null) _remover = _activator.Subscribe(WhenActivated);
             }
         }
 
@@ -194,7 +190,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnVisibleChanging(CancelEventArgs e)
         {
-            if (Visible != false) AdjustDesktopLocation();
+            if (Visible != false && !DesignMode) AdjustDesktopLocation();
             VisibleChanging?.Invoke(this, e);
         }
 
@@ -449,6 +445,7 @@ namespace Cube.Forms
         #region Fields
         private double _dpi = 0.0;
         private Cube.Processes.IMessenger<string[]> _activator = null;
+        private IDisposable _remover = null;
         #endregion
 
         #endregion
