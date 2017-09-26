@@ -64,13 +64,15 @@ namespace Cube.Tests
                     cts.Cancel();
                 };
 
+                IDisposable uns = null;
+
                 try
                 {
-                    server.Subscribe(h);
+                    uns = server.Subscribe(h);
                     Task.Run(() => client.Publish(msg)).Forget();
                     await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
                 }
-                catch (TaskCanceledException /* err */) { server.Unsubscribe(h); }
+                catch (TaskCanceledException /* err */) { uns.Dispose(); }
             }
 
             Assert.That(actual, Is.EqualTo(msg));
