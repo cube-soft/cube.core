@@ -114,6 +114,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// BaseDpi
+        /// 
+        /// <summary>
+        /// 基準となる Dpi の値を取得または設定します。します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public double BaseDpi { get; set; } = 96.0;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// EventHub
         /// 
         /// <summary>
@@ -190,7 +201,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnVisibleChanging(CancelEventArgs e)
         {
-            if (Visible != false && !DesignMode) AdjustDesktopLocation();
+            if (Visible && !DesignMode) AdjustDesktopLocation();
             VisibleChanging?.Invoke(this, e);
         }
 
