@@ -66,6 +66,7 @@
     <Compile Include="Events\NavigatingEventArgs.cs" />
     <Compile Include="Models\ButtonPainter.cs" />
     <Compile Include="Models\ButtonStyle.cs" />
+    <Compile Include="Models\ControlInfo.cs" />
     <Compile Include="Models\FontFactory.cs" />
     <Compile Include="Models\NotifyItem.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
