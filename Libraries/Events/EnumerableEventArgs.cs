@@ -16,55 +16,44 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueEventArgs(TKey, TValue)
+    /// EnumerableEventArgs(TValue)
     ///
     /// <summary>
-    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
+    /// イベントハンドラに特定の型のコレクションを伝搬させるための
+    /// クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class KeyValueEventArgs<TKey, TValue> : EventArgs
+    public class EnumerableEventArgs<TValue> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// KeyValueEventArgs
+        /// EnumerableEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <param name="key">設定するキー</param>
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueEventArgs(TKey key, TValue value) : base()
+        public EnumerableEventArgs(IEnumerable<TValue> value)
         {
-            Key = key;
             Value = value;
         }
 
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Key
-        /// 
-        /// <summary>
-        /// キーを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TKey Key { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -75,73 +64,60 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TValue Value { get; }
+        public IEnumerable<TValue> Value { get; }
 
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueCancelEventArgs(TKey, TValue)
+    /// EnumerableCancelEventArgs(TValue)
     ///
     /// <summary>
-    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
+    /// イベントハンドラに特定の型のコレクションを伝搬させるための
+    /// クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class KeyValueCancelEventArgs<TKey, TValue> : CancelEventArgs
+    public class EnumerableCancelEventArgs<TValue> : CancelEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// KeyValueCancelEventArgs
+        /// EnumerableCancelEventArgs
         /// 
         /// <summary>
         /// Cancel の値を false に設定してオブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <param name="key">設定するキー</param>
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueCancelEventArgs(TKey key, TValue value)
-            : this(key, value, false)
-        { }
+        public EnumerableCancelEventArgs(IEnumerable<TValue> value)
+            : this(value, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// KeyValueCancelEventArgs
+        /// EnumerableCancelEventArgs
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <param name="key">設定するキー</param>
         /// <param name="value">設定値</param>
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueCancelEventArgs(TKey key, TValue value, bool cancel) : base(cancel)
+        public EnumerableCancelEventArgs(IEnumerable<TValue> value, bool cancel)
+            : base(cancel)
         {
-            Key = key;
             Value = value;
         }
 
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Key
-        /// 
-        /// <summary>
-        /// キーを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TKey Key { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -152,58 +128,56 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TValue Value { get; }
+        public IEnumerable<TValue> Value { get; }
 
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueEventArgs
+    /// EnumerableEventArgs
     ///
     /// <summary>
-    /// KeyValueEventArgs(T, U), KeyValueCancelEventArgs(T, U)
-    /// オブジェクトを生成するための補助クラスです。
+    /// EnumerableEventArgs(T), EnumerableEventArgs(T) オブジェクトを
+    /// 生成するための補助クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class KeyValueEventArgs
+    public static class EnumerableEventArgs
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Create
         /// 
         /// <summary>
-        /// KeyValueEventArgs(T, U) オブジェクトを生成します。
+        /// EnumerableEventArgs(T) オブジェクトを生成します。
         /// </summary>
         /// 
-        /// <param name="key">設定するキー</param>
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static KeyValueEventArgs<T, U> Create<T, U>(T key, U value)
-            => new KeyValueEventArgs<T, U>(key, value);
+        public static EnumerableEventArgs<T> Create<T>(IEnumerable<T> value)
+            => new EnumerableEventArgs<T>(value);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create
         /// 
         /// <summary>
-        /// KeyValueCancelEventArgs(T, U) オブジェクトを生成します。
+        /// EnumerableCancelEventArgs(T) オブジェクトを生成します。
         /// </summary>
         /// 
-        /// <param name="key">設定するキー</param>
         /// <param name="value">設定値</param>
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel)
-            => new KeyValueCancelEventArgs<T, U>(key, value, cancel);
+        public static EnumerableCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel)
+            => new EnumerableCancelEventArgs<T>(value, cancel);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueEventHandler(TValue)
+    /// EnumerableEventHandler(TValue)
     /// 
     /// <summary>
     /// イベントを処理するメソッドを表します。
@@ -211,11 +185,11 @@ namespace Cube
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void KeyValueEventHandler<TKey, TValue>(object sender, KeyValueEventArgs<TKey, TValue> e);
+    public delegate void EnumerableEventHandler<TValue>(object sender, EnumerableEventArgs<TValue> e);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValueCanelEventHandler(TValue)
+    /// EnumerableCancelEventHandler(TValue)
     /// 
     /// <summary>
     /// イベントを処理するメソッドを表します。
@@ -223,5 +197,5 @@ namespace Cube
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void KeyValueCanelEventHandler<TKey, TValue>(object sender, KeyValueCancelEventArgs<TKey, TValue> e);
+    public delegate void EnumerableCancelEventHandler<TValue>(object sender, EnumerableCancelEventArgs<TValue> e);
 }

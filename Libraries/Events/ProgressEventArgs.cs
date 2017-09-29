@@ -24,7 +24,7 @@ namespace Cube
     /// ProgressEventArgs(TValue)
     ///
     /// <summary>
-    /// 進捗情報を保持するためのクラスです。
+    /// 進捗状況を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,10 +40,13 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
+        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
+        /// <param name="value">ユーザデータ</param>
+        /// 
         /* ----------------------------------------------------------------- */
-        public ProgressEventArgs(double percentage, TValue value) : base()
+        public ProgressEventArgs(double ratio, TValue value) : base()
         {
-            Percentage = percentage;
+            Ratio = ratio;
             Value = value;
         }
 
@@ -53,21 +56,21 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Percentage
+        /// Ratio
         /// 
         /// <summary>
-        /// 進捗状況を百分率で取得します。
+        /// 進捗状況を表す値を取得します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public double Percentage { get; }
+        public double Ratio { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Value
         /// 
         /// <summary>
-        /// ユーザから指定された値を取得します。
+        /// ユーザデータを取得します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -94,10 +97,13 @@ namespace Cube
         /// <summary>
         /// ProgressEventArgs(T) オブジェクトを生成します。
         /// </summary>
+        /// 
+        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
+        /// <param name="value">ユーザデータ</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static ProgressEventArgs<T> Create<T>(double percentage, T value)
-            => new ProgressEventArgs<T>(percentage, value);
+        public static ProgressEventArgs<T> Create<T>(double ratio, T value)
+            => new ProgressEventArgs<T>(ratio, value);
     }
 
     /* --------------------------------------------------------------------- */

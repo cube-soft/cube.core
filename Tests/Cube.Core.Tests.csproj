@@ -65,6 +65,7 @@
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="DisposableTest.cs" />
+    <Compile Include="Events\EnumerableEventArgsTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
     <Compile Include="Events\ProgressEventArgsTest.cs" />
     <Compile Include="Events\QueryEventArgsTest.cs" />
