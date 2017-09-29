@@ -29,7 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class FontFactory
+    internal static class FontFactory
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -54,12 +54,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public static Font Create(float size, FontStyle style, GraphicsUnit unit)
         {
-            const string primary   = "Meiryo UI";
-            const string secondary = "MS UI Gothic";
+            var primary   = "Meiryo UI";
+            var secondary = SystemFonts.DefaultFont.FontFamily.Name;
 
             var dest = new Font(primary, size, style, unit);
-            if (dest.Name == primary) return dest;
-            return new Font(secondary, size, style, unit);
+            return dest.Name == primary ?
+                   dest :
+                   new Font(secondary, size, style, unit);
         }
     }
 }

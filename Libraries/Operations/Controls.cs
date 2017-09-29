@@ -75,8 +75,7 @@ namespace Cube.Forms.Controls
         /// <returns>コントロール中の位置</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Position HitTest(this System.Windows.Forms.Control control,
-            Point point, int grip)
+        public static Position HitTest(this System.Windows.Forms.Control control, Point point, int grip)
         {
             var x = point.X;
             var y = point.Y;
@@ -132,8 +131,7 @@ namespace Cube.Forms.Controls
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form,
-            string message, Assembly assembly)
+        public static void UpdateText(this System.Windows.Forms.Form form, string message, Assembly assembly)
         {
             var asm = new AssemblyReader(assembly);
             var ss = new System.Text.StringBuilder();
@@ -143,6 +141,44 @@ namespace Cube.Forms.Controls
 
             form.Text = ss.ToString();
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateControl
+        /// 
+        /// <summary>
+        /// DPI の変更に応じてレイアウトを更新します。
+        /// </summary>
+        ///
+        /// <param name="control">更新対象となるコントロール</param>
+        /// <param name="olddpi">変更前の DPI</param>
+        /// <param name="newdpi">変更後の DPI</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateControl(this IDpiAwarableControl control, double olddpi, double newdpi)
+        {
+            var ratio = newdpi / olddpi;
+            var x = (int)(control.Location.X * ratio);
+            var y = (int)(control.Location.Y * ratio);
+            control.Location = new Point(x, y);
+            UpdateLayout(control, olddpi, newdpi);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateForm
+        /// 
+        /// <summary>
+        /// DPI の変更に応じてレイアウトを更新します。
+        /// </summary>
+        ///
+        /// <param name="form">更新対象となるフォーム</param>
+        /// <param name="olddpi">変更前の DPI</param>
+        /// <param name="newdpi">変更後の DPI</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateForm(this IForm form, double olddpi, double newdpi)
+            => UpdateLayout(form, olddpi, newdpi);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -206,6 +242,53 @@ namespace Cube.Forms.Controls
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateLayout
+        /// 
+        /// <summary>
+        /// DPI の変更に応じてレイアウトを更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateLayout(IDpiAwarableControl src, double olddpi, double newdpi)
+        {
+            var ratio = newdpi / olddpi;
+
+            var w = (int)(src.Size.Width * ratio);
+            var h = (int)(src.Size.Height * ratio);
+            src.Size = new Size(w, h);
+
+            var ml = (int)(src.Margin.Left * ratio);
+            var mt = (int)(src.Margin.Top * ratio);
+            var mr = (int)(src.Margin.Right * ratio);
+            var mb = (int)(src.Margin.Bottom * ratio);
+            src.Margin = new System.Windows.Forms.Padding(ml, mt, mr, mb);
+
+            var pl = (int)(src.Padding.Left * ratio);
+            var pt = (int)(src.Padding.Top * ratio);
+            var pr = (int)(src.Padding.Right * ratio);
+            var pb = (int)(src.Padding.Bottom * ratio);
+            src.Padding = new System.Windows.Forms.Padding(pl, pt, pr, pb);
+
+            if (src.Font != null)
+            {
+                var name  = src.Font.FontFamily.Name;
+                var size  = (float)(src.Font.Size * ratio);
+                var unit  = src.Font.Unit;
+                var style = src.Font.Style;
+                src.Font = new Font(name, size, style, unit);
+            }
+
+            if (src is System.Windows.Forms.Control control)
+            {
+                foreach (var c in control.Controls)
+                {
+                    if (c is IDpiAwarableControl dac) dac.Dpi = src.Dpi;
+                }
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///

@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DeviceAwareForm : FormBase
+    public class DeviceAwareForm : StandardForm
     {
         #region Constructors
 

@@ -16,6 +16,7 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 
 namespace Cube.Forms.Demo
 {
@@ -43,7 +44,7 @@ namespace Cube.Forms.Demo
         static void Main(string[] args)
         {
             var app = System.Windows.Forms.Application.ProductName;
-            using (var m = new Cube.Processes.Messenger<string[]>(app))
+            using (var m = new Cube.Processes.Messenger<IEnumerable<string>>(app))
             {
                 if (!m.IsServer) m.Publish(args);
                 else

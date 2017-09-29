@@ -41,10 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.5.0\lib\net45\Cube.Core.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Core.1.5.1\lib\net45\Cube.Core.dll</HintPath>
     </Reference>
     <Reference Include="Cube.Images">
-      <HintPath>..\..\packages\Cube.Images.1.5.0\lib\net45\Cube.Images.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Images.1.5.1\lib\net45\Cube.Images.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -66,11 +66,9 @@
     <Compile Include="Events\NavigatingEventArgs.cs" />
     <Compile Include="Models\ButtonPainter.cs" />
     <Compile Include="Models\ButtonStyle.cs" />
-    <Compile Include="Models\ControlInfo.cs" />
     <Compile Include="Models\FontFactory.cs" />
     <Compile Include="Models\NotifyItem.cs" />
     <Compile Include="Models\NotifyStyle.cs" />
-    <Compile Include="Models\IListViewItemConverter.cs" />
     <Compile Include="Models\OnlyExpandableConverter.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\SizeHacker.cs" />
@@ -129,9 +127,6 @@
     <Compile Include="Views\Controls\FeatureControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\ListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Views\Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -160,7 +155,7 @@
     <Compile Include="Views\Forms\DeviceAwareForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\FormBase.cs">
+    <Compile Include="Views\Forms\StandardForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Forms\NotifyForm.cs">

@@ -87,6 +87,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Font
+        /// 
+        /// <summary>
+        /// フォントを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Font Font { get; set; } = SystemFonts.DefaultFont;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Location
         /// 
         /// <summary>
@@ -122,6 +133,51 @@ namespace Cube.Forms
                 if (_size == value) return;
                 _size = value;
                 Resize?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Margin
+        /// 
+        /// <summary>
+        /// 外側の余白を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public System.Windows.Forms.Padding Margin { get; set; }
+            = new System.Windows.Forms.Padding(0);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Padding
+        /// 
+        /// <summary>
+        /// 内側の余白を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public System.Windows.Forms.Padding Padding { get; set; }
+            = new System.Windows.Forms.Padding(0);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dpi
+        /// 
+        /// <summary>
+        /// DPI の値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public double Dpi
+        {
+            get { return _dpi; }
+            set
+            {
+                if (_dpi == value) return;
+                var prev = _dpi;
+                _dpi = value;
+                DpiChanged?.Invoke(this, ValueChangedEventArgs.Create(prev, value));
             }
         }
 
@@ -217,6 +273,17 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public event EventHandler Resize;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        /// 
+        /// <summary>
+        /// DPI 変更時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<double> DpiChanged;
+
         #endregion
 
         #region Methods
@@ -291,6 +358,7 @@ namespace Cube.Forms
         private bool _visible = false;
         private Point _location;
         private Size _size;
+        private double _dpi = 96.0;
         #endregion
     }
 }

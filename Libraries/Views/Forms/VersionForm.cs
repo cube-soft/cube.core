@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class VersionForm : FormBase
+    public class VersionForm : StandardForm
     {
         #region Constructors
 
