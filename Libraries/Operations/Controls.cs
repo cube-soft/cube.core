@@ -157,10 +157,13 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         public static void UpdateControl(this IDpiAwarableControl control, double olddpi, double newdpi)
         {
-            var ratio = newdpi / olddpi;
-            var x = (int)(control.Location.X * ratio);
-            var y = (int)(control.Location.Y * ratio);
-            control.Location = new Point(x, y);
+            if (olddpi > 1.0)
+            {
+                var ratio = newdpi / olddpi;
+                var x = (int)(control.Location.X * ratio);
+                var y = (int)(control.Location.Y * ratio);
+                control.Location = new Point(x, y);
+            }
             UpdateLayout(control, olddpi, newdpi);
         }
 
@@ -254,31 +257,34 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         public static void UpdateLayout(IDpiAwarableControl src, double olddpi, double newdpi)
         {
-            var ratio = newdpi / olddpi;
-
-            var w = (int)(src.Size.Width * ratio);
-            var h = (int)(src.Size.Height * ratio);
-            src.Size = new Size(w, h);
-
-            var ml = (int)(src.Margin.Left * ratio);
-            var mt = (int)(src.Margin.Top * ratio);
-            var mr = (int)(src.Margin.Right * ratio);
-            var mb = (int)(src.Margin.Bottom * ratio);
-            src.Margin = new System.Windows.Forms.Padding(ml, mt, mr, mb);
-
-            var pl = (int)(src.Padding.Left * ratio);
-            var pt = (int)(src.Padding.Top * ratio);
-            var pr = (int)(src.Padding.Right * ratio);
-            var pb = (int)(src.Padding.Bottom * ratio);
-            src.Padding = new System.Windows.Forms.Padding(pl, pt, pr, pb);
-
-            if (src.Font != null)
+            if (olddpi > 1.0)
             {
-                var name  = src.Font.FontFamily.Name;
-                var size  = (float)(src.Font.Size * ratio);
-                var unit  = src.Font.Unit;
-                var style = src.Font.Style;
-                src.Font = new Font(name, size, style, unit);
+                var ratio = newdpi / olddpi;
+
+                var w = (int)(src.Size.Width * ratio);
+                var h = (int)(src.Size.Height * ratio);
+                src.Size = new Size(w, h);
+
+                var ml = (int)(src.Margin.Left * ratio);
+                var mt = (int)(src.Margin.Top * ratio);
+                var mr = (int)(src.Margin.Right * ratio);
+                var mb = (int)(src.Margin.Bottom * ratio);
+                src.Margin = new System.Windows.Forms.Padding(ml, mt, mr, mb);
+
+                var pl = (int)(src.Padding.Left * ratio);
+                var pt = (int)(src.Padding.Top * ratio);
+                var pr = (int)(src.Padding.Right * ratio);
+                var pb = (int)(src.Padding.Bottom * ratio);
+                src.Padding = new System.Windows.Forms.Padding(pl, pt, pr, pb);
+
+                if (src.Font != null)
+                {
+                    var name = src.Font.FontFamily.Name;
+                    var size = (float)(src.Font.Size * ratio);
+                    var unit = src.Font.Unit;
+                    var style = src.Font.Style;
+                    src.Font = new Font(name, size, style, unit);
+                }
             }
 
             if (src is System.Windows.Forms.Control control)

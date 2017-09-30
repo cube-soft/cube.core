@@ -18,6 +18,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -34,20 +35,20 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class ControlBase : System.Windows.Forms.UserControl, IControl
+    public class ControlBase : System.Windows.Forms.UserControl, IDpiAwarableControl
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UserControl
+        /// ControlBase
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ControlBase()
+        protected ControlBase()
             : base()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -90,9 +91,53 @@ namespace Cube.Forms
             }
         }
 
+        public double Dpi
+        {
+            get { return _dpi; }
+            set
+            {
+                if (_dpi == value) return;
+                var old = _dpi;
+                _dpi = value;
+
+            }
+        }
+
         #endregion
 
         #region Events
+
+        #region DpiChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        ///
+        /// <summary>
+        /// DPI の値が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<double> DpiChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDpiChanged
+        ///
+        /// <summary>
+        /// DpiChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
+        {
+            this.UpdateControl(e.OldValue, e.NewValue);
+            DpiChanged?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region NcHitTest
 
         /* ----------------------------------------------------------------- */
         ///
@@ -116,6 +161,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
             => NcHitTest?.Invoke(this, e);
+
+        #endregion
 
         #endregion
 
@@ -154,6 +201,7 @@ namespace Cube.Forms
 
         #region Fields
         private IEventHub _events;
+        private double _dpi = 0.0;
         #endregion
     }
 }

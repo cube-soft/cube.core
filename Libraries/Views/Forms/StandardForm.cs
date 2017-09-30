@@ -107,6 +107,8 @@ namespace Cube.Forms
             get { return _dpi; }
             set
             {
+                System.Diagnostics.Debug.Assert(value > 1.0);
+
                 if (_dpi == value) return;
                 var prev = _dpi;
                 _dpi = value;
@@ -249,8 +251,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
         {
-            var need = AutoScaleMode == System.Windows.Forms.AutoScaleMode.Dpi &&
-                       e.OldValue > 1.0 && e.NewValue > 1.0;
+            var need = AutoScaleMode == System.Windows.Forms.AutoScaleMode.Dpi;
             if (need) this.UpdateForm(e.OldValue, e.NewValue);
             DpiChanged?.Invoke(this, e);
         }
