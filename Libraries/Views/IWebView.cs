@@ -29,7 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IWebView : IControl
+    public interface IWebView : IDpiAwarableControl
     {
         /* --------------------------------------------------------------------- */
         ///

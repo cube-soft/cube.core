@@ -110,9 +110,9 @@ namespace Cube.Forms
                 System.Diagnostics.Debug.Assert(value > 1.0);
 
                 if (_dpi == value) return;
-                var prev = _dpi;
+                var old = _dpi;
                 _dpi = value;
-                OnDpiChanged(ValueChangedEventArgs.Create(prev, value));
+                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
             }
         }
 

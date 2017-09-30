@@ -19,6 +19,7 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using Cube.Log;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -59,10 +60,6 @@ namespace Cube.Forms
             }
         }
 
-        #endregion
-
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
@@ -75,6 +72,29 @@ namespace Cube.Forms
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEventHub EventHub { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dpi
+        /// 
+        /// <summary>
+        /// 現在の Dpi の値を取得または設定します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public double Dpi
+        {
+            get { return _dpi; }
+            set
+            {
+                if (_dpi == value) return;
+                var old = _dpi;
+                _dpi = value;
+                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
+            }
+        }
 
         #endregion
 
@@ -185,6 +205,36 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         protected virtual void OnMessageShowing(MessageEventArgs e)
             => MessageShowing?.Invoke(this, e);
+
+        #endregion
+
+        #region DpiChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        ///
+        /// <summary>
+        /// DPI の値が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<double> DpiChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDpiChanged
+        ///
+        /// <summary>
+        /// DpiChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
+        {
+            this.UpdateControl(e.OldValue, e.NewValue);
+            DpiChanged?.Invoke(this, e);
+        }
 
         #endregion
 
@@ -458,6 +508,7 @@ namespace Cube.Forms
         private string _agent = string.Empty;
         private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie = null;
         private ActiveXControlEvents _events = null;
+        private double _dpi = 0.0;
         #endregion
 
         #endregion

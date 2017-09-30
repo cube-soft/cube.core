@@ -68,7 +68,7 @@ namespace Cube.Forms
         /// </summary>
         /// 
         /// <remarks>
-        /// Controls に登録されている ControlBase オブジェクトに対して、
+        /// Controls に登録されている IControl オブジェクトに対して、
         /// 再帰的に設定します。
         /// </remarks>
         ///
@@ -84,13 +84,22 @@ namespace Cube.Forms
                 _events = value;
                 foreach (var obj in Controls)
                 {
-                    var control = obj as ControlBase;
-                    if (control == null) continue;
-                    control.EventHub = value;
+                    if (obj is IControl c) c.EventHub = value;
                 }
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dpi
+        /// 
+        /// <summary>
+        /// 現在の Dpi の値を取得または設定します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Dpi
         {
             get { return _dpi; }
@@ -99,7 +108,7 @@ namespace Cube.Forms
                 if (_dpi == value) return;
                 var old = _dpi;
                 _dpi = value;
-
+                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
             }
         }
 
@@ -166,7 +175,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -197,11 +206,11 @@ namespace Cube.Forms
             }
         }
 
-        #endregion
-
         #region Fields
         private IEventHub _events;
         private double _dpi = 0.0;
+        #endregion
+
         #endregion
     }
 }

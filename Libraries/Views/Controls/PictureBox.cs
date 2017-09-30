@@ -16,7 +16,9 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -29,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PictureBox : System.Windows.Forms.PictureBox
+    public class PictureBox : System.Windows.Forms.PictureBox, IDpiAwarableControl
     {
         #region Constructors
 
@@ -46,7 +48,96 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventHub
+        /// 
+        /// <summary>
+        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Controls に登録されている IControl オブジェクトに対して、
+        /// 再帰的に設定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEventHub EventHub
+        {
+            get { return _events; }
+            set
+            {
+                if (_events == value) return;
+                _events = value;
+                foreach (var obj in Controls)
+                {
+                    if (obj is IControl c) c.EventHub = value;
+                }
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dpi
+        /// 
+        /// <summary>
+        /// 現在の Dpi の値を取得または設定します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public double Dpi
+        {
+            get { return _dpi; }
+            set
+            {
+                if (_dpi == value) return;
+                var old = _dpi;
+                _dpi = value;
+                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
+            }
+        }
+
+        #endregion
+
         #region Events
+
+        #region DpiChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        ///
+        /// <summary>
+        /// DPI の値が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<double> DpiChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDpiChanged
+        ///
+        /// <summary>
+        /// DpiChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
+        {
+            this.UpdateControl(e.OldValue, e.NewValue);
+            DpiChanged?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region NcHitTest
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,10 +149,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public event EventHandler<QueryEventArgs<Point, Position>> NcHitTest;
-
-        #endregion
-
-        #region Virtual methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -77,7 +164,9 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -107,6 +196,11 @@ namespace Cube.Forms
                     break;
             }
         }
+
+        #region Fields
+        private IEventHub _events;
+        private double _dpi = 0.0;
+        #endregion
 
         #endregion
     }
