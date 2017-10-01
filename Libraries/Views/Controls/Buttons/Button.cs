@@ -16,7 +16,9 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -35,24 +37,62 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Button : System.Windows.Forms.Button
+    public class Button : System.Windows.Forms.Button, IDpiAwarableControl
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Button
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Button() : base() { }
-
-        #endregion
-
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventHub
+        /// 
+        /// <summary>
+        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Controls に登録されている IControl オブジェクトに対して、
+        /// 再帰的に設定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEventHub EventHub
+        {
+            get { return _events; }
+            set
+            {
+                if (_events == value) return;
+                _events = value;
+                foreach (var obj in Controls)
+                {
+                    if (obj is IControl c) c.EventHub = value;
+                }
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dpi
+        /// 
+        /// <summary>
+        /// 現在の Dpi の値を取得または設定します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public double Dpi
+        {
+            get { return _dpi; }
+            set
+            {
+                if (_dpi == value) return;
+                var old = _dpi;
+                _dpi = value;
+                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,7 +107,68 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #region Events
+
+        #region DpiChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        ///
+        /// <summary>
+        /// DPI の値が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<double> DpiChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDpiChanged
+        ///
+        /// <summary>
+        /// DpiChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
+        {
+            this.UpdateControl(e.OldValue, e.NewValue);
+            DpiChanged?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region NcHitTest
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NcHitTest
+        ///
+        /// <summary>
+        /// マウスのヒットテスト時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event QueryEventHandler<Point, Position> NcHitTest;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnNcHitTest
+        ///
+        /// <summary>
+        /// NcHitTest イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
+            => NcHitTest?.Invoke(this, e);
+
+        #endregion
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,10 +191,6 @@ namespace Cube.Forms
             }
             finally { base.OnEnabledChanged(e); }
         }
-
-        #endregion
-
-        #region Other private methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,13 +229,15 @@ namespace Cube.Forms
             FlatAppearance.BorderColor = Color.FromArgb(191, 191, 191);
         }
 
-        #endregion
-
         #region Fields
         private bool _previous = true;
         private Color _background = Color.Empty;
         private Color _foreground = Color.Empty;
         private Color _border = Color.Empty;
+        private IEventHub _events;
+        private double _dpi = 0.0;
+        #endregion
+
         #endregion
     }
 }

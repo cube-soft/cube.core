@@ -235,10 +235,6 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public EventHandler Apply;
 
-        #endregion
-
-        #region Virtual methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnApply
@@ -253,7 +249,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Override methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -281,34 +277,30 @@ namespace Cube.Forms
             dialog.ShowApply = ShowApply;
             dialog.ShowColor = ShowColor;
             dialog.ShowEffects = ShowEffects;
-            dialog.Apply -= FontDialog_Apply;
-            dialog.Apply += FontDialog_Apply;
+            dialog.Apply -= WhenApply;
+            dialog.Apply += WhenApply;
 
             dialog.Color = ForeColor;
             dialog.Font = Font;
 
             var result = dialog.ShowDialog();
-            dialog.Apply -= FontDialog_Apply;
+            dialog.Apply -= WhenApply;
             if (result == System.Windows.Forms.DialogResult.Cancel) return;
 
             ForeColor = dialog.Color;
             Font = dialog.Font;
         }
 
-        #endregion
-
-        #region Event handlers
-
         /* ----------------------------------------------------------------- */
         ///
-        /// FontDialog_Apply
+        /// WhenApply
         ///
         /// <summary>
         /// FontDialog の適用ボタンが押下された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void FontDialog_Apply(object sender, EventArgs e) => OnApply(e);
+        private void WhenApply(object sender, EventArgs e) => OnApply(e);
 
         #endregion
     }

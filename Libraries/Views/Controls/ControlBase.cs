@@ -48,10 +48,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ControlBase()
-            : base()
+        protected ControlBase() : base()
         {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
         }
 

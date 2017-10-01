@@ -16,6 +16,8 @@
 ///
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
+using System.Drawing;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -28,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FlatButton : System.Windows.Forms.Button
+    public class FlatButton : System.Windows.Forms.Button, IDpiAwarableControl
     {
         #region Constructors
 
@@ -50,6 +52,59 @@ namespace Cube.Forms
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventHub
+        /// 
+        /// <summary>
+        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Controls に登録されている IControl オブジェクトに対して、
+        /// 再帰的に設定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IEventHub EventHub
+        {
+            get { return _events; }
+            set
+            {
+                if (_events == value) return;
+                _events = value;
+                foreach (var obj in Controls)
+                {
+                    if (obj is IControl c) c.EventHub = value;
+                }
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dpi
+        /// 
+        /// <summary>
+        /// 現在の Dpi の値を取得または設定します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public double Dpi
+        {
+            get { return _dpi; }
+            set
+            {
+                if (_dpi == value) return;
+                var old = _dpi;
+                _dpi = value;
+                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -96,13 +151,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected override bool ShowFocusCues => false;
 
-        #endregion
-
         #region Hiding properties
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Color BackColor
+        public new Color BackColor
         {
             get { return base.BackColor; }
             set { base.BackColor = value; }
@@ -110,7 +163,7 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Image BackgroundImage
+        public new Image BackgroundImage
         {
             get { return base.BackgroundImage; }
             set { base.BackgroundImage = value; }
@@ -133,7 +186,7 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Color ForeColor
+        public new Color ForeColor
         {
             get { return base.ForeColor; }
             set { base.ForeColor = value; }
@@ -141,7 +194,7 @@ namespace Cube.Forms
 
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Drawing.Image Image
+        public new Image Image
         {
             get { return base.Image; }
             set { base.Image = value; }
@@ -197,8 +250,73 @@ namespace Cube.Forms
 
         #endregion
 
+        #endregion
+
+        #region Events
+
+        #region DpiChanged
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DpiChanged
+        ///
+        /// <summary>
+        /// DPI の値が変化した時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event ValueChangedEventHandler<double> DpiChanged;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDpiChanged
+        ///
+        /// <summary>
+        /// DpiChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
+        {
+            this.UpdateControl(e.OldValue, e.NewValue);
+            DpiChanged?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region NcHitTest
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NcHitTest
+        ///
+        /// <summary>
+        /// マウスのヒットテスト時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event QueryEventHandler<Point, Position> NcHitTest;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnNcHitTest
+        ///
+        /// <summary>
+        /// NcHitTest イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
+            => NcHitTest?.Invoke(this, e);
+
+        #endregion
+
+        #endregion
+
         #region Fields
         private ButtonPainter _painter = null;
+        private IEventHub _events;
+        private double _dpi = 0.0;
         #endregion
     }
 }
