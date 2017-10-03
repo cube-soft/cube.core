@@ -17,8 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Cube.Forms
 {
@@ -31,54 +29,9 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CaptionControl : ControlBase, INotifyPropertyChanged
+    public class CaptionControl : ControlBase
     {
         #region Properties
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// MaximizeBox
-        /// 
-        /// <summary>
-        /// 最大化ボタンを表示するかどうかを示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public bool MaximizeBox
-        {
-            get { return _maximizeBox; }
-            set { SetProperty(ref _maximizeBox, value); }
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// MinimizeBox
-        /// 
-        /// <summary>
-        /// 最小化ボタンを表示するかどうかを示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public bool MinimizeBox
-        {
-            get { return _minimizeBox; }
-            set { SetProperty(ref _minimizeBox, value); }
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// CloseBox
-        /// 
-        /// <summary>
-        /// 閉じるボタンを表示するかどうかを示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public bool CloseBox
-        {
-            get { return _closeBox; }
-            set { SetProperty(ref _closeBox, value); }
-        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -93,7 +46,14 @@ namespace Cube.Forms
         public bool Active
         {
             get { return _active; }
-            set { SetProperty(ref _active, value); }
+            set
+            {
+                if (_active == value) return;
+                _active = value;
+
+                if (value) OnActivated(EventArgs.Empty);
+                else OnDeactivate(EventArgs.Empty);
+            }
         }
 
         /* --------------------------------------------------------------------- */
@@ -108,7 +68,24 @@ namespace Cube.Forms
         public System.Windows.Forms.FormWindowState WindowState
         {
             get { return _state; }
-            set { SetProperty(ref _state, value); }
+            set
+            {
+                if (_state == value) return;
+                _state = value;
+
+                switch (value)
+                {
+                    case System.Windows.Forms.FormWindowState.Maximized:
+                        OnMaximized(EventArgs.Empty);
+                        break;
+                    case System.Windows.Forms.FormWindowState.Minimized:
+                        OnMinimized(EventArgs.Empty);
+                        break;
+                    case System.Windows.Forms.FormWindowState.Normal:
+                        OnNormalized(EventArgs.Empty);
+                        break;
+                }
+            }
         }
 
         /* --------------------------------------------------------------------- */
@@ -122,19 +99,15 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected System.Windows.Forms.Control MaximizeControl
+        public System.Windows.Forms.Control MaximizeControl
         {
-            get { return _maximizeControl; }
+            get { return _maximize; }
             set
             {
-                if (_maximizeControl == value) return;
-                if (_maximizeControl != null) _maximizeControl.Click -= WhenMaximize;
-
-                _maximizeControl = value;
-                if (_maximizeControl == null) return;
-
-                _maximizeControl.Click  += WhenMaximize;
-                _maximizeControl.Visible = MaximizeBox;
+                if (_maximize == value) return;
+                if (_maximize != null) _maximize.Click -= WhenMaximizeRequested;
+                _maximize = value;
+                if (_maximize != null) _maximize.Click += WhenMaximizeRequested;
             }
         }
 
@@ -149,19 +122,15 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected System.Windows.Forms.Control MinimizeControl
+        public System.Windows.Forms.Control MinimizeControl
         {
-            get { return _minimizeControl; }
+            get { return _minimize; }
             set
             {
-                if (_minimizeControl == value) return;
-                if (_minimizeControl != null) _minimizeControl.Click -= WhenMinimize;
-
-                _minimizeControl = value;
-                if (_minimizeControl == null) return;
-
-                _minimizeControl.Click  += WhenMinimize;
-                _minimizeControl.Visible = MinimizeBox;
+                if (_minimize == value) return;
+                if (_minimize != null) _minimize.Click -= WhenMinimizeRequested;
+                _minimize = value;
+                if (_minimize != null) _minimize.Click += WhenMinimizeRequested;
             }
         }
 
@@ -176,19 +145,15 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        protected System.Windows.Forms.Control CloseControl
+        public System.Windows.Forms.Control CloseControl
         {
-            get { return _closeControl; }
+            get { return _close; }
             set
             {
-                if (_closeControl == value) return;
-                if (_closeControl != null) _closeControl.Click -= WhenClose;
-
-                _closeControl = value;
-                if (_closeControl == null) return;
-
-                _closeControl.Click  += WhenClose;
-                _closeControl.Visible = CloseBox;
+                if (_close == value) return;
+                if (_close != null) _close.Click -= WhenCloseRequested;
+                _close = value;
+                if (_close != null) _close.Click += WhenCloseRequested;
             }
         }
 
@@ -196,180 +161,231 @@ namespace Cube.Forms
 
         #region Events
 
-        #region Maximize
+        #region CloseRequested
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Maximize
-        /// 
-        /// <summary>
-        /// 最大化が要求された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public event EventHandler Maximize;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnMaximize
-        /// 
-        /// <summary>
-        /// Maximize イベントを発生させます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnMaximize(EventArgs e) => Maximize?.Invoke(this, e);
-
-        #endregion
-
-        #region Minimize
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Minimize
-        /// 
-        /// <summary>
-        /// 最小化が要求された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public event EventHandler Minimize;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnMinimize
-        /// 
-        /// <summary>
-        /// Minimize イベントを発生させます。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected virtual void OnMinimize(EventArgs e) => Minimize?.Invoke(this, e);
-
-        #endregion
-
-        #region Close
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Close
+        /// CloseRequested
         /// 
         /// <summary>
         /// 画面を閉じる操作が要求された時に発生するイベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event EventHandler Close;
+        public event EventHandler CloseRequested;
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnClose
+        /// OnCloseRequested
         /// 
         /// <summary>
-        /// Close イベントを発生させます。
+        /// CloseRequested イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnClose(EventArgs e) => Close?.Invoke(this, e);
+        protected virtual void OnCloseRequested(EventArgs e)
+            => CloseRequested?.Invoke(this, e);
 
         #endregion
 
-        #region PropertyChanged
+        #region MaximizeRequested
 
         /* --------------------------------------------------------------------- */
         ///
-        /// PropertyChanged
+        /// MaximizeRequested
         /// 
         /// <summary>
-        /// プロパティが変化した時に発生するイベントです。
+        /// 最大化が要求された時に発生するイベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler MaximizeRequested;
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnPropertyChanged
+        /// OnMaximizeRequested
         /// 
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// MaximizeRequested イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(MaximizeBox):
-                    if (MaximizeControl != null) MaximizeControl.Visible = MaximizeBox;
-                    break;
-                case nameof(MinimizeBox):
-                    if (MinimizeControl != null) MinimizeControl.Visible = MinimizeBox;
-                    break;
-                case nameof(CloseBox):
-                    if (CloseControl != null) CloseControl.Visible = CloseBox;
-                    break;
-                default:
-                    break;
-            }
+        protected virtual void OnMaximizeRequested(EventArgs e)
+            => MaximizeRequested?.Invoke(this, e);
 
-            PropertyChanged?.Invoke(this, e);
-        }
+        #endregion
+
+        #region Maximized
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Maximized
+        /// 
+        /// <summary>
+        /// 最大化時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler Maximized;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnMaximized
+        /// 
+        /// <summary>
+        /// Maximized イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnMaximized(EventArgs e) => Maximized?.Invoke(this, e);
+
+        #endregion
+
+        #region MinimizeRequested
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// MinimizeRequested
+        /// 
+        /// <summary>
+        /// 最小化が要求された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler MinimizeRequested;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnMinimizeRequested
+        /// 
+        /// <summary>
+        /// MinimizeRequested イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnMinmizeRequested(EventArgs e)
+            => MinimizeRequested?.Invoke(this, e);
+
+        #endregion
+
+        #region Minimized
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Minimized
+        /// 
+        /// <summary>
+        /// 最小化時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler Minimized;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnMinimized
+        /// 
+        /// <summary>
+        /// Minimized イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnMinimized(EventArgs e) => Minimized?.Invoke(this, e);
+
+        #endregion
+
+        #region Normalized
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Normalized
+        /// 
+        /// <summary>
+        /// 元の大きさに戻った時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler Normalized;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnNormalized
+        /// 
+        /// <summary>
+        /// Normalized イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnNormalized(EventArgs e) => Normalized?.Invoke(this, e);
+
+        #endregion
+
+        #region Activated
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Activated
+        /// 
+        /// <summary>
+        /// アクティブ化された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler Activated;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnActivated
+        /// 
+        /// <summary>
+        /// Activated イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnActivated(EventArgs e) => Activated?.Invoke(this, e);
+
+        #endregion
+
+        #region Deactivate
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Deactivate
+        /// 
+        /// <summary>
+        /// 非アクティブ化された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public event EventHandler Deactivate;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnDeactivate
+        /// 
+        /// <summary>
+        /// Deactivate イベントを発生させます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected virtual void OnDeactivate(EventArgs e) => Deactivate?.Invoke(this, e);
 
         #endregion
 
         #endregion
 
-        #region SetProperty
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        /// 
-        /// <summary>
-        /// プロパティに値を設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        /// 
-        /// <summary>
-        /// プロパティに値を設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
-        {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
-            return true;
-        }
-
-        #endregion
-
-        #region Event handlers
-        private void WhenMaximize(object s, EventArgs e) => OnMaximize(e);
-        private void WhenMinimize(object s, EventArgs e) => OnMinimize(e);
-        private void WhenClose(object s, EventArgs e) => OnClose(e);
+        #region Handlers
+        private void WhenMaximizeRequested(object s, EventArgs e) => OnMaximizeRequested(e);
+        private void WhenMinimizeRequested(object s, EventArgs e) => OnMinmizeRequested(e);
+        private void WhenCloseRequested(object s, EventArgs e) => OnCloseRequested(e);
         #endregion
 
         #region Fields
-        private bool _maximizeBox = true;
-        private bool _minimizeBox = true;
-        private bool _closeBox = true;
         private bool _active = true;
         private System.Windows.Forms.FormWindowState _state = System.Windows.Forms.FormWindowState.Normal;
-        private System.Windows.Forms.Control _maximizeControl;
-        private System.Windows.Forms.Control _minimizeControl;
-        private System.Windows.Forms.Control _closeControl;
+        private System.Windows.Forms.Control _maximize;
+        private System.Windows.Forms.Control _minimize;
+        private System.Windows.Forms.Control _close;
         #endregion
     }
 }

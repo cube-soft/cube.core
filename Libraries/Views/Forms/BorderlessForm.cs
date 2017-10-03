@@ -124,6 +124,11 @@ namespace Cube.Forms
         /// <summary>
         /// 四隅の角の丸みを表す値を取得または設定します。
         /// </summary>
+        /// 
+        /// <remarks>
+        /// TODO: ShowInTaskbar の値を変更した時に Region がリセット
+        /// されてしまうので、該当部分の処理を要検討。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
@@ -537,39 +542,36 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenMaximize
+        /// WhenMaximizeRequested
         ///
         /// <summary>
         /// 最大化要求時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenMaximize(object sender, EventArgs e)
-            => DoMaximize();
+        private void WhenMaximizeRequested(object sender, EventArgs e) => DoMaximize();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenMinimize
+        /// WhenMinimizeRequested
         ///
         /// <summary>
         /// 最小化要求時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenMinimize(object sender, EventArgs e)
-            => DoMinimize();
+        private void WhenMinimizeRequested(object sender, EventArgs e) => DoMinimize();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenClose
+        /// WhenCloseRequested
         ///
         /// <summary>
         /// 画面を閉じる操作が要求された時に実行されます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenClose(object sender, EventArgs e)
-            => Close();
+        private void WhenCloseRequested(object sender, EventArgs e) => Close();
 
         #endregion
 
@@ -577,7 +579,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Maximize
+        /// DoMaximize
         ///
         /// <summary>
         /// 最大化します。
@@ -589,15 +591,15 @@ namespace Cube.Forms
             if (!Sizable || !MaximizeBox) return;
 
             WindowState = WindowState == System.Windows.Forms.FormWindowState.Normal ?
-                           System.Windows.Forms.FormWindowState.Maximized :
-                           System.Windows.Forms.FormWindowState.Normal;
+                          System.Windows.Forms.FormWindowState.Maximized :
+                          System.Windows.Forms.FormWindowState.Normal;
 
             if (Caption != null) Caption.WindowState = WindowState;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Minimize
+        /// DoMinimize
         ///
         /// <summary>
         /// 最小化します。
@@ -682,21 +684,32 @@ namespace Cube.Forms
         /// Attach
         ///
         /// <summary>
-        /// CaptionBase オブジェクトにイベントハンドラを設定します。
+        /// CaptionControl オブジェクトにイベントハンドラを設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private void Attach(CaptionControl caption)
         {
             if (caption == null) return;
-            caption.MaximizeBox = MaximizeBox;
-            caption.MinimizeBox = MinimizeBox;
-            caption.CloseBox    = true;
 
-            if (!CaptionMonitoring) return;
-            caption.Maximize += WhenMaximize;
-            caption.Minimize += WhenMinimize;
-            caption.Close    += WhenClose;
+            if (caption.MaximizeControl != null)
+            {
+                caption.MaximizeControl.Enabled = MaximizeBox;
+                caption.MaximizeControl.Visible = MaximizeBox || MinimizeBox;
+            }
+
+            if (caption.MinimizeControl != null)
+            {
+                caption.MinimizeControl.Enabled = MinimizeBox;
+                caption.MinimizeControl.Visible = MinimizeBox || MaximizeBox;
+            }
+
+            if (CaptionMonitoring)
+            {
+                caption.MaximizeRequested += WhenMaximizeRequested;
+                caption.MinimizeRequested += WhenMinimizeRequested;
+                caption.CloseRequested    += WhenCloseRequested;
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -712,9 +725,9 @@ namespace Cube.Forms
         {
             if (caption == null) return;
 
-            caption.Maximize -= WhenMaximize;
-            caption.Minimize -= WhenMinimize;
-            caption.Close    -= WhenClose;
+            caption.MaximizeRequested -= WhenMaximizeRequested;
+            caption.MinimizeRequested -= WhenMinimizeRequested;
+            caption.CloseRequested    -= WhenCloseRequested;
         }
 
         /* ----------------------------------------------------------------- */

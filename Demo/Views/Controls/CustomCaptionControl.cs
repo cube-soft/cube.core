@@ -15,7 +15,7 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 using System.Drawing;
 
 namespace Cube.Forms.Demo
@@ -72,44 +72,38 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnPropertyChanged
+        /// OnActivated
         /// 
         /// <summary>
-        /// プロパティの内容が変化した時に実行されます。
+        /// アクティブ化された時に実行されます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        protected override void OnActivated(EventArgs e)
         {
-            base.OnPropertyChanged(e);
-            if (e.PropertyName == nameof(Active)) UpdateLayout();
+            BackColor = _backColor;
+            MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.Minimize;
+            MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.Maximize;
+            ExitButton.Styles.NormalStyle.Image = Properties.Resources.Close;
+            base.OnActivated(e);
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// UpdateLayout
+        /// OnDeactivate
         /// 
         /// <summary>
-        /// 外観を更新します。
+        /// 非アクティブ化された時に実行されるハンドラです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void UpdateLayout()
+        protected override void OnDeactivate(EventArgs e)
         {
-            if (Active)
-            {
-                BackColor = _backColor;
-                MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.Minimize;
-                MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.Maximize;
-                ExitButton.Styles.NormalStyle.Image     = Properties.Resources.Close;
-            }
-            else
-            {
-                BackColor = Color.White;
-                MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.MinimizeGray;
-                MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.MaximizeGray;
-                ExitButton.Styles.NormalStyle.Image     = Properties.Resources.CloseGray;
-            }
+            BackColor = Color.White;
+            MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.MinimizeGray;
+            MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.MaximizeGray;
+            ExitButton.Styles.NormalStyle.Image = Properties.Resources.CloseGray;
+            base.OnDeactivate(e);
         }
 
         #region Fields

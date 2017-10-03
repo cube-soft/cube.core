@@ -63,12 +63,9 @@
             // 
             this.HeaderCaptionControl.Active = true;
             this.HeaderCaptionControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.HeaderCaptionControl.CloseBox = true;
             this.HeaderCaptionControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.HeaderCaptionControl.Location = new System.Drawing.Point(0, 0);
             this.HeaderCaptionControl.Margin = new System.Windows.Forms.Padding(0);
-            this.HeaderCaptionControl.MaximizeBox = true;
-            this.HeaderCaptionControl.MinimizeBox = true;
             this.HeaderCaptionControl.Name = "HeaderCaptionControl";
             this.HeaderCaptionControl.Size = new System.Drawing.Size(350, 30);
             this.HeaderCaptionControl.TabIndex = 0;
