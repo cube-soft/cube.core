@@ -64,6 +64,62 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// MaximizeBox
+        /// 
+        /// <summary>
+        /// 最大化ボタンを有効にするかどうかを示す値を取得または
+        /// 設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 変更内容を Caption に反映させるため、元々の MaximizeBox
+        /// プロパティを隠ぺいしています。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public new bool MaximizeBox
+        {
+            get { return base.MaximizeBox; }
+            set
+            {
+                if (base.MaximizeBox == value) return;
+                base.MaximizeBox = value;
+                Attach(Caption);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MinimizeBox
+        /// 
+        /// <summary>
+        /// 最小化ボタンを有効にするかどうかを示す値を取得または
+        /// 設定します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 変更内容を Caption に反映させるため、元々の MinimizeBox
+        /// プロパティを隠ぺいしています。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(true)]
+        public new bool MinimizeBox
+        {
+            get { return base.MinimizeBox; }
+            set
+            {
+                if (base.MinimizeBox == value) return;
+                base.MinimizeBox = value;
+                Attach(Caption);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// DropShadow
         /// 
         /// <summary>
@@ -691,19 +747,8 @@ namespace Cube.Forms
         private void Attach(CaptionControl caption)
         {
             if (caption == null) return;
-
-            if (caption.MaximizeControl != null)
-            {
-                caption.MaximizeControl.Enabled = MaximizeBox;
-                caption.MaximizeControl.Visible = MaximizeBox || MinimizeBox;
-            }
-
-            if (caption.MinimizeControl != null)
-            {
-                caption.MinimizeControl.Enabled = MinimizeBox;
-                caption.MinimizeControl.Visible = MinimizeBox || MaximizeBox;
-            }
-
+            if (caption.MaximizeControl != null) caption.MaximizeControl.Enabled = MaximizeBox;
+            if (caption.MinimizeControl != null) caption.MinimizeControl.Enabled = MinimizeBox;
             if (CaptionMonitoring)
             {
                 caption.MaximizeRequested += WhenMaximizeRequested;

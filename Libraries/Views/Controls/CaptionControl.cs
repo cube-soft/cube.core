@@ -93,7 +93,7 @@ namespace Cube.Forms
         /// MaximizeControl
         /// 
         /// <summary>
-        /// 最大化ボタンを表すコントロールを取得または設定します。
+        /// 最大化ボタンを表すコントロールを取得します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -102,7 +102,7 @@ namespace Cube.Forms
         public System.Windows.Forms.Control MaximizeControl
         {
             get { return _maximize; }
-            set
+            protected set
             {
                 if (_maximize == value) return;
                 if (_maximize != null) _maximize.Click -= WhenMaximizeRequested;
@@ -116,7 +116,7 @@ namespace Cube.Forms
         /// MinimizeControl
         /// 
         /// <summary>
-        /// 最小化ボタンを表すコントロールを取得または設定します。
+        /// 最小化ボタンを表すコントロールを取得します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -125,7 +125,7 @@ namespace Cube.Forms
         public System.Windows.Forms.Control MinimizeControl
         {
             get { return _minimize; }
-            set
+            protected set
             {
                 if (_minimize == value) return;
                 if (_minimize != null) _minimize.Click -= WhenMinimizeRequested;
@@ -139,7 +139,7 @@ namespace Cube.Forms
         /// CloseControl
         /// 
         /// <summary>
-        /// 閉じるボタンを表すコントロールを取得または設定します。
+        /// 閉じるボタンを表すコントロールを取得します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -148,7 +148,7 @@ namespace Cube.Forms
         public System.Windows.Forms.Control CloseControl
         {
             get { return _close; }
-            set
+            protected set
             {
                 if (_close == value) return;
                 if (_close != null) _close.Click -= WhenCloseRequested;
