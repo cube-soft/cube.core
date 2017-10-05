@@ -34,7 +34,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SizeGripControl : System.Windows.Forms.PictureBox, IDpiAwarableControl
+    public class SizeGripControl : System.Windows.Forms.PictureBox, IControl
     {
         #region Constructors
 

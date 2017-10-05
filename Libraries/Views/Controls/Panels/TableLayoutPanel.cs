@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class TableLayoutPanel : System.Windows.Forms.TableLayoutPanel, IDpiAwarableControl
+    public class TableLayoutPanel : System.Windows.Forms.TableLayoutPanel, IControl
     {
         #region Properties
 

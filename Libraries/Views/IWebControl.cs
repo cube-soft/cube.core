@@ -22,14 +22,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IWebView
+    /// IWebControl
     /// 
     /// <summary>
     /// Web ページを表示するためのインターフェースです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IWebView : IDpiAwarableControl
+    public interface IWebControl : IControl
     {
         /* --------------------------------------------------------------------- */
         ///

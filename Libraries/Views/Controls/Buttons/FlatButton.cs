@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FlatButton : System.Windows.Forms.Button, IDpiAwarableControl
+    public class FlatButton : System.Windows.Forms.Button, IControl
     {
         #region Constructors
 

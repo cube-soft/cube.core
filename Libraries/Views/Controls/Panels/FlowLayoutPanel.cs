@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FlowLayoutPanel : System.Windows.Forms.FlowLayoutPanel, IDpiAwarableControl
+    public class FlowLayoutPanel : System.Windows.Forms.FlowLayoutPanel, IControl
     {
         #region Properties
 

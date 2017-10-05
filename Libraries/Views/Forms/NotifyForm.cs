@@ -34,7 +34,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NotifyForm : BorderlessForm, INotifyView
+    public class NotifyForm : BorderlessForm, INotifyForm
     {
         #region Constructors
 

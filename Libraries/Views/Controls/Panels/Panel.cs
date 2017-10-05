@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Panel : System.Windows.Forms.Panel, IDpiAwarableControl
+    public class Panel : System.Windows.Forms.Panel, IControl
     {
         #region Properties
 

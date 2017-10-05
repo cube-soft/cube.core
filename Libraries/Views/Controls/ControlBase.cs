@@ -35,7 +35,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class ControlBase : System.Windows.Forms.UserControl, IDpiAwarableControl
+    public class ControlBase : System.Windows.Forms.UserControl, IControl
     {
         #region Constructors
 

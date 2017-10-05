@@ -87,8 +87,10 @@
     <Compile Include="Presenters\PresenterBase.cs" />
     <Compile Include="Views\Mocks\MockView.cs" />
     <Compile Include="Views\IControl.cs" />
-    <Compile Include="Views\INotifyView.cs" />
-    <Compile Include="Views\IWebView.cs" />
+    <Compile Include="Views\IDpiAwarable.cs" />
+    <Compile Include="Views\IForm.cs" />
+    <Compile Include="Views\INotifyForm.cs" />
+    <Compile Include="Views\IWebControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Views\Controls\Buttons\Button.cs">

@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PictureBox : System.Windows.Forms.PictureBox, IDpiAwarableControl
+    public class PictureBox : System.Windows.Forms.PictureBox, IControl
     {
         #region Constructors
 

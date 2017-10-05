@@ -37,7 +37,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Button : System.Windows.Forms.Button, IDpiAwarableControl
+    public class Button : System.Windows.Forms.Button, IControl
     {
         #region Properties
 
