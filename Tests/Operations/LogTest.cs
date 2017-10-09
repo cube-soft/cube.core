@@ -37,7 +37,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Log_Debug
+        /// LogDebug
         ///
         /// <summary>
         /// Debug 系メソッドのテストを実行します。
@@ -45,8 +45,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Log_Debug()
-            => Assert.DoesNotThrow(() =>
+        public void LogDebug() => Assert.DoesNotThrow(() =>
         {
             var message = nameof(Cube.Log.Operations.Debug);
 
@@ -66,7 +65,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Log_Info
+        /// LogInfo
         ///
         /// <summary>
         /// Info 系メソッドのテストを実行します。
@@ -74,8 +73,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Log_Info()
-            => Assert.DoesNotThrow(() =>
+        public void LogInfo() => Assert.DoesNotThrow(() =>
         {
             var message = nameof(Cube.Log.Operations.Info);
 
@@ -98,7 +96,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Log_Warn
+        /// LogWarn
         ///
         /// <summary>
         /// Warn 系メソッドのテストを実行します。
@@ -106,8 +104,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Log_Warn()
-            => Assert.DoesNotThrow(() =>
+        public void LogWarn() => Assert.DoesNotThrow(() =>
         {
             var message = nameof(Cube.Log.Operations.Warn);
 
@@ -127,7 +124,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Log_Error
+        /// LogError
         ///
         /// <summary>
         /// Error 系メソッドのテストを実行します。
@@ -135,8 +132,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Log_Error()
-            => Assert.DoesNotThrow(() =>
+        public void Log_Error() => Assert.DoesNotThrow(() =>
         {
             var message = nameof(Cube.Log.Operations.Error);
 
@@ -156,7 +152,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Log_Fatal
+        /// LogFatal
         ///
         /// <summary>
         /// Fatal 系メソッドのテストを実行します。
@@ -164,8 +160,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Log_Fatal()
-            => Assert.DoesNotThrow(() =>
+        public void LogFatal() => Assert.DoesNotThrow(() =>
         {
             var message = nameof(Cube.Log.Operations.Fatal);
 

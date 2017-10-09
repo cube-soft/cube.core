@@ -42,8 +42,8 @@ namespace Cube.Tests
         /// Copy_Serializable
         ///
         /// <summary>
-        /// Serializable 属性が付与されているオブジェクトのコピーを
-        /// テストします。
+        /// Serializable 属性が付与されているオブジェクトのコピーの
+        /// テストを実行します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -71,8 +71,8 @@ namespace Cube.Tests
         /// Copy_NonSerializable
         ///
         /// <summary>
-        /// Serializable 属性が付与されていないオブジェクトのコピーを
-        /// テストします。
+        /// Serializable 属性が付与されていないオブジェクトのコピーの
+        /// テストを実行します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
@@ -109,16 +109,16 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Modify_Integer_NotEqual
+        /// Copy_Modify_Integer
         ///
         /// <summary>
         /// コピー後、コピー元オブジェクトの int の値を変更するテストを
-        /// 行います。
+        /// 実行します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Modify_Integer_NotEqual()
+        public void Copy_Modify_Integer()
         {
             var src = new Person();
             src.Identification = 10;
@@ -130,16 +130,16 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Modify_String_NotEqual
+        /// Copy_Modify_String
         ///
         /// <summary>
         /// コピー後、コピー元オブジェクトの string の値を変更するテストを
-        /// 行います。
+        /// 実行します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Modify_String_NotEqual()
+        public void Copy_Modify_String()
         {
             var src = new Person();
             src.Name = "Copy Serializable";
@@ -151,16 +151,16 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Modify_Reference_Equal
+        /// Copy_Modify_Reference
         ///
         /// <summary>
         /// コピー後、コピー元オブジェクトのクラスの値を変更するテストを
-        /// 行います。
+        /// 実行します。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Modify_Reference_Equal()
+        public void Copy_Modify_Reference()
         {
             var src = new Person();
             src.Phone.Value = "01-2345-6789";

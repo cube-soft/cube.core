@@ -39,7 +39,7 @@ namespace Cube.Tests
         /// Forget
         ///
         /// <summary>
-        /// Task の Fire&Forget をテストします。
+        /// Task の Fire&Forget のテストを実行します。
         /// </summary>
         /// 
         /// <remarks>

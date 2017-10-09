@@ -37,7 +37,7 @@ namespace Cube.Tests
         /// ToPrettyBytes
         /// 
         /// <summary>
-        /// ToPrettyBytes のテストを行います。
+        /// ToPrettyBytes のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -58,7 +58,7 @@ namespace Cube.Tests
         /// ToRoughBytes
         /// 
         /// <summary>
-        /// ToRoughBytes のテストを行います。
+        /// ToRoughBytes のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
