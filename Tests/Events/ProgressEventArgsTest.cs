@@ -43,10 +43,10 @@ namespace Cube.Tests
         [TestCase(10.0, "Progress")]
         [TestCase(-25.67890, false)]
         [TestCase(0.0, 3.1415926)]
-        public void Create_ProgressEventArgs<T>(double percentage, T value)
+        public void Create_ProgressEventArgs<T>(double ratio, T value)
         {
-            var args = ProgressEventArgs.Create(percentage, value);
-            Assert.That(args.Percentage, Is.EqualTo(percentage));
+            var args = ProgressEventArgs.Create(ratio, value);
+            Assert.That(args.Ratio, Is.EqualTo(ratio));
             Assert.That(args.Value, Is.EqualTo(value));
         }
     }

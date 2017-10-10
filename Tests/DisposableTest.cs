@@ -15,56 +15,63 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
+using System;
 using NUnit.Framework;
-using Cube.Conversions;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ByteFormatTest
+    /// DisposableTest
     /// 
     /// <summary>
-    /// バイトサイズの書式に関するテストを行うためのクラスです。
+    /// Disposable のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ByteFormatTest
+    class DisposableTest
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToPrettyBytes
-        /// 
-        /// <summary>
-        /// ToPrettyBytes のテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(1L,                   ExpectedResult = "1 Bytes")]
-        [TestCase(1234L,                ExpectedResult = "1.21 KB")]
-        [TestCase(12345L,               ExpectedResult = "12.1 KB")]
-        [TestCase(123456L,              ExpectedResult = "121 KB")]
-        [TestCase(1234567L,             ExpectedResult = "1.18 MB")]
-        [TestCase(1234567890L,          ExpectedResult = "1.15 GB")]
-        [TestCase(1234567890123L,       ExpectedResult = "1.12 TB")]
-        [TestCase(1234567890123456L,    ExpectedResult = "1.1 PB")]
-        [TestCase(1234567890123456789L, ExpectedResult = "1.07 EB")]
-        public string ToPrettyBytes(long src)
-            => src.ToPrettyBytes();
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToRoughBytes
+        /// Create_Dispose
         /// 
         /// <summary>
-        /// ToRoughBytes のテストを実行します。
+        /// IDisposable オブジェクトを生成して Dispose するテストを
+        /// 実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(0L,    ExpectedResult = "0 Bytes")]
-        [TestCase(1023L, ExpectedResult = "1 KB")]
-        public string ToRoughBytes(long src)
-            => src.ToRoughBytes();
+        [Test]
+        public void Create_Dispose()
+        {
+            var count = 0;
+            var disposable = Disposable.Create(() => count++);
+
+            disposable.Dispose();
+            Assert.That(count, Is.EqualTo(1));
+            Assert.DoesNotThrow(() => disposable.Dispose());
+            Assert.That(count, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Null_Throws
+        /// 
+        /// <summary>
+        /// Disposable.Create メソッドに null オブジェクトを指定した時の
+        /// 挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Null_Throws() => Assert.That(
+            () => Disposable.Create(null),
+            Throws.TypeOf<ArgumentException>()
+        );
+
+        #endregion
     }
 }

@@ -98,24 +98,15 @@ namespace Cube.Processes
         /// </summary>
         /// 
         /// <param name="action">処理を表すオブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Subscribe(Action<TValue> action)
-            => _subscriptions.Add(action);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Unsubscribe
-        ///
-        /// <summary>
-        /// 登録した処理を解除します。
-        /// </summary>
         /// 
-        /// <param name="action">処理を表すオブジェクト</param>
+        /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public void Unsubscribe(Action<TValue> action)
-            => _subscriptions.Remove(action);
+        public IDisposable Subscribe(Action<TValue> action)
+        {
+            _subscriptions.Add(action);
+            return Disposable.Create(() => _subscriptions.Remove(action));
+        }
 
         #endregion
 

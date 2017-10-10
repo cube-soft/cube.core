@@ -8,12 +8,12 @@
     <owners>$author$</owners>
     <copyright>$copyright$</copyright>
     <description>Common library for Cube.* projects.</description>
+    <releaseNotes>Private release.</releaseNotes>
+    <tags>Cube Windows</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
     <iconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>Private release.</releaseNotes>
-    <tags>Cube Windows</tags>
   </metadata>
   <files>
     <file src="bin\net35\Release\Cube.Core.dll" target="lib\net35" />

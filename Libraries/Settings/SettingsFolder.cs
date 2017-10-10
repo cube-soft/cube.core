@@ -348,7 +348,7 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public void Load(SettingsType type, string src) => OnLoaded(
-            new ValueChangedEventArgs<TValue>(Value, type.Load<TValue>(src))
+            ValueChangedEventArgs.Create(Value, type.Load<TValue>(src))
         );
 
         /* ----------------------------------------------------------------- */

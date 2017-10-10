@@ -22,27 +22,27 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHandler
+    /// FileHelper
     /// 
     /// <summary>
     /// テストでファイルを使用するためのクラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    class FileHandler
+    class FileHelper
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileResource
+        /// FileHelper
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHandler()
+        protected FileHelper()
         {
             var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
             Root = Path.GetDirectoryName(reader.Location);
@@ -103,11 +103,11 @@ namespace Cube.Tests
         /// </summary>
         /// 
         /// <param name="filename">ファイル名</param>
+        /// 
         /// <returns>パス</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Example(string filename)
-            => Path.Combine(Examples, filename);
+        protected string Example(string filename) => Path.Combine(Examples, filename);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -119,11 +119,11 @@ namespace Cube.Tests
         /// </summary>
         /// 
         /// <param name="filename">ファイル名</param>
+        /// 
         /// <returns>パス</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Result(string filename)
-            => Path.Combine(Results, filename);
+        protected string Result(string filename) => Path.Combine(Results, filename);
 
         #endregion
 
