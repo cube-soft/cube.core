@@ -45,7 +45,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void GetFiles(IOperatorCore core)
         {
             var io = new Operator(core);
@@ -68,7 +68,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void GetDirectories(IOperatorCore core)
         {
             var io = new Operator(core);
@@ -91,7 +91,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Get_Properties(IOperatorCore core)
         {
             var io   = new Operator(core);
@@ -120,7 +120,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Get_Throws(IOperatorCore core)
         {
             var io = new Operator(core);
@@ -136,7 +136,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Create(IOperatorCore core)
         {
             var dest = Result(@"Directory\Create.txt");
@@ -155,7 +155,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void OpenWrite(IOperatorCore core)
         {
             var dest = Result("OpenWrite.txt");
@@ -180,7 +180,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Move(IOperatorCore core)
         {
             var io = new Operator(core);
@@ -226,7 +226,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Move_Failed(IOperatorCore core)
         {
             var failed = false;
@@ -258,7 +258,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Open_Failed(IOperatorCore core)
         {
             var failed = false;
@@ -295,7 +295,7 @@ namespace Cube.FileSystem.Tests
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Operator_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public void Move_Throws(IOperatorCore core)
             => Assert.That(() =>
             {
@@ -306,20 +306,39 @@ namespace Cube.FileSystem.Tests
             },
             Throws.TypeOf<System.IO.FileNotFoundException>());
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Open_Throws
+        ///
+        /// <summary>
+        /// ファイルを開く操作に失敗するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Open_Throws(IOperatorCore core)
+            => Assert.That(() =>
+            {
+                var io     = new Operator(core);
+                var src    = io.Combine(Results, "FileNotFound.txt");
+                var stream = io.OpenRead(src);
+            },
+            Throws.TypeOf<System.IO.FileNotFoundException>());
+
         #endregion
 
         #region TestCases
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Operator_TestCases
+        /// TestCases
         ///
         /// <summary>
         /// 各種 Operator のテスト用データを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IEnumerable<TestCaseData> Operator_TestCases
+        private static IEnumerable<TestCaseData> TestCases
         {
             get
             {
