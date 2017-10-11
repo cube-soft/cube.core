@@ -319,7 +319,7 @@ namespace Cube.FileSystem.Tests
             get
             {
                 yield return new TestCaseData(new OperatorCore());
-                yield return new TestCaseData(new Alpha());
+                yield return new TestCaseData(new AlphaOperatorCore());
             }
         }
 

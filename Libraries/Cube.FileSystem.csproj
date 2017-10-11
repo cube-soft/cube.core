@@ -91,13 +91,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Details\IShellLink.cs" />
+    <Compile Include="Information\Alpha.cs" />
+    <Compile Include="Information\Standard.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
+    <Compile Include="OperatorCore\Alpha.cs" />
+    <Compile Include="OperatorCore\Standard.cs" />
     <Compile Include="Operations\Files.cs" />
-    <Compile Include="Alpha.cs" />
     <Compile Include="FailedEventArgs.cs" />
-    <Compile Include="Information.cs" />
+    <Compile Include="IInformation.cs" />
+    <Compile Include="IOperatorCore.cs" />
     <Compile Include="Operator.cs" />
-    <Compile Include="OperatorCore.cs" />
     <Compile Include="PathFilter.cs" />
     <Compile Include="Shortcut.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
