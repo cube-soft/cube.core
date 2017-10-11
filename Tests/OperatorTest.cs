@@ -195,6 +195,9 @@ namespace Cube.FileSystem.Tests
             Assert.That(src.Exists, Is.True);
 
             io.Copy(src.FullName, dest.FullName, false);
+            io.SetCreationTime(dest.FullName, src.CreationTime);
+            io.SetLastWriteTime(dest.FullName, DateTime.Now);
+            io.SetLastAccessTime(dest.FullName, DateTime.Now);
             io.SetAttributes(dest.FullName, System.IO.FileAttributes.ReadOnly);
 
             io.Move(src.FullName, dest.FullName, true);
@@ -236,6 +239,7 @@ namespace Cube.FileSystem.Tests
 
                 Assert.That(e.Name,          Is.EqualTo("Move"));
                 Assert.That(e.Paths.Count(), Is.EqualTo(2));
+                Assert.That(e.Exception,     Is.TypeOf<System.IO.FileNotFoundException>());
             };
 
             var src  = io.Combine(Results, "FileNotFound.txt");
@@ -265,8 +269,9 @@ namespace Cube.FileSystem.Tests
                 e.Cancel = failed;
                 failed   = true;
 
-                Assert.That(e.Name, Is.EqualTo("OpenRead"));
+                Assert.That(e.Name,          Is.EqualTo("OpenRead"));
                 Assert.That(e.Paths.Count(), Is.EqualTo(1));
+                Assert.That(e.Exception,     Is.TypeOf<System.IO.FileNotFoundException>());
             };
 
             var src    = io.Combine(Results, "FileNotFound.txt");
