@@ -31,7 +31,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum TimerState : int
+    public enum TimerState
     {
         /// <summary>実行中</summary>
         Run     =  0,
