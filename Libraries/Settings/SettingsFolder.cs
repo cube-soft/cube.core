@@ -51,7 +51,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder() : this(Assembly.GetEntryAssembly()) { }
+        public SettingsFolder() : this(SettingsType.Registry) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -61,15 +61,12 @@ namespace Cube.Settings
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <param name="assembly">
-        /// 設定対象となる <c>Assembly</c> オブジェクト
-        /// </param>
+        /// <param name="type">設定情報の保存方法</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly)
+        public SettingsFolder(SettingsType type)
         {
-            var reader = new AssemblyReader(assembly);
-            Initialize(assembly, reader.Company, reader.Product);
+            Initialize(AssemblyReader.Default, type);
         }
 
         /* ----------------------------------------------------------------- */
@@ -79,33 +76,14 @@ namespace Cube.Settings
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
-        /// <param name="company">会社名</param>
-        /// <param name="product">製品名</param>
         ///
-        /* ----------------------------------------------------------------- */
-        public SettingsFolder(string company, string product)
-            : this(Assembly.GetEntryAssembly(), company, product) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SettingsFolder
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="assembly">
-        /// 設定対象となる <c>Assembly</c> オブジェクト
-        /// </param>
-        /// 
-        /// <param name="company">会社名</param>
-        /// <param name="product">製品名</param>
+        /// <param name="type">設定情報の保存方法</param>
+        /// <param name="path">設定情報の保存場所</param>
         /// 
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly, string company, string product)
+        public SettingsFolder(SettingsType type, string path)
         {
-            Initialize(assembly, company, product);
+            Initialize(AssemblyReader.Default, type, path);
         }
 
         #endregion
@@ -125,17 +103,6 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Assembly
-        ///
-        /// <summary>
-        /// アセンブリ情報を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Assembly Assembly { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Version
         ///
         /// <summary>
@@ -144,6 +111,50 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion Version { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Company
+        ///
+        /// <summary>
+        /// アプリケーションの発行者を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Company { get; private set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Product
+        ///
+        /// <summary>
+        /// アプリケーション名を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Product { get; private set; } = string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Type
+        ///
+        /// <summary>
+        /// 設定情報の保存方法を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsType Type { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Path
+        ///
+        /// <summary>
+        /// 設定情報の保存場所を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Path { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -184,39 +195,6 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public TimeSpan AutoSaveDelay { get; set; } = TimeSpan.FromSeconds(1);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Company
-        ///
-        /// <summary>
-        /// アプリケーションの発行元を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Company { get; private set; } = string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Product
-        ///
-        /// <summary>
-        /// アプリケーション名を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Product { get; private set; } = string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SubkeyName
-        ///
-        /// <summary>
-        /// レジストリ上で各種設定が保存されているサブキー名を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected string SubKeyName => $@"Software\{Company}\{Product}";
 
         #endregion
 
@@ -329,27 +307,12 @@ namespace Cube.Settings
         /// Load
         ///
         /// <summary>
-        /// ユーザ設定をレジストリから読み込みます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Load() => Load(SettingsType.Registry, SubKeyName);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        ///
-        /// <summary>
         /// ユーザ設定を読み込みます。
         /// </summary>
-        /// 
-        /// <param name="type">データ形式</param>
-        /// <param name="src">読み込み先パス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load(SettingsType type, string src) => OnLoaded(
-            ValueChangedEventArgs.Create(Value, type.Load<TValue>(src))
-        );
+        public void Load()
+            => OnLoaded(ValueChangedEventArgs.Create(Value, Type.Load<TValue>(Path)));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -360,22 +323,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() => Save(SettingsType.Registry, SubKeyName);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save
-        ///
-        /// <summary>
-        /// ユーザ設定を保存します。
-        /// </summary>
-        /// 
-        /// <param name="type">保存形式</param>
-        /// <param name="dest">保存先パス</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Save(SettingsType type, string dest)
-            => OnSaved(KeyValueEventArgs.Create(type, dest));
+        public void Save()
+            => OnSaved(KeyValueEventArgs.Create(Type, Path));
 
         #region IDisposable
 
@@ -439,18 +388,38 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize(Assembly assembly, string company, string product)
+        private void Initialize(AssemblyReader reader, SettingsType type, string path)
         {
-            Assembly = assembly;
-            Company  = company;
-            Product  = product;
-            Version  = new SoftwareVersion(Assembly);
+            Type     = type;
+            Path     = path;
+            Version  = new SoftwareVersion(reader.Assembly);
+            Company  = reader.Company;
+            Product  = reader.Product;
             Value    = new TValue();
 
             Value.PropertyChanged += WhenChanged;
 
             _autosaver.AutoReset = false;
-            _autosaver.Elapsed  += WhenElapsed;
+            _autosaver.Elapsed += WhenElapsed;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Initialize
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Initialize(AssemblyReader reader, SettingsType type)
+        {
+            var root = type == SettingsType.Registry ?
+                       "Software" :
+                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var path = System.IO.Path.Combine(root, $@"{reader.Company}\{reader.Product}");
+
+            Initialize(reader, type, path);
         }
 
         /* ----------------------------------------------------------------- */
