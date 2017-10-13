@@ -56,6 +56,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Default
+        ///
+        /// <summary>
+        /// 既定の AssemblyReader オブジェクトを取得します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public static AssemblyReader Default { get; }
+            = new AssemblyReader(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Assembly
         ///
         /// <summary>
