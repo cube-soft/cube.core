@@ -119,8 +119,7 @@ namespace Cube.FileSystem
         /// <returns>ディレクトリ一覧</returns>
         /// 
         /* ----------------------------------------------------------------- */
-        public string[] GetDirectories(string path)
-            => Directory.Exists(path) ? Directory.GetDirectories(path) : null;
+        public string[] GetDirectories(string path) => GetDirectoriesCore(path);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -265,7 +264,7 @@ namespace Cube.FileSystem
         /// 
         /* ----------------------------------------------------------------- */
         public void SetLastAccessTime(string path, DateTime time)
-            => SetLastWriteTimeCore(path, time);
+            => SetLastAccessTimeCore(path, time);
 
         /* ----------------------------------------------------------------- */
         ///

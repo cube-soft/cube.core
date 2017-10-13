@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void GetFiles(Operator io)
         {
-            Assert.That(io.GetFiles(Examples).Count(), Is.GreaterThan(1));
+            Assert.That(io.GetFiles(Examples).Count(), Is.EqualTo(2));
             Assert.That(io.GetFiles(Example("Sample.txt")), Is.Null);
 
             var empty = Result("Empty");
@@ -70,7 +70,7 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void GetDirectories(Operator io)
         {
-            Assert.That(io.GetDirectories(Examples).Count(), Is.GreaterThanOrEqualTo(1));
+            Assert.That(io.GetDirectories(Examples).Count(), Is.EqualTo(1));
             Assert.That(io.GetDirectories(Example("Sample.txt")), Is.Null);
 
             var empty = Result("Empty");
