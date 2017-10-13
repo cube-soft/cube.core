@@ -45,7 +45,7 @@ namespace Cube.Tests
         [Test]
         public void Load()
         {
-            var exec = Assembly.GetExecutingAssembly().Location;
+            var exec = AssemblyReader.Default.Location;
             var name = Path.GetFileNameWithoutExtension(exec);
             var startup = new Cube.Settings.Startup(name);
             startup.Load();
@@ -64,7 +64,7 @@ namespace Cube.Tests
         [Test]
         public void Save_Delete()
         {
-            var exec = Assembly.GetExecutingAssembly().Location;
+            var exec = AssemblyReader.Default.Location;
             var name = Path.GetFileNameWithoutExtension(exec);
             var command = '"' + exec + '"';
 

@@ -44,7 +44,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         protected FileHelper()
         {
-            var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
+            var reader = AssemblyReader.Default;
             Root = Path.GetDirectoryName(reader.Location);
             _folder = GetType().FullName.Replace($"{reader.Product}.", "");
             if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);

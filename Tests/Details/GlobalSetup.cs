@@ -46,7 +46,7 @@ namespace Cube.Tests
         {
             Cube.Log.Operations.Configure();
             Cube.Log.Operations.ObserveTaskException();
-            Cube.Log.Operations.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
+            Cube.Log.Operations.Info(typeof(GlobalSetup), AssemblyReader.Default.Assembly);
         }
     }
 }
