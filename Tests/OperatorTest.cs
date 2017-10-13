@@ -46,9 +46,8 @@ namespace Cube.FileSystem.Tests
         /// 
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void GetFiles(IOperatorCore core)
+        public void GetFiles(Operator io)
         {
-            var io = new Operator(core);
             Assert.That(io.GetFiles(Examples).Count(), Is.GreaterThan(1));
             Assert.That(io.GetFiles(Example("Sample.txt")), Is.Null);
 
@@ -69,9 +68,8 @@ namespace Cube.FileSystem.Tests
         /// 
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void GetDirectories(IOperatorCore core)
+        public void GetDirectories(Operator io)
         {
-            var io = new Operator(core);
             Assert.That(io.GetDirectories(Examples).Count(), Is.GreaterThanOrEqualTo(1));
             Assert.That(io.GetDirectories(Example("Sample.txt")), Is.Null);
 
@@ -92,9 +90,8 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get_Properties(IOperatorCore core)
+        public void Get_Properties(Operator io)
         {
-            var io   = new Operator(core);
             var file = io.Get(Example("Sample.txt"));
             var dir  = io.Get(file.DirectoryName);
             var cmp  = new DateTime(2017, 6, 5);
@@ -121,11 +118,8 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get_Throws(IOperatorCore core)
-        {
-            var io = new Operator(core);
-            Assert.That(() => io.Get(string.Empty), Throws.TypeOf<ArgumentException>());
-        }
+        public void Get_Throws(Operator io)
+            => Assert.That(() => io.Get(string.Empty), Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -137,11 +131,9 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Create(IOperatorCore core)
+        public void Create(Operator io)
         {
             var dest = Result(@"Directory\Create.txt");
-            var io = new Operator(core);
-
             using (var stream = io.Create(dest)) stream.WriteByte((byte)'A');
             Assert.That(io.Get(dest).Length, Is.EqualTo(1));
         }
@@ -156,10 +148,9 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void OpenWrite(IOperatorCore core)
+        public void OpenWrite(Operator io)
         {
             var dest = Result("OpenWrite.txt");
-            var io = new Operator(core);
             io.Copy(Example("Sample.txt"), dest, true);
 
             var count = io.Get(dest).Length;
@@ -181,9 +172,8 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move(IOperatorCore core)
+        public void Move(Operator io)
         {
-            var io = new Operator(core);
             io.Failed += (s, e) => Assert.Fail($"{e.Name}: {e.Exception}");
 
             var info = io.Get("Sample.txt");
@@ -227,10 +217,9 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move_Failed(IOperatorCore core)
+        public void Move_Failed(Operator io)
         {
             var failed = false;
-            var io = new Operator(core);
             io.Failed += (s, e) =>
             {
                 // try twice
@@ -259,10 +248,9 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Open_Failed(IOperatorCore core)
+        public void Open_Failed(Operator io)
         {
             var failed = false;
-            var io = new Operator(core);
             io.Failed += (s, e) =>
             {
                 // try twice
@@ -296,15 +284,13 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move_Throws(IOperatorCore core)
-            => Assert.That(() =>
-            {
-                var io   = new Operator(core);
-                var src  = io.Combine(Results, "FileNotFound.txt");
-                var dest = io.Combine(Results, "Moved.txt");
-                io.Move(src, dest);
-            },
-            Throws.TypeOf<System.IO.FileNotFoundException>());
+        public void Move_Throws(Operator io) => Assert.That(() =>
+        {
+            var src  = io.Combine(Results, "FileNotFound.txt");
+            var dest = io.Combine(Results, "Moved.txt");
+            io.Move(src, dest);
+        },
+        Throws.TypeOf<System.IO.FileNotFoundException>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -316,14 +302,12 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Open_Throws(IOperatorCore core)
-            => Assert.That(() =>
-            {
-                var io     = new Operator(core);
-                var src    = io.Combine(Results, "FileNotFound.txt");
-                var stream = io.OpenRead(src);
-            },
-            Throws.TypeOf<System.IO.FileNotFoundException>());
+        public void Open_Throws(Operator io) => Assert.That(() =>
+        {
+            var src    = io.Combine(Results, "FileNotFound.txt");
+            var stream = io.OpenRead(src);
+        },
+        Throws.TypeOf<System.IO.FileNotFoundException>());
 
         #endregion
 
@@ -342,8 +326,8 @@ namespace Cube.FileSystem.Tests
         {
             get
             {
-                yield return new TestCaseData(new OperatorCore());
-                yield return new TestCaseData(new AlphaOperatorCore());
+                yield return new TestCaseData(new Operator());
+                yield return new TestCaseData(new AfsOperator());
             }
         }
 

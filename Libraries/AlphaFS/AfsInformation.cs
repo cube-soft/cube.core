@@ -22,14 +22,14 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AlphaInformation
+    /// AfsInformation
     /// 
     /// <summary>
     /// AlphaFS を利用した IInformation の実装クラスです。
     /// </summary>
     /// 
     /* --------------------------------------------------------------------- */
-    internal class AlphaInformation : IInformation
+    internal class AfsInformation : IInformation
     {
         #region Constructors
 
@@ -44,7 +44,7 @@ namespace Cube.FileSystem
         /// <param name="path">ファイルまたはディレクトリのパス</param>
         /// 
         /* ----------------------------------------------------------------- */
-        public AlphaInformation(string path) : this(
+        public AfsInformation(string path) : this(
             Directory.Exists(path) ?
             new DirectoryInfo(path) as FileSystemInfo:
             new FileInfo(path) as FileSystemInfo
@@ -61,7 +61,7 @@ namespace Cube.FileSystem
         /// <param name="raw">実装オブジェクト</param>
         /// 
         /* ----------------------------------------------------------------- */
-        public AlphaInformation(FileSystemInfo raw)
+        public AfsInformation(FileSystemInfo raw)
         {
             RawObject = raw;
         }

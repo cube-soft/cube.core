@@ -90,16 +90,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlphaFS\AfsInformation.cs" />
+    <Compile Include="AlphaFS\AfsOperator.cs" />
     <Compile Include="Details\IShellLink.cs" />
-    <Compile Include="Information\Alpha.cs" />
-    <Compile Include="Information\Standard.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
-    <Compile Include="OperatorCore\Alpha.cs" />
-    <Compile Include="OperatorCore\Standard.cs" />
     <Compile Include="Operations\Files.cs" />
     <Compile Include="FailedEventArgs.cs" />
     <Compile Include="IInformation.cs" />
-    <Compile Include="IOperatorCore.cs" />
+    <Compile Include="Information.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="PathFilter.cs" />
     <Compile Include="Shortcut.cs" />
