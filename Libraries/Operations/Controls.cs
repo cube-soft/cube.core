@@ -196,10 +196,27 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         public static void BringToFront(this System.Windows.Forms.Form form)
         {
+            form.ResetTopMost();
+            form.Activate();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ResetTopMost
+        /// 
+        /// <summary>
+        /// TopMost の値をリセットします。
+        /// </summary>
+        /// 
+        /// <param name="form">フォーム</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void ResetTopMost(this System.Windows.Forms.Form form)
+        {
             var tmp = form.TopMost;
+            form.TopMost = false;
             form.TopMost = true;
             form.TopMost = tmp;
-            form.Activate();
         }
 
         /* ----------------------------------------------------------------- */
