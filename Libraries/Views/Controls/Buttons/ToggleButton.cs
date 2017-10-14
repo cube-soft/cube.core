@@ -1,19 +1,19 @@
 ﻿/* ------------------------------------------------------------------------- */
-///
-/// Copyright (c) 2010 CubeSoft, Inc.
-/// 
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///  http://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
-///
+//
+// Copyright (c) 2010 CubeSoft, Inc.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
 using System.Drawing;
@@ -155,6 +155,15 @@ namespace Cube.Forms
 
         #region ButtonBase
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BackColor
+        /// 
+        /// <summary>
+        /// 背景色を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Color BackColor
@@ -163,6 +172,15 @@ namespace Cube.Forms
             set { base.BackColor = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BackColor
+        /// 
+        /// <summary>
+        /// 背景イメージを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Image BackgroundImage
@@ -171,6 +189,15 @@ namespace Cube.Forms
             set { base.BackgroundImage = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FlatAppearance
+        /// 
+        /// <summary>
+        /// 表示内容を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FlatButtonAppearance FlatAppearance
@@ -178,6 +205,15 @@ namespace Cube.Forms
             get { return base.FlatAppearance; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FlatStyle
+        /// 
+        /// <summary>
+        /// 表示方法を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FlatStyle FlatStyle
@@ -186,6 +222,15 @@ namespace Cube.Forms
             set { base.FlatStyle = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ForeColor
+        /// 
+        /// <summary>
+        /// 前景色を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Color ForeColor
@@ -194,6 +239,15 @@ namespace Cube.Forms
             set { base.ForeColor = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Image
+        /// 
+        /// <summary>
+        /// 表示イメージを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Image Image
@@ -202,6 +256,15 @@ namespace Cube.Forms
             set { base.Image = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ImageIndex
+        /// 
+        /// <summary>
+        /// イメージを取得するためのインデックスを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new int ImageIndex
@@ -210,6 +273,15 @@ namespace Cube.Forms
             set { base.ImageIndex = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ImageKey
+        /// 
+        /// <summary>
+        /// イメージを取得するためのキーを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new string ImageKey
@@ -218,6 +290,15 @@ namespace Cube.Forms
             set { base.ImageKey = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ImageList
+        /// 
+        /// <summary>
+        /// イメージリストを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.ImageList ImageList
@@ -226,6 +307,15 @@ namespace Cube.Forms
             set { base.ImageList = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Text
+        /// 
+        /// <summary>
+        /// 表示テキストを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new string Text
@@ -234,6 +324,15 @@ namespace Cube.Forms
             set { base.Text = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TextImageRelation
+        /// 
+        /// <summary>
+        /// テキストとイメージの位置関係を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.TextImageRelation TextImageRelation
@@ -242,6 +341,15 @@ namespace Cube.Forms
             set { base.TextImageRelation = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UseVisualStyleBakColor
+        /// 
+        /// <summary>
+        /// VisualStyle を適用するかどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new bool UseVisualStyleBackColor
@@ -254,6 +362,15 @@ namespace Cube.Forms
 
         #region CheckBox
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Appearance
+        /// 
+        /// <summary>
+        /// 表示方法を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         public new System.Windows.Forms.Appearance Appearance
         {
@@ -261,6 +378,15 @@ namespace Cube.Forms
             set { base.Appearance = value; }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CheckAlign
+        /// 
+        /// <summary>
+        /// チェックボックスの表示位置を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Browsable(false)]
         public new ContentAlignment CheckAlign
         {
