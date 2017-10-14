@@ -235,7 +235,7 @@ namespace Cube.Forms
         private Color _foreground = Color.Empty;
         private Color _border = Color.Empty;
         private IEventHub _events;
-        private double _dpi = 0.0;
+        private double _dpi = StandardForm.BaseDpi;
         #endregion
 
         #endregion

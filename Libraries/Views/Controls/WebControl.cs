@@ -508,7 +508,7 @@ namespace Cube.Forms
         private string _agent = string.Empty;
         private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie = null;
         private ActiveXControlEvents _events = null;
-        private double _dpi = 0.0;
+        private double _dpi = StandardForm.BaseDpi;
         #endregion
 
         #endregion

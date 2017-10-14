@@ -316,7 +316,7 @@ namespace Cube.Forms
         #region Fields
         private ButtonPainter _painter = null;
         private IEventHub _events;
-        private double _dpi = 0.0;
+        private double _dpi = StandardForm.BaseDpi;
         #endregion
     }
 }

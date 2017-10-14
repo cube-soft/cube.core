@@ -270,7 +270,7 @@ namespace Cube.Forms
 
         #region Fields
         private IEventHub _events;
-        private double _dpi = 0.0;
+        private double _dpi = StandardForm.BaseDpi;
         #endregion
 
         #endregion

@@ -118,6 +118,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// BaseDpi
+        /// 
+        /// <summary>
+        /// 基準となる Dpi の値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static double BaseDpi { get; } = 96.0;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// EventHub
         /// 
         /// <summary>
@@ -451,7 +462,7 @@ namespace Cube.Forms
         }
 
         #region Fields
-        private double _dpi = 0.0;
+        private double _dpi = StandardForm.BaseDpi;
         private Cube.Processes.IMessenger<IEnumerable<string>> _activator = null;
         private IDisposable _remover = null;
         #endregion
