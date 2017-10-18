@@ -150,12 +150,18 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void OpenWrite(Operator io)
         {
-            var dest = Result("OpenWrite.txt");
-            io.Copy(Example("Sample.txt"), dest, true);
+            var src  = io.Get(Example("Sample.txt"));
+            var dest = io.Get(Result("OpenWrite.txt"));
 
-            var count = io.Get(dest).Length;
-            using (var stream = io.OpenWrite(dest)) stream.WriteByte((byte)'A');
-            Assert.That(io.Get(dest).Length, Is.EqualTo(count));
+            io.Copy(src.FullName, dest.FullName, true);
+            io.SetAttributes(dest.FullName, src.Attributes);
+            io.SetCreationTime(dest.FullName, src.CreationTime);
+            io.SetLastWriteTime(dest.FullName, DateTime.Now);
+            io.SetLastAccessTime(dest.FullName, DateTime.Now);
+
+            var count = dest.Length;
+            using (var stream = io.OpenWrite(dest.FullName)) stream.WriteByte((byte)'A');
+            Assert.That(dest.Length, Is.EqualTo(count));
 
             var newfile = Result(@"Directory\OpenWrite.txt");
             using (var stream = io.OpenWrite(newfile)) stream.WriteByte((byte)'A');
@@ -176,35 +182,30 @@ namespace Cube.FileSystem.Tests
         {
             io.Failed += (s, e) => Assert.Fail($"{e.Name}: {e.Exception}");
 
-            var info = io.Get("Sample.txt");
-            var src  = io.Get(io.Combine(Results, info.Name));
-            var dest = io.Get(io.Combine(Results, $"{info.NameWithoutExtension}-Move{info.Extension}"));
+            var name = "Archive";
+            var src  = io.Get(io.Combine(Results, name));
+            var dest = io.Get(io.Combine(Results, $"{name}-Move"));
 
-            io.Copy(io.Combine(Examples, info.Name), src.FullName, false);
+            io.Copy(Example(name), src.FullName, false);
             src.Refresh();
             Assert.That(src.Exists, Is.True);
 
             io.Copy(src.FullName, dest.FullName, false);
-            io.SetCreationTime(dest.FullName, src.CreationTime);
-            io.SetLastWriteTime(dest.FullName, DateTime.Now);
-            io.SetLastAccessTime(dest.FullName, DateTime.Now);
-            io.SetAttributes(dest.FullName, System.IO.FileAttributes.ReadOnly);
-
             io.Move(src.FullName, dest.FullName, true);
             src.Refresh();
             dest.Refresh();
-            Assert.That(src.Exists,  Is.False);
+            Assert.That(src.Exists, Is.False);
             Assert.That(dest.Exists, Is.True);
 
             io.Move(dest.FullName, src.FullName);
             src.Refresh();
             dest.Refresh();
-            Assert.That(src.Exists,  Is.True);
+            Assert.That(src.Exists, Is.True);
             Assert.That(dest.Exists, Is.False);
 
             io.Delete(src.FullName);
             src.Refresh();
-            Assert.That(src.Exists,  Is.False);
+            Assert.That(src.Exists, Is.False);
         }
 
         /* ----------------------------------------------------------------- */

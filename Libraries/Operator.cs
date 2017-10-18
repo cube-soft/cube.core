@@ -560,19 +560,9 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Move(string src, string dest, bool overwrite)
         {
-            var si = Get(src);
-            var di = Get(dest);
-
-            if (!overwrite || !di.Exists) MoveInner(si, di);
-            else
-            {
-                var tmp = Combine(si.DirectoryName, Guid.NewGuid().ToString("D"));
-                var ti  = Get(tmp);
-
-                if (!MoveInner(di, ti)) return;
-                if (!MoveInner(si, di)) MoveInner(ti, di); // recover
-                else Delete(tmp);
-            }
+            var info = Get(src);
+            if (info.IsDirectory) MoveDirectory(info, Get(dest), overwrite);
+            else MoveFile(info, Get(dest), overwrite);
         }
 
         /* ----------------------------------------------------------------- */
@@ -621,11 +611,11 @@ namespace Cube.FileSystem
         /// 
         /* ----------------------------------------------------------------- */
         public void Copy(string src, string dest, bool overwrite)
-            => Action(nameof(Copy), () =>
         {
-            CreateParentDirectory(Get(dest));
-            CopyCore(src, dest, overwrite);
-        }, src, dest);
+            var info = Get(src);
+            if (info.IsDirectory) CopyDirectory(info, Get(dest), overwrite);
+            else CopyFile(info, Get(dest), overwrite);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -702,14 +692,120 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MoveInner
+        /// CopyDirectory
         ///
         /// <summary>
-        /// 移動操作を実行します。
+        /// ディレクトリおよびその中身をコピーします。
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        private bool MoveInner(IInformation src, IInformation dest)
+        private bool CopyDirectory(IInformation src, IInformation dest, bool overwrite)
+        {
+            if (!dest.Exists) CreateDirectory(dest.FullName);
+
+            var result = true;
+
+            foreach (var file in GetFiles(src.FullName))
+            {
+                var si = Get(file);
+                var di = Get(Combine(dest.FullName, si.Name));
+                result &= CopyFile(si, di, overwrite);
+            }
+
+            foreach (var dir in GetDirectories(src.FullName))
+            {
+                var si = Get(dir);
+                var di = Get(Combine(dest.FullName, si.Name));
+                result &= CopyDirectory(si, di, overwrite);
+            }
+
+            return result;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CopyFile
+        ///
+        /// <summary>
+        /// ファイルをコピーします。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private bool CopyFile(IInformation src, IInformation dest, bool overwrite)
+            => Action(nameof(Copy), () =>
+        {
+            CreateParentDirectory(dest);
+            CopyCore(src.FullName, dest.FullName, overwrite);
+        }, src.FullName, dest.FullName);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveDirectory
+        ///
+        /// <summary>
+        /// ディレクトリおよびその中身を移動します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private bool MoveDirectory(IInformation src, IInformation dest, bool overwrite)
+        {
+            if (!dest.Exists) CreateDirectory(dest.FullName);
+
+            var result = true;
+
+            foreach (var file in GetFiles(src.FullName))
+            {
+                var si = Get(file);
+                var di = Get(Combine(dest.FullName, si.Name));
+                result &= MoveFile(si, di, overwrite);
+            }
+
+            foreach (var dir in GetDirectories(src.FullName))
+            {
+                var si = Get(dir);
+                var di = Get(Combine(dest.FullName, si.Name));
+                result &= MoveDirectory(si, di, overwrite);
+            }
+
+            if (result && src.Exists) Delete(src.FullName);
+
+            return result;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveFile
+        ///
+        /// <summary>
+        /// ファイルを移動します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private bool MoveFile(IInformation src, IInformation dest, bool overwrite)
+        {
+            if (!overwrite || !dest.Exists) return MoveFile(src, dest);
+            else
+            {
+                var tmp = Combine(src.DirectoryName, Guid.NewGuid().ToString("D"));
+                var ti = Get(tmp);
+
+                if (!MoveFile(dest, ti)) return false;
+                if (!MoveFile(src, dest)) return MoveFile(ti, dest); // recover
+                else Delete(tmp);
+            }
+            return true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MoveFile
+        ///
+        /// <summary>
+        /// ファイルを移動します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private bool MoveFile(IInformation src, IInformation dest)
             => Action(nameof(Move), () =>
         {
             CreateParentDirectory(dest);
