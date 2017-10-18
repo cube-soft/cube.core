@@ -44,27 +44,9 @@ namespace Cube.FileSystem
         /// <param name="path">ファイルまたはディレクトリのパス</param>
         /// 
         /* ----------------------------------------------------------------- */
-        public Information(string path) : this(
-            Directory.Exists(path) ?
-            new DirectoryInfo(path) as FileSystemInfo :
-            new FileInfo(path) as FileSystemInfo
-        )
-        { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Information
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        /// 
-        /// <param name="raw">実装オブジェクト</param>
-        /// 
-        /* ----------------------------------------------------------------- */
-        public Information(FileSystemInfo raw)
+        public Information(string path)
         {
-            RawObject = raw;
+            Reset(path);
         }
 
         #endregion
@@ -92,8 +74,7 @@ namespace Cube.FileSystem
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory
-            => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+        public bool IsDirectory => RawObject is DirectoryInfo;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -215,7 +196,7 @@ namespace Cube.FileSystem
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public FileSystemInfo RawObject { get; }
+        public FileSystemInfo RawObject { get; private set; }
 
         #endregion
 
@@ -230,11 +211,27 @@ namespace Cube.FileSystem
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        public void Refresh() => RawObject.Refresh();
+        public void Refresh() => Reset(FullName);
 
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Reset
+        ///
+        /// <summary>
+        /// RawObject をリセットします。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void Reset(string path)
+        {
+            RawObject = Directory.Exists(path) ?
+                        new DirectoryInfo(path) as FileSystemInfo :
+                        new FileInfo(path) as FileSystemInfo;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
