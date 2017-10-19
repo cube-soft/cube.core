@@ -96,11 +96,21 @@ namespace Cube.FileSystem.Tests
             var dir  = io.Get(file.DirectoryName);
             var cmp  = new DateTime(2017, 6, 5);
 
-            Assert.That(file.DirectoryName,  Is.EqualTo(Examples));
-            Assert.That(dir.DirectoryName,   Is.Not.Null.And.Not.Empty);
-            Assert.That(file.CreationTime,   Is.GreaterThan(cmp));
-            Assert.That(file.LastWriteTime,  Is.GreaterThan(cmp));
-            Assert.That(file.LastAccessTime, Is.GreaterThan(cmp));
+            Assert.That(file.FullName,             Is.EqualTo(Example("Sample.txt")));
+            Assert.That(file.Name,                 Is.EqualTo("Sample.txt"));
+            Assert.That(file.NameWithoutExtension, Is.EqualTo("Sample"));
+            Assert.That(file.Extension,            Is.EqualTo(".txt"));
+            Assert.That(file.DirectoryName,        Is.EqualTo(Examples));
+            Assert.That(file.CreationTime,         Is.GreaterThan(cmp));
+            Assert.That(file.LastWriteTime,        Is.GreaterThan(cmp));
+            Assert.That(file.LastAccessTime,       Is.GreaterThan(cmp));
+
+            Assert.That(dir.FullName,              Is.EqualTo(Examples));
+            Assert.That(dir.Name,                  Is.EqualTo("Examples"));
+            Assert.That(dir.NameWithoutExtension,  Is.EqualTo("Examples"));
+            Assert.That(dir.Extension,             Is.Empty);
+            Assert.That(dir.DirectoryName,         Is.Not.Null.And.Not.Empty);
+
             Assert.DoesNotThrow(() =>
             {
                 file.Refresh();
