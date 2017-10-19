@@ -170,7 +170,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected virtual void SetAttributesCore(string path, FileAttributes attr)
         {
-            if (File.Exists(path)) File.SetAttributes(path, attr);
+            if (Directory.Exists(path)) new DirectoryInfo(path) { Attributes = attr };
+            else if (File.Exists(path)) File.SetAttributes(path, attr);
         }
 
         #endregion
@@ -380,8 +381,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected virtual void DeleteCore(string path)
         {
-            if (Get(path).IsDirectory) Directory.Delete(path, true);
-            else File.Delete(path);
+            if (Directory.Exists(path)) Directory.Delete(path, true);
+            else if (File.Exists(path)) File.Delete(path);
         }
 
         #endregion
@@ -677,6 +678,24 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CreateDirectory
+        ///
+        /// <summary>
+        /// ディレクトリを生成し、各種属性をコピーします。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        private void CreateDirectory(string path, IInformation src)
+        {
+            CreateDirectory(path);
+            SetCreationTime(path, src.CreationTime);
+            SetLastWriteTime(path, src.LastWriteTime);
+            SetLastAccessTime(path, src.LastAccessTime);
+            SetAttributes(path, src.Attributes);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// CreateParentDirectory
         ///
         /// <summary>
@@ -701,7 +720,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private bool CopyDirectory(IInformation src, IInformation dest, bool overwrite)
         {
-            if (!dest.Exists) CreateDirectory(dest.FullName);
+            if (!dest.Exists) CreateDirectory(dest.FullName, src);
 
             var result = true;
 
@@ -749,7 +768,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private bool MoveDirectory(IInformation src, IInformation dest, bool overwrite)
         {
-            if (!dest.Exists) CreateDirectory(dest.FullName);
+            if (!dest.Exists) CreateDirectory(dest.FullName, src);
 
             var result = true;
 

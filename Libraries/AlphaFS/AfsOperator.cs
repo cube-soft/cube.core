@@ -93,7 +93,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected override void SetAttributesCore(string path, System.IO.FileAttributes attr)
         {
-            if (File.Exists(path)) File.SetAttributes(path, attr);
+            if (Directory.Exists(path)) new DirectoryInfo(path) { Attributes = attr };
+            else if (File.Exists(path)) File.SetAttributes(path, attr);
         }
 
         /* ----------------------------------------------------------------- */
@@ -191,8 +192,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected override void DeleteCore(string path)
         {
-            if (Get(path).IsDirectory) Directory.Delete(path, true);
-            else File.Delete(path);
+            if (Directory.Exists(path)) Directory.Delete(path, true);
+            else if (File.Exists(path)) File.Delete(path);
         }
 
         /* ----------------------------------------------------------------- */
