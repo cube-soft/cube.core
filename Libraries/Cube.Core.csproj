@@ -86,6 +86,7 @@
     <Compile Include="Disposable.cs" />
     <Compile Include="GenericComparer.cs" />
     <Compile Include="ObservableProperty.cs" />
+    <Compile Include="OnceAction.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="SoftwareVersion.cs" />

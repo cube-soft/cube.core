@@ -64,7 +64,6 @@
     <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
-    <Compile Include="DisposableTest.cs" />
     <Compile Include="Events\EnumerableEventArgsTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
     <Compile Include="Events\ProgressEventArgsTest.cs" />
@@ -82,7 +81,9 @@
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
+    <Compile Include="DisposableTest.cs" />
     <Compile Include="GenericComparerTest.cs" />
+    <Compile Include="OnceActionTest.cs" />
     <Compile Include="PowerTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
