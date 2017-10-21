@@ -96,6 +96,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public Messenger(string id)
         {
+            _dispose = new OnceAction<bool>(Dispose);
             _mutex = new Mutex(false, id);
             IsServer = _mutex.WaitOne(0, false);
 
@@ -153,16 +154,30 @@ namespace Cube.Processes
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispose
+        /// ~Messenger
         /// 
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        ~Messenger()
+        {
+            _dispose.Invoke(false);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        /// 
+        /// <summary>
+        /// リソースを解放します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         public void Dispose()
         {
-            Dispose(true);
+            _dispose.Invoke(true);
             GC.SuppressFinalize(this);
         }
 
@@ -171,21 +186,17 @@ namespace Cube.Processes
         /// Dispose
         /// 
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// リソースを解放します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
-
             if (disposing)
             {
                 _core.Dispose();
                 _mutex.Close();
             }
-
-            _disposed = true;
         }
 
         #endregion
@@ -193,7 +204,7 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private bool _disposed = false;
+        private OnceAction<bool> _dispose;
         private Mutex _mutex = null;
         private IMessenger<TValue> _core;
         #endregion
@@ -225,6 +236,8 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public MessengerServer(string id)
         {
+            _dispose = new OnceAction<bool>(Dispose);
+
             var address = new Uri($"net.pipe://localhost/{id}");
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
             _service = new MessengerService<TValue>();
@@ -286,7 +299,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ~MessengerServer()
         {
-            Dispose(false);
+            _dispose.Invoke(false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -300,7 +313,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public void Dispose()
         {
-            Dispose(true);
+            _dispose.Invoke(true);
             GC.SuppressFinalize(this);
         }
 
@@ -319,11 +332,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
-
             if (disposing) _host.Abort();
-
-            _disposed = true;
         }
 
         #endregion
@@ -331,7 +340,7 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private bool _disposed = false;
+        private OnceAction<bool> _dispose;
         private MessengerService<TValue> _service;
         private ServiceHost _host;
         #endregion
@@ -367,6 +376,7 @@ namespace Cube.Processes
             var address = new EndpointAddress(uri);
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
 
+            _dispose  = new OnceAction<bool>(Dispose);
             _callback = new MessengerServiceCallback<TValue>();
             _context  = new InstanceContext(_callback);
             _factory  = new DuplexChannelFactory<IMessengerService>(_callback, binding, address);
@@ -429,7 +439,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ~MessengerClient()
         {
-            Dispose(false);
+            _dispose.Invoke(false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -443,7 +453,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         public void Dispose()
         {
-            Dispose(true);
+            _dispose.Invoke(true);
             GC.SuppressFinalize(this);
         }
 
@@ -462,8 +472,6 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
-
             if (disposing)
             {
                 (_service as IClientChannel)?.Abort();
@@ -471,8 +479,6 @@ namespace Cube.Processes
                 _context.Abort();
                 _factory.Abort();
             }
-
-            _disposed = true;
         }
 
         #endregion
@@ -525,7 +531,7 @@ namespace Cube.Processes
         }
 
         #region Fields
-        private bool _disposed = false;
+        private OnceAction<bool> _dispose;
         private ChannelFactory<IMessengerService> _factory;
         private IMessengerService _service;
         private InstanceContext _context;

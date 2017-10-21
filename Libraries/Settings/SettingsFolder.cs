@@ -40,7 +40,7 @@ namespace Cube.Settings
     public class SettingsFolder<TValue> : IDisposable, INotifyPropertyChanged
         where TValue : INotifyPropertyChanged, new()
     {
-        #region Constructors and destructors
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
@@ -339,7 +339,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ~SettingsFolder()
         {
-            Dispose(false);
+            _dispose.Invoke(false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -353,7 +353,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public void Dispose()
         {
-            Dispose(true);
+            _dispose.Invoke(true);
             GC.SuppressFinalize(this);
         }
 
@@ -368,9 +368,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
             if (disposing) _autosaver.Dispose();
-            _disposed = true;
         }
 
         #endregion
@@ -401,6 +399,7 @@ namespace Cube.Settings
 
             _autosaver.AutoReset = false;
             _autosaver.Elapsed += WhenElapsed;
+            _dispose = new OnceAction<bool>(Dispose);
         }
 
         /* ----------------------------------------------------------------- */
@@ -457,7 +456,7 @@ namespace Cube.Settings
             => Task.Run(() => Save()).Forget();
 
         #region Fields
-        private bool _disposed = false;
+        private OnceAction<bool> _dispose;
         private Timer _autosaver = new Timer();
         #endregion
 

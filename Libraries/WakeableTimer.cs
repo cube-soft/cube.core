@@ -81,6 +81,7 @@ namespace Cube
         public WakeableTimer(TimeSpan interval)
         {
             Interval = interval;
+            _dispose = new OnceAction<bool>(Dispose);
             _core.Elapsed += (s, e) => Publish();
             Power.ModeChanged += (s, e) => OnPowerModeChanged(e);
         }
@@ -299,7 +300,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ~WakeableTimer()
         {
-            Dispose(false);
+            _dispose.Invoke(false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -307,13 +308,13 @@ namespace Cube
         /// Dispose
         /// 
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// リソースを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void Dispose()
         {
-            Dispose(true);
+            _dispose.Invoke(true);
             GC.SuppressFinalize(this);
         }
 
@@ -328,8 +329,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
-            _disposed = true;
             if (disposing) _core.Dispose();
         }
 
@@ -434,7 +433,7 @@ namespace Cube
         }
 
         #region Fields
-        private bool _disposed = false;
+        private OnceAction<bool> _dispose;
         private TimeSpan _interval;
         private System.Timers.Timer _core = new System.Timers.Timer();
         #endregion
