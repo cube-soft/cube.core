@@ -44,8 +44,40 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Request_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public bool Request(IList<string> results)
+        {
+            var index = 0;
+            var query = new Query<string, string>(x =>
+            {
+                if (index >= results.Count) x.Cancel = true;
+                else
+                {
+                    x.Cancel = false;
+                    x.Result = results[index++];
+                }
+            });
+
+            return new QueryContoroller().Execute(query);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Request_SynchronizationContext
+        ///
+        /// <summary>
+        /// SynchronizationContext オブジェクトが null ではない時の
+        /// テストを実行します。
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// NUnit 経由で実行する場合 SynchronizationContext.Current が
+        /// null である事が確認されているので、明示的に設定します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public bool Request_SynchronizationContext(IList<string> results)
         {
             var index = 0;
             var query = new Query<string, string>(x =>
@@ -85,14 +117,14 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request_TestCases
+        /// TestCases
         ///
         /// <summary>
         /// Query オブジェクトのテスト用データです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IEnumerable<TestCaseData> Request_TestCases
+        private static IEnumerable<TestCaseData> TestCases
         {
             get
             {
