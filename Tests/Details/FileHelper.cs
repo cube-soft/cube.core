@@ -44,9 +44,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         protected FileHelper()
         {
-            var asm = new AssemblyReader(Assembly.GetExecutingAssembly());
-            Root = Path.GetDirectoryName(asm.Location);
-            _folder = GetType().FullName.Replace($"{asm.Product}.", "");
+            Root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _folder = GetType().FullName;
             if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
             Clean(Results);
         }
