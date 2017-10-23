@@ -56,10 +56,9 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         protected FileHelper(Operator io)
         {
-            var reader = new AssemblyReader(Assembly.GetExecutingAssembly());
             IO = io;
-            Root = IO.Get(reader.Location).DirectoryName;
-            _directory = GetType().FullName.Replace($"{reader.Product}.", "");
+            Root = IO.Get(Assembly.GetExecutingAssembly().Location).DirectoryName;
+            _directory = GetType().FullName;
 
             if (!IO.Exists(Results)) IO.CreateDirectory(Results);
             Delete(Results);
