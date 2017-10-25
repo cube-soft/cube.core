@@ -74,6 +74,7 @@ namespace Cube.Tests
                 Suffix = "-end"
             };
 
+            Assert.That(version.Platform,        Is.EqualTo(arch));
             Assert.That(version.ToString(true),  Is.EqualTo($"begin-{major}.{minor}-end ({arch})"));
             Assert.That(version.ToString(false), Is.EqualTo($"begin-{major}.{minor}-end"));
             Assert.That(version.ToString(),      Is.EqualTo(version.ToString(false)));

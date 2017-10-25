@@ -58,26 +58,22 @@ namespace Cube.Tests
                 }
             });
 
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             return new QueryContoroller().Execute(query);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request_SynchronizationContext
+        /// Request_NullSynchronizationContext
         ///
         /// <summary>
-        /// SynchronizationContext オブジェクトが null ではない時の
+        /// SynchronizationContext オブジェクトが null である時の
         /// テストを実行します。
         /// </summary>
-        /// 
-        /// <remarks>
-        /// NUnit 経由で実行する場合 SynchronizationContext.Current が
-        /// null である事が確認されているので、明示的に設定します。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public bool Request_SynchronizationContext(IList<string> results)
+        public bool Request_NullSynchronizationContext(IList<string> results)
         {
             var index = 0;
             var query = new Query<string, string>(x =>
@@ -90,7 +86,7 @@ namespace Cube.Tests
                 }
             });
 
-            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            SynchronizationContext.SetSynchronizationContext(default(SynchronizationContext));
             return new QueryContoroller().Execute(query);
         }
 
