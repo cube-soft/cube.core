@@ -60,7 +60,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(Assembly assembly)
         {
-            var number = assembly?.GetName()?.Version;
+            var number = assembly?.GetName().Version;
             if (number != null) Number = number;
         }
 

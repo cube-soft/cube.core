@@ -142,9 +142,9 @@ namespace Cube.Log
         public static void Info(Type type, Assembly assembly)
         {
             var asm = new AssemblyReader(assembly);
-            var pf  = (IntPtr.Size == 4) ? "x86" : "x64";
+            var sv  = new SoftwareVersion(assembly);
 
-            Info(type, $"{asm.Product} {asm.Version} ({pf})");
+            Info(type, $"{asm.Product} {sv.ToString(true)}");
             Info(type, $"{Environment.OSVersion}");
             Info(type, $"Microsoft .NET Framework {Environment.Version}");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
