@@ -19,7 +19,6 @@ using System;
 using System.ComponentModel;
 using System.Timers;
 using System.Threading.Tasks;
-using System.Reflection;
 using Cube.Tasks;
 
 namespace Cube.Settings
