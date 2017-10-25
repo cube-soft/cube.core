@@ -80,8 +80,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public WakeableTimer(TimeSpan interval)
         {
-            Interval = interval;
-            _dispose = new OnceAction<bool>(Dispose);
+            _interval = interval;
+            _dispose  = new OnceAction<bool>(Dispose);
             _core.Elapsed += (s, e) => Publish();
             Power.ModeChanged += (s, e) => OnPowerModeChanged(e);
         }
