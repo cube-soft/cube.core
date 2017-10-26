@@ -105,33 +105,33 @@ namespace Cube.Settings
         /// Version
         ///
         /// <summary>
-        /// バージョン情報を取得します。
+        /// バージョン情報を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion Version { get; private set; }
+        public SoftwareVersion Version { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Company
         ///
         /// <summary>
-        /// アプリケーションの発行者を取得します。
+        /// アプリケーションの発行者を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Company { get; private set; } = string.Empty;
+        public string Company { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Product
         ///
         /// <summary>
-        /// アプリケーション名を取得します。
+        /// アプリケーション名を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Product { get; private set; } = string.Empty;
+        public string Product { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
