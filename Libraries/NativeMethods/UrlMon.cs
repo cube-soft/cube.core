@@ -64,7 +64,7 @@ namespace Cube.Forms.UrlMon
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Ansi)]
+        [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         public static extern int UrlMkSetSessionOption(int dwOption, string pBuffer,
             int dwBufferLength, int dwReserved);
 
@@ -77,7 +77,7 @@ namespace Cube.Forms.UrlMon
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Ansi)]
+        [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         public static extern int UrlMkGetSessionOption(int dwOption, StringBuilder pBuffer,
             int dwBufferLength, ref int pdwBufferLength, int dwReserved);
 
