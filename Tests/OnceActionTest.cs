@@ -48,9 +48,9 @@ namespace Cube.Tests
             var once  = new OnceAction(() => value++);
             var tasks = new[]
             {
-                Task.Run(() => once.Invoke()),
-                Task.Run(() => once.Invoke()),
-                Task.Run(() => once.Invoke()),
+                TaskEx.Run(() => once.Invoke()),
+                TaskEx.Run(() => once.Invoke()),
+                TaskEx.Run(() => once.Invoke()),
             };
 
             Task.WaitAll(tasks);
@@ -73,9 +73,9 @@ namespace Cube.Tests
             var once  = new OnceAction<string>(s => value += s);
             var tasks = new[]
             {
-                Task.Run(() => once.Invoke(obj)),
-                Task.Run(() => once.Invoke(obj)),
-                Task.Run(() => once.Invoke(obj)),
+                TaskEx.Run(() => once.Invoke(obj)),
+                TaskEx.Run(() => once.Invoke(obj)),
+                TaskEx.Run(() => once.Invoke(obj)),
             };
 
             Task.WaitAll(tasks);
