@@ -15,53 +15,62 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
+using System.Threading.Tasks;
+using NUnit.Framework;
 
-namespace Cube.Numeric
+namespace Cube.Tests
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Numeric.Operations
-    /// 
-    /// <summary>
-    /// 数値に対する汎用的な操作を定義するための拡張メソッド用クラスです。
-    /// </summary>
-    /// 
-    /* --------------------------------------------------------------------- */
-    public static class Operations
+    [TestFixture]
+    class OnceActionTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Times
+        /// Invoke
         ///
         /// <summary>
-        /// 指定回数だけ同じ操作を繰り返します。
+        /// OnceAction のテストを実行します。
         /// </summary>
-        /// 
-        /// <param name="n">繰り返し回数</param>
-        /// <param name="action">操作内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Times(this int n, Action action)
+        [Test]
+        public void Invoke()
         {
-            for (var i = 0; i < n; ++i) action();
+            var value = 0;
+            var once  = new OnceAction(() => value++);
+            var tasks = new[]
+            {
+                Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
+            };
+
+            Task.WaitAll(tasks);
+            Assert.That(value, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Times
+        /// Invoke
         ///
         /// <summary>
-        /// 指定回数だけ同じ操作を繰り返します。
+        /// OnceAction(T) のテストを実行します。
         /// </summary>
-        /// 
-        /// <param name="n">繰り返し回数</param>
-        /// <param name="action">操作内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Times(this int n, Action<int> action)
+        [TestCase("once")]
+        public void Invoke(string obj)
         {
-            for (var i = 0; i < n; ++i) action(i);
+            var value = "";
+            var once  = new OnceAction<string>(s => value += s);
+            var tasks = new[]
+            {
+                Task.Run(() => once.Invoke(obj)),
+                Task.Run(() => once.Invoke(obj)),
+                Task.Run(() => once.Invoke(obj)),
+            };
+
+            Task.WaitAll(tasks);
+            Assert.That(value, Is.EqualTo(obj));
         }
     }
 }

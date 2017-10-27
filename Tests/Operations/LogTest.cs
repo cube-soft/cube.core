@@ -79,7 +79,7 @@ namespace Cube.Tests
 
             try
             {
-                var asm = System.Reflection.Assembly.GetExecutingAssembly();
+                var asm = AssemblyReader.Default.Assembly;
                 Cube.Log.Operations.Info(typeof(LogTest), message);
                 Cube.Log.Operations.Info(typeof(LogTest), asm);
                 this.LogInfo($"{message} (extension)");

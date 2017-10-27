@@ -44,7 +44,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(Request_TestCases))]
+        [TestCaseSource(nameof(TestCases))]
         public bool Request(IList<string> results)
         {
             var index = 0;
@@ -59,6 +59,34 @@ namespace Cube.Tests
             });
 
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            return new QueryContoroller().Execute(query);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Request_NullSynchronizationContext
+        ///
+        /// <summary>
+        /// SynchronizationContext オブジェクトが null である時の
+        /// テストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public bool Request_NullSynchronizationContext(IList<string> results)
+        {
+            var index = 0;
+            var query = new Query<string, string>(x =>
+            {
+                if (index >= results.Count) x.Cancel = true;
+                else
+                {
+                    x.Cancel = false;
+                    x.Result = results[index++];
+                }
+            });
+
+            SynchronizationContext.SetSynchronizationContext(default(SynchronizationContext));
             return new QueryContoroller().Execute(query);
         }
 
@@ -85,14 +113,14 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request_TestCases
+        /// TestCases
         ///
         /// <summary>
         /// Query オブジェクトのテスト用データです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IEnumerable<TestCaseData> Request_TestCases
+        private static IEnumerable<TestCaseData> TestCases
         {
             get
             {

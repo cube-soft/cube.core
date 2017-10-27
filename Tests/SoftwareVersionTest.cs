@@ -62,18 +62,19 @@ namespace Cube.Tests
         [Test]
         public void ToString_Assembly()
         {
-            var asm   = Assembly.GetExecutingAssembly();
-            var major = asm.GetName().Version.Major;
-            var minor = asm.GetName().Version.Minor;
+            var asm   = AssemblyReader.Default;
+            var major = asm.Version.Major;
+            var minor = asm.Version.Minor;
             var arch  = (IntPtr.Size == 4) ? "x86" : "x64";
 
-            var version = new SoftwareVersion(asm)
+            var version = new SoftwareVersion(asm.Assembly)
             {
                 Digit  = 2,
                 Prefix = "begin-",
                 Suffix = "-end"
             };
 
+            Assert.That(version.Platform,        Is.EqualTo(arch));
             Assert.That(version.ToString(true),  Is.EqualTo($"begin-{major}.{minor}-end ({arch})"));
             Assert.That(version.ToString(false), Is.EqualTo($"begin-{major}.{minor}-end"));
             Assert.That(version.ToString(),      Is.EqualTo(version.ToString(false)));

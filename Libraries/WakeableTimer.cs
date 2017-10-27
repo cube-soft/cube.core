@@ -1,19 +1,19 @@
 ﻿/* ------------------------------------------------------------------------- */
-///
-/// Copyright (c) 2010 CubeSoft, Inc.
-/// 
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///  http://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
-///
+//
+// Copyright (c) 2010 CubeSoft, Inc.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
@@ -31,11 +31,15 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum TimerState : int
+    public enum TimerState
     {
+        /// <summary>実行中</summary>
         Run     =  0,
+        /// <summary>停止</summary>
         Stop    =  1,
+        /// <summary>一時停止</summary>
         Suspend =  2,
+        /// <summary>不明</summary>
         Unknown = -1
     }
 
@@ -76,7 +80,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public WakeableTimer(TimeSpan interval)
         {
-            Interval = interval;
+            _interval = interval;
+            _dispose  = new OnceAction<bool>(Dispose);
             _core.Elapsed += (s, e) => Publish();
             Power.ModeChanged += (s, e) => OnPowerModeChanged(e);
         }
@@ -295,7 +300,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ~WakeableTimer()
         {
-            Dispose(false);
+            _dispose.Invoke(false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -303,13 +308,13 @@ namespace Cube
         /// Dispose
         /// 
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// リソースを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void Dispose()
         {
-            Dispose(true);
+            _dispose.Invoke(true);
             GC.SuppressFinalize(this);
         }
 
@@ -324,8 +329,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
-            _disposed = true;
             if (disposing) _core.Dispose();
         }
 
@@ -430,7 +433,7 @@ namespace Cube
         }
 
         #region Fields
-        private bool _disposed = false;
+        private OnceAction<bool> _dispose;
         private TimeSpan _interval;
         private System.Timers.Timer _core = new System.Timers.Timer();
         #endregion

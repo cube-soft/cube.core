@@ -15,9 +15,8 @@
 /// limitations under the License.
 ///
 /* ------------------------------------------------------------------------- */
-using System;
 using NUnit.Framework;
-using Cube.Numeric;
+using Cube.Enumerable;
 
 namespace Cube.Tests
 {
@@ -26,7 +25,7 @@ namespace Cube.Tests
     /// NumericTest
     /// 
     /// <summary>
-    /// Cube.Numeric.Operations のテスト用クラスです。
+    /// Cube.Enumerable.Numeric のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

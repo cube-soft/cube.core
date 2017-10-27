@@ -17,67 +17,51 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Conversions
+namespace Cube.Enumerable
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ByteFormat
+    /// Numeric
     /// 
     /// <summary>
-    /// バイトサイズの書式に変換する拡張メソッド用クラスです。
+    /// 数値に対する拡張メソッド用クラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    public static class ByteFormat
+    public static class Numeric
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ToPrettyBytes
-        /// 
+        /// Times
+        ///
         /// <summary>
-        /// バイトサイズを読みやすい文字列に変換します。
+        /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
         /// 
-        /// <param name="bytes">バイト数</param>
-        /// 
-        /// <returns>バイト数を表す文字列</returns>
+        /// <param name="n">繰り返し回数</param>
+        /// <param name="action">操作内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ToPrettyBytes(this long bytes)
+        public static void Times(this int n, Action action)
         {
-            var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-            var value = (double)bytes;
-            var index = 0;
-
-            while (value > 1000.0)
-            {
-                value /= 1024.0;
-                ++index;
-                if (index >= units.Length - 1) break;
-            }
-
-            return $"{value:G3} {units[index]}";
+            for (var i = 0; i < n; ++i) action();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToRoughBytes
-        /// 
+        /// Times
+        ///
         /// <summary>
-        /// バイトサイズの概算値を文字列に変換します。
+        /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
         /// 
-        /// <param name="bytes">バイト数</param>
-        /// 
-        /// <returns>バイト数を表す文字列</returns>
-        ///
-        /// <remarks>
-        /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
-        /// 出力します。
-        /// </remarks>
+        /// <param name="n">繰り返し回数</param>
+        /// <param name="action">操作内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ToRoughBytes(this long bytes)
-            => ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
+        public static void Times(this int n, Action<int> action)
+        {
+            for (var i = 0; i < n; ++i) action(i);
+        }
     }
 }

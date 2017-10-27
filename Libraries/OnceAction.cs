@@ -22,63 +22,32 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Disposable
+    /// OnceAction
     /// 
     /// <summary>
-    /// IDisposable オブジェクトを生成するためのクラスです。
+    /// 登録された内容を一度だけ実行するためのクラスです。
     /// </summary>
-    /// 
-    /* --------------------------------------------------------------------- */
-    public static class Disposable
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        /// 
-        /// <summary>
-        /// IDisposable オブジェクトを生成します。
-        /// </summary>
-        /// 
-        /// <param name="dispose">Dispose 時に実行する動作</param>
-        /// 
-        /// <returns>IDisposable オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable Create(Action dispose)
-        {
-            if (dispose == null) throw new ArgumentException(nameof(dispose));
-            return new AnonymousDisposable(dispose);
-        }
-    }
-
-    /* --------------------------------------------------------------------- */
     ///
-    /// AnonymousDisposable
-    /// 
-    /// <summary>
-    /// Dispose 時に特定の動作を実行するためのクラスです。
-    /// </summary>
-    /// 
     /* --------------------------------------------------------------------- */
-    internal sealed class AnonymousDisposable : IDisposable
+    public class OnceAction
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AnonymousDisposable
+        /// OnceAction
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
-        /// <param name="dispose">Dispose 時に実行する動作</param>
+        /// <param name="action">一度だけ実行する内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public AnonymousDisposable(Action dispose)
+        public OnceAction(Action action)
         {
-            System.Diagnostics.Debug.Assert(dispose != null);
-            _dispose = dispose;
+            System.Diagnostics.Debug.Assert(action != null);
+            _action = action;
         }
 
         #endregion
@@ -87,19 +56,73 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispose
+        /// Invoke
         /// 
         /// <summary>
-        /// 設定された動作を実行します。
+        /// Action を実行します。
         /// </summary>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
-        public void Dispose() => Interlocked.Exchange(ref _dispose, null)?.Invoke();
+        public void Invoke() => Interlocked.Exchange(ref _action, null)?.Invoke();
 
         #endregion
 
         #region Fields
-        private Action _dispose;
+        private Action _action;
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnceAction(T)
+    /// 
+    /// <summary>
+    /// 登録された内容を一度だけ実行するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class OnceAction<T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnceAction
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <param name="action">一度だけ実行する内容</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OnceAction(Action<T> action)
+        {
+            System.Diagnostics.Debug.Assert(action != null);
+            _action = action;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        /// 
+        /// <summary>
+        /// Action(T) を実行します。
+        /// </summary>
+        /// 
+        /// <param name="obj">引数</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Invoke(T obj) => Interlocked.Exchange(ref _action, null)?.Invoke(obj);
+
+        #endregion
+
+        #region Fields
+        private Action<T> _action;
         #endregion
     }
 }

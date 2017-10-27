@@ -41,32 +41,54 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder
+        /// Create_Registry
         /// 
         /// <summary>
         /// SettingsFolder を規定値で初期化するテストを実行します。
         /// </summary>
         /// 
-        /// <remarks>
-        /// 通常は実行時の Assembly オブジェクトを基に初期化されますが、
-        /// NUnit 経由では Assembly オブジェクトが見つからないため、
-        /// null で初期化されます。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void SettingsFolder()
+        public void Create_Registry()
         {
-            var count    = 0;
+            var count = 0;
             var settings = new SettingsFolder<Person>();
             settings.Loaded += (s, e) => ++count;
             settings.Load();
 
-            Assert.That(count, Is.EqualTo(1));
-            Assert.That(settings.Company, Is.EqualTo(""));
-            Assert.That(settings.Product, Is.EqualTo(""));
-            Assert.That(settings.Version.ToString(false), Is.EqualTo("1.0.0.0"));
-            Assert.That(settings.Value, Is.Not.Null);
+            Assert.That(count,                   Is.EqualTo(1));
+            Assert.That(settings.Type,           Is.EqualTo(SettingsType.Registry));
+            Assert.That(settings.Path,           Does.StartWith("Software"));
+            Assert.That(settings.Path,           Does.EndWith(AssemblyReader.Default.Product));
+            Assert.That(settings.Company,        Is.EqualTo(AssemblyReader.Default.Company));
+            Assert.That(settings.Product,        Is.EqualTo(AssemblyReader.Default.Product));
+            Assert.That(settings.Version.Number, Is.EqualTo(AssemblyReader.Default.Version));
+            Assert.That(settings.Value,          Is.Not.Null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Json
+        /// 
+        /// <summary>
+        /// SettingsFolder に SettingsType.Json 指定して初期化する
+        /// テストを実行します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Json()
+        {
+            var settings = new SettingsFolder<Person>(SettingsType.Json);
+            var root = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+            Assert.That(settings.Type,           Is.EqualTo(SettingsType.Json));
+            Assert.That(settings.Path,           Does.StartWith(root));
+            Assert.That(settings.Path,           Does.EndWith(AssemblyReader.Default.Product));
+            Assert.That(settings.Company,        Is.EqualTo(AssemblyReader.Default.Company));
+            Assert.That(settings.Product,        Is.EqualTo(AssemblyReader.Default.Product));
+            Assert.That(settings.Version.Number, Is.EqualTo(AssemblyReader.Default.Version));
+            Assert.That(settings.Value,          Is.Not.Null);
         }
 
         /* ----------------------------------------------------------------- */
@@ -81,7 +103,7 @@ namespace Cube.Tests
         [Test]
         public void Load_Registry()
         {
-            using (var s = new SettingsFolder<Person>(Company, Product))
+            using (var s = new SettingsFolder<Person>(SettingsType.Registry, LoadKeyName))
             {
                 s.AutoSave = false;
                 s.Load();
@@ -256,7 +278,7 @@ namespace Cube.Tests
             var change = 0;
             var delay  = TimeSpan.FromMilliseconds(100);
 
-            using (var settings = new SettingsFolder<Person>(Company, "Settings_SaveTest"))
+            using (var settings = new SettingsFolder<Person>(SettingsType.Registry, SaveKeyName))
             {
                 settings.Saved           += (s, e) => ++count;
                 settings.PropertyChanged += (s, e) => ++change;
@@ -294,8 +316,9 @@ namespace Cube.Tests
         {
             var count = 0;
 
-            var settings = new SettingsFolder<Person>(Company, Product) { AutoSave = false };
+            var settings = new SettingsFolder<Person>(SettingsType.Registry, LoadKeyName);
             settings.Loaded += (s, e) => ++count;
+            settings.AutoSave = false;
 
             settings.Load();
             settings.Value.Name = "Before ReLoad";
@@ -392,10 +415,8 @@ namespace Cube.Tests
         };
 
         #region Registry information
-        private string Company => "CubeSoft";
-        private string Product => "Settings_LoadTest";
-        private string LoadKeyName => $@"Software\{Company}\{Product}";
-        private string SaveKeyName => $@"Software\{Company}\Settings_SaveTest";
+        private string LoadKeyName => $@"Software\CubeSoft\Settings_LoadTest";
+        private string SaveKeyName => $@"Software\CubeSoft\Settings_SaveTest";
         private RegistryKey CreateLoadKey() => Registry.CurrentUser.CreateSubKey(LoadKeyName);
         private RegistryKey OpenSaveKey() => Registry.CurrentUser.OpenSubKey(SaveKeyName, false);
         #endregion
