@@ -19,18 +19,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Cube.Collections
+namespace Cube.Enumerable
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Collections.Operations
+    /// Collections
     /// 
     /// <summary>
     /// Collection クラスの拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class Collections
     {
         #region IEnumerable(T)
 

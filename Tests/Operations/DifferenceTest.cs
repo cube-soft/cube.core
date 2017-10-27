@@ -18,7 +18,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Cube.Collections;
+using Cube.Enumerable;
 using Cube.Differences;
 
 namespace Cube.Tests
