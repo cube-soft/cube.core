@@ -145,11 +145,11 @@ namespace Cube
         /// Platform
         /// 
         /// <summary>
-        /// ソフトウェアのプラットフォームを示す文字列を取得または設定します。
+        /// ソフトウェアのプラットフォームを示す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Platform => (IntPtr.Size == 4) ? "x86" : "x64";
+        public string Platform => AssemblyReader.Platform;
 
         #endregion
 

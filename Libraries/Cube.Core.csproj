@@ -74,7 +74,7 @@
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Tasks.cs" />
     <Compile Include="Processes\Messenger.cs" />
-    <Compile Include="Processes\MessenterService.cs" />
+    <Compile Include="Processes\MessengerService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
     <Compile Include="Settings\Operations.cs" />
     <Compile Include="Settings\RegistrySettings.cs" />

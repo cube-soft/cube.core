@@ -65,7 +65,7 @@ namespace Cube.Tests
             var asm   = AssemblyReader.Default;
             var major = asm.Version.Major;
             var minor = asm.Version.Minor;
-            var arch  = (IntPtr.Size == 4) ? "x86" : "x64";
+            var arch  = AssemblyReader.Platform;
 
             var version = new SoftwareVersion(asm.Assembly)
             {

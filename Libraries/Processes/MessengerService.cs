@@ -138,7 +138,7 @@ namespace Cube.Processes
                 try { x.SendCallback(bytes); }
                 catch (CommunicationObjectAbortedException /* err */) { aborts.Add(x); }
                 catch (CommunicationObjectFaultedException /* err */) { aborts.Add(x); }
-                catch (Exception err) { this.LogWarn(err.ToString()); }
+                catch (Exception err) { this.LogWarn(err.ToString(), err); }
             }
 
             foreach (var c in aborts) _clients.Remove(c);

@@ -82,11 +82,11 @@ namespace Cube.Tests
                     Company       = "CubeSoft",
                     Product       = "Cube.Core.Tests",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
-                    Trademark     = "ここに商標を設定します。",
+                    Trademark     = "",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 5, 2, 0),
-                    FileVersion   = new Version(1, 5, 2, 0)
+                    Version       = new Version(1, 5, 3, 0),
+                    FileVersion   = new Version(1, 5, 3, 0)
                 });
 
                 yield return new TestCaseData(null, new Result
