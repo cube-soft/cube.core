@@ -82,7 +82,23 @@ namespace Cube.Tests
                     Company       = "CubeSoft",
                     Product       = "Cube.Core.Tests",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
-                    Trademark     = "",
+                    Trademark     = "CubeSoft, Inc.",
+                    Configuration = string.Empty,
+                    Culture       = string.Empty,
+                    Version       = new Version(1, 5, 3, 0),
+                    FileVersion   = new Version(1, 5, 3, 0)
+                });
+
+                yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
+                {
+                    Assembly      = Assembly.GetAssembly(typeof(AssemblyReader)),
+                    Location      = true,
+                    Title         = "Cube.Core",
+                    Description   = "Common library for Cube.* projects.",
+                    Company       = "CubeSoft",
+                    Product       = "Cube.Core",
+                    Copyright     = "Copyright © 2010 CubeSoft, Inc.",
+                    Trademark     = string.Empty,
                     Configuration = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(1, 5, 3, 0),

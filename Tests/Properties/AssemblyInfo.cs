@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("CubeSoft")]
 [assembly: AssemblyProduct("Cube.Core.Tests")]
 [assembly: AssemblyCopyright("Copyright © 2010 CubeSoft, Inc.")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("CubeSoft, Inc.")]
 [assembly: AssemblyCulture("")]
 
 // ComVisible を false に設定すると、その型はこのアセンブリ内で COM コンポーネントから 
