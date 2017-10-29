@@ -22,7 +22,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AfsOperatorCore
+    /// AfsOperator
     /// 
     /// <summary>
     /// AlphaFS を利用した Operator クラスです。
