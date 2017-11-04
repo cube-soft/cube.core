@@ -34,9 +34,9 @@ namespace Cube
     public enum TimerState
     {
         /// <summary>実行中</summary>
-        Run     =  0,
+        Run =  0,
         /// <summary>停止</summary>
-        Stop    =  1,
+        Stop =  1,
         /// <summary>一時停止</summary>
         Suspend =  2,
         /// <summary>不明</summary>
@@ -101,7 +101,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public TimeSpan Interval
         {
-            get { return _interval; }
+            get => _interval;
             set
             {
                 if (_interval == value) return;

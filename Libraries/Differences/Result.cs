@@ -60,6 +60,10 @@ namespace Cube.Differences
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="condition">差分の状態</param>
+        /// <param name="older">変更前シーケンスの対象部分</param>
+        /// <param name="newer">変更後シーケンスの対象部分</param>
         ///
         /* ----------------------------------------------------------------- */
         public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
@@ -89,7 +93,7 @@ namespace Cube.Differences
         /// Older
         /// 
         /// <summary>
-        /// 古いコレクションオブジェクトの対象部分を取得します。
+        /// 変更前シーケンスの対象部分を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -100,7 +104,7 @@ namespace Cube.Differences
         /// Newer
         /// 
         /// <summary>
-        /// 新しいコレクションオブジェクトの対象部分を取得します。
+        /// 変更後シーケンスの対象部分を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

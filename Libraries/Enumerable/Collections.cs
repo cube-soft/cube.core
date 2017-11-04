@@ -41,6 +41,10 @@ namespace Cube.Enumerable
         /// <summary>
         /// ObservableCollection に変換します。
         /// </summary>
+        /// 
+        /// <param name="src">変換前のコレクション</param>
+        /// 
+        /// <returns>ObservableCollection オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> src)

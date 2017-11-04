@@ -110,7 +110,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public int Digit
         {
-            get { return _digit; }
+            get => _digit;
             set
             {
                 if (_digit == value) return;

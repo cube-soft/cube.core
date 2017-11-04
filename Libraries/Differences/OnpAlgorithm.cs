@@ -60,6 +60,8 @@ namespace Cube.Differences
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
+        /// <param name="comparer">比較用オブジェクト</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public OnpAlgorithm(IEqualityComparer<T> comparer)
         {
@@ -84,6 +86,8 @@ namespace Cube.Differences
         /// 2 つのシーケンスで異なる部分のみを結果に含めるかどうか
         /// </param>
         /// 
+        /// <returns>差分</returns>
+        /// 
         /* ----------------------------------------------------------------- */
         public IEnumerable<Result<T>> Compare(IEnumerable<T> older, IEnumerable<T> newer, bool diffonly = true)
             => Compare(older?.ToArray(), newer?.ToArray(), diffonly);
@@ -101,6 +105,8 @@ namespace Cube.Differences
         /// <param name="diffonly">
         /// 2 つのシーケンスで異なる部分のみを結果に含めるかどうか
         /// </param>
+        /// 
+        /// <returns>差分</returns>
         /// 
         /* ----------------------------------------------------------------- */
         public IEnumerable<Result<T>> Compare(T[] older, T[] newer, bool diffonly = true)
