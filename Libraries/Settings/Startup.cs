@@ -115,8 +115,8 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public bool Enabled
         {
-            get { return _enabled; }
-            set { SetProperty(ref _enabled, value); }
+            get => _enabled;
+            set => SetProperty(ref _enabled, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -130,8 +130,8 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public string Name
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -145,8 +145,8 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         public string Command
         {
-            get { return _command; }
-            set { SetProperty(ref _command, value); }
+            get => _command;
+            set => SetProperty(ref _command, value);
         }
 
         #endregion

@@ -76,7 +76,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static PowerModes Mode
         {
-            get { return _mode; }
+            get => _mode;
             set
             {
                 if (_mode == value) return;
