@@ -83,6 +83,7 @@
     <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
+    <Compile Include="AsyncLockTest.cs" />
     <Compile Include="DisposableTest.cs" />
     <Compile Include="GenericComparerTest.cs" />
     <Compile Include="OnceActionTest.cs" />
