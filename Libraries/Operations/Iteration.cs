@@ -15,55 +15,53 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
-using Cube.Enumerable;
+using System;
 
-namespace Cube.Tests
+namespace Cube.Iteration
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NumericTest
+    /// Iteration.Operations
     /// 
     /// <summary>
-    /// Cube.Enumerable.Numeric のテスト用クラスです。
+    /// 数値に対する拡張メソッド用クラスです。
     /// </summary>
-    ///
+    /// 
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class NumericTest
+    public static class Operations
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Times
         ///
         /// <summary>
-        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
         /// 
+        /// <param name="n">繰り返し回数</param>
+        /// <param name="action">操作内容</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times()
+        public static void Times(this int n, Action action)
         {
-            var actual = 0;
-            10.Times(() => actual++);
-            Assert.That(actual, Is.EqualTo(10));
+            for (var i = 0; i < n; ++i) action();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Times_WithIndex
+        /// Times
         ///
         /// <summary>
-        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
         /// 
+        /// <param name="n">繰り返し回数</param>
+        /// <param name="action">操作内容</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times_WithIndex()
+        public static void Times(this int n, Action<int> action)
         {
-            var actual = 0;
-            10.Times(i => actual += i);
-            Assert.That(actual, Is.EqualTo(45));
+            for (var i = 0; i < n; ++i) action(i);
         }
     }
 }
