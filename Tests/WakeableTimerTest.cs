@@ -49,7 +49,7 @@ namespace Cube.Tests
             using (var timer = new WakeableTimer())
             {
                 Assert.That(timer.Interval,     Is.EqualTo(TimeSpan.FromSeconds(1)));
-                Assert.That(timer.LastExecuted, Is.EqualTo(DateTime.MinValue));
+                Assert.That(timer.LastPublished, Is.EqualTo(DateTime.MinValue));
                 Assert.That(timer.PowerMode,    Is.EqualTo(PowerModes.Resume));
             }
         }
@@ -153,11 +153,11 @@ namespace Cube.Tests
                 await Task.Delay(ms * 2);
                 timer.Stop();
 
-                var last = timer.LastExecuted;
+                var last = timer.LastPublished;
                 Assert.That(last, Is.Not.EqualTo(DateTime.MinValue));
 
                 timer.Reset();
-                Assert.That(timer.LastExecuted, Is.EqualTo(last));
+                Assert.That(timer.LastPublished, Is.EqualTo(last));
                 Assert.That(timer.Interval.TotalMilliseconds, Is.EqualTo(ms).Within(1.0));
             }
         }

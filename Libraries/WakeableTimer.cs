@@ -112,14 +112,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LastExecuted
+        /// LastPublished
         /// 
         /// <summary>
-        /// 操作が最後に実行された日時を取得します。
+        /// 最後に Publish が実行された日時を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastExecuted { get; private set; } = DateTime.MinValue;
+        public DateTime LastPublished { get; private set; } = DateTime.MinValue;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -347,13 +347,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void Publish()
         {
-            LastExecuted = DateTime.Now;
+            LastPublished = DateTime.Now;
 
             var ms    = Interval.TotalMilliseconds;
             var delta = Math.Abs(_core.Interval - ms);
             if (delta > 1.0) _core.Interval = ms;
 
-            Next = LastExecuted + TimeSpan.FromMilliseconds(_core.Interval);
+            Next = LastPublished + TimeSpan.FromMilliseconds(_core.Interval);
 
             foreach (var action in Subscriptions) action();
         }
@@ -396,7 +396,7 @@ namespace Cube
             Next  = now + time;
 
             this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
-                LastExecuted, Next, Interval));
+                LastPublished, Next, Interval));
 
             _core.Interval = time.TotalMilliseconds;
             _core.Start();
