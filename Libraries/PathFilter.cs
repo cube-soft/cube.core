@@ -120,7 +120,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public char EscapeChar
         {
-            get { return _escapeChar; }
+            get => _escapeChar;
             set
             {
                 if (_escapeChar == value) return;
@@ -145,7 +145,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool AllowDriveLetter
         {
-            get { return _allowDriveLetter; }
+            get => _allowDriveLetter;
             set
             {
                 if (_allowDriveLetter == value) return;
@@ -173,7 +173,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool AllowCurrentDirectory
         {
-            get { return _allowCurrentDirectory; }
+            get => _allowCurrentDirectory;
             set
             {
                 if (_allowCurrentDirectory == value) return;
@@ -201,7 +201,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool AllowParentDirectory
         {
-            get { return _allowParentDirectory; }
+            get => _allowParentDirectory;
             set
             {
                 if (_allowParentDirectory == value) return;
@@ -229,7 +229,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool AllowInactivation
         {
-            get { return _allowInactivation; }
+            get => _allowInactivation;
             set
             {
                 if (_allowInactivation == value) return;
@@ -252,7 +252,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool AllowUnc
         {
-            get { return _allowUnc; }
+            get => _allowUnc;
             set
             {
                 if (_allowUnc == value) return;
@@ -275,13 +275,7 @@ namespace Cube.FileSystem
         /// 
         /* ----------------------------------------------------------------- */
         protected IEnumerable<string> EspacedPaths
-        {
-            get
-            {
-                if (_escaped == null) _escaped = Escape();
-                return _escaped;
-            }
-        }
+            => _escaped = _escaped ?? Escape();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -296,7 +290,7 @@ namespace Cube.FileSystem
         {
             get
             {
-                if (_escaped == null) _escaped = Escape();
+                var _ = EspacedPaths;
                 return _kind;
             }
         }
