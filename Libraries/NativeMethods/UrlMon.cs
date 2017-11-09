@@ -33,30 +33,6 @@ namespace Cube.Forms.UrlMon
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// CoInternetIsFeatureEnabled
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/ms537164.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern int CoInternetIsFeatureEnabled(int featureEntry, int dwFlags);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CoInternetSetFeatureEnabled
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/ms537168.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// UrlMkSetSessionOption
         ///
         /// <summary>
