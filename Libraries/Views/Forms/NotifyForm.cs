@@ -69,7 +69,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public NotifyItem Value
         {
-            get { return _value; }
+            get => _value;
             private set
             {
                 if (_value == value) return;
@@ -93,8 +93,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public bool AutoEllipsis
         {
-            get { return _text.AutoEllipsis; }
-            set { _text.AutoEllipsis = value; }
+            get => _text.AutoEllipsis;
+            set => _text.AutoEllipsis = value;
         }
 
         /* --------------------------------------------------------------------- */
@@ -137,8 +137,8 @@ namespace Cube.Forms
         [Obsolete("Don't use this property, use Title")]
         public new string Text
         {
-            get { return base.Text; }
-            set { base.Text = value; }
+            get => base.Text;
+            set => base.Text = value;
         }
 
         /* --------------------------------------------------------------------- */
@@ -155,8 +155,8 @@ namespace Cube.Forms
         [Obsolete("Don't use this property")]
         public new bool TopMost
         {
-            get { return base.TopMost; }
-            set { base.TopMost = value; }
+            get => base.TopMost;
+            set => base.TopMost = value;
         }
 
         #endregion

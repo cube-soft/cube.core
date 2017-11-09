@@ -85,7 +85,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control OKButton
         {
-            get { return _ok; }
+            get => _ok;
             set
             {
                 if (_ok == value) return;
@@ -112,7 +112,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control ApplyButton
         {
-            get { return _apply; }
+            get => _apply;
             set
             {
                 if (_apply == value) return;
@@ -139,7 +139,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control CancelButton
         {
-            get { return _cancel; }
+            get => _cancel;
             set
             {
                 if (_cancel == value) return;

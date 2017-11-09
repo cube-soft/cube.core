@@ -71,7 +71,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEventHub EventHub
         {
-            get { return _events; }
+            get => _events;
             set
             {
                 if (_events == value) return;
@@ -96,7 +96,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Dpi
         {
-            get { return _dpi; }
+            get => _dpi;
             set
             {
                 if (_dpi == value) return;
@@ -131,7 +131,7 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Content
         {
-            get { return _painter.Content; }
+            get => _painter.Content;
             set
             {
                 if (_painter.Content == value) return;
@@ -168,8 +168,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Color BackColor
         {
-            get { return base.BackColor; }
-            set { base.BackColor = value; }
+            get => base.BackColor;
+            set => base.BackColor = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -185,8 +185,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Image BackgroundImage
         {
-            get { return base.BackgroundImage; }
-            set { base.BackgroundImage = value; }
+            get => base.BackgroundImage;
+            set => base.BackgroundImage = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -201,9 +201,7 @@ namespace Cube.Forms
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FlatButtonAppearance FlatAppearance
-        {
-            get { return base.FlatAppearance; }
-        }
+            => base.FlatAppearance;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -218,8 +216,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FlatStyle FlatStyle
         {
-            get { return base.FlatStyle; }
-            set { base.FlatStyle = value; }
+            get => base.FlatStyle;
+            set => base.FlatStyle = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -235,8 +233,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Color ForeColor
         {
-            get { return base.ForeColor; }
-            set { base.ForeColor = value; }
+            get => base.ForeColor;
+            set => base.ForeColor = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -252,8 +250,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Image Image
         {
-            get { return base.Image; }
-            set { base.Image = value; }
+            get => base.Image;
+            set => base.Image = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -269,8 +267,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new int ImageIndex
         {
-            get { return base.ImageIndex; }
-            set { base.ImageIndex = value; }
+            get => base.ImageIndex;
+            set => base.ImageIndex = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -286,8 +284,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new string ImageKey
         {
-            get { return base.ImageKey; }
-            set { base.ImageKey = value; }
+            get => base.ImageKey;
+            set => base.ImageKey = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -303,8 +301,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.ImageList ImageList
         {
-            get { return base.ImageList; }
-            set { base.ImageList = value; }
+            get => base.ImageList;
+            set => base.ImageList = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -320,8 +318,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new string Text
         {
-            get { return base.Text; }
-            set { base.Text = value; }
+            get => base.Text;
+            set => base.Text = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -337,8 +335,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.TextImageRelation TextImageRelation
         {
-            get { return base.TextImageRelation; }
-            set { base.TextImageRelation = value; }
+            get => base.TextImageRelation;
+            set => base.TextImageRelation = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -354,8 +352,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new bool UseVisualStyleBackColor
         {
-            get { return base.UseVisualStyleBackColor; }
-            set { base.UseVisualStyleBackColor = value; }
+            get => base.UseVisualStyleBackColor;
+            set => base.UseVisualStyleBackColor = value;
         }
 
         #endregion
@@ -374,8 +372,8 @@ namespace Cube.Forms
         [Browsable(false)]
         public new System.Windows.Forms.Appearance Appearance
         {
-            get { return base.Appearance; }
-            set { base.Appearance = value; }
+            get => base.Appearance;
+            set => base.Appearance = value;
         }
 
         /* ----------------------------------------------------------------- */
@@ -390,8 +388,8 @@ namespace Cube.Forms
         [Browsable(false)]
         public new ContentAlignment CheckAlign
         {
-            get { return base.CheckAlign; }
-            set { base.CheckAlign = value; }
+            get => base.CheckAlign;
+            set => base.CheckAlign = value;
         }
 
         #endregion

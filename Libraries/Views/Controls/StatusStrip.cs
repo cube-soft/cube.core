@@ -68,7 +68,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IEventHub EventHub
         {
-            get { return _events; }
+            get => _events;
             set
             {
                 if (_events == value) return;
@@ -93,7 +93,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Dpi
         {
-            get { return _dpi; }
+            get => _dpi;
             set
             {
                 if (_dpi == value) return;

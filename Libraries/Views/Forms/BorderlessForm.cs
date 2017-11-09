@@ -81,7 +81,7 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public new bool MaximizeBox
         {
-            get { return base.MaximizeBox; }
+            get => base.MaximizeBox;
             set
             {
                 if (base.MaximizeBox == value) return;
@@ -109,7 +109,7 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public new bool MinimizeBox
         {
-            get { return base.MinimizeBox; }
+            get => base.MinimizeBox;
             set
             {
                 if (base.MinimizeBox == value) return;
@@ -145,7 +145,7 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public bool Sizable
         {
-            get { return _sizable; }
+            get => _sizable;
             set
             {
                 if (_sizable == value) return;
@@ -191,7 +191,7 @@ namespace Cube.Forms
         [DefaultValue(0)]
         public int CornerRadius
         {
-            get { return _cornerRadius; }
+            get => _cornerRadius;
             set
             {
                 if (_cornerRadius == value) return;
@@ -221,7 +221,7 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public bool SystemMenu
         {
-            get { return base.FormBorderStyle != System.Windows.Forms.FormBorderStyle.None; }
+            get => base.FormBorderStyle != System.Windows.Forms.FormBorderStyle.None;
             set
             {
                 var dest = value ?
@@ -246,7 +246,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CaptionControl Caption
         {
-            get { return _caption; }
+            get => _caption;
             set
             {
                 if (_caption == value) return;
@@ -321,8 +321,8 @@ namespace Cube.Forms
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new System.Windows.Forms.FormBorderStyle FormBorderStyle
         {
-            get { return base.FormBorderStyle; }
-            set { base.FormBorderStyle = value; }
+            get => base.FormBorderStyle;
+            set => base.FormBorderStyle = value;
         }
 
         #endregion

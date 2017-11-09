@@ -80,7 +80,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Cube.Processes.IMessenger<IEnumerable<string>> Activator
         {
-            get { return _activator; }
+            get => _activator;
             set
             {
                 if (_activator == value) return;
@@ -104,7 +104,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Dpi
         {
-            get { return _dpi; }
+            get => _dpi;
             set
             {
                 System.Diagnostics.Debug.Assert(value > 1.0);

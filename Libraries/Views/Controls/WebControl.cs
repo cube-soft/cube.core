@@ -86,7 +86,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public double Dpi
         {
-            get { return _dpi; }
+            get => _dpi;
             set
             {
                 if (_dpi == value) return;

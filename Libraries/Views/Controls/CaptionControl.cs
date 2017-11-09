@@ -45,7 +45,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public bool Active
         {
-            get { return _active; }
+            get => _active;
             set
             {
                 if (_active == value) return;
@@ -67,7 +67,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public System.Windows.Forms.FormWindowState WindowState
         {
-            get { return _state; }
+            get => _state;
             set
             {
                 if (_state == value) return;
@@ -101,7 +101,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control MaximizeControl
         {
-            get { return _maximize; }
+            get => _maximize;
             protected set
             {
                 if (_maximize == value) return;
@@ -124,7 +124,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control MinimizeControl
         {
-            get { return _minimize; }
+            get => _minimize;
             protected set
             {
                 if (_minimize == value) return;
@@ -147,7 +147,7 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control CloseControl
         {
-            get { return _close; }
+            get => _close;
             protected set
             {
                 if (_close == value) return;

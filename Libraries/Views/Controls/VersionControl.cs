@@ -84,7 +84,7 @@ namespace Cube.Forms
         [Browsable(true)]
         public Image Image
         {
-            get { return _image.Image; }
+            get => _image.Image;
             set
             {
                 if (_image.Image == value) return;
@@ -105,7 +105,7 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Product
         {
-            get { return _product.Text; }
+            get => _product.Text;
             set
             {
                 if (_product.Text == value) return;
@@ -125,7 +125,7 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Version
         {
-            get { return _version.Text; }
+            get => _version.Text;
             set
             {
                 if (_version.Text == value) return;
@@ -145,7 +145,7 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Description
         {
-            get { return _others.Text; }
+            get => _others.Text;
             set
             {
                 if (_others.Text == value) return;
@@ -166,7 +166,7 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Copyright
         {
-            get { return _copyright.Text; }
+            get => _copyright.Text;
             set
             {
                 if (_copyright.Text == value) return;

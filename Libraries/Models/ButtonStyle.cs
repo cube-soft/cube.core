@@ -47,8 +47,8 @@ namespace Cube.Forms
         [DefaultValue(typeof(Color), "")]
         public Color BackColor
         {
-            get { return _backColor; }
-            set { SetProperty(ref _backColor, value); }
+            get => _backColor;
+            set => SetProperty(ref _backColor, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -64,8 +64,8 @@ namespace Cube.Forms
         [DefaultValue(null)]
         public Image BackgroundImage
         {
-            get { return _backgroundImage; }
-            set { SetProperty(ref _backgroundImage, value); }
+            get => _backgroundImage;
+            set => SetProperty(ref _backgroundImage, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -81,8 +81,8 @@ namespace Cube.Forms
         [DefaultValue(typeof(Color), "")]
         public Color BorderColor
         {
-            get { return _borderColor; }
-            set { SetProperty(ref _borderColor, value); }
+            get => _borderColor;
+            set => SetProperty(ref _borderColor, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -99,8 +99,8 @@ namespace Cube.Forms
         [DefaultValue(-1)]
         public int BorderSize
         {
-            get { return _borderSize; }
-            set { SetProperty(ref _borderSize, value); }
+            get => _borderSize;
+            set => SetProperty(ref _borderSize, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -116,8 +116,8 @@ namespace Cube.Forms
         [DefaultValue(null)]
         public Image Image
         {
-            get { return _image; }
-            set { SetProperty(ref _image, value); }
+            get => _image;
+            set => SetProperty(ref _image, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -133,8 +133,8 @@ namespace Cube.Forms
         [DefaultValue(typeof(Color), "")]
         public Color ContentColor
         {
-            get { return _contentColor; }
-            set { SetProperty(ref _contentColor, value); }
+            get => _contentColor;
+            set => SetProperty(ref _contentColor, value);
         }
 
         #endregion

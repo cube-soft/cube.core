@@ -55,7 +55,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public bool Enabled
         {
-            get { return _enabled; }
+            get => _enabled;
             set
             {
                 if (_enabled == value) return;
@@ -76,7 +76,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public bool Visible
         {
-            get { return _visible; }
+            get => _visible;
             set
             {
                 if (_visible == value) return;
@@ -107,7 +107,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public Point Location
         {
-            get { return _location; }
+            get => _location;
             set
             {
                 if (_location == value) return;
@@ -127,7 +127,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public Size Size
         {
-            get { return _size; }
+            get => _size;
             set
             {
                 if (_size == value) return;
@@ -171,7 +171,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public double Dpi
         {
-            get { return _dpi; }
+            get => _dpi;
             set
             {
                 if (_dpi == value) return;
