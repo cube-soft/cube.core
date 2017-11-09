@@ -126,9 +126,6 @@
     <Compile Include="Views\Controls\ControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\FeatureControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Views\Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
