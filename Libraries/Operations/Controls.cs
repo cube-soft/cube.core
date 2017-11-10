@@ -114,8 +114,7 @@ namespace Cube.Forms.Controls
         ///
         /* ----------------------------------------------------------------- */
         public static void UpdateText(this System.Windows.Forms.Form form, string message)
-            => UpdateText(form, message,
-               Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
+            => UpdateText(form, message, AssemblyReader.Default);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,13 +130,31 @@ namespace Cube.Forms.Controls
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form, string message, Assembly assembly)
+        public static void UpdateText(this System.Windows.Forms.Form form,
+            string message, Assembly assembly)
+            => UpdateText(form, message, new AssemblyReader(assembly));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateText
+        /// 
+        /// <summary>
+        /// フォームのタイトルを "message - ProductName" と言う表記で
+        /// 更新します。
+        /// </summary>
+        ///
+        /// <param name="form">フォーム</param>
+        /// <param name="message">タイトルに表示するメッセージ</param>
+        /// <param name="assembly">アセンブリ情報</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateText(this System.Windows.Forms.Form form,
+            string message, AssemblyReader assembly)
         {
-            var asm = new AssemblyReader(assembly);
             var ss = new System.Text.StringBuilder();
             ss.Append(message);
-            if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(asm.Product)) ss.Append(" - ");
-            ss.Append(asm.Product);
+            if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(assembly.Product)) ss.Append(" - ");
+            ss.Append(assembly.Product);
 
             form.Text = ss.ToString();
         }

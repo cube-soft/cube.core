@@ -44,9 +44,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionForm()
-            : this(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly())
-        { }
+        public VersionForm() : this(AssemblyReader.Default) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -55,9 +53,24 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionForm(Assembly assembly) : base()
+        public VersionForm(Assembly assembly) : this(new AssemblyReader(assembly)) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// VersionForm
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリ情報</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public VersionForm(AssemblyReader assembly) : base()
         {
             InitializeLayout(assembly);
         }
@@ -179,8 +192,20 @@ namespace Cube.Forms
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update(Assembly assembly)
-            => _control.Update(assembly);
+        public void Update(Assembly assembly) => _control.Update(assembly);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Update
+        ///
+        /// <summary>
+        /// アセンブリ情報を基に表示内容を更新します。
+        /// </summary>
+        /// 
+        /// <param name="assembly">アセンブリ情報</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Update(AssemblyReader assembly) => _control.Update(assembly);
 
         #endregion
 
@@ -195,7 +220,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void InitializeLayout(Assembly assembly)
+        private void InitializeLayout(AssemblyReader assembly)
         {
             Size = new Size(400, 270);
             SuspendLayout();
