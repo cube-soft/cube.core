@@ -158,13 +158,28 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,     "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(SettingsType.Json,    "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(SettingsType.Xml,     "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(SettingsType.Json,    "Settings.ja.json", ExpectedResult = "山田太郎")]
-        [TestCase(SettingsType.Unknown, "Settings.xml",     ExpectedResult = null)]
+        [TestCase(SettingsType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(SettingsType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(SettingsType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
         public string Load_File(SettingsType type, string filename)
             => type.Load<Person>(Example(filename))?.Name;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_File_Throws
+        /// 
+        /// <summary>
+        /// ファイルから設定を読み込みに失敗するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(SettingsType.Unknown, "Settings.xml")]
+        public void Load_File_Throws(SettingsType type, string filename)
+            => Assert.That(
+                () => type.Load<Person>(Example(filename)),
+                Throws.TypeOf<ArgumentException>()
+            );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -175,12 +190,10 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,      "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(SettingsType.Json,     "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(SettingsType.Xml,      "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(SettingsType.Json,     "Settings.ja.json", ExpectedResult = "山田太郎")]
-        [TestCase(SettingsType.Registry, "Settings.xml",     ExpectedResult = null)]
-        [TestCase(SettingsType.Unknown,  "Settings.xml",     ExpectedResult = null)]
+        [TestCase(SettingsType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(SettingsType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(SettingsType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
         public string Load_Stream(SettingsType type, string filename)
         {
             using (var reader = new StreamReader(Example(filename)))
@@ -188,6 +201,26 @@ namespace Cube.Tests
                 return type.Load<Person>(reader.BaseStream)?.Name;
             }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load_Stream_Throws
+        /// 
+        /// <summary>
+        /// ストリームから設定を読み込みに失敗するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(SettingsType.Registry, "Settings.xml")]
+        [TestCase(SettingsType.Unknown,  "Settings.xml")]
+        public void Load_Stream_Throws(SettingsType type, string filename)
+            => Assert.That(() =>
+        {
+            using (var reader = new StreamReader(Example(filename)))
+            {
+                type.Load<Person>(reader.BaseStream);
+            }
+        }, Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -251,12 +284,12 @@ namespace Cube.Tests
         /// Save_File
         /// 
         /// <summary>
-        /// オブジェクトの内容がファイルに書き込まれた事を確認します。
+        /// 設定内容をファイルに書き込むテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,   "Person.xml")]
-        [TestCase(SettingsType.Json,  "Person.json")]
+        [TestCase(SettingsType.Xml,  "Person.xml")]
+        [TestCase(SettingsType.Json, "Person.json")]
         public void Save_File(SettingsType type, string filename)
         {
             var dest = Result(filename);
@@ -266,23 +299,60 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Save_Unknown
+        /// Save_File_Throws
         /// 
         /// <summary>
-        /// 無効な FileType を指定して保存した時のテストを実行します。
+        /// 設定の保存に失敗するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Save_Unknown()
-        {
-            var dest = Result("Person.txt");
-            Assert.That(
-                () => SettingsType.Unknown.Save(dest, CreatePerson()),
+        [TestCase(SettingsType.Unknown,  "Person.txt")]
+        public void Save_File_Throws(SettingsType type, string filename)
+            => Assert.That(
+                () => type.Save(Result(filename), CreatePerson()),
                 Throws.TypeOf<ArgumentException>()
             );
-            Assert.That(File.Exists(dest), Is.False);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Stream
+        /// 
+        /// <summary>
+        /// 設定内容をストリームに書き込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(SettingsType.Xml,  "PersonStream.xml")]
+        [TestCase(SettingsType.Json, "PersonStream.json")]
+        public void Save_Stream(SettingsType type, string filename)
+        {
+            var dest = Result(filename);
+            using (var sw = new StreamWriter(dest))
+            {
+                type.Save(sw.BaseStream, CreatePerson());
+            }
+            Assert.That(File.Exists(dest), Is.True);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Stream_Throws
+        /// 
+        /// <summary>
+        /// 設定の保存に失敗するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(SettingsType.Registry, "Person.reg")]
+        [TestCase(SettingsType.Unknown,  "Person.txt")]
+        public void Save_Stream_Throws(SettingsType type, string filename)
+            => Assert.That(() =>
+        {
+            using (var sw = new StreamWriter(Result(filename)))
+            {
+                type.Save(sw.BaseStream, CreatePerson());
+            }
+        }, Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///

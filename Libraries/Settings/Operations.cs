@@ -63,7 +63,7 @@ namespace Cube.Settings
                 case SettingsType.Xml:      return LoadXml<T>(src);
                 case SettingsType.Json:     return LoadJson<T>(src);
                 case SettingsType.Registry: return RegistrySettings.Load<T>(src);
-                default:                    return default(T);
+                default:                    throw Error(type, "wrong type");
             }
         }
 
@@ -85,9 +85,10 @@ namespace Cube.Settings
         {
             switch (type)
             {
-                case SettingsType.Xml:  return LoadXml<T>(src);
-                case SettingsType.Json: return LoadJson<T>(src);
-                default:                return default(T);
+                case SettingsType.Xml:      return LoadXml<T>(src);
+                case SettingsType.Json:     return LoadJson<T>(src);
+                case SettingsType.Registry: throw Error(type, "cannot save to stream");
+                default:                    throw Error(type, "wrong type");
             }
         }
 
@@ -130,7 +131,7 @@ namespace Cube.Settings
                     RegistrySettings.Save(dest, src);
                     break;
                 default:
-                    throw new ArgumentException($"{type}:Unknown SettingsType");
+                    throw Error(type, "wrong type");
             }
         }
 
@@ -158,15 +159,27 @@ namespace Cube.Settings
                     SaveJson(src, dest);
                     break;
                 case SettingsType.Registry:
-                    throw new ArgumentException($"{type}:Cannot save to Stream");
+                    throw Error(type, "cannot save to stream");
                 default:
-                    throw new ArgumentException($"{type}:Unknown SettingsType");
+                    throw Error(type, "wrong type");
             }
         }
 
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Error
+        /// 
+        /// <summary>
+        /// エラー用オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Exception Error(SettingsType type, string message)
+            => new ArgumentException($"{type}:{message}");
 
         #region Load
 
