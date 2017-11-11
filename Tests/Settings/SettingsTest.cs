@@ -163,7 +163,7 @@ namespace Cube.Tests
         [TestCase(SettingsType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
         [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
         public string Load_File(SettingsType type, string filename)
-            => type.Load<Person>(Example(filename))?.Name;
+            => type.Load<Person>(Example(filename)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -198,7 +198,7 @@ namespace Cube.Tests
         {
             using (var reader = new StreamReader(Example(filename)))
             {
-                return type.Load<Person>(reader.BaseStream)?.Name;
+                return type.Load<Person>(reader.BaseStream).Name;
             }
         }
 

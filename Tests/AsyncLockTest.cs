@@ -46,25 +46,24 @@ namespace Cube.Tests
         [Test]
         public void LockAsync()
         {
-            _counter = 0;
-
-            Task.WaitAll(
-                WithoutAsyncLock(),
-                WithoutAsyncLock(),
-                WithoutAsyncLock()
-            );
-
-            Assert.That(_counter, Is.EqualTo(3), "WithoutAsyncLock");
-
-            _counter = 0;
-            _obj = null;
-
-            Task.WaitAll(
-                WithAsyncLock(),
-                WithAsyncLock(),
-                WithAsyncLock());
-
+            Task.WaitAll(WithLock(), WithLock(), WithLock());
             Assert.That(_counter, Is.EqualTo(1), "WithAsyncLock");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LockAsync_Compare
+        /// 
+        /// <summary>
+        /// LockAsync の比較用テストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void LockAsync_Compare()
+        {
+            Task.WaitAll(WithoutLock(), WithoutLock(), WithoutLock());
+            Assert.That(_counter, Is.GreaterThan(1), "WithoutAsyncLock");
         }
 
         #endregion
@@ -73,14 +72,30 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithoutAsyncLock
+        /// Setup
+        /// 
+        /// <summary>
+        /// テスト前に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [SetUp]
+        public void Setup()
+        {
+            _obj = null;
+            _counter = 0;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WithoutLock
         /// 
         /// <summary>
         /// ロック無で処理を実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private async Task WithoutAsyncLock()
+        private async Task WithoutLock()
         {
             if (_obj == null)
             {
@@ -92,14 +107,14 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WithAsyncLock
+        /// WithLock
         /// 
         /// <summary>
         /// ロック付で処理を実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private async Task WithAsyncLock()
+        private async Task WithLock()
         {
             using (var _ = await _mutex.LockAsync())
             {
@@ -113,8 +128,8 @@ namespace Cube.Tests
         }
 
         #region Fields
-        private int _counter;
-        private object _obj;
+        private int _counter = 0;
+        private object _obj = null;
         private readonly AsyncLock _mutex = new AsyncLock();
         #endregion
 
