@@ -454,11 +454,8 @@ namespace Cube
             }
             finally
             {
-                var msec  = Interval.TotalMilliseconds;
-                var delta = Math.Abs(_core.Interval - msec);
-                if (delta > 1.0) _core.Interval = msec;
-
                 Next = DateTime.Now + TimeSpan.FromMilliseconds(_core.Interval);
+                _core.Interval = Interval.TotalMilliseconds;
                 _core.Start();
             }
         }
