@@ -36,7 +36,7 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_Default
+        /// Timer_Properties
         /// 
         /// <summary>
         /// 各種プロパティの初期値を確認します。
@@ -44,14 +44,38 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_Default()
+        public void Timer_Properties()
         {
             using (var timer = new WakeableTimer())
             {
-                Assert.That(timer.Interval,     Is.EqualTo(TimeSpan.FromSeconds(1)));
+                Assert.That(timer.Interval,      Is.EqualTo(TimeSpan.FromSeconds(1)));
                 Assert.That(timer.LastPublished, Is.EqualTo(DateTime.MinValue));
-                Assert.That(timer.PowerMode,    Is.EqualTo(PowerModes.Resume));
+                Assert.That(timer.State,         Is.EqualTo(TimerState.Stop));
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Start
+        /// 
+        /// <summary>
+        /// タイマーを開始するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Start()
+        {
+            var count = 0;
+            using (var timer = new WakeableTimer())
+            {
+                timer.Subscribe(() => ++count);
+                timer.Interval = TimeSpan.FromMilliseconds(50);
+                timer.Start();
+                Task.Delay(200).Wait();
+                timer.Stop();
+            }
+            Assert.That(count, Is.GreaterThanOrEqualTo(3));
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,14 +91,12 @@ namespace Cube.Tests
         public void Start_InitialDelay()
         {
             var count = 0;
-
             using (var timer = new WakeableTimer())
             {
                 timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.FromSeconds(1));
                 timer.Stop();
             }
-
             Assert.That(count, Is.EqualTo(0));
         }
 
@@ -91,17 +113,17 @@ namespace Cube.Tests
         public void Start_Immediately()
         {
             var count = 0;
-
             using (var timer = new WakeableTimer())
             {
                 var disposable = timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.Zero);
+                Task.Delay(50).Wait();
                 timer.Stop();
                 disposable.Dispose();
                 timer.Start(TimeSpan.Zero);
+                Task.Delay(50).Wait();
                 timer.Stop();
             }
-
             Assert.That(count, Is.EqualTo(1));
         }
 
@@ -141,7 +163,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public async Task Reset()
+        public void Reset()
         {
             using (var timer = new WakeableTimer())
             {
@@ -150,7 +172,7 @@ namespace Cube.Tests
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
                 timer.Interval = TimeSpan.FromMilliseconds(ms); // ignore
                 timer.Start();
-                await Task.Delay(ms * 2);
+                Task.Delay(ms * 2).Wait();
                 timer.Stop();
 
                 var last = timer.LastPublished;
@@ -171,32 +193,34 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase( 0, 2)]
-        [TestCase(50, 1)]
-        public async Task Resume(int delay, int expected)
+        [TestCase( 0, ExpectedResult = 2)]
+        [TestCase(50, ExpectedResult = 1)]
+        public int Resume(int delay)
         {
             using (var timer = new WakeableTimer())
             {
-                var ms      = Math.Max(delay, 100);
+                var msec    = Math.Max(delay, 100);
                 var count   = 0;
                 var chagned = 0;
 
-                timer.Interval = TimeSpan.FromMilliseconds(ms);
+                timer.Interval = TimeSpan.FromMilliseconds(msec);
                 timer.Subscribe(() => ++count);
                 timer.PowerModeChanged += (s, e) => ++chagned;
                 timer.Start(TimeSpan.FromMilliseconds(delay));
 
                 // force change
-                Cube.Power.Mode = PowerModes.Suspend;
-                await Task.Delay(ms * 2);
-                Cube.Power.Mode = PowerModes.Resume;
-                await Task.Delay(150);
+                Task.Delay(30).Wait();
+                Power.Mode = PowerModes.Suspend;
+                Task.Delay(delay * 2).Wait();
+                Power.Mode = PowerModes.Resume;
+                Task.Delay(100).Wait();
 
                 timer.Stop();
 
-                Assert.That(timer.PowerMode, Is.EqualTo(PowerModes.Resume));
-                Assert.That(chagned, Is.EqualTo(2));
-                Assert.That(count, Is.EqualTo(expected));
+                Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
+                Assert.That(chagned, Is.EqualTo(2), nameof(timer.PowerModeChanged));
+
+                return count;
             }
         }
     }

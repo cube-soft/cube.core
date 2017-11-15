@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.Win32;
 using Cube.Log;
 
@@ -82,7 +84,8 @@ namespace Cube
         {
             _interval = interval;
             _dispose  = new OnceAction<bool>(Dispose);
-            _core.Elapsed += (s, e) => Publish();
+            _core.AutoReset = false;
+            _core.Elapsed += WhenPublished;
             Power.ModeChanged += (s, e) => OnPowerModeChanged(e);
         }
 
@@ -149,17 +152,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PowerMode
-        /// 
-        /// <summary>
-        /// 電源の状態を取得します。
-        /// </summary>
-        /// 
-        /* ----------------------------------------------------------------- */
-        public PowerModes PowerMode => Power.Mode;
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Subscriptions
         /// 
         /// <summary>
@@ -167,7 +159,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IList<Action> Subscriptions { get; } = new List<Action>();
+        protected IList<Func<Task>> Subscriptions { get; } = new List<Func<Task>>();
 
         #endregion
 
@@ -230,12 +222,9 @@ namespace Cube
             if (State != TimerState.Stop) return;
 
             State = TimerState.Run;
-
-            var time = delay > TimeSpan.Zero ? delay : Interval;
+            var time = delay > TimeSpan.Zero ? delay : TimeSpan.Zero;
             Next = DateTime.Now + time;
-            _core.Interval = time.TotalMilliseconds;
-
-            if (delay <= TimeSpan.Zero) Publish();
+            _core.Interval = Math.Max(time.TotalMilliseconds, 1);
             _core.Start();
         }
 
@@ -260,17 +249,35 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// 一定間隔毎に実行される処理を登録します。
+        /// 一定間隔で実行される非同期処理を登録します。
         /// </summary>
         /// 
-        /// <param name="action">処理を表すオブジェクト</param>
+        /// <param name="action">非同期処理を表すオブジェクト</param>
+        /// 
+        /// <returns>登録を解除するためのオブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action action)
+        public IDisposable Subscribe(Func<Task> action)
         {
             Subscriptions.Add(action);
             return Disposable.Create(() => Subscriptions.Remove(action));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// 一定間隔で実行される処理を登録します。
+        /// </summary>
+        /// 
+        /// <param name="action">処理を表すオブジェクト</param>
+        /// 
+        /// <returns>登録を解除するためのオブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IDisposable Subscribe(Action action)
+            => Subscribe(() => Task.Run(() => action()));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -298,10 +305,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~WakeableTimer()
-        {
-            _dispose.Invoke(false);
-        }
+        ~WakeableTimer() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -345,17 +349,17 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Publish()
+        protected virtual async Task Publish()
         {
             LastPublished = DateTime.Now;
 
-            var ms    = Interval.TotalMilliseconds;
-            var delta = Math.Abs(_core.Interval - ms);
-            if (delta > 1.0) _core.Interval = ms;
+            var msec  = Interval.TotalMilliseconds;
+            var delta = Math.Abs(_core.Interval - msec);
+            if (delta > 1.0) _core.Interval = msec;
 
             Next = LastPublished + TimeSpan.FromMilliseconds(_core.Interval);
 
-            foreach (var action in Subscriptions) action();
+            foreach (var action in Subscriptions) await action();
         }
 
         /* ----------------------------------------------------------------- */
@@ -432,10 +436,37 @@ namespace Cube
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenPublished
+        /// 
+        /// <summary>
+        /// 一定間隔で実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async void WhenPublished(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                LastPublished = e.SignalTime;
+                await Publish();
+            }
+            finally
+            {
+                var msec  = Interval.TotalMilliseconds;
+                var delta = Math.Abs(_core.Interval - msec);
+                if (delta > 1.0) _core.Interval = msec;
+
+                Next = DateTime.Now + TimeSpan.FromMilliseconds(_core.Interval);
+                _core.Start();
+            }
+        }
+
         #region Fields
         private OnceAction<bool> _dispose;
         private TimeSpan _interval;
-        private System.Timers.Timer _core = new System.Timers.Timer();
+        private Timer _core = new Timer();
         #endregion
 
         #endregion
