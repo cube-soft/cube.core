@@ -69,10 +69,10 @@ namespace Cube.Tests
             var count = 0;
             using (var timer = new WakeableTimer())
             {
-                timer.Subscribe(() => ++count);
-                timer.Interval = TimeSpan.FromMilliseconds(50);
+                timer.Subscribe(() => Task.Run(() => ++count));
+                timer.Interval = TimeSpan.FromMilliseconds(100);
                 timer.Start();
-                Task.Delay(200).Wait();
+                Task.Delay(300).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.GreaterThanOrEqualTo(3));
@@ -167,7 +167,7 @@ namespace Cube.Tests
         {
             using (var timer = new WakeableTimer())
             {
-                var ms = 50;
+                var ms = 100;
 
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
                 timer.Interval = TimeSpan.FromMilliseconds(ms); // ignore
@@ -193,34 +193,35 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase( 0, ExpectedResult = 2)]
-        [TestCase(50, ExpectedResult = 1)]
-        public int Resume(int delay)
+        [Test]
+        public void Resume()
         {
             using (var timer = new WakeableTimer())
             {
-                var msec    = Math.Max(delay, 100);
                 var count   = 0;
                 var chagned = 0;
 
-                timer.Interval = TimeSpan.FromMilliseconds(msec);
+                timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.Subscribe(() => ++count);
                 timer.PowerModeChanged += (s, e) => ++chagned;
-                timer.Start(TimeSpan.FromMilliseconds(delay));
 
-                // force change
+                timer.Start();
                 Task.Delay(30).Wait();
-                Power.Mode = PowerModes.Suspend;
-                Task.Delay(delay * 2).Wait();
-                Power.Mode = PowerModes.Resume;
-                Task.Delay(100).Wait();
+                Assert.That(count, Is.EqualTo(1), "Start");
 
+                Power.Mode = PowerModes.Suspend;
+                Task.Delay(200).Wait();
+                Assert.That(count, Is.EqualTo(1), "Suspend");
+
+                Power.Mode = PowerModes.Resume;
+                Assert.That(count, Is.EqualTo(1), "Resume");
+
+                Task.Delay(150).Wait();
                 timer.Stop();
+                Assert.That(count, Is.EqualTo(2), "Stop");
 
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
                 Assert.That(chagned, Is.EqualTo(2), nameof(timer.PowerModeChanged));
-
-                return count;
             }
         }
     }
