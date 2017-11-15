@@ -69,7 +69,7 @@ namespace Cube.Tests
             var count = 0;
             using (var timer = new WakeableTimer())
             {
-                timer.Subscribe(() => Task.Run(() => ++count));
+                timer.Subscribe(() => ++count);
                 timer.Interval = TimeSpan.FromMilliseconds(100);
                 timer.Start();
                 Task.Delay(300).Wait();

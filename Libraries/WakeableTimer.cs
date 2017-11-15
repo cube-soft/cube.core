@@ -359,7 +359,7 @@ namespace Cube
 
             Next = LastPublished + TimeSpan.FromMilliseconds(_core.Interval);
 
-            foreach (var action in Subscriptions) await action();
+            foreach (var action in Subscriptions) await action().ConfigureAwait(false);
         }
 
         /* ----------------------------------------------------------------- */
@@ -450,7 +450,7 @@ namespace Cube
             try
             {
                 LastPublished = e.SignalTime;
-                await Publish();
+                await Publish().ConfigureAwait(false);
             }
             finally
             {
