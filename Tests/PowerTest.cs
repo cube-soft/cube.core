@@ -41,24 +41,30 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void ModeChanged()
+        [TestCase(true,  ExpectedResult = 2)]
+        [TestCase(false, ExpectedResult = 4)]
+        public int ModeChanged(bool ignore)
         {
             var count = 0;
             PowerModeChangedEventHandler handler = (s, e) => ++count;
 
-            Cube.Power.ModeChanged += handler;
-            Cube.Power.Mode = PowerModes.Resume;       // Resume -> Resume
-            Cube.Power.Mode = PowerModes.StatusChange; // Resume -> StatusChange
-            Cube.Power.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
-            Cube.Power.Mode = PowerModes.Suspend;      // Suspend -> Suspend
-            Cube.Power.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
-            Cube.Power.Mode = PowerModes.Resume;       // StatusChange -> Resume
-            Cube.Power.ModeChanged -= handler;
-            Cube.Power.Mode = PowerModes.Suspend;
-            Cube.Power.Mode = PowerModes.Resume;
+            var mock = new PowerModeContext(Power.Mode);
+            Power.Configure(mock);
+            mock.IgnoreStatusChanged = ignore;
 
-            Assert.That(count, Is.EqualTo(4));
+            Power.ModeChanged += handler;
+            mock.Mode = PowerModes.Resume;       // Resume -> Resume
+            mock.Mode = PowerModes.StatusChange; // Resume -> StatusChange
+            mock.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
+            mock.Mode = PowerModes.Suspend;      // Suspend -> Suspend
+            mock.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
+            mock.Mode = PowerModes.Resume;       // StatusChange -> Resume
+
+            Power.ModeChanged -= handler;
+            mock.Mode = PowerModes.Suspend;
+            mock.Mode = PowerModes.Resume;
+
+            return count;
         }
     }
 }

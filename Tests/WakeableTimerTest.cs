@@ -200,6 +200,9 @@ namespace Cube.Tests
             {
                 var count   = 0;
                 var chagned = 0;
+                var power   = new PowerModeContext(Power.Mode);
+
+                Power.Configure(power);
 
                 timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.Subscribe(() => ++count);
@@ -209,11 +212,11 @@ namespace Cube.Tests
                 Task.Delay(30).Wait();
                 Assert.That(count, Is.EqualTo(1), "Start");
 
-                Power.Mode = PowerModes.Suspend;
+                power.Mode = PowerModes.Suspend;
                 Task.Delay(200).Wait();
                 Assert.That(count, Is.EqualTo(1), "Suspend");
 
-                Power.Mode = PowerModes.Resume;
+                power.Mode = PowerModes.Resume;
                 Assert.That(count, Is.EqualTo(1), "Resume");
 
                 Task.Delay(150).Wait();
