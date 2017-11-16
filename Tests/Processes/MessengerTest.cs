@@ -19,6 +19,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Cube.Processes;
 using Cube.Tasks;
 
 namespace Cube.Tests
@@ -47,14 +48,14 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public async Task Publish()
+        public void Publish()
         {
             var id     = nameof(MessengerTest);
             var msg    = "ClientToServer";
             var actual = string.Empty;
 
-            using (var server = new Cube.Processes.Messenger<string>(id))
-            using (var client = new Cube.Processes.MessengerClient<string>(id))
+            using (var server = new Messenger<string>(id))
+            using (var client = new MessengerClient<string>(id))
             {
                 var cts = new CancellationTokenSource();
                 Action<string> h = (x) =>
@@ -70,9 +71,9 @@ namespace Cube.Tests
                 {
                     uns = server.Subscribe(h);
                     Task.Run(() => client.Publish(msg)).Forget();
-                    await Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
+                    Task.Delay(TimeSpan.FromSeconds(5), cts.Token).Wait();
                 }
-                catch (TaskCanceledException /* err */) { uns.Dispose(); }
+                catch (AggregateException /* err */) { uns.Dispose(); }
             }
 
             Assert.That(actual, Is.EqualTo(msg));
@@ -94,19 +95,15 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_DuplicateServer_Throws()
-            => Assert.That(() =>
+        public void Create_DuplicateServer_Throws() => Assert.That(() =>
+        {
+            var id = nameof(MessengerTest);
+            using (var s1 = new Messenger<string>(id))
             {
-                var id = nameof(MessengerTest);
-                using (var s1 = new Cube.Processes.Messenger<string>(id))
-                {
-                    Assert.That(s1.IsServer, Is.True);
-                    using (var s2 = new Cube.Processes.Messenger<string>(id))
-                    {
-                        Assert.Fail("never reached");
-                    }
-                }
-            }, Throws.TypeOf<InvalidOperationException>());
+                Assert.That(s1.IsServer, Is.True);
+                using (var s2 = new Messenger<string>(id)) { }
+            }
+        }, Throws.TypeOf<InvalidOperationException>());
 
         #endregion
     }

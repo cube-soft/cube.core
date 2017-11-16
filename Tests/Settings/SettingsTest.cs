@@ -364,7 +364,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public async Task AutoSave()
+        public void AutoSave()
         {
             var count  = 0;
             var change = 0;
@@ -381,7 +381,7 @@ namespace Cube.Tests
                 settings.Value.Age     = 77;
                 settings.Value.Sex     = Sex.Female;
 
-                await Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2));
+                Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2)).Wait();
             }
 
             using (var key = OpenSaveKey())

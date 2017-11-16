@@ -63,15 +63,15 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Timeout()
-            => Assert.That(
-                async () =>
-                {
-                    await Task.Run(() => { while (true) { } })
-                              .Timeout(TimeSpan.FromMilliseconds(50));
-                },
-                Throws.TypeOf<TimeoutException>()
-            );
+        public void Timeout() => Assert.That(
+            () => Task.Run(() => { while (true) { } })
+                      .Timeout(TimeSpan.FromMilliseconds(50))
+                      .Wait(),
+            Throws.TypeOf<AggregateException>()
+                  .And
+                  .InnerException
+                  .TypeOf<TimeoutException>()
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -84,9 +84,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(5u, ExpectedResult = 5)]
-        public async Task<long> Timeout_NotThrow(uint n)
-            => await Task.Run(() => Fibonacci(n))
-                         .Timeout(TimeSpan.FromSeconds(100));
+        public long Timeout_NotThrow(uint n)
+            => Task.Run(() => Fibonacci(n))
+                   .Timeout(TimeSpan.FromSeconds(100))
+                   .Result;
 
         #region Helper methods
 
