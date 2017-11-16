@@ -431,8 +431,6 @@ namespace Cube
                 case PowerModes.Suspend:
                     Suspend();
                     break;
-                default:
-                    break;
             }
         }
 

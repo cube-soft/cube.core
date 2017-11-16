@@ -161,10 +161,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~Messenger()
-        {
-            _dispose.Invoke(false);
-        }
+        ~Messenger() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -297,10 +294,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~MessengerServer()
-        {
-            _dispose.Invoke(false);
-        }
+        ~MessengerServer() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -437,10 +431,7 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~MessengerClient()
-        {
-            _dispose.Invoke(false);
-        }
+        ~MessengerClient() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
