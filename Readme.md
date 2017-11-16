@@ -6,11 +6,11 @@ Cube.FileSystem
 
 Cube.FileSystem is an I/O library for CubeSoft applications.
 
-## Requirements
+## Dependencies
 
 * [AlphaFS](http://alphafs.alphaleonis.com/)
+* [Cube.Core](https://github.com/cube-soft/Cube.Core)
 * [log4net](https://logging.apache.org/log4net/)
-* [NUnit](http://nunit.org/)
 
 ## License
 
