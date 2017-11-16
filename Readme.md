@@ -5,8 +5,12 @@ Cube.Forms
 
 Cube.Forms is a WinForms based GUI library for CubeSoft applications.
 
-## Requirements
+## Dependencies
 
+* [AlphaFS](http://alphafs.alphaleonis.com/)
+* [Cube.Core](https://github.com/cube-soft/Cube.Core)
+* [Cube.FileSystem](https://github.com/cube-soft/Cube.FileSystem)
+* [Cube.Images](https://github.com/cube-soft/Cube.Images)
 * [log4net](https://logging.apache.org/log4net/)
 
 ## License
