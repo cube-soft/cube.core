@@ -221,10 +221,10 @@ namespace Cube
         {
             if (State != TimerState.Stop) return;
 
+            var time = Math.Max(delay.TotalMilliseconds, 1);
             State = TimerState.Run;
-            var time = delay > TimeSpan.Zero ? delay : TimeSpan.Zero;
-            Next = DateTime.Now + time;
-            _core.Interval = Math.Max(time.TotalMilliseconds, 1);
+            Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
+            _core.Interval = time;
             _core.Start();
         }
 
