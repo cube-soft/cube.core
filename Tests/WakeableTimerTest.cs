@@ -207,6 +207,8 @@ namespace Cube.Tests
                 timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.PowerModeChanged += (s, e) => ++chagned;
                 timer.Subscribe(() => ++count);
+                Assert.That(count, Is.EqualTo(0), "Subscribe");
+
                 timer.Start();
                 Task.Delay(50).Wait();
                 Assert.That(count, Is.EqualTo(1), "Start");
