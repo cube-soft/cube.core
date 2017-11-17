@@ -209,7 +209,7 @@ namespace Cube.Tests
                 timer.PowerModeChanged += (s, e) => ++chagned;
 
                 timer.Start();
-                Task.Delay(30).Wait();
+                Task.Delay(100).Wait();
                 Assert.That(count, Is.EqualTo(1), "Start");
 
                 power.Mode = PowerModes.Suspend;
