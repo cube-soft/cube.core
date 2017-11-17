@@ -351,15 +351,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual async Task Publish()
         {
-            LastPublished = DateTime.Now;
-
-            var msec  = Interval.TotalMilliseconds;
-            var delta = Math.Abs(_core.Interval - msec);
-            if (delta > 1.0) _core.Interval = msec;
-
-            Next = LastPublished + TimeSpan.FromMilliseconds(_core.Interval);
-
-            foreach (var action in Subscriptions) await action().ConfigureAwait(false);
+            foreach (var action in Subscriptions)
+            {
+                if (State != TimerState.Run) return;
+                await action().ConfigureAwait(false);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -445,6 +441,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private async void WhenPublished(object sender, ElapsedEventArgs e)
         {
+            if (State != TimerState.Run) return;
+
             try
             {
                 LastPublished = e.SignalTime;
