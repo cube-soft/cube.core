@@ -108,7 +108,7 @@ namespace Cube.Tests
             var actual = "AbCdEfG".Diff(
                 "aBcDeFg",
                 (x, y) => char.ToLower(x) == char.ToLower(y),
-                true
+                Condition.DiffOnly
             );
 
             Assert.That(actual.Count(), Is.EqualTo(0));

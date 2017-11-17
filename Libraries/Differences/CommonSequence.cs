@@ -136,8 +136,9 @@ namespace Cube.Differences
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, bool diffonly, bool swap)
+        public IEnumerable<Result<T>> ToResult(T[] older, T[] newer, Condition mask, bool swap)
         {
+            var none   = Condition.None;
             var dest   = new List<Result<T>>();
             var seq    = this;
             var array0 = swap ? newer : older;
@@ -154,7 +155,11 @@ namespace Cube.Differences
                 {
                     var ocount = start0 - prev0;
                     var ncount = start1 - prev1;
-                    dest.Add(Create(array0, prev0, ocount, array1, prev1, ncount));
+                    var cond = ocount > 0 && ncount > 0 ? Condition.Changed :
+                               ocount > 0               ? Condition.Deleted :
+                                                          Condition.Inserted;
+
+                    if (mask.HasFlag(cond)) dest.Add(Create(cond, array0, prev0, ocount, array1, prev1, ncount));
                 }
 
                 if (seq.Count == 0) break; // End of contents
@@ -162,7 +167,7 @@ namespace Cube.Differences
                 prev0 = start0;
                 prev1 = start1;
 
-                if (!diffonly) dest.Add(Create(Condition.None, array0, prev0, seq.Count, array1, prev1, seq.Count));
+                if (mask.HasFlag(none)) dest.Add(Create(none, array0, prev0, seq.Count, array1, prev1, seq.Count));
 
                 prev0 += seq.Count;
                 prev1 += seq.Count;
@@ -176,29 +181,6 @@ namespace Cube.Differences
         #endregion
 
         #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        /// 
-        /// <summary>
-        /// Result(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Result<T> Create(T[] older, int ostart, int ocount,
-            T[] newer, int nstart, int ncount)
-        {
-            Debug.Assert(ocount > 0 || ncount > 0);
-
-            var cond = ocount > 0 && ncount > 0 ? Condition.Changed :
-                       ocount > 0               ? Condition.Deleted :
-                                                  Condition.Inserted;
-            return Create(cond,
-                older, ostart, ocount,
-                newer, nstart, ncount
-            );
-        }
 
         /* ----------------------------------------------------------------- */
         ///
