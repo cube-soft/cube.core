@@ -205,11 +205,10 @@ namespace Cube.Tests
                 Power.Configure(power);
 
                 timer.Interval = TimeSpan.FromMilliseconds(200);
-                timer.Subscribe(() => ++count);
                 timer.PowerModeChanged += (s, e) => ++chagned;
-
+                timer.Subscribe(() => ++count);
                 timer.Start();
-                Task.Delay(100).Wait();
+                Task.Delay(50).Wait();
                 Assert.That(count, Is.EqualTo(1), "Start");
 
                 power.Mode = PowerModes.Suspend;

@@ -276,8 +276,11 @@ namespace Cube
         /// <returns>登録を解除するためのオブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action action)
-            => Subscribe(() => Task.Run(() => action()));
+        public IDisposable Subscribe(Action action) => Subscribe(async () =>
+        {
+            action();
+            await Task.FromResult(0);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -450,7 +453,7 @@ namespace Cube
             }
             finally
             {
-                Next = DateTime.Now + TimeSpan.FromMilliseconds(_core.Interval);
+                Next = DateTime.Now + Interval;
                 _core.Interval = Interval.TotalMilliseconds;
                 _core.Start();
             }
