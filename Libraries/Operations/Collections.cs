@@ -52,14 +52,14 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Difference
+        /// Diff
         /// 
         /// <summary>
         /// 差分を検出します。
         /// </summary>
         /// 
-        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="diffonly">
         /// 差分のみを取得するかどうかを示す真偽値
         /// </param>
@@ -69,20 +69,20 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
+        public static IEnumerable<Cube.Differences.Result<T>> Diff<T>(
             this IEnumerable<T> newer, IEnumerable<T> older, bool diffonly = true)
             => new Cube.Differences.OnpAlgorithm<T>().Compare(older, newer, diffonly);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Difference
+        /// Diff
         /// 
         /// <summary>
         /// 差分を検出します。
         /// </summary>
         ///
-        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="comparer">比較用オブジェクト</param>
         /// <param name="diffonly">
         /// 差分のみを取得するかどうかを示す真偽値
@@ -93,21 +93,21 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
+        public static IEnumerable<Cube.Differences.Result<T>> Diff<T>(
             this IEnumerable<T> newer, IEnumerable<T> older,
             IEqualityComparer<T> comparer, bool diffonly = true)
             => new Cube.Differences.OnpAlgorithm<T>(comparer).Compare(older, newer, diffonly);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Difference
+        /// Diff
         /// 
         /// <summary>
         /// 差分を検出します。
         /// </summary>
         ///
-        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="compare">比較関数</param>
         /// <param name="diffonly">
         /// 差分のみを取得するかどうかを示す真偽値
@@ -118,10 +118,10 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<Cube.Differences.Result<T>> Difference<T>(
+        public static IEnumerable<Cube.Differences.Result<T>> Diff<T>(
             this IEnumerable<T> newer, IEnumerable<T> older,
             Func<T, T, bool> compare, bool diffonly = true)
-            => Difference(older, newer, new GenericEqualityComparer<T>(compare), diffonly);
+            => Diff(older, newer, new GenericEqualityComparer<T>(compare), diffonly);
 
         #endregion
 
