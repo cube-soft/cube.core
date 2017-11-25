@@ -436,10 +436,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// WhenPublished
-        /// 
+        ///
         /// <summary>
         /// 一定間隔で実行されるハンドラです。
         /// </summary>
+        ///
+        /// <remarks>
+        /// 原則としてユーザの設定したインターバルで Publish を発行します。
+        /// ただし、Publish の処理時間がユーザの設定したインターバルを
+        /// 超える場合、最低でもその 1/10 秒ほどの間隔をあけて次の
+        /// Publish を発行します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private async void WhenPublished(object sender, ElapsedEventArgs e)
@@ -453,8 +460,12 @@ namespace Cube
             }
             finally
             {
-                Next = DateTime.Now + Interval;
-                _core.Interval = Interval.TotalMilliseconds;
+                var user = Interval.TotalMilliseconds;
+                var diff = (DateTime.Now - LastPublished).TotalMilliseconds;
+                var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
+
+                Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
+                _core.Interval = time;
                 _core.Start();
             }
         }
