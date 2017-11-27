@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("Cube.FileSystem")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("I/O library for CubeSoft applications.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CubeSoft")]
 [assembly: AssemblyProduct("Cube.FileSystem")]
