@@ -15,10 +15,87 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.ComponentModel;
 using Microsoft.Win32;
 
 namespace Cube
 {
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PowerModeContext
+    ///
+    /// <summary>
+    /// 電源の状態を保持するためのクラスです。
+    /// </summary>
+    /// 
+    /* --------------------------------------------------------------------- */
+    public class PowerModeContext : ObservableProperty
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PowerModeContext
+        /// 
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        /// 
+        /// <param name="mode">電源状態</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PowerModeContext(PowerModes mode)
+        {
+            Mode = mode;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Mode
+        /// 
+        /// <summary>
+        /// 電源状態を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PowerModes Mode
+        {
+            get => _mode;
+            set
+            {
+                if (IgnoreStatusChanged && value == PowerModes.StatusChange) return;
+                SetProperty(ref _mode, value);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IgnoreStatusChanged
+        /// 
+        /// <summary>
+        /// PowerModes.StatusChanged を無視するかどうかを示す値を取得
+        /// または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IgnoreStatusChanged
+        {
+            get => _ignore;
+            set => SetProperty(ref _ignore, value);
+        }
+
+        #endregion
+
+        #region Fields
+        private PowerModes _mode;
+        private bool _ignore = true;
+        #endregion
+    }
+
     /* --------------------------------------------------------------------- */
     ///
     /// Power
@@ -43,7 +120,10 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static Power()
         {
-            SystemEvents.PowerModeChanged += WhenChanged;
+            _context = new PowerModeContext(PowerModes.Resume);
+            _context.PropertyChanged += WhenChanged;
+
+            SystemEvents.PowerModeChanged += (s, e) => _context.Mode = e.Mode;
         }
 
         #endregion
@@ -58,32 +138,8 @@ namespace Cube
         /// 電源状態を取得します。
         /// </summary>
         ///
-        /// <remarks>
-        /// 
-        /// <para>
-        /// Mode プロパティは通常、値の取得用途のみに使用されます。
-        /// 値の設定は、動作検証やテスト等の時に使用して下さい。
-        /// </para>
-        /// 
-        /// <para>
-        /// このプロパティは通常 Resume または Suspend どちらかの値を
-        /// 示します。そのため、PowerModeChanged イベントの
-        /// Mode プロパティの値とは必ずしも一致しません。
-        /// </para>
-        /// 
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
-        public static PowerModes Mode
-        {
-            get { return _mode; }
-            set
-            {
-                if (_mode == value) return;
-                _mode = value;
-                ModeChanged?.Invoke(null, new PowerModeChangedEventArgs(value));
-            }
-        }
+        public static PowerModes Mode => _context.Mode;
 
         #endregion
 
@@ -97,14 +153,38 @@ namespace Cube
         /// 電源状態が変化した時に発生するイベントです。
         /// </summary>
         /// 
+        /* ----------------------------------------------------------------- */
+        public static PowerModeChangedEventHandler ModeChanged;
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Configure
+        /// 
+        /// <summary>
+        /// PowerModeContext オブジェクトを差し換えます。
+        /// </summary>
+        /// 
         /// <remarks>
-        /// SystemEvents.PowerModeChanged とは異なり、Mode プロパティに
-        /// 明示的に設定しない限り、PowerModes.StatusChanged への変化時には
-        /// イベントは発生しません。
+        /// プログラム上で独自に Power.Mode の状態を更新する必要がある
+        /// 場合などに利用します。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static PowerModeChangedEventHandler ModeChanged;
+        public static void Configure(PowerModeContext context)
+        {
+            System.Diagnostics.Debug.Assert(context != null);
+            lock (_lock)
+            {
+                _context.PropertyChanged -= WhenChanged;
+                _context = context;
+                _context.PropertyChanged -= WhenChanged;
+                _context.PropertyChanged += WhenChanged;
+            }
+        }
 
         #endregion
 
@@ -115,20 +195,22 @@ namespace Cube
         /// WhenChanged
         /// 
         /// <summary>
-        /// SystemEvents.PowerModeChanged イベント発生時に実行される
-        /// ハンドラです。
+        /// PowerModeContext.PropertyChanged イベント発生時に実行される
+        /// ハンドラです。必要に応じて ModeChanged イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void WhenChanged(object sender, PowerModeChangedEventArgs e)
+        private static void WhenChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.Mode != PowerModes.StatusChange) Mode = e.Mode;
+            if (e.PropertyName != nameof(_context.Mode)) return;
+            ModeChanged?.Invoke(null, new PowerModeChangedEventArgs(Mode));
         }
 
+        #region Fields
+        private static PowerModeContext _context;
+        private static object _lock = new object();
         #endregion
 
-        #region Fields
-        private static PowerModes _mode = PowerModes.Resume;
         #endregion
     }
 }

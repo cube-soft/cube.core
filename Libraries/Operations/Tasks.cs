@@ -70,7 +70,7 @@ namespace Cube.Tasks
         public static async Task Timeout(this Task task, TimeSpan timeout)
         {
             var delay = TaskEx.Delay(timeout);
-            if (await TaskEx.WhenAny(task, delay) == delay)
+            if (await TaskEx.WhenAny(task, delay).ConfigureAwait(false) == delay)
             {
                 throw new TimeoutException();
             }

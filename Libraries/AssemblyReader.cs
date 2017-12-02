@@ -68,6 +68,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Platform
+        ///
+        /// <summary>
+        /// ソフトウェアのプラットフォームを示す文字列を取得します。
+        /// </summary>
+        /// 
+        /* ----------------------------------------------------------------- */
+        public static string Platform { get; } = (IntPtr.Size == 4) ? "x86" : "x64";
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Assembly
         ///
         /// <summary>
@@ -98,15 +109,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Title
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyTitleAttribute)) as AssemblyTitleAttribute;
-                return obj?.Title ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyTitleAttribute>()?.Title);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -118,15 +121,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Description
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
-                return obj?.Description ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyDescriptionAttribute>()?.Description);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -138,15 +133,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Configuration
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyConfigurationAttribute)) as AssemblyConfigurationAttribute;
-                return obj?.Configuration ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyConfigurationAttribute>()?.Configuration);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -158,15 +145,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Company
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
-                return obj?.Company ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyCompanyAttribute>()?.Company);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -178,15 +157,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Product
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyProductAttribute)) as AssemblyProductAttribute;
-                return obj?.Product ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyProductAttribute>()?.Product);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -198,15 +169,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Copyright
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
-                return obj?.Copyright ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyCopyrightAttribute>()?.Copyright);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -218,15 +181,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Trademark
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyTrademarkAttribute)) as AssemblyTrademarkAttribute;
-                return obj?.Trademark ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyTrademarkAttribute>()?.Trademark);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -238,15 +193,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Culture
-        {
-            get
-            {
-                if (Assembly == null) return string.Empty;
-                var obj = Attribute.GetCustomAttribute(Assembly,
-                    typeof(AssemblyCultureAttribute)) as AssemblyCultureAttribute;
-                return obj?.Culture ?? string.Empty;
-            }
-        }
+            => Normalize(Get<AssemblyCultureAttribute>()?.Culture);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -272,6 +219,36 @@ namespace Cube
             Assembly != null ?
             new Version(FileVersionInfo.GetVersionInfo(Assembly.Location).FileVersion) :
             new Version();
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Get
+        ///
+        /// <summary>
+        /// CustomAttribute を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private T Get<T>() where T : class
+            => Assembly != null ?
+               Attribute.GetCustomAttribute(Assembly, typeof(T)) as T :
+               default(T);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Normalize
+        ///
+        /// <summary>
+        /// null を空文字に正規化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string Normalize(string src)
+            => !string.IsNullOrEmpty(src) ? src : string.Empty;
 
         #endregion
     }

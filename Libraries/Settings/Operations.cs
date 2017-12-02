@@ -60,14 +60,35 @@ namespace Cube.Settings
         {
             switch (type)
             {
-                case SettingsType.Registry:
-                    return RegistrySettings.Load<T>(src);
-                case SettingsType.Xml:
-                    return LoadXml<T>(src);
-                case SettingsType.Json:
-                    return LoadJson<T>(src);
-                default:
-                    return default(T);
+                case SettingsType.Xml:      return LoadXml<T>(src);
+                case SettingsType.Json:     return LoadJson<T>(src);
+                case SettingsType.Registry: return RegistrySettings.Load<T>(src);
+                default:                    throw Error(type, "wrong type");
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load
+        /// 
+        /// <summary>
+        /// 指定されたファイルから値を読み込み、オブジェクトに設定します。
+        /// </summary>
+        /// 
+        /// <param name="type">設定データのフォーマット</param>
+        /// <param name="src">読み込み元ストリーム</param>
+        /// 
+        /// <returns>設定オブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static T Load<T>(this SettingsType type, System.IO.Stream src)
+        {
+            switch (type)
+            {
+                case SettingsType.Xml:      return LoadXml<T>(src);
+                case SettingsType.Json:     return LoadJson<T>(src);
+                case SettingsType.Registry: throw Error(type, "cannot save to stream");
+                default:                    throw Error(type, "wrong type");
             }
         }
 
@@ -91,28 +112,74 @@ namespace Cube.Settings
         /// 指定されたファイルに、オブジェクトの値を保存します。
         /// </summary>
         ///
+        /// <param name="type">設定データのフォーマット</param>
+        /// <param name="dest">保存ファイル</param>
+        /// <param name="src">設定情報</param>
+        ///
         /* ----------------------------------------------------------------- */
         public static void Save<T>(this SettingsType type, string dest, T src)
         {
             switch (type)
             {
-                case SettingsType.Registry:
-                    RegistrySettings.Save(dest, src);
-                    break;
                 case SettingsType.Xml:
                     SaveXml(src, dest);
                     break;
                 case SettingsType.Json:
                     SaveJson(src, dest);
                     break;
+                case SettingsType.Registry:
+                    RegistrySettings.Save(dest, src);
+                    break;
                 default:
-                    throw new ArgumentException($"{type}:Unknown SettingsType");
+                    throw Error(type, "wrong type");
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save
+        /// 
+        /// <summary>
+        /// 指定されたファイルに、オブジェクトの値を保存します。
+        /// </summary>
+        /// 
+        /// <param name="type">設定データのフォーマット</param>
+        /// <param name="dest">保存先ストリーム</param>
+        /// <param name="src">設定情報</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Save<T>(this SettingsType type, System.IO.Stream dest, T src)
+        {
+            switch (type)
+            {
+                case SettingsType.Xml:
+                    SaveXml(src, dest);
+                    break;
+                case SettingsType.Json:
+                    SaveJson(src, dest);
+                    break;
+                case SettingsType.Registry:
+                    throw Error(type, "cannot save to stream");
+                default:
+                    throw Error(type, "wrong type");
             }
         }
 
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Error
+        /// 
+        /// <summary>
+        /// エラー用オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Exception Error(SettingsType type, string message)
+            => new ArgumentException($"{type}:{message}");
 
         #region Load
 
@@ -129,10 +196,24 @@ namespace Cube.Settings
         {
             using (var reader = new System.IO.StreamReader(src))
             {
-                var serializer = new DataContractSerializer(typeof(T));
-                var dest = (T)serializer.ReadObject(reader.BaseStream);
-                return dest;
+                return LoadXml<T>(reader.BaseStream);
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadXml
+        /// 
+        /// <summary>
+        /// XML 形式のストリームから値を読み込み、オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static T LoadXml<T>(System.IO.Stream src)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            var dest = (T)serializer.ReadObject(src);
+            return dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -148,10 +229,24 @@ namespace Cube.Settings
         {
             using (var reader = new System.IO.StreamReader(src))
             {
-                var serializer = new DataContractJsonSerializer(typeof(T));
-                var dest = (T)serializer.ReadObject(reader.BaseStream);
-                return dest;
+                return LoadJson<T>(reader.BaseStream);
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadJson
+        /// 
+        /// <summary>
+        /// JSON 形式のストリームから値を読み込み、オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static T LoadJson<T>(System.IO.Stream src)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            var dest = (T)serializer.ReadObject(src);
+            return dest;
         }
 
         #endregion
@@ -171,9 +266,23 @@ namespace Cube.Settings
         {
             using (var writer = new System.IO.StreamWriter(dest))
             {
-                var serializer = new DataContractSerializer(typeof(T));
-                serializer.WriteObject(writer.BaseStream, src);
+                SaveXml(src, writer.BaseStream);
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveXml
+        /// 
+        /// <summary>
+        /// ストリームに XML 形式で保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveXml<T>(T src, System.IO.Stream dest)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            serializer.WriteObject(dest, src);
         }
 
         /* ----------------------------------------------------------------- */
@@ -189,9 +298,23 @@ namespace Cube.Settings
         {
             using (var writer = new System.IO.StreamWriter(dest))
             {
-                var serializer = new DataContractJsonSerializer(typeof(T));
-                serializer.WriteObject(writer.BaseStream, src);
+                SaveJson(src, writer.BaseStream);
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveJson
+        /// 
+        /// <summary>
+        /// ストリームに JSON 形式で保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveJson<T>(T src, System.IO.Stream dest)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            serializer.WriteObject(dest, src);
         }
 
         #endregion

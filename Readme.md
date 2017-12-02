@@ -6,10 +6,9 @@ Cube.Core
 
 Cube.Core is a common library for CubeSoft applications.
 
-## Requirements
+## Dependencies
 
 * [log4net](https://logging.apache.org/log4net/)
-* [NUnit](http://nunit.org/)
 
 ## License
 

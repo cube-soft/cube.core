@@ -32,7 +32,6 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    [Ignore("NUnit for .NET 3.5 does not support async/await")]
     class TaskTest
     {
         /* ----------------------------------------------------------------- */
@@ -64,15 +63,16 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Timeout()
-            => Assert.That(
-                async () =>
-                {
-                    await TaskEx.Run(() => { while (true) { } })
-                                .Timeout(TimeSpan.FromMilliseconds(50));
-                },
-                Throws.TypeOf<TimeoutException>()
-            );
+        public void Timeout() => Assert.That(
+            () => TaskEx.Run(() => { while (true) { } })
+            .Timeout(TimeSpan.FromMilliseconds(50))
+            .Wait(),
+            Throws
+            .TypeOf<AggregateException>()
+            .And
+            .InnerException
+            .TypeOf<TimeoutException>()
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -85,9 +85,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(5u, ExpectedResult = 5)]
-        public async Task<long> Timeout_NotThrow(uint n)
-            => await TaskEx.Run(() => Fibonacci(n))
-                           .Timeout(TimeSpan.FromSeconds(100));
+        public long Timeout_NotThrow(uint n)
+            => TaskEx.Run(() => Fibonacci(n))
+            .Timeout(TimeSpan.FromSeconds(100))
+            .Result;
 
         #region Helper methods
 

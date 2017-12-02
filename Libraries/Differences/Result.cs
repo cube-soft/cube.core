@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Collections.Generic;
 
 namespace Cube.Differences
@@ -27,17 +28,28 @@ namespace Cube.Differences
     /// 差分の状態を表す列挙型です。
     /// </summary>
     /// 
+    /// <remarks>
+    /// DiffOnly および Any は、主に処理実行時に指定する Mask として
+    /// 使用されます。
+    /// </remarks>
+    /// 
     /* --------------------------------------------------------------------- */
+    [Flags]
     public enum Condition
     {
         /// <summary>差分無し</summary>
-        None,
+        None = 0x01,
         /// <summary>追加（新しいシーケンスにのみ存在する）</summary>
-        Inserted,
+        Inserted = 0x02,
         /// <summary>削除（古いシーケンスにのみ存在する）</summary>
-        Deleted,
+        Deleted = 0x04,
         /// <summary>変更</summary>
-        Changed,
+        Changed = 0x08,
+
+        /// <summary>何らかの変更があった事を示す Mask</summary>
+        DiffOnly = Inserted | Deleted | Changed,
+        /// <summary>全てを示す Mask</summary>
+        Any = None | DiffOnly,
     }
 
     /* --------------------------------------------------------------------- */
@@ -60,6 +72,10 @@ namespace Cube.Differences
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
+        /// 
+        /// <param name="condition">差分の状態</param>
+        /// <param name="older">変更前シーケンスの対象部分</param>
+        /// <param name="newer">変更後シーケンスの対象部分</param>
         ///
         /* ----------------------------------------------------------------- */
         public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
@@ -89,7 +105,7 @@ namespace Cube.Differences
         /// Older
         /// 
         /// <summary>
-        /// 古いコレクションオブジェクトの対象部分を取得します。
+        /// 変更前シーケンスの対象部分を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -100,7 +116,7 @@ namespace Cube.Differences
         /// Newer
         /// 
         /// <summary>
-        /// 新しいコレクションオブジェクトの対象部分を取得します。
+        /// 変更後シーケンスの対象部分を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

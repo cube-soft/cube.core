@@ -123,9 +123,23 @@ namespace Cube
         {
             if (func.Equals(field, value)) return false;
             field = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
+            RaisePropertyChanged(name);
             return true;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaisePropertyChanged
+        /// 
+        /// <summary>
+        /// PropertyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /// <param name="name">プロパティの名前</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void RaisePropertyChanged([CallerMemberName] string name = null)
+            => OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         #endregion
     }

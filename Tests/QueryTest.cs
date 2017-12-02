@@ -59,7 +59,7 @@ namespace Cube.Tests
             });
 
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            return new QueryContoroller().Execute(query);
+            return new QueryContoroller().Invoke(query);
         }
 
         /* ----------------------------------------------------------------- */
@@ -87,7 +87,7 @@ namespace Cube.Tests
             });
 
             SynchronizationContext.SetSynchronizationContext(default(SynchronizationContext));
-            return new QueryContoroller().Execute(query);
+            return new QueryContoroller().Invoke(query);
         }
 
         /* ----------------------------------------------------------------- */
@@ -103,7 +103,7 @@ namespace Cube.Tests
         [Test]
         public void Request_None()
             => Assert.That(
-                new QueryContoroller().Execute(new Query<string, string>()),
+                new QueryContoroller().Invoke(new Query<string, string>()),
                 Is.False
             );
 
@@ -144,7 +144,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         class QueryContoroller
         {
-            public bool Execute(IQuery<string, string> query)
+            public bool Invoke(IQuery<string, string> query)
             {
                 var e = new QueryEventArgs<string, string>("contoroller");
 

@@ -336,10 +336,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~SettingsFolder()
-        {
-            _dispose.Invoke(false);
-        }
+        ~SettingsFolder() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///

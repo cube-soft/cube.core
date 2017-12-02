@@ -56,7 +56,7 @@
       <HintPath>..\..\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.8.1\lib\net35\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.9.0\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
@@ -76,16 +76,16 @@
     <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Details\SerializableData.cs" />
-    <Compile Include="Enumerable\CollectionsTest.cs" />
-    <Compile Include="Enumerable\NumericTest.cs" />
     <Compile Include="Events\EnumerableEventArgsTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
     <Compile Include="Events\ProgressEventArgsTest.cs" />
     <Compile Include="Events\QueryEventArgsTest.cs" />
     <Compile Include="Events\RelayEventTest.cs" />
     <Compile Include="Events\ValueEventArgsTest.cs" />
+    <Compile Include="Operations\CollectionsTest.cs" />
     <Compile Include="Operations\DifferenceTest.cs" />
     <Compile Include="Operations\GenericsTest.cs" />
+    <Compile Include="Operations\IterationTest.cs" />
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />

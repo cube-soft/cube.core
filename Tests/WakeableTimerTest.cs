@@ -36,7 +36,7 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_Default
+        /// Timer_Properties
         /// 
         /// <summary>
         /// 各種プロパティの初期値を確認します。
@@ -44,14 +44,38 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_Default()
+        public void Timer_Properties()
         {
             using (var timer = new WakeableTimer())
             {
-                Assert.That(timer.Interval,     Is.EqualTo(TimeSpan.FromSeconds(1)));
-                Assert.That(timer.LastExecuted, Is.EqualTo(DateTime.MinValue));
-                Assert.That(timer.PowerMode,    Is.EqualTo(PowerModes.Resume));
+                Assert.That(timer.Interval,      Is.EqualTo(TimeSpan.FromSeconds(1)));
+                Assert.That(timer.LastPublished, Is.EqualTo(DateTime.MinValue));
+                Assert.That(timer.State,         Is.EqualTo(TimerState.Stop));
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Start
+        /// 
+        /// <summary>
+        /// タイマーを開始するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Start()
+        {
+            var count = 0;
+            using (var timer = new WakeableTimer())
+            {
+                timer.Subscribe(() => ++count);
+                timer.Interval = TimeSpan.FromMilliseconds(100);
+                timer.Start();
+                TaskEx.Delay(300).Wait();
+                timer.Stop();
+            }
+            Assert.That(count, Is.GreaterThanOrEqualTo(3));
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,14 +91,12 @@ namespace Cube.Tests
         public void Start_InitialDelay()
         {
             var count = 0;
-
             using (var timer = new WakeableTimer())
             {
                 timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.FromSeconds(1));
                 timer.Stop();
             }
-
             Assert.That(count, Is.EqualTo(0));
         }
 
@@ -91,17 +113,17 @@ namespace Cube.Tests
         public void Start_Immediately()
         {
             var count = 0;
-
             using (var timer = new WakeableTimer())
             {
                 var disposable = timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.Zero);
+                TaskEx.Delay(50).Wait();
                 timer.Stop();
                 disposable.Dispose();
                 timer.Start(TimeSpan.Zero);
+                TaskEx.Delay(50).Wait();
                 timer.Stop();
             }
-
             Assert.That(count, Is.EqualTo(1));
         }
 
@@ -141,23 +163,23 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public async void Reset()
+        public void Reset()
         {
             using (var timer = new WakeableTimer())
             {
-                var ms = 50;
+                var ms = 100;
 
                 timer.Interval = TimeSpan.FromMilliseconds(ms);
                 timer.Interval = TimeSpan.FromMilliseconds(ms); // ignore
                 timer.Start();
-                await TaskEx.Delay(ms * 2);
+                TaskEx.Delay(ms * 2).Wait();
                 timer.Stop();
 
-                var last = timer.LastExecuted;
+                var last = timer.LastPublished;
                 Assert.That(last, Is.Not.EqualTo(DateTime.MinValue));
 
                 timer.Reset();
-                Assert.That(timer.LastExecuted, Is.EqualTo(last));
+                Assert.That(timer.LastPublished, Is.EqualTo(last));
                 Assert.That(timer.Interval.TotalMilliseconds, Is.EqualTo(ms).Within(1.0));
             }
         }
@@ -171,32 +193,39 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase( 0, 2)]
-        [TestCase(50, 1)]
-        public async void Resume(int delay, int expected)
+        [Test]
+        public void Resume()
         {
             using (var timer = new WakeableTimer())
             {
-                var ms      = Math.Max(delay, 100);
                 var count   = 0;
                 var chagned = 0;
+                var power   = new PowerModeContext(Power.Mode);
 
-                timer.Interval = TimeSpan.FromMilliseconds(ms);
-                timer.Subscribe(() => ++count);
+                Power.Configure(power);
+
+                timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.PowerModeChanged += (s, e) => ++chagned;
-                timer.Start(TimeSpan.FromMilliseconds(delay));
+                timer.Subscribe(() => ++count);
+                Assert.That(count, Is.EqualTo(0), "Subscribe");
 
-                // force change
-                Cube.Power.Mode = PowerModes.Suspend;
-                await TaskEx.Delay(ms * 2);
-                Cube.Power.Mode = PowerModes.Resume;
-                await TaskEx.Delay(150);
+                timer.Start();
+                TaskEx.Delay(50).Wait();
+                Assert.That(count, Is.EqualTo(1), "Start");
 
+                power.Mode = PowerModes.Suspend;
+                TaskEx.Delay(200).Wait();
+                Assert.That(count, Is.EqualTo(1), "Suspend");
+
+                power.Mode = PowerModes.Resume;
+                Assert.That(count, Is.EqualTo(1), "Resume");
+
+                TaskEx.Delay(150).Wait();
                 timer.Stop();
+                Assert.That(count, Is.EqualTo(2), "Stop");
 
-                Assert.That(timer.PowerMode, Is.EqualTo(PowerModes.Resume));
-                Assert.That(chagned, Is.EqualTo(2));
-                Assert.That(count, Is.EqualTo(expected));
+                Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
+                Assert.That(chagned, Is.EqualTo(2), nameof(timer.PowerModeChanged));
             }
         }
     }

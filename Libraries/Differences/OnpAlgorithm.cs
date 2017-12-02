@@ -60,6 +60,8 @@ namespace Cube.Differences
         /// オブジェクトを初期化します。
         /// </summary>
         /// 
+        /// <param name="comparer">比較用オブジェクト</param>
+        /// 
         /* ----------------------------------------------------------------- */
         public OnpAlgorithm(IEqualityComparer<T> comparer)
         {
@@ -80,13 +82,13 @@ namespace Cube.Differences
         ///
         /// <param name="older">変更前シーケンス</param>
         /// <param name="newer">変更後シーケンス</param>
-        /// <param name="diffonly">
-        /// 2 つのシーケンスで異なる部分のみを結果に含めるかどうか
-        /// </param>
+        /// <param name="mask">結果のフィルタリング用 Mask</param>
+        /// 
+        /// <returns>差分</returns>
         /// 
         /* ----------------------------------------------------------------- */
-        public IEnumerable<Result<T>> Compare(IEnumerable<T> older, IEnumerable<T> newer, bool diffonly = true)
-            => Compare(older?.ToArray(), newer?.ToArray(), diffonly);
+        public IEnumerable<Result<T>> Compare(IEnumerable<T> older, IEnumerable<T> newer, Condition mask)
+            => Compare(older?.ToArray(), newer?.ToArray(), mask);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -98,23 +100,23 @@ namespace Cube.Differences
         ///
         /// <param name="older">変更前シーケンス</param>
         /// <param name="newer">変更後シーケンス</param>
-        /// <param name="diffonly">
-        /// 2 つのシーケンスで異なる部分のみを結果に含めるかどうか
-        /// </param>
+        /// <param name="mask">結果のフィルタリング用 Mask</param>
+        /// 
+        /// <returns>差分</returns>
         /// 
         /* ----------------------------------------------------------------- */
-        public IEnumerable<Result<T>> Compare(T[] older, T[] newer, bool diffonly = true)
+        public IEnumerable<Result<T>> Compare(T[] older, T[] newer, Condition mask)
         {
             if (older == null || older.Length == 0 || newer == null || newer.Length == 0)
             {
-                return CompareEmpty(older, newer, diffonly);
+                return CompareEmpty(older, newer, mask);
             }
 
             _swap  = older.Length > newer.Length;
             _older = _swap ? newer : older;
             _newer = _swap ? older : newer;
 
-            return Compare(diffonly);
+            return Compare(mask);
         }
 
         #endregion
@@ -130,12 +132,12 @@ namespace Cube.Differences
         /// </summary>
         /// 
         /* ----------------------------------------------------------------- */
-        private IEnumerable<Result<T>> CompareEmpty(T[] older, T[] newer, bool diffonly)
+        private IEnumerable<Result<T>> CompareEmpty(T[] older, T[] newer, Condition mask)
             => new CommonSequence<T>(
             older?.Length ?? 0,
             newer?.Length ?? 0,
             0, null
-        ).ToResult(older, newer, diffonly, false);
+        ).ToResult(older, newer, mask, false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -151,7 +153,7 @@ namespace Cube.Differences
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private IEnumerable<Result<T>> Compare(bool diffonly)
+        private IEnumerable<Result<T>> Compare(Condition mask)
         {
             Debug.Assert(_older != null && _newer != null && _older.Length <= _newer.Length);
 
@@ -168,7 +170,7 @@ namespace Cube.Differences
             while (_fp[_newer.Length + 1].Position != _newer.Length + 1);
 
             var tail = new CommonSequence<T>(_older.Length, _newer.Length, 0, _fp[_newer.Length + 1].Sequence);
-            return tail.Reverse().ToResult(_older, _newer, diffonly, _swap);
+            return tail.Reverse().ToResult(_older, _newer, mask, _swap);
         }
 
         /* ----------------------------------------------------------------- */

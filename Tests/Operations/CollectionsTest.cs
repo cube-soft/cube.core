@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
 using NUnit.Framework;
-using Cube.Enumerable;
+using Cube.Collections;
 
 namespace Cube.Tests
 {
@@ -26,7 +26,7 @@ namespace Cube.Tests
     /// CollectionsTest
     /// 
     /// <summary>
-    /// Cube.Enumerable.Collections のテスト用クラスです。
+    /// Cube.Collections.Operations のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

@@ -46,7 +46,7 @@ namespace Cube.Tests
         {
             var exec = AssemblyReader.Default.Location;
             var name = Path.GetFileNameWithoutExtension(exec);
-            var startup = new Cube.Settings.Startup(name);
+            var startup = new Cube.Settings.Startup(name, '"' + exec + '"');
             startup.Load();
             Assert.That(startup.Enabled, Is.False);
         }

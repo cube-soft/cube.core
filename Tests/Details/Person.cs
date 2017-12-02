@@ -97,8 +97,8 @@ namespace Cube.Tests
         [DataMember(Name = "ID")]
         public int Identification
         {
-            get { return _identification; }
-            set { SetProperty(ref _identification, value); }
+            get => _identification;
+            set => SetProperty(ref _identification, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -113,8 +113,8 @@ namespace Cube.Tests
         [DataMember]
         public string Name
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -129,8 +129,8 @@ namespace Cube.Tests
         [DataMember]
         public Sex Sex
         {
-            get { return _sex; }
-            set { SetProperty(ref _sex, value); }
+            get => _sex;
+            set => SetProperty(ref _sex, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -145,8 +145,8 @@ namespace Cube.Tests
         [DataMember]
         public int Age
         {
-            get { return _age; }
-            set { SetProperty(ref _age, value); }
+            get => _age;
+            set => SetProperty(ref _age, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -161,8 +161,8 @@ namespace Cube.Tests
         [DataMember]
         public DateTime Creation
         {
-            get { return _creation; }
-            set { SetProperty(ref _creation, value); }
+            get => _creation;
+            set => SetProperty(ref _creation, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -177,8 +177,8 @@ namespace Cube.Tests
         [DataMember]
         public Address Phone
         {
-            get { return _phone; }
-            set { SetProperty(ref _phone, value); }
+            get => _phone;
+            set => SetProperty(ref _phone, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -193,8 +193,8 @@ namespace Cube.Tests
         [DataMember]
         public Address Email
         {
-            get { return _email; }
-            set { SetProperty(ref _email, value); }
+            get => _email;
+            set => SetProperty(ref _email, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -209,8 +209,8 @@ namespace Cube.Tests
         [DataMember]
         public bool Reserved
         {
-            get { return _reserved; }
-            set { SetProperty(ref _reserved, value); }
+            get => _reserved;
+            set => SetProperty(ref _reserved, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -224,8 +224,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         public string Secret
         {
-            get { return _secret; }
-            set { SetProperty(ref _secret, value); }
+            get => _secret;
+            set => SetProperty(ref _secret, value);
         }
 
         /* ----------------------------------------------------------------- */

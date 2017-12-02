@@ -218,7 +218,7 @@ namespace Cube.Settings
 
             var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
             if (obj == null || obj.Length == 0) return info.Name;
-
+            
             var attr = obj[0] as DataMemberAttribute;
             return attr?.Name ?? info.Name;
         }
