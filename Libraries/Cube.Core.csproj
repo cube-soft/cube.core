@@ -83,7 +83,6 @@
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
-    <Compile Include="AsyncLock.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="GenericComparer.cs" />
     <Compile Include="ObservableProperty.cs" />
