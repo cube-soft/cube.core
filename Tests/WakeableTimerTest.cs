@@ -129,7 +129,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Start_Stop_State
+        /// State_Scenario
         /// 
         /// <summary>
         /// WakeableTimer の State の内容を確認します。
@@ -137,13 +137,19 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start_Stop_State()
+        public void State_Scenario()
         {
             using (var timer = new WakeableTimer())
             {
                 Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
                 timer.Start();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Start();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Suspend();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Suspend));
+                timer.Suspend();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Suspend));
                 timer.Start();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Run));
                 timer.Stop();
@@ -186,15 +192,15 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Resume
+        /// PowerMode_Scenario
         /// 
         /// <summary>
-        /// Suspend/Resume のテストを実行します。
+        /// 電源状態の変化に伴う Suspend/Resume のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Resume()
+        public void PowerMode_Scenario()
         {
             using (var timer = new WakeableTimer())
             {

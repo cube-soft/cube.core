@@ -215,17 +215,20 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="delay">初期遅延時間</param>
-        ///
+        /// 
         /* ----------------------------------------------------------------- */
         public void Start(TimeSpan delay)
         {
-            if (State != TimerState.Stop) return;
-
-            var time = Math.Max(delay.TotalMilliseconds, 1);
-            State = TimerState.Run;
-            Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
-            _core.Interval = time;
-            _core.Start();
+            if (State == TimerState.Run) return;
+            if (State == TimerState.Suspend) Resume(delay);
+            else
+            {
+                var time = Math.Max(delay.TotalMilliseconds, 1);
+                State = TimerState.Run;
+                Next  = DateTime.Now + TimeSpan.FromMilliseconds(time);
+                _core.Interval = time;
+                _core.Start();
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -242,6 +245,23 @@ namespace Cube
             if (State == TimerState.Stop) return;
             if (_core.Enabled) _core.Stop();
             State = TimerState.Stop;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Suspend
+        /// 
+        /// <summary>
+        /// タイマーを一時停止します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Suspend()
+        {
+            if (State != TimerState.Run) return;
+            _core.Stop();
+            State = TimerState.Suspend;
+            this.LogDebug($"Suspend\tInterval:{Interval}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -363,24 +383,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Suspend
-        /// 
-        /// <summary>
-        /// タイマーを一時停止します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Suspend()
-        {
-            if (State != TimerState.Run) return;
-
-            _core.Stop();
-            State = TimerState.Suspend;
-            this.LogDebug($"Suspend\tInterval:{Interval}");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Resume
         /// 
         /// <summary>
@@ -388,12 +390,13 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Resume()
+        protected void Resume(TimeSpan delay)
         {
             if (State != TimerState.Suspend) return;
 
-            var now  = DateTime.Now;
-            var time = now < Next ? Next - now : TimeSpan.FromMilliseconds(100);
+            var now   = DateTime.Now;
+            var delta = Next - now;
+            var time  = delta > delay ? delta : delay;
 
             State = TimerState.Run;
             Next  = now + time;
@@ -425,7 +428,7 @@ namespace Cube
             switch (mode)
             {
                 case PowerModes.Resume:
-                    Resume();
+                    Resume(TimeSpan.FromMilliseconds(100));
                     break;
                 case PowerModes.Suspend:
                     Suspend();
