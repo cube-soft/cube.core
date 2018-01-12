@@ -365,6 +365,7 @@ namespace Cube.Settings
         protected virtual void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
+            if (AutoSave) Save();
         }
 
         #endregion

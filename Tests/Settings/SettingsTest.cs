@@ -386,7 +386,7 @@ namespace Cube.Tests
 
             using (var key = OpenSaveKey())
             {
-                Assert.That(count,  Is.EqualTo(1));
+                Assert.That(count,  Is.EqualTo(2));
                 Assert.That(change, Is.EqualTo(3));
                 Assert.That(key.GetValue("Name"), Is.EqualTo("AutoSave"));
                 Assert.That(key.GetValue("Age"),  Is.EqualTo(77));
