@@ -29,8 +29,6 @@ namespace Cube.Settings
     /* --------------------------------------------------------------------- */
     public enum SettingsType
     {
-        /// <summary>レジストリ</summary>
-        Registry,
         /// <summary>XML</summary>
         Xml,
         /// <summary>JSON</summary>

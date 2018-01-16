@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cube.Tests</RootNamespace>
     <AssemblyName>Cube.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,50 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.8\lib\netstandard1.3\log4net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.9.0\lib\netstandard1.6\nunit.framework.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Conversions\ByteFormatTest.cs" />
-    <Compile Include="Conversions\TimeTest.cs" />
-    <Compile Include="Conversions\UriQueryTest.cs" />
-    <Compile Include="Details\FileHelper.cs" />
-    <Compile Include="Details\FileHelperTest.cs" />
-    <Compile Include="Details\GlobalSetup.cs" />
-    <Compile Include="Details\Person.cs" />
-    <Compile Include="Details\SerializableData.cs" />
-    <Compile Include="Events\EnumerableEventArgsTest.cs" />
-    <Compile Include="Events\KeyValueEventArgsTest.cs" />
-    <Compile Include="Events\ProgressEventArgsTest.cs" />
-    <Compile Include="Events\QueryEventArgsTest.cs" />
-    <Compile Include="Events\RelayEventTest.cs" />
-    <Compile Include="Events\ValueEventArgsTest.cs" />
-    <Compile Include="Operations\CollectionsTest.cs" />
-    <Compile Include="Operations\DifferenceTest.cs" />
-    <Compile Include="Operations\GenericsTest.cs" />
-    <Compile Include="Operations\IterationTest.cs" />
-    <Compile Include="Operations\LogTest.cs" />
-    <Compile Include="Operations\TaskTest.cs" />
-    <Compile Include="Processes\MessengerTest.cs" />
-    <Compile Include="Settings\SettingsTest.cs" />
-    <Compile Include="Settings\StartupTest.cs" />
-    <Compile Include="ArgumentsTest.cs" />
-    <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="DisposableTest.cs" />
-    <Compile Include="GenericComparerTest.cs" />
-    <Compile Include="OnceActionTest.cs" />
-    <Compile Include="PowerTest.cs" />
-    <Compile Include="QueryTest.cs" />
-    <Compile Include="SoftwareVersionTest.cs" />
-    <Compile Include="WakeableTimerTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -114,7 +76,6 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -18,7 +18,6 @@
 using System;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using Microsoft.Win32;
 
 namespace Cube.Settings
 {
@@ -40,18 +39,6 @@ namespace Cube.Settings
         /// Load
         /// 
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
-        /// オブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Load<T>(this RegistryKey src) => RegistrySettings.Load<T>(src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        /// 
-        /// <summary>
         /// 指定されたファイルから値を読み込み、オブジェクトに設定します。
         /// </summary>
         ///
@@ -62,7 +49,6 @@ namespace Cube.Settings
             {
                 case SettingsType.Xml:      return LoadXml<T>(src);
                 case SettingsType.Json:     return LoadJson<T>(src);
-                case SettingsType.Registry: return RegistrySettings.Load<T>(src);
                 default:                    throw Error(type, "wrong type");
             }
         }
@@ -87,22 +73,9 @@ namespace Cube.Settings
             {
                 case SettingsType.Xml:      return LoadXml<T>(src);
                 case SettingsType.Json:     return LoadJson<T>(src);
-                case SettingsType.Registry: throw Error(type, "cannot save to stream");
                 default:                    throw Error(type, "wrong type");
             }
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save
-        /// 
-        /// <summary>
-        /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Save<T>(this RegistryKey dest, T src)
-            => RegistrySettings.Save(dest, src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,9 +99,6 @@ namespace Cube.Settings
                     break;
                 case SettingsType.Json:
                     SaveJson(src, dest);
-                    break;
-                case SettingsType.Registry:
-                    RegistrySettings.Save(dest, src);
                     break;
                 default:
                     throw Error(type, "wrong type");
@@ -158,8 +128,6 @@ namespace Cube.Settings
                 case SettingsType.Json:
                     SaveJson(src, dest);
                     break;
-                case SettingsType.Registry:
-                    throw Error(type, "cannot save to stream");
                 default:
                     throw Error(type, "wrong type");
             }

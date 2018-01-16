@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cube</RootNamespace>
     <AssemblyName>Cube.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,62 +44,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.2.0.8\lib\netstandard1.3\log4net.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Conversions\ByteFormat.cs" />
-    <Compile Include="Conversions\Time.cs" />
-    <Compile Include="Conversions\UriQuery.cs" />
-    <Compile Include="Differences\CommonSequence.cs" />
-    <Compile Include="Differences\OnpAlgorithm.cs" />
-    <Compile Include="Differences\Result.cs" />
-    <Compile Include="Events\EnumerableEventArgs.cs" />
-    <Compile Include="Events\Event.cs" />
-    <Compile Include="Events\KeyValueEventArgs.cs" />
-    <Compile Include="Events\ProgressEventArgs.cs" />
-    <Compile Include="Events\QueryEventArgs.cs" />
-    <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="Operations\Collections.cs" />
-    <Compile Include="Operations\Generics.cs" />
-    <Compile Include="Operations\Iteration.cs" />
-    <Compile Include="Operations\Log.cs" />
-    <Compile Include="Operations\Tasks.cs" />
-    <Compile Include="Processes\Messenger.cs" />
-    <Compile Include="Processes\MessengerService.cs" />
-    <Compile Include="Processes\MessengerServiceCallback.cs" />
-    <Compile Include="Settings\Operations.cs" />
-    <Compile Include="Settings\RegistrySettings.cs" />
-    <Compile Include="Settings\SettingsFolder.cs" />
-    <Compile Include="Settings\SettingsType.cs" />
-    <Compile Include="Settings\Startup.cs" />
-    <Compile Include="Arguments.cs" />
-    <Compile Include="AssemblyReader.cs" />
-    <Compile Include="Disposable.cs" />
-    <Compile Include="GenericComparer.cs" />
-    <Compile Include="ObservableProperty.cs" />
-    <Compile Include="OnceAction.cs" />
-    <Compile Include="Power.cs" />
-    <Compile Include="Query.cs" />
-    <Compile Include="SoftwareVersion.cs" />
-    <Compile Include="UtmQuery.cs" />
-    <Compile Include="WakeableTimer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
     <None Include="Packages.config" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

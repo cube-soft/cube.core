@@ -50,7 +50,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder() : this(SettingsType.Registry) { }
+        public SettingsFolder() : this(SettingsType.Json) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -157,17 +157,6 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Startup
-        ///
-        /// <summary>
-        /// スタートアップ設定を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Startup Startup { get; } = new Startup();
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// AutoSave
         ///
         /// <summary>
@@ -259,7 +248,6 @@ namespace Cube.Settings
             if (e.NewValue != null) e.NewValue.PropertyChanged += WhenChanged;
 
             Value = e.NewValue;
-            Startup.Load();
 
             Loaded?.Invoke(this, e);
         }
@@ -291,7 +279,6 @@ namespace Cube.Settings
         protected virtual void OnSaved(KeyValueEventArgs<SettingsType, string> e)
         {
             e.Key.Save(e.Value, Value);
-            Startup.Save();
             Saved?.Invoke(this, e);
         }
 
@@ -410,9 +397,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private void Initialize(AssemblyReader reader, SettingsType type)
         {
-            var root = type == SettingsType.Registry ?
-                       "Software" :
-                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var root = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var path = System.IO.Path.Combine(root, $@"{reader.Company}\{reader.Product}");
 
             Initialize(reader, type, path);

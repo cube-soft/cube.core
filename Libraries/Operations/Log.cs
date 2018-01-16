@@ -44,7 +44,7 @@ namespace Cube.Log
         /// 
         /* ----------------------------------------------------------------- */
         public static void Configure()
-            => log4net.Config.XmlConfigurator.Configure();
+            => log4net.Config.XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
 
         /* ----------------------------------------------------------------- */
         ///
