@@ -22,20 +22,20 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageBox
+    /// DialogMessage
     ///
     /// <summary>
     /// メッセージボックスに表示する情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessageBox
+    public class DialogMessage
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MessageBox
+        /// DialogMessage
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
@@ -44,12 +44,12 @@ namespace Cube.Xui
         /// <param name="text">メッセージ内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBox(string text)
+        public DialogMessage(string text)
             : this(text, AssemblyReader.Default.Title) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MessageBox
+        /// DialogMessage
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
@@ -59,12 +59,12 @@ namespace Cube.Xui
         /// <param name="caption">タイトルキャプション</param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBox(string text, string caption)
+        public DialogMessage(string text, string caption)
             : this(text, caption, null) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MessageBox
+        /// DialogMessage
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
@@ -74,12 +74,12 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBox(string text, Action<MessageBoxResult> callback)
+        public DialogMessage(string text, Action<MessageBoxResult> callback)
             : this(text, AssemblyReader.Default.Title, callback) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MessageBox
+        /// DialogMessage
         /// 
         /// <summary>
         /// オブジェクトを初期化します。
@@ -90,7 +90,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBox(string text, string caption, Action<MessageBoxResult> callback)
+        public DialogMessage(string text, string caption, Action<MessageBoxResult> callback)
         {
             Text     = text;
             Caption  = caption;
