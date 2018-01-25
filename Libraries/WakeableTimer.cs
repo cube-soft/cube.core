@@ -404,7 +404,7 @@ namespace Cube
             this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
                 LastPublished, Next, Interval));
 
-            _core.Interval = time.TotalMilliseconds;
+            _core.Interval = Math.Max(time.TotalMilliseconds, 1);
             _core.Start();
         }
 

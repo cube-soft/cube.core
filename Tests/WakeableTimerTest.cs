@@ -129,6 +129,33 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Resume_Immediately
+        /// 
+        /// <summary>
+        /// Suspend からの復帰後に即実行されるケースのテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Resume_Immediately()
+        {
+            var count = 0;
+            using (var timer = new WakeableTimer())
+            {
+                timer.Subscribe(() => ++count);
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Start(TimeSpan.FromMilliseconds(50));
+                timer.Suspend();
+                Task.Delay(100).Wait();
+                timer.Start();
+                Task.Delay(50).Wait();
+                timer.Stop();
+            }
+            Assert.That(count, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// State_Scenario
         /// 
         /// <summary>
