@@ -76,12 +76,26 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-            => PropertyChanged?.Invoke(this, e);
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
+            PropertyChanged?.Invoke(this, e);
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaisePropertyChanged
+        /// 
+        /// <summary>
+        /// PropertyChanged イベントを発生させます。
+        /// </summary>
+        ///
+        /// <param name="name">プロパティの名前</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void RaisePropertyChanged(string name) =>
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,20 +140,6 @@ namespace Cube
             RaisePropertyChanged(name);
             return true;
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaisePropertyChanged
-        /// 
-        /// <summary>
-        /// PropertyChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /// <param name="name">プロパティの名前</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged([CallerMemberName] string name = null)
-            => OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         #endregion
     }
