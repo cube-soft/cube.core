@@ -7,7 +7,7 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <copyright>$copyright$</copyright>
-    <description>Cube forms library.</description>
+    <description>WinForms based GUI library for CubeSoft applications.</description>
     <releaseNotes>Private release.</releaseNotes>
     <tags>Cube Windows Forms</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
