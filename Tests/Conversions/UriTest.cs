@@ -32,9 +32,26 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class UriQueryTest
+    class UriTest
     {
         #region Tests
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToUri
+        /// 
+        /// <summary>
+        /// 文字列から Uri オブジェクトに変換するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("http://www.cube-soft.jp/1.html",  ExpectedResult = "http://www.cube-soft.jp/1.html")]
+        [TestCase("https://www.cube-soft.jp/2.html", ExpectedResult = "https://www.cube-soft.jp/2.html")]
+        [TestCase("www.cube-soft.jp/3.html",         ExpectedResult = "http://www.cube-soft.jp/3.html")]
+        [TestCase("//www.cube-soft.jp/4.html",       ExpectedResult = "http://www.cube-soft.jp/4.html")]
+        [TestCase("/5.html",                         ExpectedResult = "http://localhost/5.html")]
+        [TestCase("",                                ExpectedResult = "")]
+        public string ToUri(string src) => src.ToUri()?.ToString() ?? string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///

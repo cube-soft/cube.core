@@ -34,6 +34,28 @@ namespace Cube.Conversions
     {
         /* ----------------------------------------------------------------- */
         ///
+        /// ToUri
+        /// 
+        /// <summary>
+        /// 文字列を Uri オブジェクトに変換します。
+        /// </summary>
+        /// 
+        /// <param name="src">URL を示す文字列</param>
+        /// 
+        /// <returns>
+        /// <c>Uri</c> オブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Uri ToUri(this string src) =>
+            string.IsNullOrEmpty(src) ? default(Uri) :
+            src.Contains("://")       ? new Uri(src) :
+            src.StartsWith("//")      ? new Uri("http:" + src) :
+            src.StartsWith("/")       ? new Uri("http://localhost" + src) :
+                                        new Uri("http://" + src);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// With
         /// 
         /// <summary>
