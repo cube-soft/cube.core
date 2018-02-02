@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,7 +22,7 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     ///
     /// SerializableData
-    /// 
+    ///
     /// <summary>
     /// Serializabl 属性を持つクラスのサンプルです。
     /// </summary>
@@ -31,10 +31,12 @@ namespace Cube.Tests
     [Serializable]
     internal class SerializableData
     {
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
         /// Identification
-        /// 
+        ///
         /// <summary>
         /// ID を取得または設定します。
         /// </summary>
@@ -45,7 +47,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Name
-        /// 
+        ///
         /// <summary>
         /// 名前を取得または設定します。
         /// </summary>
@@ -56,7 +58,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Sex
-        /// 
+        ///
         /// <summary>
         /// 性別を取得または設定します。
         /// </summary>
@@ -67,7 +69,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Creation
-        /// 
+        ///
         /// <summary>
         /// 作成日時を取得または設定します。
         /// </summary>
@@ -78,12 +80,14 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Reserved
-        /// 
+        ///
         /// <summary>
         /// フラグを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public bool Reserved { get; set; } = false;
+
+        #endregion
     }
 }

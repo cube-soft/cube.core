@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,11 +25,11 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// AssemblyReaderTest
-    /// 
+    ///
     /// <summary>
     /// AssemblyReader のテスト用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class AssemblyReaderTest
@@ -37,7 +37,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Assembly_Properties
-        /// 
+        ///
         /// <summary>
         /// 各種プロパティの内容を確認します。
         /// </summary>
@@ -63,7 +63,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// TestCases
-        /// 
+        ///
         /// <summary>
         /// テストケースを取得します。
         /// </summary>
@@ -85,8 +85,8 @@ namespace Cube.Tests
                     Trademark     = "CubeSoft, Inc.",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 6, 1, 0),
-                    FileVersion   = new Version(1, 6, 1, 0)
+                    Version       = new Version(1, 7, 0, 0),
+                    FileVersion   = new Version(1, 7, 0, 0)
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
@@ -101,8 +101,8 @@ namespace Cube.Tests
                     Trademark     = string.Empty,
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 6, 1, 0),
-                    FileVersion   = new Version(1, 6, 1, 0)
+                    Version       = new Version(1, 7, 0, 0),
+                    FileVersion   = new Version(1, 7, 0, 0)
                 });
 
                 yield return new TestCaseData(null, new Result
@@ -126,7 +126,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Result
-        /// 
+        ///
         /// <summary>
         /// 期待される結果を保持するための構造体です。
         /// </summary>

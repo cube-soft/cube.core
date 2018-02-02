@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableEventArgs(TValue)
+    /// EnumerableEventArgs(T)
     ///
     /// <summary>
     /// イベントハンドラに特定の型のコレクションを伝搬させるための
@@ -31,22 +31,22 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class EnumerableEventArgs<TValue> : EventArgs
+    public class EnumerableEventArgs<T> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EnumerableEventArgs
-        /// 
+        /// EnumerableEventArgs(T)
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EnumerableEventArgs(IEnumerable<TValue> value)
+        public EnumerableEventArgs(IEnumerable<T> value)
         {
             Value = value;
         }
@@ -58,20 +58,20 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Value
-        /// 
+        ///
         /// <summary>
         /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<TValue> Value { get; }
+        public IEnumerable<T> Value { get; }
 
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableCancelEventArgs(TValue)
+    /// EnumerableCancelEventArgs(T)
     ///
     /// <summary>
     /// イベントハンドラに特定の型のコレクションを伝搬させるための
@@ -79,38 +79,38 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class EnumerableCancelEventArgs<TValue> : CancelEventArgs
+    public class EnumerableCancelEventArgs<T> : CancelEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EnumerableCancelEventArgs
-        /// 
+        /// EnumerableCancelEventArgs(T)
+        ///
         /// <summary>
         /// Cancel の値を false に設定してオブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EnumerableCancelEventArgs(IEnumerable<TValue> value)
-            : this(value, false) { }
+        public EnumerableCancelEventArgs(IEnumerable<T> value) :
+            this(value, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// EnumerableCancelEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="value">設定値</param>
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EnumerableCancelEventArgs(IEnumerable<TValue> value, bool cancel)
-            : base(cancel)
+        public EnumerableCancelEventArgs(IEnumerable<T> value, bool cancel) :
+            base(cancel)
         {
             Value = value;
         }
@@ -122,13 +122,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Value
-        /// 
+        ///
         /// <summary>
         /// 値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<TValue> Value { get; }
+        public IEnumerable<T> Value { get; }
 
         #endregion
     }
@@ -148,54 +148,54 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Create
-        /// 
+        ///
         /// <summary>
         /// EnumerableEventArgs(T) オブジェクトを生成します。
         /// </summary>
-        /// 
+        ///
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static EnumerableEventArgs<T> Create<T>(IEnumerable<T> value)
-            => new EnumerableEventArgs<T>(value);
+        public static EnumerableEventArgs<T> Create<T>(IEnumerable<T> value) =>
+            new EnumerableEventArgs<T>(value);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create
-        /// 
+        ///
         /// <summary>
         /// EnumerableCancelEventArgs(T) オブジェクトを生成します。
         /// </summary>
-        /// 
+        ///
         /// <param name="value">設定値</param>
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static EnumerableCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel)
-            => new EnumerableCancelEventArgs<T>(value, cancel);
+        public static EnumerableCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
+            new EnumerableCancelEventArgs<T>(value, cancel);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableEventHandler(TValue)
-    /// 
+    /// EnumerableEventHandler(T)
+    ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void EnumerableEventHandler<TValue>(object sender, EnumerableEventArgs<TValue> e);
+    public delegate void EnumerableEventHandler<T>(object sender, EnumerableEventArgs<T> e);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableCancelEventHandler(TValue)
-    /// 
+    /// EnumerableCancelEventHandler(T)
+    ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void EnumerableCancelEventHandler<TValue>(object sender, EnumerableCancelEventArgs<TValue> e);
+    public delegate void EnumerableCancelEventHandler<T>(object sender, EnumerableCancelEventArgs<T> e);
 }

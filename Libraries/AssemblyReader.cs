@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     ///
     /// AssemblyReader
-    /// 
+    ///
     /// <summary>
     /// Assembly オブジェクトの各種情報を取得するクラスです。
     /// </summary>
@@ -41,7 +41,7 @@ namespace Cube
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="assembly">アセンブリオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -61,10 +61,10 @@ namespace Cube
         /// <summary>
         /// 既定の AssemblyReader オブジェクトを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static AssemblyReader Default { get; }
-            = new AssemblyReader(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
+        public static AssemblyReader Default { get; } =
+            new AssemblyReader(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -73,7 +73,7 @@ namespace Cube
         /// <summary>
         /// ソフトウェアのプラットフォームを示す文字列を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public static string Platform { get; } = (IntPtr.Size == 4) ? "x86" : "x64";
 
@@ -108,8 +108,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title
-            => Normalize(Get<AssemblyTitleAttribute>()?.Title);
+        public string Title =>
+            Normalize(Get<AssemblyTitleAttribute>()?.Title);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -120,8 +120,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Description
-            => Normalize(Get<AssemblyDescriptionAttribute>()?.Description);
+        public string Description =>
+            Normalize(Get<AssemblyDescriptionAttribute>()?.Description);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,8 +132,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Configuration
-            => Normalize(Get<AssemblyConfigurationAttribute>()?.Configuration);
+        public string Configuration =>
+            Normalize(Get<AssemblyConfigurationAttribute>()?.Configuration);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -144,8 +144,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Company
-            => Normalize(Get<AssemblyCompanyAttribute>()?.Company);
+        public string Company =>
+            Normalize(Get<AssemblyCompanyAttribute>()?.Company);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -156,8 +156,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Product
-            => Normalize(Get<AssemblyProductAttribute>()?.Product);
+        public string Product =>
+            Normalize(Get<AssemblyProductAttribute>()?.Product);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -168,8 +168,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Copyright
-            => Normalize(Get<AssemblyCopyrightAttribute>()?.Copyright);
+        public string Copyright =>
+            Normalize(Get<AssemblyCopyrightAttribute>()?.Copyright);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -180,8 +180,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Trademark
-            => Normalize(Get<AssemblyTrademarkAttribute>()?.Trademark);
+        public string Trademark =>
+            Normalize(Get<AssemblyTrademarkAttribute>()?.Trademark);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -192,8 +192,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Culture
-            => Normalize(Get<AssemblyCultureAttribute>()?.Culture);
+        public string Culture =>
+            Normalize(Get<AssemblyCultureAttribute>()?.Culture);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -204,7 +204,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version Version => Assembly?.GetName().Version ?? new Version();
+        public Version Version =>
+            Assembly?.GetName().Version ?? new Version();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -233,10 +234,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private T Get<T>() where T : class
-            => Assembly != null ?
-               Attribute.GetCustomAttribute(Assembly, typeof(T)) as T :
-               default(T);
+        private T Get<T>() where T : class =>
+            Assembly != null ?
+            Attribute.GetCustomAttribute(Assembly, typeof(T)) as T :
+            default(T);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -247,8 +248,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string Normalize(string src)
-            => !string.IsNullOrEmpty(src) ? src : string.Empty;
+        private string Normalize(string src) =>
+            !string.IsNullOrEmpty(src) ? src : string.Empty;
 
         #endregion
     }

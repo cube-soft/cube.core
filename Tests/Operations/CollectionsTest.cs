@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,9 +24,9 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// CollectionsTest
-    /// 
+    ///
     /// <summary>
-    /// Cube.Collections.Operations のテスト用クラスです。
+    /// CollectionOperatorTest のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// LastIndex
-        /// 
+        ///
         /// <summary>
         /// 最後のインデックスを取得するテストを実行します。
         /// </summary>
@@ -47,13 +47,12 @@ namespace Cube.Tests
         [TestCase(10, ExpectedResult = 9)]
         [TestCase( 1, ExpectedResult = 0)]
         [TestCase( 0, ExpectedResult = 0)]
-        public int LastIndex(int count)
-            => Create(count).LastIndex();
+        public int LastIndex(int count) => Create(count).LastIndex();
 
         /* ----------------------------------------------------------------- */
         ///
         /// LastIndex_Null
-        /// 
+        ///
         /// <summary>
         /// 最後のインデックスを取得するテストを実行します。
         /// </summary>
@@ -69,7 +68,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Clamp_Null
-        /// 
+        ///
         /// <summary>
         /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸める
         /// テストを実行します。
@@ -81,13 +80,12 @@ namespace Cube.Tests
         [TestCase(10, -1, ExpectedResult = 0)]
         [TestCase( 0, 10, ExpectedResult = 0)]
         [TestCase( 0, -1, ExpectedResult = 0)]
-        public int Clamp(int count, int index)
-            => Create(count).Clamp(index);
+        public int Clamp(int count, int index) => Create(count).Clamp(index);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Clamp_Null
-        /// 
+        ///
         /// <summary>
         /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸める
         /// テストを実行します。
@@ -104,7 +102,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToObservable
-        /// 
+        ///
         /// <summary>
         /// IList(int) を ObservableCollection(int) に変換するテストを
         /// 実行しますます。
@@ -125,7 +123,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Create
-        /// 
+        ///
         /// <summary>
         /// テスト用のコレクションオブジェクトを生成します。
         /// </summary>

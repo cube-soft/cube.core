@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,8 +23,8 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TimeTest
-    /// 
+    /// TimeFormatTest
+    ///
     /// <summary>
     /// DateTime に関するテスト用クラスです。
     /// </summary>
@@ -36,7 +36,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToUniversalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
         /// 再度 DateTime オブジェクトに変換するテストを実行します。
@@ -58,7 +58,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToLocalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
         /// 再度 DateTime オブジェクトに変換するテストを実行します。
@@ -80,7 +80,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToDateTime
-        /// 
+        ///
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
         /// 再度 DateTime オブジェクトに変換するテストを実行します。
@@ -99,7 +99,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToDateTime
-        /// 
+        ///
         /// <summary>
         /// int 型で表された UNIX 時刻を DateTime オブジェクトに変換する
         /// テストを実行します。
@@ -119,7 +119,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToLocalTime
-        /// 
+        ///
         /// <summary>
         /// int 型で表された UNIX 時刻を現地時刻で DateTime オブジェクトに
         /// 変換するテストを実行します。
@@ -139,7 +139,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Parse_UniversalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された文字列を UTC 時刻として解析します。
         /// </summary>
@@ -159,7 +159,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Parse_LocalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された文字列をローカル時刻として解析します。
         /// </summary>

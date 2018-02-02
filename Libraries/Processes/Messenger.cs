@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -26,25 +26,25 @@ namespace Cube.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IMessenger(TValue)
-    /// 
+    /// IMessenger(T)
+    ///
     /// <summary>
     /// 相互通信を表すインターフェースです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public interface IMessenger<TValue> : IDisposable
+    public interface IMessenger<T> : IDisposable
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// データを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        void Publish(TValue value);
+        void Publish(T value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -53,25 +53,25 @@ namespace Cube.Processes
         /// <summary>
         /// 相手からのデータ送信時に実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        IDisposable Subscribe(Action<TValue> action);
+        IDisposable Subscribe(Action<T> action);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Messenger(TValue)
-    /// 
+    /// Messenger(T)
+    ///
     /// <summary>
     /// プロセス間等で通信を実現するためのクラスです。
     /// 最初に初期化されたオブジェクトがサーバ、それ以降のオブジェクト
     /// がクライアントとして機能します。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// サーバが既に存在しているかどうかを Mutex を用いて判別しているため、
     /// 同じスレッドで Messenger オブジェクトを複数作成するとエラーが
@@ -79,20 +79,20 @@ namespace Cube.Processes
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Messenger<TValue> : IMessenger<TValue> where TValue : class
+    public class Messenger<T> : IMessenger<T> where T : class
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Messenger
-        /// 
+        /// Messenger(T)
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="id">識別子</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public Messenger(string id)
         {
@@ -100,8 +100,8 @@ namespace Cube.Processes
             _mutex = new Mutex(false, id);
             IsServer = _mutex.WaitOne(0, false);
 
-            if (IsServer) _core = new MessengerServer<TValue>(id);
-            else _core = new MessengerClient<TValue>(id);
+            if (IsServer) _core = new MessengerServer<T>(id);
+            else _core = new MessengerClient<T>(id);
         }
 
         #endregion
@@ -111,7 +111,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// IsServer
-        /// 
+        ///
         /// <summary>
         /// サーバとして動作しているかどうかを示す値を取得します。
         /// </summary>
@@ -126,13 +126,13 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// データを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Publish(TValue value) => _core.Publish(value);
+        public void Publish(T value) => _core.Publish(value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -141,21 +141,20 @@ namespace Cube.Processes
         /// <summary>
         /// 相手からのデータ送信時に実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<TValue> action)
-            => _core.Subscribe(action);
+        public IDisposable Subscribe(Action<T> action) => _core.Subscribe(action);
 
         #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
         /// ~Messenger
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -166,7 +165,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -181,7 +180,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -203,33 +202,33 @@ namespace Cube.Processes
         #region Fields
         private OnceAction<bool> _dispose;
         private Mutex _mutex = null;
-        private IMessenger<TValue> _core;
+        private IMessenger<T> _core;
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MessengerServer(TValue)
-    /// 
+    /// MessengerServer(T)
+    ///
     /// <summary>
     /// プロセス間等で通信を実現するためのサーバクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessengerServer<TValue> : IMessenger<TValue> where TValue : class
+    public class MessengerServer<T> : IMessenger<T> where T : class
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MessengerServer
-        /// 
+        /// MessengerServer(T)
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="id">識別子</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public MessengerServer(string id)
         {
@@ -237,7 +236,7 @@ namespace Cube.Processes
 
             var address = new Uri($"net.pipe://localhost/{id}");
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
-            _service = new MessengerService<TValue>();
+            _service = new MessengerService<T>();
 
             _host = new ServiceHost(_service);
             _host.AddServiceEndpoint(typeof(IMessengerService), binding, address);
@@ -251,18 +250,18 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// クライアントにデータを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Publish(TValue value)
+        public void Publish(T value)
         {
             using (var ms = new MemoryStream())
             {
-                var json = new DataContractSerializer(typeof(TValue));
-                json.WriteObject(ms, value);
+                var dc = new DataContractSerializer(typeof(T));
+                dc.WriteObject(ms, value);
                 _service.SendToClient(ms.ToArray());
             }
         }
@@ -274,21 +273,20 @@ namespace Cube.Processes
         /// <summary>
         /// クライアントからのデータ送信時に実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<TValue> action)
-            => _service.Subscribe(action);
+        public IDisposable Subscribe(Action<T> action) => _service.Subscribe(action);
 
         #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
         /// ~MessengerServer
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -299,7 +297,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -314,11 +312,11 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
-        /// 
+        ///
         /// <param name="disposing">
         /// マネージリソースを解放するかどうかを示す値
         /// </param>
@@ -335,34 +333,34 @@ namespace Cube.Processes
 
         #region Fields
         private OnceAction<bool> _dispose;
-        private MessengerService<TValue> _service;
+        private MessengerService<T> _service;
         private ServiceHost _host;
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MessengerClient(TValue)
-    /// 
+    /// MessengerClient(T)
+    ///
     /// <summary>
     /// プロセス間等で通信を実現するためのクライアントクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessengerClient<TValue> : IMessenger<TValue> where TValue : class
+    public class MessengerClient<T> : IMessenger<T> where T : class
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MessengerClient
-        /// 
+        /// MessengerClient(T)
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="id">識別子</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public MessengerClient(string id)
         {
@@ -371,7 +369,7 @@ namespace Cube.Processes
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
 
             _dispose  = new OnceAction<bool>(Dispose);
-            _callback = new MessengerServiceCallback<TValue>();
+            _callback = new MessengerServiceCallback<T>();
             _context  = new InstanceContext(_callback);
             _factory  = new DuplexChannelFactory<IMessengerService>(_callback, binding, address);
 
@@ -385,21 +383,21 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// クライアントにデータを送信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Publish(TValue value)
+        public void Publish(T value)
         {
             var channel = _service as IClientChannel;
             if (channel.State != CommunicationState.Opened) Recreate();
 
             using (var ms = new MemoryStream())
             {
-                var json = new DataContractSerializer(typeof(TValue));
-                json.WriteObject(ms, value);
+                var dc = new DataContractSerializer(typeof(T));
+                dc.WriteObject(ms, value);
                 _service.Send(ms.ToArray());
             }
         }
@@ -411,21 +409,20 @@ namespace Cube.Processes
         /// <summary>
         /// サーバからのデータ送信時に実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<TValue> action)
-            => _callback.Subscribe(action);
+        public IDisposable Subscribe(Action<T> action) => _callback.Subscribe(action);
 
         #region IDisposable
 
         /* ----------------------------------------------------------------- */
         ///
         /// ~MessengerServer
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -436,7 +433,7 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -451,11 +448,11 @@ namespace Cube.Processes
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
-        /// 
+        ///
         /// <param name="disposing">
         /// マネージリソースを解放するかどうかを示す値
         /// </param>
@@ -485,7 +482,7 @@ namespace Cube.Processes
         /// <summary>
         /// チャンネル再生成時に実行されるハンドラです。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         private void WhenRecreate(object s, EventArgs e) => Recreate();
 
@@ -496,7 +493,7 @@ namespace Cube.Processes
         /// <summary>
         /// チャンネルを再生成します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         private void Recreate()
         {
@@ -521,14 +518,14 @@ namespace Cube.Processes
             catch (Exception err) { this.LogWarn(err.ToString()); }
         }
 
+        #endregion
+
         #region Fields
         private OnceAction<bool> _dispose;
         private ChannelFactory<IMessengerService> _factory;
         private IMessengerService _service;
         private InstanceContext _context;
-        private MessengerServiceCallback<TValue> _callback;
-        #endregion
-
+        private MessengerServiceCallback<T> _callback;
         #endregion
     }
 }

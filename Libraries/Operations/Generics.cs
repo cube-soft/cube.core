@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,15 +21,17 @@ namespace Cube.Generics
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Generics.Operations
-    /// 
+    /// GenericOperator
+    ///
     /// <summary>
     /// クラスに対する汎用的な操作を定義するための拡張メソッド用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class GenericOperator
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Assign
@@ -37,7 +39,7 @@ namespace Cube.Generics
         /// <summary>
         /// public なプロパティおよびフィールドの値を代入します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dest">代入先オブジェクト</param>
         /// <param name="src">代入元オブジェクト</param>
         ///
@@ -65,7 +67,7 @@ namespace Cube.Generics
         /// </summary>
         ///
         /// <param name="src">コピーするオブジェクト</param>
-        /// 
+        ///
         /// <remarks>
         /// Serializable 属性を持つクラスの場合、BinaryFormatter を
         /// 利用して値をコピーします。
@@ -88,18 +90,20 @@ namespace Cube.Generics
         /// <summary>
         /// オブジェクトを T 型にキャストします。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">キャストするオブジェクト</param>
         /// <param name="failed">キャスト失敗時に返される値</param>
-        /// 
+        ///
         /// <returns>キャスト結果</returns>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public static T TryCast<T>(this object src, T failed = default(T))
         {
             try { return (T)src; }
             catch (System.Exception /* err */) { return failed; }
         }
+
+        #endregion
 
         #region Implementations
 

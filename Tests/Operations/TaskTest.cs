@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,15 +25,17 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// TaskTest
-    /// 
+    ///
     /// <summary>
-    /// Cube.Tasks.Oprations のテスト用クラスです。
+    /// TaskOperator のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class TaskTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Forget
@@ -41,7 +43,7 @@ namespace Cube.Tests
         /// <summary>
         /// Task の Fire&amp;Forget のテストを実行します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// 例外発生時にはログに出力されます。
         /// </remarks>
@@ -84,10 +86,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(5u, ExpectedResult = 5)]
-        public long Timeout_NotThrow(uint n)
-            => Task.Run(() => Fibonacci(n))
-                   .Timeout(TimeSpan.FromSeconds(100))
-                   .Result;
+        public long Timeout_NotThrow(uint n) =>
+            Task.Run(() => Fibonacci(n))
+                .Timeout(TimeSpan.FromSeconds(100))
+                .Result;
+
+        #endregion
 
         #region Helper methods
 

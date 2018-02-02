@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,11 +25,11 @@ namespace Cube.Settings
     /* --------------------------------------------------------------------- */
     ///
     /// RegistrySettings
-    /// 
+    ///
     /// <summary>
     /// ユーザ設定をレジストリ上で管理するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     internal static class RegistrySettings
     {
@@ -38,14 +38,14 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
         /// オブジェクトに設定します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">レジストリ・サブキー</param>
-        /// 
+        ///
         /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -54,14 +54,14 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// HKEY_CURRENT_USER 下の指定されたサブキーに存在する値を
         /// 読み込み、オブジェクトに設定します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">レジストリ・サブキー名</param>
-        /// 
+        ///
         /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -76,12 +76,12 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存
         /// します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dest">レジストリ・サブキー</param>
         /// <param name="src">保存オブジェクト</param>
         ///
@@ -91,12 +91,12 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存
         /// します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dest">レジストリ・サブキー名</param>
         /// <param name="src">保存オブジェクト</param>
         ///
@@ -116,7 +116,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
         /// オブジェクトに設定します。
@@ -153,7 +153,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
@@ -168,7 +168,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
@@ -200,13 +200,13 @@ namespace Cube.Settings
                         break;
                 }
             }
-            catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
+            catch (Exception err) { Cube.Log.LogOperator.Warn(typeof(SettingsOperator), err.ToString()); }
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetDataMemberName
-        /// 
+        ///
         /// <summary>
         /// DataMember 属性の名前を取得します。
         /// </summary>
@@ -218,7 +218,7 @@ namespace Cube.Settings
 
             var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
             if (obj == null || obj.Length == 0) return info.Name;
-            
+
             var attr = obj[0] as DataMemberAttribute;
             return attr?.Name ?? info.Name;
         }
@@ -226,7 +226,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Convert
-        /// 
+        ///
         /// <summary>
         /// 指定した型で、指定したオブジェクトと同じ内容を表すを持つ
         /// オブジェクトを返します。
@@ -247,7 +247,7 @@ namespace Cube.Settings
                         return System.Convert.ChangeType(value, type);
                 }
             }
-            catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
+            catch (Exception err) { Cube.Log.LogOperator.Warn(typeof(SettingsOperator), err.ToString()); }
 
             return null;
         }
@@ -255,14 +255,14 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Convert
-        /// 
+        ///
         /// <summary>
         /// DateTime オブジェクトをレジストリに保存する形式に変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static object Convert(DateTime value)
-            => value.ToUniversalTime().ToString("o");
+        private static object Convert(DateTime value) =>
+            value.ToUniversalTime().ToString("o");
 
         #endregion
     }

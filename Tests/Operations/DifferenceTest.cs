@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -26,9 +26,9 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// DifferenceTest
-    /// 
+    ///
     /// <summary>
-    /// Cube.Collections.Operations.Diff のテスト用クラスです。
+    /// Cube.CollectionOperator.Diff のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Diff
-        /// 
+        ///
         /// <summary>
         /// 差分検出のテストを実行します。
         /// </summary>
@@ -58,7 +58,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Diff_OlderIsEmpty
-        /// 
+        ///
         /// <summary>
         /// 変更前のテキストが空の場合のテストを実行します。
         /// </summary>
@@ -77,7 +77,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Diff_NewerIsEmpty
-        /// 
+        ///
         /// <summary>
         /// 変更後のテキストが空の場合のテストを実行します。
         /// </summary>
@@ -96,7 +96,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Diff_IgnoreCase
-        /// 
+        ///
         /// <summary>
         /// 大文字・小文字を無視した比較のテストを実行します。
         /// </summary>
@@ -121,7 +121,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// TestCases
-        /// 
+        ///
         /// <summary>
         /// テストに使用するデータを取得します。
         /// </summary>
@@ -143,15 +143,15 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// TestCase
-        /// 
+        ///
         /// <summary>
         /// TestCaseData オブジェクトを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private static TestCaseData TestCase(string older, string newer,
-            Condition cond, string oresult, string nresult)
-            => new TestCaseData(older, newer, new Result<char>(cond, oresult, nresult));
+            Condition cond, string oresult, string nresult) =>
+            new TestCaseData(older, newer, new Result<char>(cond, oresult, nresult));
 
         #endregion
     }

@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormat.cs" />
-    <Compile Include="Conversions\Time.cs" />
-    <Compile Include="Conversions\UriQuery.cs" />
+    <Compile Include="Conversions\TimeFormat.cs" />
+    <Compile Include="Conversions\UriFormat.cs" />
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
@@ -76,10 +76,9 @@
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessengerService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
-    <Compile Include="Settings\Operations.cs" />
+    <Compile Include="Settings\SettingsOperator.cs" />
     <Compile Include="Settings\RegistrySettings.cs" />
     <Compile Include="Settings\SettingsFolder.cs" />
-    <Compile Include="Settings\SettingsType.cs" />
     <Compile Include="Settings\Startup.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
@@ -90,7 +89,6 @@
     <Compile Include="Power.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="SoftwareVersion.cs" />
-    <Compile Include="UtmQuery.cs" />
     <Compile Include="WakeableTimer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// WakeableTimerTest
-    /// 
+    ///
     /// <summary>
     /// WakeableTimer のテスト用クラスです。
     /// </summary>
@@ -34,10 +34,12 @@ namespace Cube.Tests
     [TestFixture]
     class WakeableTimerTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Timer_Properties
-        /// 
+        ///
         /// <summary>
         /// 各種プロパティの初期値を確認します。
         /// </summary>
@@ -57,7 +59,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// タイマーを開始するテストを実行します。
         /// </summary>
@@ -81,7 +83,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Start_InitialDelay
-        /// 
+        ///
         /// <summary>
         /// InitialDelay を設定するテストを実行します。
         /// </summary>
@@ -103,7 +105,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Start_Immediately
-        /// 
+        ///
         /// <summary>
         /// InitialDelay にゼロを設定したテストを実行します。
         /// </summary>
@@ -130,7 +132,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Resume_Immediately
-        /// 
+        ///
         /// <summary>
         /// Suspend からの復帰後に即実行されるケースのテストを実行します。
         /// </summary>
@@ -157,7 +159,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// State_Scenario
-        /// 
+        ///
         /// <summary>
         /// WakeableTimer の State の内容を確認します。
         /// </summary>
@@ -189,7 +191,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Reset
-        /// 
+        ///
         /// <summary>
         /// Reset のテストを実行します。
         /// </summary>
@@ -220,7 +222,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// PowerMode_Scenario
-        /// 
+        ///
         /// <summary>
         /// 電源状態の変化に伴う Suspend/Resume のテストを実行します。
         /// </summary>
@@ -253,5 +255,7 @@ namespace Cube.Tests
                 Assert.That(chagned, Is.EqualTo(2), nameof(timer.PowerModeChanged));
             }
         }
+
+        #endregion
     }
 }

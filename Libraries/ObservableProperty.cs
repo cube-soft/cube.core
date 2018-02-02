@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     ///
     /// ObservableProperty
-    /// 
+    ///
     /// <summary>
     /// INotifyPropertyChanged の汎用的な実装です。
     /// </summary>
@@ -39,11 +39,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// ObservableProperty
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// このクラスを直接オブジェクト化する事はできません。継承クラスを
         /// 使用して下さい。
@@ -59,7 +59,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// PropertyChanged
-        /// 
+        ///
         /// <summary>
         /// プロパティが変更された時に発生するイベントです。
         /// </summary>
@@ -70,7 +70,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// OnPropertyChanged
-        /// 
+        ///
         /// <summary>
         /// PropertyChanged イベントを発生させます。
         /// </summary>
@@ -86,7 +86,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// RaisePropertyChanged
-        /// 
+        ///
         /// <summary>
         /// PropertyChanged イベントを発生させます。
         /// </summary>
@@ -100,15 +100,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// SetProperty
-        /// 
+        ///
         /// <summary>
         /// プロパティに値を設定します。
         /// </summary>
-        /// 
+        ///
         /// <param name="field">設定先の参照</param>
         /// <param name="value">設定値</param>
         /// <param name="name">設定するプロパティの名前</param>
-        /// 
+        ///
         /// <returns>設定したかどうかを示す値</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -119,7 +119,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// SetProperty
-        /// 
+        ///
         /// <summary>
         /// プロパティに値を設定します。
         /// </summary>
@@ -128,7 +128,7 @@ namespace Cube
         /// <param name="value">設定値</param>
         /// <param name="func">比較用オブジェクト</param>
         /// <param name="name">設定するプロパティの名前</param>
-        /// 
+        ///
         /// <returns>設定したかどうかを示す値</returns>
         ///
         /* ----------------------------------------------------------------- */

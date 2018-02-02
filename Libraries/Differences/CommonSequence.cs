@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Cube.Differences
 {
@@ -28,7 +27,7 @@ namespace Cube.Differences
     /// <summary>
     /// シーケンスを保持するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     internal class CommonSequence<T>
     {
@@ -37,7 +36,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// CommonSequence
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -58,7 +57,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// OlderStart
-        /// 
+        ///
         /// <summary>
         /// 変更前コンテンツの開始インデックスを取得します。
         /// </summary>
@@ -69,7 +68,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// NewerStart
-        /// 
+        ///
         /// <summary>
         /// 変更後コンテンツの開始インデックスを取得します。
         /// </summary>
@@ -80,7 +79,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Count
-        /// 
+        ///
         /// <summary>
         /// 対象範囲を取得します。
         /// </summary>
@@ -91,7 +90,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Next
-        /// 
+        ///
         /// <summary>
         /// 次のシーケンスを取得または設定します。
         /// </summary>
@@ -106,7 +105,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Reverse
-        /// 
+        ///
         /// <summary>
         /// リンクリストを反転させます。
         /// </summary>
@@ -130,7 +129,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// ToResult
-        /// 
+        ///
         /// <summary>
         /// Result オブジェクトに変換します。
         /// </summary>
@@ -180,12 +179,12 @@ namespace Cube.Differences
 
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create
-        /// 
+        ///
         /// <summary>
         /// Result(T) オブジェクトを生成します。
         /// </summary>
@@ -193,17 +192,16 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         private Result<T> Create(Condition condition,
             T[] older, int ostart, int ocount,
-            T[] newer, int nstart, int ncount)
-            => new Result<T>(
-                condition,
-                Slice(older, ostart, ocount),
-                Slice(newer, nstart, ncount)
-            );
+            T[] newer, int nstart, int ncount) => new Result<T>(
+            condition,
+            Slice(older, ostart, ocount),
+            Slice(newer, nstart, ncount)
+        );
 
         /* ----------------------------------------------------------------- */
         ///
         /// Slice
-        /// 
+        ///
         /// <summary>
         /// 配列の一部を表すオブジェクトを生成します。
         /// </summary>

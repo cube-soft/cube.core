@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -43,7 +43,7 @@ namespace Cube.Processes
         /// <summary>
         /// データ送信時に実行されるメソッドです。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">送信データ</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,7 +53,7 @@ namespace Cube.Processes
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MessengerServiceCallback(TValue)
+    /// MessengerServiceCallback(T)
     ///
     /// <summary>
     /// IMessengerService からのメッセージの受信時に実行される
@@ -61,7 +61,7 @@ namespace Cube.Processes
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal class MessengerServiceCallback<TValue> : IMessengerServiceCallback where TValue : class
+    internal class MessengerServiceCallback<T> : IMessengerServiceCallback where T : class
     {
         #region Methods
 
@@ -73,7 +73,7 @@ namespace Cube.Processes
         /// 相手（サーバ or クライアント）からデータが送信された時に
         /// 実行されます。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">送信データ</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -81,8 +81,8 @@ namespace Cube.Processes
         {
             using (var ms = new MemoryStream(bytes))
             {
-                var json = new DataContractSerializer(typeof(TValue));
-                if (json.ReadObject(ms) is TValue value)
+                var json = new DataContractSerializer(typeof(T));
+                if (json.ReadObject(ms) is T value)
                 {
                     foreach (var f in _subscriptions) f(value);
                 }
@@ -96,13 +96,13 @@ namespace Cube.Processes
         /// <summary>
         /// SendCallback で実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<TValue> action)
+        public IDisposable Subscribe(Action<T> action)
         {
             _subscriptions.Add(action);
             return Disposable.Create(() => _subscriptions.Remove(action));
@@ -111,7 +111,7 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private List<Action<TValue>> _subscriptions = new List<Action<TValue>>();
+        private List<Action<T>> _subscriptions = new List<Action<T>>();
         #endregion
     }
 }

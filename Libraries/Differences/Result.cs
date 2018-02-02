@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,12 +27,12 @@ namespace Cube.Differences
     /// <summary>
     /// 差分の状態を表す列挙型です。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// DiffOnly および Any は、主に処理実行時に指定する Mask として
     /// 使用されます。
     /// </remarks>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     [Flags]
     public enum Condition
@@ -59,7 +59,7 @@ namespace Cube.Differences
     /// <summary>
     /// 比較結果を保持するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public class Result<T>
     {
@@ -68,11 +68,11 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Result
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="condition">差分の状態</param>
         /// <param name="older">変更前シーケンスの対象部分</param>
         /// <param name="newer">変更後シーケンスの対象部分</param>
@@ -92,7 +92,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Condition
-        /// 
+        ///
         /// <summary>
         /// 差分の状態を示す値を取得します。
         /// </summary>
@@ -103,7 +103,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Older
-        /// 
+        ///
         /// <summary>
         /// 変更前シーケンスの対象部分を取得します。
         /// </summary>
@@ -114,7 +114,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Newer
-        /// 
+        ///
         /// <summary>
         /// 変更後シーケンスの対象部分を取得します。
         /// </summary>

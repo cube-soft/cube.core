@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,30 +21,30 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ProgressEventArgs(TValue)
+    /// ProgressEventArgs(T)
     ///
     /// <summary>
     /// 進捗状況を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ProgressEventArgs<TValue> : EventArgs
+    public class ProgressEventArgs<T> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
         /// ProgressEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="ratio">進捗状況（パーセンテージ等）</param>
         /// <param name="value">ユーザデータ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public ProgressEventArgs(double ratio, TValue value) : base()
+        public ProgressEventArgs(double ratio, T value) : base()
         {
             Ratio = ratio;
             Value = value;
@@ -57,24 +57,24 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Ratio
-        /// 
+        ///
         /// <summary>
         /// 進捗状況を表す値を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public double Ratio { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Value
-        /// 
+        ///
         /// <summary>
         /// ユーザデータを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public TValue Value { get; }
+        public T Value { get; }
 
         #endregion
     }
@@ -93,11 +93,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Create
-        /// 
+        ///
         /// <summary>
         /// ProgressEventArgs(T) オブジェクトを生成します。
         /// </summary>
-        /// 
+        ///
         /// <param name="ratio">進捗状況（パーセンテージ等）</param>
         /// <param name="value">ユーザデータ</param>
         ///
@@ -108,13 +108,13 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ProgressEventHandler(TValue)
-    /// 
+    /// ProgressEventHandler(T)
+    ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void ProgressEventHandler<TValue>(object sender, ProgressEventArgs<TValue> e);
+    public delegate void ProgressEventHandler<T>(object sender, ProgressEventArgs<T> e);
 }

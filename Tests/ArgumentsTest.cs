@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// ArgumentsTest
-    /// 
+    ///
     /// <summary>
     /// Arguments のテスト用クラスです。
     /// </summary>
@@ -46,8 +46,8 @@ namespace Cube.Tests
         #region Parse
 
         [TestCaseSource(nameof(Parse_TestCases))]
-        public int Parse(IEnumerable<string> args)
-            => new Arguments(args).Get().Count();
+        public int Parse(IEnumerable<string> args) =>
+            new Arguments(args).Get().Count();
 
         public static IEnumerable<TestCaseData> Parse_TestCases
         {
@@ -75,12 +75,12 @@ namespace Cube.Tests
         #region Parse options
 
         [TestCaseSource(nameof(Parse_Options_TestCases))]
-        public string Parse_Options(IEnumerable<string> args, string option)
-            => new Arguments(args).Get(option);
+        public string Parse_Options(IEnumerable<string> args, string option) =>
+            new Arguments(args).Get(option);
 
         [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
-        public int Parse_Options_Count(IEnumerable<string> args)
-            => new Arguments(args).GetOptions().Count;
+        public int Parse_Options_Count(IEnumerable<string> args) =>
+            new Arguments(args).GetOptions().Count;
 
         public static IEnumerable<TestCaseData> Parse_Options_TestCases
         {

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// SoftwareVersionTest
-    /// 
+    ///
     /// <summary>
     /// SoftwareVersion のテスト用クラスです。
     /// </summary>
@@ -33,6 +33,8 @@ namespace Cube.Tests
     [TestFixture]
     class SoftwareVersionTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Digit
@@ -47,8 +49,7 @@ namespace Cube.Tests
         [TestCase(3, ExpectedResult = 3)]
         [TestCase(4, ExpectedResult = 4)]
         [TestCase(5, ExpectedResult = 4)]
-        public int Digit(int digit)
-            => new SoftwareVersion { Digit = digit }.Digit;
+        public int Digit(int digit) => new SoftwareVersion { Digit = digit }.Digit;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,5 +135,7 @@ namespace Cube.Tests
             var version = new SoftwareVersion(default(Assembly));
             Assert.That(version.ToString(false), Is.EqualTo("1.0.0.0"));
         }
+
+        #endregion
     }
 }

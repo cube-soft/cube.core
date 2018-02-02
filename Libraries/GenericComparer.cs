@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,8 +22,8 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericComparer
-    /// 
+    /// GenericComparer(T)
+    ///
     /// <summary>
     /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
     /// </summary>
@@ -35,12 +35,12 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericComparer
-        /// 
+        /// GenericComparer(T)
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="func">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -56,14 +56,14 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Compare
-        /// 
+        ///
         /// <summary>
         /// 2 つのオブジェクトを比較します。
         /// </summary>
-        /// 
+        ///
         /// <param name="x">比較する最初のオブジェクト</param>
         /// <param name="y">比較する 2 番目のオブジェクト</param>
-        /// 
+        ///
         /// <returns>比較結果</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,8 +78,8 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericEqualityComparer
-    /// 
+    /// GenericEqualityComparer(T)
+    ///
     /// <summary>
     /// Func(T, T, bool) を EqualityComparer(T) に変換するためのクラスです。
     /// </summary>
@@ -91,12 +91,12 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericEqualityComparer
-        /// 
+        /// GenericEqualityComparer(T)
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="func">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -112,14 +112,14 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Equals
-        /// 
+        ///
         /// <summary>
         /// 2 つのオブジェクトが等しいかどうかを判別します。
         /// </summary>
-        /// 
+        ///
         /// <param name="x">比較する最初のオブジェクト</param>
         /// <param name="y">比較する 2 番目のオブジェクト</param>
-        /// 
+        ///
         /// <returns>比較結果</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,15 +128,14 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// GetHashCode
-        /// 
+        ///
         /// <summary>
         /// GenericEqualityComparer(T) は GetHashcode(T) を必要とする
         /// 操作を許可しません。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override int GetHashCode(T obj)
-            => throw new InvalidOperationException();
+        public override int GetHashCode(T obj) => throw new InvalidOperationException();
 
         #endregion
 

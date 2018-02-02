@@ -59,8 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormatTest.cs" />
-    <Compile Include="Conversions\TimeTest.cs" />
-    <Compile Include="Conversions\UriTest.cs" />
+    <Compile Include="Conversions\TimeFormatTest.cs" />
+    <Compile Include="Conversions\UriFormatTest.cs" />
     <Compile Include="Details\FileHelper.cs" />
     <Compile Include="Details\FileHelperTest.cs" />
     <Compile Include="Details\GlobalSetup.cs" />

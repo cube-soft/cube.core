@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,7 +22,7 @@ namespace Cube.Conversions
     /* --------------------------------------------------------------------- */
     ///
     /// ByteFormat
-    /// 
+    ///
     /// <summary>
     /// バイトサイズの書式に変換する拡張メソッド用クラスです。
     /// </summary>
@@ -33,13 +33,13 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         ///
         /// ToPrettyBytes
-        /// 
+        ///
         /// <summary>
         /// バイトサイズを読みやすい文字列に変換します。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">バイト数</param>
-        /// 
+        ///
         /// <returns>バイト数を表す文字列</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -62,13 +62,13 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         ///
         /// ToRoughBytes
-        /// 
+        ///
         /// <summary>
         /// バイトサイズの概算値を文字列に変換します。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">バイト数</param>
-        /// 
+        ///
         /// <returns>バイト数を表す文字列</returns>
         ///
         /// <remarks>
@@ -77,7 +77,7 @@ namespace Cube.Conversions
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ToRoughBytes(this long bytes)
-            => ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
+        public static string ToRoughBytes(this long bytes) =>
+            ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
     }
 }

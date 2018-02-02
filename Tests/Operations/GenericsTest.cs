@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// GenericsTest
-    /// 
+    ///
     /// <summary>
     /// Cube.Generics.Operations のテスト用クラスです。
     /// </summary>
@@ -45,7 +45,7 @@ namespace Cube.Tests
         /// Serializable 属性が付与されているオブジェクトのコピーの
         /// テストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Copy_Serializable()
@@ -74,7 +74,7 @@ namespace Cube.Tests
         /// Serializable 属性が付与されていないオブジェクトのコピーの
         /// テストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Copy_NonSerializable()
@@ -115,7 +115,7 @@ namespace Cube.Tests
         /// コピー後、コピー元オブジェクトの int の値を変更するテストを
         /// 実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Copy_Modify_Integer()
@@ -136,7 +136,7 @@ namespace Cube.Tests
         /// コピー後、コピー元オブジェクトの string の値を変更するテストを
         /// 実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Copy_Modify_String()
@@ -157,7 +157,7 @@ namespace Cube.Tests
         /// コピー後、コピー元オブジェクトのクラスの値を変更するテストを
         /// 実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Copy_Modify_Reference()
@@ -181,11 +181,11 @@ namespace Cube.Tests
         /// <summary>
         /// TryCast に失敗した時の挙動を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TryCast_Failed()
-            => Assert.That(10.TryCast("failed"), Is.EqualTo("failed"));
+        public void TryCast_Failed() =>
+            Assert.That(10.TryCast("failed"), Is.EqualTo("failed"));
 
         #endregion
 

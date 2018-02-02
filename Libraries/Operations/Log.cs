@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,14 +23,14 @@ namespace Cube.Log
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Log.Operations
-    /// 
+    /// LogOperator
+    ///
     /// <summary>
     /// Log オブジェクトに対する操作を定義するための拡張メソッド用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class LogOperator
     {
         #region Methods
 
@@ -41,10 +41,10 @@ namespace Cube.Log
         /// <summary>
         /// 初期設定を行います。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Configure()
-            => log4net.Config.XmlConfigurator.Configure();
+        public static void Configure() =>
+            log4net.Config.XmlConfigurator.Configure();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,7 +54,7 @@ namespace Cube.Log
         /// UnobservedTaskException を監視し、取得した例外をログに
         /// 出力します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public static void ObserveTaskException()
         {
@@ -72,13 +72,13 @@ namespace Cube.Log
         /// <summary>
         /// デバッグ情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Debug(Type type, string message)
-            => Logger(type).Debug(message);
+        public static void Debug(Type type, string message) =>
+            Logger(type).Debug(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -87,14 +87,14 @@ namespace Cube.Log
         /// <summary>
         /// デバッグ情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Debug(Type type, string message, Exception err)
-            => Logger(type).Debug(message, err);
+        public static void Debug(Type type, string message, Exception err) =>
+            Logger(type).Debug(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,13 +103,13 @@ namespace Cube.Log
         /// <summary>
         /// 情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Info(Type type, string message)
-            => Logger(type).Info(message);
+        public static void Info(Type type, string message) =>
+            Logger(type).Info(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -118,14 +118,14 @@ namespace Cube.Log
         /// <summary>
         /// 情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Info(Type type, string message, Exception err)
-            => Logger(type).Info(message, err);
+        public static void Info(Type type, string message, Exception err) =>
+            Logger(type).Info(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,10 +134,10 @@ namespace Cube.Log
         /// <summary>
         /// システム情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="assembly">アセンブリ情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Assembly assembly)
         {
@@ -157,13 +157,13 @@ namespace Cube.Log
         /// <summary>
         /// 警告をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Warn(Type type, string message)
-            => Logger(type).Warn(message);
+        public static void Warn(Type type, string message) =>
+            Logger(type).Warn(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -172,14 +172,14 @@ namespace Cube.Log
         /// <summary>
         /// 警告をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Warn(Type type, string message, Exception err)
-            => Logger(type).Warn(message, err);
+        public static void Warn(Type type, string message, Exception err) =>
+            Logger(type).Warn(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,13 +188,13 @@ namespace Cube.Log
         /// <summary>
         /// エラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Error(Type type, string message)
-            => Logger(type).Error(message);
+        public static void Error(Type type, string message) =>
+            Logger(type).Error(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -203,14 +203,14 @@ namespace Cube.Log
         /// <summary>
         /// エラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Error(Type type, string message, Exception err)
-            => Logger(type).Error(message, err);
+        public static void Error(Type type, string message, Exception err) =>
+            Logger(type).Error(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -219,13 +219,13 @@ namespace Cube.Log
         /// <summary>
         /// 致命的なエラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Fatal(Type type, string message)
-            => Logger(type).Fatal(message);
+        public static void Fatal(Type type, string message) =>
+            Logger(type).Fatal(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -234,14 +234,14 @@ namespace Cube.Log
         /// <summary>
         /// 致命的なエラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Fatal(Type type, string message, Exception err)
-            => Logger(type).Fatal(message, err);
+        public static void Fatal(Type type, string message, Exception err) =>
+            Logger(type).Fatal(message, err);
 
         #endregion
 
@@ -254,13 +254,13 @@ namespace Cube.Log
         /// <summary>
         /// デバッグ情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogDebug<T>(this T src, string message)
-            => src.Logger().Debug(message);
+        public static void LogDebug<T>(this T src, string message) =>
+            src.Logger().Debug(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -269,14 +269,14 @@ namespace Cube.Log
         /// <summary>
         /// デバッグ情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogDebug<T>(this T src, string message, Exception err)
-            => src.Logger().Debug(message, err);
+        public static void LogDebug<T>(this T src, string message, Exception err) =>
+            src.Logger().Debug(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -285,13 +285,13 @@ namespace Cube.Log
         /// <summary>
         /// 情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, string message)
-            => src.Logger().Info(message);
+        public static void LogInfo<T>(this T src, string message) =>
+            src.Logger().Info(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -300,14 +300,14 @@ namespace Cube.Log
         /// <summary>
         /// 情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, string message, Exception err)
-            => src.Logger().Info(message, err);
+        public static void LogInfo<T>(this T src, string message, Exception err) =>
+            src.Logger().Info(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -316,13 +316,13 @@ namespace Cube.Log
         /// <summary>
         /// 情報をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="assembly">アセンブリ情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, Assembly assembly)
-            => Info(src.GetType(), assembly);
+        public static void LogInfo<T>(this T src, Assembly assembly) =>
+            Info(src.GetType(), assembly);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -331,13 +331,13 @@ namespace Cube.Log
         /// <summary>
         /// 警告をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogWarn<T>(this T src, string message)
-            => src.Logger().Warn(message);
+        public static void LogWarn<T>(this T src, string message) =>
+            src.Logger().Warn(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -346,14 +346,14 @@ namespace Cube.Log
         /// <summary>
         /// 警告をログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogWarn<T>(this T src, string message, Exception err)
-            => src.Logger().Warn(message, err);
+        public static void LogWarn<T>(this T src, string message, Exception err) =>
+            src.Logger().Warn(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -362,13 +362,13 @@ namespace Cube.Log
         /// <summary>
         /// エラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogError<T>(this T src, string message)
-            => src.Logger().Error(message);
+        public static void LogError<T>(this T src, string message) =>
+            src.Logger().Error(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -377,14 +377,14 @@ namespace Cube.Log
         /// <summary>
         /// エラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogError<T>(this T src, string message, Exception err)
-            => src.Logger().Error(message, err);
+        public static void LogError<T>(this T src, string message, Exception err) =>
+            src.Logger().Error(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -393,13 +393,13 @@ namespace Cube.Log
         /// <summary>
         /// 致命的なエラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogFatal<T>(this T src, string message)
-            => src.Logger().Fatal(message);
+        public static void LogFatal<T>(this T src, string message) =>
+            src.Logger().Fatal(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -408,18 +408,18 @@ namespace Cube.Log
         /// <summary>
         /// 致命的なエラーをログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="message">メッセージ</param>
         /// <param name="err">例外情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static void LogFatal<T>(this T src, string message, Exception err)
-            => src.Logger().Fatal(message, err);
+        public static void LogFatal<T>(this T src, string message, Exception err) =>
+            src.Logger().Fatal(message, err);
 
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -430,8 +430,7 @@ namespace Cube.Log
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static ILog Logger(Type type)
-            => LogManager.GetLogger(type);
+        private static ILog Logger(Type type) => LogManager.GetLogger(type);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -442,8 +441,7 @@ namespace Cube.Log
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static ILog Logger<T>(this T src)
-            => Logger(src.GetType());
+        private static ILog Logger<T>(this T src) => Logger(src.GetType());
 
         #endregion
     }

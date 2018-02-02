@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,11 +22,11 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     ///
     /// Arguments
-    /// 
+    ///
     /// <summary>
     /// コマンドライン等の引数を解析するクラスです。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// このクラスでは、各オプション ("-" または "--" で始まる引数）は最大
     /// 1 つの引数しか指定できないと言う制約を設けています。それ以外の
@@ -43,11 +43,11 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         ///
         /// Arguments
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="prefix">オプションを示す接頭辞</param>
         ///
         /* --------------------------------------------------------------------- */
@@ -59,11 +59,11 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         ///
         /// Arguments
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="args">引数一覧</param>
         /// <param name="prefix">オプションを示す接頭辞</param>
         ///
@@ -81,7 +81,7 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         ///
         /// Prefix
-        /// 
+        ///
         /// <summary>
         /// オプションを示す接頭辞を取得または設定します。
         /// </summary>
@@ -96,11 +96,11 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         ///
         /// Parse
-        /// 
+        ///
         /// <summary>
         /// コマンドライン等の引数を解析します。
         /// </summary>
-        /// 
+        ///
         /// <param name="args">引数一覧</param>
         ///
         /* --------------------------------------------------------------------- */
@@ -131,76 +131,72 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         ///
         /// Get
-        /// 
+        ///
         /// <summary>
         /// 引数一覧を取得します。
         /// </summary>
-        /// 
+        ///
         /// <returns>引数一覧</returns>
-        /// 
+        ///
         /// <remarks>
         /// 各種オプションに対応する引数を取得する場合は
         /// GetOptions() または Get(string) を実行して下さい。
         /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerable<string> Get()
-            => _arguments;
+        public IEnumerable<string> Get() => _arguments;
 
         /* --------------------------------------------------------------------- */
         ///
         /// GetOptions
-        /// 
+        ///
         /// <summary>
         /// オプション引数一覧を取得します。
         /// </summary>
-        /// 
+        ///
         /// <returns>オプション引数一覧</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IDictionary<string, string> GetOptions()
-            => _options;
+        public IDictionary<string, string> GetOptions() => _options;
 
         /* --------------------------------------------------------------------- */
         ///
         /// Get
-        /// 
+        ///
         /// <summary>
         /// 各種オプションに対応する引数を取得します。
         /// </summary>
-        /// 
+        ///
         /// <param name="option">オプション・キー</param>
-        /// 
+        ///
         /// <returns>キーに対応する値</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public string Get(string option)
-            => HasOption(option) ? _options[option] : null;
+        public string Get(string option) => HasOption(option) ? _options[option] : null;
 
         /* --------------------------------------------------------------------- */
         ///
         /// HasOption
-        /// 
+        ///
         /// <summary>
         /// 指定されたオプションを保持しているかどうかを判別します。
         /// </summary>
-        /// 
+        ///
         /// <param name="option">オプション・キー</param>
-        /// 
+        ///
         /// <returns>オプションを保持しているかどうかを示す値</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public bool HasOption(string option)
-            => _options.ContainsKey(option);
+        public bool HasOption(string option) => _options.ContainsKey(option);
 
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* --------------------------------------------------------------------- */
         ///
         /// TrimLeft
-        /// 
+        ///
         /// <summary>
         /// 文字の先頭から Prefix で指定されている文字および空白文字を
         /// 除去します。
@@ -222,7 +218,7 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         ///
         /// UpdateOption
-        /// 
+        ///
         /// <summary>
         /// オプションの内容を更新します。
         /// </summary>

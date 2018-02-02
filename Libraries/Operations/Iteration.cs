@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,14 +21,14 @@ namespace Cube.Iteration
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Iteration.Operations
-    /// 
+    /// IterationOperator
+    ///
     /// <summary>
     /// 数値に対する拡張メソッド用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class IterationOperator
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -37,7 +37,7 @@ namespace Cube.Iteration
         /// <summary>
         /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
-        /// 
+        ///
         /// <param name="n">繰り返し回数</param>
         /// <param name="action">操作内容</param>
         ///
@@ -54,7 +54,7 @@ namespace Cube.Iteration
         /// <summary>
         /// 指定回数だけ同じ操作を繰り返します。
         /// </summary>
-        /// 
+        ///
         /// <param name="n">繰り返し回数</param>
         /// <param name="action">操作内容</param>
         ///

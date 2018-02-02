@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,11 +23,11 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     ///
     /// RelayEvent
-    /// 
+    ///
     /// <summary>
     /// イベントを中継するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public class RelayEvent
     {
@@ -36,7 +36,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// 購読者にイベントを配信します。
         /// </summary>
@@ -50,13 +50,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Subscribe
-        /// 
+        ///
         /// <summary>
         /// イベント発生時に実行する Action オブジェクトを登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">登録する Action オブジェクト</param>
-        /// 
+        ///
         /// <returns>購読解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -75,27 +75,27 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// RelayEvent(TPayload)
-    /// 
+    /// RelayEvent(T)
+    ///
     /// <summary>
     /// イベントを中継するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public class RelayEvent<TPayload>
+    public class RelayEvent<T>
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// 購読者にイベントを配信します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Publish(TPayload payload)
+        public void Publish(T payload)
         {
             foreach (var action in _subscriptions) action(payload);
         }
@@ -103,17 +103,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Subscribe
-        /// 
+        ///
         /// <summary>
         /// イベント発生時に実行する Action オブジェクトを登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">登録する Action オブジェクト</param>
-        /// 
+        ///
         /// <returns>購読解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<TPayload> action)
+        public IDisposable Subscribe(Action<T> action)
         {
             _subscriptions.Add(action);
             return Disposable.Create(() => _subscriptions.Remove(action));
@@ -122,18 +122,18 @@ namespace Cube
         #endregion
 
         #region Fields
-        private ICollection<Action<TPayload>> _subscriptions = new List<Action<TPayload>>();
+        private ICollection<Action<T>> _subscriptions = new List<Action<T>>();
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
     /// IEventHub
-    /// 
+    ///
     /// <summary>
     /// イベントを集約するためのインターフェースです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public interface IEventHub { }
 }

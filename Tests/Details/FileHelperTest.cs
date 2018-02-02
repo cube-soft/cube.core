@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// FileHelperTest
-    /// 
+    ///
     /// <summary>
     /// FileHelper のテスト用クラスです。
     /// </summary>
@@ -35,7 +35,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Examples_Exists
-        /// 
+        ///
         /// <summary>
         /// Examples フォルダが存在するかどうかのテストを実行します。
         /// </summary>
@@ -47,7 +47,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Results_Exists
-        /// 
+        ///
         /// <summary>
         /// Results フォルダが存在するかどうかのテストを実行します。
         /// </summary>
