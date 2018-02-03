@@ -131,6 +131,35 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Start_ShortInterval
+        ///
+        /// <summary>
+        /// Interval に非常に短い時間を設定した時に、バースト的にイベントが
+        /// 発生していない事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Start_ShortInterval()
+        {
+            var count = 0;
+            using (var timer = new WakeableTimer())
+            {
+                timer.Interval = TimeSpan.FromMilliseconds(10);
+                timer.Subscribe(() =>
+                {
+                    ++count;
+                    if (count >= 2) timer.Stop();
+                });
+                timer.Start();
+                Task.Delay(100).Wait();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
+            }
+            Assert.That(count, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Resume_Immediately
         ///
         /// <summary>
