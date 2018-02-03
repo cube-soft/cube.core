@@ -19,6 +19,7 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Win32;
+using Cube.Log;
 
 namespace Cube.Settings
 {
@@ -133,7 +134,7 @@ namespace Cube.Settings
                 var name = GetDataMemberName(info);
                 if (string.IsNullOrEmpty(name)) continue;
 
-                var pt = info.PropertyType;
+                var pt = GetType(info);
                 if (Type.GetTypeCode(pt) != TypeCode.Object)
                 {
                     var value = Convert(root.GetValue(name, null), pt);
@@ -182,7 +183,7 @@ namespace Cube.Settings
                 var value = info.GetValue(src, null);
                 if (name == null || value == null) return;
 
-                var pt = info.PropertyType;
+                var pt = GetType(info);
                 if (pt.IsEnum) root.SetValue(name, (int)value);
                 else switch (Type.GetTypeCode(pt))
                 {
@@ -200,7 +201,25 @@ namespace Cube.Settings
                         break;
                 }
             }
-            catch (Exception err) { Cube.Log.LogOperator.Warn(typeof(SettingsOperator), err.ToString()); }
+            catch (Exception err) { LogOperator.Warn(typeof(SettingsOperator), err.ToString()); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetType
+        ///
+        /// <summary>
+        /// PropertyInfo オブジェクトの型を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Type GetType(PropertyInfo src)
+        {
+            var dest = src.PropertyType;
+            return dest.IsGenericType &&
+                   dest.GetGenericTypeDefinition() == typeof(Nullable<>) ?
+                   dest.GetGenericArguments()[0] :
+                   dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -247,7 +266,7 @@ namespace Cube.Settings
                         return System.Convert.ChangeType(value, type);
                 }
             }
-            catch (Exception err) { Cube.Log.LogOperator.Warn(typeof(SettingsOperator), err.ToString()); }
+            catch (Exception err) { LogOperator.Warn(typeof(SettingsOperator), err.ToString()); }
 
             return null;
         }

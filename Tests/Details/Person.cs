@@ -161,7 +161,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public DateTime Creation
+        public DateTime? Creation
         {
             get => _creation;
             set => SetProperty(ref _creation, value);
@@ -248,7 +248,7 @@ namespace Cube.Tests
         private string _name = string.Empty;
         private Sex _sex = Sex.Unknown;
         private int _age = 0;
-        private DateTime _creation = DateTime.MinValue;
+        private DateTime? _creation = DateTime.MinValue;
         private Address _phone = new Address { Type = "Phone", Value = string.Empty };
         private Address _email = new Address { Type = "Email", Value = string.Empty };
         private bool _reserved = false;

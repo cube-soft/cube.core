@@ -75,7 +75,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime Creation { get; set; } = DateTime.MinValue;
+        public DateTime? Creation { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
