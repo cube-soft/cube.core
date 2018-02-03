@@ -200,6 +200,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public static class ValueEventArgs
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
@@ -228,6 +230,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) =>
             new ValueCancelEventArgs<T>(value, cancel);
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */
@@ -242,6 +246,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public static class ValueChangedEventArgs
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
@@ -256,6 +262,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static ValueChangedEventArgs<T> Create<T>(T oldvalue, T newvalue) =>
             new ValueChangedEventArgs<T>(oldvalue, newvalue);
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

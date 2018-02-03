@@ -33,6 +33,8 @@ namespace Cube.Collections
     /* --------------------------------------------------------------------- */
     public static class CollectionOperator
     {
+        #region Methods
+
         #region IEnumerable(T)
 
         /* ----------------------------------------------------------------- */
@@ -151,6 +153,8 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public static int LastIndex<T>(this IList<T> src) =>
             src == null || src.Count == 0 ? 0 : src.Count - 1;
+
+        #endregion
 
         #endregion
     }

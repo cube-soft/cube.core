@@ -30,6 +30,8 @@ namespace Cube.Iteration
     /* --------------------------------------------------------------------- */
     public static class IterationOperator
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Times
@@ -63,5 +65,7 @@ namespace Cube.Iteration
         {
             for (var i = 0; i < n; ++i) action(i);
         }
+
+        #endregion
     }
 }

@@ -168,6 +168,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public static class KeyValueEventArgs
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
@@ -198,6 +200,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel) =>
             new KeyValueCancelEventArgs<T, U>(key, value, cancel);
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

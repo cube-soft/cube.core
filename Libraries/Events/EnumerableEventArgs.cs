@@ -145,6 +145,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public static class EnumerableEventArgs
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
@@ -173,6 +175,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static EnumerableCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
             new EnumerableCancelEventArgs<T>(value, cancel);
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

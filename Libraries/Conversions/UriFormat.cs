@@ -32,6 +32,10 @@ namespace Cube.Conversions
     /* --------------------------------------------------------------------- */
     public static class UriFormat
     {
+        #region Methods
+
+        #region ToUri
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToUri
@@ -51,6 +55,10 @@ namespace Cube.Conversions
             src.StartsWith("//")      ? new Uri("http:" + src) :
             src.StartsWith("/")       ? new Uri("http://localhost" + src) :
                                         new Uri("http://" + src);
+
+        #endregion
+
+        #region With
 
         /* ----------------------------------------------------------------- */
         ///
@@ -172,6 +180,10 @@ namespace Cube.Conversions
             return With(uri, query);
         }
 
+        #endregion
+
+        #region WithoutQuery
+
         /* ----------------------------------------------------------------- */
         ///
         /// WithoutQuery
@@ -189,6 +201,10 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static Uri WithoutQuery(this Uri uri) =>
             new Uri(uri.GetLeftPart(UriPartial.Path));
+
+        #endregion
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

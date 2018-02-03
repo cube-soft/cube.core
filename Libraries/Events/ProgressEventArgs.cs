@@ -90,6 +90,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public static class ProgressEventArgs
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
@@ -102,8 +104,10 @@ namespace Cube
         /// <param name="value">ユーザデータ</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static ProgressEventArgs<T> Create<T>(double ratio, T value)
-            => new ProgressEventArgs<T>(ratio, value);
+        public static ProgressEventArgs<T> Create<T>(double ratio, T value) =>
+            new ProgressEventArgs<T>(ratio, value);
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

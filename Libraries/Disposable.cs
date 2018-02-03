@@ -31,6 +31,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public static class Disposable
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
@@ -49,6 +51,8 @@ namespace Cube
             if (dispose == null) throw new ArgumentException(nameof(dispose));
             return new AnonymousDisposable(dispose);
         }
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

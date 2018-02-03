@@ -32,6 +32,8 @@ namespace Cube.Tasks
     /* --------------------------------------------------------------------- */
     public static class TaskOperator
     {
+        #region Methods
+
         /* --------------------------------------------------------------------- */
         ///
         /// Forget
@@ -91,5 +93,7 @@ namespace Cube.Tasks
             await ((Task)task).Timeout(timeout);
             return await task;
         }
+
+        #endregion
     }
 }

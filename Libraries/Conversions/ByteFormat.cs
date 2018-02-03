@@ -30,6 +30,8 @@ namespace Cube.Conversions
     /* --------------------------------------------------------------------- */
     public static class ByteFormat
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToPrettyBytes
@@ -79,5 +81,7 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static string ToRoughBytes(this long bytes) =>
             ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
+
+        #endregion
     }
 }

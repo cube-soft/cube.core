@@ -30,6 +30,10 @@ namespace Cube.Conversions
     /* --------------------------------------------------------------------- */
     public static class TimeFormat
     {
+        #region Methods
+
+        #region ToUnixTime
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToUnixTime
@@ -48,6 +52,10 @@ namespace Cube.Conversions
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return (long)(time?.ToUniversalTime().Subtract(epoch).TotalSeconds ?? 0.0);
         }
+
+        #endregion
+
+        #region ToDateTime
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,6 +108,10 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static DateTime? ToDateTime(this string time, string format) =>
             ToUniversalTime(time, format);
+
+        #endregion
+
+        #region ToUniversalTime
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,6 +173,10 @@ namespace Cube.Conversions
                        );
             return new DateTime(dest.Ticks, DateTimeKind.Utc);
         }
+
+        #endregion
+
+        #region ToLocalTime
 
         /* ----------------------------------------------------------------- */
         ///
@@ -227,5 +243,9 @@ namespace Cube.Conversions
                        );
             return new DateTime(dest.Ticks, DateTimeKind.Local);
         }
+
+        #endregion
+
+        #endregion
     }
 }
