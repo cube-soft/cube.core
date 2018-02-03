@@ -51,7 +51,7 @@ namespace Cube.Tests
             using (var timer = new WakeableTimer())
             {
                 Assert.That(timer.Interval,      Is.EqualTo(TimeSpan.FromSeconds(1)));
-                Assert.That(timer.LastPublished, Is.EqualTo(DateTime.MinValue));
+                Assert.That(timer.LastPublished, Is.Null);
                 Assert.That(timer.State,         Is.EqualTo(TimerState.Stop));
             }
         }

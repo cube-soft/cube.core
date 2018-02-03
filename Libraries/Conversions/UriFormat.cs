@@ -121,7 +121,7 @@ namespace Cube.Conversions
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static Uri With(this Uri uri, DateTime time) =>
+        public static Uri With(this Uri uri, DateTime? time) =>
             With(uri, "ts", time.ToUnixTime());
 
         /* ----------------------------------------------------------------- */

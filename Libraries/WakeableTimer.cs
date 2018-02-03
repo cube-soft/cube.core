@@ -100,7 +100,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastPublished { get; private set; } = DateTime.MinValue;
+        public DateTime? LastPublished { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -115,7 +115,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected DateTime Next { get; set; } = DateTime.Now;
+        protected DateTime? Next { get; set; } = DateTime.Now;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -382,7 +382,7 @@ namespace Cube
             this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
                 LastPublished, Next, Interval));
 
-            _core.Interval = Math.Max(time.TotalMilliseconds, 1);
+            _core.Interval = Math.Max(time.Value.TotalMilliseconds, 1);
             _core.Start();
         }
 
@@ -442,7 +442,7 @@ namespace Cube
             finally
             {
                 var user = Interval.TotalMilliseconds;
-                var diff = (DateTime.Now - LastPublished).TotalMilliseconds;
+                var diff = (DateTime.Now - LastPublished).Value.TotalMilliseconds;
                 var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
 
                 Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
