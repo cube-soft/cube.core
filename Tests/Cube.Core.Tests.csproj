@@ -40,12 +40,6 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libraries\Cube.Core.csproj">
-      <Project>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</Project>
-      <Name>Cube.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -56,6 +50,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conversions\ByteFormatTest.cs" />
@@ -78,6 +74,7 @@
     <Compile Include="Operations\IterationTest.cs" />
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
+    <Compile Include="Operations\XmlTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
@@ -95,6 +92,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Packages.config" />
+    <None Include="Examples\Sample.opml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\Sample.rss">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Examples\Sample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -112,14 +115,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Libraries\Cube.Core.csproj">
+      <Project>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</Project>
+      <Name>Cube.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

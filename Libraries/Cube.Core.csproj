@@ -73,6 +73,7 @@
     <Compile Include="Operations\Iteration.cs" />
     <Compile Include="Operations\Log.cs" />
     <Compile Include="Operations\Tasks.cs" />
+    <Compile Include="Operations\Xml.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessengerService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />

@@ -15,106 +15,138 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using NUnit.Framework;
-using Cube.Collections;
+using Cube.Xml;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CollectionsTest
+    /// XmlTest
     ///
     /// <summary>
-    /// CollectionOperator のテスト用クラスです。
+    /// XmlOperator のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CollectionsTest
+    class XmlTest : FileHelper
     {
         #region Tests
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastIndex
-        ///
-        /// <summary>
-        /// 最後のインデックスを取得するテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(10, ExpectedResult = 9)]
-        [TestCase( 1, ExpectedResult = 0)]
-        [TestCase( 0, ExpectedResult = 0)]
-        public int LastIndex(int count) => Create(count).LastIndex();
+        #region GetElements
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LastIndex_Null
+        /// GetElements_Rss
         ///
         /// <summary>
-        /// 最後のインデックスを取得するテストを実行します。
+        /// Sample.rss に対して GetElements のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 0)]
-        public int LastIndex_Null()
+        [Test]
+        public void GetElements_Rss() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetElement("items")
+                .GetElement("rdf", "Seq")
+                .GetElements("rdf", "li")
+                .Count(),
+            Is.EqualTo(2)
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetElements_Opml
+        ///
+        /// <summary>
+        /// Sample.opml に対して GetElements のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetElements_Opml() => Assert.That(
+            Create("Sample.opml")
+                .GetElement("body")
+                .GetElements("outline")
+                .Count(),
+            Is.EqualTo(1)
+        );
+
+        #endregion
+
+        #region GetDecendants
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDecendants_Rss
+        ///
+        /// <summary>
+        /// Sample.rss に対して GetDecendants のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetDecendants_Rss() => Assert.That(
+            Create("Sample.rss").GetDecendants("rdf", "li").Count(),
+            Is.EqualTo(2)
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDecendants_Opml
+        ///
+        /// <summary>
+        /// Sample.opml に対して GetDecendants のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetDecendants_Opml() => Assert.That(
+            Create("Sample.opml").GetDecendants("outline").Count(),
+            Is.EqualTo(8)
+        );
+
+        #endregion
+
+        #region GetValueOrAttribute
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValueOrAttribute
+        ///
+        /// <summary>
+        /// GetValueOrAttribute のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetValueOrAttribute()
         {
-            IList<int> collection = null;
-            return collection.LastIndex();
+            var src = Create("Sample.rss").GetElement("channel");
+
+            Assert.That(
+                src.GetValueOrAttribute("link", string.Empty),
+                Is.EqualTo("http://xml.com/pub")
+            );
+
+            var seq = src.GetElement("items").GetElement("rdf", "Seq");
+
+            Assert.That(
+                seq.GetValueOrAttribute("rdf", "li", string.Empty),
+                Is.Empty
+            );
+
+            Assert.That(
+                seq.GetValueOrAttribute("rdf", "li", "resource"),
+                Is.EqualTo("http://xml.com/pub/2000/08/09/xslt/xslt.html")
+            );
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Clamp_Null
-        ///
-        /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸める
-        /// テストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(10,  5, ExpectedResult = 5)]
-        [TestCase(10, 20, ExpectedResult = 9)]
-        [TestCase(10, -1, ExpectedResult = 0)]
-        [TestCase( 0, 10, ExpectedResult = 0)]
-        [TestCase( 0, -1, ExpectedResult = 0)]
-        public int Clamp(int count, int index) => Create(count).Clamp(index);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Clamp_Null
-        ///
-        /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸める
-        /// テストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 0)]
-        public int Clamp_Null()
-        {
-            IList<int> collection = null;
-            return collection.Clamp(100);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToObservable
-        ///
-        /// <summary>
-        /// IList(int) を ObservableCollection(int) に変換するテストを
-        /// 実行しますます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(100)]
-        public void ToObservable(int count)
-        {
-            var src = Create(count);
-            Assert.That(src.ToObservable(), Is.EquivalentTo(src));
-        }
+        #endregion
 
         #endregion
 
@@ -125,16 +157,11 @@ namespace Cube.Tests
         /// Create
         ///
         /// <summary>
-        /// テスト用のコレクションオブジェクトを生成します。
+        /// テスト用の XElement オブジェクトを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private IList<int> Create(int count)
-        {
-            var dest = new List<int>();
-            for (int i = 0; i < count; ++i) dest.Add(i);
-            return dest;
-        }
+        private XElement Create(string e) => XDocument.Load(Example(e)).Root;
 
         #endregion
     }
