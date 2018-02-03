@@ -144,6 +144,16 @@ namespace Cube.Tests
                 seq.GetValueOrAttribute("rdf", "li", "resource"),
                 Is.EqualTo("http://xml.com/pub/2000/08/09/xslt/xslt.html")
             );
+
+            Assert.That(
+                seq.GetValueOrAttribute("rdf", "li", "dummy"),
+                Is.Empty
+            );
+
+            Assert.That(
+                seq.GetValueOrAttribute("li", "resource"),
+                Is.Empty
+            );
         }
 
         #endregion
