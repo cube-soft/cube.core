@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
@@ -81,7 +82,7 @@ namespace Cube.Settings
         /// <returns>設定オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this SettingsType type, System.IO.Stream src)
+        public static T Load<T>(this SettingsType type, Stream src)
         {
             switch (type)
             {
@@ -148,7 +149,7 @@ namespace Cube.Settings
         /// <param name="src">設定情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(this SettingsType type, System.IO.Stream dest, T src)
+        public static void Save<T>(this SettingsType type, Stream dest, T src)
         {
             switch (type)
             {
@@ -194,7 +195,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private static T LoadXml<T>(string src)
         {
-            using (var ss = System.IO.File.OpenRead(src)) return LoadXml<T>(ss);
+            using (var ss = File.OpenRead(src)) return LoadXml<T>(ss);
         }
 
         /* ----------------------------------------------------------------- */
@@ -206,7 +207,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadXml<T>(System.IO.Stream src)
+        private static T LoadXml<T>(Stream src)
         {
             var serializer = new DataContractSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -224,7 +225,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private static T LoadJson<T>(string src)
         {
-            using (var ss = System.IO.File.OpenRead(src)) return LoadJson<T>(ss);
+            using (var ss = File.OpenRead(src)) return LoadJson<T>(ss);
         }
 
         /* ----------------------------------------------------------------- */
@@ -236,7 +237,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadJson<T>(System.IO.Stream src)
+        private static T LoadJson<T>(Stream src)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -249,29 +250,20 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SaveXml
+        /// Save
         ///
         /// <summary>
-        /// ストリームに XML 形式で保存します。
+        /// ファイルに保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, string dest)
+        private static void Save(string dest, Action<Stream> action)
         {
-            var error = false;
-            try
+            using (var ms = new MemoryStream())
             {
-                using (var ds = System.IO.File.Create(dest))
-                {
-                    try { SaveXml(src, ds); }
-                    catch (Exception)
-                    {
-                        error = true;
-                        throw;
-                    }
-                }
+                action(ms);
+                using (var ds = File.Create(dest)) ms.CopyTo(ds);
             }
-            finally { if (error) System.IO.File.Delete(dest); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -283,7 +275,19 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, System.IO.Stream dest)
+        private static void SaveXml<T>(T src, string dest) =>
+            Save(dest, e => SaveXml(src, e));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveXml
+        ///
+        /// <summary>
+        /// ストリームに XML 形式で保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveXml<T>(T src, Stream dest)
         {
             var serializer = new DataContractSerializer(typeof(T));
             serializer.WriteObject(dest, src);
@@ -298,23 +302,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, string dest)
-        {
-            var error = false;
-            try
-            {
-                using (var ds = System.IO.File.Create(dest))
-                {
-                    try { SaveJson(src, ds); }
-                    catch (Exception)
-                    {
-                        error = true;
-                        throw;
-                    }
-                }
-            }
-            finally { if (error) System.IO.File.Delete(dest); }
-        }
+        private static void SaveJson<T>(T src, string dest) =>
+            Save(dest, e => SaveJson(src, e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -325,7 +314,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, System.IO.Stream dest)
+        private static void SaveJson<T>(T src, Stream dest)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             serializer.WriteObject(dest, src);
