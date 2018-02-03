@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -20,7 +20,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// NavigatingEventArgs
-    /// 
+    ///
     /// <summary>
     /// Web ブラウザにおいて、画面遷移が発生した時の引数を保持するための
     /// クラスです。
@@ -34,16 +34,15 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// NavigatingEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NavigatingEventArgs(string url, string frame)
-            : base(false)
+        public NavigatingEventArgs(string url, string frame) : base(false)
         {
-            Url = url;
+            Url   = url;
             Frame = frame;
         }
 
@@ -54,7 +53,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Url
-        /// 
+        ///
         /// <summary>
         /// 遷移先の URL を取得します。
         /// </summary>
@@ -65,7 +64,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Frame
-        /// 
+        ///
         /// <summary>
         /// 遷移先のターゲットフレームを取得します。
         /// </summary>
@@ -79,7 +78,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// NavigateErrorEventArgs
-    /// 
+    ///
     /// <summary>
     /// ウェブブラウザにおいて、移動中にエラーが発生した時の引数を保持する
     /// ためのクラスです。
@@ -93,14 +92,14 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// NavigatingErrorEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public NavigatingErrorEventArgs(string url, string frame, int code)
-            : base(url, frame)
+        public NavigatingErrorEventArgs(string url, string frame, int code) :
+            base(url, frame)
         {
             StatusCode = code;
         }
@@ -112,7 +111,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// StatusCode
-        /// 
+        ///
         /// <summary>
         /// ステータスコードを取得します。
         /// </summary>

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Forms.Demo
     /* --------------------------------------------------------------------- */
     ///
     /// CustomCaptionControl
-    /// 
+    ///
     /// <summary>
     /// 画面上部のキャプション（タイトルバー）を表すコントロールです。
     /// </summary>
@@ -36,7 +36,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         ///
         /// CustomCaptionControl
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -58,7 +58,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         ///
         /// OnControlAdded
-        /// 
+        ///
         /// <summary>
         /// このコントロールが何らかのコンテナに追加された時に実行されます。
         /// </summary>
@@ -73,7 +73,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         ///
         /// OnActivated
-        /// 
+        ///
         /// <summary>
         /// アクティブ化された時に実行されます。
         /// </summary>
@@ -91,7 +91,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         ///
         /// OnDeactivate
-        /// 
+        ///
         /// <summary>
         /// 非アクティブ化された時に実行されるハンドラです。
         /// </summary>
@@ -106,10 +106,10 @@ namespace Cube.Forms.Demo
             base.OnDeactivate(e);
         }
 
-        #region Fields
-        private Color _backColor = Color.Empty;
         #endregion
 
+        #region Fields
+        private Color _backColor = Color.Empty;
         #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,23 +21,25 @@ namespace Cube.Forms.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Processes.Operations
-    /// 
+    /// ProcessOperator
+    ///
     /// <summary>
     /// Process クラスの拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class ProcessOperator
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Activate
-        /// 
+        ///
         /// <summary>
         /// プロセスのメイン画面をアクティブ化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="process">Process オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -48,5 +50,7 @@ namespace Cube.Forms.Processes
             if (User32.NativeMethods.IsIconic(h)) User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
             User32.NativeMethods.SetForegroundWindow(h);
         }
+
+        #endregion
     }
 }

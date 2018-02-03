@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -26,7 +26,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// WebControl
-    /// 
+    ///
     /// <summary>
     /// Web ページを表示するためのコントロールです。
     /// </summary>
@@ -63,11 +63,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -76,11 +76,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// 現在の Dpi の値を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -105,7 +105,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// BeforeNavigating
-        /// 
+        ///
         /// <summary>
         /// ページ遷移が発生する直前に発生するイベントです。
         /// </summary>
@@ -116,14 +116,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnBeforeNavigating
-        /// 
+        ///
         /// <summary>
         /// BeforeNavigating を発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnBeforeNavigating(NavigatingEventArgs e)
-            => BeforeNavigating?.Invoke(this, e);
+        protected virtual void OnBeforeNavigating(NavigatingEventArgs e) =>
+            BeforeNavigating?.Invoke(this, e);
 
         #endregion
 
@@ -132,7 +132,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// BeforeNewWindow
-        /// 
+        ///
         /// <summary>
         /// 新しいウィンドウでページを開く直前に発生するイベントです。
         /// </summary>
@@ -143,14 +143,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnBeforeNewWindow
-        /// 
+        ///
         /// <summary>
         /// BeforeNewWindow を発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnBeforeNewWindow(NavigatingEventArgs e)
-            => BeforeNewWindow?.Invoke(this, e);
+        protected virtual void OnBeforeNewWindow(NavigatingEventArgs e) =>
+            BeforeNewWindow?.Invoke(this, e);
 
         #endregion
 
@@ -159,7 +159,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// NavigatingError
-        /// 
+        ///
         /// <summary>
         /// ページ遷移中にエラーが生じた際に発生するイベントです。
         /// </summary>
@@ -170,14 +170,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnNavigatingError
-        /// 
+        ///
         /// <summary>
         /// ページ遷移中にエラーが生じた際に実行されます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnNavigatingError(NavigatingErrorEventArgs e)
-            => NavigatingError?.Invoke(this, e);
+        protected virtual void OnNavigatingError(NavigatingErrorEventArgs e) =>
+            NavigatingError?.Invoke(this, e);
 
         #endregion
 
@@ -186,7 +186,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// MessageShowing
-        /// 
+        ///
         /// <summary>
         /// メッセージボックスが表示される直前に発生するイベントです。
         /// </summary>
@@ -197,14 +197,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnMessageShowing
-        /// 
+        ///
         /// <summary>
         /// メッセージボックスが表示される直前に実行されます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnMessageShowing(MessageEventArgs e)
-            => MessageShowing?.Invoke(this, e);
+        protected virtual void OnMessageShowing(MessageEventArgs e) =>
+            MessageShowing?.Invoke(this, e);
 
         #endregion
 
@@ -245,11 +245,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// URL で示されたコンテンツの表示を開始します。
         /// </summary>
-        /// 
+        ///
         /// <param name="uri">URL</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -262,11 +262,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// HTML で示されたコンテンツの表示を開始します。
         /// </summary>
-        /// 
+        ///
         /// <param name="html">HTML</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -279,11 +279,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// HTML で示されたコンテンツの表示を開始します。
         /// </summary>
-        /// 
+        ///
         /// <param name="stream">HTML コンテンツを含むストリーム</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -304,7 +304,7 @@ namespace Cube.Forms
         /// <summary>
         /// ウィンドウメッセージを受信します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// JavaScript の window.close() が実行された場合への対応。
         /// TODO: WM_DESTROY をキャンセルする方法があるかどうか要調査
@@ -335,8 +335,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override System.Windows.Forms.WebBrowserSiteBase CreateWebBrowserSiteBase()
-            => new ShowUIWebBrowserSite(this);
+        protected override System.Windows.Forms.WebBrowserSiteBase CreateWebBrowserSiteBase() =>
+            new ShowUIWebBrowserSite(this);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -346,7 +346,7 @@ namespace Cube.Forms
         /// コントロール イベントを処理できるクライアントに、基になる ActiveX
         /// コントロールを関連付けます。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// System.Windows.Forms.WebBrowser から継承されます。
         /// </remarks>
@@ -367,7 +367,7 @@ namespace Cube.Forms
         /// 基になる ActiveX コントロールの CreateSink メソッドでアタッチされた
         /// イベント処理クライアントを解放します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// System.Windows.Forms.WebBrowser から継承されます。
         /// </remarks>
@@ -386,7 +386,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// GetUserAgent
-        /// 
+        ///
         /// <summary>
         /// UserAgent を取得します。
         /// </summary>
@@ -408,7 +408,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// SetUserAgent
-        /// 
+        ///
         /// <summary>
         /// UserAgent を設定します。
         /// </summary>
@@ -428,7 +428,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// CloseForm
-        /// 
+        ///
         /// <summary>
         /// コンポーネントが関連付られているフォームを閉じます。
         /// </summary>
@@ -443,7 +443,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// RaiseBeforeNavigating
-        /// 
+        ///
         /// <summary>
         /// ページ遷移が発生する直前に実行されます。
         /// </summary>
@@ -459,7 +459,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// RaiseBeforeNewWindow
-        /// 
+        ///
         /// <summary>
         /// 新しいウィンドウでページを開く直前に実行されます。
         /// </summary>
@@ -475,7 +475,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// RaiseNavigatingError
-        /// 
+        ///
         /// <summary>
         /// ページ遷移中にエラーが生じた際に実行されます。
         /// </summary>
@@ -491,7 +491,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// RaiseMessageShowing
-        /// 
+        ///
         /// <summary>
         /// メッセージボックスが表示される直前に実行されます。
         /// </summary>
@@ -504,13 +504,13 @@ namespace Cube.Forms
             result = e.Handled ? e.Result : -1;
         }
 
+        #endregion
+
         #region Fields
         private string _agent = string.Empty;
         private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie = null;
         private ActiveXControlEvents _events = null;
         private double _dpi = StandardForm.BaseDpi;
-        #endregion
-
         #endregion
     }
 }

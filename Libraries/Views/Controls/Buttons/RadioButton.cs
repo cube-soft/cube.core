@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// RadioButton
-    /// 
+    ///
     /// <summary>
     /// ラジオボタンを作成するためのクラスです。
     /// </summary>
@@ -56,11 +56,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Controls に登録されている IControl オブジェクトに対して、
         /// 再帰的に設定します。
@@ -86,11 +86,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// 現在の Dpi の値を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -143,7 +143,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ShowFocusCues
-        /// 
+        ///
         /// <summary>
         /// フォーカス時に枠線を描画するかどうかを取得します。
         /// </summary>
@@ -158,7 +158,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// BackColor
-        /// 
+        ///
         /// <summary>
         /// 背景色を取得または設定します。
         /// </summary>
@@ -175,7 +175,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// BackColor
-        /// 
+        ///
         /// <summary>
         /// 背景イメージを取得または設定します。
         /// </summary>
@@ -192,7 +192,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// FlatAppearance
-        /// 
+        ///
         /// <summary>
         /// 表示内容を取得します。
         /// </summary>
@@ -200,13 +200,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.FlatButtonAppearance FlatAppearance
-            => base.FlatAppearance;
+        public new System.Windows.Forms.FlatButtonAppearance FlatAppearance =>
+            base.FlatAppearance;
 
         /* ----------------------------------------------------------------- */
         ///
         /// FlatStyle
-        /// 
+        ///
         /// <summary>
         /// 表示方法を取得または設定します。
         /// </summary>
@@ -223,7 +223,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ForeColor
-        /// 
+        ///
         /// <summary>
         /// 前景色を取得または設定します。
         /// </summary>
@@ -240,7 +240,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Image
-        /// 
+        ///
         /// <summary>
         /// 表示イメージを取得または設定します。
         /// </summary>
@@ -257,7 +257,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ImageIndex
-        /// 
+        ///
         /// <summary>
         /// イメージを取得するためのインデックスを取得または設定します。
         /// </summary>
@@ -274,7 +274,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ImageKey
-        /// 
+        ///
         /// <summary>
         /// イメージを取得するためのキーを取得または設定します。
         /// </summary>
@@ -291,7 +291,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ImageList
-        /// 
+        ///
         /// <summary>
         /// イメージリストを取得または設定します。
         /// </summary>
@@ -308,7 +308,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Text
-        /// 
+        ///
         /// <summary>
         /// 表示テキストを取得または設定します。
         /// </summary>
@@ -325,7 +325,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// TextImageRelation
-        /// 
+        ///
         /// <summary>
         /// テキストとイメージの位置関係を取得または設定します。
         /// </summary>
@@ -342,7 +342,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// UseVisualStyleBakColor
-        /// 
+        ///
         /// <summary>
         /// VisualStyle を適用するかどうかを示す値を取得または設定します。
         /// </summary>
@@ -363,7 +363,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Appearance
-        /// 
+        ///
         /// <summary>
         /// 表示方法を取得または設定します。
         /// </summary>
@@ -380,7 +380,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// CheckAlign
-        /// 
+        ///
         /// <summary>
         /// チェックボックスの表示位置を取得または設定します。
         /// </summary>
@@ -454,8 +454,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
-            => NcHitTest?.Invoke(this, e);
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e) =>
+            NcHitTest?.Invoke(this, e);
 
         #endregion
 

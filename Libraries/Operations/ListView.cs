@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,40 +22,43 @@ namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SelectedIndices
-    /// 
+    /// ListViewOperator
+    ///
     /// <summary>
-    /// System.Windows.Forms.ListView.SelectedIndexCollection の
-    /// 拡張メソッドを定義したクラスです。
+    /// System.Windows.Forms.ListView の拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class SelectedIndices
+    public static class ListViewOperator
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Ascend
-        /// 
+        ///
         /// <summary>
         /// 昇順にソートします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<int> Ascend(
-            this System.Windows.Forms.ListView.SelectedIndexCollection indices)
-            => indices.Cast<int>().OrderBy(x => x);
+            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
+            indices.Cast<int>().OrderBy(x => x);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Descend
-        /// 
+        ///
         /// <summary>
         /// 降順にソートします。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<int> Descend(
-            this System.Windows.Forms.ListView.SelectedIndexCollection indices)
-            => indices.Cast<int>().OrderByDescending(x => x);
+            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
+            indices.Cast<int>().OrderByDescending(x => x);
+
+        #endregion
     }
 }

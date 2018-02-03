@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,11 +27,11 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// StandardForm
-    /// 
+    ///
     /// <summary>
     /// Windows 標準のフォームを表すクラスです。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// System.Windows.Forms.Form をベースに実装されています。
     /// </remarks>
@@ -69,7 +69,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Activator
-        /// 
+        ///
         /// <summary>
         /// プロセス間通信を介した起動およびアクティブ化を制御するための
         /// オブジェクトを取得または設定します。
@@ -94,7 +94,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// 現在の Dpi の値を取得または設定します。
         /// </summary>
@@ -119,7 +119,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// BaseDpi
-        /// 
+        ///
         /// <summary>
         /// 基準となる Dpi の値を取得します。
         /// </summary>
@@ -130,11 +130,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Controls に登録されている ControlBase オブジェクトに対して、
         /// 再帰的に設定します。
@@ -148,11 +148,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ShortcutKeys
-        /// 
+        ///
         /// <summary>
         /// ショートカットキーの一覧を取得します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// ShortcutKeys に登録された動作が ProcessCmdKey(Message, Keys)
         /// にて実行されます。
@@ -161,13 +161,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDictionary<System.Windows.Forms.Keys, Action> ShortcutKeys { get; }
-            = new Dictionary<System.Windows.Forms.Keys, Action>();
+        public IDictionary<System.Windows.Forms.Keys, Action> ShortcutKeys { get; } =
+            new Dictionary<System.Windows.Forms.Keys, Action>();
 
         /* ----------------------------------------------------------------- */
         ///
         /// ProductPlatform
-        /// 
+        ///
         /// <summary>
         /// 実行中のプロセスのプラットフォームを表す文字列を取得します。
         /// </summary>
@@ -175,7 +175,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string ProductPlatform => (IntPtr.Size == 4) ? "x86" : "x64";
+        public string ProductPlatform => AssemblyReader.Platform;
 
         #endregion
 
@@ -186,7 +186,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// VisibleChanging
-        /// 
+        ///
         /// <summary>
         /// Visible プロパティの値が変更される直前に発生するイベントです。
         /// </summary>
@@ -197,7 +197,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnVisibleChanging
-        /// 
+        ///
         /// <summary>
         /// VisibleChanging イベントを発生させます。
         /// </summary>
@@ -233,8 +233,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(EnumerableEventArgs<string> e)
-            => Received?.Invoke(this, e);
+        protected virtual void OnReceived(EnumerableEventArgs<string> e) =>
+            Received?.Invoke(this, e);
 
         #endregion
 
@@ -306,7 +306,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// AdjustDesktopLocation
-        /// 
+        ///
         /// <summary>
         /// スクリーンからはみ出さないように表示位置を調整します。
         /// </summary>
@@ -336,7 +336,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// DoShortcutKeys
-        /// 
+        ///
         /// <summary>
         /// ショートカットキーを実行します。
         /// </summary>
@@ -356,7 +356,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// SetVisibleCore
-        /// 
+        ///
         /// <summary>
         /// コントロールを指定した表示状態に設定します。
         /// </summary>
@@ -405,7 +405,7 @@ namespace Cube.Forms
 
             switch (m.Msg)
             {
-                case 0x02e0: // WM_DPICHANGED                    
+                case 0x02e0: // WM_DPICHANGED
                     Dpi = (short)(m.WParam.ToInt32() & 0x0000ffff);
                     break;
                 case 0x0084: // WM_NCHITTEST
@@ -421,7 +421,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// WhenActivated
-        /// 
+        ///
         /// <summary>
         /// 他プロセスからメッセージを受信（アクティブ化）した時に実行
         /// されるハンドラです。
@@ -448,7 +448,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// CreatePoint
-        /// 
+        ///
         /// <summary>
         /// lParam から Point オブジェクトを生成します。
         /// </summary>
@@ -461,12 +461,12 @@ namespace Cube.Forms
             return new Point(x, y);
         }
 
+        #endregion
+
         #region Fields
         private double _dpi = StandardForm.BaseDpi;
         private Cube.Processes.IMessenger<IEnumerable<string>> _activator = null;
         private IDisposable _remover = null;
-        #endregion
-
         #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,7 +27,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// SizeGripControl
-    /// 
+    ///
     /// <summary>
     /// フォーム右下に表示されるリサイズ用グリップの機能を提供する
     /// コントロールクラスです。
@@ -41,7 +41,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// SizeGripControl
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -56,11 +56,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Controls に登録されている IControl オブジェクトに対して、
         /// 再帰的に設定します。
@@ -86,11 +86,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// 現在の Dpi の値を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -147,7 +147,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnCreateControl
-        /// 
+        ///
         /// <summary>
         /// コントロール生成時に実行されます。
         /// </summary>
@@ -162,7 +162,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnBackColorChanged
-        /// 
+        ///
         /// <summary>
         /// 背景色の変更時に実行されます。
         /// </summary>
@@ -177,7 +177,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnResize
-        /// 
+        ///
         /// <summary>
         /// コントロール自体のサイズ変更時に実行されます。
         /// </summary>
@@ -192,7 +192,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnMouseMove
-        /// 
+        ///
         /// <summary>
         /// マウス移動時に実行されます。
         /// </summary>
@@ -211,7 +211,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnMouseDown
-        /// 
+        ///
         /// <summary>
         /// マウスのボタンを押下時に実行されます。
         /// </summary>
@@ -231,7 +231,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// DrawSizeGrip
-        /// 
+        ///
         /// <summary>
         /// リサイズ用グリップの外観を描画します。
         /// </summary>
@@ -257,11 +257,11 @@ namespace Cube.Forms
             Image = image;
         }
 
+        #endregion
+
         #region Fields
         private IEventHub _events;
         private double _dpi = StandardForm.BaseDpi;
-        #endregion
-
         #endregion
     }
 }

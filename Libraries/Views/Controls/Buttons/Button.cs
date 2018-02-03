@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,11 +25,11 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// Button
-    /// 
+    ///
     /// <summary>
     /// ボタンを作成するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// Button クラスは、System.Windows.Forms.Button クラスにおける
     /// いくつかの表示上の問題を解決するために定義されたクラスです。
@@ -44,11 +44,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Controls に登録されている IControl オブジェクトに対して、
         /// 再帰的に設定します。
@@ -74,11 +74,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// 現在の Dpi の値を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -161,8 +161,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
-            => NcHitTest?.Invoke(this, e);
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e) =>
+            NcHitTest?.Invoke(this, e);
 
         #endregion
 
@@ -229,6 +229,8 @@ namespace Cube.Forms
             FlatAppearance.BorderColor = Color.FromArgb(191, 191, 191);
         }
 
+        #endregion
+
         #region Fields
         private bool _previous = true;
         private Color _background = Color.Empty;
@@ -236,8 +238,6 @@ namespace Cube.Forms
         private Color _border = Color.Empty;
         private IEventHub _events;
         private double _dpi = StandardForm.BaseDpi;
-        #endregion
-
         #endregion
     }
 }

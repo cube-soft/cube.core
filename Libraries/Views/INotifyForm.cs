@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,7 +22,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// INotifyForm
-    /// 
+    ///
     /// <summary>
     /// 通知フォームを表すインターフェースです。
     /// </summary>
@@ -30,10 +30,12 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public interface INotifyForm : IForm
     {
+        #region Properties
+
         /* --------------------------------------------------------------------- */
         ///
         /// IsBusy
-        /// 
+        ///
         /// <summary>
         /// 実行中かどうかを取得します。
         /// </summary>
@@ -44,7 +46,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Value
-        /// 
+        ///
         /// <summary>
         /// 通知内容を取得します。
         /// </summary>
@@ -52,14 +54,18 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         NotifyItem Value { get; }
 
+        #endregion
+
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Show
-        /// 
+        ///
         /// <summary>
         /// フォームを表示します。
         /// </summary>
-        /// 
+        ///
         /// <param name="item">表示内容</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -68,21 +74,25 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Show
-        /// 
+        ///
         /// <summary>
         /// フォームを表示します。
         /// </summary>
-        /// 
+        ///
         /// <param name="item">表示内容</param>
         /// <param name="style">表示スタイル</param>
         ///
         /* ----------------------------------------------------------------- */
         void Show(NotifyItem item, NotifyStyle style);
 
+        #endregion
+
+        #region Events
+
         /* ----------------------------------------------------------------- */
         ///
         /// Selected
-        /// 
+        ///
         /// <summary>
         /// ユーザの選択時に発生します。
         /// </summary>
@@ -93,12 +103,14 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Completed
-        /// 
+        ///
         /// <summary>
         /// 通知完了時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         event EventHandler Completed;
+
+        #endregion
     }
 }

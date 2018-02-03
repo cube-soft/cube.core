@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -38,11 +38,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="view">View オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -51,22 +51,22 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="view">View オブジェクト</param>
         /// <param name="events">EventHub オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, IEventHub events)
-            : this(view, events, SynchronizationContext.Current) { }
+        public PresenterBase(TView view, IEventHub events) :
+            this(view, events, SynchronizationContext.Current) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -74,7 +74,7 @@ namespace Cube.Forms
         /// <param name="view">View オブジェクト</param>
         /// <param name="events">EventHub オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public PresenterBase(TView view, IEventHub events, SynchronizationContext context)
         {
@@ -91,7 +91,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// View
-        /// 
+        ///
         /// <summary>
         /// View オブジェクトを取得します。
         /// </summary>
@@ -102,7 +102,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// EventHub オブジェクトを取得または設定します。
         /// </summary>
@@ -113,7 +113,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// SynchronizationContext
-        /// 
+        ///
         /// <summary>
         /// オブジェクト初期化時のコンテキストを取得します。
         /// </summary>
@@ -128,11 +128,11 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Async
-        /// 
+        ///
         /// <summary>
         /// 各種操作を非同期で実行します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">
         /// 非同期で実行する <c>Action</c> オブジェクト
         /// </param>
@@ -143,11 +143,11 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Async
-        /// 
+        ///
         /// <summary>
         /// 各種操作を非同期で実行します。
         /// </summary>
-        /// 
+        ///
         /// <param name="func">
         /// 非同期で実行する <c>Func(TResult)</c> オブジェクト
         /// </param>
@@ -158,11 +158,11 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Sync
-        /// 
+        ///
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">
         /// 同期コンテキスト上で実行する <c>Action</c> オブジェクト
         /// </param>
@@ -177,12 +177,12 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// SyncWait
-        /// 
+        ///
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行し、
         /// 実行が完了するまで待機します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">
         /// 同期コンテキスト上で実行する <c>Action</c> オブジェクト
         /// </param>
@@ -197,12 +197,12 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// SyncWait
-        /// 
+        ///
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行し、
         /// 実行が完了するまで待機します。
         /// </summary>
-        /// 
+        ///
         /// <param name="func">
         /// 同期コンテキスト上で実行する <c>Func(TResult)</c> オブジェクト
         /// </param>
@@ -221,7 +221,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ~PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -232,7 +232,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -247,7 +247,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -280,17 +280,16 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model)
-            : base(view)
+        public PresenterBase(TView view, TModel model) : base(view)
         {
             Model = model;
         }
@@ -298,7 +297,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -306,10 +305,10 @@ namespace Cube.Forms
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
         /// <param name="events">EventHub オブジェクト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, IEventHub events)
-            : base(view, events)
+        public PresenterBase(TView view, TModel model, IEventHub events) :
+            base(view, events)
         {
             Model = model;
         }
@@ -317,7 +316,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -326,10 +325,10 @@ namespace Cube.Forms
         /// <param name="model">Model オブジェクト</param>
         /// <param name="events">EventHub オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, IEventHub events, SynchronizationContext context)
-            : base(view, events, context)
+        public PresenterBase(TView view, TModel model, IEventHub events, SynchronizationContext context) :
+            base(view, events, context)
         {
             Model = model;
         }
@@ -341,7 +340,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Model
-        /// 
+        ///
         /// <summary>
         /// Model オブジェクトを取得します。
         /// </summary>
@@ -369,7 +368,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -377,10 +376,10 @@ namespace Cube.Forms
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
         /// <param name="settings">Settings オブジェクト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, TSettings settings)
-            : base(view, model)
+        public PresenterBase(TView view, TModel model, TSettings settings) :
+            base(view, model)
         {
             Settings = settings;
         }
@@ -388,7 +387,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -397,10 +396,10 @@ namespace Cube.Forms
         /// <param name="model">Model オブジェクト</param>
         /// <param name="settings">Settings オブジェクト</param>
         /// <param name="events">EventHub オブジェクト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, TSettings settings, IEventHub events)
-            : base(view, model, events)
+        public PresenterBase(TView view, TModel model, TSettings settings, IEventHub events) :
+            base(view, model, events)
         {
             Settings = settings;
         }
@@ -408,7 +407,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// PresenterBase
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -418,11 +417,11 @@ namespace Cube.Forms
         /// <param name="settings">Settings オブジェクト</param>
         /// <param name="events">EventHub オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public PresenterBase(TView view, TModel model, TSettings settings,
-            IEventHub events, SynchronizationContext context)
-            : base(view, model, events, context)
+            IEventHub events, SynchronizationContext context) :
+            base(view, model, events, context)
         {
             Settings = settings;
         }
@@ -434,7 +433,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Settings
-        /// 
+        ///
         /// <summary>
         /// Settings オブジェクトを取得します。
         /// </summary>

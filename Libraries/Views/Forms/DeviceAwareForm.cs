@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// DeviceAwareForm
-    /// 
+    ///
     /// <summary>
     /// デバイスの追加等に反応するフォームクラスです。
     /// </summary>
@@ -50,6 +50,8 @@ namespace Cube.Forms
 
         #region Events
 
+        #region Attached
+
         /* ----------------------------------------------------------------- */
         ///
         /// Attached
@@ -63,6 +65,22 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnAttached
+        ///
+        /// <summary>
+        /// ドライブまたはメディアが接続された時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnAttached(DeviceEventArgs e) =>
+            Attached?.Invoke(this, e);
+
+        #endregion
+
+        #region Detached
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Detached
         ///
         /// <summary>
@@ -71,22 +89,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public event EventHandler<DeviceEventArgs> Detached;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// ドライブまたはメディアが接続された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnAttached(DeviceEventArgs e)
-            => Attached?.Invoke(this, e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,12 +99,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnDetached(DeviceEventArgs e)
-            => Detached?.Invoke(this, e);
+        protected virtual void OnDetached(DeviceEventArgs e) =>
+            Detached?.Invoke(this, e);
 
         #endregion
 
-        #region Override methods
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,10 +130,6 @@ namespace Cube.Forms
             base.WndProc(ref m);
         }
 
-        #endregion
-
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// RaiseDeviceChangeEvent
@@ -137,7 +137,7 @@ namespace Cube.Forms
         /// <summary>
         /// デバイスの着脱を通知するためのイベントを発生させます。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// TODO: デバイスの着脱通知は、DBT_DEVTYP_VOLUME 以外にも
         /// DBT_DEVTYP_OEM (0x0000), DBT_DEVTYP_DEVNODE (0x0001),

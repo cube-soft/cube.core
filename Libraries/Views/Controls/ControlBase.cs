@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,11 +25,11 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// ControlBase
-    /// 
+    ///
     /// <summary>
     /// 各種コントロールの基底となるクラスです。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// System.Windows.Forms.UserControl をベースに実装されています。
     /// </remarks>
@@ -60,11 +60,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Controls に登録されている IControl オブジェクトに対して、
         /// 再帰的に設定します。
@@ -90,11 +90,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// 現在の Dpi の値を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -166,8 +166,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
-            => NcHitTest?.Invoke(this, e);
+        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e) =>
+            NcHitTest?.Invoke(this, e);
 
         #endregion
 
@@ -204,11 +204,11 @@ namespace Cube.Forms
             }
         }
 
+        #endregion
+
         #region Fields
         private IEventHub _events;
         private double _dpi = StandardForm.BaseDpi;
-        #endregion
-
         #endregion
     }
 }

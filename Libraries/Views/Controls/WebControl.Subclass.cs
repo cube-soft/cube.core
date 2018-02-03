@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// WebBrowser
-    /// 
+    ///
     /// <summary>
     /// Web ページを表示するためのクラスです。
     /// </summary>
@@ -43,13 +43,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        internal class ActiveXControlEvents
-            : StandardOleMarshalObject, DWebBrowserEvents2
+        internal class ActiveXControlEvents : StandardOleMarshalObject, DWebBrowserEvents2
         {
             /* ------------------------------------------------------------- */
             ///
             /// ActiveXControlEvents
-            /// 
+            ///
             /// <summary>
             /// オブジェクトを初期化します。
             /// </summary>
@@ -63,7 +62,7 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             ///
             /// WebBrowser
-            /// 
+            ///
             /// <summary>
             /// 関連付けられた WebBrowser オブジェクトを取得します。
             /// </summary>
@@ -74,7 +73,7 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             ///
             /// BeforeNavigate2
-            /// 
+            ///
             /// <summary>
             /// ページ遷移が発生する直前に実行されます。
             /// </summary>
@@ -82,34 +81,34 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             public void BeforeNavigate2(object pDisp, ref object URL,
                 ref object flags, ref object targetFrameName,
-                ref object postData, ref object headers, ref bool cancel)
-                => Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
+                ref object postData, ref object headers, ref bool cancel) =>
+                Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
 
             /* ------------------------------------------------------------- */
             ///
             /// NewWindow3
-            /// 
+            ///
             /// <summary>
             /// 新しいウィンドウが開く直前に実行されます。
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
             public void NewWindow3(object pDisp, ref bool cancel,
-                ref object flags, ref object URLContext, ref object URL)
-                => Target.RaiseBeforeNewWindow((string)URL, out cancel);
+                ref object flags, ref object URLContext, ref object URL) =>
+                Target.RaiseBeforeNewWindow((string)URL, out cancel);
 
             /* ------------------------------------------------------------- */
             ///
             /// NavigateError
-            /// 
+            ///
             /// <summary>
             /// ページ遷移時にエラーが発生した時に実行されます。
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
             public void NavigateError(object pDisp, ref object URL,
-                ref object targetFrameName, ref object statusCode, ref bool cancel)
-                => Target.RaiseNavigatingError(
+                ref object targetFrameName, ref object statusCode, ref bool cancel) =>
+                Target.RaiseNavigatingError(
                     (string)URL, (string)targetFrameName,
                     (int)statusCode, out cancel
                 );
@@ -134,7 +133,7 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             ///
             /// ShowUIWebBrowserSite
-            /// 
+            ///
             /// <summary>
             /// オブジェクトを初期化します。
             /// </summary>
@@ -148,7 +147,7 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             ///
             /// Host
-            /// 
+            ///
             /// <summary>
             /// 関連付ける WebBrowser オブジェクトを取得します。
             /// </summary>
@@ -159,7 +158,7 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             ///
             /// ShowMessage
-            /// 
+            ///
             /// <summary>
             /// メッセージを表示します。
             /// </summary>
@@ -175,11 +174,11 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             ///
             /// ShowHelp
-            /// 
+            ///
             /// <summary>
             /// ヘルプを表示します。
             /// </summary>
-            /// 
+            ///
             /// <remarks>
             /// 現在は常にキャンセルされます。
             /// </remarks>

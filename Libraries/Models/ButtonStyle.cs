@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// ButtonStyle
-    /// 
+    ///
     /// <summary>
     /// ボタンの外観を定義するためのクラスです。
     /// </summary>
@@ -152,14 +152,14 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// ButtonStyleContainer
-    /// 
+    ///
     /// <summary>
     /// ボタンの外観を定義するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(OnlyExpandableConverter))]
-    public class ButtonStyleContainer : INotifyPropertyChanged
+    public class ButtonStyleContainer : ObservableProperty
     {
         #region Constructors
 
@@ -174,11 +174,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public ButtonStyleContainer()
         {
-            NormalStyle.PropertyChanged    += (s, e) => OnPropertyChanged(nameof(NormalStyle));
-            CheckedStyle.PropertyChanged   += (s, e) => OnPropertyChanged(nameof(CheckedStyle));
-            DisabledStyle.PropertyChanged  += (s, e) => OnPropertyChanged(nameof(DisabledStyle));
-            MouseOverStyle.PropertyChanged += (s, e) => OnPropertyChanged(nameof(MouseOverStyle));
-            MouseDownStyle.PropertyChanged += (s, e) => OnPropertyChanged(nameof(MouseDownStyle));
+            NormalStyle.PropertyChanged    += (s, e) => RaisePropertyChanged(nameof(NormalStyle));
+            CheckedStyle.PropertyChanged   += (s, e) => RaisePropertyChanged(nameof(CheckedStyle));
+            DisabledStyle.PropertyChanged  += (s, e) => RaisePropertyChanged(nameof(DisabledStyle));
+            MouseOverStyle.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(MouseOverStyle));
+            MouseDownStyle.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(MouseDownStyle));
         }
 
         #endregion
@@ -254,49 +254,6 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle MouseDownStyle { get; } = new ButtonStyle();
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        /// 
-        /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Virtual methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        /// 
-        /// <summary>
-        /// PropertyChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-            => PropertyChanged?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        /// 
-        /// <summary>
-        /// PropertyChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(string name)
-            => OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         #endregion
     }

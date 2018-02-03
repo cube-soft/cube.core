@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,21 +23,21 @@ namespace Cube.Forms.Drawing
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Drawing.Operations
-    /// 
+    /// GraphicsOperator
+    ///
     /// <summary>
     /// System.Drawing.Graphics の拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class Operations
+    internal static class GraphicsOperator
     {
-        #region Extension methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// FillBackground
-        /// 
+        ///
         /// <summary>
         /// 指定した色で背景を塗りつぶします。
         /// </summary>
@@ -51,7 +51,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// DrawBorder
-        /// 
+        ///
         /// <summary>
         /// 指定した色、幅で枠線を描画します。
         /// </summary>
@@ -71,7 +71,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// DrawText
-        /// 
+        ///
         /// <summary>
         /// 指定したフォント、色で指定された位置にテキストを描画します。
         /// </summary>
@@ -90,7 +90,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// DrawImage
-        /// 
+        ///
         /// <summary>
         /// 指定した位置に画像を描画します。
         /// </summary>
@@ -107,7 +107,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// DrawImage
-        /// 
+        ///
         /// <summary>
         /// 指定した位置に画像を描画します。
         /// </summary>
@@ -142,12 +142,12 @@ namespace Cube.Forms.Drawing
 
         #endregion
 
-        #region Private methods
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
         /// DrawStretchImage
-        /// 
+        ///
         /// <summary>
         /// 画像を縦横比を無視して、できるだけ大きく描画します。
         /// </summary>
@@ -162,7 +162,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// DrawZoomImage
-        /// 
+        ///
         /// <summary>
         /// 画像を縦横比を保ったまま、できるだけ大きく描画します。
         /// </summary>
@@ -188,7 +188,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// DrawTileImage
-        /// 
+        ///
         /// <summary>
         /// 画像をタイル状に描画します。
         /// </summary>
@@ -206,7 +206,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// GetClipBounds
-        /// 
+        ///
         /// <summary>
         /// 画像の描画領域を取得します。
         /// </summary>
@@ -269,7 +269,7 @@ namespace Cube.Forms.Drawing
         /* ----------------------------------------------------------------- */
         ///
         /// GetStringFormat
-        /// 
+        ///
         /// <summary>
         /// 文字列を描画するための書式オブジェクトを取得します。
         /// </summary>

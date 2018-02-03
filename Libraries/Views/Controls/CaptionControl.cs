@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// CaptionControl
-    /// 
+    ///
     /// <summary>
     /// 画面上部のキャプション（タイトルバー）を表すコントロールです。
     /// </summary>
@@ -36,7 +36,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Active
-        /// 
+        ///
         /// <summary>
         /// 関連付けられているフォームがアクティブかどうかを示す値を取得
         /// または設定します。
@@ -59,7 +59,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// WindowState
-        /// 
+        ///
         /// <summary>
         /// ウィンドウの状態を取得または設定します。
         /// </summary>
@@ -91,7 +91,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// MaximizeControl
-        /// 
+        ///
         /// <summary>
         /// 最大化ボタンを表すコントロールを取得します。
         /// </summary>
@@ -114,7 +114,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// MinimizeControl
-        /// 
+        ///
         /// <summary>
         /// 最小化ボタンを表すコントロールを取得します。
         /// </summary>
@@ -137,7 +137,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// CloseControl
-        /// 
+        ///
         /// <summary>
         /// 閉じるボタンを表すコントロールを取得します。
         /// </summary>
@@ -166,7 +166,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// CloseRequested
-        /// 
+        ///
         /// <summary>
         /// 画面を閉じる操作が要求された時に発生するイベントです。
         /// </summary>
@@ -177,14 +177,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnCloseRequested
-        /// 
+        ///
         /// <summary>
         /// CloseRequested イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnCloseRequested(EventArgs e)
-            => CloseRequested?.Invoke(this, e);
+        protected virtual void OnCloseRequested(EventArgs e) =>
+            CloseRequested?.Invoke(this, e);
 
         #endregion
 
@@ -193,7 +193,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// MaximizeRequested
-        /// 
+        ///
         /// <summary>
         /// 最大化が要求された時に発生するイベントです。
         /// </summary>
@@ -204,14 +204,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnMaximizeRequested
-        /// 
+        ///
         /// <summary>
         /// MaximizeRequested イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnMaximizeRequested(EventArgs e)
-            => MaximizeRequested?.Invoke(this, e);
+        protected virtual void OnMaximizeRequested(EventArgs e) =>
+            MaximizeRequested?.Invoke(this, e);
 
         #endregion
 
@@ -220,7 +220,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Maximized
-        /// 
+        ///
         /// <summary>
         /// 最大化時に発生するイベントです。
         /// </summary>
@@ -231,7 +231,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnMaximized
-        /// 
+        ///
         /// <summary>
         /// Maximized イベントを発生させます。
         /// </summary>
@@ -246,7 +246,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// MinimizeRequested
-        /// 
+        ///
         /// <summary>
         /// 最小化が要求された時に発生するイベントです。
         /// </summary>
@@ -257,14 +257,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnMinimizeRequested
-        /// 
+        ///
         /// <summary>
         /// MinimizeRequested イベントを発生させます。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnMinmizeRequested(EventArgs e)
-            => MinimizeRequested?.Invoke(this, e);
+        protected virtual void OnMinmizeRequested(EventArgs e) =>
+            MinimizeRequested?.Invoke(this, e);
 
         #endregion
 
@@ -273,7 +273,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Minimized
-        /// 
+        ///
         /// <summary>
         /// 最小化時に発生するイベントです。
         /// </summary>
@@ -284,7 +284,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnMinimized
-        /// 
+        ///
         /// <summary>
         /// Minimized イベントを発生させます。
         /// </summary>
@@ -299,7 +299,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Normalized
-        /// 
+        ///
         /// <summary>
         /// 元の大きさに戻った時に発生するイベントです。
         /// </summary>
@@ -310,7 +310,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnNormalized
-        /// 
+        ///
         /// <summary>
         /// Normalized イベントを発生させます。
         /// </summary>
@@ -325,7 +325,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Activated
-        /// 
+        ///
         /// <summary>
         /// アクティブ化された時に発生するイベントです。
         /// </summary>
@@ -336,7 +336,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnActivated
-        /// 
+        ///
         /// <summary>
         /// Activated イベントを発生させます。
         /// </summary>
@@ -351,7 +351,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Deactivate
-        /// 
+        ///
         /// <summary>
         /// 非アクティブ化された時に発生するイベントです。
         /// </summary>
@@ -362,7 +362,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// OnDeactivate
-        /// 
+        ///
         /// <summary>
         /// Deactivate イベントを発生させます。
         /// </summary>

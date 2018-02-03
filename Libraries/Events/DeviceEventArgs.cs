@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -41,11 +41,10 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DeviceEventArgs(char letter, DeviceType type)
-            : base()
+        public DeviceEventArgs(char letter, DeviceType type) : base()
         {
             Letter = letter;
-            Type = type;
+            Type   = type;
         }
 
         #endregion

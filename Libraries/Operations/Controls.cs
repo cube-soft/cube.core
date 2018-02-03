@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,29 +24,29 @@ namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Controls.Operations
-    /// 
+    /// ControlOperator
+    ///
     /// <summary>
     /// System.Windows.Forms.Control の拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class ControlOperator
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// HasEventHandler
-        /// 
+        ///
         /// <summary>
         /// 指定されたイベントに対して、イベントハンドラが設定されているか
         /// どうかを判別します。
         /// </summary>
-        /// 
+        ///
         /// <param name="control">判別するコントロール</param>
         /// <param name="name">イベント名</param>
-        /// 
+        ///
         /// <returns>
         /// イベントハンドラが設定されているかどうかを示す値
         /// </returns>
@@ -63,15 +63,15 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// HitTest
-        /// 
+        ///
         /// <summary>
         /// コントロール中のどの位置にいるのかヒットテストを行います。
         /// </summary>
-        /// 
+        ///
         /// <param name="control">コントロール</param>
         /// <param name="point">コントロールを基準とした座標</param>
         /// <param name="grip">グリップサイズ</param>
-        /// 
+        ///
         /// <returns>コントロール中の位置</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -103,23 +103,23 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateText
-        /// 
+        ///
         /// <summary>
         /// フォームのタイトルを "message - ProductName" と言う表記で
         /// 更新します。
         /// </summary>
-        /// 
+        ///
         /// <param name="form">フォーム</param>
         /// <param name="message">タイトルに表示するメッセージ</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form, string message)
-            => UpdateText(form, message, AssemblyReader.Default);
+        public static void UpdateText(this System.Windows.Forms.Form form, string message) =>
+            UpdateText(form, message, AssemblyReader.Default);
 
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateText
-        /// 
+        ///
         /// <summary>
         /// フォームのタイトルを "message - ProductName" と言う表記で
         /// 更新します。
@@ -131,13 +131,13 @@ namespace Cube.Forms.Controls
         ///
         /* ----------------------------------------------------------------- */
         public static void UpdateText(this System.Windows.Forms.Form form,
-            string message, Assembly assembly)
-            => UpdateText(form, message, new AssemblyReader(assembly));
+            string message, Assembly assembly) =>
+            UpdateText(form, message, new AssemblyReader(assembly));
 
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateText
-        /// 
+        ///
         /// <summary>
         /// フォームのタイトルを "message - ProductName" と言う表記で
         /// 更新します。
@@ -162,7 +162,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateControl
-        /// 
+        ///
         /// <summary>
         /// DPI の変更に応じてレイアウトを更新します。
         /// </summary>
@@ -187,7 +187,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateForm
-        /// 
+        ///
         /// <summary>
         /// DPI の変更に応じてレイアウトを更新します。
         /// </summary>
@@ -197,17 +197,17 @@ namespace Cube.Forms.Controls
         /// <param name="newdpi">変更後の DPI</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateForm(this IForm form, double olddpi, double newdpi)
-            => UpdateLayout(form, olddpi, newdpi);
+        public static void UpdateForm(this IForm form, double olddpi, double newdpi) =>
+            UpdateLayout(form, olddpi, newdpi);
 
         /* ----------------------------------------------------------------- */
         ///
         /// BringToFront
-        /// 
+        ///
         /// <summary>
         /// フォームを最前面に表示します。
         /// </summary>
-        /// 
+        ///
         /// <param name="form">フォーム</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -220,11 +220,11 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// ResetTopMost
-        /// 
+        ///
         /// <summary>
         /// TopMost の値をリセットします。
         /// </summary>
-        /// 
+        ///
         /// <param name="form">フォーム</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -239,14 +239,14 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// SetTopMost
-        /// 
+        ///
         /// <summary>
         /// フォームを最前面に表示します。
         /// </summary>
-        /// 
+        ///
         /// <param name="form">フォーム</param>
         /// <param name="active">アクティブ状態にするかどうか</param>
-        /// 
+        ///
         /// <remarks>
         /// SetTopMost は主に、フォーカスを奪わずに最前面に表示する時に
         /// 使用します。この場合、最前面に表示された状態でも TopMost
@@ -283,7 +283,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateLayout
-        /// 
+        ///
         /// <summary>
         /// DPI の変更に応じてレイアウトを更新します。
         /// </summary>
@@ -334,7 +334,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// GetEventHandlerList
-        /// 
+        ///
         /// <summary>
         /// 指定されたオブジェクトに設定されているイベントハンドラの一覧を
         /// 取得します。
@@ -357,7 +357,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// GetEventKey
-        /// 
+        ///
         /// <summary>
         /// 指定されたイベント名に対応するオブジェクトを取得します。
         /// </summary>
@@ -379,7 +379,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         ///
         /// GetAllFlags
-        /// 
+        ///
         /// <summary>
         /// 全ての属性が有効になった BindingFlags を取得します。
         /// </summary>

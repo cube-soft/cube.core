@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// VersionForm
-    /// 
+    ///
     /// <summary>
     /// バージョン情報を表示するためのフォームです。
     /// </summary>
@@ -53,7 +53,7 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,7 +66,7 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -188,7 +188,7 @@ namespace Cube.Forms
         /// <summary>
         /// アセンブリ情報を基に表示内容を更新します。
         /// </summary>
-        /// 
+        ///
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -201,7 +201,7 @@ namespace Cube.Forms
         /// <summary>
         /// アセンブリ情報を基に表示内容を更新します。
         /// </summary>
-        /// 
+        ///
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -261,12 +261,12 @@ namespace Cube.Forms
             ResumeLayout(false);
         }
 
+        #endregion
+
         #region Fields
         private VersionControl _control;
         private TableLayoutPanel _panel;
         private Button _button;
-        #endregion
-
         #endregion
     }
 }

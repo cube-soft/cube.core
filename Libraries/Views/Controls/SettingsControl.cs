@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// SettingsControl
-    /// 
+    ///
     /// <summary>
     /// 設定フォームを補助するためのコントロールです。
     /// </summary>
@@ -52,7 +52,7 @@ namespace Cube.Forms
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="ok">OK ボタン</param>
         /// <param name="cancel">キャンセルボタン</param>
         /// <param name="apply">適用ボタン</param>
@@ -386,8 +386,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenAdded(object sender, System.Windows.Forms.ControlEventArgs e)
-            => Attach(e.Control);
+        private void WhenAdded(object sender, System.Windows.Forms.ControlEventArgs e) =>
+            Attach(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -398,8 +398,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenRemoved(object sender, System.Windows.Forms.ControlEventArgs e)
-            => Detach(e.Control);
+        private void WhenRemoved(object sender, System.Windows.Forms.ControlEventArgs e) =>
+            Detach(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -516,13 +516,13 @@ namespace Cube.Forms
             }
         }
 
+        #endregion
+
         #region Fields
         private System.Windows.Forms.Control _ok;
         private System.Windows.Forms.Control _cancel;
         private System.Windows.Forms.Control _apply;
         private IList<System.Windows.Forms.Control> _controls = new List<System.Windows.Forms.Control>();
-        #endregion
-
         #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,7 +28,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// NotifyForm
-    /// 
+    ///
     /// <summary>
     /// 通知用フォームを表すクラスです。
     /// </summary>
@@ -41,7 +41,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// NotifyForm
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -59,7 +59,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Value
-        /// 
+        ///
         /// <summary>
         /// 通知内容を取得または設定します。
         /// </summary>
@@ -83,7 +83,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// AutoEllipsis
-        /// 
+        ///
         /// <summary>
         /// 枠に入りきらない本文を自動的に省略するかどうかを示す値を取得または
         /// 設定します。
@@ -100,7 +100,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// IsBusy
-        /// 
+        ///
         /// <summary>
         /// 実行中かどうかを取得します。
         /// </summary>
@@ -113,7 +113,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// ShowWithoutActivation
-        /// 
+        ///
         /// <summary>
         /// フォーカスを奪わずに表示させます。
         /// </summary>
@@ -126,7 +126,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// Text
-        /// 
+        ///
         /// <summary>
         /// 表示テキストを取得または設定します。
         /// </summary>
@@ -144,7 +144,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// TopMost
-        /// 
+        ///
         /// <summary>
         /// 最前面に表示するかどうかを示す値を取得または設定します。
         /// </summary>
@@ -170,7 +170,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Selected
-        /// 
+        ///
         /// <summary>
         /// ユーザの選択時に発生します。
         /// </summary>
@@ -181,7 +181,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnSelected
-        /// 
+        ///
         /// <summary>
         /// Selected イベントを発生させます。
         /// </summary>
@@ -200,7 +200,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Completed
-        /// 
+        ///
         /// <summary>
         /// 通知完了時に発生するイベントです。
         /// </summary>
@@ -211,7 +211,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnCompleted
-        /// 
+        ///
         /// <summary>
         /// Completed イベントを発生させます。
         /// </summary>
@@ -232,11 +232,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Show
-        /// 
+        ///
         /// <summary>
         /// フォームを表示します。
         /// </summary>
-        /// 
+        ///
         /// <param name="item">表示内容</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -245,11 +245,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Show
-        /// 
+        ///
         /// <summary>
         /// フォームを表示します。
         /// </summary>
-        /// 
+        ///
         /// <param name="item">表示内容</param>
         /// <param name="style">表示スタイル</param>
         ///
@@ -268,11 +268,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Show
-        /// 
+        ///
         /// <summary>
         /// 画面を表示します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// 外部から実行できないように private で再定義します。
         /// </remarks>
@@ -283,11 +283,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ShowDialog
-        /// 
+        ///
         /// <summary>
         /// 画面を表示します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// 外部から実行できないように private で再定義します。
         /// </remarks>
@@ -298,18 +298,18 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ShowAsync
-        /// 
+        ///
         /// <summary>
         /// 指定時間フォームを表示します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         private async Task ShowAsync(TimeSpan time, TimeSpan delay)
         {
             var source = new System.Threading.CancellationTokenSource();
             EventHandler m = (s, e) => { if (!Visible) source.Cancel(); };
             VisibleChanged += m;
-            
+
             try
             {
                 IsBusy = true;
@@ -338,7 +338,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// SetStyle
-        /// 
+        ///
         /// <summary>
         /// 表示スタイルを適用します。
         /// </summary>
@@ -355,7 +355,7 @@ namespace Cube.Forms
             if (style.DescriptionColor != Color.Empty) _text.Styles.NormalStyle.ContentColor = style.DescriptionColor;
             if (style.BackColor != Color.Empty)
             {
-                BackColor                           = 
+                BackColor                           =
                 _panel.BackColor                    =
                 _close.Styles.NormalStyle.BackColor =
                 _title.Styles.NormalStyle.BackColor =
@@ -366,7 +366,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// InitializeLayout
-        /// 
+        ///
         /// <summary>
         /// レイアウトを初期化します。
         /// </summary>
@@ -455,6 +455,8 @@ namespace Cube.Forms
             ResumeLayout(false);
         }
 
+        #endregion
+
         #region Fields
         private NotifyItem _value;
         private TableLayoutPanel _panel;
@@ -462,8 +464,6 @@ namespace Cube.Forms
         private FlatButton _title;
         private FlatButton _text;
         private FlatButton _close;
-        #endregion
-
         #endregion
     }
 }

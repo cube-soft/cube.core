@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// IWebControl
-    /// 
+    ///
     /// <summary>
     /// Web ページを表示するためのインターフェースです。
     /// </summary>
@@ -31,6 +31,8 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public interface IWebControl : IControl
     {
+        #region Properties
+
         /* --------------------------------------------------------------------- */
         ///
         /// Document
@@ -65,10 +67,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         bool IsBusy { get; }
 
+        #endregion
+
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// URL で示されたコンテンツの表示を開始します。
         /// </summary>
@@ -79,7 +85,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// HTML で示されたコンテンツの表示を開始します。
         /// </summary>
@@ -90,7 +96,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Stop
-        /// 
+        ///
         /// <summary>
         /// コンテンツの表示を中断します。
         /// </summary>
@@ -98,10 +104,14 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         void Stop();
 
+        #endregion
+
+        #region Events
+
         /* --------------------------------------------------------------------- */
         ///
         /// BeforeNavigating
-        /// 
+        ///
         /// <summary>
         /// ページ遷移が発生する直前に発生するイベントです。
         /// </summary>
@@ -112,7 +122,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// BeforeNewWindow
-        /// 
+        ///
         /// <summary>
         /// 新しいウィンドウでページを開く直前に発生するイベントです。
         /// </summary>
@@ -123,12 +133,14 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// DocumentCompleted
-        /// 
+        ///
         /// <summary>
         /// コンテンツの表示が完了した時に発生するイベントです。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
         event WebBrowserDocumentCompletedEventHandler DocumentCompleted;
+
+        #endregion
     }
 }

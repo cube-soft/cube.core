@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// MockView
-    /// 
+    ///
     /// <summary>
     /// IForm を最小構成で実装した Mock クラスです。
     /// </summary>
@@ -36,7 +36,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EventHub
-        /// 
+        ///
         /// <summary>
         /// イベントを集約するためのオブジェクトを取得または設定します。
         /// </summary>
@@ -47,7 +47,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Enabled
-        /// 
+        ///
         /// <summary>
         /// コントロールが有効かどうかを示す値を取得または設定します。
         /// </summary>
@@ -67,7 +67,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Visible
-        /// 
+        ///
         /// <summary>
         /// コントロールが表示されているかどうかを示す値を取得または
         /// 設定します。
@@ -88,7 +88,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Font
-        /// 
+        ///
         /// <summary>
         /// フォントを取得または設定します。
         /// </summary>
@@ -99,7 +99,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Location
-        /// 
+        ///
         /// <summary>
         /// 表示位置を取得または設定します。
         /// </summary>
@@ -119,7 +119,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Size
-        /// 
+        ///
         /// <summary>
         /// 表示サイズを取得または設定します。
         /// </summary>
@@ -139,31 +139,31 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Margin
-        /// 
+        ///
         /// <summary>
         /// 外側の余白を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public System.Windows.Forms.Padding Margin { get; set; }
-            = new System.Windows.Forms.Padding(0);
+        public System.Windows.Forms.Padding Margin { get; set; } =
+            new System.Windows.Forms.Padding(0);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Padding
-        /// 
+        ///
         /// <summary>
         /// 内側の余白を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public System.Windows.Forms.Padding Padding { get; set; }
-            = new System.Windows.Forms.Padding(0);
+        public System.Windows.Forms.Padding Padding { get; set; } =
+            new System.Windows.Forms.Padding(0);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Dpi
-        /// 
+        ///
         /// <summary>
         /// DPI の値を取得または設定します。
         /// </summary>
@@ -188,7 +188,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// オブジェクトがロードされた時に発生するイベントです。
         /// </summary>
@@ -199,7 +199,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Activated
-        /// 
+        ///
         /// <summary>
         /// View がアクティブ化した時に発生するイベントです。
         /// </summary>
@@ -210,7 +210,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Deactivate
-        /// 
+        ///
         /// <summary>
         /// View が非アクティブ化した時に発生するイベントです。
         /// </summary>
@@ -221,7 +221,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Click
-        /// 
+        ///
         /// <summary>
         /// クリック時に発生するイベントです。
         /// </summary>
@@ -232,7 +232,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EnabledChanged
-        /// 
+        ///
         /// <summary>
         /// Enabled が変更された時に発生するイベントです。
         /// </summary>
@@ -243,7 +243,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// VisibleChanged
-        /// 
+        ///
         /// <summary>
         /// Visible が変更された時に発生するイベントです。
         /// </summary>
@@ -254,7 +254,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Move
-        /// 
+        ///
         /// <summary>
         /// 移動時に発生するイベントです。
         /// </summary>
@@ -265,7 +265,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Resize
-        /// 
+        ///
         /// <summary>
         /// リサイズ時に発生するイベントです。
         /// </summary>
@@ -276,7 +276,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// DpiChanged
-        /// 
+        ///
         /// <summary>
         /// DPI 変更時に発生するイベントです。
         /// </summary>
@@ -291,7 +291,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Activate
-        /// 
+        ///
         /// <summary>
         /// View をアクティブ化します。
         /// </summary>
@@ -302,11 +302,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Close
-        /// 
+        ///
         /// <summary>
         /// View を閉じます。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// MockView では、Visible プロパティを false に設定します。
         /// </remarks>
@@ -321,11 +321,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Show
-        /// 
+        ///
         /// <summary>
         /// View を表示します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// MockView では Load イベントを発生させた後、Visible プロパティを
         /// true に設定します。
@@ -342,14 +342,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnClick
-        /// 
+        ///
         /// <summary>
         /// Click イベントを発生させます。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnClick(EventArgs e)
-            => Click.Invoke(this, e);
+        protected virtual void OnClick(EventArgs e) => Click.Invoke(this, e);
 
         #endregion
 

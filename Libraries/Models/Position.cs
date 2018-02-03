@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,11 +22,11 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// Position
-    /// 
+    ///
     /// <summary>
     /// コントロール中の位置を表すための列挙型です。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645618.aspx
     /// </remarks>
@@ -85,7 +85,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// PositionConversions
-    /// 
+    ///
     /// <summary>
     /// Position の拡張用クラスです。
     /// </summary>
@@ -98,7 +98,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         ///
         /// ToCursor
-        /// 
+        ///
         /// <summary>
         /// Position に対応するカーソルを取得します。
         /// </summary>

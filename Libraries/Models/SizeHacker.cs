@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,11 +25,11 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// SizeHacker
-    /// 
+    ///
     /// <summary>
     /// フォームのリサイズを補助するクラスです。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// FormBorderStyle = None 等でリサイズ用の枠線が描画されていない場合に
     /// リサイズ用の枠線と同様のリサイズ方法を提供します。
@@ -43,7 +43,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// SizeHacker
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -64,7 +64,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Root
-        /// 
+        ///
         /// <summary>
         /// 監視するコントロール群の基底となるコントロールを取得します。
         /// </summary>
@@ -75,7 +75,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// SizeGrip
-        /// 
+        ///
         /// <summary>
         /// リサイズ用のグリップに使用する幅を取得します。
         /// </summary>
@@ -92,7 +92,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ~SizeHacker
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -103,7 +103,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -118,11 +118,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを解放します。
         /// </summary>
-        /// 
+        ///
         /// <param name="disposing">
         /// マネージリソースを解放するかどうか
         /// </param>
@@ -146,31 +146,31 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// WhenControlAdded
-        /// 
+        ///
         /// <summary>
         /// コントロールが追加された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenControlAdded(object sender, ControlEventArgs e)
-            => StartMonitor(e.Control);
+        private void WhenControlAdded(object sender, ControlEventArgs e) =>
+            StartMonitor(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
         /// WhenControlRemoved
-        /// 
+        ///
         /// <summary>
         /// コントロールが削除された時に実行されるハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenControlRemoved(object sender, ControlEventArgs e)
-            => EndMonitor(e.Control);
+        private void WhenControlRemoved(object sender, ControlEventArgs e) =>
+            EndMonitor(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
         /// WhenMouseMove
-        /// 
+        ///
         /// <summary>
         /// マウスが移動した時に実行されるハンドラです。
         /// </summary>
@@ -195,7 +195,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// WhenMouseDown
-        /// 
+        ///
         /// <summary>
         /// マウスのボタンが押下された時に実行されるハンドラです。
         /// </summary>
@@ -208,7 +208,7 @@ namespace Cube.Forms
 
             var form = control.FindForm();
             if (form == null || form.WindowState != FormWindowState.Normal) return;
-            
+
             var point  = form.PointToClient(control.PointToScreen(e.Location));
             var result = form.HitTest(point, SizeGrip);
             if (result != Position.Left       && result != Position.Right    &&
@@ -223,7 +223,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// StartMonitor
-        /// 
+        ///
         /// <summary>
         /// 指定されたコントロールおよび Controls に含まれる全ての
         /// コントロールの MouseMove/MouseDown イベントを監視します。
@@ -249,7 +249,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// EndMonitor
-        /// 
+        ///
         /// <summary>
         /// 指定されたコントロールおよび Controls に含まれる全ての
         /// コントロールの監視を終了します。
@@ -271,7 +271,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Stash
-        /// 
+        ///
         /// <summary>
         /// コントロールが元々保持していたカーソルを退避し、新たなカーソルに
         /// 設定します。
@@ -287,7 +287,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Push
-        /// 
+        ///
         /// <summary>
         /// コントロールが元々保持していたカーソルを記憶します。
         /// </summary>
@@ -301,7 +301,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Pop
-        /// 
+        ///
         /// <summary>
         /// コントロールが元々保持していたカーソルを復元します。
         /// </summary>
@@ -315,11 +315,11 @@ namespace Cube.Forms
             _cursors.Remove(control);
         }
 
+        #endregion
+
         #region Fields
         private OnceAction<bool> _dispose;
         private IDictionary<Control, Cursor> _cursors = new Dictionary<Control, Cursor>();
-        #endregion
-
         #endregion
     }
 }

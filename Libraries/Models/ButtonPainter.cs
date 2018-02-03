@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// ButtonPainter
-    /// 
+    ///
     /// <summary>
     /// ボタンの外観を描画するためのクラスです。
     /// </summary>
@@ -38,7 +38,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ButtonPainter
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -65,7 +65,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// View
-        /// 
+        ///
         /// <summary>
         /// 描画する対象となるボタンオブジェクトを取得します。
         /// </summary>
@@ -76,7 +76,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Content
-        /// 
+        ///
         /// <summary>
         /// ボタンに表示する内容を取得または設定します。
         /// </summary>
@@ -87,7 +87,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Styles
-        /// 
+        ///
         /// <summary>
         /// ボタンの基本となる外観を定義したオブジェクトを取得します。
         /// </summary>
@@ -98,7 +98,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// IsChecked
-        /// 
+        ///
         /// <summary>
         /// ボタンがチェック状態かどうかを判別します。
         /// </summary>
@@ -109,7 +109,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// IsMouseDown
-        /// 
+        ///
         /// <summary>
         /// マウスがクリック状態かどうかを判別します。
         /// </summary>
@@ -120,7 +120,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// IsMouseOver
-        /// 
+        ///
         /// <summary>
         /// マウスポインタがボタンの境界範囲内に存在するかを判別します。
         /// </summary>
@@ -130,12 +130,12 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Virtual methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnPaint
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの Paint イベントを捕捉するハンドラです。
         /// </summary>
@@ -158,43 +158,41 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// OnMouseEnter
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの MouseEnter イベントを捕捉するハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseEnter(EventArgs e)
-            => IsMouseOver = true;
+        protected virtual void OnMouseEnter(EventArgs e) => IsMouseOver = true;
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnMouseLeave
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの MouseLeave イベントを捕捉するハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseLeave(EventArgs e)
-            => IsMouseOver = false;
+        protected virtual void OnMouseLeave(EventArgs e) => IsMouseOver = false;
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnMouseDown
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの MouseDown イベントを捕捉するハンドラです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
-            => IsMouseDown = (e.Button == System.Windows.Forms.MouseButtons.Left);
+        protected virtual void OnMouseDown(System.Windows.Forms.MouseEventArgs e) =>
+            IsMouseDown = (e.Button == System.Windows.Forms.MouseButtons.Left);
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnMouseUp
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの MouseUp イベントを捕捉するハンドラです。
         /// </summary>
@@ -213,7 +211,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// DisableSystemStyles
-        /// 
+        ///
         /// <summary>
         /// 外観の描画に関して ButtonBase オブジェクトと競合するプロパティを
         /// 無効にします。
@@ -241,17 +239,17 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// Select
-        /// 
+        ///
         /// <summary>
         /// 描画に使用するオブジェクトを選択して返します。
         /// </summary>
-        /// 
+        ///
         /// <param name="normal">通常時のオブジェクト</param>
         /// <param name="check">ボタンがチェック状態のオブジェクト</param>
         /// <param name="over">マウスオーバ時のオブジェクト</param>
         /// <param name="down">マウスクリック時のオブジェクト</param>
         /// <param name="ignore">一致する時に無視する値</param>
-        /// 
+        ///
         /// <remarks>
         /// オブジェクトを使用する優先順位は以下の通りです。
         ///
@@ -259,13 +257,13 @@ namespace Cube.Forms
         ///   2. マウスオーバ時のオブジェクト (over)
         ///   3. ボタンがチェック状態のオブジェクト (check)
         ///   4. 通常時のオブジェクト (normal)
-        /// 
+        ///
         /// 例えば、マウスクリック時 (IsMouseDown == true) の選択方法は、
         /// down が有効なオブジェクトであれば down を使用し、down が無効で
         /// over が有効なオブジェクトであれば over を使用します。
         /// そして、両方とも無効なオブジェクトであれば check と normal の
         /// 内、より適切なオブジェクトを使用します。
-        /// 
+        ///
         /// check と normal どちらのオブジェクトを使用するかについては、
         /// ボタンがチェック状態 (IsChecked == true) であり、かつ、check が
         /// 有効なオブジェクトであれば check を、それ以外の場合は normal を
@@ -286,7 +284,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetBorderColor
-        /// 
+        ///
         /// <summary>
         /// 現在の境界線の色を取得します。
         /// </summary>
@@ -302,7 +300,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetBorderColor
-        /// 
+        ///
         /// <summary>
         /// 現在の境界線のサイズ (ピクセル単位) を取得します。
         /// </summary>
@@ -319,11 +317,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetBackColor
-        /// 
+        ///
         /// <summary>
         /// 現在の背景色を取得します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// 背景色の描画を行わない場合、FocusCue 等の意図しないものが描画
         /// される可能性があるため、可能な限り Color.Empty 以外の値を返す
@@ -352,7 +350,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetContentColor
-        /// 
+        ///
         /// <summary>
         /// 現在のテキスト色を取得します。
         /// </summary>
@@ -368,7 +366,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetImage
-        /// 
+        ///
         /// <summary>
         /// 現在のイメージを取得します。
         /// </summary>
@@ -384,7 +382,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetBackgroundImage
-        /// 
+        ///
         /// <summary>
         /// 現在の背景イメージを取得します。
         /// </summary>
@@ -400,7 +398,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// GetDrawBounds
-        /// 
+        ///
         /// <summary>
         /// 描画領域を表すオブジェクトを取得します。
         /// </summary>
@@ -422,7 +420,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// RadioButtonPainter
-    /// 
+    ///
     /// <summary>
     /// ラジオボタンの外観を描画するためのクラスです。
     /// </summary>
@@ -435,14 +433,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// RadioButtonPainter
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public RadioButtonPainter(System.Windows.Forms.RadioButton view)
-            : base(view)
+        public RadioButtonPainter(System.Windows.Forms.RadioButton view) : base(view)
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
             view.Appearance = System.Windows.Forms.Appearance.Button;
@@ -451,12 +448,12 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Virtual methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnCheckedChanged
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの CheckedChanged イベントを捕捉する
         /// ハンドラです。
@@ -477,7 +474,7 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     ///
     /// ToggleButtonPainter
-    /// 
+    ///
     /// <summary>
     /// トグルボタンの外観を描画するためのクラスです。
     /// </summary>
@@ -490,14 +487,13 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         ///
         /// ToggleButtonPainter
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ToggleButtonPainter(System.Windows.Forms.CheckBox view)
-            : base(view)
+        public ToggleButtonPainter(System.Windows.Forms.CheckBox view) : base(view)
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
             view.Appearance = System.Windows.Forms.Appearance.Button;
@@ -506,12 +502,12 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Virtual methods
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnCheckedChanged
-        /// 
+        ///
         /// <summary>
         /// 描画対象となるボタンの CheckedChanged イベントを捕捉する
         /// ハンドラです。
