@@ -33,6 +33,8 @@ namespace Cube.Tests
     [TestFixture]
     class ArgumentsTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Parse
@@ -43,25 +45,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        #region Parse
-
         [TestCaseSource(nameof(Parse_TestCases))]
-        public int Parse(IEnumerable<string> args) =>
+        public int Parse(int id, IEnumerable<string> args) =>
             new Arguments(args).Get().Count();
-
-        public static IEnumerable<TestCaseData> Parse_TestCases
-        {
-            get
-            {
-                yield return new TestCaseData(new List<string> { "foo", "bar", "bas" }).Returns(3);
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
-                yield return new TestCaseData(new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
-                yield return new TestCaseData(new List<string> { "foo", "", "--bar" }).Returns(1);
-                yield return new TestCaseData(new List<string>()).Returns(0);
-            }
-        }
-
-        #endregion
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,41 +58,91 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        #region Parse options
-
         [TestCaseSource(nameof(Parse_Options_TestCases))]
-        public string Parse_Options(IEnumerable<string> args, string option) =>
+        public string Parse_Options(int id, IEnumerable<string> args, string option) =>
             new Arguments(args).Get(option);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_Options
+        ///
+        /// <summary>
+        /// オプション項目が正常に解析できる事を確認するためのテストです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
-        public int Parse_Options_Count(IEnumerable<string> args) =>
+        public int Parse_Options_Count(int id, IEnumerable<string> args) =>
             new Arguments(args).GetOptions().Count;
 
+        #endregion
+
+        #region TestCases
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_TestCases
+        ///
+        /// <summary>
+        /// Parse テストのテストケースを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<TestCaseData> Parse_TestCases
+        {
+            get
+            {
+                yield return new TestCaseData(0, new List<string> { "foo", "bar", "bas" }).Returns(3);
+                yield return new TestCaseData(1, new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
+                yield return new TestCaseData(2, new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
+                yield return new TestCaseData(3, new List<string> { "foo", "", "--bar" }).Returns(1);
+                yield return new TestCaseData(4, new List<string>()).Returns(0);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_Options_TestCases
+        ///
+        /// <summary>
+        /// Parse_Options テストのテストケースを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         public static IEnumerable<TestCaseData> Parse_Options_TestCases
         {
             get
             {
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas" }, "bar").Returns("bas");
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas" }, "bas").Returns(null);
-                yield return new TestCaseData(new List<string> { "foo", "--bar" }, "bar").Returns(null);
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, "bar").Returns("hoge");
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "--hoge", "fuga" }, "bar").Returns(null);
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "--hoge", "fuga" }, "hoge").Returns("fuga");
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
+                yield return new TestCaseData(0, new List<string> { "foo", "--bar", "bas" }, "bar").Returns("bas");
+                yield return new TestCaseData(1, new List<string> { "foo", "--bar", "bas" }, "bas").Returns(null);
+                yield return new TestCaseData(2, new List<string> { "foo", "--bar" }, "bar").Returns(null);
+                yield return new TestCaseData(3, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, "bar").Returns("hoge");
+                yield return new TestCaseData(4, new List<string> { "foo", "--bar", "--hoge", "fuga" }, "bar").Returns(null);
+                yield return new TestCaseData(5, new List<string> { "foo", "--bar", "--hoge", "fuga" }, "hoge").Returns("fuga");
+                yield return new TestCaseData(6, new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_Options_Count_TestCases
+        ///
+        /// <summary>
+        /// Parse_Options_Count テストのテストケースを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         public static IEnumerable<TestCaseData> Parse_Options_Count_TestCases
         {
             get
             {
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas" }).Returns(1);
-                yield return new TestCaseData(new List<string> { "foo", "--bar" }).Returns(1);
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }).Returns(1);
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "--hoge", "fuga" }).Returns(2);
-                yield return new TestCaseData(new List<string> { "foo", "--bar", "--", "bas" }).Returns(1);
-                yield return new TestCaseData(new List<string> { "foo", "bas" }).Returns(0);
-                yield return new TestCaseData(new List<string> { "foo", "--", "bas" }).Returns(0);
+                yield return new TestCaseData(0, new List<string> { "foo", "--bar", "bas" }).Returns(1);
+                yield return new TestCaseData(1, new List<string> { "foo", "--bar" }).Returns(1);
+                yield return new TestCaseData(2, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }).Returns(1);
+                yield return new TestCaseData(3, new List<string> { "foo", "--bar", "--hoge", "fuga" }).Returns(2);
+                yield return new TestCaseData(4, new List<string> { "foo", "--bar", "--", "bas" }).Returns(1);
+                yield return new TestCaseData(5, new List<string> { "foo", "bas" }).Returns(0);
+                yield return new TestCaseData(6, new List<string> { "foo", "--", "bas" }).Returns(0);
             }
         }
 

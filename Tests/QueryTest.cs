@@ -45,7 +45,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public bool Request(IList<string> results)
+        public bool Request(int id, IList<string> results)
         {
             var index = 0;
             var query = new Query<string, string>(x =>
@@ -73,7 +73,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public bool Request_NullSynchronizationContext(IList<string> results)
+        public bool Request_NullSynchronizationContext(int id, IList<string> results)
         {
             var index = 0;
             var query = new Query<string, string>(x =>
@@ -123,8 +123,8 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(new List<string> { "first", "second", "success" }).Returns(true);
-                yield return new TestCaseData(new List<string> { "first", "failed" }).Returns(false);
+                yield return new TestCaseData(0, new List<string> { "first", "second", "success" }).Returns(true);
+                yield return new TestCaseData(1, new List<string> { "first", "failed" }).Returns(false);
             }
         }
 
