@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -17,17 +17,18 @@
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
 using NUnit.Framework;
+using Cube.Log;
 
 namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
     /// GlobalSetup
-    /// 
+    ///
     /// <summary>
     /// NUnit で最初に実行する処理を記述するテストです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     [SetUpFixture]
     public class GlobalSetup
@@ -44,8 +45,8 @@ namespace Cube.FileSystem.Tests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            Cube.Log.Operations.Configure();
-            Cube.Log.Operations.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
+            LogOperator.Configure();
+            LogOperator.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
         }
     }
 }

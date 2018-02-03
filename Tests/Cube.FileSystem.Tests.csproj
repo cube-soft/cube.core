@@ -76,7 +76,7 @@
       <HintPath>..\..\packages\AlphaFS.2.1.3\lib\net45\AlphaFS.dll</HintPath>
     </Reference>
     <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.6.1\lib\net45\Cube.Core.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Core.1.7.0\lib\net45\Cube.Core.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -101,9 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="Packages.config" />
     <None Include="Examples\Archive\FilterDirectory\Filter.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -128,17 +126,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.FileSystem.csproj">
       <Project>{e89aad2c-5a74-49f6-ad84-65f0016ef1bb}</Project>
       <Name>Cube.FileSystem</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
