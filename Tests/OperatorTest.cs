@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.FileSystem.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// OperatorTest
-    /// 
+    ///
     /// <summary>
     /// Cube.FileSystem.Operator のテスト用クラスです。
     /// </summary>
@@ -43,7 +43,7 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// ファイル一覧を取得するテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
         public void GetFiles(Operator io)
@@ -65,7 +65,7 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// ディレクトリ一覧を取得するテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
         public void GetDirectories(Operator io)
@@ -128,8 +128,8 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get_Throws(Operator io)
-            => Assert.That(() => io.Get(string.Empty), Throws.TypeOf<ArgumentException>());
+        public void Get_Throws(Operator io) =>
+            Assert.That(() => io.Get(string.Empty), Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -287,7 +287,7 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// 移動操作に失敗するテストを実行します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Failed イベントにハンドラを登録していない場合、File.Move を
         /// 実行した時と同様の例外が発生します。

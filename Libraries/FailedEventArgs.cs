@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -37,27 +37,27 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         ///
         /// FailedEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="name">操作に失敗したメソッド名</param>
         /// <param name="paths">失敗時に指定したパス一覧</param>
         /// <param name="err">送出された例外オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public FailedEventArgs(string name, IEnumerable<string> paths, Exception err)
-            : this(name, paths, err, false) { }
+        public FailedEventArgs(string name, IEnumerable<string> paths, Exception err) :
+            this(name, paths, err, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// FailedEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="name">操作に失敗したメソッド名</param>
         /// <param name="paths">失敗時に指定したパス一覧</param>
         /// <param name="err">送出された例外オブジェクト</param>
@@ -79,7 +79,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         ///
         /// Name
-        /// 
+        ///
         /// <summary>
         /// 操作に失敗したメソッド名を取得します。
         /// </summary>
@@ -90,7 +90,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         ///
         /// Paths
-        /// 
+        ///
         /// <summary>
         /// 失敗時に指定されたパス一覧を取得します。
         /// </summary>
@@ -101,7 +101,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         ///
         /// Exception
-        /// 
+        ///
         /// <summary>
         /// 送出された例外オブジェクトを取得します。
         /// </summary>
@@ -115,7 +115,7 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     ///
     /// FailedEventHandler
-    /// 
+    ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
     /// </summary>

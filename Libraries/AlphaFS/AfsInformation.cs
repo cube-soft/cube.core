@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,11 +23,11 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     ///
     /// AfsInformation
-    /// 
+    ///
     /// <summary>
     /// AlphaFS を利用した IInformation の実装クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     internal class AfsInformation : IInformation
     {
@@ -40,9 +40,9 @@ namespace Cube.FileSystem
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="path">ファイルまたはディレクトリのパス</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public AfsInformation(string path)
         {
@@ -61,7 +61,7 @@ namespace Cube.FileSystem
         /// ファイルまたはディレクトリが存在するかどうかを示す値を
         /// 取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public bool Exists => RawObject.Exists;
 
@@ -72,7 +72,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ディレクトリかどうかを示す値を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public bool IsDirectory => RawObject is DirectoryInfo;
 
@@ -83,7 +83,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイル名を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public string Name => RawObject.Name;
 
@@ -94,7 +94,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 拡張子を除いたファイル名を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public string NameWithoutExtension => Path.GetFileNameWithoutExtension(Name);
 
@@ -105,7 +105,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 拡張子を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public string Extension => RawObject.Extension;
 
@@ -116,7 +116,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 完全なパスを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public string FullName => RawObject.FullName;
 
@@ -127,10 +127,10 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの親ディレクトリのパスを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName
-            => TryCast()?.DirectoryName ?? Path.GetDirectoryName(FullName);
+        public string DirectoryName =>
+            TryCast()?.DirectoryName ?? Path.GetDirectoryName(FullName);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -139,7 +139,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルサイズを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public long Length => TryCast()?.Length ?? 0;
 
@@ -150,7 +150,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの属性を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public System.IO.FileAttributes Attributes => RawObject.Attributes;
 
@@ -161,7 +161,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの作成日時を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public DateTime CreationTime => RawObject.CreationTime;
 
@@ -172,7 +172,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの最終更新日時を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public DateTime LastWriteTime => RawObject.LastWriteTime;
 
@@ -183,7 +183,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの最終アクセス日時を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public DateTime LastAccessTime => RawObject.LastAccessTime;
 
@@ -194,7 +194,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 実装オブジェクトを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public FileSystemInfo RawObject { get; private set; }
 
@@ -209,7 +209,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// オブジェクトを最新の状態に更新します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public void Refresh() => Reset(FullName);
 
@@ -224,14 +224,12 @@ namespace Cube.FileSystem
         /// <summary>
         /// RawObject をリセットします。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        private void Reset(string path)
-        {
+        private void Reset(string path) =>
             RawObject = Directory.Exists(path) ?
                         new DirectoryInfo(path) as FileSystemInfo :
                         new FileInfo(path) as FileSystemInfo;
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -240,7 +238,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// FileInfo オブジェクトへのキャストを施行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         private FileInfo TryCast() => RawObject as FileInfo;
 

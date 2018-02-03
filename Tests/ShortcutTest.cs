@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.FileSystem.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// ShortcutTest
-    /// 
+    ///
     /// <summary>
     /// Shortcut のテスト用クラスです。
     /// </summary>
@@ -94,8 +94,8 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Throw()
-            => Assert.That(() => new Shortcut(""), Throws.TypeOf<ArgumentException>());
+        public void Create_Throw() =>
+            Assert.That(() => new Shortcut(""), Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -180,7 +180,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// GetLinkPath
-        /// 
+        ///
         /// <summary>
         /// リンク先のパスを取得します。
         /// </summary>

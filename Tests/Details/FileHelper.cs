@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,11 +22,11 @@ namespace Cube.FileSystem.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// FileHelper
-    /// 
+    ///
     /// <summary>
     /// テストでファイルを使用するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     class FileHelper
     {
@@ -50,7 +50,7 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -94,7 +94,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Examples
-        /// 
+        ///
         /// <summary>
         /// テスト用ファイルの存在するフォルダへのパスを取得します。
         /// </summary>
@@ -105,7 +105,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Results
-        /// 
+        ///
         /// <summary>
         /// テスト結果を格納するためのフォルダへのパスを取得します。
         /// </summary>
@@ -120,34 +120,32 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Example
-        /// 
+        ///
         /// <summary>
         /// ファイル名に対して Examples フォルダのパスを結合したパスを
         /// 取得します。
         /// </summary>
-        /// 
+        ///
         /// <param name="filename">ファイル名</param>
         /// <returns>パス</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Example(string filename)
-            => IO.Combine(Examples, filename);
+        protected string Example(string filename) => IO.Combine(Examples, filename);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Example
-        /// 
+        ///
         /// <summary>
         /// ファイル名に対して Results フォルダのパスを結合したパスを
         /// 取得します。
         /// </summary>
-        /// 
+        ///
         /// <param name="filename">ファイル名</param>
         /// <returns>パス</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Result(string filename)
-            => IO.Combine(Results, filename);
+        protected string Result(string filename) => IO.Combine(Results, filename);
 
         #endregion
 
@@ -156,7 +154,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Delete
-        /// 
+        ///
         /// <summary>
         /// 指定されたフォルダ内に存在する全てのファイルおよびフォルダを
         /// 削除します。
@@ -173,10 +171,10 @@ namespace Cube.FileSystem.Tests
             }
         }
 
-        #region Fields
-        private string _directory = string.Empty;
         #endregion
 
+        #region Fields
+        private string _directory = string.Empty;
         #endregion
     }
 }

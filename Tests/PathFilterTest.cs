@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,7 +22,7 @@ namespace Cube.FileSystem.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// PathFilterTest
-    /// 
+    ///
     /// <summary>
     /// PathFilter のテスト用クラスです。
     /// </summary>
@@ -40,7 +40,7 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// エスケープ処理のテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\dir\file.txt",       '_', ExpectedResult = @"C:\windows\dir\file.txt")]
         [TestCase(@"C:\windows\dir\file*?<>|.txt",  '_', ExpectedResult = @"C:\windows\dir\file_____.txt")]
@@ -56,8 +56,8 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"/unix/foo/bar.txt",             '_', ExpectedResult = @"unix\foo\bar.txt")]
         [TestCase(@"",                              '_', ExpectedResult = @"")]
         [TestCase(null,                             '_', ExpectedResult = @"")]
-        public string Escape(string src, char escape)
-            => new PathFilter(src)
+        public string Escape(string src, char escape) =>
+            new PathFilter(src)
             {
                 AllowDriveLetter      = true,
                 AllowParentDirectory  = false,
@@ -74,12 +74,12 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// ドライブ文字の許可設定に応じた結果を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\dir\allow.txt", true,  ExpectedResult = @"C:\windows\dir\allow.txt")]
         [TestCase(@"C:\windows\dir\deny.txt",  false, ExpectedResult = @"C_\windows\dir\deny.txt")]
-        public string Escape_DriveLetter(string src, bool drive)
-            => new PathFilter(src) { AllowDriveLetter = drive }.EscapedPath;
+        public string Escape_DriveLetter(string src, bool drive) =>
+            new PathFilter(src) { AllowDriveLetter = drive }.EscapedPath;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,12 +88,12 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// "." の許可設定に応じた結果を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\dir\.\allow.txt", true, ExpectedResult = @"C:\windows\dir\.\allow.txt")]
         [TestCase(@"C:\windows\dir\.\deny.txt", false, ExpectedResult = @"C:\windows\dir\deny.txt")]
-        public string Escape_CurrentDirectory(string src, bool allow)
-            => new PathFilter(src)
+        public string Escape_CurrentDirectory(string src, bool allow) =>
+            new PathFilter(src)
             {
                 AllowInactivation     = false,
                 AllowCurrentDirectory = allow,
@@ -106,12 +106,12 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// ".." の許可設定に応じた結果を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\dir\..\allow.txt", true, ExpectedResult = @"C:\windows\dir\..\allow.txt")]
         [TestCase(@"C:\windows\dir\..\deny.txt", false, ExpectedResult = @"C:\windows\dir\deny.txt")]
-        public string Escape_ParentDirectory(string src, bool allow)
-            => new PathFilter(src)
+        public string Escape_ParentDirectory(string src, bool allow) =>
+            new PathFilter(src)
             {
                 AllowInactivation    = false,
                 AllowParentDirectory = allow,
@@ -124,13 +124,13 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// サービス機能の不活性化の許可設定に応じた結果を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"\\?\C:\windows\dir\deny.txt",  false, ExpectedResult = @"C:\windows\dir\deny.txt")]
         [TestCase(@"\\?\C:\windows\dir\allow.txt",  true, ExpectedResult = @"\\?\C:\windows\dir\allow.txt")]
         [TestCase(@"\\?\C:\windows\.\..\allow.txt", true, ExpectedResult = @"\\?\C:\windows\allow.txt")]
-        public string Escape_Inactivation(string src, bool allow)
-            => new PathFilter(src)
+        public string Escape_Inactivation(string src, bool allow) =>
+            new PathFilter(src)
             {
                 AllowInactivation     = allow,
                 AllowDriveLetter      = true,
@@ -146,13 +146,13 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// UNC パスの許可設定に応じた結果を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"\\domain\dir\allow.txt", true, false, ExpectedResult = @"\\domain\dir\allow.txt")]
         [TestCase(@"\\domain\dir\allow.txt", true,  true, ExpectedResult = @"domain\dir\allow.txt")]
         [TestCase(@"\\domain\dir\deny.txt", false, false, ExpectedResult = @"domain\dir\deny.txt")]
-        public string Escape_Unc(string src, bool unc, bool inactivation)
-            => new PathFilter(src)
+        public string Escape_Unc(string src, bool unc, bool inactivation) =>
+            new PathFilter(src)
             {
                 AllowInactivation = inactivation,
                 AllowUnc          = unc
@@ -165,13 +165,12 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// Match メソッドのテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\dir\file.txt", "file.txt", ExpectedResult = true)]
         [TestCase(@"C:\windows\dir\FILE.txt", "file.txt", ExpectedResult = true)]
         [TestCase(@"C:\windows\dir\file.txt", "file",     ExpectedResult = false)]
-        public bool Match(string src, string cmp)
-            => new PathFilter(src).Match(cmp);
+        public bool Match(string src, string cmp) => new PathFilter(src).Match(cmp);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -180,15 +179,15 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// MatchAny メソッドのテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\dir\Thumbs.db",       ExpectedResult = true)]
         [TestCase(@"C:\windows\__MACOSX\file.txt",   ExpectedResult = true)]
         [TestCase(@"C:\windows\__MACOSX__\file.txt", ExpectedResult = false)]
         [TestCase(@"",                               ExpectedResult = false)]
         [TestCase(null,                              ExpectedResult = false)]
-        public bool MatchAny(string src)
-            => new PathFilter(src).MatchAny(new[]
+        public bool MatchAny(string src) =>
+            new PathFilter(src).MatchAny(new[]
             {
                 ".DS_Store", "Thumbs.db", "__MACOSX", "desktop.ini"
             });
@@ -200,12 +199,12 @@ namespace Cube.FileSystem.Tests
         /// <summary>
         /// 大文字・小文字の区別の有無の違いによる結果を確認します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\windows\.ds_store\file.txt", true,  ExpectedResult = true)]
         [TestCase(@"C:\windows\.ds_store\file.txt", false, ExpectedResult = false)]
-        public bool MatchAny_IgnoreCase(string src, bool ignore)
-            => new PathFilter(src).MatchAny(new[]
+        public bool MatchAny_IgnoreCase(string src, bool ignore) =>
+            new PathFilter(src).MatchAny(new[]
             {
                 ".DS_Store", "Thumbs.db", "__MACOSX", "desktop.ini"
             }, ignore);

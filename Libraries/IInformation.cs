@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,12 +23,12 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     ///
     /// IInformation
-    /// 
+    ///
     /// <summary>
     /// ファイルまたはディレクトリの情報を保持するための
     /// インターフェースです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public interface IInformation
     {
@@ -42,7 +42,7 @@ namespace Cube.FileSystem
         /// ファイルまたはディレクトリが存在するかどうかを示す値を
         /// 取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         bool Exists { get; }
 
@@ -53,7 +53,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ディレクトリかどうかを示す値を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         bool IsDirectory { get; }
 
@@ -64,7 +64,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイル名を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         string Name { get; }
 
@@ -75,7 +75,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 拡張子を除いたファイル名を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         string NameWithoutExtension { get; }
 
@@ -86,7 +86,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 拡張子を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         string Extension { get; }
 
@@ -97,7 +97,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// 完全なパスを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         string FullName { get; }
 
@@ -108,7 +108,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの親ディレクトリのパスを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         string DirectoryName { get; }
 
@@ -119,7 +119,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルサイズを取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         long Length { get; }
 
@@ -130,7 +130,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの属性を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         FileAttributes Attributes { get; }
 
@@ -141,7 +141,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの作成日時を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         DateTime CreationTime { get; }
 
@@ -152,7 +152,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの最終更新日時を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         DateTime LastWriteTime { get; }
 
@@ -163,7 +163,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// ファイルまたはディレクトリの最終アクセス日時を取得します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         DateTime LastAccessTime { get; }
 
@@ -178,7 +178,7 @@ namespace Cube.FileSystem
         /// <summary>
         /// オブジェクトを最新の状態に更新します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         void Refresh();
 

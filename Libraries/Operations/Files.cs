@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,15 +22,17 @@ namespace Cube.FileSystem.Files
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Files.Operations
-    /// 
+    /// OperatorEx
+    ///
     /// <summary>
     /// FileSystem.Operator に対する拡張メソッドを定義したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class OperatorEx
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// GetTypeName
@@ -41,10 +43,10 @@ namespace Cube.FileSystem.Files
         ///
         /// <param name="io">ファイル操作用オブジェクト</param>
         /// <param name="info">ファイル情報</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this Operator io, IInformation info)
-            => GetTypeName(io, info?.FullName);
+        public static string GetTypeName(this Operator io, IInformation info) =>
+            GetTypeName(io, info?.FullName);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,11 +58,11 @@ namespace Cube.FileSystem.Files
         ///
         /// <param name="io">ファイル操作用オブジェクト</param>
         /// <param name="path">対象となるパス</param>
-        /// 
+        ///
         /// <remarks>
         /// 現在は Operator オブジェクトは使用していません。
         /// </remarks>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public static string GetTypeName(this Operator io, string path)
         {
@@ -84,13 +86,13 @@ namespace Cube.FileSystem.Files
         /// <summary>
         /// 指定されたパスを基にした一意なパスを取得します。
         /// </summary>
-        /// 
+        ///
         /// <param name="io">ファイル操作用オブジェクト</param>
         /// <param name="path">対象となるパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this Operator io, string path)
-            => GetUniqueName(io, io?.Get(path));
+        public static string GetUniqueName(this Operator io, string path) =>
+            GetUniqueName(io, io?.Get(path));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -99,7 +101,7 @@ namespace Cube.FileSystem.Files
         /// <summary>
         /// IInformation オブジェクトを基にした一意なパスを取得します。
         /// </summary>
-        /// 
+        ///
         /// <param name="io">ファイル操作用オブジェクト</param>
         /// <param name="info">ファイル情報</param>
         ///
@@ -117,5 +119,7 @@ namespace Cube.FileSystem.Files
                 if (!io.Exists(dest)) return dest;
             }
         }
+
+        #endregion
     }
 }

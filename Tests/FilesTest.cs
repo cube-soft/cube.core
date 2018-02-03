@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.FileSystem.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// FilesTest
-    /// 
+    ///
     /// <summary>
     /// FileSystem.Operator の拡張メソッドのテスト用クラスです。
     /// </summary>
@@ -32,6 +32,8 @@ namespace Cube.FileSystem.Tests
     [TestFixture]
     class FilesTest : FileHelper
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// GetTypeName
@@ -43,8 +45,8 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [TestCase("Sample.txt",     ExpectedResult = true)]
         [TestCase("NotExist.dummy", ExpectedResult = true)]
-        public bool GetTypeName(string filename)
-            => !string.IsNullOrEmpty(IO.GetTypeName(IO.Get(Example(filename))));
+        public bool GetTypeName(string filename) =>
+            !string.IsNullOrEmpty(IO.GetTypeName(IO.Get(Example(filename))));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,5 +112,7 @@ namespace Cube.FileSystem.Tests
             Assert.That(dummy.GetUniqueName(src), Is.Null);
             Assert.That(dummy.GetUniqueName(IO.Get(src)), Is.Null);
         }
+
+        #endregion
     }
 }
