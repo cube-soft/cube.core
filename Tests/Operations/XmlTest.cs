@@ -76,38 +76,73 @@ namespace Cube.Tests
             Is.EqualTo(1)
         );
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetElements_WrongNamespace
+        ///
+        /// <summary>
+        /// 無効な名前空間を指定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetElements_WrongNamespace() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetElement("items")
+                .GetElement("rdf", "Seq")
+                .GetElements("dummy", "li")
+                .Count(),
+            Is.EqualTo(0)
+        );
+
         #endregion
 
         #region GetDecendants
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDecendants_Rss
+        /// GetDescendants_Rss
         ///
         /// <summary>
-        /// Sample.rss に対して GetDecendants のテストを実行します。
+        /// Sample.rss に対して GetDescendants のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetDecendants_Rss() => Assert.That(
-            Create("Sample.rss").GetDecendants("rdf", "li").Count(),
+        public void GetDescendants_Rss() => Assert.That(
+            Create("Sample.rss").GetDescendants("rdf", "li").Count(),
             Is.EqualTo(2)
         );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDecendants_Opml
+        /// GetDescendants_Opml
         ///
         /// <summary>
-        /// Sample.opml に対して GetDecendants のテストを実行します。
+        /// Sample.opml に対して GetDescendants のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetDecendants_Opml() => Assert.That(
-            Create("Sample.opml").GetDecendants("outline").Count(),
+        public void GetDescendants_Opml() => Assert.That(
+            Create("Sample.opml").GetDescendants("outline").Count(),
             Is.EqualTo(8)
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDescendants_WrongNamespace
+        ///
+        /// <summary>
+        /// 無効な名前空間を指定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetDescendants_WrongNamespace() => Assert.That(
+            Create("Sample.rss").GetDescendants("dummy", "li").Count(),
+            Is.EqualTo(0)
         );
 
         #endregion
@@ -116,45 +151,101 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetValueOrAttribute
+        /// GetValueOrAttribute_Value
         ///
         /// <summary>
-        /// GetValueOrAttribute のテストを実行します。
+        /// GetValueOrAttribute の結果 Value が取得できるケースの
+        /// テストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetValueOrAttribute()
-        {
-            var src = Create("Sample.rss").GetElement("channel");
+        public void GetValueOrAttribute_Value() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetValueOrAttribute("link", "href"),
+            Is.EqualTo("http://xml.com/pub")
+        );
 
-            Assert.That(
-                src.GetValueOrAttribute("link", string.Empty),
-                Is.EqualTo("http://xml.com/pub")
-            );
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValueOrAttribute_Attribute
+        ///
+        /// <summary>
+        /// GetValueOrAttribute の結果 Attribute が取得できるケースの
+        /// テストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetValueOrAttribute_Attribute() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetElement("items")
+                .GetElement("rdf", "Seq")
+                .GetValueOrAttribute("rdf", "li", "resource"),
+            Is.EqualTo("http://xml.com/pub/2000/08/09/xslt/xslt.html")
+        );
 
-            var seq = src.GetElement("items").GetElement("rdf", "Seq");
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValueOrAttribute_NotFound
+        ///
+        /// <summary>
+        /// GetValueOrAttribute の結果どちらも見つからないケースの
+        /// テストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetValueOrAttribute_NotFound() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetElement("items")
+                .GetElement("rdf", "Seq")
+                .GetValueOrAttribute("rdf", "li", "dummy"),
+            Is.Empty
+        );
 
-            Assert.That(
-                seq.GetValueOrAttribute("rdf", "li", string.Empty),
-                Is.Empty
-            );
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValueOrAttribute_Empty
+        ///
+        /// <summary>
+        /// GetValueOrAttribute の属性に空文字を指定した時の挙動を
+        /// 確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetValueOrAttribute_Empty() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetElement("items")
+                .GetElement("rdf", "Seq")
+                .GetValueOrAttribute("rdf", "li", string.Empty),
+            Is.Empty
+        );
 
-            Assert.That(
-                seq.GetValueOrAttribute("rdf", "li", "resource"),
-                Is.EqualTo("http://xml.com/pub/2000/08/09/xslt/xslt.html")
-            );
-
-            Assert.That(
-                seq.GetValueOrAttribute("rdf", "li", "dummy"),
-                Is.Empty
-            );
-
-            Assert.That(
-                seq.GetValueOrAttribute("li", "resource"),
-                Is.Empty
-            );
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValueOrAttribute_WrongNamespace
+        ///
+        /// <summary>
+        /// GetValueOrAttribute に無効な名前空間を指定した時の挙動を
+        /// 確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetValueOrAttribute_WrongNamespace() => Assert.That(
+            Create("Sample.rss")
+                .GetElement("channel")
+                .GetElement("items")
+                .GetElement("rdf", "Seq")
+                .GetValueOrAttribute("dummy", "li", "resource"),
+            Is.Empty
+        );
 
         #endregion
 

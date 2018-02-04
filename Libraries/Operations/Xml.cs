@@ -68,9 +68,9 @@ namespace Cube.Xml
         ///
         /* ----------------------------------------------------------------- */
         public static XElement GetElement(this XElement e, string ns, string name) =>
-            !string.IsNullOrEmpty(ns) ?
-            e.Element(e.GetNamespaceOfPrefix(ns) + name) :
-            e.Element(e.GetDefaultNamespace() + name);
+            e.GetNamespace(ns) is XNamespace result ?
+            e.Element(result + name) :
+            default(XElement);
 
         #endregion
 
@@ -111,9 +111,9 @@ namespace Cube.Xml
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetElements(this XElement e, string ns, string name) =>
-            !string.IsNullOrEmpty(ns) ?
-            e.Elements(e.GetNamespaceOfPrefix(ns) + name) :
-            e.Elements(e.GetDefaultNamespace() + name);
+            e.GetNamespace(ns) is XNamespace result ?
+            e.Elements(result + name) :
+            new XElement[0];
 
         #endregion
 
@@ -134,12 +134,12 @@ namespace Cube.Xml
         /// <returns>XElements オブジェクトの配列</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<XElement> GetDecendants(this XElement e, string name) =>
-            GetDecendants(e, string.Empty, name);
+        public static IEnumerable<XElement> GetDescendants(this XElement e, string name) =>
+            e.GetDescendants(string.Empty, name);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDecendants
+        /// GetDescendants
         ///
         /// <summary>
         /// XElement オブジェクト一覧を取得します。
@@ -153,10 +153,10 @@ namespace Cube.Xml
         /// <returns>XElements オブジェクトの配列</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<XElement> GetDecendants(this XElement e, string ns, string name) =>
-            !string.IsNullOrEmpty(ns) ?
-            e.Descendants(e.GetNamespaceOfPrefix(ns) + name) :
-            e.Descendants(e.GetDefaultNamespace() + name);
+        public static IEnumerable<XElement> GetDescendants(this XElement e, string ns, string name) =>
+            e.GetNamespace(ns) is XNamespace result ?
+            e.Descendants(result + name) :
+            new XElement[0];
 
         #endregion
 
@@ -224,6 +224,25 @@ namespace Cube.Xml
             if (!string.IsNullOrEmpty(e.Value)) return e.Value;
             if (string.IsNullOrEmpty(hint)) return string.Empty;
             return (string)e.Attribute(hint) ?? string.Empty;
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetNamespace
+        ///
+        /// <summary>
+        /// XNamespace オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static XNamespace GetNamespace(this XElement e, string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix)) return e.GetDefaultNamespace();
+            return e.GetNamespaceOfPrefix(prefix);
         }
 
         #endregion
