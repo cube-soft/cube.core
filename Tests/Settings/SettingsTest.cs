@@ -294,7 +294,7 @@ namespace Cube.Tests
         {
             var dest = Result(filename);
             type.Save(dest, CreatePerson());
-            Assert.That(File.Exists(dest), Is.True);
+            Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -331,7 +331,7 @@ namespace Cube.Tests
             {
                 type.Save(sw.BaseStream, CreatePerson());
             }
-            Assert.That(File.Exists(dest), Is.True);
+            Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */

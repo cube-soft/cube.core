@@ -262,7 +262,11 @@ namespace Cube.Settings
             using (var ms = new MemoryStream())
             {
                 action(ms);
-                using (var ds = File.Create(dest)) ms.CopyTo(ds);
+                using (var ds = File.Create(dest))
+                {
+                    ms.Position = 0;
+                    ms.CopyTo(ds);
+                }
             }
         }
 
