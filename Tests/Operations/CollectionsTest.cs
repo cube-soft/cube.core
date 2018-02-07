@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Cube.Collections;
 
@@ -116,6 +117,74 @@ namespace Cube.Tests
             Assert.That(src.ToObservable(), Is.EquivalentTo(src));
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Flatten
+        ///
+        /// <summary>
+        /// ツリー構造を平坦化するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Flatten()
+        {
+            var src = new[]
+            {
+                new Tree { Name = "1st" },
+                new Tree
+                {
+                    Name     = "2nd",
+                    Children = new[]
+                    {
+                        new Tree
+                        {
+                            Name     = "2nd-1st",
+                            Children = new[] { new Tree { Name = "2nd-1st-1st" } },
+                        },
+                        new Tree { Name = "2nd-2nd" },
+                        new Tree
+                        {
+                            Name     = "2nd-3rd",
+                            Children = new[]
+                            {
+                                new Tree { Name = "2nd-3rd-1st" },
+                                new Tree { Name = "2nd-3rd-2nd" },
+                            },
+                        },
+                    },
+                },
+                new Tree { Name = "3rd" },
+            };
+
+            var dest = src.Flatten(e => e.Children).ToList();
+            Assert.That(dest.Count, Is.EqualTo(9));
+            Assert.That(dest[0].Name, Is.EqualTo("1st"));
+            Assert.That(dest[1].Name, Is.EqualTo("2nd"));
+            Assert.That(dest[2].Name, Is.EqualTo("3rd"));
+            Assert.That(dest[3].Name, Is.EqualTo("2nd-1st"));
+            Assert.That(dest[4].Name, Is.EqualTo("2nd-2nd"));
+            Assert.That(dest[5].Name, Is.EqualTo("2nd-3rd"));
+            Assert.That(dest[6].Name, Is.EqualTo("2nd-1st-1st"));
+            Assert.That(dest[7].Name, Is.EqualTo("2nd-3rd-1st"));
+            Assert.That(dest[8].Name, Is.EqualTo("2nd-3rd-2nd"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Flatten_Empty
+        ///
+        /// <summary>
+        /// 空の配列に対して Flatten を実行した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Flatten_Empty() => Assert.That(
+            new Tree[0].Flatten(e => e.Children).Count(),
+            Is.EqualTo(0)
+        );
+
         #endregion
 
         #region Helper methods
@@ -134,6 +203,21 @@ namespace Cube.Tests
             var dest = new List<int>();
             for (int i = 0; i < count; ++i) dest.Add(i);
             return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Tree
+        ///
+        /// <summary>
+        /// テスト用のツリー構造を持つクラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        class Tree
+        {
+            public string Name { get; set; }
+            public IEnumerable<Tree> Children { get; set; }
         }
 
         #endregion

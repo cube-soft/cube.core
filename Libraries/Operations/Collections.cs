@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Cube.Differences;
 
 namespace Cube.Collections
@@ -35,23 +36,7 @@ namespace Cube.Collections
     {
         #region Methods
 
-        #region IEnumerable(T)
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToObservable(T)
-        ///
-        /// <summary>
-        /// ObservableCollection に変換します。
-        /// </summary>
-        ///
-        /// <param name="src">変換前のコレクション</param>
-        ///
-        /// <returns>ObservableCollection オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> src) =>
-            new ObservableCollection<T>(src);
+        #region Diff
 
         /* ----------------------------------------------------------------- */
         ///
@@ -128,7 +113,41 @@ namespace Cube.Collections
 
         #endregion
 
-        #region IList(T)
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Flatten
+        ///
+        /// <summary>
+        /// 木構造を一次元配列に変換します。
+        /// 変換時には幅優先探索アルゴリズムが用いられます。
+        /// </summary>
+        ///
+        /// <param name="src">ツリー構造オブジェクト</param>
+        /// <param name="children">
+        /// 子要素を選択するための関数オブジェクト
+        /// </param>
+        ///
+        /// <returns>変換後のオブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> src,
+            Func<T, IEnumerable<T>> children) => src.Flatten((e, s) => children(e));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToObservable(T)
+        ///
+        /// <summary>
+        /// ObservableCollection に変換します。
+        /// </summary>
+        ///
+        /// <param name="src">変換前のコレクション</param>
+        ///
+        /// <returns>ObservableCollection オブジェクト</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> src) =>
+            new ObservableCollection<T>(src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,6 +174,23 @@ namespace Cube.Collections
             src == null || src.Count == 0 ? 0 : src.Count - 1;
 
         #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Flatten
+        ///
+        /// <summary>
+        /// 木構造を一次元配列に変換します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static IEnumerable<T> Flatten<T>(this IEnumerable<T> src,
+            Func<T, IEnumerable<T>, IEnumerable<T>> func) => src.Concat(
+                src.Where(e => func(e, src) != null)
+                   .SelectMany(e => func(e, src).Flatten(func))
+            );
 
         #endregion
     }
