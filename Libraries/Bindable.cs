@@ -79,9 +79,10 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public Bindable(T value, SynchronizationContext context)
         {
-            _value   = value;
-            _context = context;
-            _dispose = new OnceAction<bool>(Dispose);
+            _dispose     = new OnceAction<bool>(Dispose);
+            _context     = context;
+            _value       = value;
+            IsRedirected = true;
         }
 
         #endregion
@@ -103,19 +104,9 @@ namespace Cube.Xui
             set
             {
                 if (_value != null && _value.Equals(value)) return;
-                if (_value is INotifyPropertyChanged prev)
-                {
-                    prev.PropertyChanged -= WhenMemberChanged;
-                }
-
+                UnsetHandler(_value);
                 _value = value;
-
-                if (IsRedirected && _value is INotifyPropertyChanged next)
-                {
-                    next.PropertyChanged -= WhenMemberChanged;
-                    next.PropertyChanged += WhenMemberChanged;
-                }
-
+                SetHandler(_value);
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(HasValue));
             }
@@ -165,7 +156,17 @@ namespace Cube.Xui
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsRedirected { get; set; } = true;
+        public bool IsRedirected
+        {
+            get => _redirect;
+            set
+            {
+                if (_redirect == value) return;
+                _redirect = value;
+                if (value) SetHandler(Value);
+                else UnsetHandler(Value);
+            }
+        }
 
         #endregion
 
@@ -271,6 +272,41 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
+        /// SetHandler
+        ///
+        /// <summary>
+        /// オブジェクトに対してハンドラを設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void SetHandler(T value)
+        {
+            if (IsRedirected && value is INotifyPropertyChanged cvt)
+            {
+                cvt.PropertyChanged -= WhenMemberChanged;
+                cvt.PropertyChanged += WhenMemberChanged;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UnsetHandler
+        ///
+        /// <summary>
+        /// オブジェクトからハンドラの設定を解除します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void UnsetHandler(T value)
+        {
+            if (value is INotifyPropertyChanged cvt)
+            {
+                cvt.PropertyChanged -= WhenMemberChanged;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// WhenMemberChanged
         ///
         /// <summary>
@@ -286,6 +322,7 @@ namespace Cube.Xui
 
         #region Fields
         private T _value;
+        private bool _redirect;
         private SynchronizationContext _context;
         private OnceAction<bool> _dispose;
         #endregion

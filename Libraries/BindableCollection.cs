@@ -100,8 +100,9 @@ namespace Cube.Xui
         public BindableCollection(IEnumerable<T> collection, SynchronizationContext context) :
             base(collection ?? new T[0])
         {
-            _dispose = new OnceAction<bool>(Dispose);
-            _context = context;
+            _dispose     = new OnceAction<bool>(Dispose);
+            _context     = context;
+            IsRedirected = true;
         }
 
         #endregion
@@ -141,7 +142,17 @@ namespace Cube.Xui
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsRedirected { get; set; } = true;
+        public bool IsRedirected
+        {
+            get => _redirect;
+            set
+            {
+                if (_redirect == value) return;
+                _redirect = value;
+                if (value) SetHandler(this);
+                else UnsetHandler(this);
+            }
+        }
 
         #region IDisposable
 
@@ -329,6 +340,7 @@ namespace Cube.Xui
         #endregion
 
         #region Fields
+        private bool _redirect;
         private SynchronizationContext _context;
         private OnceAction<bool> _dispose;
         #endregion
