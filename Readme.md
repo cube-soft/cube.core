@@ -1,6 +1,8 @@
 Cube.Xui
 ====
 
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/brama8ylsuk8xjer?svg=true)](https://ci.appveyor.com/project/clown/cube-xui)
+
 Cube.Xui is a library for WPF applications.
 
 ## Dependencies
