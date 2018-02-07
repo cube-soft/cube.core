@@ -1,0 +1,26 @@
+version: 1.7.0.{build}
+branches:
+    only:
+        - master
+skip_tags: true
+clone_folder: C:\Cube\Cube.Xui
+image: Visual Studio 2017
+nuget:
+    project_feed: true
+    disable_publish_on_pr: true
+platform: Any CPU
+configuration: Release
+before_build:
+    - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
+    - nuget restore Cube.Xui.sln
+build:
+    parallel: true
+    project: Cube.Xui.sln
+    publish_nuget: true
+    verbosity: normal
+test_script:
+    - ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:nunit3-console.exe -targetargs:Cube.Xui.Tests.dll -targetdir:Tests\bin\Release -returntargetcode -hideskipped:All -output:CoverResult.xml -filter:"+[*]* -[*]*NativeMethods -[*]*Properties.*"
+after_test:
+    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+    - pip install codecov
+    - codecov -f CoverResult.xml
