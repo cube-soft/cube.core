@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using GalaSoft.MvvmLight.Command;
 
@@ -46,16 +47,15 @@ namespace Cube.Xui
         ///
         /// <param name="execute">実行内容</param>
         /// <param name="canExecute">実行可能かどうか</param>
-        /// <param name="obj">関連付けるオブジェクト</param>
+        /// <param name="objects">関連付けるオブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
         public BindableCommand(Action execute, Func<bool> canExecute,
-            INotifyPropertyChanged obj) : base(execute, canExecute)
+            params INotifyPropertyChanged[] objects) : base(execute, canExecute)
         {
-            System.Diagnostics.Debug.Assert(obj != null);
             _dispose = new OnceAction<bool>(Dispose);
-            AssociatedObject = obj;
-            AssociatedObject.PropertyChanged += WhenChanged;
+            AssociatedObjects = objects;
+            foreach (var obj in objects) obj.PropertyChanged += WhenChanged;
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public INotifyPropertyChanged AssociatedObject { get; }
+        public IEnumerable<INotifyPropertyChanged> AssociatedObjects { get; }
 
         #endregion
 
@@ -120,7 +120,10 @@ namespace Cube.Xui
         {
             if (disposing)
             {
-                AssociatedObject.PropertyChanged -= WhenChanged;
+                foreach (var obj in AssociatedObjects)
+                {
+                    obj.PropertyChanged -= WhenChanged;
+                }
             }
         }
 
