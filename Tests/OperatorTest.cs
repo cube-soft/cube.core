@@ -223,6 +223,19 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Delete_NotFound
+        ///
+        /// <summary>
+        /// 存在しないファイルの削除を試みた時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Delete_NotFound(Operator io) =>
+            Assert.DoesNotThrow(() => io.Delete(Result("NotFound")));
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Move
         ///
         /// <summary>
