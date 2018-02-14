@@ -103,19 +103,19 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Packages.config" />
-    <None Include="Examples\Archive\FilterDirectory\Filter.txt">
+    <None Include="Examples\SampleDirectory\FilterDirectory\Filter.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Examples\Archive\FilterDirectory\Sample.txt">
+    <None Include="Examples\SampleDirectory\FilterDirectory\Sample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Examples\Archive\Empty.txt">
+    <None Include="Examples\SampleDirectory\Empty.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Examples\Archive\FileInDirectory.txt">
+    <None Include="Examples\SampleDirectory\FileInDirectory.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Examples\Archive\Filter.txt">
+    <None Include="Examples\SampleDirectory\Filter.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Examples\Empty.txt">

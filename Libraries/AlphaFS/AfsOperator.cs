@@ -192,8 +192,18 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected override void DeleteCore(string path)
         {
-            if (Directory.Exists(path)) Directory.Delete(path, true);
-            else if (File.Exists(path)) File.Delete(path);
+            if (Directory.Exists(path))
+            {
+                foreach (var f in Directory.GetFiles(path)) DeleteCore(f);
+                foreach (var d in Directory.GetDirectories(path)) DeleteCore(d);
+                SetAttributes(path, System.IO.FileAttributes.Normal);
+                Directory.Delete(path, false);
+            }
+            else if (File.Exists(path))
+            {
+                SetAttributes(path, System.IO.FileAttributes.Normal);
+                File.Delete(path);
+            }
         }
 
         /* ----------------------------------------------------------------- */

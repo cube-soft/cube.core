@@ -361,12 +361,8 @@ namespace Cube.FileSystem
         /// <param name="path">削除するファイルのパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Delete(string path) => Action(nameof(Delete), () =>
-        {
-            if (!Exists(path)) return;
-            SetAttributes(path, FileAttributes.Normal);
-            DeleteCore(path);
-        }, path);
+        public void Delete(string path) =>
+            Action(nameof(Delete), () => DeleteCore(path), path);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -381,8 +377,18 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected virtual void DeleteCore(string path)
         {
-            if (Directory.Exists(path)) Directory.Delete(path, true);
-            else if (File.Exists(path)) File.Delete(path);
+            if (Directory.Exists(path))
+            {
+                foreach (var f in Directory.GetFiles(path)) DeleteCore(f);
+                foreach (var d in Directory.GetDirectories(path)) DeleteCore(d);
+                SetAttributes(path, FileAttributes.Normal);
+                Directory.Delete(path, false);
+            }
+            else if (File.Exists(path))
+            {
+                SetAttributes(path, FileAttributes.Normal);
+                File.Delete(path);
+            }
         }
 
         #endregion

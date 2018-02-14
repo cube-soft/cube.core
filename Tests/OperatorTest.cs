@@ -180,6 +180,49 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Delete
+        ///
+        /// <summary>
+        /// ファイルを削除するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Delete(Operator io)
+        {
+            var dest = Result("Delete.txt");
+
+            io.Copy(Example("Sample.txt"), dest);
+            io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
+            io.Delete(dest);
+
+            Assert.That(io.Exists(dest), Is.False);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DeleteRecursive
+        ///
+        /// <summary>
+        /// ディレクトリを再帰的に削除するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void DeleteRecursive(Operator io)
+        {
+            var name = "SampleDirectory";
+            var dest = Result(name);
+
+            io.Copy(Example(name), dest, true);
+            foreach (var f in io.GetFiles(dest)) io.SetAttributes(f, System.IO.FileAttributes.ReadOnly);
+            io.Delete(dest);
+
+            Assert.That(io.Exists(dest), Is.False);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Move
         ///
         /// <summary>
@@ -192,7 +235,7 @@ namespace Cube.FileSystem.Tests
         {
             io.Failed += (s, e) => Assert.Fail($"{e.Name}: {e.Exception}");
 
-            var name = "Archive";
+            var name = "SampleDirectory";
             var src  = io.Get(io.Combine(Results, name));
             var dest = io.Get(io.Combine(Results, $"{name}-Move"));
 
@@ -251,6 +294,29 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Move_Throws
+        ///
+        /// <summary>
+        /// 移動操作に失敗するテストを実行します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Failed イベントにハンドラを登録していない場合、File.Move を
+        /// 実行した時と同様の例外が発生します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Move_Throws(Operator io) => Assert.That(() =>
+        {
+            var src  = io.Combine(Results, "FileNotFound.txt");
+            var dest = io.Combine(Results, "Moved.txt");
+            io.Move(src, dest);
+        },
+        Throws.TypeOf<System.IO.FileNotFoundException>());
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Open_Failed
         ///
         /// <summary>
@@ -279,29 +345,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(failed, Is.True);
             Assert.That(stream, Is.Null);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Move_Throws
-        ///
-        /// <summary>
-        /// 移動操作に失敗するテストを実行します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// Failed イベントにハンドラを登録していない場合、File.Move を
-        /// 実行した時と同様の例外が発生します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void Move_Throws(Operator io) => Assert.That(() =>
-        {
-            var src  = io.Combine(Results, "FileNotFound.txt");
-            var dest = io.Combine(Results, "Moved.txt");
-            io.Move(src, dest);
-        },
-        Throws.TypeOf<System.IO.FileNotFoundException>());
 
         /* ----------------------------------------------------------------- */
         ///
