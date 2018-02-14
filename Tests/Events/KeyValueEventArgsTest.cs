@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,11 +22,11 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// KeyValueEventArgsTest
-    /// 
+    ///
     /// <summary>
     /// KeyValueEventArgs のテスト用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class KeyValueEventArgsTest
@@ -79,7 +79,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(ExpectedResult = false)]
-        public bool KeyValueCancelEventArgs_Cancel()
-            => new KeyValueCancelEventArgs<int, int>(1, 2).Cancel;
+        public bool KeyValueCancelEventArgs_Cancel() =>
+            new KeyValueCancelEventArgs<int, int>(1, 2).Cancel;
     }
 }

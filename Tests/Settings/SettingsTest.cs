@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,7 +28,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// SettingsTest
-    /// 
+    ///
     /// <summary>
     /// Settings のテスト用クラスです。
     /// </summary>
@@ -42,11 +42,11 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Registry
-        /// 
+        ///
         /// <summary>
         /// SettingsFolder を規定値で初期化するテストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_Registry()
@@ -69,12 +69,12 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Json
-        /// 
+        ///
         /// <summary>
         /// SettingsFolder に SettingsType.Json 指定して初期化する
         /// テストを実行します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_Json()
@@ -94,7 +94,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Load_Registry
-        /// 
+        ///
         /// <summary>
         /// レジストリから設定を読み込むテストを実行します。
         /// </summary>
@@ -125,7 +125,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Load_RegistryIsNull
-        /// 
+        ///
         /// <summary>
         /// 無効なレジストリキーを設定した時の挙動を確認します。
         /// </summary>
@@ -153,7 +153,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Load_File
-        /// 
+        ///
         /// <summary>
         /// ファイルから設定を読み込むテストを実行します。
         /// </summary>
@@ -163,21 +163,21 @@ namespace Cube.Tests
         [TestCase(SettingsType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
         [TestCase(SettingsType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
         [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
-        public string Load_File(SettingsType type, string filename)
-            => type.Load<Person>(Example(filename)).Name;
+        public string Load_File(SettingsType type, string filename) =>
+            type.Load<Person>(Example(filename)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Load_File_Throws
-        /// 
+        ///
         /// <summary>
         /// ファイルから設定を読み込みに失敗するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(SettingsType.Unknown, "Settings.xml")]
-        public void Load_File_Throws(SettingsType type, string filename)
-            => Assert.That(
+        public void Load_File_Throws(SettingsType type, string filename) =>
+            Assert.That(
                 () => type.Load<Person>(Example(filename)),
                 Throws.TypeOf<ArgumentException>()
             );
@@ -185,7 +185,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Load_Stream
-        /// 
+        ///
         /// <summary>
         /// ストリームから設定を読み込むテストを実行します。
         /// </summary>
@@ -206,7 +206,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Load_Stream_Throws
-        /// 
+        ///
         /// <summary>
         /// ストリームから設定を読み込みに失敗するテストを実行します。
         /// </summary>
@@ -214,19 +214,19 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(SettingsType.Registry, "Settings.xml")]
         [TestCase(SettingsType.Unknown,  "Settings.xml")]
-        public void Load_Stream_Throws(SettingsType type, string filename)
-            => Assert.That(() =>
-        {
-            using (var reader = new StreamReader(Example(filename)))
+        public void Load_Stream_Throws(SettingsType type, string filename) =>
+            Assert.That(() =>
             {
-                type.Load<Person>(reader.BaseStream);
-            }
-        }, Throws.TypeOf<ArgumentException>());
+                using (var reader = new StreamReader(Example(filename)))
+                {
+                    type.Load<Person>(reader.BaseStream);
+                }
+            }, Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save_Registry
-        /// 
+        ///
         /// <summary>
         /// レジストリに設定を保存するテストを実行します。
         /// </summary>
@@ -266,24 +266,24 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Save_RegistryIsNull
-        /// 
+        ///
         /// <summary>
         /// 無効なレジストリに保存した時の挙動を確認します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// RegistryKey が null の場合、処理は無視されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Save_RegistryIsNull()
-            => Assert.DoesNotThrow(() => default(RegistryKey).Save(CreatePerson()));
+        public void Save_RegistryIsNull() =>
+            Assert.DoesNotThrow(() => default(RegistryKey).Save(CreatePerson()));
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save_File
-        /// 
+        ///
         /// <summary>
         /// 設定内容をファイルに書き込むテストを実行します。
         /// </summary>
@@ -295,21 +295,21 @@ namespace Cube.Tests
         {
             var dest = Result(filename);
             type.Save(dest, CreatePerson());
-            Assert.That(File.Exists(dest), Is.True);
+            Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save_File_Throws
-        /// 
+        ///
         /// <summary>
         /// 設定の保存に失敗するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(SettingsType.Unknown,  "Person.txt")]
-        public void Save_File_Throws(SettingsType type, string filename)
-            => Assert.That(
+        public void Save_File_Throws(SettingsType type, string filename) =>
+            Assert.That(
                 () => type.Save(Result(filename), CreatePerson()),
                 Throws.TypeOf<ArgumentException>()
             );
@@ -317,7 +317,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Save_Stream
-        /// 
+        ///
         /// <summary>
         /// 設定内容をストリームに書き込むテストを実行します。
         /// </summary>
@@ -332,13 +332,13 @@ namespace Cube.Tests
             {
                 type.Save(sw.BaseStream, CreatePerson());
             }
-            Assert.That(File.Exists(dest), Is.True);
+            Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save_Stream_Throws
-        /// 
+        ///
         /// <summary>
         /// 設定の保存に失敗するテストを実行します。
         /// </summary>
@@ -346,19 +346,19 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(SettingsType.Registry, "Person.reg")]
         [TestCase(SettingsType.Unknown,  "Person.txt")]
-        public void Save_Stream_Throws(SettingsType type, string filename)
-            => Assert.That(() =>
-        {
-            using (var sw = new StreamWriter(Result(filename)))
+        public void Save_Stream_Throws(SettingsType type, string filename) =>
+            Assert.That(() =>
             {
-                type.Save(sw.BaseStream, CreatePerson());
-            }
-        }, Throws.TypeOf<ArgumentException>());
+                using (var sw = new StreamWriter(Result(filename)))
+                {
+                    type.Save(sw.BaseStream, CreatePerson());
+                }
+            }, Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///
         /// AutoSave
-        /// 
+        ///
         /// <summary>
         /// 自動保存機能のテストを実行します。
         /// </summary>
@@ -387,7 +387,7 @@ namespace Cube.Tests
 
             using (var key = OpenSaveKey())
             {
-                Assert.That(count,  Is.EqualTo(1));
+                Assert.That(count,  Is.EqualTo(2));
                 Assert.That(change, Is.EqualTo(3));
                 Assert.That(key.GetValue("Name"), Is.EqualTo("AutoSave"));
                 Assert.That(key.GetValue("Age"),  Is.EqualTo(77));
@@ -398,7 +398,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ReLoad
-        /// 
+        ///
         /// <summary>
         /// レジストリから設定を 2 回以上読み込むテストを実行します。
         /// </summary>
@@ -416,7 +416,7 @@ namespace Cube.Tests
             settings.Load();
             settings.Value.Name = "Before ReLoad";
             settings.Load();
-            
+
             Assert.That(count, Is.EqualTo(2));
             Assert.That(settings.Value.Name, Is.EqualTo("佐藤栄作"));
         }
@@ -488,7 +488,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// CreatePerson
-        /// 
+        ///
         /// <summary>
         /// Person オブジェクトを生成します。
         /// </summary>

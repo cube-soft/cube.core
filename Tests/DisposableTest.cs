@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// DisposableTest
-    /// 
+    ///
     /// <summary>
     /// Disposable のテスト用クラスです。
     /// </summary>
@@ -37,7 +37,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Dispose
-        /// 
+        ///
         /// <summary>
         /// IDisposable オブジェクトを生成して Dispose するテストを
         /// 実行します。
@@ -59,7 +59,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Null_Throws
-        /// 
+        ///
         /// <summary>
         /// Disposable.Create メソッドに null オブジェクトを指定した時の
         /// 挙動を確認します。

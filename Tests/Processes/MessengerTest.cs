@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,7 +27,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// MessengerTest
-    /// 
+    ///
     /// <summary>
     /// Messenger クラスのテスト用クラスです。
     /// </summary>
@@ -41,7 +41,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Publish
-        /// 
+        ///
         /// <summary>
         /// サーバにメッセージを送信するテストを実行します。
         /// </summary>
@@ -82,11 +82,11 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Create_DuplicateServer_Throws
-        /// 
+        ///
         /// <summary>
         /// サーバを 2 つ生成しようとするテストを実行します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// Messenger(T) は同一スレッド上に存在する他のサーバを検知する
         /// 事ができないので、2 つ目のサーバを生成しようとして例外が

@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,7 +25,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// WakeableTimerTest
-    /// 
+    ///
     /// <summary>
     /// WakeableTimer のテスト用クラスです。
     /// </summary>
@@ -34,10 +34,12 @@ namespace Cube.Tests
     [TestFixture]
     class WakeableTimerTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Timer_Properties
-        /// 
+        ///
         /// <summary>
         /// 各種プロパティの初期値を確認します。
         /// </summary>
@@ -49,7 +51,7 @@ namespace Cube.Tests
             using (var timer = new WakeableTimer())
             {
                 Assert.That(timer.Interval,      Is.EqualTo(TimeSpan.FromSeconds(1)));
-                Assert.That(timer.LastPublished, Is.EqualTo(DateTime.MinValue));
+                Assert.That(timer.LastPublished, Is.Null);
                 Assert.That(timer.State,         Is.EqualTo(TimerState.Stop));
             }
         }
@@ -57,7 +59,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// タイマーを開始するテストを実行します。
         /// </summary>
@@ -81,7 +83,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Start_InitialDelay
-        /// 
+        ///
         /// <summary>
         /// InitialDelay を設定するテストを実行します。
         /// </summary>
@@ -103,7 +105,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Start_Immediately
-        /// 
+        ///
         /// <summary>
         /// InitialDelay にゼロを設定したテストを実行します。
         /// </summary>
@@ -129,21 +131,83 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Start_Stop_State
-        /// 
+        /// Start_ShortInterval
+        ///
+        /// <summary>
+        /// Interval に非常に短い時間を設定した時に、バースト的にイベントが
+        /// 発生していない事を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Start_ShortInterval()
+        {
+            var count = 0;
+            using (var timer = new WakeableTimer())
+            {
+                timer.Interval = TimeSpan.FromMilliseconds(10);
+                timer.Subscribe(() =>
+                {
+                    ++count;
+                    if (count >= 2) timer.Stop();
+                });
+                timer.Start();
+                TaskEx.Delay(100).Wait();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
+            }
+            Assert.That(count, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resume_Immediately
+        ///
+        /// <summary>
+        /// Suspend からの復帰後に即実行されるケースのテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Resume_Immediately()
+        {
+            var count = 0;
+            using (var timer = new WakeableTimer())
+            {
+                timer.Subscribe(() => ++count);
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Start(TimeSpan.FromMilliseconds(50));
+                timer.Suspend();
+                TaskEx.Delay(100).Wait();
+                timer.Start();
+                TaskEx.Delay(50).Wait();
+                timer.Stop();
+            }
+            Assert.That(count, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// State_Scenario
+        ///
         /// <summary>
         /// WakeableTimer の State の内容を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start_Stop_State()
+        public void State_Scenario()
         {
             using (var timer = new WakeableTimer())
             {
                 Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
                 timer.Start();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Start();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Run));
+                timer.Suspend();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Suspend));
+                timer.Suspend();
+                Assert.That(timer.State, Is.EqualTo(TimerState.Suspend));
                 timer.Start();
                 Assert.That(timer.State, Is.EqualTo(TimerState.Run));
                 timer.Stop();
@@ -156,7 +220,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Reset
-        /// 
+        ///
         /// <summary>
         /// Reset のテストを実行します。
         /// </summary>
@@ -186,15 +250,15 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Resume
-        /// 
+        /// PowerMode_Scenario
+        ///
         /// <summary>
-        /// Suspend/Resume のテストを実行します。
+        /// 電源状態の変化に伴う Suspend/Resume のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Resume()
+        public void PowerMode_Scenario()
         {
             using (var timer = new WakeableTimer())
             {
@@ -207,26 +271,20 @@ namespace Cube.Tests
                 timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.PowerModeChanged += (s, e) => ++chagned;
                 timer.Subscribe(() => ++count);
-                Assert.That(count, Is.EqualTo(0), "Subscribe");
-
                 timer.Start();
+
                 TaskEx.Delay(50).Wait();
-                Assert.That(count, Is.EqualTo(1), "Start");
-
                 power.Mode = PowerModes.Suspend;
-                TaskEx.Delay(200).Wait();
-                Assert.That(count, Is.EqualTo(1), "Suspend");
-
+                TaskEx.Delay(100).Wait();
                 power.Mode = PowerModes.Resume;
-                Assert.That(count, Is.EqualTo(1), "Resume");
-
                 TaskEx.Delay(150).Wait();
                 timer.Stop();
-                Assert.That(count, Is.EqualTo(2), "Stop");
 
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
                 Assert.That(chagned, Is.EqualTo(2), nameof(timer.PowerModeChanged));
             }
         }
+
+        #endregion
     }
 }

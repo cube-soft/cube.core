@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,44 +22,44 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IQuery(TQuery, TResult)
-    /// 
+    /// IQuery(T, U)
+    ///
     /// <summary>
     /// 問い合わせ用プロバイダーを定義します。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IQuery<TQuery, TResult>
+    public interface IQuery<T, U>
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Request
-        /// 
+        ///
         /// <summary>
         /// 問い合わせを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        void Request(QueryEventArgs<TQuery, TResult> value);
+        void Request(QueryEventArgs<T, U> value);
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Query(TQuery, TResult)
-    /// 
+    /// Query(T, U)
+    ///
     /// <summary>
-    /// IQuery(TQuery, TResult) を実装したクラスです。
+    /// IQuery(T, U) を実装したクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Query<TQuery, TResult> : IQuery<TQuery, TResult>
+    public class Query<T, U> : IQuery<T, U>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
         /// Query
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -73,15 +73,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Query
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="callback">コールバック関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Query(Action<QueryEventArgs<TQuery, TResult>> callback) : this()
+        public Query(Action<QueryEventArgs<T, U>> callback) : this()
         {
             Requested += (s, e) => callback(e);
         }
@@ -93,24 +93,24 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Requested
-        /// 
+        ///
         /// <summary>
         /// 問い合わせ時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event QueryEventHandler<TQuery, TResult> Requested;
+        public event QueryEventHandler<T, U> Requested;
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnRequested
-        /// 
+        ///
         /// <summary>
         /// Requested イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void OnRequested(QueryEventArgs<TQuery, TResult> e)
+        public virtual void OnRequested(QueryEventArgs<T, U> e)
         {
             if (Requested != null)
             {
@@ -127,19 +127,18 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Request
-        /// 
+        ///
         /// <summary>
         /// 問い合わせを実行します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// 問い合わせの結果が無効な場合、Cancel プロパティが true に
         /// 設定されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<TQuery, TResult> value)
-            => OnRequested(value);
+        public void Request(QueryEventArgs<T, U> value) => OnRequested(value);
 
         #endregion
 

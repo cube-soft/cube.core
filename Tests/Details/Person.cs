@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     ///
     /// Sex
-    /// 
+    ///
     /// <summary>
     /// 性別を表す列挙体です。
     /// </summary>
@@ -39,7 +39,7 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     ///
     /// Address
-    /// 
+    ///
     /// <summary>
     /// アドレスを保持するためのクラスです。
     /// </summary>
@@ -51,7 +51,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Type
-        /// 
+        ///
         /// <summary>
         /// アドレスの種類を取得または設定します。
         /// </summary>
@@ -63,7 +63,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Value
-        /// 
+        ///
         /// <summary>
         /// アドレスの内容を取得または設定します。
         /// </summary>
@@ -76,7 +76,7 @@ namespace Cube.Tests
     /* ----------------------------------------------------------------- */
     ///
     /// Person
-    /// 
+    ///
     /// <summary>
     /// 個人情報を保持するためのクラスです。
     /// </summary>
@@ -85,10 +85,12 @@ namespace Cube.Tests
     [DataContract]
     internal class Person : Cube.ObservableProperty
     {
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
         /// Identification
-        /// 
+        ///
         /// <summary>
         /// ID を取得または設定します。
         /// </summary>
@@ -104,7 +106,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Name
-        /// 
+        ///
         /// <summary>
         /// 名前を取得または設定します。
         /// </summary>
@@ -120,7 +122,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Sex
-        /// 
+        ///
         /// <summary>
         /// 性別を取得または設定します。
         /// </summary>
@@ -136,7 +138,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Age
-        /// 
+        ///
         /// <summary>
         /// 年齢を取得または設定します。
         /// </summary>
@@ -152,14 +154,14 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Creation
-        /// 
+        ///
         /// <summary>
         /// 作成日時を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public DateTime Creation
+        public DateTime? Creation
         {
             get => _creation;
             set => SetProperty(ref _creation, value);
@@ -168,7 +170,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Phone
-        /// 
+        ///
         /// <summary>
         /// 電話番号を取得または設定します。
         /// </summary>
@@ -184,7 +186,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Email
-        /// 
+        ///
         /// <summary>
         /// Email アドレスを取得または設定します。
         /// </summary>
@@ -200,7 +202,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Reserved
-        /// 
+        ///
         /// <summary>
         /// フラグを取得または設定します。
         /// </summary>
@@ -216,7 +218,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Secret
-        /// 
+        ///
         /// <summary>
         /// 秘密のメモ用データを取得または設定します。
         /// </summary>
@@ -231,7 +233,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Guid
-        /// 
+        ///
         /// <summary>
         /// Guid オブジェクトを取得します。
         /// </summary>
@@ -239,12 +241,14 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         public Guid Guid { get; } = Guid.NewGuid();
 
+        #endregion
+
         #region Fields
         private int _identification = -1;
         private string _name = string.Empty;
         private Sex _sex = Sex.Unknown;
         private int _age = 0;
-        private DateTime _creation = DateTime.MinValue;
+        private DateTime? _creation = DateTime.MinValue;
         private Address _phone = new Address { Type = "Phone", Value = string.Empty };
         private Address _email = new Address { Type = "Email", Value = string.Empty };
         private bool _reserved = false;

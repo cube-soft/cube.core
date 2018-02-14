@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,11 +22,11 @@ namespace Cube.Tests.Events
     /* --------------------------------------------------------------------- */
     ///
     /// RelayEventTest
-    /// 
+    ///
     /// <summary>
     /// RelayEvent のテスト用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class RelayEventTest
@@ -54,7 +54,28 @@ namespace Cube.Tests.Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Unsubscribe
+        /// Publish_Args
+        ///
+        /// <summary>
+        /// Publish/Subscribe のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1)]
+        [TestCase("pi")]
+        [TestCase(true)]
+        public void Publish_Args<T>(T value)
+        {
+            var result = default(T);
+            var ev = new RelayEvent<T>();
+            ev.Subscribe(x => { result = x; });
+            ev.Publish(value);
+            Assert.That(result, Is.EqualTo(value));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unsubscribe_Manytimes
         ///
         /// <summary>
         /// Unsubscribe のテストを実行します。
@@ -77,28 +98,7 @@ namespace Cube.Tests.Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Publish_Subscribe
-        ///
-        /// <summary>
-        /// Publish/Subscribe のテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(1)]
-        [TestCase("pi")]
-        [TestCase(true)]
-        public void Publish_Subscribe<T>(T value)
-        {
-            var result = default(T);
-            var ev = new RelayEvent<T>();
-            ev.Subscribe(x => { result = x; });
-            ev.Publish(value);
-            Assert.That(result, Is.EqualTo(value));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Unsubscribe
+        /// Unsubscribe_Args
         ///
         /// <summary>
         /// Unsubscribe のテストを実行します。
@@ -106,7 +106,7 @@ namespace Cube.Tests.Events
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(2)]
-        public void Unsubscribe(int value)
+        public void Unsubscribe_Args(int value)
         {
             var count = 0;
             var ev = new RelayEvent<int>();

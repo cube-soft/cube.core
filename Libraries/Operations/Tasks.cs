@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,49 +23,47 @@ namespace Cube.Tasks
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Tasks.Operations
-    /// 
+    /// TaskOperator
+    ///
     /// <summary>
     /// Task の拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class TaskOperator
     {
+        #region Methods
+
         /* --------------------------------------------------------------------- */
         ///
         /// Forget
-        /// 
+        ///
         /// <summary>
         /// 実行されたタスクを待たずに終了します。
+        /// 例外発生時にはログに出力します。
         /// </summary>
-        /// 
+        ///
         /// <param name="task">Task オブジェクト</param>
-        /// 
-        /// <remarks>
-        /// 例外発生時にログを出力します。
-        /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
-        public static void Forget(this Task task)
-            => task.ContinueWith(x =>
-            {
-                x.LogWarn(x.Exception.ToString());
-            }, TaskContinuationOptions.OnlyOnFaulted);
+        public static void Forget(this Task task) => task.ContinueWith(x =>
+        {
+            x.LogWarn(x.Exception.ToString());
+        }, TaskContinuationOptions.OnlyOnFaulted);
 
         /* --------------------------------------------------------------------- */
         ///
         /// Timeout
-        /// 
+        ///
         /// <summary>
         /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
         /// <param name="task">Task オブジェクト</param>
         /// <param name="timeout">タイムアウト時間</param>
-        /// 
+        ///
         /// <returns>Task オブジェクト</returns>
-        /// 
+        ///
         /* --------------------------------------------------------------------- */
         public static async Task Timeout(this Task task, TimeSpan timeout)
         {
@@ -79,21 +77,23 @@ namespace Cube.Tasks
         /* --------------------------------------------------------------------- */
         ///
         /// Timeout
-        /// 
+        ///
         /// <summary>
         /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
         /// <param name="task">Task(T) オブジェクト</param>
         /// <param name="timeout">タイムアウト時間</param>
-        /// 
+        ///
         /// <returns>Task(T) オブジェクト</returns>
-        /// 
+        ///
         /* --------------------------------------------------------------------- */
         public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
         {
             await ((Task)task).Timeout(timeout);
             return await task;
         }
+
+        #endregion
     }
 }

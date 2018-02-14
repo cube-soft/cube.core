@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// QueryTest
-    /// 
+    ///
     /// <summary>
     /// プログラムオプション等の引数を解析するためのクラスです。
     /// </summary>
@@ -45,7 +45,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public bool Request(IList<string> results)
+        public bool Request(int id, IList<string> results)
         {
             var index = 0;
             var query = new Query<string, string>(x =>
@@ -73,7 +73,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public bool Request_NullSynchronizationContext(IList<string> results)
+        public bool Request_NullSynchronizationContext(int id, IList<string> results)
         {
             var index = 0;
             var query = new Query<string, string>(x =>
@@ -101,11 +101,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Request_None()
-            => Assert.That(
-                new QueryContoroller().Invoke(new Query<string, string>()),
-                Is.False
-            );
+        public void Request_None() => Assert.That(
+            new QueryContoroller().Invoke(new Query<string, string>()),
+            Is.False
+        );
 
         #endregion
 
@@ -124,8 +123,8 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(new List<string> { "first", "second", "success" }).Returns(true);
-                yield return new TestCaseData(new List<string> { "first", "failed" }).Returns(false);
+                yield return new TestCaseData(0, new List<string> { "first", "second", "success" }).Returns(true);
+                yield return new TestCaseData(1, new List<string> { "first", "failed" }).Returns(false);
             }
         }
 

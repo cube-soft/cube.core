@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,23 +23,25 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TimeTest
-    /// 
+    /// TimeFormatTest
+    ///
     /// <summary>
-    /// DateTime に関するテスト用クラスです。
+    /// DateTime? に関するテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class TimeTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToUniversalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
-        /// 再度 DateTime オブジェクトに変換するテストを実行します。
+        /// 再度 DateTime? オブジェクトに変換するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -50,7 +52,7 @@ namespace Cube.Tests
         [TestCase(2999, 12, 31, 23, 59, 59)]
         public void ToUniversalTime(int y, int m, int d, int hh, int mm, int ss)
         {
-            var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            var src = (DateTime?)new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
             var actual = src.ToUnixTime().ToUniversalTime();
             Assert.That(actual, Is.EqualTo(src));
         }
@@ -58,10 +60,10 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToLocalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
-        /// 再度 DateTime オブジェクトに変換するテストを実行します。
+        /// 再度 DateTime? オブジェクトに変換するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -72,7 +74,7 @@ namespace Cube.Tests
         [TestCase(2999, 12, 31, 23, 59, 59)]
         public void ToLocalTime(int y, int m, int d, int hh, int mm, int ss)
         {
-            var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
+            var src = (DateTime?)new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
             var actual = src.ToUnixTime().ToLocalTime();
             Assert.That(actual, Is.EqualTo(src));
         }
@@ -80,10 +82,10 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToDateTime
-        /// 
+        ///
         /// <summary>
         /// 指定された日時をいったん UNIX 時刻に変換し、
-        /// 再度 DateTime オブジェクトに変換するテストを実行します。
+        /// 再度 DateTime? オブジェクトに変換するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -91,7 +93,7 @@ namespace Cube.Tests
         [TestCase(2999, 12, 31, 23, 59, 59)]
         public void ToDateTime(int y, int m, int d, int hh, int mm, int ss)
         {
-            var src = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            var src = (DateTime?)new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
             var actual = src.ToUnixTime().ToDateTime();
             Assert.That(actual, Is.EqualTo(src));
         }
@@ -99,9 +101,9 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToDateTime
-        /// 
+        ///
         /// <summary>
-        /// int 型で表された UNIX 時刻を DateTime オブジェクトに変換する
+        /// int 型で表された UNIX 時刻を DateTime? オブジェクトに変換する
         /// テストを実行します。
         /// </summary>
         ///
@@ -119,9 +121,9 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToLocalTime
-        /// 
+        ///
         /// <summary>
-        /// int 型で表された UNIX 時刻を現地時刻で DateTime オブジェクトに
+        /// int 型で表された UNIX 時刻を現地時刻で DateTime? オブジェクトに
         /// 変換するテストを実行します。
         /// </summary>
         ///
@@ -139,7 +141,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Parse_UniversalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された文字列を UTC 時刻として解析します。
         /// </summary>
@@ -150,7 +152,7 @@ namespace Cube.Tests
         public void Parse_UniversalTime(string src, string fmt, int y, int m, int d, int hh, int mm, int ss)
         {
             var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
-            var actual   = src.ToDateTime(fmt);
+            var actual   = src.ToDateTime(fmt) ?? CreateMinValue(DateTimeKind.Utc);
 
             Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Utc));
             Assert.That(actual,      Is.EqualTo(expected));
@@ -159,7 +161,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// Parse_LocalTime
-        /// 
+        ///
         /// <summary>
         /// 指定された文字列をローカル時刻として解析します。
         /// </summary>
@@ -170,10 +172,28 @@ namespace Cube.Tests
         public void Parse_LocalTime(string src, string fmt, int y, int m, int d, int hh, int mm, int ss)
         {
             var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
-            var actual   = src.ToLocalTime(fmt);
+            var actual   = src.ToLocalTime(fmt) ?? CreateMinValue(DateTimeKind.Local);
 
             Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Local));
             Assert.That(actual,      Is.EqualTo(expected));
         }
+
+        #endregion
+
+        #region Helper methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateMinValue
+        ///
+        /// <summary>
+        /// 指定された DateTimeKind を持つ MinValue を生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private DateTime CreateMinValue(DateTimeKind kind) =>
+            new DateTime(1, 1, 1, 0, 0, 0, kind);
+
+        #endregion
     }
 }

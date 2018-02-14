@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -29,13 +29,13 @@ namespace Cube.Differences
     /// <summary>
     /// 差分検出アルゴリズムを実装したクラスです。
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// Sun Wu, Udi Manber, and Gene Myers, "An O(NP) Sequence Comparison
     /// Algorithm", Information Processing Letters Volume 35, Issue 6,
     /// pp. 317-323, September 1990.
     /// </remarks>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public class OnpAlgorithm<T>
     {
@@ -44,24 +44,24 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// OnpAlgorithm
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public OnpAlgorithm() : this(EqualityComparer<T>.Default) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnpAlgorithm
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="comparer">比較用オブジェクト</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public OnpAlgorithm(IEqualityComparer<T> comparer)
         {
@@ -75,7 +75,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Compar
-        /// 
+        ///
         /// <summary>
         /// 2 つのシーケンスを比較し、差分を検出します。
         /// </summary>
@@ -83,17 +83,18 @@ namespace Cube.Differences
         /// <param name="older">変更前シーケンス</param>
         /// <param name="newer">変更後シーケンス</param>
         /// <param name="mask">結果のフィルタリング用 Mask</param>
-        /// 
+        ///
         /// <returns>差分</returns>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<Result<T>> Compare(IEnumerable<T> older, IEnumerable<T> newer, Condition mask)
-            => Compare(older?.ToArray(), newer?.ToArray(), mask);
+        public IEnumerable<Result<T>> Compare(IEnumerable<T> older,
+            IEnumerable<T> newer, Condition mask) =>
+            Compare(older?.ToArray(), newer?.ToArray(), mask);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Compar
-        /// 
+        ///
         /// <summary>
         /// 2 つのシーケンスを比較し、差分を検出します。
         /// </summary>
@@ -101,9 +102,9 @@ namespace Cube.Differences
         /// <param name="older">変更前シーケンス</param>
         /// <param name="newer">変更後シーケンス</param>
         /// <param name="mask">結果のフィルタリング用 Mask</param>
-        /// 
+        ///
         /// <returns>差分</returns>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public IEnumerable<Result<T>> Compare(T[] older, T[] newer, Condition mask)
         {
@@ -126,14 +127,14 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// CompareEmpty
-        /// 
+        ///
         /// <summary>
         /// 差分を検出します。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        private IEnumerable<Result<T>> CompareEmpty(T[] older, T[] newer, Condition mask)
-            => new CommonSequence<T>(
+        private IEnumerable<Result<T>> CompareEmpty(T[] older, T[] newer,
+            Condition mask) => new CommonSequence<T>(
             older?.Length ?? 0,
             newer?.Length ?? 0,
             0, null
@@ -142,11 +143,11 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// Compare
-        /// 
+        ///
         /// <summary>
         /// 差分を検出します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// このメソッド実行時には対象となるデータが設定されている
         /// 必要があります。
@@ -176,7 +177,7 @@ namespace Cube.Differences
         /* ----------------------------------------------------------------- */
         ///
         /// SearchSnake
-        /// 
+        ///
         /// <summary>
         /// 差分検出処理を実行します。
         /// </summary>
@@ -214,7 +215,7 @@ namespace Cube.Differences
 
         #endregion
 
-        #region Structures and fields
+        #region Fields
 
         private struct Snake
         {

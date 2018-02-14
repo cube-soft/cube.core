@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,25 +25,21 @@ namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingsFolder
-    /// 
+    /// SettingsFolder(T)
+    ///
     /// <summary>
     /// ユーザ設定を保持するためのクラスです。
     /// </summary>
-    /// 
-    /// <remarks>
-    /// このクラスでは、各種設定をレジストリで保持する事を想定しています。
-    /// </remarks>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<TValue> : IDisposable, INotifyPropertyChanged
-        where TValue : INotifyPropertyChanged, new()
+    public class SettingsFolder<T> : IDisposable, INotifyPropertyChanged
+        where T : INotifyPropertyChanged, new()
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder
+        /// SettingsFolder(T)
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -54,12 +50,12 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder
+        /// SettingsFolder(T)
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">設定情報の保存方法</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -70,7 +66,7 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder
+        /// SettingsFolder(T)
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -78,7 +74,7 @@ namespace Cube.Settings
         ///
         /// <param name="type">設定情報の保存方法</param>
         /// <param name="path">設定情報の保存場所</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public SettingsFolder(SettingsType type, string path)
         {
@@ -98,7 +94,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TValue Value { get; private set; }
+        public T Value { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -185,7 +181,7 @@ namespace Cube.Settings
         /// <summary>
         /// 自動的保存の実行遅延時間を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// AutoSave モードの場合、短時間に大量の保存処理が実行される
         /// 可能性があります。SettingsFolder では、直前のプロパティの
@@ -208,7 +204,7 @@ namespace Cube.Settings
         /// <summary>
         /// プロパティの内容が変更された時に発生するイベントです。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// この PropertyChanged イベントは Value.PropertyChanged
         /// イベントを補足して中継するために使用されます。
@@ -226,8 +222,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-            => PropertyChanged?.Invoke(this, e);
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
+            PropertyChanged?.Invoke(this, e);
 
         #endregion
 
@@ -242,7 +238,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event ValueChangedEventHandler<TValue> Loaded;
+        public event ValueChangedEventHandler<T> Loaded;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -253,7 +249,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnLoaded(ValueChangedEventArgs<TValue> e)
+        protected virtual void OnLoaded(ValueChangedEventArgs<T> e)
         {
             if (e.OldValue != null) e.OldValue.PropertyChanged -= WhenChanged;
             if (e.NewValue != null) e.NewValue.PropertyChanged += WhenChanged;
@@ -310,8 +306,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load()
-            => OnLoaded(ValueChangedEventArgs.Create(Value, Type.Load<TValue>(Path)));
+        public void Load() =>
+            OnLoaded(ValueChangedEventArgs.Create(Value, Type.Load<T>(Path)));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -322,8 +318,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save()
-            => OnSaved(KeyValueEventArgs.Create(Type, Path));
+        public void Save() =>
+            OnSaved(KeyValueEventArgs.Create(Type, Path));
 
         #region IDisposable
 
@@ -341,7 +337,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを破棄します。
         /// </summary>
@@ -356,7 +352,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを破棄します。
         /// </summary>
@@ -365,6 +361,7 @@ namespace Cube.Settings
         protected virtual void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
+            if (AutoSave) Save();
         }
 
         #endregion
@@ -389,7 +386,7 @@ namespace Cube.Settings
             Version  = new SoftwareVersion(reader.Assembly);
             Company  = reader.Company;
             Product  = reader.Product;
-            Value    = new TValue();
+            Value    = new T();
 
             Value.PropertyChanged += WhenChanged;
 
@@ -425,7 +422,7 @@ namespace Cube.Settings
         /// Value.PropertyChanged イベントが発生した時に実行される
         /// ハンドラです。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         private void WhenChanged(object sener, PropertyChangedEventArgs e)
         {
@@ -448,14 +445,14 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenElapsed(object sender, ElapsedEventArgs e)
-            => TaskEx.Run(() => Save()).Forget();
+        private void WhenElapsed(object sender, ElapsedEventArgs e) =>
+            TaskEx.Run(() => Save()).Forget();
+
+        #endregion
 
         #region Fields
         private OnceAction<bool> _dispose;
         private Timer _autosaver = new Timer();
-        #endregion
-
         #endregion
     }
 }

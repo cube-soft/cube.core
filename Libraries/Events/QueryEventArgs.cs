@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,59 +22,59 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryEventArgs(TQuery, TResult)
-    /// 
+    /// QueryEventArgs(T, U)
+    ///
     /// <summary>
     /// クエリーデータを受け渡すためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class QueryEventArgs<TQuery, TResult> : CancelEventArgs
+    public class QueryEventArgs<T, U> : CancelEventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
         /// QueryEventArgs
-        /// 
+        ///
         /// <summary>
         /// Cancel の値を false に設定してオブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="query">クエリーデータ</param>
         ///
         /* ----------------------------------------------------------------- */
-        public QueryEventArgs(TQuery query) : this(query, false) { }
+        public QueryEventArgs(T query) : this(query, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// QueryEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /// <param name="query">クエリーデータ</param>
         /// <param name="cancel">キャンセルするかどうか</param>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
-        public QueryEventArgs(TQuery query, bool cancel)
-            : this(query, default(TResult), cancel) { }
+        public QueryEventArgs(T query, bool cancel)
+            : this(query, default(U), cancel) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// QueryEventArgs
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="query">クエリーデータ</param>
         /// <param name="result">結果の初期値</param>
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public QueryEventArgs(TQuery query, TResult result, bool cancel) : base(cancel)
+        public QueryEventArgs(T query, U result, bool cancel) : base(cancel)
         {
             Query  = query;
             Result = result;
@@ -87,37 +87,37 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Query
-        /// 
+        ///
         /// <summary>
         /// イベント発生元から受け取ったクエリーデータを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TQuery Query { get; }
+        public T Query { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Result
-        /// 
+        ///
         /// <summary>
         /// クエリーデータに対する結果を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TResult Result { get; set; }
+        public U Result { get; set; }
 
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryEventHandler(TValue)
-    /// 
+    /// QueryEventHandler(T, U)
+    ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void QueryEventHandler<TQuery, TResult>(object sender, QueryEventArgs<TQuery, TResult> e);
+    public delegate void QueryEventHandler<T, U>(object sender, QueryEventArgs<T, U> e);
 }

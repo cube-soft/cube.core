@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,29 +16,31 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Microsoft.Win32;
+using Cube.Streams;
 
 namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Settings.Operations
-    /// 
+    /// SettingsOperator
+    ///
     /// <summary>
     /// ユーザ設定を扱うためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Operations
+    public static class SettingsOperator
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
         /// オブジェクトに設定します。
@@ -50,7 +52,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたファイルから値を読み込み、オブジェクトに設定します。
         /// </summary>
@@ -70,18 +72,18 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたファイルから値を読み込み、オブジェクトに設定します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">設定データのフォーマット</param>
         /// <param name="src">読み込み元ストリーム</param>
-        /// 
+        ///
         /// <returns>設定オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this SettingsType type, System.IO.Stream src)
+        public static T Load<T>(this SettingsType type, Stream src)
         {
             switch (type)
             {
@@ -95,19 +97,19 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(this RegistryKey dest, T src)
-            => RegistrySettings.Save(dest, src);
+        public static void Save<T>(this RegistryKey dest, T src) =>
+            RegistrySettings.Save(dest, src);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたファイルに、オブジェクトの値を保存します。
         /// </summary>
@@ -138,17 +140,17 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたファイルに、オブジェクトの値を保存します。
         /// </summary>
-        /// 
+        ///
         /// <param name="type">設定データのフォーマット</param>
         /// <param name="dest">保存先ストリーム</param>
         /// <param name="src">設定情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save<T>(this SettingsType type, System.IO.Stream dest, T src)
+        public static void Save<T>(this SettingsType type, Stream dest, T src)
         {
             switch (type)
             {
@@ -172,21 +174,21 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Error
-        /// 
+        ///
         /// <summary>
         /// エラー用オブジェクトを生成します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Exception Error(SettingsType type, string message)
-            => new ArgumentException($"{type}:{message}");
+        private static Exception Error(SettingsType type, string message) =>
+            new ArgumentException($"{type}:{message}");
 
         #region Load
 
         /* ----------------------------------------------------------------- */
         ///
         /// LoadXml
-        /// 
+        ///
         /// <summary>
         /// XML 形式のストリームから値を読み込み、オブジェクトに設定します。
         /// </summary>
@@ -194,22 +196,19 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private static T LoadXml<T>(string src)
         {
-            using (var reader = new System.IO.StreamReader(src))
-            {
-                return LoadXml<T>(reader.BaseStream);
-            }
+            using (var ss = File.OpenRead(src)) return LoadXml<T>(ss);
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// LoadXml
-        /// 
+        ///
         /// <summary>
         /// XML 形式のストリームから値を読み込み、オブジェクトに設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadXml<T>(System.IO.Stream src)
+        private static T LoadXml<T>(Stream src)
         {
             var serializer = new DataContractSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -219,7 +218,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// LoadJson
-        /// 
+        ///
         /// <summary>
         /// JSON 形式のストリームから値を読み込み、オブジェクトに設定します。
         /// </summary>
@@ -227,22 +226,19 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private static T LoadJson<T>(string src)
         {
-            using (var reader = new System.IO.StreamReader(src))
-            {
-                return LoadJson<T>(reader.BaseStream);
-            }
+            using (var ss = File.OpenRead(src)) return LoadJson<T>(ss);
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// LoadJson
-        /// 
+        ///
         /// <summary>
         /// JSON 形式のストリームから値を読み込み、オブジェクトに設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T LoadJson<T>(System.IO.Stream src)
+        private static T LoadJson<T>(Stream src)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             var dest = (T)serializer.ReadObject(src);
@@ -255,31 +251,48 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SaveXml
-        /// 
+        /// Save
+        ///
         /// <summary>
-        /// ストリームに XML 形式で保存します。
+        /// ファイルに保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, string dest)
+        private static void Save(string dest, Action<Stream> action)
         {
-            using (var writer = new System.IO.StreamWriter(dest))
+            using (var ms = new MemoryStream())
             {
-                SaveXml(src, writer.BaseStream);
+                action(ms);
+                using (var ds = File.Create(dest))
+                {
+                    ms.Position = 0;
+                    ms.CopyTo(ds);
+                }
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// SaveXml
-        /// 
+        ///
         /// <summary>
         /// ストリームに XML 形式で保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveXml<T>(T src, System.IO.Stream dest)
+        private static void SaveXml<T>(T src, string dest) =>
+            Save(dest, e => SaveXml(src, e));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SaveXml
+        ///
+        /// <summary>
+        /// ストリームに XML 形式で保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SaveXml<T>(T src, Stream dest)
         {
             var serializer = new DataContractSerializer(typeof(T));
             serializer.WriteObject(dest, src);
@@ -288,30 +301,25 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// SaveJson
-        /// 
+        ///
         /// <summary>
         /// ストリームに JSON 形式で保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, string dest)
-        {
-            using (var writer = new System.IO.StreamWriter(dest))
-            {
-                SaveJson(src, writer.BaseStream);
-            }
-        }
+        private static void SaveJson<T>(T src, string dest) =>
+            Save(dest, e => SaveJson(src, e));
 
         /* ----------------------------------------------------------------- */
         ///
         /// SaveJson
-        /// 
+        ///
         /// <summary>
         /// ストリームに JSON 形式で保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SaveJson<T>(T src, System.IO.Stream dest)
+        private static void SaveJson<T>(T src, Stream dest)
         {
             var serializer = new DataContractJsonSerializer(typeof(T));
             serializer.WriteObject(dest, src);
@@ -320,5 +328,27 @@ namespace Cube.Settings
         #endregion
 
         #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SettingsType
+    ///
+    /// <summary>
+    /// Settings クラスで読み込み、および保存可能なデータ形式一覧を
+    /// 表した列挙型です。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public enum SettingsType
+    {
+        /// <summary>レジストリ</summary>
+        Registry,
+        /// <summary>XML</summary>
+        Xml,
+        /// <summary>JSON</summary>
+        Json,
+        /// <summary>不明</summary>
+        Unknown = -1
     }
 }

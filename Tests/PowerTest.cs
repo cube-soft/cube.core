@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Microsoft.Win32;
+using System;
 using NUnit.Framework;
 
 namespace Cube.Tests
@@ -23,11 +23,11 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// PowerTest
-    /// 
+    ///
     /// <summary>
     /// Power のテスト用クラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class PowerTest
@@ -35,7 +35,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ModeChanged
-        /// 
+        ///
         /// <summary>
         /// ModeChanged イベントの発生状況を確認します。
         /// </summary>
@@ -46,7 +46,7 @@ namespace Cube.Tests
         public int ModeChanged(bool ignore)
         {
             var count = 0;
-            PowerModeChangedEventHandler handler = (s, e) => ++count;
+            void handler(object s, EventArgs e) => ++count;
 
             var mock = new PowerModeContext(Power.Mode);
             Power.Configure(mock);

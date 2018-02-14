@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -54,7 +54,7 @@ namespace Cube.Processes
         /// <summary>
         /// サーバにデータを送信します。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">送信データ</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -68,7 +68,7 @@ namespace Cube.Processes
         /// <summary>
         /// クライアントにデータを送信します。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">送信データ</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +78,7 @@ namespace Cube.Processes
 
     /* --------------------------------------------------------------------- */
     ///
-    /// MessengerService(TValue)
+    /// MessengerService(T)
     ///
     /// <summary>
     /// プロセス間でメッセージをやり取りするサービスを表すクラスです。
@@ -86,7 +86,7 @@ namespace Cube.Processes
     ///
     /* --------------------------------------------------------------------- */
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    internal class MessengerService<TValue> : IMessengerService where TValue : class
+    internal class MessengerService<T> : IMessengerService where T : class
     {
         #region Methods
 
@@ -113,7 +113,7 @@ namespace Cube.Processes
         /// <summary>
         /// サーバにデータを送信します。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">送信データ</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -126,7 +126,7 @@ namespace Cube.Processes
         /// <summary>
         /// クライアントにデータを送信します。
         /// </summary>
-        /// 
+        ///
         /// <param name="bytes">送信データ</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -151,19 +151,19 @@ namespace Cube.Processes
         /// <summary>
         /// Send で実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<TValue> action)
+        public IDisposable Subscribe(Action<T> action)
             => _callback.Subscribe(action);
 
         #endregion
 
         #region Fields
-        private MessengerServiceCallback<TValue> _callback = new MessengerServiceCallback<TValue>();
+        private MessengerServiceCallback<T> _callback = new MessengerServiceCallback<T>();
         private List<IMessengerServiceCallback> _clients = new List<IMessengerServiceCallback>();
         #endregion
     }

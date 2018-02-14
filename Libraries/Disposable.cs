@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,24 +23,26 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     ///
     /// Disposable
-    /// 
+    ///
     /// <summary>
     /// IDisposable オブジェクトを生成するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public static class Disposable
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create
-        /// 
+        ///
         /// <summary>
         /// IDisposable オブジェクトを生成します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dispose">Dispose 時に実行する動作</param>
-        /// 
+        ///
         /// <returns>IDisposable オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -49,16 +51,18 @@ namespace Cube
             if (dispose == null) throw new ArgumentException(nameof(dispose));
             return new AnonymousDisposable(dispose);
         }
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
     /// AnonymousDisposable
-    /// 
+    ///
     /// <summary>
     /// Dispose 時に特定の動作を実行するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     internal sealed class AnonymousDisposable : IDisposable
     {
@@ -67,11 +71,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// AnonymousDisposable
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dispose">Dispose 時に実行する動作</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -88,7 +92,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// 設定された動作を実行します。
         /// </summary>

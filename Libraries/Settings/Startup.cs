@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,11 +22,11 @@ namespace Cube.Settings
     /* --------------------------------------------------------------------- */
     ///
     /// Startup
-    /// 
+    ///
     /// <summary>
     /// スタートアップ設定を行うためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     public class Startup : ObservableProperty
     {
@@ -41,9 +41,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Startup()
-            : this(string.Empty, string.Empty, false)
-        { }
+        public Startup() : this(string.Empty, string.Empty, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,9 +52,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Startup(string name)
-            :this(name, string.Empty, false)
-        { }
+        public Startup(string name) : this(name, string.Empty, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,9 +63,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Startup(string name, string command)
-            : this(name, command, true)
-        { }
+        public Startup(string name, string command) : this(name, command, true) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,8 +95,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string RootKeyName
-            => @"Software\Microsoft\Windows\CurrentVersion\Run";
+        public static string RootKeyName =>
+            @"Software\Microsoft\Windows\CurrentVersion\Run";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -198,7 +192,7 @@ namespace Cube.Settings
 
         #endregion
 
-        #region Others
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///

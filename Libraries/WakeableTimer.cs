@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -19,36 +19,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using Microsoft.Win32;
 using Cube.Log;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TimerState
-    /// 
-    /// <summary>
-    /// 各種 Timer オブジェクトの状態を表すための列挙型です。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum TimerState
-    {
-        /// <summary>実行中</summary>
-        Run =  0,
-        /// <summary>停止</summary>
-        Stop =  1,
-        /// <summary>一時停止</summary>
-        Suspend =  2,
-        /// <summary>不明</summary>
-        Unknown = -1
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// WakeableTimer
-    /// 
+    ///
     /// <summary>
     /// 端末の電源状態に応じて一時停止、再起動を行うタイマーです。
     /// </summary>
@@ -61,7 +39,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// WakeableTimer
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
@@ -72,11 +50,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// WakeableTimer
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
-        /// 
+        ///
         /// <param name="interval">実行周期</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -96,7 +74,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Interval
-        /// 
+        ///
         /// <summary>
         /// 実行間隔を取得または設定します。
         /// </summary>
@@ -116,33 +94,33 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// LastPublished
-        /// 
+        ///
         /// <summary>
         /// 最後に Publish が実行された日時を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastPublished { get; private set; } = DateTime.MinValue;
+        public DateTime? LastPublished { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Next
-        /// 
+        ///
         /// <summary>
         /// 次回の実行予定日時を取得または設定します。
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// 主にスリープモード復帰時に利用します。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected DateTime Next { get; set; } = DateTime.Now;
+        protected DateTime? Next { get; set; } = DateTime.Now;
 
         /* ----------------------------------------------------------------- */
         ///
         /// State
-        /// 
+        ///
         /// <summary>
         /// オブジェクトの状態を取得します。
         /// </summary>
@@ -153,7 +131,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Subscriptions
-        /// 
+        ///
         /// <summary>
         /// 購読者一覧を取得します。
         /// </summary>
@@ -168,26 +146,26 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// PowerModeChanged
-        /// 
+        ///
         /// <summary>
         /// 電源状態が変更された時に発生するイベントです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event PowerModeChangedEventHandler PowerModeChanged;
+        public event EventHandler PowerModeChanged;
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnPowerModeChanged
-        /// 
+        ///
         /// <summary>
         /// PowerModeChanged イベントを発生させます。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPowerModeChanged(PowerModeChangedEventArgs e)
+        protected virtual void OnPowerModeChanged(EventArgs e)
         {
-            UpdateState(e.Mode);
+            UpdateState(Power.Mode);
             PowerModeChanged?.Invoke(this, e);
         }
 
@@ -198,7 +176,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// タイマーを開始します。
         /// </summary>
@@ -209,7 +187,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Start
-        /// 
+        ///
         /// <summary>
         /// タイマーを開始します。
         /// </summary>
@@ -219,19 +197,22 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Start(TimeSpan delay)
         {
-            if (State != TimerState.Stop) return;
-
-            var time = Math.Max(delay.TotalMilliseconds, 1);
-            State = TimerState.Run;
-            Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
-            _core.Interval = time;
-            _core.Start();
+            if (State == TimerState.Run) return;
+            if (State == TimerState.Suspend) Resume(delay);
+            else
+            {
+                var time = Math.Max(delay.TotalMilliseconds, 1);
+                State = TimerState.Run;
+                Next  = DateTime.Now + TimeSpan.FromMilliseconds(time);
+                _core.Interval = time;
+                _core.Start();
+            }
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Stop
-        /// 
+        ///
         /// <summary>
         /// スケジューリングを停止します。
         /// </summary>
@@ -246,18 +227,35 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Subscribe
+        /// Suspend
+        ///
+        /// <summary>
+        /// タイマーを一時停止します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Suspend()
+        {
+            if (State != TimerState.Run) return;
+            _core.Stop();
+            State = TimerState.Suspend;
+            this.LogDebug($"Suspend\tInterval:{Interval}");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SubscribeAsync
         ///
         /// <summary>
         /// 一定間隔で実行される非同期処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">非同期処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録を解除するためのオブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Func<Task> action)
+        public IDisposable SubscribeAsync(Func<Task> action)
         {
             Subscriptions.Add(action);
             return Disposable.Create(() => Subscriptions.Remove(action));
@@ -270,26 +268,26 @@ namespace Cube
         /// <summary>
         /// 一定間隔で実行される処理を登録します。
         /// </summary>
-        /// 
+        ///
         /// <param name="action">処理を表すオブジェクト</param>
-        /// 
+        ///
         /// <returns>登録を解除するためのオブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action action) => Subscribe(async () =>
+        public IDisposable Subscribe(Action action) => SubscribeAsync(() =>
         {
             action();
-            await TaskEx.FromResult(0);
+            return TaskEx.FromResult(0);
         });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Reset
-        /// 
+        ///
         /// <summary>
         /// 内部状態をリセットします。
         /// </summary>
-        /// 
+        ///
         /* ----------------------------------------------------------------- */
         public virtual void Reset()
         {
@@ -302,7 +300,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// ~WakeableTimer
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -313,7 +311,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// リソースを破棄します。
         /// </summary>
@@ -328,7 +326,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
-        /// 
+        ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
@@ -345,14 +343,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Publish
-        /// 
+        /// PublishAsync
+        ///
         /// <summary>
         /// イベントを発行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual async Task Publish()
+        protected virtual async Task PublishAsync()
         {
             foreach (var action in Subscriptions)
             {
@@ -363,37 +361,20 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Suspend
-        /// 
-        /// <summary>
-        /// タイマーを一時停止します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Suspend()
-        {
-            if (State != TimerState.Run) return;
-
-            _core.Stop();
-            State = TimerState.Suspend;
-            this.LogDebug($"Suspend\tInterval:{Interval}");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Resume
-        /// 
+        ///
         /// <summary>
         /// 一時停止していたタイマーを再開します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Resume()
+        protected void Resume(TimeSpan delay)
         {
             if (State != TimerState.Suspend) return;
 
-            var now  = DateTime.Now;
-            var time = now < Next ? Next - now : TimeSpan.FromMilliseconds(100);
+            var now   = DateTime.Now;
+            var delta = Next - now;
+            var time  = delta > delay ? delta : delay;
 
             State = TimerState.Run;
             Next  = now + time;
@@ -401,7 +382,7 @@ namespace Cube
             this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
                 LastPublished, Next, Interval));
 
-            _core.Interval = time.TotalMilliseconds;
+            _core.Interval = Math.Max(time.Value.TotalMilliseconds, 1);
             _core.Start();
         }
 
@@ -414,7 +395,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         ///
         /// UpdateState
-        /// 
+        ///
         /// <summary>
         /// PowerMode に応じて State を変更します。
         /// </summary>
@@ -425,7 +406,7 @@ namespace Cube
             switch (mode)
             {
                 case PowerModes.Resume:
-                    Resume();
+                    Resume(TimeSpan.FromMilliseconds(100));
                     break;
                 case PowerModes.Suspend:
                     Suspend();
@@ -456,12 +437,12 @@ namespace Cube
             try
             {
                 LastPublished = e.SignalTime;
-                await Publish().ConfigureAwait(false);
+                await PublishAsync().ConfigureAwait(false);
             }
             finally
             {
                 var user = Interval.TotalMilliseconds;
-                var diff = (DateTime.Now - LastPublished).TotalMilliseconds;
+                var diff = (DateTime.Now - LastPublished).Value.TotalMilliseconds;
                 var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
 
                 Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
@@ -470,12 +451,33 @@ namespace Cube
             }
         }
 
+        #endregion
+
         #region Fields
         private OnceAction<bool> _dispose;
         private TimeSpan _interval;
         private Timer _core = new Timer();
         #endregion
+    }
 
-        #endregion
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TimerState
+    ///
+    /// <summary>
+    /// 各種 Timer オブジェクトの状態を表すための列挙型です。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public enum TimerState
+    {
+        /// <summary>実行中</summary>
+        Run = 0,
+        /// <summary>停止</summary>
+        Stop = 1,
+        /// <summary>一時停止</summary>
+        Suspend = 2,
+        /// <summary>不明</summary>
+        Unknown = -1
     }
 }

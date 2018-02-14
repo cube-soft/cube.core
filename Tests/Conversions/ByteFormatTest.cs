@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,7 +23,7 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// ByteFormatTest
-    /// 
+    ///
     /// <summary>
     /// バイトサイズの書式に関するテストを行うためのクラスです。
     /// </summary>
@@ -35,7 +35,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         ///
         /// ToPrettyBytes
-        /// 
+        ///
         /// <summary>
         /// ToPrettyBytes のテストを実行します。
         /// </summary>
@@ -50,13 +50,12 @@ namespace Cube.Tests
         [TestCase(1234567890123L,       ExpectedResult = "1.12 TB")]
         [TestCase(1234567890123456L,    ExpectedResult = "1.1 PB")]
         [TestCase(1234567890123456789L, ExpectedResult = "1.07 EB")]
-        public string ToPrettyBytes(long src)
-            => src.ToPrettyBytes();
+        public string ToPrettyBytes(long src) => src.ToPrettyBytes();
 
         /* ----------------------------------------------------------------- */
         ///
         /// ToRoughBytes
-        /// 
+        ///
         /// <summary>
         /// ToRoughBytes のテストを実行します。
         /// </summary>
@@ -64,7 +63,6 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(0L,    ExpectedResult = "0 Bytes")]
         [TestCase(1023L, ExpectedResult = "1 KB")]
-        public string ToRoughBytes(long src)
-            => src.ToRoughBytes();
+        public string ToRoughBytes(long src) => src.ToRoughBytes();
     }
 }

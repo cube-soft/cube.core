@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,9 +24,9 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     ///
     /// LogTest
-    /// 
+    ///
     /// <summary>
-    /// Cube.Log.Oprations のテスト用クラスです。
+    /// LogOperator のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -47,18 +47,18 @@ namespace Cube.Tests
         [Test]
         public void LogDebug() => Assert.DoesNotThrow(() =>
         {
-            var message = nameof(Cube.Log.Operations.Debug);
+            var message = nameof(LogOperator.Debug);
 
             try
             {
-                Cube.Log.Operations.Debug(typeof(LogTest), message);
+                LogOperator.Debug(typeof(LogTest), message);
                 this.LogDebug($"{message} (extension)");
                 throw new ArgumentException($"{message} (throw)");
             }
             catch (ArgumentException err)
             {
                 Assert.That(err.Message, Does.StartWith(message));
-                Cube.Log.Operations.Debug(typeof(LogTest), err.Message, err);
+                LogOperator.Debug(typeof(LogTest), err.Message, err);
                 this.LogDebug(err.Message, err);
             }
         });
@@ -75,13 +75,13 @@ namespace Cube.Tests
         [Test]
         public void LogInfo() => Assert.DoesNotThrow(() =>
         {
-            var message = nameof(Cube.Log.Operations.Info);
+            var message = nameof(LogOperator.Info);
 
             try
             {
                 var asm = AssemblyReader.Default.Assembly;
-                Cube.Log.Operations.Info(typeof(LogTest), message);
-                Cube.Log.Operations.Info(typeof(LogTest), asm);
+                LogOperator.Info(typeof(LogTest), message);
+                LogOperator.Info(typeof(LogTest), asm);
                 this.LogInfo($"{message} (extension)");
                 this.LogInfo(asm);
                 throw new ArgumentException($"{message} (throw)");
@@ -89,7 +89,7 @@ namespace Cube.Tests
             catch (ArgumentException err)
             {
                 Assert.That(err.Message, Does.StartWith(message));
-                Cube.Log.Operations.Info(typeof(LogTest), err.Message, err);
+                LogOperator.Info(typeof(LogTest), err.Message, err);
                 this.LogInfo(err.Message, err);
             }
         });
@@ -106,18 +106,18 @@ namespace Cube.Tests
         [Test]
         public void LogWarn() => Assert.DoesNotThrow(() =>
         {
-            var message = nameof(Cube.Log.Operations.Warn);
+            var message = nameof(LogOperator.Warn);
 
             try
             {
-                Cube.Log.Operations.Warn(typeof(LogTest), message);
+                LogOperator.Warn(typeof(LogTest), message);
                 this.LogWarn($"{message} (extension)");
                 throw new ArgumentException($"{message} (throw)");
             }
             catch (ArgumentException err)
             {
                 Assert.That(err.Message, Does.StartWith(message));
-                Cube.Log.Operations.Warn(typeof(LogTest), err.Message, err);
+                LogOperator.Warn(typeof(LogTest), err.Message, err);
                 this.LogWarn(err.Message, err);
             }
         });
@@ -134,18 +134,18 @@ namespace Cube.Tests
         [Test]
         public void Log_Error() => Assert.DoesNotThrow(() =>
         {
-            var message = nameof(Cube.Log.Operations.Error);
+            var message = nameof(LogOperator.Error);
 
             try
             {
-                Cube.Log.Operations.Error(typeof(LogTest), message);
+                LogOperator.Error(typeof(LogTest), message);
                 this.LogError($"{message} (extension)");
                 throw new ArgumentException($"{message} (throw)");
             }
             catch (ArgumentException err)
             {
                 Assert.That(err.Message, Does.StartWith(message));
-                Cube.Log.Operations.Error(typeof(LogTest), err.Message, err);
+                LogOperator.Error(typeof(LogTest), err.Message, err);
                 this.LogError(err.Message, err);
             }
         });
@@ -162,18 +162,18 @@ namespace Cube.Tests
         [Test]
         public void LogFatal() => Assert.DoesNotThrow(() =>
         {
-            var message = nameof(Cube.Log.Operations.Fatal);
+            var message = nameof(LogOperator.Fatal);
 
             try
             {
-                Cube.Log.Operations.Fatal(typeof(LogTest), message);
+                LogOperator.Fatal(typeof(LogTest), message);
                 this.LogFatal($"{message} (extension)");
                 throw new ArgumentException($"{message} (throw)");
             }
             catch (ArgumentException err)
             {
                 Assert.That(err.Message, Does.StartWith(message));
-                Cube.Log.Operations.Fatal(typeof(LogTest), err.Message, err);
+                LogOperator.Fatal(typeof(LogTest), err.Message, err);
                 this.LogFatal(err.Message, err);
             }
         });

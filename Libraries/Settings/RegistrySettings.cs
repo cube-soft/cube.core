@@ -1,7 +1,7 @@
 ﻿/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -19,17 +19,18 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Win32;
+using Cube.Log;
 
 namespace Cube.Settings
 {
     /* --------------------------------------------------------------------- */
     ///
     /// RegistrySettings
-    /// 
+    ///
     /// <summary>
     /// ユーザ設定をレジストリ上で管理するためのクラスです。
     /// </summary>
-    /// 
+    ///
     /* --------------------------------------------------------------------- */
     internal static class RegistrySettings
     {
@@ -38,14 +39,14 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
         /// オブジェクトに設定します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">レジストリ・サブキー</param>
-        /// 
+        ///
         /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -54,14 +55,14 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// HKEY_CURRENT_USER 下の指定されたサブキーに存在する値を
         /// 読み込み、オブジェクトに設定します。
         /// </summary>
-        /// 
+        ///
         /// <param name="src">レジストリ・サブキー名</param>
-        /// 
+        ///
         /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
@@ -76,12 +77,12 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存
         /// します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dest">レジストリ・サブキー</param>
         /// <param name="src">保存オブジェクト</param>
         ///
@@ -91,12 +92,12 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存
         /// します。
         /// </summary>
-        /// 
+        ///
         /// <param name="dest">レジストリ・サブキー名</param>
         /// <param name="src">保存オブジェクト</param>
         ///
@@ -116,7 +117,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Load
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
         /// オブジェクトに設定します。
@@ -127,33 +128,46 @@ namespace Cube.Settings
         {
             var dest = Activator.CreateInstance(type);
             if (root == null) return dest;
-
-            foreach (var info in type.GetProperties())
-            {
-                var name = GetDataMemberName(info);
-                if (string.IsNullOrEmpty(name)) continue;
-
-                var pt = info.PropertyType;
-                if (Type.GetTypeCode(pt) != TypeCode.Object)
-                {
-                    var value = Convert(root.GetValue(name, null), pt);
-                    if (value != null) info.SetValue(dest, value, null);
-                }
-                else using (var subkey = root.OpenSubKey(name))
-                {
-                    if (subkey == null) continue;
-                    var value = Load(subkey, pt);
-                    if (value != null) info.SetValue(dest, value, null);
-                }
-            }
-
+            foreach (var info in type.GetProperties()) Log(() => Load(dest, info, root));
             return dest;
         }
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Load
+        ///
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
+        /// オブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void Load(object dest, PropertyInfo info, RegistryKey root)
+        {
+            var name = GetDataMemberName(info);
+            if (string.IsNullOrEmpty(name)) return;
+
+            var type = GetType(info);
+            if (Type.GetTypeCode(type) == TypeCode.Object)
+            {
+                using (var subkey = root.OpenSubKey(name))
+                {
+                    if (subkey == null) return;
+                    var value = Load(subkey, type);
+                    if (value != null) info.SetValue(dest, value, null);
+                }
+            }
+            else
+            {
+                var value = Convert(root.GetValue(name, null), type);
+                if (value != null) info.SetValue(dest, value, null);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
@@ -162,13 +176,13 @@ namespace Cube.Settings
         private static void Save(object src, Type type, RegistryKey root)
         {
             if (src == null || root == null) return;
-            foreach (var info in type.GetProperties()) Save(src, info, root);
+            foreach (var info in type.GetProperties()) Log(() =>Save(src, info, root));
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Save
-        /// 
+        ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に、オブジェクトの値を保存します。
         /// </summary>
@@ -176,37 +190,51 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private static void Save(object src, PropertyInfo info, RegistryKey root)
         {
-            try
-            {
-                var name = GetDataMemberName(info);
-                var value = info.GetValue(src, null);
-                if (name == null || value == null) return;
+            var name = GetDataMemberName(info);
+            var value = info.GetValue(src, null);
+            if (name == null || value == null) return;
 
-                var pt = info.PropertyType;
-                if (pt.IsEnum) root.SetValue(name, (int)value);
-                else switch (Type.GetTypeCode(pt))
-                {
-                    case TypeCode.Boolean:
-                        root.SetValue(name, ((bool)value) ? 1 : 0);
-                        break;
-                    case TypeCode.DateTime:
-                        root.SetValue(name, Convert((DateTime)value));
-                        break;
-                    case TypeCode.Object:
-                        using (var k = root.CreateSubKey(name)) Save(value, pt, k);
-                        break;
-                    default:
-                        root.SetValue(name, value);
-                        break;
-                }
+            var type = GetType(info);
+            if (type.IsEnum) root.SetValue(name, (int)value);
+            else switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Boolean:
+                    root.SetValue(name, ((bool)value) ? 1 : 0);
+                    break;
+                case TypeCode.DateTime:
+                    root.SetValue(name, Convert((DateTime)value));
+                    break;
+                case TypeCode.Object:
+                    using (var k = root.CreateSubKey(name)) Save(value, type, k);
+                    break;
+                default:
+                    root.SetValue(name, value);
+                    break;
             }
-            catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetType
+        ///
+        /// <summary>
+        /// PropertyInfo オブジェクトの型を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Type GetType(PropertyInfo src)
+        {
+            var dest = src.PropertyType;
+            return dest.IsGenericType &&
+                   dest.GetGenericTypeDefinition() == typeof(Nullable<>) ?
+                   dest.GetGenericArguments()[0] :
+                   dest;
         }
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetDataMemberName
-        /// 
+        ///
         /// <summary>
         /// DataMember 属性の名前を取得します。
         /// </summary>
@@ -218,7 +246,7 @@ namespace Cube.Settings
 
             var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
             if (obj == null || obj.Length == 0) return info.Name;
-            
+
             var attr = obj[0] as DataMemberAttribute;
             return attr?.Name ?? info.Name;
         }
@@ -226,43 +254,44 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         ///
         /// Convert
-        /// 
+        ///
         /// <summary>
         /// 指定した型で、指定したオブジェクトと同じ内容を表すを持つ
         /// オブジェクトを返します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static object Convert(object value, Type type)
-        {
-            try
-            {
-                if (value == null) return null;
-                if (type.IsEnum) return (int)value;
-                else switch (Type.GetTypeCode(type))
-                {
-                    case TypeCode.DateTime:
-                        return DateTime.Parse(value as string).ToLocalTime();
-                    default:
-                        return System.Convert.ChangeType(value, type);
-                }
-            }
-            catch (Exception err) { Cube.Log.Operations.Warn(typeof(Operations), err.ToString()); }
-
-            return null;
-        }
+        private static object Convert(object value, Type type) =>
+            value == null            ? null :
+            type.IsEnum              ? (int)value :
+            type == typeof(DateTime) ? DateTime.Parse(value as string).ToLocalTime() :
+            System.Convert.ChangeType(value, type);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Convert
-        /// 
+        ///
         /// <summary>
         /// DateTime オブジェクトをレジストリに保存する形式に変換します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static object Convert(DateTime value)
-            => value.ToUniversalTime().ToString("o");
+        private static object Convert(DateTime e) => e.ToUniversalTime().ToString("o");
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Log
+        ///
+        /// <summary>
+        /// 例外発生時にエラー内容をログに出力します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void Log(Action action)
+        {
+            try { action(); }
+            catch (Exception err) { LogOperator.Warn(typeof(RegistrySettings), err.ToString()); }
+        }
 
         #endregion
     }
