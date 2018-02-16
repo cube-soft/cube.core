@@ -36,6 +36,39 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Load
+        ///
+        /// <summary>
+        /// ファイルを読み込むテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Sample.txt",     ExpectedResult = 13)]
+        [TestCase("NoExists.dummy", ExpectedResult = -1)]
+        public int Load(string filename) =>
+            new Operator().Load(Example(filename), e => (int)e.Length, -1);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save
+        ///
+        /// <summary>
+        /// ファイルを保存するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Save()
+        {
+            var io   = new Operator();
+            var dest = Result(nameof(Save));
+
+            io.Save(dest, e => e.WriteByte((byte)'a'));
+            Assert.That(io.Get(dest).Length, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetTypeName
         ///
         /// <summary>

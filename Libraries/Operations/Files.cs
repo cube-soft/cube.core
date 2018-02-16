@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Runtime.InteropServices;
+using Cube.Log;
 
 namespace Cube.FileSystem.Files
 {
@@ -32,6 +33,79 @@ namespace Cube.FileSystem.Files
     public static class OperatorEx
     {
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load
+        ///
+        /// <summary>
+        /// ファイルを開いて内容を読み込みます。
+        /// </summary>
+        ///
+        /// <param name="io">入出力用オブジェクト</param>
+        /// <param name="src">ファイルのパス</param>
+        /// <param name="func">入力ストリームに対する処理</param>
+        /// <param name="error">エラー時に返される値</param>
+        ///
+        /// <returns>変換結果</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static T Load<T>(this Operator io, string src,
+            Func<System.IO.Stream, T> func, T error = default(T)) => io.LogWarn(() =>
+        {
+            if (io.Exists(src) && io.Get(src).Length > 0)
+            {
+                using (var ss = io.OpenRead(src)) return func(ss);
+            }
+            return error;
+        }, error);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Load
+        ///
+        /// <summary>
+        /// ファイルを開いて内容を読み込みます。
+        /// </summary>
+        ///
+        /// <param name="io">入出力用オブジェクト</param>
+        /// <param name="src">ファイルのパス</param>
+        /// <param name="action">入力ストリームに対する処理</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Load(this Operator io, string src,
+            Action<System.IO.Stream> action) => io.Load(src, e =>
+        {
+            action(e);
+            return true;
+        }, false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save
+        ///
+        /// <summary>
+        /// ファイルに保存します。
+        /// </summary>
+        ///
+        /// <param name="io">入出力用オブジェクト</param>
+        /// <param name="dest">ファイルのパス</param>
+        /// <param name="action">出力ストリームに対する処理</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Save(this Operator io, string dest,
+            Action<System.IO.Stream> action) => io.LogWarn(() =>
+        {
+            using (var ss = new System.IO.MemoryStream())
+            {
+                action(ss);
+                using (var ds = io.Create(dest))
+                {
+                    ss.Position = 0;
+                    ss.CopyTo(ds);
+                }
+            }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
