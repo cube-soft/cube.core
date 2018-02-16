@@ -495,28 +495,24 @@ namespace Cube.Processes
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Recreate()
+        private void Recreate() => this.LogWarn(() =>
         {
-            try
+            if (_service != null)
             {
-                if (_service != null)
-                {
-                    var ch0 = _service as IClientChannel;
-                    ch0.Faulted -= WhenRecreate;
-                    ch0.Closed  -= WhenRecreate;
-                    ch0.Abort();
-                }
-
-                _service = _factory.CreateChannel();
-
-                var ch1 = _service as IClientChannel;
-                ch1.Faulted += WhenRecreate;
-                ch1.Closed  += WhenRecreate;
-
-                _service.Connect();
+                var ch0 = _service as IClientChannel;
+                ch0.Faulted -= WhenRecreate;
+                ch0.Closed  -= WhenRecreate;
+                ch0.Abort();
             }
-            catch (Exception err) { this.LogWarn(err.ToString()); }
-        }
+
+            _service = _factory.CreateChannel();
+
+            var ch1 = _service as IClientChannel;
+            ch1.Faulted += WhenRecreate;
+            ch1.Closed  += WhenRecreate;
+
+            _service.Connect();
+        });
 
         #endregion
 
