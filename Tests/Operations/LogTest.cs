@@ -50,7 +50,8 @@ namespace Cube.Tests
             try
             {
                 this.LogDebug(nameof(LogInfo));
-                this.LogDebug("OK", () => { });
+                this.LogDebug("Action", () => { });
+                Assert.That(this.LogDebug("Func", () => 1), Is.EqualTo(1));
                 this.LogDebug("Error", () => throw new ArgumentException($"{nameof(LogInfo)} (throw)"));
             }
             catch (ArgumentException err) { this.LogDebug(err.Message, err); }
@@ -72,7 +73,8 @@ namespace Cube.Tests
             {
                 this.LogInfo(nameof(LogInfo));
                 this.LogInfo(AssemblyReader.Default.Assembly);
-                this.LogInfo("OK", () => { });
+                this.LogInfo("Action", () => { });
+                Assert.That(this.LogInfo("Func", () => 2), Is.EqualTo(2));
                 this.LogInfo("Error", () => throw new ArgumentException($"{nameof(LogInfo)} (throw)"));
             }
             catch (ArgumentException err) { this.LogInfo(err.Message, err); }
@@ -90,9 +92,13 @@ namespace Cube.Tests
         [Test]
         public void LogWarn() => Assert.DoesNotThrow(() =>
         {
+            var error = new ArgumentException($"{nameof(LogWarn)} (throw)");
             this.LogWarn(nameof(LogWarn));
-            this.LogWarn(() => { });
-            this.LogWarn(() => throw new ArgumentException($"{nameof(LogWarn)} (throw)"));
+            this.LogWarn(() => throw error);
+            Assert.That(this.LogWarn(() => 3, -1), Is.EqualTo(3));
+
+            try { throw error; }
+            catch (ArgumentException err) { this.LogWarn(err.Message, err); }
         });
 
         /* ----------------------------------------------------------------- */
@@ -107,9 +113,13 @@ namespace Cube.Tests
         [Test]
         public void LogError() => Assert.DoesNotThrow(() =>
         {
+            var error = new ArgumentException($"{nameof(LogError)} (throw)");
             this.LogError(nameof(LogError));
-            this.LogError(() => { });
-            this.LogError(() => throw new ArgumentException($"{nameof(LogError)} (throw)"));
+            this.LogError(() => throw error);
+            Assert.That(this.LogError(() => 4, -1), Is.EqualTo(4));
+
+            try { throw error; }
+            catch (ArgumentException err) { this.LogError(err.Message, err); }
         });
 
         /* ----------------------------------------------------------------- */
@@ -124,9 +134,13 @@ namespace Cube.Tests
         [Test]
         public void LogFatal() => Assert.DoesNotThrow(() =>
         {
+            var error = new ArgumentException($"{nameof(LogFatal)} (throw)");
             this.LogFatal(nameof(LogFatal));
-            this.LogFatal(() => { });
-            this.LogFatal(() => throw new ArgumentException($"{nameof(LogFatal)} (throw)"));
+            this.LogFatal(() => throw error);
+            Assert.That(this.LogFatal(() => 5, -1), Is.EqualTo(5));
+
+            try { throw error; }
+            catch (ArgumentException err) { this.LogFatal(err.Message, err); }
         });
 
         #endregion
