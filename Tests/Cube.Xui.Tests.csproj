@@ -58,9 +58,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Details\Person.cs" />
     <Compile Include="BindableCollectionTest.cs" />
     <Compile Include="BindableCommandTest.cs" />
-    <Compile Include="Details\Person.cs" />
+    <Compile Include="BindableTest.cs" />
+    <Compile Include="MessengerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
