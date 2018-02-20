@@ -64,7 +64,7 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AssociatedObject
+        /// AssociatedObjects
         ///
         /// <summary>
         /// 関連付けられたオブジェクトを取得します。
