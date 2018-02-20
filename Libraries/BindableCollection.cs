@@ -124,7 +124,7 @@ namespace Cube.Xui
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsSynchronous { get; set; } = false;
+        public bool IsSynchronous { get; set; } = true;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -253,27 +253,24 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnCollectionChangedCore(NotifyCollectionChangedEventArgs e)
+        private void OnCollectionChangedCore(NotifyCollectionChangedEventArgs e) =>
+            this.LogWarn(() =>
         {
-            try
+            switch (e.Action)
             {
-                switch (e.Action)
-                {
-                    case NotifyCollectionChangedAction.Add:
-                        SetHandler(e.NewItems);
-                        break;
-                    case NotifyCollectionChangedAction.Remove:
-                        UnsetHandler(e.OldItems);
-                        break;
-                    case NotifyCollectionChangedAction.Replace:
-                        UnsetHandler(e.OldItems);
-                        SetHandler(e.NewItems);
-                        break;
-                }
-                base.OnCollectionChanged(e);
+                case NotifyCollectionChangedAction.Add:
+                    SetHandler(e.NewItems);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    UnsetHandler(e.OldItems);
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    UnsetHandler(e.OldItems);
+                    SetHandler(e.NewItems);
+                    break;
             }
-            catch (Exception err) { this.LogWarn(err.ToString(), err); }
-        }
+            base.OnCollectionChanged(e);
+        });
 
         /* ----------------------------------------------------------------- */
         ///

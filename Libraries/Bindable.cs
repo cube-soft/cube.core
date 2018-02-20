@@ -138,7 +138,7 @@ namespace Cube.Xui
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsSynchronous { get; set; } = false;
+        public bool IsSynchronous { get; set; } = true;
 
         /* ----------------------------------------------------------------- */
         ///
