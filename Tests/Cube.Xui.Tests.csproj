@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindableCollectionTest.cs" />
+    <Compile Include="BindableCommandTest.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

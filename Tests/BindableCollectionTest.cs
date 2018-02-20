@@ -15,6 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cube.Iteration;
 using NUnit.Framework;
 
 namespace Cube.Xui.Tests
@@ -42,7 +45,7 @@ namespace Cube.Xui.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(true, ExpectedResult = 4)]
+        [TestCase(true,  ExpectedResult = 4)]
         [TestCase(false, ExpectedResult = 3)]
         public int RaiseCollectionChanged(bool redirect)
         {
@@ -90,6 +93,54 @@ namespace Cube.Xui.Tests
             default(Person[]).ToBindable().Count,
             Is.EqualTo(0)
         );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Add_Async
+        ///
+        /// <summary>
+        /// 非同期で要素を追加した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Add_Async()
+        {
+            var count = 0;
+            var src   = new BindableCollection<Person>();
+            src.CollectionChanged += (s, e) => ++count;
+
+            var tasks = new List<Task>();
+            foreach (var item in Create()) tasks.Add(Task.Run(() => src.Add(item)));
+            Task.WaitAll(tasks.ToArray());
+
+            Assert.That(src.Count, Is.EqualTo(4));
+            Assert.That(count,     Is.EqualTo(4));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Add_Async
+        ///
+        /// <summary>
+        /// 非同期で要素を追加した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Remove_Async()
+        {
+            var count = 0;
+            var src   = Create().ToBindable();
+            src.CollectionChanged += (s, e) => ++count;
+
+            var tasks = new List<Task>();
+            4.Times(() => tasks.Add(Task.Run(() => src.RemoveAt(0))));
+            Task.WaitAll(tasks.ToArray());
+
+            Assert.That(src.Count, Is.EqualTo(0));
+            Assert.That(count,     Is.EqualTo(4));
+        }
 
         #endregion
 
