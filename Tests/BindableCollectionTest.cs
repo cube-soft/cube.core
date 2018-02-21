@@ -18,6 +18,7 @@
 using Cube.Iteration;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Cube.Xui.Tests
@@ -49,18 +50,20 @@ namespace Cube.Xui.Tests
         [TestCase(false, ExpectedResult = 3)]
         public int RaiseCollectionChanged(bool redirect)
         {
-            var count = 0;
-            var src   = Create().ToBindable();
+            using (var src = Create().ToBindable())
+            {
+                var count = 0;
 
-            src.IsRedirected = redirect;
-            src.CollectionChanged += (s, e) => ++count;
+                src.IsRedirected = redirect;
+                src.CollectionChanged += (s, e) => ++count;
 
-            src.Add(new Person { Name = "Ken", Age = 20 });
-            src.Move(0, 2);
-            src.RemoveAt(1);
-            src[0].Name = "Magic";
+                src.Add(new Person { Name = "Ken", Age = 20 });
+                src.Move(0, 2);
+                src.RemoveAt(1);
+                src[0].Name = "Magic";
 
-            return count;
+                return count;
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -106,16 +109,18 @@ namespace Cube.Xui.Tests
         [Test]
         public void Add_Async()
         {
-            var count = 0;
-            var src   = new BindableCollection<Person>();
-            src.CollectionChanged += (s, e) => ++count;
+            using (var src = new BindableCollection<Person>(new SynchronizationContext()))
+            {
+                var count = 0;
+                src.CollectionChanged += (s, e) => ++count;
 
-            var tasks = new List<Task>();
-            foreach (var item in Create()) tasks.Add(Task.Run(() => src.Add(item)));
-            Task.WaitAll(tasks.ToArray());
+                var tasks = new List<Task>();
+                foreach (var item in Create()) tasks.Add(Task.Run(() => src.Add(item)));
+                Task.WaitAll(tasks.ToArray());
 
-            Assert.That(src.Count, Is.EqualTo(4));
-            Assert.That(count,     Is.EqualTo(4));
+                Assert.That(src.Count, Is.EqualTo(4));
+                Assert.That(count,     Is.EqualTo(4));
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -130,21 +135,23 @@ namespace Cube.Xui.Tests
         [Test]
         public void Remove_Async()
         {
-            var count = 0;
-            var src   = Create().ToBindable();
-            src.CollectionChanged += (s, e) => ++count;
+            using (var src = Create().ToBindable(new SynchronizationContext()))
+            {
+                var count = 0;
+                src.CollectionChanged += (s, e) => ++count;
 
-            var tasks = new List<Task>();
-            4.Times(() => tasks.Add(Task.Run(() => src.RemoveAt(0))));
-            Task.WaitAll(tasks.ToArray());
+                var tasks = new List<Task>();
+                4.Times(() => tasks.Add(Task.Run(() => src.RemoveAt(0))));
+                Task.WaitAll(tasks.ToArray());
 
-            Assert.That(src.Count, Is.EqualTo(0));
-            Assert.That(count,     Is.EqualTo(4));
+                Assert.That(src.Count, Is.EqualTo(0));
+                Assert.That(count,     Is.EqualTo(4));
+            }
         }
 
         #endregion
 
-        #region Helpers
+        #region Helpers methods
 
         /* ----------------------------------------------------------------- */
         ///
