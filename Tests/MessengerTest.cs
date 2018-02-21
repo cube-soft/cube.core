@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using GalaSoft.MvvmLight.Messaging;
 using NUnit.Framework;
+using System.Windows;
 
 namespace Cube.Xui.Tests
 {
@@ -51,7 +52,35 @@ namespace Cube.Xui.Tests
 
             src.Register<CloseMessage>(this, e => dest = e);
             src.Send<CloseMessage>();
+
             Assert.That(dest, Is.Not.Null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_DialogMessage
+        ///
+        /// <summary>
+        /// DialogMessage を送信するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_DialogMessage()
+        {
+            var src  = new Messenger();
+            var dest = default(DialogMessage);
+
+            src.Register<DialogMessage>(this, e => dest = e);
+            src.Send(new DialogMessage(nameof(Send_DialogMessage)));
+
+            Assert.That(dest,          Is.Not.Null);
+            Assert.That(dest.Content,  Is.EqualTo(nameof(Send_DialogMessage)));
+            Assert.That(dest.Title,    Is.EqualTo(AssemblyReader.Default.Title));
+            Assert.That(dest.Callback, Is.Null);
+            Assert.That(dest.Button,   Is.EqualTo(MessageBoxButton.OK));
+            Assert.That(dest.Image,    Is.EqualTo(MessageBoxImage.Error));
+            Assert.That(dest.Result,   Is.True);
         }
 
         #endregion

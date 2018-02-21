@@ -15,44 +15,58 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows.Forms;
-using System.Windows.Forms.Integration;
-using System.Windows.Interactivity;
+using System.Globalization;
+using System.Windows.Data;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WindowsFormsBehavior
+    /// ConvertHelper
     ///
     /// <summary>
-    /// WindowsForms に対して Behavior を適用するためのクラスです。
+    /// 各種 Converter クラスをテストする際の補助クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WindowsFormsBehavior<TControl> : Behavior<WindowsFormsHost>
-        where TControl : Control
+    class ConvertHelper
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Source
-        ///
-        /// <summary>
-        /// 対象となるコントロールオブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TControl Source => AssociatedObject?.Child as TControl;
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Source
+        /// Convert
         ///
         /// <summary>
-        /// 対象となるコントロールの親オブジェクトを取得します。
+        /// IValueConverter.Convert を実行します。
         /// </summary>
         ///
+        /// <param name="src">Convert を実行するオブジェクト</param>
+        /// <param name="value">変換元オブジェクト</param>
+        ///
+        /// <returns>変換結果</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public WindowsFormsHost Parent => AssociatedObject;
+        public T Convert<T>(IValueConverter src, object value) =>
+            (T)src.Convert(value, typeof(T), null, CultureInfo.CurrentCulture);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute
+        ///
+        /// <summary>
+        /// IValueConverter.ConvertBack を実行します。
+        /// </summary>
+        ///
+        /// <param name="src">ConvertBack を実行するオブジェクト</param>
+        /// <param name="value">変換元オブジェクト</param>
+        ///
+        /// <returns>変換結果</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public T ConvertBack<T>(IValueConverter src, object value) =>
+            (T)src.ConvertBack(value, typeof(T), null, CultureInfo.CurrentCulture);
+
+        #endregion
     }
 }

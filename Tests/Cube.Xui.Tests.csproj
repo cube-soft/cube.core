@@ -56,8 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BooleanConverterTest.cs" />
+    <Compile Include="Details\ConvertHelper.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="BindableCollectionTest.cs" />
     <Compile Include="BindableCommandTest.cs" />

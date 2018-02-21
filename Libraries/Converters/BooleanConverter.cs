@@ -30,7 +30,7 @@ namespace Cube.Xui.Converters
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Inverse : SimplexConverter
+    public class Inverse : DuplexConverter
     {
         #region Constructors
 
@@ -43,7 +43,7 @@ namespace Cube.Xui.Converters
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Inverse() : base(e => !(bool)e) { }
+        public Inverse() : base(e => !(bool)e, e => !(bool)e) { }
 
         #endregion
     }

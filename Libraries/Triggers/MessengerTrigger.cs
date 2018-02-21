@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Interactivity;
-using GalaSoft.MvvmLight.Messaging;
 
 namespace Cube.Xui.Triggers
 {
