@@ -18,6 +18,7 @@
 using Cube.Xui.Converters;
 using NUnit.Framework;
 using System;
+using System.Windows;
 
 namespace Cube.Xui.Tests
 {
@@ -94,6 +95,39 @@ namespace Cube.Xui.Tests
         public void BooleanToInteger_Back() => Assert.That(
             () => ConvertBack<bool>(new BooleanToInteger(), 1),
             Throws.TypeOf<NotSupportedException>()
+        );
+
+        #endregion
+
+        #region BooleanToVisibility
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BooleanToVisibility
+        ///
+        /// <summary>
+        /// 真偽値を Visibility に変換するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(true,  ExpectedResult = Visibility.Visible)]
+        [TestCase(false, ExpectedResult = Visibility.Collapsed)]
+        public Visibility BooleanToVisibility(bool src) =>
+            Convert<Visibility>(new BooleanToVisibility(), src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BooleanToVisibility_Func
+        ///
+        /// <summary>
+        /// 関数オブジェクトを引数に初期化するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void BooleanToVisibility_Func() => Assert.That(
+            Convert<Visibility>(new BooleanToVisibility(e => (int)e > 0), 1),
+            Is.EqualTo(Visibility.Visible)
         );
 
         #endregion

@@ -83,6 +83,65 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Result,   Is.True);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_OpenFileDialogMessage
+        ///
+        /// <summary>
+        /// OpenFileDialogMessage を送信するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_OpenFileDialogMessage()
+        {
+            var src  = new Messenger();
+            var dest = default(OpenFileDialogMessage);
+
+            src.Register<OpenFileDialogMessage>(this, e => e.Callback(e));
+            src.Send(new OpenFileDialogMessage(e => dest = e));
+
+            Assert.That(dest,                  Is.Not.Null);
+            Assert.That(dest.Callback,         Is.Not.Null);
+            Assert.That(dest.CheckPathExists,  Is.True, nameof(dest.CheckPathExists));
+            Assert.That(dest.FileName,         Is.Null, nameof(dest.FileName));
+            Assert.That(dest.FileNames,        Is.Null, nameof(dest.FileNames));
+            Assert.That(dest.InitialDirectory, Is.Null, nameof(dest.InitialDirectory));
+            Assert.That(dest.Multiselect,      Is.False, nameof(dest.Multiselect));
+            Assert.That(dest.Result,           Is.False, nameof(dest.Result));
+            Assert.That(dest.Title,            Is.Null, nameof(dest.Title));
+            Assert.That(dest.Filter,           Does.StartWith("All Files"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_SaveFileDialogMessage
+        ///
+        /// <summary>
+        /// SaveFileDialogMessage を送信するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_SaveFileDialogMessage()
+        {
+            var src  = new Messenger();
+            var dest = default(SaveFileDialogMessage);
+
+            src.Register<SaveFileDialogMessage>(this, e => e.Callback(e));
+            src.Send(new SaveFileDialogMessage(e => dest = e));
+
+            Assert.That(dest,                  Is.Not.Null);
+            Assert.That(dest.Callback,         Is.Not.Null);
+            Assert.That(dest.CheckPathExists,  Is.False, nameof(dest.CheckPathExists));
+            Assert.That(dest.FileName,         Is.Null, nameof(dest.FileName));
+            Assert.That(dest.InitialDirectory, Is.Null, nameof(dest.InitialDirectory));
+            Assert.That(dest.OverwritePrompt,  Is.True, nameof(dest.OverwritePrompt));
+            Assert.That(dest.Result,           Is.False, nameof(dest.Result));
+            Assert.That(dest.Title,            Is.Null, nameof(dest.Title));
+            Assert.That(dest.Filter,           Does.StartWith("All Files"));
+        }
+
         #endregion
     }
 }
