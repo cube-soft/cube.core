@@ -33,6 +33,32 @@ namespace Cube.Xui.Tests
     {
         #region Tests
 
+        #region BindableCommand
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Destruct
+        ///
+        /// <summary>
+        /// BindableCommand の生成から破棄までのテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Destruct()
+        {
+            var src  = new Person().ToBindable();
+            var dest = new BindableCommand(
+                () => src.Value.Name = "Done",
+                () => src.Value.Age > 0,
+                src
+            );
+
+            src.Value.Age = 20;
+            dest.Execute(null);
+            Assert.That(src.Value.Name, Is.EqualTo("Done"));
+        }
+
         /* ----------------------------------------------------------------- */
         ///
         /// RaiseCanExecuteChanged
@@ -62,6 +88,34 @@ namespace Cube.Xui.Tests
                 dest.Execute(null);
                 Assert.That(src.Value.Name, Is.EqualTo("Done"));
             }
+        }
+
+        #endregion
+
+        #region BindableCommand<T>
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Destruct_Generic
+        ///
+        /// <summary>
+        /// BindableCommand(T) の生成から破棄までのテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Destruct_Generic()
+        {
+            var src  = new Person().ToBindable();
+            var dest = new BindableCommand<int>(
+                e => src.Value.Name = $"Done:{e}",
+                e => e > 0 && src.Value.Age > 0,
+                src
+            );
+
+            src.Value.Age = 20;
+            dest.Execute(1);
+            Assert.That(src.Value.Name, Is.EqualTo("Done:1"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -98,6 +152,8 @@ namespace Cube.Xui.Tests
                 Assert.That(src.Value.Name, Is.EqualTo("Done:4"));
             }
         }
+
+        #endregion
 
         #endregion
     }
