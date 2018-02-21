@@ -104,35 +104,6 @@ namespace Cube.Xui
         public static BindableCollection<T> ToBindable<T>(this T[] src,
             SynchronizationContext context) => ToBindable((IEnumerable<T>)src, context);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBindable
-        ///
-        /// <summary>
-        /// BindableCollection オブジェクトに変換します。
-        /// </summary>
-        ///
-        /// <param name="src">変換元オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this IList<T> src) =>
-            ToBindable((IEnumerable<T>)src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBindable
-        ///
-        /// <summary>
-        /// BindableCollection オブジェクトに変換します。
-        /// </summary>
-        ///
-        /// <param name="src">変換元オブジェクト</param>
-        /// <param name="context">同期用コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this IList<T> src,
-            SynchronizationContext context) => ToBindable((IEnumerable<T>)src, context);
-
         #endregion
     }
 }

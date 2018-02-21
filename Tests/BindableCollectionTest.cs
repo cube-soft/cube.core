@@ -39,32 +39,18 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseCollectionChanged
+        /// Create_Default
         ///
         /// <summary>
-        /// CollectionChanged イベントの挙動を確認します。
+        /// 既定のコンストラクタで初期化した時の挙動を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(true,  ExpectedResult = 4)]
-        [TestCase(false, ExpectedResult = 3)]
-        public int RaiseCollectionChanged(bool redirect)
-        {
-            using (var src = Create().ToBindable())
-            {
-                var count = 0;
-
-                src.IsRedirected = redirect;
-                src.CollectionChanged += (s, e) => ++count;
-
-                src.Add(new Person { Name = "Ken", Age = 20 });
-                src.Move(0, 2);
-                src.RemoveAt(1);
-                src[0].Name = "Magic";
-
-                return count;
-            }
-        }
+        [Test]
+        public void Create_Default() => Assert.That(
+            new BindableCollection<int>().Count,
+            Is.EqualTo(0)
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -146,6 +132,35 @@ namespace Cube.Xui.Tests
 
                 Assert.That(src.Count, Is.EqualTo(0));
                 Assert.That(count,     Is.EqualTo(4));
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseCollectionChanged
+        ///
+        /// <summary>
+        /// CollectionChanged イベントの挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(true,  ExpectedResult = 4)]
+        [TestCase(false, ExpectedResult = 3)]
+        public int RaiseCollectionChanged(bool redirect)
+        {
+            using (var src = Create().ToBindable())
+            {
+                var count = 0;
+
+                src.IsRedirected = redirect;
+                src.CollectionChanged += (s, e) => ++count;
+
+                src.Add(new Person { Name = "Ken", Age = 20 });
+                src.Move(0, 2);
+                src.RemoveAt(1);
+                src[0].Name = "Magic";
+
+                return count;
             }
         }
 
