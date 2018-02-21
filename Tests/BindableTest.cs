@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System.Threading;
 
 namespace Cube.Xui.Tests
 {
@@ -62,6 +63,32 @@ namespace Cube.Xui.Tests
                 value.Age  = 20;
 
                 return count;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bindable_Context
+        ///
+        /// <summary>
+        /// SynchronizationContext を指定した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Bindable_Context()
+        {
+            var value = new Person();
+            using (var src = new Bindable<Person>(value, new SynchronizationContext()))
+            {
+                var count = 0;
+                src.PropertyChanged += (s, e) => ++count;
+                src.Value = value;
+
+                value.Name = "Jack";
+                value.Age  = 20;
+
+                Assert.That(count, Is.EqualTo(2));
             }
         }
 
