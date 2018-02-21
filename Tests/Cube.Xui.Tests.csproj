@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Converters\BooleanConverterTest.cs" />
     <Compile Include="Converters\ImageConverterTest.cs" />
+    <Compile Include="Converters\StringConverterTest.cs" />
     <Compile Include="Details\ConvertHelper.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="BindableCollectionTest.cs" />

@@ -17,69 +17,51 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Xui.Converters;
 using NUnit.Framework;
-using System.Windows.Media.Imaging;
 
 namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ImageConverterTest
+    /// StringConverterTest
     ///
     /// <summary>
-    /// Image オブジェクトに関する Converter のテスト用クラスです。
+    /// ValueToString のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ImageConverterTest : ConvertHelper
+    class StringConverterTest : ConvertHelper
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ImageConverter
+        /// ValueToString
         ///
         /// <summary>
-        /// ImageConverter.Convert のテストを実行します。
+        /// 文字列に変換するテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ImageConverter() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), Properties.Resources.Logo),
-            Is.Not.Null
+        public void ValueToString() => Assert.That(
+            Convert<string>(new ValueToString(), 1),
+            Is.EqualTo("1")
         );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ImageConverter_Icon
+        /// ValueToString_Null
         ///
         /// <summary>
-        /// アイコンを指定して ImageConverter.Convert を実行した時の挙動を
-        /// 確認します。
+        /// 引数に null を指定した時の挙動を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ImageConverter_Icon() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), Properties.Resources.App),
-            Is.Not.Null
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ImageConverter_Null
-        ///
-        /// <summary>
-        /// null を指定して ImageConverter.Convert を実行した時の挙動を
-        /// 確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ImageConverter_Null() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), null),
-            Is.Null
+        public void ValueToString_Null() => Assert.That(
+            Convert<string>(new ValueToString(), null),
+            Is.Empty
         );
 
         #endregion

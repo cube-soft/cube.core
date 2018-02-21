@@ -64,6 +64,42 @@ namespace Cube.Xui.Tests
         [TestCase(false, ExpectedResult = true)]
         public bool Inverse_Back(bool src) => ConvertBack<bool>(new Inverse(), src);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Inverse_ProvideValue
+        ///
+        /// <summary>
+        /// ProvideValue のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Inverse_ProvideValue()
+        {
+            var src = new Inverse();
+            Assert.That(src.ProvideValue(null), Is.EqualTo(src));
+        }
+
+        #endregion
+
+        #region BooleanToGeneric
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BooleanToGeneric
+        ///
+        /// <summary>
+        /// BooleanToGeneric(T).Convert のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("src", "compared", ExpectedResult = "src")]
+        public string BooleanToGeneric(string src, string compared) =>
+            Convert<string>(new BooleanToGeneric<string>(src, compared,
+                (x, y) => ((string)x).CompareTo(compared) > 0),
+                src
+            );
+
         #endregion
 
         #region BooleanToInteger
@@ -96,6 +132,22 @@ namespace Cube.Xui.Tests
             () => ConvertBack<bool>(new BooleanToInteger(), 1),
             Throws.TypeOf<NotSupportedException>()
         );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BooleanToInteger_ProvideValue
+        ///
+        /// <summary>
+        /// ProvideValue のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void BooleanToInteger_ProvideValue()
+        {
+            var src = new BooleanToInteger();
+            Assert.That(src.ProvideValue(null), Is.EqualTo(src));
+        }
 
         #endregion
 
