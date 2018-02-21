@@ -40,8 +40,12 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e) =>
-            new TView { DataContext = e }.Show();
+        protected override void Invoke(TViewModel e)
+        {
+            var dest = new TView { DataContext = e };
+            if (AssociatedObject is Window wnd) dest.Owner = wnd;
+            dest.Show();
+        }
     }
 
     /* --------------------------------------------------------------------- */
@@ -65,7 +69,11 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e) =>
-            new TView { DataContext = e }.ShowDialog();
+        protected override void Invoke(TViewModel e)
+        {
+            var dest = new TView { DataContext = e };
+            if (AssociatedObject is Window wnd) dest.Owner = wnd;
+            dest.ShowDialog();
+        }
     }
 }
