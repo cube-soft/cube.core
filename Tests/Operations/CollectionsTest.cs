@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
-using Cube.Collections;
 
 namespace Cube.Tests
 {
@@ -98,6 +98,42 @@ namespace Cube.Tests
         {
             IList<int> collection = null;
             return collection.Clamp(100);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetOrDefault
+        ///
+        /// <summary>
+        /// GetOrDefault の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetOrDefault()
+        {
+            var sum = 0;
+            var src = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            foreach (var i in src.GetOrDefault()) sum += i;
+            Assert.That(sum, Is.EqualTo(55));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetOrDefault_Null
+        ///
+        /// <summary>
+        /// null を指定した場合の GetOrDefault の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetOrDefault_Null()
+        {
+            var sum = 0;
+            var src = default(List<int>);
+            foreach (var i in src.GetOrDefault()) sum += i;
+            Assert.That(sum, Is.EqualTo(0));
         }
 
         /* ----------------------------------------------------------------- */
