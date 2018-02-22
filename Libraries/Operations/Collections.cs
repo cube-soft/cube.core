@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Differences;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Cube.Differences;
 
 namespace Cube.Collections
 {
@@ -172,6 +172,18 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public static int LastIndex<T>(this IList<T> src) =>
             src == null || src.Count == 0 ? 0 : src.Count - 1;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetOrDefault(T)
+        ///
+        /// <summary>
+        /// 自身かまたは空の IEnumerable(T) オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
+            src ?? Enumerable.Empty<T>();
 
         #endregion
 
