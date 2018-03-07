@@ -75,6 +75,7 @@
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
     <Compile Include="Operations\XmlTest.cs" />
+    <Compile Include="OrderedDictionaryTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />
