@@ -154,8 +154,13 @@ namespace Cube.Collections
         /// Clamp(T)
         ///
         /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めます。
+        /// 指定されたインデックスを [0, Count) の範囲に補正します。
         /// </summary>
+        ///
+        /// <param name="src">コレクション</param>
+        /// <param name="index">インデックス</param>
+        ///
+        /// <returns>補正後のインデックス</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static int Clamp<T>(this IList<T> src, int index) =>
@@ -169,6 +174,10 @@ namespace Cube.Collections
         /// 最後のインデックスを取得します。
         /// </summary>
         ///
+        /// <param name="src">コレクション</param>
+        ///
+        /// <returns>最後のインデックス</returns>
+        ///
         /* ----------------------------------------------------------------- */
         public static int LastIndex<T>(this IList<T> src) =>
             src == null || src.Count == 0 ? 0 : src.Count - 1;
@@ -180,6 +189,10 @@ namespace Cube.Collections
         /// <summary>
         /// 自身かまたは空の IEnumerable(T) オブジェクトを取得します。
         /// </summary>
+        ///
+        /// <param name="src">コレクション</param>
+        ///
+        /// <returns>自身かまたは空のコレクション</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
