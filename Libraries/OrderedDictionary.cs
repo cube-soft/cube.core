@@ -263,7 +263,7 @@ namespace Cube.Collections
         /* --------------------------------------------------------------------- */
         public bool Remove(TKey key)
         {
-            if (key == null || !ContainsKey(key)) return false;
+            if (!ContainsKey(key)) return false;
             _core.Remove(key);
             return true;
         }

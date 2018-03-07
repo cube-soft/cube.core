@@ -52,6 +52,7 @@ namespace Cube.Tests
         public void Access_WithKey()
         {
             var src = Create();
+            Assert.That(src.IsReadOnly, Is.False);
             Assert.That(src.Count,      Is.EqualTo(5));
             Assert.That(src["Linus"],   Is.EqualTo("Torvalds"));
 
@@ -92,15 +93,16 @@ namespace Cube.Tests
         public void Access_WithIndex()
         {
             var src = Create();
-            Assert.That(src.Count, Is.EqualTo(5));
-            Assert.That(src[0],    Is.EqualTo("Ritchie"));
-            Assert.That(src[1],    Is.EqualTo("Kernighan"));
-            Assert.That(src[2],    Is.EqualTo("Thompson"));
-            Assert.That(src[3],    Is.EqualTo("Torvalds"));
-            Assert.That(src[4],    Is.EqualTo("Stallman"));
+            Assert.That(src.IsReadOnly, Is.False);
+            Assert.That(src.Count,      Is.EqualTo(5));
+            Assert.That(src[0],         Is.EqualTo("Ritchie"));
+            Assert.That(src[1],         Is.EqualTo("Kernighan"));
+            Assert.That(src[2],         Is.EqualTo("Thompson"));
+            Assert.That(src[3],         Is.EqualTo("Torvalds"));
+            Assert.That(src[4],         Is.EqualTo("Stallman"));
 
             src[2] = "Gutmans";
-            Assert.That(src[2],    Is.EqualTo("Gutmans"));
+            Assert.That(src[2],         Is.EqualTo("Gutmans"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -152,6 +154,29 @@ namespace Cube.Tests
         [TestCase(null,   null,        ExpectedResult = false)]
         public bool Remove(string key, string value) =>
             Create().Remove(new KeyValuePair<string, string>(key, value));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CopyFrom
+        ///
+        /// <summary>
+        /// コピーコンストラクタの挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void CopyFrom()
+        {
+            var src  = Create();
+            var dest = new OrderedDictionary<string, string>(src);
+            Assert.That(dest.Count, Is.EqualTo(src.Count));
+
+            src["Brian"] = "Kay";
+            Assert.That(src["Brian"],  Is.EqualTo("Kay"));
+            Assert.That(dest["Brian"], Is.EqualTo("Kernighan"));
+
+            Assert.That(new OrderedDictionary<string, string>(null).Count, Is.EqualTo(0));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
