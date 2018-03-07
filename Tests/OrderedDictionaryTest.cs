@@ -250,6 +250,7 @@ namespace Cube.Tests
             src.Remove("Richard");
             src.Remove("Dennis");
             src.Remove("Kenneth");
+            src.Remove("Dummy");
             Assert.That(src.Count,      Is.EqualTo(4));
             Assert.That(keys.Count,     Is.EqualTo(5));
             Assert.That(values.Count,   Is.EqualTo(5));
