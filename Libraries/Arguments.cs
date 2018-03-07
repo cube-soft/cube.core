@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Cube
@@ -28,15 +29,14 @@ namespace Cube
     /// </summary>
     ///
     /// <remarks>
-    /// このクラスでは、各オプション ("-" または "--" で始まる引数）は最大
-    /// 1 つの引数しか指定できないと言う制約を設けています。それ以外の
-    /// 引数は、全て Get(void) メソッドで取得できる配列に格納されます。
-    /// また、同じオプションが複数回指定された場合、最後に指定された引数を
-    /// 保持します。
+    /// このクラスでは、各オプションは最大 1 つの引数しか指定できないと言う
+    /// 制約を設けています。それ以外の引数は全て自身のシーケンスに格納され
+    /// ます。また、同じオプションが複数回指定された場合、後に指定された
+    /// 内容で上書きされます。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Arguments
+    public class Arguments : IReadOnlyList<string>
     {
         #region Constructors
 
@@ -48,13 +48,10 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="prefix">オプションを示す接頭辞</param>
+        /// <param name="src">引数一覧</param>
         ///
         /* --------------------------------------------------------------------- */
-        public Arguments(char prefix = '-')
-        {
-            Prefix = prefix;
-        }
+        public Arguments(IEnumerable<string> src) : this(src, '-') { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -64,14 +61,14 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="args">引数一覧</param>
+        /// <param name="src">引数一覧</param>
         /// <param name="prefix">オプションを示す接頭辞</param>
         ///
         /* --------------------------------------------------------------------- */
-        public Arguments(IEnumerable<string> args, char prefix = '-')
-            : this(prefix)
+        public Arguments(IEnumerable<string> src, char prefix)
         {
-            Parse(args);
+            Prefix = prefix;
+            Parse(src);
         }
 
         #endregion
@@ -89,9 +86,73 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         public char Prefix { get; set; }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Item(int)
+        ///
+        /// <summary>
+        /// 非オプション要素を取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public string this[int index] => _primary[index];
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Count
+        ///
+        /// <summary>
+        /// 非オプション要素の数を取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public int Count => _primary.Count;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Options
+        ///
+        /// <summary>
+        /// オプション引数一覧を取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IDictionary<string, string> Options => _options;
+
         #endregion
 
         #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetEnumerator
+        ///
+        /// <summary>
+        /// オプション引数以外の要素一覧を取得するための反復用オブジェクトを
+        /// 取得します。
+        /// </summary>
+        ///
+        /// <returns>反復用オブジェクト</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IEnumerator<string> GetEnumerator() => _primary.GetEnumerator();
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetEnumerator
+        ///
+        /// <summary>
+        /// 非オプション要素を取得するための反復用オブジェクトを取得します。
+        /// </summary>
+        ///
+        /// <returns>反復用オブジェクト</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        #endregion
+
+        #region Implementations
 
         /* --------------------------------------------------------------------- */
         ///
@@ -101,118 +162,31 @@ namespace Cube
         /// コマンドライン等の引数を解析します。
         /// </summary>
         ///
-        /// <param name="args">引数一覧</param>
+        /// <param name="src">引数一覧</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Parse(IEnumerable<string> args)
+        private void Parse(IEnumerable<string> src)
         {
             var option = string.Empty;
 
-            foreach (var s in args)
+            foreach (var s in src)
             {
                 if (string.IsNullOrEmpty(s)) continue;
 
                 if (s[0] == Prefix)
                 {
                     if (!string.IsNullOrEmpty(option)) UpdateOption(option, null);
-                    option = TrimLeft(s);
+                    option = s.TrimStart(Prefix);
                 }
                 else if (!string.IsNullOrEmpty(option))
                 {
                     UpdateOption(option, s);
                     option = string.Empty;
                 }
-                else _arguments.Add(s);
+                else _primary.Add(s);
             }
 
             if (!string.IsNullOrEmpty(option)) UpdateOption(option, null);
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// 引数一覧を取得します。
-        /// </summary>
-        ///
-        /// <returns>引数一覧</returns>
-        ///
-        /// <remarks>
-        /// 各種オプションに対応する引数を取得する場合は
-        /// GetOptions() または Get(string) を実行して下さい。
-        /// </remarks>
-        ///
-        /* --------------------------------------------------------------------- */
-        public IEnumerable<string> Get() => _arguments;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetOptions
-        ///
-        /// <summary>
-        /// オプション引数一覧を取得します。
-        /// </summary>
-        ///
-        /// <returns>オプション引数一覧</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public IDictionary<string, string> GetOptions() => _options;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// 各種オプションに対応する引数を取得します。
-        /// </summary>
-        ///
-        /// <param name="option">オプション・キー</param>
-        ///
-        /// <returns>キーに対応する値</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public string Get(string option) => HasOption(option) ? _options[option] : null;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// HasOption
-        ///
-        /// <summary>
-        /// 指定されたオプションを保持しているかどうかを判別します。
-        /// </summary>
-        ///
-        /// <param name="option">オプション・キー</param>
-        ///
-        /// <returns>オプションを保持しているかどうかを示す値</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public bool HasOption(string option) => _options.ContainsKey(option);
-
-        #endregion
-
-        #region Implementations
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// TrimLeft
-        ///
-        /// <summary>
-        /// 文字の先頭から Prefix で指定されている文字および空白文字を
-        /// 除去します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private string TrimLeft(string option)
-        {
-            var index = 0;
-            while (index < option.Length)
-            {
-                var c = option[index];
-                if (!char.IsWhiteSpace(c) && c != Prefix) break;
-                ++index;
-            }
-            return option.Substring(index);
         }
 
         /* --------------------------------------------------------------------- */
@@ -233,7 +207,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private IList<string> _arguments = new List<string>();
+        private IList<string> _primary = new List<string>();
         private IDictionary<string, string> _options = new Dictionary<string, string>();
         #endregion
     }

@@ -15,9 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Cube.Tests
 {
@@ -40,14 +39,13 @@ namespace Cube.Tests
         /// Parse
         ///
         /// <summary>
-        /// オプション以外の項目を正常に解析できる事を確認するための
-        /// テストです。
+        /// 非オプション項目を正常に解析できる事を確認するためのテストです。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_TestCases))]
         public int Parse(int id, IEnumerable<string> args) =>
-            new Arguments(args).Get().Count();
+            new Arguments(args).Count;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -59,8 +57,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_TestCases))]
-        public string Parse_Options(int id, IEnumerable<string> args, string option) =>
-            new Arguments(args).Get(option);
+        public string Parse_Options(int id, IEnumerable<string> args, string key)
+        {
+            try { return new Arguments(args).Options[key]; }
+            catch { return null; }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -73,7 +74,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
         public int Parse_Options_Count(int id, IEnumerable<string> args) =>
-            new Arguments(args).GetOptions().Count;
+            new Arguments(args).Options.Count;
 
         #endregion
 
