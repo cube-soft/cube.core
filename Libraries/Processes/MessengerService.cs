@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using Cube.Log;
 
 namespace Cube.Processes
 {

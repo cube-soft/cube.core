@@ -100,7 +100,7 @@ namespace Cube.Generics
         public static T TryCast<T>(this object src, T failed = default(T))
         {
             try { return (T)src; }
-            catch (System.Exception /* err */) { return failed; }
+            catch { return failed; }
         }
 
         #endregion
