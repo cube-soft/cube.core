@@ -142,6 +142,32 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Filter,           Does.StartWith("All Files"));
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_DirectoryDialogMessage
+        ///
+        /// <summary>
+        /// DirectoryDialogMessage を送信するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_DirectoryDialogMessage()
+        {
+            var src = new Messenger();
+            var dest = default(DirectoryDialogMessage);
+
+            src.Register<DirectoryDialogMessage>(this, e => e.Callback(e));
+            src.Send(new DirectoryDialogMessage(e => dest = e));
+
+            Assert.That(dest,           Is.Not.Null);
+            Assert.That(dest.Callback,  Is.Not.Null);
+            Assert.That(dest.FileName,  Is.Null, nameof(dest.FileName));
+            Assert.That(dest.NewButton, Is.True, nameof(dest.NewButton));
+            Assert.That(dest.Result,    Is.False, nameof(dest.Result));
+            Assert.That(dest.Title,     Is.Null, nameof(dest.Title));
+        }
+
         #endregion
     }
 }

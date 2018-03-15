@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\CloseBehavior.cs" />
     <Compile Include="Behaviors\DialogBehavior.cs" />
+    <Compile Include="Behaviors\DirectoryDialogBehavior.cs" />
     <Compile Include="Behaviors\EditBehavior.cs" />
     <Compile Include="Behaviors\FileDialogBehavior.cs" />
     <Compile Include="Behaviors\MessengerBehavior.cs" />
