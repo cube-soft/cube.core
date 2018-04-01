@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Settings;
+using Microsoft.Win32;
+using NUnit.Framework;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Win32;
-using NUnit.Framework;
-using Cube.Settings;
 
 namespace Cube.Tests
 {
@@ -183,6 +183,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Load_File_Default
+        ///
+        /// <summary>
+        /// SettingsFolder.Load 失敗時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(SettingsType.Unknown, "Settings.xml")]
+        public void Load_File_Default(SettingsType type, string filename)
+        {
+            var src = new SettingsFolder<Person>(type, Example(filename));
+            src.Load();
+            Assert.That(src.Value, Is.Null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Load_Stream
         ///
         /// <summary>
@@ -196,10 +213,7 @@ namespace Cube.Tests
         [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
         public string Load_Stream(SettingsType type, string filename)
         {
-            using (var reader = new StreamReader(Example(filename)))
-            {
-                return type.Load<Person>(reader.BaseStream).Name;
-            }
+            using (var ss = File.OpenRead(Example(filename))) return type.Load<Person>(ss).Name;
         }
 
         /* ----------------------------------------------------------------- */
@@ -216,10 +230,7 @@ namespace Cube.Tests
         public void Load_Stream_Throws(SettingsType type, string filename) =>
             Assert.That(() =>
             {
-                using (var reader = new StreamReader(Example(filename)))
-                {
-                    type.Load<Person>(reader.BaseStream);
-                }
+                using (var ss = File.OpenRead(Example(filename))) type.Load<Person>(ss);
             }, Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
@@ -327,10 +338,7 @@ namespace Cube.Tests
         public void Save_Stream(SettingsType type, string filename)
         {
             var dest = Result(filename);
-            using (var sw = new StreamWriter(dest))
-            {
-                type.Save(sw.BaseStream, CreatePerson());
-            }
+            using (var ss = File.Create(dest)) type.Save(ss, CreatePerson());
             Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
@@ -348,10 +356,7 @@ namespace Cube.Tests
         public void Save_Stream_Throws(SettingsType type, string filename) =>
             Assert.That(() =>
             {
-                using (var sw = new StreamWriter(Result(filename)))
-                {
-                    type.Save(sw.BaseStream, CreatePerson());
-                }
+                using (var ss = File.Create(Result(filename))) type.Save(ss, CreatePerson());
             }, Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
