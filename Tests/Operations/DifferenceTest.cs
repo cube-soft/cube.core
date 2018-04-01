@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
 using Cube.Collections;
 using Cube.Differences;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.Tests
 {

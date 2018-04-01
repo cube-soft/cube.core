@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using Cube.Log;
 
 namespace Cube
 {

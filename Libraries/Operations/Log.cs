@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using log4net;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using log4net;
 
 namespace Cube.Log
 {

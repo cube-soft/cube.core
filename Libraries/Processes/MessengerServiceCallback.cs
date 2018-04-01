@@ -18,8 +18,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 
 namespace Cube.Processes
 {

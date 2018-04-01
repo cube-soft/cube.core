@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Threading.Tasks;
-using Cube.Log;
 
 namespace Cube.Tasks
 {
