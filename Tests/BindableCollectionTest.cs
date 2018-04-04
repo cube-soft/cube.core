@@ -64,7 +64,7 @@ namespace Cube.Xui.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_EmptyCollection() => Assert.That(
-            new Person[0].ToBindable().Count,
+            ((IEnumerable<Person>)new Person[0]).ToBindable().Count,
             Is.EqualTo(0)
         );
 
@@ -79,7 +79,7 @@ namespace Cube.Xui.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_NullCollection() => Assert.That(
-            default(Person[]).ToBindable().Count,
+            default(IEnumerable<Person>).ToBindable().Count,
             Is.EqualTo(0)
         );
 
@@ -148,13 +148,12 @@ namespace Cube.Xui.Tests
         [TestCase(false, ExpectedResult = 3)]
         public int RaiseCollectionChanged(bool redirect)
         {
-            using (var src = Create().ToBindable())
+            var ctx = SynchronizationContext.Current;
+            using (var src = Create().ToBindable(redirect, ctx))
             {
                 var count = 0;
 
-                src.IsRedirected = redirect;
                 src.CollectionChanged += (s, e) => ++count;
-
                 src.Add(new Person { Name = "Ken", Age = 20 });
                 src.Move(0, 2);
                 src.RemoveAt(1);
@@ -177,7 +176,7 @@ namespace Cube.Xui.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private Person[] Create() => new[]
+        private IEnumerable<Person> Create() => new[]
         {
             new Person { Name = "Alice", Age = 13 },
             new Person { Name = "Bob",   Age = 15 },

@@ -73,16 +73,46 @@ namespace Cube.Xui
         /// オブジェクトを初期化します。
         /// </summary>
         ///
+        /// <param name="context">同期コンテキスト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Bindable(SynchronizationContext context) :
+            this(default(T), context) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bindable
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
         /// <param name="value">初期値</param>
         /// <param name="context">同期コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(T value, SynchronizationContext context)
+        public Bindable(T value, SynchronizationContext context) :
+            this(value, false, context) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bindable
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="value">初期値</param>
+        /// <param name="redirect">イベントのリダイレクト設定</param>
+        /// <param name="context">同期コンテキスト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Bindable(T value, bool redirect, SynchronizationContext context)
         {
             _dispose     = new OnceAction<bool>(Dispose);
             _context     = context;
-            _value       = value;
-            IsRedirected = true;
+            IsRedirected = redirect;
+            Value        = value;
         }
 
         #endregion
@@ -146,27 +176,17 @@ namespace Cube.Xui
         ///
         /// <summary>
         /// PropertyChanged イベントをリダイレクトするかどうかを示す値を
-        /// 取得または設定します。
+        /// 取得します。
         /// </summary>
         ///
         /// <remarks>
-        /// true に設定した場合、Value.PropertyChanged イベントが発生した
-        /// 時に PropertyName を "Value" に設定した状態で PropertyChanged
+        /// true の場合、Value.PropertyChanged イベントが発生した時に
+        /// PropertyName を "Value" に設定した状態で PropertyChanged
         /// イベントを発生させます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsRedirected
-        {
-            get => _redirect;
-            set
-            {
-                if (_redirect == value) return;
-                _redirect = value;
-                if (value) SetHandler(Value);
-                else UnsetHandler(Value);
-            }
-        }
+        public bool IsRedirected { get; }
 
         #endregion
 
@@ -322,7 +342,6 @@ namespace Cube.Xui
 
         #region Fields
         private T _value;
-        private bool _redirect;
         private SynchronizationContext _context;
         private OnceAction<bool> _dispose;
         #endregion

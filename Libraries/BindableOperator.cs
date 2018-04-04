@@ -51,6 +51,37 @@ namespace Cube.Xui
         /// ToBindable
         ///
         /// <summary>
+        /// Bindable オブジェクトに変換します。
+        /// </summary>
+        ///
+        /// <param name="src">変換元オブジェクト</param>
+        /// <param name="context">同期用コンテキスト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Bindable<T> ToBindable<T>(this T src,
+            SynchronizationContext context) => new Bindable<T>(src, context);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToBindable
+        ///
+        /// <summary>
+        /// Bindable オブジェクトに変換します。
+        /// </summary>
+        ///
+        /// <param name="src">変換元オブジェクト</param>
+        /// <param name="redirect">リダイレクト設定</param>
+        /// <param name="context">同期用コンテキスト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Bindable<T> ToBindable<T>(this T src, bool redirect,
+            SynchronizationContext context) => new Bindable<T>(src, redirect, context);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToBindable
+        ///
+        /// <summary>
         /// BindableCollection オブジェクトに変換します。
         /// </summary>
         ///
@@ -84,25 +115,13 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="src">変換元オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this T[] src) =>
-            ToBindable((IEnumerable<T>)src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBindable
-        ///
-        /// <summary>
-        /// BindableCollection オブジェクトに変換します。
-        /// </summary>
-        ///
-        /// <param name="src">変換元オブジェクト</param>
+        /// <param name="redirect">リダイレクト設定</param>
         /// <param name="context">同期用コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this T[] src,
-            SynchronizationContext context) => ToBindable((IEnumerable<T>)src, context);
+        public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src,
+            bool redirect, SynchronizationContext context) =>
+            new BindableCollection<T>(src, redirect, context);
 
         #endregion
     }

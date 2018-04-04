@@ -39,7 +39,7 @@ namespace Cube.Xui.Tests
         /// RaiseCollectionChanged
         ///
         /// <summary>
-        /// CollectionChanged イベントの挙動を確認します。
+        /// PropertyChanged イベントの挙動を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -47,14 +47,13 @@ namespace Cube.Xui.Tests
         [TestCase(false, ExpectedResult = 2)]
         public int RaisePropertyChanged(bool redirect)
         {
-            using (var src = new Bindable<Person>())
+            var ctx = SynchronizationContext.Current;
+            using (var src = new Bindable<Person>(null, redirect, ctx))
             {
                 var count = 0;
                 Assert.That(src.HasValue, Is.False);
 
                 src.PropertyChanged += (s, e) => ++count;
-                src.IsRedirected = redirect;
-
                 var value = new Person();
                 src.Value = value;
                 Assert.That(src.HasValue, Is.True);
@@ -79,7 +78,7 @@ namespace Cube.Xui.Tests
         public void Bindable_Context()
         {
             var value = new Person();
-            using (var src = new Bindable<Person>(value, new SynchronizationContext()))
+            using (var src = new Bindable<Person>(value, true, new SynchronizationContext()))
             {
                 var count = 0;
                 src.PropertyChanged += (s, e) => ++count;
