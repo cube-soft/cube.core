@@ -117,6 +117,7 @@ namespace Cube.Tests
             using (var timer = new WakeableTimer())
             {
                 var disposable = timer.Subscribe(() => ++count);
+                timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.Start(TimeSpan.Zero);
                 Task.Delay(100).Wait();
                 timer.Stop();
