@@ -76,7 +76,7 @@ namespace Cube.Tests
                 Task.Delay(300).Wait();
                 timer.Stop();
             }
-            Assert.That(count, Is.GreaterThanOrEqualTo(3));
+            Assert.That(count, Is.AtLeast(3));
         }
 
         /* ----------------------------------------------------------------- */
@@ -118,11 +118,11 @@ namespace Cube.Tests
             {
                 var disposable = timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.Zero);
-                Task.Delay(50).Wait();
+                Task.Delay(100).Wait();
                 timer.Stop();
                 disposable.Dispose();
                 timer.Start(TimeSpan.Zero);
-                Task.Delay(50).Wait();
+                Task.Delay(100).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.EqualTo(1));
@@ -178,7 +178,7 @@ namespace Cube.Tests
                 timer.Suspend();
                 Task.Delay(100).Wait();
                 timer.Start();
-                Task.Delay(50).Wait();
+                Task.Delay(100).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.EqualTo(1));
@@ -272,11 +272,11 @@ namespace Cube.Tests
                 timer.Subscribe(() => ++count);
                 timer.Start();
 
-                Task.Delay(50).Wait();
+                Task.Delay(100).Wait();
                 power.Mode = PowerModes.Suspend;
                 Task.Delay(100).Wait();
                 power.Mode = PowerModes.Resume;
-                Task.Delay(150).Wait();
+                Task.Delay(200).Wait();
                 timer.Stop();
 
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
