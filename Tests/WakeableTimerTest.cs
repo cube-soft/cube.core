@@ -76,7 +76,7 @@ namespace Cube.Tests
                 Task.Delay(300).Wait();
                 timer.Stop();
             }
-            Assert.That(count, Is.AtLeast(3));
+            Assert.That(count, Is.AtLeast(2));
         }
 
         /* ----------------------------------------------------------------- */
@@ -96,6 +96,7 @@ namespace Cube.Tests
             {
                 timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.FromSeconds(1));
+                Task.Delay(100).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.EqualTo(0));
