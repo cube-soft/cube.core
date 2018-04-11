@@ -1,6 +1,7 @@
 Cube.Core
 ====
 
+[![NuGet](https://img.shields.io/nuget/v/Cube.Core.svg)](https://www.nuget.org/packages/Cube.Core/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/romqhgh1ben6eedn?svg=true)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
 

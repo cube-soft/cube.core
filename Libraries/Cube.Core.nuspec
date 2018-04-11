@@ -7,11 +7,11 @@
     <authors>$author$</authors>
     <owners>$author$</owners>
     <copyright>$copyright$</copyright>
-    <description>Common library for Cube.* projects.</description>
+    <description>Common library for CubeSoft applications.</description>
     <tags>Cube</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
+    <licenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</licenseUrl>
     <iconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</iconUrl>
   </metadata>
 </package>
