@@ -7,6 +7,14 @@ Cube.Core
 
 Cube.Core is a common library for CubeSoft applications.
 
+## Installation
+
+You can install using NuGet like this:
+
+    PM> Install-Package Cube.Core
+
+Or select it from the NuGet packages UI on Visual Studio.
+
 ## Dependencies
 
 * [log4net](https://logging.apache.org/log4net/)
