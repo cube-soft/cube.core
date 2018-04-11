@@ -6,8 +6,8 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <description>$description</description>
     <copyright>$copyright$</copyright>
+    <description>Common library for Cube.* projects.</description>
     <tags>Cube</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</licenseUrl>
