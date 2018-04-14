@@ -334,7 +334,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) _core.Dispose();
+            if (disposing)
+            {
+                State = TimerState.Stop;
+                _core.Dispose();
+            }
         }
 
         #endregion
@@ -446,8 +450,12 @@ namespace Cube
                 var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
 
                 Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
-                _core.Interval = time;
-                _core.Start();
+
+                if (State == TimerState.Run)
+                {
+                    _core.Interval = time;
+                    _core.Start();
+                }
             }
         }
 

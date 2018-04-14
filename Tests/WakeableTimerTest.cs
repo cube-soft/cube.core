@@ -251,6 +251,26 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Subscribe されたオブジェクトの実行中に Dispose された時の
+        /// 挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Dispose()
+        {
+            var timer = new WakeableTimer();
+            timer.Subscribe(() => timer.Dispose());
+            timer.Start();
+            Task.Delay(200).Wait();
+            Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// PowerMode_Scenario
         ///
         /// <summary>
