@@ -19,7 +19,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace Cube.Xui.Triggers
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
