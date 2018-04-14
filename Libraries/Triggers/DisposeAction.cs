@@ -43,8 +43,9 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Invoke(object notused)
         {
-            if (AssociatedObject.DataContext is IDisposable dc) dc.Dispose();
+            var dc = AssociatedObject.DataContext as IDisposable;
             AssociatedObject.DataContext = null;
+            dc?.Dispose();
         }
     }
 }
