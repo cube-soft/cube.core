@@ -1,4 +1,4 @@
-version: 1.8.0.{build}
+version: 1.8.1.{build}
 branches:
     only:
         - master
@@ -15,7 +15,7 @@ before_build:
     - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
     - nuget sources add -name Cube.Images -source https://ci.appveyor.com/nuget/cube.images
     - nuget restore Cube.Forms.sln
-build: 
+build:
   parallel: true
   project: Cube.Forms.sln
   publish_nuget: true
