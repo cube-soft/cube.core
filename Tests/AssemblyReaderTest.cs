@@ -85,8 +85,8 @@ namespace Cube.Tests
                     Trademark     = "CubeSoft, Inc.",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 8, 0, 0),
-                    FileVersion   = new Version(1, 8, 0, 0)
+                    Version       = new Version(1, 8, 1, 0),
+                    FileVersion   = new Version(1, 8, 1, 0)
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
@@ -94,15 +94,15 @@ namespace Cube.Tests
                     Assembly      = Assembly.GetAssembly(typeof(AssemblyReader)),
                     Location      = true,
                     Title         = "Cube.Core",
-                    Description   = "Common library for Cube.* projects.",
+                    Description   = "Common library for CubeSoft applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Trademark     = string.Empty,
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 8, 0, 0),
-                    FileVersion   = new Version(1, 8, 0, 0)
+                    Version       = new Version(1, 8, 1, 0),
+                    FileVersion   = new Version(1, 8, 1, 0)
                 });
 
                 yield return new TestCaseData(null, new Result
