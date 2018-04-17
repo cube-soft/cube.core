@@ -19,6 +19,7 @@ using log4net;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Cube.Log
 {
@@ -55,14 +56,16 @@ namespace Cube.Log
         /// 出力します。
         /// </summary>
         ///
+        /// <returns>監視を解除するためのオブジェクト</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public static void ObserveTaskException()
+        public static IDisposable ObserveTaskException()
         {
-            System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) =>
-            {
-                var type = typeof(System.Threading.Tasks.TaskScheduler);
-                Error(type, e.Exception.ToString());
-            };
+            TaskScheduler.UnobservedTaskException -= WhenTaskError;
+            TaskScheduler.UnobservedTaskException += WhenTaskError;
+            return new AnonymousDisposable(
+                () => TaskScheduler.UnobservedTaskException -= WhenTaskError
+            );
         }
 
         #region Debug
@@ -844,6 +847,18 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         private static ILog Logger(Type type) => LogManager.GetLogger(type);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenTaskError
+        ///
+        /// <summary>
+        /// UnobservedTaskException 発生時に実行されるハンドラです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
+            Error(typeof(TaskScheduler), e.Exception.ToString(), e.Exception);
 
         #endregion
     }

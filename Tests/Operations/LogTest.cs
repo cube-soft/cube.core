@@ -18,6 +18,7 @@
 using Cube.Log;
 using NUnit.Framework;
 using System;
+using System.Threading.Tasks;
 
 namespace Cube.Tests
 {
@@ -141,6 +142,25 @@ namespace Cube.Tests
 
             try { throw error; }
             catch (ArgumentException err) { this.LogFatal(err.Message, err); }
+        });
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ObserveTaskException
+        ///
+        /// <summary>
+        /// ObserveTaskException のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void ObserveTaskException() => Assert.DoesNotThrow(() =>
+        {
+            using (var _ = LogOperator.ObserveTaskException())
+            {
+                Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
+                Task.Delay(100).Wait();
+            }
         });
 
         #endregion
