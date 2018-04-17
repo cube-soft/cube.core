@@ -83,6 +83,7 @@
     <Compile Include="Messages\EmptyMessage.cs" />
     <Compile Include="Messages\FileDialogMessage.cs" />
     <Compile Include="Operations\MessengerOperator.cs" />
+    <Compile Include="Operations\XuiLogOperator.cs" />
     <Compile Include="Triggers\DisposeAction.cs" />
     <Compile Include="Triggers\MessengerTrigger.cs" />
     <Compile Include="Bindable.cs" />
