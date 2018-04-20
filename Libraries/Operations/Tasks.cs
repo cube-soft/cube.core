@@ -60,14 +60,14 @@ namespace Cube.Tasks
         /// </summary>
         ///
         /// <param name="task">Task オブジェクト</param>
-        /// <param name="timeout">タイムアウト時間</param>
+        /// <param name="value">タイムアウト時間</param>
         ///
         /// <returns>Task オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task task, TimeSpan timeout)
+        public static async Task Timeout(this Task task, TimeSpan value)
         {
-            var delay = Task.Delay(timeout);
+            var delay = Task.Delay(value);
             if (await Task.WhenAny(task, delay).ConfigureAwait(false) == delay)
             {
                 throw new TimeoutException();
@@ -83,15 +83,15 @@ namespace Cube.Tasks
         /// </summary>
         ///
         /// <param name="task">Task(T) オブジェクト</param>
-        /// <param name="timeout">タイムアウト時間</param>
+        /// <param name="value">タイムアウト時間</param>
         ///
         /// <returns>Task(T) オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
+        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan value)
         {
-            await ((Task)task).Timeout(timeout);
-            return await task;
+            await ((Task)task).Timeout(value).ConfigureAwait(false);
+            return await task.ConfigureAwait(false);
         }
 
         #endregion

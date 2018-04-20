@@ -48,6 +48,27 @@ namespace Cube.Collections
         ///
         /// <param name="newer">変更後のオブジェクト</param>
         /// <param name="older">変更前のオブジェクト</param>
+        ///
+        /// <returns>
+        /// 差分の結果を保持するオブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Result<T>> Diff<T>(
+            this IEnumerable<T> newer,
+            IEnumerable<T> older) =>
+            Diff(newer, older, Condition.DiffOnly);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Diff(T)
+        ///
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="mask">結果のフィルタリング用 Mask</param>
         ///
         /// <returns>
@@ -58,8 +79,32 @@ namespace Cube.Collections
         public static IEnumerable<Result<T>> Diff<T>(
             this IEnumerable<T> newer,
             IEnumerable<T> older,
-            Condition mask = Condition.DiffOnly
-        ) => new OnpAlgorithm<T>().Compare(older, newer, mask);
+            Condition mask) =>
+            new OnpAlgorithm<T>().Compare(older, newer, mask);
+
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Diff(T)
+        ///
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
+        /// <param name="comparer">比較用オブジェクト</param>
+        ///
+        /// <returns>
+        /// 差分の結果を保持するオブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Result<T>> Diff<T>(
+            this IEnumerable<T> newer,
+            IEnumerable<T> older,
+            IEqualityComparer<T> comparer) =>
+            Diff(newer, older, comparer, Condition.DiffOnly);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -83,8 +128,31 @@ namespace Cube.Collections
             this IEnumerable<T> newer,
             IEnumerable<T> older,
             IEqualityComparer<T> comparer,
-            Condition mask = Condition.DiffOnly
-        ) => new OnpAlgorithm<T>(comparer).Compare(older, newer, mask);
+            Condition mask) =>
+            new OnpAlgorithm<T>(comparer).Compare(older, newer, mask);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Diff(T)
+        ///
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
+        /// <param name="compare">比較関数</param>
+        ///
+        /// <returns>
+        /// 差分の結果を保持するオブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Result<T>> Diff<T>(
+            this IEnumerable<T> newer,
+            IEnumerable<T> older,
+            Func<T, T, bool> compare) =>
+            Diff(newer, older, compare, Condition.DiffOnly);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,8 +176,8 @@ namespace Cube.Collections
             this IEnumerable<T> newer,
             IEnumerable<T> older,
             Func<T, T, bool> compare,
-            Condition mask = Condition.DiffOnly
-        ) => Diff(older, newer, new GenericEqualityComparer<T>(compare), mask);
+            Condition mask) =>
+            Diff(older, newer, new GenericEqualityComparer<T>(compare), mask);
 
         #endregion
 

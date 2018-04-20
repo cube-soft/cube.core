@@ -207,8 +207,8 @@ namespace Cube
         #endregion
 
         #region Fields
-        private IList<string> _primary = new List<string>();
-        private IDictionary<string, string> _options = new Dictionary<string, string>();
+        private readonly IList<string> _primary = new List<string>();
+        private readonly IDictionary<string, string> _options = new Dictionary<string, string>();
         #endregion
     }
 }

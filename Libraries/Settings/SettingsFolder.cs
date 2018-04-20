@@ -473,14 +473,14 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenElapsed(object sender, ElapsedEventArgs e) =>
+        private void WhenElapsed(object s, ElapsedEventArgs e) =>
             Task.Run(() => Save()).Forget();
 
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
-        private Timer _autosaver = new Timer();
+        private readonly OnceAction<bool> _dispose;
+        private readonly Timer _autosaver = new Timer();
         #endregion
     }
 }

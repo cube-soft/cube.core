@@ -107,14 +107,14 @@ namespace Cube.Collections
         {
             get
             {
-                if (key == null) throw new ArgumentNullException();
+                if (Equals(key, default(TKey))) throw new ArgumentNullException();
                 if (ContainsKey(key)) return (TValue)_core[key];
                 else throw new KeyNotFoundException(key.ToString());
             }
 
             set
             {
-                if (key == null) throw new ArgumentNullException();
+                if (Equals(key, default(TKey))) throw new ArgumentNullException();
                 if (ContainsKey(key)) _core[key] = value;
                 else throw new KeyNotFoundException(key.ToString());
             }
@@ -199,7 +199,7 @@ namespace Cube.Collections
         /// <returns>含まれているかどうか</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public bool ContainsKey(TKey key) => key != null && _core.Contains(key);
+        public bool ContainsKey(TKey key) => !Equals(key, default(TKey)) && _core.Contains(key);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -228,7 +228,7 @@ namespace Cube.Collections
         /* --------------------------------------------------------------------- */
         public void Add(TKey key, TValue value)
         {
-            if (key == null) throw new ArgumentNullException();
+            if (Equals(key, default(TKey))) throw new ArgumentNullException();
             _core.Add(key, value);
         }
 
@@ -352,7 +352,7 @@ namespace Cube.Collections
         #endregion
 
         #region Fields
-        OrderedDictionary _core = new OrderedDictionary();
+        private readonly OrderedDictionary _core = new OrderedDictionary();
         #endregion
     }
 }

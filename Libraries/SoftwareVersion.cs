@@ -237,9 +237,8 @@ namespace Cube
             Prefix = match.Groups["prefix"].Value;
             Suffix = match.Groups["suffix"].Value;
 
-            var result = Number;
             var number = match.Groups["number"].Value;
-            if (Version.TryParse(number, out result))
+            if (Version.TryParse(number, out Version result))
             {
                 Number = result;
                 Digit  = number.Count(c => c == '.') + 1;

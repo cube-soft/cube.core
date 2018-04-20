@@ -111,7 +111,7 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private List<Action<T>> _subscriptions = new List<Action<T>>();
+        private readonly List<Action<T>> _subscriptions = new List<Action<T>>();
         #endregion
     }
 }

@@ -44,7 +44,7 @@ namespace Cube
         /// <param name="value">ユーザデータ</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ProgressEventArgs(double ratio, T value) : base()
+        public ProgressEventArgs(double ratio, T value)
         {
             Ratio = ratio;
             Value = value;

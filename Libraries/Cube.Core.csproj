@@ -63,10 +63,10 @@
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
     <Compile Include="Events\EnumerableEventArgs.cs" />
-    <Compile Include="Events\Event.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
     <Compile Include="Events\ProgressEventArgs.cs" />
     <Compile Include="Events\QueryEventArgs.cs" />
+    <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
     <Compile Include="Operations\Collections.cs" />
     <Compile Include="Operations\Generics.cs" />
@@ -99,7 +99,7 @@
     <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

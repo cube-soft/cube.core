@@ -92,15 +92,30 @@ namespace Cube.Generics
         /// </summary>
         ///
         /// <param name="src">キャストするオブジェクト</param>
-        /// <param name="failed">キャスト失敗時に返される値</param>
         ///
         /// <returns>キャスト結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T TryCast<T>(this object src, T failed = default(T))
+        public static T TryCast<T>(this object src) => TryCast(src, default(T));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast
+        ///
+        /// <summary>
+        /// オブジェクトを T 型にキャストします。
+        /// </summary>
+        ///
+        /// <param name="src">キャストするオブジェクト</param>
+        /// <param name="err">キャスト失敗時に返される値</param>
+        ///
+        /// <returns>キャスト結果</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static T TryCast<T>(this object src, T err)
         {
             try { return (T)src; }
-            catch { return failed; }
+            catch { return err; }
         }
 
         #endregion

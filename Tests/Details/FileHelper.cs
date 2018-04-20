@@ -156,7 +156,7 @@ namespace Cube.Tests
         #endregion
 
         #region Fields
-        private string _folder = string.Empty;
+        private readonly string _folder = string.Empty;
         #endregion
     }
 }

@@ -69,7 +69,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private ICollection<Action> _subscriptions = new List<Action>();
+        private readonly ICollection<Action> _subscriptions = new List<Action>();
         #endregion
     }
 
@@ -122,7 +122,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private ICollection<Action<T>> _subscriptions = new List<Action<T>>();
+        private readonly ICollection<Action<T>> _subscriptions = new List<Action<T>>();
         #endregion
     }
 

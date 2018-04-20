@@ -290,16 +290,16 @@ namespace Cube.Log
         ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="func">実行内容</param>
-        /// <param name="error">エラー時の値</param>
+        /// <param name="err">エラー時の値</param>
         ///
         /// <returns>実行結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Warn<T>(Type type, Func<T> func, T error = default(T))
+        public static T Warn<T>(Type type, Func<T> func, T err)
         {
             try { return func(); }
             catch (Exception e) { Warn(type, e.ToString(), e); }
-            return error;
+            return err;
         }
 
         /* ----------------------------------------------------------------- */
@@ -365,16 +365,16 @@ namespace Cube.Log
         ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="func">実行内容</param>
-        /// <param name="error">エラー時の値</param>
+        /// <param name="err">エラー時の値</param>
         ///
         /// <returns>実行結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Error<T>(Type type, Func<T> func, T error = default(T))
+        public static T Error<T>(Type type, Func<T> func, T err)
         {
             try { return func(); }
             catch (Exception e) { Error(type, e.ToString(), e); }
-            return error;
+            return err;
         }
 
         /* ----------------------------------------------------------------- */
@@ -440,16 +440,16 @@ namespace Cube.Log
         ///
         /// <param name="type">対象となるオブジェクトの型情報</param>
         /// <param name="func">実行内容</param>
-        /// <param name="error">エラー時の値</param>
+        /// <param name="err">エラー時の値</param>
         ///
         /// <returns>実行結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Fatal<T>(Type type, Func<T> func, T error = default(T))
+        public static T Fatal<T>(Type type, Func<T> func, T err)
         {
             try { return func(); }
             catch (Exception e) { Fatal(type, e.ToString(), e); }
-            return error;
+            return err;
         }
 
         /* ----------------------------------------------------------------- */
@@ -672,13 +672,30 @@ namespace Cube.Log
         ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="func">実行内容</param>
-        /// <param name="error">エラー時の値</param>
         ///
         /// <returns>実行結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static U LogWarn<T, U>(this T src, Func<U> func, U error = default(U)) =>
-            Warn(src.GetType(), func, error);
+        public static U LogWarn<T, U>(this T src, Func<U> func) =>
+            LogWarn(src, func, default(U));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LogWarn
+        ///
+        /// <summary>
+        /// 例外発生時に警告としてログに出力します。
+        /// </summary>
+        ///
+        /// <param name="src">対象となるオブジェクト</param>
+        /// <param name="func">実行内容</param>
+        /// <param name="err">エラー時の値</param>
+        ///
+        /// <returns>実行結果</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static U LogWarn<T, U>(this T src, Func<U> func, U err) =>
+            Warn(src.GetType(), func, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -740,13 +757,30 @@ namespace Cube.Log
         ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="func">実行内容</param>
-        /// <param name="error">エラー時の値</param>
         ///
         /// <returns>実行結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static U LogError<T, U>(this T src, Func<U> func, U error = default(U)) =>
-            Error(src.GetType(), func, error);
+        public static U LogError<T, U>(this T src, Func<U> func) =>
+            LogError(src, func, default(U));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LogError
+        ///
+        /// <summary>
+        /// 例外発生時にエラーとしてログに出力します。
+        /// </summary>
+        ///
+        /// <param name="src">対象となるオブジェクト</param>
+        /// <param name="func">実行内容</param>
+        /// <param name="err">エラー時の値</param>
+        ///
+        /// <returns>実行結果</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static U LogError<T, U>(this T src, Func<U> func, U err) =>
+            Error(src.GetType(), func, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -808,13 +842,30 @@ namespace Cube.Log
         ///
         /// <param name="src">対象となるオブジェクト</param>
         /// <param name="func">実行内容</param>
-        /// <param name="error">エラー時の値</param>
         ///
         /// <returns>実行結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static U LogFatal<T, U>(this T src, Func<U> func, U error = default(U)) =>
-            Fatal(src.GetType(), func, error);
+        public static U LogFatal<T, U>(this T src, Func<U> func) =>
+            LogFatal(src, func, default(U));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LogFatal
+        ///
+        /// <summary>
+        /// 例外発生時に致命的なエラーとしてログに出力します。
+        /// </summary>
+        ///
+        /// <param name="src">対象となるオブジェクト</param>
+        /// <param name="func">実行内容</param>
+        /// <param name="err">エラー時の値</param>
+        ///
+        /// <returns>実行結果</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static U LogFatal<T, U>(this T src, Func<U> func, U err) =>
+            Fatal(src.GetType(), func, err);
 
         /* ----------------------------------------------------------------- */
         ///

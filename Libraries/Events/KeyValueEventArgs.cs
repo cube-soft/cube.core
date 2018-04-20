@@ -45,7 +45,7 @@ namespace Cube
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueEventArgs(T key, U value) : base()
+        public KeyValueEventArgs(T key, U value)
         {
             Key   = key;
             Value = value;

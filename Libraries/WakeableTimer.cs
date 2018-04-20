@@ -415,6 +415,8 @@ namespace Cube
                 case PowerModes.Suspend:
                     Suspend();
                     break;
+                default:
+                    break;
             }
         }
 
@@ -434,7 +436,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private async void WhenPublished(object sender, ElapsedEventArgs e)
+        private async void WhenPublished(object s, ElapsedEventArgs e)
         {
             if (State != TimerState.Run) return;
 
@@ -462,9 +464,9 @@ namespace Cube
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
+        private readonly OnceAction<bool> _dispose;
+        private readonly Timer _core = new Timer();
         private TimeSpan _interval;
-        private Timer _core = new Timer();
         #endregion
     }
 

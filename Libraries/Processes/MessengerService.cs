@@ -163,8 +163,8 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private MessengerServiceCallback<T> _callback = new MessengerServiceCallback<T>();
-        private List<IMessengerServiceCallback> _clients = new List<IMessengerServiceCallback>();
+        private readonly MessengerServiceCallback<T> _callback = new MessengerServiceCallback<T>();
+        private readonly List<IMessengerServiceCallback> _clients = new List<IMessengerServiceCallback>();
         #endregion
     }
 }
