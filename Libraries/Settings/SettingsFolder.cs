@@ -479,7 +479,7 @@ namespace Cube.Settings
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
+        private OnceAction<bool> _dispose;
         private readonly Timer _autosaver = new Timer();
         #endregion
     }
