@@ -85,6 +85,24 @@ namespace Cube.Tests
     [DataContract]
     internal class Person : Cube.ObservableProperty
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Person
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Person()
+        {
+            Reset();
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -243,16 +261,54 @@ namespace Cube.Tests
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDeserializing
+        ///
+        /// <summary>
+        /// デシリアライズ直前に実行されます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OnDeserializing]
+        private void OnDeserializing(StreamingContext context) => Reset();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Reset
+        ///
+        /// <summary>
+        /// 値をリセットします。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Reset()
+        {
+            _identification = -1;
+            _name           = string.Empty;
+            _sex            = Sex.Unknown;
+            _age            = 0;
+            _creation       = DateTime.MinValue;
+            _phone          = new Address { Type = "Phone", Value = string.Empty };
+            _email          = new Address { Type = "Email", Value = string.Empty };
+            _reserved       = false;
+            _secret         = "secret message";
+        }
+
+        #endregion
+
         #region Fields
-        private int _identification = -1;
-        private string _name = string.Empty;
-        private Sex _sex = Sex.Unknown;
-        private int _age = 0;
-        private DateTime? _creation = DateTime.MinValue;
-        private Address _phone = new Address { Type = "Phone", Value = string.Empty };
-        private Address _email = new Address { Type = "Email", Value = string.Empty };
-        private bool _reserved = false;
-        private string _secret = "secret message";
+        private int _identification;
+        private string _name;
+        private Sex _sex;
+        private int _age;
+        private DateTime? _creation;
+        private Address _phone;
+        private Address _email;
+        private bool _reserved;
+        private string _secret;
         #endregion
     }
 }
