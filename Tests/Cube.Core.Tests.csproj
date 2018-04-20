@@ -50,7 +50,7 @@
       <HintPath>..\..\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.9.0\lib\net35\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.10.1\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
@@ -85,6 +85,7 @@
     <Compile Include="Operations\LogTest.cs" />
     <Compile Include="Operations\TaskTest.cs" />
     <Compile Include="Operations\XmlTest.cs" />
+    <Compile Include="OrderedDictionaryTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />
     <Compile Include="Settings\SettingsTest.cs" />
     <Compile Include="Settings\StartupTest.cs" />

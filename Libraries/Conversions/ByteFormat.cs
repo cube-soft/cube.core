@@ -47,7 +47,7 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static string ToPrettyBytes(this long bytes)
         {
-            var units = new string[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+            var units = new[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
             var value = (double)bytes;
             var index = 0;
 

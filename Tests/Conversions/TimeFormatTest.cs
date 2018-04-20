@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using NUnit.Framework;
 using Cube.Conversions;
+using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {

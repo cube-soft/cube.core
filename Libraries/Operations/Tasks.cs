@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Threading.Tasks;
-using Cube.Log;
 
 namespace Cube.Tasks
 {
@@ -60,14 +60,14 @@ namespace Cube.Tasks
         /// </summary>
         ///
         /// <param name="task">Task オブジェクト</param>
-        /// <param name="timeout">タイムアウト時間</param>
+        /// <param name="value">タイムアウト時間</param>
         ///
         /// <returns>Task オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task task, TimeSpan timeout)
+        public static async Task Timeout(this Task task, TimeSpan value)
         {
-            var delay = TaskEx.Delay(timeout);
+            var delay = TaskEx.Delay(value);
             if (await TaskEx.WhenAny(task, delay).ConfigureAwait(false) == delay)
             {
                 throw new TimeoutException();
@@ -83,15 +83,15 @@ namespace Cube.Tasks
         /// </summary>
         ///
         /// <param name="task">Task(T) オブジェクト</param>
-        /// <param name="timeout">タイムアウト時間</param>
+        /// <param name="value">タイムアウト時間</param>
         ///
         /// <returns>Task(T) オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan timeout)
+        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan value)
         {
-            await ((Task)task).Timeout(timeout);
-            return await task;
+            await ((Task)task).Timeout(value).ConfigureAwait(false);
+            return await task.ConfigureAwait(false);
         }
 
         #endregion

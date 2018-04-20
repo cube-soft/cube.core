@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using Cube.Log;
 
 namespace Cube.Processes
 {
@@ -163,8 +163,8 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private MessengerServiceCallback<T> _callback = new MessengerServiceCallback<T>();
-        private List<IMessengerServiceCallback> _clients = new List<IMessengerServiceCallback>();
+        private readonly MessengerServiceCallback<T> _callback = new MessengerServiceCallback<T>();
+        private readonly List<IMessengerServiceCallback> _clients = new List<IMessengerServiceCallback>();
         #endregion
     }
 }

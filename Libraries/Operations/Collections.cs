@@ -48,6 +48,27 @@ namespace Cube.Collections
         ///
         /// <param name="newer">変更後のオブジェクト</param>
         /// <param name="older">変更前のオブジェクト</param>
+        ///
+        /// <returns>
+        /// 差分の結果を保持するオブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Result<T>> Diff<T>(
+            this IEnumerable<T> newer,
+            IEnumerable<T> older) =>
+            Diff(newer, older, Condition.DiffOnly);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Diff(T)
+        ///
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
         /// <param name="mask">結果のフィルタリング用 Mask</param>
         ///
         /// <returns>
@@ -58,8 +79,32 @@ namespace Cube.Collections
         public static IEnumerable<Result<T>> Diff<T>(
             this IEnumerable<T> newer,
             IEnumerable<T> older,
-            Condition mask = Condition.DiffOnly
-        ) => new OnpAlgorithm<T>().Compare(older, newer, mask);
+            Condition mask) =>
+            new OnpAlgorithm<T>().Compare(older, newer, mask);
+
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Diff(T)
+        ///
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
+        /// <param name="comparer">比較用オブジェクト</param>
+        ///
+        /// <returns>
+        /// 差分の結果を保持するオブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Result<T>> Diff<T>(
+            this IEnumerable<T> newer,
+            IEnumerable<T> older,
+            IEqualityComparer<T> comparer) =>
+            Diff(newer, older, comparer, Condition.DiffOnly);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -83,8 +128,31 @@ namespace Cube.Collections
             this IEnumerable<T> newer,
             IEnumerable<T> older,
             IEqualityComparer<T> comparer,
-            Condition mask = Condition.DiffOnly
-        ) => new OnpAlgorithm<T>(comparer).Compare(older, newer, mask);
+            Condition mask) =>
+            new OnpAlgorithm<T>(comparer).Compare(older, newer, mask);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Diff(T)
+        ///
+        /// <summary>
+        /// 差分を検出します。
+        /// </summary>
+        ///
+        /// <param name="newer">変更後のオブジェクト</param>
+        /// <param name="older">変更前のオブジェクト</param>
+        /// <param name="compare">比較関数</param>
+        ///
+        /// <returns>
+        /// 差分の結果を保持するオブジェクト
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<Result<T>> Diff<T>(
+            this IEnumerable<T> newer,
+            IEnumerable<T> older,
+            Func<T, T, bool> compare) =>
+            Diff(newer, older, compare, Condition.DiffOnly);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,8 +176,8 @@ namespace Cube.Collections
             this IEnumerable<T> newer,
             IEnumerable<T> older,
             Func<T, T, bool> compare,
-            Condition mask = Condition.DiffOnly
-        ) => Diff(older, newer, new GenericEqualityComparer<T>(compare), mask);
+            Condition mask) =>
+            Diff(older, newer, new GenericEqualityComparer<T>(compare), mask);
 
         #endregion
 
@@ -154,8 +222,13 @@ namespace Cube.Collections
         /// Clamp(T)
         ///
         /// <summary>
-        /// 指定されたインデックスを [0, IList(T).Count) の範囲に丸めます。
+        /// 指定されたインデックスを [0, Count) の範囲に補正します。
         /// </summary>
+        ///
+        /// <param name="src">コレクション</param>
+        /// <param name="index">インデックス</param>
+        ///
+        /// <returns>補正後のインデックス</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static int Clamp<T>(this IList<T> src, int index) =>
@@ -169,6 +242,10 @@ namespace Cube.Collections
         /// 最後のインデックスを取得します。
         /// </summary>
         ///
+        /// <param name="src">コレクション</param>
+        ///
+        /// <returns>最後のインデックス</returns>
+        ///
         /* ----------------------------------------------------------------- */
         public static int LastIndex<T>(this IList<T> src) =>
             src == null || src.Count == 0 ? 0 : src.Count - 1;
@@ -180,6 +257,10 @@ namespace Cube.Collections
         /// <summary>
         /// 自身かまたは空の IEnumerable(T) オブジェクトを取得します。
         /// </summary>
+        ///
+        /// <param name="src">コレクション</param>
+        ///
+        /// <returns>自身かまたは空のコレクション</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>

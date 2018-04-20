@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Reflection;
 using System.IO;
+using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -156,7 +156,7 @@ namespace Cube.Tests
         #endregion
 
         #region Fields
-        private string _folder = string.Empty;
+        private readonly string _folder = string.Empty;
         #endregion
     }
 }

@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
+using Microsoft.Win32;
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Microsoft.Win32;
-using Cube.Log;
 
 namespace Cube.Settings
 {

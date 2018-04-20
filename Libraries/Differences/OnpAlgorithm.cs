@@ -217,13 +217,14 @@ namespace Cube.Differences
 
         #region Fields
 
-        private struct Snake
+        private struct Snake : IEquatable<Snake>
         {
-            public int Position;
-            public CommonSequence<T> Sequence;
+            public int Position { get; set; }
+            public CommonSequence<T> Sequence { get; set; }
+            public bool Equals(Snake e) => Position == e.Position && Sequence.Equals(e.Sequence);
         }
 
-        private IEqualityComparer<T> _cmp;
+        private readonly IEqualityComparer<T> _cmp;
         private bool _swap;
         private T[] _older;
         private T[] _newer;

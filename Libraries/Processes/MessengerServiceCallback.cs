@@ -18,8 +18,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 
 namespace Cube.Processes
 {
@@ -111,7 +111,7 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private List<Action<T>> _subscriptions = new List<Action<T>>();
+        private readonly List<Action<T>> _subscriptions = new List<Action<T>>();
         #endregion
     }
 }

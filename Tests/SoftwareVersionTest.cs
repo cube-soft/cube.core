@@ -15,9 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Reflection;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -49,7 +48,7 @@ namespace Cube.Tests
         [TestCase(3, ExpectedResult = 3)]
         [TestCase(4, ExpectedResult = 4)]
         [TestCase(5, ExpectedResult = 4)]
-        public int Digit(int digit) => new SoftwareVersion { Digit = digit }.Digit;
+        public int Digit(int src) => new SoftwareVersion { Digit = src }.Digit;
 
         /* ----------------------------------------------------------------- */
         ///

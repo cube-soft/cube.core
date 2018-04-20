@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -85,8 +85,8 @@ namespace Cube.Tests
                     Trademark     = "CubeSoft, Inc.",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 7, 0, 0),
-                    FileVersion   = new Version(1, 7, 0, 0)
+                    Version       = new Version(1, 8, 1, 0),
+                    FileVersion   = new Version(1, 8, 1, 0)
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
@@ -94,15 +94,15 @@ namespace Cube.Tests
                     Assembly      = Assembly.GetAssembly(typeof(AssemblyReader)),
                     Location      = true,
                     Title         = "Cube.Core",
-                    Description   = "Common library for Cube.* projects.",
+                    Description   = "Common library for CubeSoft applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Trademark     = string.Empty,
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 7, 0, 0),
-                    FileVersion   = new Version(1, 7, 0, 0)
+                    Version       = new Version(1, 8, 1, 0),
+                    FileVersion   = new Version(1, 8, 1, 0)
                 });
 
                 yield return new TestCaseData(null, new Result
@@ -132,20 +132,20 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public struct Result
+        public class Result
         {
-            public Assembly Assembly;
-            public bool Location;
-            public string Title;
-            public string Description;
-            public string Company;
-            public string Product;
-            public string Copyright;
-            public string Trademark;
-            public string Configuration;
-            public string Culture;
-            public Version Version;
-            public Version FileVersion;
+            public Assembly Assembly { get; set; }
+            public bool Location { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string Company { get; set; }
+            public string Product { get; set; }
+            public string Copyright { get; set; }
+            public string Trademark { get; set; }
+            public string Configuration { get; set; }
+            public string Culture { get; set; }
+            public Version Version { get; set; }
+            public Version FileVersion { get; set; }
         }
     }
 }

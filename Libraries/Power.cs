@@ -79,7 +79,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static EventHandler ModeChanged;
+        public static event EventHandler ModeChanged;
 
         #endregion
 
@@ -125,7 +125,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void WhenChanged(object sender, PropertyChangedEventArgs e)
+        private static void WhenChanged(object s, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_context.Mode))
             {
@@ -135,7 +135,7 @@ namespace Cube
 
         #region Fields
         private static PowerModeContext _context;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
         #endregion
 
         #endregion

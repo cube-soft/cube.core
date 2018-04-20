@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.IO;
-using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.Threading;
-using Cube.Log;
 
 namespace Cube.Processes
 {
@@ -200,9 +200,9 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
-        private Mutex _mutex = null;
-        private IMessenger<T> _core;
+        private readonly OnceAction<bool> _dispose;
+        private readonly Mutex _mutex;
+        private readonly IMessenger<T> _core;
         #endregion
     }
 
@@ -332,9 +332,9 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
-        private MessengerService<T> _service;
-        private ServiceHost _host;
+        private readonly OnceAction<bool> _dispose;
+        private readonly MessengerService<T> _service;
+        private readonly ServiceHost _host;
         #endregion
     }
 
@@ -517,11 +517,11 @@ namespace Cube.Processes
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
-        private ChannelFactory<IMessengerService> _factory;
+        private readonly OnceAction<bool> _dispose;
+        private readonly ChannelFactory<IMessengerService> _factory;
+        private readonly InstanceContext _context;
+        private readonly MessengerServiceCallback<T> _callback;
         private IMessengerService _service;
-        private InstanceContext _context;
-        private MessengerServiceCallback<T> _callback;
         #endregion
     }
 }

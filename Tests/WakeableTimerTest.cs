@@ -15,10 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Win32;
-using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -77,7 +76,7 @@ namespace Cube.Tests
                 TaskEx.Delay(300).Wait();
                 timer.Stop();
             }
-            Assert.That(count, Is.GreaterThanOrEqualTo(3));
+            Assert.That(count, Is.AtLeast(2));
         }
 
         /* ----------------------------------------------------------------- */
@@ -97,6 +96,7 @@ namespace Cube.Tests
             {
                 timer.Subscribe(() => ++count);
                 timer.Start(TimeSpan.FromSeconds(1));
+                TaskEx.Delay(100).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.EqualTo(0));
@@ -118,12 +118,13 @@ namespace Cube.Tests
             using (var timer = new WakeableTimer())
             {
                 var disposable = timer.Subscribe(() => ++count);
+                timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.Start(TimeSpan.Zero);
-                TaskEx.Delay(50).Wait();
+                TaskEx.Delay(100).Wait();
                 timer.Stop();
                 disposable.Dispose();
                 timer.Start(TimeSpan.Zero);
-                TaskEx.Delay(50).Wait();
+                TaskEx.Delay(100).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.EqualTo(1));
@@ -179,7 +180,7 @@ namespace Cube.Tests
                 timer.Suspend();
                 TaskEx.Delay(100).Wait();
                 timer.Start();
-                TaskEx.Delay(50).Wait();
+                TaskEx.Delay(100).Wait();
                 timer.Stop();
             }
             Assert.That(count, Is.EqualTo(1));
@@ -250,6 +251,26 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Subscribe されたオブジェクトの実行中に Dispose された時の
+        /// 挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Dispose()
+        {
+            var timer = new WakeableTimer();
+            timer.Subscribe(() => timer.Dispose());
+            timer.Start();
+            TaskEx.Delay(200).Wait();
+            Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// PowerMode_Scenario
         ///
         /// <summary>
@@ -273,11 +294,11 @@ namespace Cube.Tests
                 timer.Subscribe(() => ++count);
                 timer.Start();
 
-                TaskEx.Delay(50).Wait();
+                TaskEx.Delay(100).Wait();
                 power.Mode = PowerModes.Suspend;
                 TaskEx.Delay(100).Wait();
                 power.Mode = PowerModes.Resume;
-                TaskEx.Delay(150).Wait();
+                TaskEx.Delay(200).Wait();
                 timer.Stop();
 
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));

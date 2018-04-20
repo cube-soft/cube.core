@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Tasks;
 using System;
 using System.ComponentModel;
-using System.Timers;
 using System.Threading.Tasks;
-using Cube.Tasks;
+using System.Timers;
 
 namespace Cube.Settings
 {
@@ -306,8 +306,21 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() =>
-            OnLoaded(ValueChangedEventArgs.Create(Value, Type.Load<T>(Path)));
+        public void Load() => LoadOrDefault(default(T));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LoadOrDefault
+        ///
+        /// <summary>
+        /// ユーザ設定を読み込みます。
+        /// </summary>
+        ///
+        /// <param name="alternate">失敗時に適用する値</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void LoadOrDefault(T alternate) =>
+            OnLoaded(ValueChangedEventArgs.Create(Value, LoadCore(alternate)));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -416,6 +429,21 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
+        /// LoadCore
+        ///
+        /// <summary>
+        /// 設定情報を読み込みます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private T LoadCore(T alternate)
+        {
+            try { return Type.Load<T>(Path); }
+            catch { return alternate; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// WhenChanged
         ///
         /// <summary>
@@ -445,14 +473,14 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenElapsed(object sender, ElapsedEventArgs e) =>
+        private void WhenElapsed(object s, ElapsedEventArgs e) =>
             TaskEx.Run(() => Save()).Forget();
 
         #endregion
 
         #region Fields
         private OnceAction<bool> _dispose;
-        private Timer _autosaver = new Timer();
+        private readonly Timer _autosaver = new Timer();
         #endregion
     }
 }

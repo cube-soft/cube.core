@@ -72,7 +72,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private Func<T, T, int> _comparer;
+        private readonly Func<T, T, int> _comparer;
         #endregion
     }
 

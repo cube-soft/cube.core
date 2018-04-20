@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using Cube.Log;
 
 namespace Cube
 {
@@ -334,7 +334,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) _core.Dispose();
+            if (disposing)
+            {
+                State = TimerState.Stop;
+                _core.Dispose();
+            }
         }
 
         #endregion
@@ -411,6 +415,8 @@ namespace Cube
                 case PowerModes.Suspend:
                     Suspend();
                     break;
+                default:
+                    break;
             }
         }
 
@@ -430,7 +436,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private async void WhenPublished(object sender, ElapsedEventArgs e)
+        private async void WhenPublished(object s, ElapsedEventArgs e)
         {
             if (State != TimerState.Run) return;
 
@@ -446,17 +452,21 @@ namespace Cube
                 var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
 
                 Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
-                _core.Interval = time;
-                _core.Start();
+
+                if (State == TimerState.Run)
+                {
+                    _core.Interval = time;
+                    _core.Start();
+                }
             }
         }
 
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
+        private readonly OnceAction<bool> _dispose;
+        private readonly Timer _core = new Timer();
         private TimeSpan _interval;
-        private Timer _core = new Timer();
         #endregion
     }
 

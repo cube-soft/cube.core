@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Cube.Tests
 {
@@ -40,27 +40,52 @@ namespace Cube.Tests
         /// Parse
         ///
         /// <summary>
-        /// オプション以外の項目を正常に解析できる事を確認するための
-        /// テストです。
+        /// 非オプション項目を正常に解析できる事を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_TestCases))]
-        public int Parse(int id, IEnumerable<string> args) =>
-            new Arguments(args).Get().Count();
+        public int Parse(int id, IEnumerable<string> args)
+        {
+            var src = new Arguments(args);
+
+            Assert.That(src[0], Is.Not.Null);
+            Assert.That(src[src.Count - 1], Is.Not.Null);
+            foreach (var item in (IEnumerable)src) Assert.That(item, Is.Not.Null);
+
+            return src.Count;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_Empty
+        ///
+        /// <summary>
+        /// 空の配列で初期化した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Parse_Empty() => Assert.That(
+            new Arguments(new string[0]).Count,
+            Is.EqualTo(0)
+        );
 
         /* ----------------------------------------------------------------- */
         ///
         /// Parse_Options
         ///
         /// <summary>
-        /// オプション項目が正常に解析できる事を確認するためのテストです。
+        /// オプション項目が正常に解析できる事を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_TestCases))]
-        public string Parse_Options(int id, IEnumerable<string> args, string option) =>
-            new Arguments(args).Get(option);
+        public string Parse_Options(int id, IEnumerable<string> args, string key)
+        {
+            try { return new Arguments(args).Options[key]; }
+            catch { return null; }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -73,7 +98,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
         public int Parse_Options_Count(int id, IEnumerable<string> args) =>
-            new Arguments(args).GetOptions().Count;
+            new Arguments(args).Options.Count;
 
         #endregion
 
@@ -96,7 +121,6 @@ namespace Cube.Tests
                 yield return new TestCaseData(1, new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
                 yield return new TestCaseData(2, new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
                 yield return new TestCaseData(3, new List<string> { "foo", "", "--bar" }).Returns(1);
-                yield return new TestCaseData(4, new List<string>()).Returns(0);
             }
         }
 

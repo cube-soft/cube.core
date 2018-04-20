@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using NUnit.Framework;
 using Cube.Generics;
+using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -50,7 +50,7 @@ namespace Cube.Tests
         [Test]
         public void Copy_Serializable()
         {
-            var src = new SerializableData()
+            var src = new SerializableData
             {
                 Identification = 10,
                 Name           = "Copy Serializable",
@@ -79,7 +79,7 @@ namespace Cube.Tests
         [Test]
         public void Copy_NonSerializable()
         {
-            var src = new Person()
+            var src = new Person
             {
                 Identification = 10,
                 Name           = "Copy Serializable",
