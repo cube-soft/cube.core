@@ -307,7 +307,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static readonly char[] SeparatorChars = new[]
+        public static char[] SeparatorChars { get; } = new[]
         {
             System.IO.Path.DirectorySeparatorChar,
             System.IO.Path.AltDirectorySeparatorChar,
@@ -322,7 +322,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static readonly string CurrentDirectoryStr = ".";
+        public static string CurrentDirectoryStr { get; } = ".";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -333,7 +333,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static readonly string ParentDirectoryStr = "..";
+        public static string ParentDirectoryStr { get; } = "..";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -344,7 +344,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static readonly string UncStr = @"\\";
+        public static string UncStr { get; } = @"\\";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -355,7 +355,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static readonly string InactivationStr = @"\\?\";
+        public static string InactivationStr { get; } = @"\\?\";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -366,7 +366,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static char[] InvalidChars => System.IO.Path.GetInvalidFileNameChars();
+        public static char[] InvalidChars { get; } = System.IO.Path.GetInvalidFileNameChars();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -377,7 +377,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static readonly string[] ReservedNames = new[]
+        public static string[] ReservedNames { get; } = new[]
         {
             "CON",  "PRN",  "AUX",  "NUL",
             "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
@@ -654,7 +654,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private Operator _io;
+        private readonly Operator _io;
         private char _escapeChar = '_';
         private bool _allowDriveLetter = true;
         private bool _allowCurrentDirectory = true;

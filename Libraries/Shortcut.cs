@@ -259,7 +259,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private Operator _io;
+        private readonly Operator _io;
         #endregion
     }
 }

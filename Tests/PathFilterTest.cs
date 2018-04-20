@@ -56,7 +56,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"/unix/foo/bar.txt",             '_', ExpectedResult = @"unix\foo\bar.txt")]
         [TestCase(@"",                              '_', ExpectedResult = @"")]
         [TestCase(null,                             '_', ExpectedResult = @"")]
-        public string Escape(string src, char escape) =>
+        public string Escape(string src, char replaced) =>
             new PathFilter(src)
             {
                 AllowDriveLetter      = true,
@@ -64,7 +64,7 @@ namespace Cube.FileSystem.Tests
                 AllowCurrentDirectory = false,
                 AllowInactivation     = false,
                 AllowUnc              = false,
-                EscapeChar            = escape,
+                EscapeChar            = replaced,
             }.EscapedPath;
 
         /* ----------------------------------------------------------------- */

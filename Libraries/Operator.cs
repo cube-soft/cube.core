@@ -851,13 +851,13 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private bool Action(string name, Action action, params string[] paths)
+        private bool Action(string name, Action f, params string[] paths)
         {
             while (true)
             {
                 try
                 {
-                    action();
+                    f();
                     return true;
                 }
                 catch (Exception err)
@@ -884,11 +884,11 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private T Func<T>(string name, Func<T> func, params string[] paths)
+        private T Func<T>(string name, Func<T> f, params string[] paths)
         {
             while (true)
             {
-                try { return func(); }
+                try { return f(); }
                 catch (Exception err)
                 {
                     if (Failed == null) throw;

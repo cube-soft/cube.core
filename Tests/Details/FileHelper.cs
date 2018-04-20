@@ -174,7 +174,7 @@ namespace Cube.FileSystem.Tests
         #endregion
 
         #region Fields
-        private string _directory = string.Empty;
+        private readonly string _directory = string.Empty;
         #endregion
     }
 }
