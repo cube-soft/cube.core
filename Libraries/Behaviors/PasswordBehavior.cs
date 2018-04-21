@@ -333,10 +333,10 @@ namespace Cube.Forms.Behaviors
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
-        private System.Windows.Forms.TextBox _master;
-        private System.Windows.Forms.TextBox _confirm;
-        private System.Windows.Forms.CheckBox _show;
+        private readonly OnceAction<bool> _dispose;
+        private readonly System.Windows.Forms.TextBox _master;
+        private readonly System.Windows.Forms.TextBox _confirm;
+        private readonly System.Windows.Forms.CheckBox _show;
         private Color _warning = Color.FromArgb(255, 102, 102);
         private Color _default = SystemColors.Window;
         private Color _disabled = SystemColors.Control;

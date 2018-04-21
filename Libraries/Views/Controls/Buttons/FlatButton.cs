@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
 using System.ComponentModel;
 using System.Drawing;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -420,7 +420,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private ButtonPainter _painter = null;
+        private readonly ButtonPainter _painter = null;
         private IEventHub _events;
         private double _dpi = StandardForm.BaseDpi;
         #endregion

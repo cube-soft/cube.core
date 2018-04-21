@@ -70,8 +70,9 @@ namespace Cube.Forms
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionForm(AssemblyReader assembly) : base()
+        public VersionForm(AssemblyReader assembly)
         {
+            _control = new VersionControl(assembly);
             InitializeLayout(assembly);
         }
 
@@ -225,7 +226,6 @@ namespace Cube.Forms
             Size = new Size(400, 270);
             SuspendLayout();
 
-            _panel = new TableLayoutPanel();
             _panel.Dock = System.Windows.Forms.DockStyle.Fill;
             _panel.Margin = new System.Windows.Forms.Padding(0);
             _panel.ColumnCount = 1;
@@ -235,13 +235,11 @@ namespace Cube.Forms
             _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             _panel.SuspendLayout();
 
-            _control = new VersionControl(assembly);
             _control.BackColor = SystemColors.Window;
             _control.Dock = System.Windows.Forms.DockStyle.Fill;
             _control.Margin = new System.Windows.Forms.Padding(0);
             _control.Padding = new System.Windows.Forms.Padding(20, 20, 0, 0);
 
-            _button = new Button();
             _button.Anchor = System.Windows.Forms.AnchorStyles.None;
             _button.Size = new Size(100, 25);
             _button.Text = "OK";
@@ -264,9 +262,9 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private VersionControl _control;
-        private TableLayoutPanel _panel;
-        private Button _button;
+        private readonly VersionControl _control;
+        private readonly TableLayoutPanel _panel = new TableLayoutPanel();
+        private readonly Button _button = new Button();
         #endregion
     }
 }

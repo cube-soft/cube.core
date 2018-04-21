@@ -41,7 +41,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DeviceEventArgs(char letter, DeviceType type) : base()
+        public DeviceEventArgs(char letter, DeviceType type)
         {
             Letter = letter;
             Type   = type;

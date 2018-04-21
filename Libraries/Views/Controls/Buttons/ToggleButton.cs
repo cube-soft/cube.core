@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
 using System.ComponentModel;
 using System.Drawing;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -43,7 +43,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ToggleButton() : base()
+        public ToggleButton()
         {
             _painter = new ToggleButtonPainter(this);
             _painter.Styles.PropertyChanged += (s, e) => Invalidate();
@@ -460,7 +460,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private ButtonPainter _painter = null;
+        private readonly ButtonPainter _painter = null;
         private IEventHub _events;
         private double _dpi = StandardForm.BaseDpi;
         #endregion

@@ -16,8 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 
@@ -45,7 +45,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ColorButton() : base()
+        public ColorButton()
         {
             UseVisualStyleBackColor = false;
             BackColor = SystemColors.Control;
@@ -146,12 +146,15 @@ namespace Cube.Forms
         {
             base.OnClick(e);
 
-            var dialog = new System.Windows.Forms.ColorDialog();
-            dialog.Color = BackColor;
-            dialog.AnyColor = AnyColor;
-            dialog.SolidColorOnly = SolidColorOnly;
-            dialog.AllowFullOpen = AllowFullOpen;
-            dialog.FullOpen = FullOpen;
+            var dialog = new System.Windows.Forms.ColorDialog
+            {
+                Color          = BackColor,
+                AnyColor       = AnyColor,
+                SolidColorOnly = SolidColorOnly,
+                AllowFullOpen  = AllowFullOpen,
+                FullOpen       = FullOpen
+            };
+
             if (CustomColors != null) dialog.CustomColors = CustomColors.ToArray();
 
             var result = dialog.ShowDialog();

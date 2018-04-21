@@ -16,8 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Cube.Forms
 {
@@ -43,7 +43,24 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsControl() : base() { }
+        public SettingsControl() { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsControl
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="ok">OK ボタン</param>
+        /// <param name="cancel">キャンセルボタン</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsControl(
+            System.Windows.Forms.Control ok,
+            System.Windows.Forms.Control cancel
+        ) : this(ok, cancel, null) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -61,7 +78,7 @@ namespace Cube.Forms
         public SettingsControl(
             System.Windows.Forms.Control ok,
             System.Windows.Forms.Control cancel,
-            System.Windows.Forms.Control apply = null) : base()
+            System.Windows.Forms.Control apply)
         {
             OKButton     = ok;
             CancelButton = cancel;
@@ -522,7 +539,7 @@ namespace Cube.Forms
         private System.Windows.Forms.Control _ok;
         private System.Windows.Forms.Control _cancel;
         private System.Windows.Forms.Control _apply;
-        private IList<System.Windows.Forms.Control> _controls = new List<System.Windows.Forms.Control>();
+        private readonly IList<System.Windows.Forms.Control> _controls = new List<System.Windows.Forms.Control>();
         #endregion
     }
 }

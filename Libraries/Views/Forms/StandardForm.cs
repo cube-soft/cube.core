@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
+using Cube.Log;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using Cube.Forms.Controls;
-using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -50,7 +50,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public StandardForm() : base()
+        public StandardForm()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;

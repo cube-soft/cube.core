@@ -282,9 +282,13 @@ namespace Cube.Forms
         public void Clear(NotifyPriority priority)
         {
             var result = false;
-            lock (_lock) _inner.Remove(priority);
-            if (result) OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Reset));
+            lock (_lock) result = _inner.Remove(priority);
+            if (result)
+            {
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                    NotifyCollectionChangedAction.Reset)
+                );
+            }
         }
 
         /* --------------------------------------------------------------------- */
@@ -323,8 +327,8 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private object _lock = new object();
-        private SortedDictionary<NotifyPriority, Queue<NotifyItem>> _inner =
+        private readonly object _lock = new object();
+        private readonly SortedDictionary<NotifyPriority, Queue<NotifyItem>> _inner =
             new SortedDictionary<NotifyPriority, Queue<NotifyItem>>(
               new GenericComparer<NotifyPriority>((x, y) => y.CompareTo(x))
             );

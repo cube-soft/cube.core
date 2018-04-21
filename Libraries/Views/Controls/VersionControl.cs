@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
-using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -71,7 +71,7 @@ namespace Cube.Forms
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionControl(AssemblyReader assembly) : base()
+        public VersionControl(AssemblyReader assembly)
         {
             Size = new Size(340, 120);
             InitializeLayout();
@@ -269,7 +269,6 @@ namespace Cube.Forms
         {
             SuspendLayout();
 
-            _panel = new System.Windows.Forms.SplitContainer();
             _panel.Dock = System.Windows.Forms.DockStyle.Fill;
             _panel.Margin = new System.Windows.Forms.Padding(0);
             _panel.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
@@ -281,30 +280,25 @@ namespace Cube.Forms
             _panel.Size = Size;
             _panel.SuspendLayout();
 
-            _image = new PictureBox();
             _image.Dock = System.Windows.Forms.DockStyle.Fill;
             _image.Image = Properties.Resources.LogoLarge;
             _image.Margin = new System.Windows.Forms.Padding(0);
 
-            _contents = new FlowLayoutPanel();
             _contents.Dock = System.Windows.Forms.DockStyle.Fill;
             _contents.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             _contents.Margin = new System.Windows.Forms.Padding(0);
             _contents.SuspendLayout();
 
-            _product = new System.Windows.Forms.Label();
             _product.AutoEllipsis = true;
             _product.AutoSize = true;
             _product.Margin = new System.Windows.Forms.Padding(0);
             _product.TabIndex = 0;
 
-            _version = new System.Windows.Forms.Label();
             _version.AutoEllipsis = true;
             _version.AutoSize = true;
             _version.Margin = new System.Windows.Forms.Padding(0);
             _version.TabIndex = 1;
 
-            _platform = new System.Windows.Forms.Label();
             _platform.AutoEllipsis = true;
             _platform.AutoSize = true;
             _platform.ForeColor = SystemColors.GrayText;
@@ -312,7 +306,6 @@ namespace Cube.Forms
             _platform.TabIndex = 2;
             _platform.Text = Platform;
 
-            _others = new System.Windows.Forms.Label();
             _others.AutoEllipsis = true;
             _others.AutoSize = true;
             _others.ForeColor = SystemColors.GrayText;
@@ -321,7 +314,6 @@ namespace Cube.Forms
             _others.Text = string.Empty;
             _others.Visible = false;
 
-            _copyright = new System.Windows.Forms.LinkLabel();
             _copyright.AutoSize = true;
             _copyright.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
             _copyright.TabIndex = 4;
@@ -352,14 +344,14 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private System.Windows.Forms.SplitContainer _panel;
-        private System.Windows.Forms.FlowLayoutPanel _contents;
-        private System.Windows.Forms.PictureBox _image;
-        private System.Windows.Forms.Label _product;
-        private System.Windows.Forms.Label _version;
-        private System.Windows.Forms.Label _platform;
-        private System.Windows.Forms.Label _others;
-        private System.Windows.Forms.LinkLabel _copyright;
+        private readonly System.Windows.Forms.SplitContainer _panel = new System.Windows.Forms.SplitContainer();
+        private readonly System.Windows.Forms.FlowLayoutPanel _contents = new System.Windows.Forms.FlowLayoutPanel();
+        private readonly System.Windows.Forms.PictureBox _image = new System.Windows.Forms.PictureBox();
+        private readonly System.Windows.Forms.Label _product = new System.Windows.Forms.Label();
+        private readonly System.Windows.Forms.Label _version = new System.Windows.Forms.Label();
+        private readonly System.Windows.Forms.Label _platform = new System.Windows.Forms.Label();
+        private readonly System.Windows.Forms.Label _others = new System.Windows.Forms.Label();
+        private readonly System.Windows.Forms.LinkLabel _copyright = new System.Windows.Forms.LinkLabel();
         private readonly int _margin = 16;
         #endregion
     }

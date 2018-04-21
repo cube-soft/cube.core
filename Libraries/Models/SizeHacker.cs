@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -318,8 +318,8 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
-        private IDictionary<Control, Cursor> _cursors = new Dictionary<Control, Cursor>();
+        private readonly OnceAction<bool> _dispose;
+        private readonly IDictionary<Control, Cursor> _cursors = new Dictionary<Control, Cursor>();
         #endregion
     }
 }

@@ -18,7 +18,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Log;
 
 namespace Cube.Forms
 {
@@ -260,7 +259,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
+        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 

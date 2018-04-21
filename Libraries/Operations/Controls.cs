@@ -17,8 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using System.Reflection;
 using System.Drawing;
+using System.Reflection;
 
 namespace Cube.Forms.Controls
 {

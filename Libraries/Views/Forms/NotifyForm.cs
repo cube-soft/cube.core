@@ -15,13 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
+using Cube.Log;
+using Cube.Tasks;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading.Tasks;
-using Cube.Forms.Controls;
-using Cube.Log;
-using Cube.Tasks;
 
 namespace Cube.Forms
 {
@@ -47,7 +47,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyForm() : base()
+        public NotifyForm()
         {
             InitializeLayout();
         }
@@ -307,7 +307,7 @@ namespace Cube.Forms
         private async Task ShowAsync(TimeSpan time, TimeSpan delay)
         {
             var source = new System.Threading.CancellationTokenSource();
-            EventHandler m = (s, e) => { if (!Visible) source.Cancel(); };
+            void m(object s, EventArgs e) { if (!Visible) source.Cancel(); }
             VisibleChanged += m;
 
             try
@@ -325,8 +325,8 @@ namespace Cube.Forms
                 if (InvokeRequired) Invoke((Action)(() => Hide()));
                 else Hide();
             }
-            catch (TaskCanceledException /* err */) { }
-            catch (OperationCanceledException /* err */) { }
+            catch (TaskCanceledException) { /* Ignore user cancel */ }
+            catch (OperationCanceledException) { /* Ignore user cancel */ }
             catch (Exception err) { this.LogWarn(err.ToString()); }
             finally
             {
@@ -355,10 +355,10 @@ namespace Cube.Forms
             if (style.DescriptionColor != Color.Empty) _text.Styles.NormalStyle.ContentColor = style.DescriptionColor;
             if (style.BackColor != Color.Empty)
             {
-                BackColor                           =
-                _panel.BackColor                    =
-                _close.Styles.NormalStyle.BackColor =
-                _title.Styles.NormalStyle.BackColor =
+                BackColor                           = style.BackColor;
+                _panel.BackColor                    = style.BackColor;
+                _close.Styles.NormalStyle.BackColor = style.BackColor;
+                _title.Styles.NormalStyle.BackColor = style.BackColor;
                 _text.Styles.NormalStyle.BackColor  = style.BackColor;
             }
         }
@@ -376,7 +376,6 @@ namespace Cube.Forms
         {
             SuspendLayout();
 
-            _image = new FlatButton();
             _image.Content = string.Empty;
             _image.Dock = System.Windows.Forms.DockStyle.Fill;
             _image.Margin = new System.Windows.Forms.Padding(0);
@@ -385,7 +384,6 @@ namespace Cube.Forms
             _image.Styles.NormalStyle.Image = Properties.Resources.LogoLarge;
             _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Image));
 
-            _title = new FlatButton();
             _title.Content = string.Empty;
             _title.Dock = System.Windows.Forms.DockStyle.Fill;
             _title.Font = FontFactory.Create(12, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -397,7 +395,6 @@ namespace Cube.Forms
             _title.Styles.NormalStyle.ContentColor = Color.DimGray;
             _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Title));
 
-            _text = new FlatButton();
             _text.AutoEllipsis = true;
             _text.Content = string.Empty;
             _text.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -409,7 +406,6 @@ namespace Cube.Forms
             _text.Styles.NormalStyle.BorderSize = 0;
             _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Description));
 
-            _close = new FlatButton();
             _close.Content = string.Empty;
             _close.Dock = System.Windows.Forms.DockStyle.Fill;
             _close.Margin = new System.Windows.Forms.Padding(0);
@@ -422,7 +418,6 @@ namespace Cube.Forms
             _close.Styles.MouseDownStyle.BackColor = Color.FromArgb(236, 236, 236);
             _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Others));
 
-            _panel = new TableLayoutPanel();
             _panel.SuspendLayout();
             _panel.Dock = System.Windows.Forms.DockStyle.Fill;
             _panel.ColumnCount = 3;
@@ -459,11 +454,11 @@ namespace Cube.Forms
 
         #region Fields
         private NotifyItem _value;
-        private TableLayoutPanel _panel;
-        private FlatButton _image;
-        private FlatButton _title;
-        private FlatButton _text;
-        private FlatButton _close;
+        private readonly TableLayoutPanel _panel = new TableLayoutPanel();
+        private readonly FlatButton _image = new FlatButton();
+        private readonly FlatButton _title = new FlatButton();
+        private readonly FlatButton _text = new FlatButton();
+        private readonly FlatButton _close = new FlatButton();
         #endregion
     }
 }

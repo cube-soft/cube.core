@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -47,7 +47,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SizeGripControl() : base() { }
+        public SizeGripControl() { }
 
         #endregion
 
@@ -220,7 +220,7 @@ namespace Cube.Forms
         protected override void OnMouseDown(MouseEventArgs e)
         {
             var form = FindForm();
-            if (form != null || form.WindowState == FormWindowState.Normal)
+            if (form != null && form.WindowState == FormWindowState.Normal)
             {
                 User32.NativeMethods.ReleaseCapture();
                 User32.NativeMethods.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);

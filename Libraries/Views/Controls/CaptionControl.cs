@@ -84,6 +84,8 @@ namespace Cube.Forms
                     case System.Windows.Forms.FormWindowState.Normal:
                         OnNormalized(EventArgs.Empty);
                         break;
+                    default:
+                        break;
                 }
             }
         }

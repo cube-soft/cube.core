@@ -47,7 +47,7 @@ namespace Cube.Forms.Demo
             InitializeComponent();
 
             ContentsControl.Resize += WhenResize;
-            DemoButton1.Click += (s, e) => new VersionForm()
+            DemoButton1.Click += (s, e) => new VersionForm
             {
                 Icon = Icon,
                 Text = Text,

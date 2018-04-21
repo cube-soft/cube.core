@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -223,7 +223,6 @@ namespace Cube.Forms
             _foreground = ForeColor;
             _border = FlatAppearance.BorderColor;
 
-            var control = SystemColors.ButtonFace;
             BackColor = Color.FromArgb(204, 204, 204);
             ForeColor = SystemColors.GrayText;
             FlatAppearance.BorderColor = Color.FromArgb(191, 191, 191);

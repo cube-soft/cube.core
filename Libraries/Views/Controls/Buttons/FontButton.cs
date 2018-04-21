@@ -42,7 +42,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FontButton() : base() { }
+        public FontButton() { }
 
         #endregion
 
@@ -233,7 +233,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public EventHandler Apply;
+        public event EventHandler Apply;
 
         /* ----------------------------------------------------------------- */
         ///

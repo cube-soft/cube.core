@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Cube.Forms
 {
@@ -224,7 +224,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle DisabledStyle { get; } = new ButtonStyle()
+        public ButtonStyle DisabledStyle { get; } = new ButtonStyle
         {
             BackColor    = SystemColors.Control,
             ContentColor = SystemColors.GrayText,

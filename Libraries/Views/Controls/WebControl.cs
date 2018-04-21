@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
+using Cube.Log;
 using System;
 using System.ComponentModel;
 using System.Text;
-using Cube.Log;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -313,14 +313,9 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
-            switch (m.Msg)
+            if (m.Msg == 0x0210) // WM_PARENTNOTIFY
             {
-                case 0x0210: /* WM_PARENTNOTIFY */
-                    /* WM_DESTROY (2) */
-                    if (m.WParam.ToInt32() == 2 && !DesignMode) CloseForm();
-                    break;
-                default:
-                    break;
+                if (m.WParam.ToInt32() == 2 && !DesignMode) CloseForm(); // WM_DESTROY (2)
             }
             base.WndProc(ref m);
         }

@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -52,7 +52,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public BorderlessForm()
-            : base()
         {
             SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
             SystemEvents.UserPreferenceChanged  += (s, e) => UpdateMaximumSize();
@@ -806,7 +805,7 @@ namespace Cube.Forms
         private bool _sizable = true;
         private bool _fakeMode = false;
         private int _cornerRadius = 0;
-        private CaptionControl _caption = null;
+        private CaptionControl _caption;
         #endregion
     }
 }

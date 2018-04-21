@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Controls;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using Cube.Forms.Controls;
 
 namespace Cube.Forms
 {
@@ -44,7 +44,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public StatusStrip() : base() { }
+        public StatusStrip() { }
 
         #endregion
 
@@ -201,7 +201,16 @@ namespace Cube.Forms
             if (IsNormalWindow() && IsSizingGrip(e.Location))
             {
                 User32.NativeMethods.ReleaseCapture();
-                User32.NativeMethods.SendMessage(FindForm().Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)Position.BottomRight, IntPtr.Zero);
+
+                var form = FindForm();
+                if (form == null) return;
+
+                User32.NativeMethods.SendMessage(
+                    form.Handle,
+                    0xa1 /* WM_NCLBUTTONDOWN */,
+                    (IntPtr)Position.BottomRight,
+                    IntPtr.Zero
+                );
             }
             else base.OnMouseDown(e);
         }
