@@ -33,21 +33,6 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class StatusStrip : System.Windows.Forms.StatusStrip, IControl
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// StatusStrip
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public StatusStrip() { }
-
-        #endregion
-
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -228,19 +213,15 @@ namespace Cube.Forms
         {
             base.WndProc(ref m);
 
-            switch (m.Msg)
+            if (m.Msg == 0x0084) // WM_NCHITTEST
             {
-                case 0x0084: // WM_NCHITTEST
-                    var x = (int)m.LParam & 0xffff;
-                    var y = (int)m.LParam >> 16 & 0xffff;
-                    var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);
-                    OnNcHitTest(e);
-                    var result = e.Cancel ? Position.Transparent : e.Result;
-                    if (DesignMode && result == Position.Transparent) break;
-                    m.Result = (IntPtr)result;
-                    break;
-                default:
-                    break;
+                var x = (int)m.LParam & 0xffff;
+                var y = (int)m.LParam >> 16 & 0xffff;
+                var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);
+                OnNcHitTest(e);
+                var result = e.Cancel ? Position.Transparent : e.Result;
+                if (DesignMode && result == Position.Transparent) return;
+                m.Result = (IntPtr)result;
             }
         }
 

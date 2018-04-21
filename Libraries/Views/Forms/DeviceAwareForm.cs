@@ -33,21 +33,6 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class DeviceAwareForm : StandardForm
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeviceAwareForm
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DeviceAwareForm() { }
-
-        #endregion
-
         #region Events
 
         #region Attached

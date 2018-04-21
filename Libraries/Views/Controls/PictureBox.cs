@@ -33,21 +33,6 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class PictureBox : System.Windows.Forms.PictureBox, IControl
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PictureBox
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public PictureBox() { }
-
-        #endregion
-
         #region Properties
 
         /* ----------------------------------------------------------------- */

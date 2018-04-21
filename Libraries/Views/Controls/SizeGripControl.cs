@@ -36,21 +36,6 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class SizeGripControl : System.Windows.Forms.PictureBox, IControl
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SizeGripControl
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SizeGripControl() { }
-
-        #endregion
-
         #region Properties
 
         /* ----------------------------------------------------------------- */

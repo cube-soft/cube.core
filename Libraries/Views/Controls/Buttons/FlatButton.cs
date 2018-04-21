@@ -43,7 +43,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FlatButton() : base()
+        public FlatButton()
         {
             _painter = new ButtonPainter(this);
             _painter.Styles.PropertyChanged += (s, e) => Invalidate();
