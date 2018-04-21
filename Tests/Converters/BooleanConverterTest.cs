@@ -96,7 +96,7 @@ namespace Cube.Xui.Tests
         [TestCase("src", "compared", ExpectedResult = "src")]
         public string BooleanToGeneric(string src, string compared) =>
             Convert<string>(new BooleanToGeneric<string>(src, compared,
-                (x, y) => ((string)x).CompareTo(compared) > 0),
+                (x, y) => string.CompareOrdinal((string)x, compared) > 0),
                 src
             );
 

@@ -144,7 +144,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DirectoryDialogMessage(Action<DirectoryDialogMessage> callback) : base()
+        public DirectoryDialogMessage(Action<DirectoryDialogMessage> callback)
         {
             Callback = callback;
         }
@@ -202,7 +202,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileDialogMessage(Action<OpenFileDialogMessage> callback) : base()
+        public OpenFileDialogMessage(Action<OpenFileDialogMessage> callback)
         {
             Callback        = callback;
             CheckPathExists = true;
@@ -272,7 +272,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileDialogMessage(Action<SaveFileDialogMessage> callback) : base()
+        public SaveFileDialogMessage(Action<SaveFileDialogMessage> callback)
         {
             Callback        = callback;
             CheckPathExists = false;

@@ -141,13 +141,13 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenChanged(object sender, PropertyChangedEventArgs e) =>
+        private void WhenChanged(object s, PropertyChangedEventArgs e) =>
             RaiseCanExecuteChanged();
 
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
+        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 }

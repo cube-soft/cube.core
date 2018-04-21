@@ -135,7 +135,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenLostFocus(object sender, RoutedEventArgs e) => Editing = false;
+        private void WhenLostFocus(object s, RoutedEventArgs e) => Editing = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -146,14 +146,9 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenKeyDown(object sender, KeyEventArgs e)
+        private void WhenKeyDown(object s, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                case Key.Enter:
-                    WhenLostFocus(sender, e);
-                    break;
-            }
+            if (e.Key == Key.Enter) WhenLostFocus(s, e);
         }
 
         /* ----------------------------------------------------------------- */

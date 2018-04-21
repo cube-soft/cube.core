@@ -47,7 +47,7 @@ namespace Cube.Xui.Converters
         /// <param name="back">逆変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DuplexConverter(Func<object, object> forward, Func<object, object> back) :
+        protected DuplexConverter(Func<object, object> forward, Func<object, object> back) :
             this((x, _, __, ___) => forward(x), (x, _, __, ___) => back(x)) { }
 
         /* ----------------------------------------------------------------- */
@@ -62,7 +62,7 @@ namespace Cube.Xui.Converters
         /// <param name="back">逆変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DuplexConverter(
+        protected DuplexConverter(
             Func<object, object, object> forward,
             Func<object, object, object> back) :
             this(
@@ -82,7 +82,7 @@ namespace Cube.Xui.Converters
         /// <param name="back">逆変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DuplexConverter(
+        protected DuplexConverter(
             Func<object, Type, object, CultureInfo, object> forward,
             Func<object, Type, object, CultureInfo, object> back)
         {
@@ -132,8 +132,8 @@ namespace Cube.Xui.Converters
         #endregion
 
         #region Fields
-        private Func<object, Type, object, CultureInfo, object> _forward;
-        private Func<object, Type, object, CultureInfo, object> _back;
+        private readonly Func<object, Type, object, CultureInfo, object> _forward;
+        private readonly Func<object, Type, object, CultureInfo, object> _back;
         #endregion
     }
 }

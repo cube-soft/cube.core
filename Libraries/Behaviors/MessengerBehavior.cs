@@ -92,7 +92,7 @@ namespace Cube.Xui.Behaviors
         /// <param name="e">パラメータ</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Invoke(T e) { }
+        protected abstract void Invoke(T e);
 
         #endregion
 

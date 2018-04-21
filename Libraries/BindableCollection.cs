@@ -275,6 +275,8 @@ namespace Cube.Xui
                     UnsetHandler(e.OldItems);
                     SetHandler(e.NewItems);
                     break;
+                default:
+                    break;
             }
             base.OnCollectionChanged(e);
         });
@@ -328,24 +330,21 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenMemberChanged(object sender, PropertyChangedEventArgs e)
+        private void WhenMemberChanged(object s, PropertyChangedEventArgs e)
         {
-            var index = IndexOf(sender.TryCast<T>());
+            var index = IndexOf(s.TryCast<T>());
             if (index < 0) return;
 
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Replace,
-                sender,
-                sender,
-                index
+                NotifyCollectionChangedAction.Replace, s, s, index
             ));
         }
 
         #endregion
 
         #region Fields
-        private SynchronizationContext _context;
-        private OnceAction<bool> _dispose;
+        private readonly SynchronizationContext _context;
+        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 }

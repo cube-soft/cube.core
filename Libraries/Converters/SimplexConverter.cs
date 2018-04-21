@@ -47,7 +47,7 @@ namespace Cube.Xui.Converters
         /// <param name="func">変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SimplexConverter(Func<object, object> func) :
+        protected SimplexConverter(Func<object, object> func) :
             this((x, _, __, ___) => func(x)) { }
 
         /* ----------------------------------------------------------------- */
@@ -61,7 +61,7 @@ namespace Cube.Xui.Converters
         /// <param name="func">変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SimplexConverter(Func<object, object, object> func) :
+        protected SimplexConverter(Func<object, object, object> func) :
             this((x, _, y, __) => func(x, y)) { }
 
         /* ----------------------------------------------------------------- */
@@ -75,7 +75,7 @@ namespace Cube.Xui.Converters
         /// <param name="func">変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SimplexConverter(Func<object, Type, object, CultureInfo, object> func)
+        protected SimplexConverter(Func<object, Type, object, CultureInfo, object> func)
         {
             _func = func;
         }
@@ -122,7 +122,7 @@ namespace Cube.Xui.Converters
         #endregion
 
         #region Fields
-        private Func<object, Type, object, CultureInfo, object> _func;
+        private readonly Func<object, Type, object, CultureInfo, object> _func;
         #endregion
     }
 
