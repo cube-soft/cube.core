@@ -18,9 +18,8 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## Dependencies
 
-* [AlphaFS](http://alphafs.alphaleonis.com/)
 * [Cube.Core](https://github.com/cube-soft/Cube.Core)
-* [log4net](https://logging.apache.org/log4net/)
+* [AlphaFS](http://alphafs.alphaleonis.com/)
 
 ## License
 
