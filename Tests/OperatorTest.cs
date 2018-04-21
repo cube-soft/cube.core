@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
 {
@@ -320,13 +320,13 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move_Throws(Operator io) => Assert.That(() =>
-        {
-            var src  = io.Combine(Results, "FileNotFound.txt");
-            var dest = io.Combine(Results, "Moved.txt");
-            io.Move(src, dest);
-        },
-        Throws.TypeOf<System.IO.FileNotFoundException>());
+        public void Move_Throws(Operator io) => Assert.That(
+            () => io.Move(
+                io.Combine(Results, "FileNotFound.txt"),
+                io.Combine(Results, "Moved.txt")
+            ),
+            Throws.TypeOf<System.IO.FileNotFoundException>()
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -369,12 +369,10 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Open_Throws(Operator io) => Assert.That(() =>
-        {
-            var src    = io.Combine(Results, "FileNotFound.txt");
-            var stream = io.OpenRead(src);
-        },
-        Throws.TypeOf<System.IO.FileNotFoundException>());
+        public void Open_Throws(Operator io) => Assert.That(
+            () => io.OpenRead(io.Combine(Results, "FileNotFound.txt")),
+            Throws.TypeOf<System.IO.FileNotFoundException>()
+        );
 
         #endregion
 
