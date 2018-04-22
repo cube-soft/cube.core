@@ -49,9 +49,6 @@
     <Reference Include="Cube.Images">
       <HintPath>..\..\packages\Cube.Images.1.8.1\lib\net45\Cube.Images.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
