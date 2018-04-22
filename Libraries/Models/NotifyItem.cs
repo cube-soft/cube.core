@@ -151,7 +151,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public int Count => _inner.Values.Aggregate(0, (n, q) => n += q.Count);
+        public int Count => _inner.Values.Aggregate(0, (n, q) => n + q.Count);
 
         #endregion
 
@@ -223,18 +223,9 @@ namespace Cube.Forms
         {
             if (_inner.Count <= 0) return null;
 
-            var dest = default(NotifyItem);
-
-            lock (_lock)
-            {
-                var pair = _inner.First();
-                dest = pair.Value.Dequeue();
-                if (pair.Value.Count <= 0) _inner.Remove(pair.Key);
-            }
-
+            var dest = DequeueCore();
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(
                 NotifyCollectionChangedAction.Remove, dest));
-
             return dest;
         }
 
@@ -323,6 +314,30 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        #endregion
+
+        #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// DequeueCore
+        ///
+        /// <summary>
+        /// 先頭のオブジェクトを取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private NotifyItem DequeueCore()
+        {
+            lock (_lock)
+            {
+                var pair = _inner.First();
+                var dest = pair.Value.Dequeue();
+                if (pair.Value.Count <= 0) _inner.Remove(pair.Key);
+                return dest;
+            }
+        }
 
         #endregion
 
