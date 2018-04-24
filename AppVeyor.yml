@@ -17,7 +17,7 @@ build:
     parallel: true
     project: Cube.FileSystem.sln
     publish_nuget: true
-    verbosity: normal
+    verbosity: minimal
 test_script:
     - ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:nunit3-console.exe -targetargs:Cube.FileSystem.Tests.dll -targetdir:Tests\bin\Release -returntargetcode -hideskipped:All -output:CoverResult.xml -filter:"+[*]* -[AlphaFS]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
