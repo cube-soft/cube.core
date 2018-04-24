@@ -5,7 +5,7 @@ require 'rake/clean'
 PROJECT  = 'Cube.Core'
 BRANCHES = [ 'master', 'net35' ]
 COPY     = 'cp -pf'
-CHECKOUT = 'git checkout -qf'
+CHECKOUT = 'git checkout'
 BUILD    = 'msbuild /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
 RESTORE  = 'nuget restore'
 PACK     = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
