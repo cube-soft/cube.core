@@ -114,10 +114,10 @@ namespace Cube.Tests
                 Assert.That(s.Value.Creation,       Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
                 Assert.That(s.Value.Identification, Is.EqualTo(1357));
                 Assert.That(s.Value.Secret,         Is.EqualTo("secret message"));
-                Assert.That(s.Value.Phone.Type,     Is.EqualTo("Mobile"));
-                Assert.That(s.Value.Phone.Value,    Is.EqualTo("090-1234-5678"));
-                Assert.That(s.Value.Email.Type,     Is.EqualTo("Email"));
-                Assert.That(s.Value.Email.Value,    Is.Null.Or.Empty);
+                Assert.That(s.Value.Contact.Type,     Is.EqualTo("Mobile"));
+                Assert.That(s.Value.Contact.Value,    Is.EqualTo("090-1234-5678"));
+                Assert.That(s.Value.OtherAddresses.Type,     Is.EqualTo("Email"));
+                Assert.That(s.Value.OtherAddresses.Value,    Is.Null.Or.Empty);
             }
         }
 
@@ -143,10 +143,10 @@ namespace Cube.Tests
             Assert.That(actual.Reserved,       Is.EqualTo(expected.Reserved));
             Assert.That(actual.Creation,       Is.EqualTo(expected.Creation));
             Assert.That(actual.Secret,         Is.EqualTo(expected.Secret));
-            Assert.That(actual.Phone.Type,     Is.EqualTo(expected.Phone.Type));
-            Assert.That(actual.Phone.Value,    Is.EqualTo(expected.Phone.Value));
-            Assert.That(actual.Email.Type,     Is.EqualTo(expected.Email.Type));
-            Assert.That(actual.Email.Value,    Is.EqualTo(expected.Email.Value));
+            Assert.That(actual.Contact.Type,     Is.EqualTo(expected.Contact.Type));
+            Assert.That(actual.Contact.Value,    Is.EqualTo(expected.Contact.Value));
+            Assert.That(actual.OtherAddresses.Type,     Is.EqualTo(expected.OtherAddresses.Type));
+            Assert.That(actual.OtherAddresses.Value,    Is.EqualTo(expected.OtherAddresses.Value));
         }
 
         /* ----------------------------------------------------------------- */
@@ -259,13 +259,13 @@ namespace Cube.Tests
                 Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(key.GetValue("Secret"),   Is.Null);
 
-                using (var subkey = key.OpenSubKey("Phone"))
+                using (var subkey = key.OpenSubKey("Contact"))
                 {
                     Assert.That(subkey.GetValue("Type"),  Is.EqualTo("Mobile"));
                     Assert.That(subkey.GetValue("Value"), Is.EqualTo("080-9876-5432"));
                 }
 
-                using (var subkey = key.OpenSubKey("Email"))
+                using (var subkey = key.OpenSubKey("OtherAddresses"))
                 {
                     Assert.That(subkey.GetValue("Type"),  Is.EqualTo("PC"));
                     Assert.That(subkey.GetValue("Value"), Is.EqualTo("dummy@example.com"));
@@ -465,7 +465,7 @@ namespace Cube.Tests
                 key.SetValue("Creation", "2015/03/16 02:32:26");
                 key.SetValue("Reserved", 1);
 
-                using (var subkey = key.CreateSubKey("Phone"))
+                using (var subkey = key.CreateSubKey("Contact"))
                 {
                     subkey.SetValue("Type", "Mobile");
                     subkey.SetValue("Value", "090-1234-5678");
@@ -505,8 +505,8 @@ namespace Cube.Tests
             Sex            = Tests.Sex.Female,
             Age            = 15,
             Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
-            Phone          = new Address { Type = "Mobile", Value = "080-9876-5432" },
-            Email          = new Address { Type = "PC", Value = "dummy@example.com" },
+            Contact        = new Address { Type = "Mobile", Value = "080-9876-5432" },
+            OtherAddresses = new Address { Type = "PC", Value = "dummy@example.com" },
             Reserved       = true,
             Secret         = "dummy data"
         };
