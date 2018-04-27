@@ -18,6 +18,8 @@
 using Cube.Log;
 using Microsoft.Win32;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -50,7 +52,7 @@ namespace Cube.Settings
         /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(RegistryKey src) => (T)Load(src, typeof(T));
+        public static T Load<T>(RegistryKey src) => (T)Get(typeof(T), src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -116,7 +118,7 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Load
+        /// Get
         ///
         /// <summary>
         /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
@@ -124,11 +126,37 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static object Load(RegistryKey root, Type type)
+        private static object Get(Type type, RegistryKey src)
         {
             var dest = Activator.CreateInstance(type);
-            if (root == null) return dest;
-            foreach (var info in type.GetProperties()) Log(() => Load(dest, info, root));
+            if (src == null) return dest;
+            foreach (var info in type.GetProperties()) Log(() => Load(dest, info, src));
+            return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetList
+        ///
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
+        /// 配列としてオブジェクトに設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static IList GetList(Type type, RegistryKey root)
+        {
+            var dest = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+
+            foreach (var name in root.GetSubKeyNames()) Log(() =>
+            {
+                using (var sk = root.OpenSubKey(name, false))
+                {
+                    var value = Get(type, sk);
+                    if (value != null) dest.Add(value);
+                }
+            });
+
             return dest;
         }
 
@@ -148,12 +176,22 @@ namespace Cube.Settings
             if (string.IsNullOrEmpty(name)) return;
 
             var type = GetType(info);
-            if (Type.GetTypeCode(type) == TypeCode.Object)
+
+            if (IsGenericList(type))
             {
-                using (var subkey = root.OpenSubKey(name))
+                using (var subkey = root.OpenSubKey(name, false))
                 {
                     if (subkey == null) return;
-                    var value = Load(subkey, type);
+                    var value = GetList(type.GetGenericArguments()[0], subkey);
+                    if (value != null) info.SetValue(dest, value, null);
+                }
+            }
+            else if (Type.GetTypeCode(type) == TypeCode.Object)
+            {
+                using (var subkey = root.OpenSubKey(name, false))
+                {
+                    if (subkey == null) return;
+                    var value = Get(type, subkey);
                     if (value != null) info.SetValue(dest, value, null);
                 }
             }
@@ -233,6 +271,23 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
+        /// IsGenericList
+        ///
+        /// <summary>
+        /// List(T) またはそのインターフェースとなる型かどうかを判別します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static bool IsGenericList(Type src)
+        {
+            if (!src.IsGenericType) return false;
+            var def = src.GetGenericTypeDefinition();
+            return def == typeof(List<>) ||
+                   def == typeof(IList<>);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetDataMemberName
         ///
         /// <summary>
@@ -240,7 +295,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetDataMemberName(PropertyInfo info)
+        private static string GetDataMemberName(PropertyInfo info)
         {
             if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return null;
 

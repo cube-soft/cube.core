@@ -293,7 +293,7 @@ namespace Cube.Tests
             _age            = 0;
             _creation       = DateTime.MinValue;
             _contact        = new Address { Type = "Phone", Value = string.Empty };
-            _others         = new Address[0];
+            _others         = new List<Address>();
             _reserved       = false;
             _secret         = "secret message";
         }
