@@ -18,8 +18,6 @@
 using Cube.Log;
 using Microsoft.Win32;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -37,44 +35,6 @@ namespace Cube.Settings
     internal static class RegistrySettings
     {
         #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        ///
-        /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
-        /// オブジェクトに設定します。
-        /// </summary>
-        ///
-        /// <param name="src">レジストリ・サブキー</param>
-        ///
-        /// <returns>生成オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Load<T>(RegistryKey src) => (T)Get(typeof(T), src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        ///
-        /// <summary>
-        /// HKEY_CURRENT_USER 下の指定されたサブキーに存在する値を
-        /// 読み込み、オブジェクトに設定します。
-        /// </summary>
-        ///
-        /// <param name="src">レジストリ・サブキー名</param>
-        ///
-        /// <returns>生成オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Load<T>(string src)
-        {
-            using (var key = Registry.CurrentUser.OpenSubKey(src, false))
-            {
-                return Load<T>(key);
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -115,92 +75,6 @@ namespace Cube.Settings
         #endregion
 
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
-        /// オブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static object Get(Type type, RegistryKey src)
-        {
-            var dest = Activator.CreateInstance(type);
-            if (src == null) return dest;
-            foreach (var info in type.GetProperties()) Log(() => Load(dest, info, src));
-            return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetList
-        ///
-        /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
-        /// 配列としてオブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static IList GetList(Type type, RegistryKey root)
-        {
-            var dest = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
-
-            foreach (var name in root.GetSubKeyNames()) Log(() =>
-            {
-                using (var sk = root.OpenSubKey(name, false))
-                {
-                    var value = Get(type, sk);
-                    if (value != null) dest.Add(value);
-                }
-            });
-
-            return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        ///
-        /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込み、
-        /// オブジェクトに設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void Load(object dest, PropertyInfo info, RegistryKey root)
-        {
-            var name = GetDataMemberName(info);
-            if (string.IsNullOrEmpty(name)) return;
-
-            var type = GetType(info);
-
-            if (IsGenericList(type))
-            {
-                using (var subkey = root.OpenSubKey(name, false))
-                {
-                    if (subkey == null) return;
-                    var value = GetList(type.GetGenericArguments()[0], subkey);
-                    if (value != null) info.SetValue(dest, value, null);
-                }
-            }
-            else if (Type.GetTypeCode(type) == TypeCode.Object)
-            {
-                using (var subkey = root.OpenSubKey(name, false))
-                {
-                    if (subkey == null) return;
-                    var value = Get(type, subkey);
-                    if (value != null) info.SetValue(dest, value, null);
-                }
-            }
-            else
-            {
-                var value = Convert(root.GetValue(name, null), type);
-                if (value != null) info.SetValue(dest, value, null);
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -271,23 +145,6 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsGenericList
-        ///
-        /// <summary>
-        /// List(T) またはそのインターフェースとなる型かどうかを判別します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static bool IsGenericList(Type src)
-        {
-            if (!src.IsGenericType) return false;
-            var def = src.GetGenericTypeDefinition();
-            return def == typeof(List<>) ||
-                   def == typeof(IList<>);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// GetDataMemberName
         ///
         /// <summary>
@@ -305,22 +162,6 @@ namespace Cube.Settings
             var attr = obj[0] as DataMemberAttribute;
             return attr?.Name ?? info.Name;
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Convert
-        ///
-        /// <summary>
-        /// 指定した型で、指定したオブジェクトと同じ内容を表すを持つ
-        /// オブジェクトを返します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static object Convert(object value, Type type) =>
-            value == null            ? null :
-            type.IsEnum              ? (int)value :
-            type == typeof(DateTime) ? DateTime.Parse(value as string).ToLocalTime() :
-            System.Convert.ChangeType(value, type);
 
         /* ----------------------------------------------------------------- */
         ///
