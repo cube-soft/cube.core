@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Cube.Tests
@@ -203,7 +204,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OtherAddresses
+        /// Others
         ///
         /// <summary>
         /// その他のアドレスを取得または設定します。
@@ -211,7 +212,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address OtherAddresses
+        public IList<Address> Others
         {
             get => _others;
             set => SetProperty(ref _others, value);
@@ -292,7 +293,7 @@ namespace Cube.Tests
             _age            = 0;
             _creation       = DateTime.MinValue;
             _contact        = new Address { Type = "Phone", Value = string.Empty };
-            _others         = new Address { Type = "Email", Value = string.Empty };
+            _others         = new Address[0];
             _reserved       = false;
             _secret         = "secret message";
         }
@@ -306,7 +307,7 @@ namespace Cube.Tests
         private int _age;
         private DateTime? _creation;
         private Address _contact;
-        private Address _others;
+        private IList<Address> _others;
         private bool _reserved;
         private string _secret;
         #endregion
