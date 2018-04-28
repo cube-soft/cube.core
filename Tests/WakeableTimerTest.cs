@@ -263,9 +263,9 @@ namespace Cube.Tests
         public void Dispose()
         {
             var timer = new WakeableTimer();
-            timer.Subscribe(() => timer.Dispose());
             timer.Start();
-            Task.Delay(200).Wait();
+            Task.Delay(50).Wait();
+            timer.Dispose();
             Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
         }
 
