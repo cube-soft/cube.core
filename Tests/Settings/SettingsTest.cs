@@ -19,7 +19,6 @@ using Cube.Settings;
 using Microsoft.Win32;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -38,6 +37,8 @@ namespace Cube.Tests
     class SettingsTest : FileHelper
     {
         #region Tests
+
+        #region Create
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,6 +91,10 @@ namespace Cube.Tests
             Assert.That(dest.Version.Number, Is.EqualTo(AssemblyReader.Default.Version));
             Assert.That(dest.Value,          Is.Not.Null);
         }
+
+        #endregion
+
+        #region Load
 
         /* ----------------------------------------------------------------- */
         ///
@@ -235,6 +240,10 @@ namespace Cube.Tests
             Throws.TypeOf<ArgumentException>()
         );
 
+        #endregion
+
+        #region Save
+
         /* ----------------------------------------------------------------- */
         ///
         /// Save_Registry
@@ -262,10 +271,25 @@ namespace Cube.Tests
                 Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(key.GetValue("Secret"),   Is.Null);
 
-                using (var sk = key.OpenSubKey("Contact"))
+                using (var sk = key.OpenSubKey("Contact", false))
                 {
-                    Assert.That(sk.GetValue("Type"),  Is.EqualTo("Mobile"));
+                    Assert.That(sk.GetValue("Type"),  Is.EqualTo("Phone"));
                     Assert.That(sk.GetValue("Value"), Is.EqualTo("080-9876-5432"));
+                }
+
+                using (var sk = key.OpenSubKey("Others", false))
+                {
+                    using (var ssk = sk.OpenSubKey("0", false))
+                    {
+                        Assert.That(ssk.GetValue("Type"),  Is.EqualTo("PC"));
+                        Assert.That(ssk.GetValue("Value"), Is.EqualTo("pc@example.com"));
+                    }
+
+                    using (var ssk = sk.OpenSubKey("1", false))
+                    {
+                        Assert.That(ssk.GetValue("Type"),  Is.EqualTo("Mobile"));
+                        Assert.That(ssk.GetValue("Value"), Is.EqualTo("mobile@example.com"));
+                    }
                 }
             }
         }
@@ -353,6 +377,8 @@ namespace Cube.Tests
             () => { using (var ss = File.Create(Result(filename))) type.Save(ss, CreatePerson()); },
             Throws.TypeOf<ArgumentException>()
         );
+
+        #endregion
 
         /* ----------------------------------------------------------------- */
         ///
@@ -465,8 +491,8 @@ namespace Cube.Tests
 
                 using (var sk = key.CreateSubKey(nameof(Person.Others)))
                 {
-                    using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "PC", "pc@example.com");
-                    using (var ssk = sk.CreateSubKey("2")) SetAddress(ssk, "Mobile", "mobile@example.com");
+                    using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
+                    using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
                 }
             }
         }
@@ -503,10 +529,25 @@ namespace Cube.Tests
             Sex            = Sex.Female,
             Age            = 15,
             Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
-            Contact        = new Address { Type = "Mobile", Value = "080-9876-5432" },
-            Others         = new List<Address> { new Address { Type = "PC", Value = "dummy@example.com" } },
+            Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
+            Others         = CreateOthers(),
             Reserved       = true,
             Secret         = "dummy data"
+        };
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateOthers
+        ///
+        /// <summary>
+        /// Address[] オブジェクトを生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Address[] CreateOthers() => new[]
+        {
+            new Address { Type = "PC",     Value = "pc@example.com" },
+            new Address { Type = "Mobile", Value = "mobile@example.com" }
         };
 
         /* ----------------------------------------------------------------- */

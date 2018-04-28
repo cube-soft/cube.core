@@ -88,12 +88,7 @@ namespace Cube.Serializations
         {
             if (!src.IsGenericType) return false;
             var gtd = src.GetGenericTypeDefinition();
-            return gtd == typeof(List<>)               ||
-                   gtd == typeof(IList<>)              ||
-                   gtd == typeof(ICollection<>)        ||
-                   gtd == typeof(IEnumerable<>)        ||
-                   gtd == typeof(IReadOnlyList<>)      ||
-                   gtd == typeof(IReadOnlyCollection<>);
+            return gtd == typeof(List<>) || gtd == typeof(IList<>);
         }
 
         #endregion

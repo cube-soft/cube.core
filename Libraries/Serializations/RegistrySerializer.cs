@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Microsoft.Win32;
 using System;
+using System.Collections;
 
 namespace Cube.Serializations
 {
@@ -60,7 +61,7 @@ namespace Cube.Serializations
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Set(Type type, RegistryKey dest, object src)
+        private void Set(Type type, RegistryKey dest, object src)
         {
             if (dest == null || src == null) return;
             foreach (var pi in type.GetProperties())
@@ -73,6 +74,7 @@ namespace Cube.Serializations
 
                 var pt = pi.GetPropertyType();
                 if (pt.IsEnum) dest.SetValue(key, (int)value);
+                else if (pt.IsGenericList()) using (var sk = dest.CreateSubKey(key)) SetList(pt, sk, (IList)value);
                 else if (pt.IsObject()) using (var sk = dest.CreateSubKey(key)) Set(pt, sk, value);
                 else Set(pt, dest, key, value);
             }
@@ -87,7 +89,7 @@ namespace Cube.Serializations
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Set(Type type, RegistryKey dest, string key, object value)
+        private void Set(Type type, RegistryKey dest, string key, object value)
         {
             switch (Type.GetTypeCode(type))
             {
@@ -100,6 +102,26 @@ namespace Cube.Serializations
                 default:
                     dest.SetValue(key, value);
                     break;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetList
+        ///
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下にリストの内容を保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void SetList(Type type, RegistryKey dest, IList src)
+        {
+            var t = type.GetGenericArguments()[0];
+            var n = (src.Count == 0) ? 1 : ((int)Math.Log10(src.Count) + 1);
+
+            for (var i = 0; i < src.Count; ++i)
+            {
+                using (var sk = dest.CreateSubKey(i.ToString($"D{n}"))) Set(t, sk, src[i]);
             }
         }
 

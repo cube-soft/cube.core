@@ -90,7 +90,7 @@ namespace Cube.Serializations
         /* ----------------------------------------------------------------- */
         private object Get(Type type, RegistryKey src, string name)
         {
-            if (type.IsGenericList()) return OpenGet(src, name, e => GetList(type.GetGenericArguments()[0], e));
+            if (type.IsGenericList()) return OpenGet(src, name, e => GetList(type, e));
             else if (type.IsObject()) return OpenGet(src, name, e => Get(type, e));
             else return type.Parse(src.GetValue(name, null));
         }
@@ -107,14 +107,15 @@ namespace Cube.Serializations
         /* ----------------------------------------------------------------- */
         private IList GetList(Type type, RegistryKey src)
         {
+            var t    = type.GetGenericArguments()[0];
             var dest = Activator.CreateInstance(typeof(List<>)
-                                .MakeGenericType(type)) as IList;
+                                .MakeGenericType(t)) as IList;
 
             foreach (var name in src.GetSubKeyNames())
             {
                 using (var sk = src.OpenSubKey(name, false))
                 {
-                    var obj = Get(type, sk);
+                    var obj = Get(t, sk);
                     if (obj != null) dest.Add(obj);
                 }
             }
