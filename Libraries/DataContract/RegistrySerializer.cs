@@ -119,6 +119,8 @@ namespace Cube.DataContract
             var t = type.GetGenericArguments()[0];
             var n = (src.Count == 0) ? 1 : ((int)Math.Log10(src.Count) + 1);
 
+            foreach (var name in dest.GetSubKeyNames()) dest.DeleteSubKeyTree(name);
+
             for (var i = 0; i < src.Count; ++i)
             {
                 using (var sk = dest.CreateSubKey(i.ToString($"D{n}"))) Set(t, sk, src[i]);

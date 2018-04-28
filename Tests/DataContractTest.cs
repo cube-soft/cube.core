@@ -111,6 +111,29 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Serialize_Registry_Remove
+        ///
+        /// <summary>
+        /// リストの項目を削除して再シリアライズした時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Serialize_Registry_Remove()
+        {
+            var name = GetSubKeyName(nameof(Serialize_Registry_Remove));
+            var src  = Person.CreateDummy();
+
+            Format.Registry.Serialize(name, src);
+            src.Others.RemoveAt(0);
+            Format.Registry.Serialize(name, src);
+
+            var dest = Format.Registry.Deserialize<Person>(name);
+            Assert.That(dest.Others.Count, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Serialize_Registry_Null
         ///
         /// <summary>

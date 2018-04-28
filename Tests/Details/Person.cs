@@ -284,7 +284,7 @@ namespace Cube.Tests
             Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
             Reserved       = true,
             Secret         = "dummy data",
-            Others         = new[]
+            Others         = new List<Address>
             {
                 new Address { Type = "PC",     Value = "pc@example.com" },
                 new Address { Type = "Mobile", Value = "mobile@example.com" }
