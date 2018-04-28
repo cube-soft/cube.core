@@ -32,6 +32,24 @@ namespace Cube.Tests
     /* --------------------------------------------------------------------- */
     class RegistryHelper : FileHelper
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RegistryHelper
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected RegistryHelper()
+        {
+            RootSubKeyName = $@"Software\CubeSoft\{GetType().Name}";
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -43,18 +61,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string RootSubKeyName => @"Software\CubeSoft\RegistryTest";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DefaultSubKeyName
-        ///
-        /// <summary>
-        /// デフォルト・サブキー名を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected string DefaultSubKeyName => "Default";
+        protected string RootSubKeyName { get; }
 
         #endregion
 
@@ -62,14 +69,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateSubKeyName
+        /// GetSubKeyName
         ///
         /// <summary>
-        /// サブキー名を生成します。
+        /// サブキー名を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string CreateSubKeyName(string subkey) => $@"{RootSubKeyName}\{subkey}";
+        protected string GetSubKeyName(string subkey) => $@"{RootSubKeyName}\{subkey}";
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetSubKeyName
+        ///
+        /// <summary>
+        /// デフォルト・サブキー名を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected string GetSubKeyName() => GetSubKeyName(_default);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -81,7 +99,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey CreateSubKey(string subkey) =>
-            Formatter.Target.CreateSubKey(CreateSubKeyName(subkey));
+            Formatter.Target.CreateSubKey(GetSubKeyName(subkey));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,7 +111,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey OpenSubKey(string subkey) =>
-            Formatter.Target.OpenSubKey(CreateSubKeyName(subkey), false);
+            Formatter.Target.OpenSubKey(GetSubKeyName(subkey), false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -104,7 +122,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected RegistryKey OpenSubKey() => OpenSubKey(DefaultSubKeyName);
+        protected RegistryKey OpenSubKey() => OpenSubKey(_default);
 
         #region Setup
 
@@ -120,7 +138,7 @@ namespace Cube.Tests
         [SetUp]
         protected virtual void Setup()
         {
-            using (var key = CreateSubKey(DefaultSubKeyName))
+            using (var key = CreateSubKey(_default))
             {
                 key.SetValue("ID", 1357);
                 key.SetValue(nameof(Person.Name), "山田太郎");
@@ -176,6 +194,10 @@ namespace Cube.Tests
             src.SetValue(nameof(Address.Value), value);
         }
 
+        #endregion
+
+        #region Fields
+        private readonly string _default = "Default";
         #endregion
     }
 }

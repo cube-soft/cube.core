@@ -76,6 +76,7 @@
     <Compile Include="Processes\MessengerTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
+    <Compile Include="DataContractTest.cs" />
     <Compile Include="DisposableTest.cs" />
     <Compile Include="GenericComparerTest.cs" />
     <Compile Include="OnceActionTest.cs" />
