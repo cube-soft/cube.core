@@ -109,7 +109,7 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public static void Save<T>(this RegistryKey dest, T src) =>
-            RegistrySettings.Save(dest, src);
+            new RegistrySerializer().Invoke(dest, src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -135,7 +135,7 @@ namespace Cube.Settings
                     SaveJson(src, dest);
                     break;
                 case SettingsType.Registry:
-                    RegistrySettings.Save(dest, src);
+                    using (var sk = Registry.CurrentUser.CreateSubKey(dest)) Save(sk, src);
                     break;
                 default:
                     throw Error(type, "wrong type");
