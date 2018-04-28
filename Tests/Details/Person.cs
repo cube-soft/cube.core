@@ -84,7 +84,7 @@ namespace Cube.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : Cube.ObservableProperty
+    internal class Person : ObservableProperty
     {
         #region Constructors
 
@@ -259,6 +259,37 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         public Guid Guid { get; } = Guid.NewGuid();
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateDummy
+        ///
+        /// <summary>
+        /// テスト用のダミーデータが設定された Person オブジェクトを
+        /// 生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Person CreateDummy() => new Person
+        {
+            Identification = 123,
+            Name           = "山田花子",
+            Sex            = Sex.Female,
+            Age            = 15,
+            Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
+            Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
+            Reserved       = true,
+            Secret         = "dummy data",
+            Others         = new[]
+            {
+                new Address { Type = "PC",     Value = "pc@example.com" },
+                new Address { Type = "Mobile", Value = "mobile@example.com" }
+            },
+        };
 
         #endregion
 

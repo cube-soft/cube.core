@@ -34,7 +34,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsFolderTest : FileHelper
+    class SettingsFolderTest : RegistryHelper
     {
         #region Tests
 
@@ -108,7 +108,8 @@ namespace Cube.Tests
         [Test]
         public void Load_Registry()
         {
-            using (var src = new SettingsFolder<Person>(Format.Registry, LoadKeyName))
+            var name = CreateSubKeyName(DefaultSubKeyName);
+            using (var src = new SettingsFolder<Person>(Format.Registry, name))
             {
                 src.AutoSave = false;
                 src.Load();
@@ -212,28 +213,30 @@ namespace Cube.Tests
         [Test]
         public void Save_Registry()
         {
-            Format.Registry.Serialize(SaveKeyName, CreatePerson());
-            Format.Registry.Serialize(SaveKeyName, default(Person)); // ignore
+            var name = CreateSubKeyName(nameof(Save_Registry));
 
-            using (var key = OpenSaveKey())
+            Format.Registry.Serialize(name, Person.CreateDummy());
+            Format.Registry.Serialize(name, default(Person)); // ignore
+
+            using (var k = OpenSubKey(nameof(Save_Registry)))
             {
                 var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
 
-                Assert.That(key.GetValue("Name"),     Is.EqualTo("山田花子"));
-                Assert.That(key.GetValue("Age"),      Is.EqualTo(15));
-                Assert.That(key.GetValue("Sex"),      Is.EqualTo(1));
-                Assert.That(key.GetValue("Reserved"), Is.EqualTo(1));
-                Assert.That(key.GetValue("Creation"), Is.EqualTo(time.ToString("o")));
-                Assert.That(key.GetValue("ID"),       Is.EqualTo(123));
-                Assert.That(key.GetValue("Secret"),   Is.Null);
+                Assert.That(k.GetValue("Name"),     Is.EqualTo("山田花子"));
+                Assert.That(k.GetValue("Age"),      Is.EqualTo(15));
+                Assert.That(k.GetValue("Sex"),      Is.EqualTo(1));
+                Assert.That(k.GetValue("Reserved"), Is.EqualTo(1));
+                Assert.That(k.GetValue("Creation"), Is.EqualTo(time.ToString("o")));
+                Assert.That(k.GetValue("ID"),       Is.EqualTo(123));
+                Assert.That(k.GetValue("Secret"),   Is.Null);
 
-                using (var sk = key.OpenSubKey("Contact", false))
+                using (var sk = k.OpenSubKey("Contact", false))
                 {
                     Assert.That(sk.GetValue("Type"),  Is.EqualTo("Phone"));
                     Assert.That(sk.GetValue("Value"), Is.EqualTo("080-9876-5432"));
                 }
 
-                using (var sk = key.OpenSubKey("Others", false))
+                using (var sk = k.OpenSubKey("Others", false))
                 {
                     using (var ssk = sk.OpenSubKey("0", false))
                     {
@@ -264,8 +267,9 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Save_RegistryIsNull() =>
-            Assert.DoesNotThrow(() => default(RegistryKey).Serialize(CreatePerson()));
+        public void Save_RegistryIsNull() => Assert.DoesNotThrow(
+            () => default(RegistryKey).Serialize(Person.CreateDummy())
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -281,7 +285,7 @@ namespace Cube.Tests
         public void Save_File(Format format, string filename)
         {
             var dest = Result(filename);
-            format.Serialize(dest, CreatePerson());
+            format.Serialize(dest, Person.CreateDummy());
             Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
@@ -301,7 +305,7 @@ namespace Cube.Tests
             {
                 using (var ss = File.Create(Result("Person.reg")))
                 {
-                    Format.Registry.Serialize(ss, CreatePerson());
+                    Format.Registry.Serialize(ss, Person.CreateDummy());
                 }
             },
             Throws.TypeOf<ArgumentException>()
@@ -321,11 +325,12 @@ namespace Cube.Tests
         [Test]
         public void AutoSave()
         {
+            var key    = nameof(AutoSave);
             var save   = 0;
             var change = 0;
             var delay  = TimeSpan.FromMilliseconds(100);
 
-            using (var src = new SettingsFolder<Person>(Format.Registry, SaveKeyName))
+            using (var src = new SettingsFolder<Person>(Format.Registry, CreateSubKeyName(key)))
             {
                 src.Saved           += (s, e) => ++save;
                 src.PropertyChanged += (s, e) => ++change;
@@ -342,7 +347,7 @@ namespace Cube.Tests
             Assert.That(save,   Is.EqualTo(2), "Saved");
             Assert.That(change, Is.EqualTo(3), "PropertyChanged");
 
-            using (var dest = OpenSaveKey())
+            using (var dest = OpenSubKey(key))
             {
                 Assert.That(dest.GetValue("Name"), Is.EqualTo("AutoSave"));
                 Assert.That(dest.GetValue("Age"),  Is.EqualTo(77));
@@ -363,7 +368,8 @@ namespace Cube.Tests
         public void ReLoad()
         {
             var save = 0;
-            var src  = new SettingsFolder<Person>(Format.Registry, LoadKeyName);
+            var key  = CreateSubKeyName(DefaultSubKeyName);
+            var src  = new SettingsFolder<Person>(Format.Registry, key);
             src.Loaded += (s, e) => ++save;
             src.AutoSave = false;
 
@@ -374,132 +380,6 @@ namespace Cube.Tests
             Assert.That(save,           Is.EqualTo(2), "Saved");
             Assert.That(src.Value.Name, Is.EqualTo("山田太郎"));
         }
-
-        #endregion
-
-        #region Helper methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Setup
-        ///
-        /// <summary>
-        /// 各テスト前に実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [SetUp]
-        public void Setup() => Registry.CurrentUser.DeleteSubKeyTree(SaveKeyName, false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OneTimeSetup
-        ///
-        /// <summary>
-        /// 初期化処理を一度だけ実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            using (var key = CreateLoadKey())
-            {
-                key.SetValue("ID",                    1357);
-                key.SetValue(nameof(Person.Name),     "山田太郎");
-                key.SetValue(nameof(Person.Sex),      0);
-                key.SetValue(nameof(Person.Age),      52);
-                key.SetValue(nameof(Person.Creation), "2015/03/16 02:32:26");
-                key.SetValue(nameof(Person.Reserved), 1);
-
-                using (var sk = key.CreateSubKey(nameof(Person.Contact)))
-                {
-                    sk.SetValue(nameof(Address.Type),  "Phone");
-                    sk.SetValue(nameof(Address.Value), "090-1234-5678");
-                }
-
-                using (var sk = key.CreateSubKey(nameof(Person.Others)))
-                {
-                    using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
-                    using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
-                }
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OneTimeTearDown
-        ///
-        /// <summary>
-        /// 終了処理を一度だけ実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
-        {
-            Registry.CurrentUser.DeleteSubKeyTree(LoadKeyName, true);
-            Registry.CurrentUser.DeleteSubKeyTree(SaveKeyName, false);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreatePerson
-        ///
-        /// <summary>
-        /// Person オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Person CreatePerson() => new Person
-        {
-            Identification = 123,
-            Name           = "山田花子",
-            Sex            = Sex.Female,
-            Age            = 15,
-            Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
-            Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
-            Others         = CreateOthers(),
-            Reserved       = true,
-            Secret         = "dummy data"
-        };
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateOthers
-        ///
-        /// <summary>
-        /// Address[] オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Address[] CreateOthers() => new[]
-        {
-            new Address { Type = "PC",     Value = "pc@example.com" },
-            new Address { Type = "Mobile", Value = "mobile@example.com" }
-        };
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetAddress
-        ///
-        /// <summary>
-        /// レジストリに Address オブジェクトに対応する値を設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void SetAddress(RegistryKey src, string type, string value)
-        {
-            src.SetValue(nameof(Address.Type),  type);
-            src.SetValue(nameof(Address.Value), value);
-        }
-
-        #region Registry information
-        private string LoadKeyName => $@"Software\CubeSoft\Settings_LoadTest";
-        private string SaveKeyName => $@"Software\CubeSoft\Settings_SaveTest";
-        private RegistryKey CreateLoadKey() => Registry.CurrentUser.CreateSubKey(LoadKeyName);
-        private RegistryKey OpenSaveKey() => Registry.CurrentUser.OpenSubKey(SaveKeyName, false);
-        #endregion
 
         #endregion
     }
