@@ -19,7 +19,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections;
 
-namespace Cube.Serializations
+namespace Cube.DataContract
 {
     /* --------------------------------------------------------------------- */
     ///

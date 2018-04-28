@@ -35,10 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\Cube.Core.Tests.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -77,8 +73,6 @@
     <Compile Include="Operations\XmlTest.cs" />
     <Compile Include="OrderedDictionaryTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />
-    <Compile Include="Settings\SettingsTest.cs" />
-    <Compile Include="Settings\StartupTest.cs" />
     <Compile Include="ArgumentsTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
     <Compile Include="DisposableTest.cs" />
@@ -86,7 +80,9 @@
     <Compile Include="OnceActionTest.cs" />
     <Compile Include="PowerTest.cs" />
     <Compile Include="QueryTest.cs" />
+    <Compile Include="SettingsFolderTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
+    <Compile Include="StartupTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

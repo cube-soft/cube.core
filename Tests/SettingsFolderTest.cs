@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Settings;
+using Cube.DataContract;
 using Microsoft.Win32;
 using NUnit.Framework;
 using System;
@@ -34,7 +34,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsTest : FileHelper
+    class SettingsFolderTest : FileHelper
     {
         #region Tests
 
@@ -58,9 +58,9 @@ namespace Cube.Tests
             dest.Load();
 
             Assert.That(count,               Is.EqualTo(1));
-            Assert.That(dest.Type,           Is.EqualTo(SettingsType.Registry));
-            Assert.That(dest.Path,           Does.StartWith("Software"));
-            Assert.That(dest.Path,           Does.EndWith(AssemblyReader.Default.Product));
+            Assert.That(dest.Format,         Is.EqualTo(Format.Registry));
+            Assert.That(dest.Location,       Does.StartWith("Software"));
+            Assert.That(dest.Location,       Does.EndWith(AssemblyReader.Default.Product));
             Assert.That(dest.Company,        Is.EqualTo(AssemblyReader.Default.Company));
             Assert.That(dest.Product,        Is.EqualTo(AssemblyReader.Default.Product));
             Assert.That(dest.Version.Number, Is.EqualTo(AssemblyReader.Default.Version));
@@ -80,12 +80,12 @@ namespace Cube.Tests
         [Test]
         public void Create_Json()
         {
-            var dest = new SettingsFolder<Person>(SettingsType.Json);
+            var dest = new SettingsFolder<Person>(Format.Json);
             var root = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-            Assert.That(dest.Type,           Is.EqualTo(SettingsType.Json));
-            Assert.That(dest.Path,           Does.StartWith(root));
-            Assert.That(dest.Path,           Does.EndWith(AssemblyReader.Default.Product));
+            Assert.That(dest.Format,         Is.EqualTo(Format.Json));
+            Assert.That(dest.Location,       Does.StartWith(root));
+            Assert.That(dest.Location,       Does.EndWith(AssemblyReader.Default.Product));
             Assert.That(dest.Company,        Is.EqualTo(AssemblyReader.Default.Company));
             Assert.That(dest.Product,        Is.EqualTo(AssemblyReader.Default.Product));
             Assert.That(dest.Version.Number, Is.EqualTo(AssemblyReader.Default.Version));
@@ -108,7 +108,7 @@ namespace Cube.Tests
         [Test]
         public void Load_Registry()
         {
-            using (var src = new SettingsFolder<Person>(SettingsType.Registry, LoadKeyName))
+            using (var src = new SettingsFolder<Person>(Format.Registry, LoadKeyName))
             {
                 src.AutoSave = false;
                 src.Load();
@@ -143,7 +143,7 @@ namespace Cube.Tests
         [Test]
         public void Load_RegistryIsNull()
         {
-            var dest     = default(RegistryKey).Load<Person>();
+            var dest     = default(RegistryKey).Deserialize<Person>();
             var expected = new Person();
 
             Assert.That(dest.Identification, Is.EqualTo(expected.Identification));
@@ -167,76 +167,32 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(SettingsType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(SettingsType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
-        public string Load_File(SettingsType type, string filename) =>
-            type.Load<Person>(Example(filename)).Name;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_File_Throws
-        ///
-        /// <summary>
-        /// ファイルから設定を読み込みに失敗するテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Unknown, "Settings.xml")]
-        public void Load_File_Throws(SettingsType type, string filename) => Assert.That(
-            () => type.Load<Person>(Example(filename)),
-            Throws.TypeOf<ArgumentException>()
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_File_Default
-        ///
-        /// <summary>
-        /// SettingsFolder.Load 失敗時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Unknown, "Settings.xml")]
-        public void Load_File_Default(SettingsType type, string filename)
-        {
-            var src = new SettingsFolder<Person>(type, Example(filename));
-            src.Load();
-            Assert.That(src.Value, Is.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Stream
-        ///
-        /// <summary>
-        /// ストリームから設定を読み込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
-        [TestCase(SettingsType.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
-        [TestCase(SettingsType.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
-        [TestCase(SettingsType.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
-        public string Load_Stream(SettingsType type, string filename)
-        {
-            using (var ss = File.OpenRead(Example(filename))) return type.Load<Person>(ss).Name;
-        }
+        [TestCase(Format.Xml,  "Settings.xml",     ExpectedResult = "John Lennon")]
+        [TestCase(Format.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
+        [TestCase(Format.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
+        [TestCase(Format.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
+        public string Load_File(Format format, string filename) =>
+            format.Deserialize<Person>(Example(filename)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Load_Stream_Throws
         ///
         /// <summary>
-        /// ストリームから設定を読み込みに失敗するテストを実行します。
+        /// Format.Registry を指定した状態でストリームから読み込んだ時の
+        /// 挙動を確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Registry, "Settings.xml")]
-        [TestCase(SettingsType.Unknown,  "Settings.xml")]
-        public void Load_Stream_Throws(SettingsType type, string filename) => Assert.That(
-            () => { using (var ss = File.OpenRead(Example(filename))) type.Load<Person>(ss); },
+        [Test]
+        public void Load_Stream_Throws() => Assert.That(
+            () =>
+            {
+                using (var ss = File.OpenRead(Example("Settings.xml")))
+                {
+                    Format.Registry.Deserialize<Person>(ss);
+                }
+            },
             Throws.TypeOf<ArgumentException>()
         );
 
@@ -256,8 +212,8 @@ namespace Cube.Tests
         [Test]
         public void Save_Registry()
         {
-            SettingsType.Registry.Save(SaveKeyName, CreatePerson());
-            SettingsType.Registry.Save(SaveKeyName, default(Person)); // ignore
+            Format.Registry.Serialize(SaveKeyName, CreatePerson());
+            Format.Registry.Serialize(SaveKeyName, default(Person)); // ignore
 
             using (var key = OpenSaveKey())
             {
@@ -309,7 +265,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Save_RegistryIsNull() =>
-            Assert.DoesNotThrow(() => default(RegistryKey).Save(CreatePerson()));
+            Assert.DoesNotThrow(() => default(RegistryKey).Serialize(CreatePerson()));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -320,45 +276,12 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,  "Person.xml")]
-        [TestCase(SettingsType.Json, "Person.json")]
-        public void Save_File(SettingsType type, string filename)
+        [TestCase(Format.Xml,  "Person.xml")]
+        [TestCase(Format.Json, "Person.json")]
+        public void Save_File(Format format, string filename)
         {
             var dest = Result(filename);
-            type.Save(dest, CreatePerson());
-            Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_File_Throws
-        ///
-        /// <summary>
-        /// 設定の保存に失敗するテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Unknown,  "Person.txt")]
-        public void Save_File_Throws(SettingsType type, string filename) => Assert.That(
-            () => type.Save(Result(filename), CreatePerson()),
-            Throws.TypeOf<ArgumentException>()
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save_Stream
-        ///
-        /// <summary>
-        /// 設定内容をストリームに書き込むテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Xml,  "PersonStream.xml")]
-        [TestCase(SettingsType.Json, "PersonStream.json")]
-        public void Save_Stream(SettingsType type, string filename)
-        {
-            var dest = Result(filename);
-            using (var ss = File.Create(dest)) type.Save(ss, CreatePerson());
+            format.Serialize(dest, CreatePerson());
             Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
@@ -367,14 +290,20 @@ namespace Cube.Tests
         /// Save_Stream_Throws
         ///
         /// <summary>
-        /// 設定の保存に失敗するテストを実行します。
+        /// Format.Registry を指定した状態でストリームに保存した時の挙動を
+        /// 確認します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(SettingsType.Registry, "Person.reg")]
-        [TestCase(SettingsType.Unknown,  "Person.txt")]
-        public void Save_Stream_Throws(SettingsType type, string filename) => Assert.That(
-            () => { using (var ss = File.Create(Result(filename))) type.Save(ss, CreatePerson()); },
+        [Test]
+        public void Save_Stream_Throws() => Assert.That(
+            () =>
+            {
+                using (var ss = File.Create(Result("Person.reg")))
+                {
+                    Format.Registry.Serialize(ss, CreatePerson());
+                }
+            },
             Throws.TypeOf<ArgumentException>()
         );
 
@@ -396,7 +325,7 @@ namespace Cube.Tests
             var change = 0;
             var delay  = TimeSpan.FromMilliseconds(100);
 
-            using (var src = new SettingsFolder<Person>(SettingsType.Registry, SaveKeyName))
+            using (var src = new SettingsFolder<Person>(Format.Registry, SaveKeyName))
             {
                 src.Saved           += (s, e) => ++save;
                 src.PropertyChanged += (s, e) => ++change;
@@ -434,7 +363,7 @@ namespace Cube.Tests
         public void ReLoad()
         {
             var save = 0;
-            var src  = new SettingsFolder<Person>(SettingsType.Registry, LoadKeyName);
+            var src  = new SettingsFolder<Person>(Format.Registry, LoadKeyName);
             src.Loaded += (s, e) => ++save;
             src.AutoSave = false;
 
