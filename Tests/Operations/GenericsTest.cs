@@ -88,7 +88,7 @@ namespace Cube.Tests
                 Creation       = DateTime.Now,
                 Reserved       = true
             };
-            src.Phone.Value = "01-2345-6789";
+            src.Contact.Value = "01-2345-6789";
             src.Secret      = "Non-DataMember";
 
             var copy = src.Copy();
@@ -98,7 +98,7 @@ namespace Cube.Tests
             Assert.That(copy.Age,            Is.EqualTo(src.Age));
             Assert.That(copy.Creation,       Is.EqualTo(src.Creation));
             Assert.That(copy.Reserved,       Is.EqualTo(src.Reserved));
-            Assert.That(copy.Phone.Value,    Is.EqualTo(src.Phone.Value));
+            Assert.That(copy.Contact.Value,    Is.EqualTo(src.Contact.Value));
             Assert.That(copy.Secret,         Is.EqualTo(src.Secret));
             Assert.That(copy.Guid,           Is.Not.EqualTo(src.Guid));
         }
@@ -163,11 +163,11 @@ namespace Cube.Tests
         public void Copy_Modify_Reference()
         {
             var src = new Person();
-            src.Phone.Value = "01-2345-6789";
+            src.Contact.Value = "01-2345-6789";
             var copy = src.Copy();
-            src.Phone.Value = "98-7654-3210";
+            src.Contact.Value = "98-7654-3210";
 
-            Assert.That(copy.Phone.Value, Is.EqualTo(src.Phone.Value));
+            Assert.That(copy.Contact.Value, Is.EqualTo(src.Contact.Value));
         }
 
         #endregion

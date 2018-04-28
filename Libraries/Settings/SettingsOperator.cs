@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Serializations;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -46,7 +47,8 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this RegistryKey src) => RegistrySettings.Load<T>(src);
+        public static T Load<T>(this RegistryKey src) =>
+            new RegistryDeserializer().Invoke<T>(src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -61,10 +63,14 @@ namespace Cube.Settings
         {
             switch (type)
             {
-                case SettingsType.Xml:      return LoadXml<T>(src);
-                case SettingsType.Json:     return LoadJson<T>(src);
-                case SettingsType.Registry: return RegistrySettings.Load<T>(src);
-                default:                    throw Error(type, "wrong type");
+                case SettingsType.Xml:
+                    return LoadXml<T>(src);
+                case SettingsType.Json:
+                    return LoadJson<T>(src);
+                case SettingsType.Registry:
+                    using (var sk = Registry.CurrentUser.OpenSubKey(src, false)) return sk.Load<T>();
+                default:
+                    throw Error(type, "wrong type");
             }
         }
 
@@ -103,7 +109,7 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public static void Save<T>(this RegistryKey dest, T src) =>
-            RegistrySettings.Save(dest, src);
+            new RegistrySerializer().Invoke(dest, src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -129,7 +135,7 @@ namespace Cube.Settings
                     SaveJson(src, dest);
                     break;
                 case SettingsType.Registry:
-                    RegistrySettings.Save(dest, src);
+                    using (var sk = Registry.CurrentUser.CreateSubKey(dest)) Save(sk, src);
                     break;
                 default:
                     throw Error(type, "wrong type");

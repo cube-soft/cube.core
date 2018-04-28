@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Cube.Tests
@@ -187,34 +188,34 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Phone
+        /// Contact
         ///
         /// <summary>
-        /// 電話番号を取得または設定します。
+        /// 連絡先を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Phone
+        public Address Contact
         {
-            get => _phone;
-            set => SetProperty(ref _phone, value);
+            get => _contact;
+            set => SetProperty(ref _contact, value);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Email
+        /// Others
         ///
         /// <summary>
-        /// Email アドレスを取得または設定します。
+        /// その他のアドレスを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Email
+        public IList<Address> Others
         {
-            get => _email;
-            set => SetProperty(ref _email, value);
+            get => _others;
+            set => SetProperty(ref _others, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -291,8 +292,8 @@ namespace Cube.Tests
             _sex            = Sex.Unknown;
             _age            = 0;
             _creation       = DateTime.MinValue;
-            _phone          = new Address { Type = "Phone", Value = string.Empty };
-            _email          = new Address { Type = "Email", Value = string.Empty };
+            _contact        = new Address { Type = "Phone", Value = string.Empty };
+            _others         = new List<Address>();
             _reserved       = false;
             _secret         = "secret message";
         }
@@ -305,8 +306,8 @@ namespace Cube.Tests
         private Sex _sex;
         private int _age;
         private DateTime? _creation;
-        private Address _phone;
-        private Address _email;
+        private Address _contact;
+        private IList<Address> _others;
         private bool _reserved;
         private string _secret;
         #endregion
