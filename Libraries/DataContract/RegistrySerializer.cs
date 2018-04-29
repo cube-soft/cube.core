@@ -39,7 +39,7 @@ namespace Cube.DataContract
         /// Invoke
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に内容を保存します。
+        /// レジストリ・サブキー下に内容を保存します。
         /// </summary>
         ///
         /// <param name="dest">レジストリ・サブキー</param>
@@ -57,7 +57,7 @@ namespace Cube.DataContract
         /// Set
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に内容を保存します。
+        /// レジストリ・サブキー下に内容を保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -74,8 +74,9 @@ namespace Cube.DataContract
 
                 var pt = pi.GetPropertyType();
                 if (pt.IsEnum) dest.SetValue(key, (int)value);
-                else if (pt.IsGenericList()) using (var sk = dest.CreateSubKey(key)) SetList(pt, sk, (IList)value);
-                else if (pt.IsObject()) using (var sk = dest.CreateSubKey(key)) Set(pt, sk, value);
+                else if (pt.IsGenericList()) Create(dest, key, e => SetList(pt, e, (IList)value));
+                else if (pt.IsArray) Create(dest, key, e => SetArray(pt, e, (Array)value));
+                else if (pt.IsObject()) Create(dest, key, e => Set(pt, e, value));
                 else Set(pt, dest, key, value);
             }
         }
@@ -85,7 +86,7 @@ namespace Cube.DataContract
         /// Set
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に内容を保存します。
+        /// レジストリ・サブキー下に内容を保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -107,25 +108,96 @@ namespace Cube.DataContract
 
         /* ----------------------------------------------------------------- */
         ///
+        /// SetArray
+        ///
+        /// <summary>
+        /// レジストリ・サブキー下に配列の内容を保存します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// 1 次元配列のみに対応しています。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetArray(Type type, RegistryKey dest, Array src)
+        {
+            if (src.Rank != 1) return;
+
+            var t = type.GetElementType();
+            var n = Digit(src.Length);
+
+            foreach (var name in dest.GetSubKeyNames()) dest.DeleteSubKeyTree(name);
+            for (var i = 0; i < src.Length; ++i)
+            {
+                Create(dest, i.ToString($"D{n}"), e => SetListElement(t, e, src.GetValue(i)));
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SetList
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下にリストの内容を保存します。
+        /// レジストリ・サブキー下にリストの内容を保存します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void SetList(Type type, RegistryKey dest, IList src)
+        private void SetList(Type type, RegistryKey dest, IList src)
         {
-            var t = type.GetGenericArguments()[0];
-            var n = (src.Count == 0) ? 1 : ((int)Math.Log10(src.Count) + 1);
+            var ga = type.GetGenericArguments();
+            if (ga == null || ga.Length != 1) return;
+
+            var n = Digit(src.Count);
 
             foreach (var name in dest.GetSubKeyNames()) dest.DeleteSubKeyTree(name);
-
             for (var i = 0; i < src.Count; ++i)
             {
-                using (var sk = dest.CreateSubKey(i.ToString($"D{n}"))) Set(t, sk, src[i]);
+                Create(dest, i.ToString($"D{n}"), e => SetListElement(ga[0], e, src[i]));
             }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetListElement
+        ///
+        /// <summary>
+        /// レジストリ・サブキー下にリスト要素の内容を保存します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void SetListElement(Type type, RegistryKey dest, object src)
+        {
+            if (type.IsObject()) Set(type, dest, src);
+            else Set(type, dest, "", src);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// レジストリ・サブキーを生成して処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Create(RegistryKey dest, string name, Action<RegistryKey> callback)
+        {
+            using (var e = dest.CreateSubKey(name))
+            {
+                if (e != null) callback(e);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Digit
+        ///
+        /// <summary>
+        /// 整数値の桁数を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private int Digit(int n) => n.ToString().Length;
 
         #endregion
     }

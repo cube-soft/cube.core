@@ -106,6 +106,13 @@ namespace Cube.Tests
                         Assert.That(ssk.GetValue("Value"), Is.EqualTo("mobile@example.com"));
                     }
                 }
+
+                using (var sk = k.OpenSubKey("Messages", false))
+                {
+                    using (var ssk = sk.OpenSubKey("0", false)) Assert.That(ssk.GetValue(""), Is.EqualTo("1st message"));
+                    using (var ssk = sk.OpenSubKey("1", false)) Assert.That(ssk.GetValue(""), Is.EqualTo("2nd message"));
+                    using (var ssk = sk.OpenSubKey("2", false)) Assert.That(ssk.GetValue(""), Is.EqualTo("3rd message"));
+                }
             }
         }
 
@@ -130,6 +137,43 @@ namespace Cube.Tests
 
             var dest = Format.Registry.Deserialize<Person>(name);
             Assert.That(dest.Others.Count, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Serialize_Registry_Add
+        ///
+        /// <summary>
+        /// 配列の項目を増やして再シリアライズした時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Serialize_Registry_Add()
+        {
+            var name = GetSubKeyName(nameof(Serialize_Registry_Add));
+            var src  = Person.CreateDummy();
+
+            Format.Registry.Serialize(name, src);
+
+            src.Messages = new[]
+            {
+                " 1st change",
+                " 2nd change",
+                " 3rd change",
+                " 4th change",
+                " 5th change",
+                " 6th change",
+                " 7th change",
+                " 8th change",
+                " 9th change",
+                "10th change",
+            };
+
+            Format.Registry.Serialize(name, src);
+
+            var dest = Format.Registry.Deserialize<Person>(name);
+            Assert.That(dest.Messages.Length, Is.EqualTo(10));
         }
 
         /* ----------------------------------------------------------------- */
