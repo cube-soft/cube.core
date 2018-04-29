@@ -120,6 +120,10 @@ namespace Cube.Tests
                 Assert.That(dest.Others[0].Value, Is.EqualTo("pc@example.com"));
                 Assert.That(dest.Others[1].Type,  Is.EqualTo("Mobile"));
                 Assert.That(dest.Others[1].Value, Is.EqualTo("mobile@example.com"));
+                Assert.That(dest.Messages.Length, Is.EqualTo(3));
+                Assert.That(dest.Messages[0],     Is.EqualTo("1st message"));
+                Assert.That(dest.Messages[1],     Is.EqualTo("2nd message"));
+                Assert.That(dest.Messages[2],     Is.EqualTo("3rd message"));
             }
         }
 

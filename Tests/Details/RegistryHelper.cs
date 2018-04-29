@@ -158,6 +158,13 @@ namespace Cube.Tests
                     using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
                     using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
                 }
+
+                using (var sk = key.CreateSubKey(nameof(Person.Messages)))
+                {
+                    using (var ssk = sk.CreateSubKey("0")) ssk.SetValue("", "1st message");
+                    using (var ssk = sk.CreateSubKey("1")) ssk.SetValue("", "2nd message");
+                    using (var ssk = sk.CreateSubKey("2")) ssk.SetValue("", "3rd message");
+                }
             }
         }
 

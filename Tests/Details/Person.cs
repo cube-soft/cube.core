@@ -220,6 +220,22 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Messages
+        ///
+        /// <summary>
+        /// メッセージ一覧を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public string[] Messages
+        {
+            get => _messages;
+            set => SetProperty(ref _messages, value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Reserved
         ///
         /// <summary>
@@ -289,6 +305,12 @@ namespace Cube.Tests
                 new Address { Type = "PC",     Value = "pc@example.com" },
                 new Address { Type = "Mobile", Value = "mobile@example.com" }
             },
+            Messages       = new[]
+            {
+                "1st message",
+                "2nd message",
+                "3rd message",
+            }
         };
 
         #endregion
@@ -325,6 +347,7 @@ namespace Cube.Tests
             _creation       = DateTime.MinValue;
             _contact        = new Address { Type = "Phone", Value = string.Empty };
             _others         = new List<Address>();
+            _messages       = new string[0];
             _reserved       = false;
             _secret         = "secret message";
         }
@@ -339,6 +362,7 @@ namespace Cube.Tests
         private DateTime? _creation;
         private Address _contact;
         private IList<Address> _others;
+        private string[] _messages;
         private bool _reserved;
         private string _secret;
         #endregion

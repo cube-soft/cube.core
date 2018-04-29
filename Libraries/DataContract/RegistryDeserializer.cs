@@ -91,8 +91,34 @@ namespace Cube.DataContract
         private object Get(Type type, RegistryKey src, string name)
         {
             if (type.IsGenericList()) return OpenGet(src, name, e => GetList(type, e));
+            else if (type.IsArray) return OpenGet(src, name, e => GetArray(type, e));
             else if (type.IsObject()) return OpenGet(src, name, e => Get(type, e));
             else return type.Parse(src.GetValue(name, null));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetArray
+        ///
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に存在する内容を配列として
+        /// 取得します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// 1 次元配列のみに対応しています。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Array GetArray(Type type, RegistryKey src)
+        {
+            if (type.GetArrayRank() != 1) return null;
+
+            var elem = type.GetElementType();
+            var obj  = GetListCore(elem, src);
+            var dest = Array.CreateInstance(elem, obj.Count);
+            obj.CopyTo(dest, 0);
+            return dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -107,17 +133,29 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         private IList GetList(Type type, RegistryKey src)
         {
-            var t    = type.GetGenericArguments()[0];
+            var ga = type.GetGenericArguments();
+            return (ga != null && ga.Length == 1) ? GetListCore(ga[0], src) : null;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetListCore
+        ///
+        /// <summary>
+        /// 指定されたレジストリ・サブキー下に存在する内容を配列として
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IList GetListCore(Type elementType, RegistryKey src)
+        {
             var dest = Activator.CreateInstance(typeof(List<>)
-                                .MakeGenericType(t)) as IList;
+                                .MakeGenericType(elementType)) as IList;
 
             foreach (var name in src.GetSubKeyNames())
             {
-                using (var sk = src.OpenSubKey(name, false))
-                {
-                    var obj = Get(t, sk);
-                    if (obj != null) dest.Add(obj);
-                }
+                var obj = OpenGet(src, name, e => GetListElement(elementType, e));
+                if (obj != null) dest.Add(obj);
             }
 
             return dest;
@@ -125,7 +163,19 @@ namespace Cube.DataContract
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Open
+        /// GetListElement
+        ///
+        /// <summary>
+        /// リストの要素を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private object GetListElement(Type type, RegistryKey src) =>
+            type.IsObject() ? Get(type, src) : type.Parse(src.GetValue("", null));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OpenGet
         ///
         /// <summary>
         /// レジストリ・サブキーを開き、内容を取得します。
