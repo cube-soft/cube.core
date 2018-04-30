@@ -92,7 +92,7 @@
     <Compile Include="Details\FileHelper.cs" />
     <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="FilesTest.cs" />
-    <Compile Include="OperatorTest.cs" />
+    <Compile Include="IoTest.cs" />
     <Compile Include="PathFilterTest.cs" />
     <Compile Include="ShortcutTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,21 +15,21 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using Alphaleonis.Win32.Filesystem;
+using System;
 
 namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AfsOperator
+    /// AfsIO
     ///
     /// <summary>
-    /// AlphaFS を利用した Operator クラスです。
+    /// AlphaFS を利用した IO クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class AfsOperator : Operator
+    public class AfsIO : IO
     {
         /* ----------------------------------------------------------------- */
         ///

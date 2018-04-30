@@ -49,7 +49,7 @@ namespace Cube.FileSystem
         /// <param name="path">対象とするパス文字列</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathFilter(string path) : this(path, new Operator()) { }
+        public PathFilter(string path) : this(path, new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -63,7 +63,7 @@ namespace Cube.FileSystem
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathFilter(string path, Operator io)
+        public PathFilter(string path, IO io)
         {
             RawPath = path;
             _io = io;
@@ -654,7 +654,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private readonly Operator _io;
+        private readonly IO _io;
         private char _escapeChar = '_';
         private bool _allowDriveLetter = true;
         private bool _allowCurrentDirectory = true;

@@ -48,7 +48,7 @@ namespace Cube.FileSystem
         /// <param name="file">ショートカットのパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Shortcut(string file) : this(file, new Operator()) { }
+        public Shortcut(string file) : this(file, new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -62,7 +62,7 @@ namespace Cube.FileSystem
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Shortcut(string file, Operator io)
+        public Shortcut(string file, IO io)
         {
             if (string.IsNullOrEmpty(file)) throw new ArgumentException();
 
@@ -259,7 +259,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private readonly Operator _io;
+        private readonly IO _io;
         #endregion
     }
 }

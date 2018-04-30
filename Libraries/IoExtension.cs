@@ -23,14 +23,14 @@ namespace Cube.FileSystem.Files
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OperatorEx
+    /// IoExtension
     ///
     /// <summary>
-    /// FileSystem.Operator に対する拡張メソッドを定義したクラスです。
+    /// Cube.FileSystem.IO に対する拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class OperatorEx
+    public static class IoExtension
     {
         #region Methods
 
@@ -49,7 +49,7 @@ namespace Cube.FileSystem.Files
         /// <returns>変換結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this Operator io, string src, Func<System.IO.Stream, T> func) =>
+        public static T Load<T>(this IO io, string src, Func<System.IO.Stream, T> func) =>
             Load(io, src, func, default(T));
 
         /* ----------------------------------------------------------------- */
@@ -68,7 +68,7 @@ namespace Cube.FileSystem.Files
         /// <returns>変換結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this Operator io, string src,
+        public static T Load<T>(this IO io, string src,
             Func<System.IO.Stream, T> func, T err) => io.LogWarn(() =>
         {
             if (io.Exists(src) && io.Get(src).Length > 0)
@@ -91,7 +91,7 @@ namespace Cube.FileSystem.Files
         /// <param name="action">入力ストリームに対する処理</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Load(this Operator io, string src,
+        public static void Load(this IO io, string src,
             Action<System.IO.Stream> action) => io.Load(src, e =>
         {
             action(e);
@@ -111,7 +111,7 @@ namespace Cube.FileSystem.Files
         /// <param name="action">出力ストリームに対する処理</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save(this Operator io, string dest,
+        public static void Save(this IO io, string dest,
             Action<System.IO.Stream> action) => io.LogWarn(() =>
         {
             using (var ss = new System.IO.MemoryStream())
@@ -137,7 +137,7 @@ namespace Cube.FileSystem.Files
         /// <param name="info">ファイル情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this Operator io, IInformation info) =>
+        public static string GetTypeName(this IO io, IInformation info) =>
             GetTypeName(io, info?.FullName);
 
         /* ----------------------------------------------------------------- */
@@ -156,7 +156,7 @@ namespace Cube.FileSystem.Files
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this Operator io, string path)
+        public static string GetTypeName(this IO io, string path)
         {
             if (string.IsNullOrEmpty(path)) return null;
 
@@ -183,7 +183,7 @@ namespace Cube.FileSystem.Files
         /// <param name="path">対象となるパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this Operator io, string path) =>
+        public static string GetUniqueName(this IO io, string path) =>
             GetUniqueName(io, io?.Get(path));
 
         /* ----------------------------------------------------------------- */
@@ -198,7 +198,7 @@ namespace Cube.FileSystem.Files
         /// <param name="info">ファイル情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this Operator io, IInformation info)
+        public static string GetUniqueName(this IO io, IInformation info)
         {
             if (info == null) return null;
             if (!info.Exists) return info.FullName;

@@ -32,7 +32,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class OperatorTest : FileHelper
+    class IoTest : FileHelper
     {
         #region Tests
 
@@ -46,7 +46,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void GetFiles(Operator io)
+        public void GetFiles(IO io)
         {
             Assert.That(io.GetFiles(Examples).Count(), Is.EqualTo(2));
             Assert.That(io.GetFiles(Example("Sample.txt")), Is.Null);
@@ -68,7 +68,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void GetDirectories(Operator io)
+        public void GetDirectories(IO io)
         {
             Assert.That(io.GetDirectories(Examples).Count(), Is.EqualTo(1));
             Assert.That(io.GetDirectories(Example("Sample.txt")), Is.Null);
@@ -90,7 +90,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get_Properties(Operator io)
+        public void Get_Properties(IO io)
         {
             var file = io.Get(Example("Sample.txt"));
             var dir  = io.Get(file.DirectoryName);
@@ -128,7 +128,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get_Throws(Operator io) =>
+        public void Get_Throws(IO io) =>
             Assert.That(() => io.Get(string.Empty), Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
@@ -141,7 +141,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Create(Operator io)
+        public void Create(IO io)
         {
             var dest = Result(@"Directory\Create.txt");
             using (var stream = io.Create(dest)) stream.WriteByte((byte)'A');
@@ -158,7 +158,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void OpenWrite(Operator io)
+        public void OpenWrite(IO io)
         {
             var src  = io.Get(Example("Sample.txt"));
             var dest = io.Get(Result("OpenWrite.txt"));
@@ -188,7 +188,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Delete(Operator io)
+        public void Delete(IO io)
         {
             var dest = Result("Delete.txt");
 
@@ -209,7 +209,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void DeleteRecursive(Operator io)
+        public void DeleteRecursive(IO io)
         {
             var name = "SampleDirectory";
             var dest = Result(name);
@@ -231,7 +231,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Delete_NotFound(Operator io) =>
+        public void Delete_NotFound(IO io) =>
             Assert.DoesNotThrow(() => io.Delete(Result("NotFound")));
 
         /* ----------------------------------------------------------------- */
@@ -244,7 +244,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move(Operator io)
+        public void Move(IO io)
         {
             io.Failed += (s, e) => Assert.Fail($"{e.Name}: {e.Exception}");
 
@@ -284,7 +284,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move_Failed(Operator io)
+        public void Move_Failed(IO io)
         {
             var failed = false;
             io.Failed += (s, e) =>
@@ -320,7 +320,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move_Throws(Operator io) => Assert.That(
+        public void Move_Throws(IO io) => Assert.That(
             () => io.Move(
                 io.Combine(Results, "FileNotFound.txt"),
                 io.Combine(Results, "Moved.txt")
@@ -338,7 +338,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Open_Failed(Operator io)
+        public void Open_Failed(IO io)
         {
             var failed = false;
             io.Failed += (s, e) =>
@@ -369,7 +369,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Open_Throws(Operator io) => Assert.That(
+        public void Open_Throws(IO io) => Assert.That(
             () => io.OpenRead(io.Combine(Results, "FileNotFound.txt")),
             Throws.TypeOf<System.IO.FileNotFoundException>()
         );
@@ -391,8 +391,8 @@ namespace Cube.FileSystem.Tests
         {
             get
             {
-                yield return new TestCaseData(new Operator());
-                yield return new TestCaseData(new AfsOperator());
+                yield return new TestCaseData(new IO());
+                yield return new TestCaseData(new AfsIO());
             }
         }
 

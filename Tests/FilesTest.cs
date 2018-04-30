@@ -44,7 +44,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Load() => new Operator().Load(
+        public void Load() => new IO().Load(
             Example("Sample.txt"),
             e => Assert.That(e.Length, Is.EqualTo(13L))
         );
@@ -60,7 +60,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Load_NotFound() => Assert.That(
-            new Operator().Load(Example("NotFound.dummy"), e => e.Length, -1),
+            new IO().Load(Example("NotFound.dummy"), e => e.Length, -1),
             Is.EqualTo(-1L)
         );
 
@@ -76,7 +76,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Save()
         {
-            var io   = new Operator();
+            var io   = new IO();
             var dest = Result(nameof(Save));
 
             io.Save(dest, e => e.WriteByte((byte)'a'));
@@ -155,7 +155,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void GetUniqueName_Null()
         {
-            var dummy = default(Operator);
+            var dummy = default(IO);
             var src   = Example("Sample.txt");
 
             Assert.That(dummy.GetUniqueName(src), Is.Null);

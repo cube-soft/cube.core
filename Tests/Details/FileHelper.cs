@@ -41,7 +41,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHelper() : this(new Operator()) { }
+        protected FileHelper() : this(new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,7 +54,7 @@ namespace Cube.FileSystem.Tests
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHelper(Operator io)
+        protected FileHelper(IO io)
         {
             IO = io;
             Root = IO.Get(Assembly.GetExecutingAssembly().Location).DirectoryName;
@@ -77,7 +77,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Operator IO { get; }
+        protected IO IO { get; }
 
         /* ----------------------------------------------------------------- */
         ///
