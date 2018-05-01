@@ -54,6 +54,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ArgumentCollection.cs" />
+    <Compile Include="Collections\CollectionExtension.cs" />
+    <Compile Include="Collections\OrderedDictionary.cs" />
     <Compile Include="Conversions\ByteFormat.cs" />
     <Compile Include="Conversions\TimeFormat.cs" />
     <Compile Include="Conversions\UriFormat.cs" />
@@ -70,20 +73,15 @@
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="Operations\Collections.cs" />
-    <Compile Include="Operations\Generics.cs" />
-    <Compile Include="Operations\Iteration.cs" />
-    <Compile Include="Operations\Log.cs" />
-    <Compile Include="Operations\Tasks.cs" />
-    <Compile Include="Operations\Xml.cs" />
-    <Compile Include="OrderedDictionary.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessengerService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
-    <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="GenericComparer.cs" />
+    <Compile Include="Generics.cs" />
+    <Compile Include="Iteration.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="OnceAction.cs" />
     <Compile Include="Power.cs" />
@@ -91,7 +89,9 @@
     <Compile Include="SettingsFolder.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tasks.cs" />
     <Compile Include="WakeableTimer.cs" />
+    <Compile Include="Xml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

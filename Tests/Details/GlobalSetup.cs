@@ -44,9 +44,9 @@ namespace Cube.Tests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            LogOperator.Configure();
-            LogOperator.ObserveTaskException();
-            LogOperator.Info(typeof(GlobalSetup), AssemblyReader.Default.Assembly);
+            Logger.Configure();
+            Logger.ObserveTaskException();
+            Logger.Info(typeof(GlobalSetup), AssemblyReader.Default.Assembly);
         }
     }
 }

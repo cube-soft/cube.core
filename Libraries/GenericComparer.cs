@@ -41,12 +41,12 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="func">関数オブジェクト</param>
+        /// <param name="src">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public GenericComparer(Func<T, T, int> func)
+        public GenericComparer(Func<T, T, int> src)
         {
-            _comparer = func;
+            _comparer = src;
         }
 
         #endregion
@@ -97,12 +97,12 @@ namespace Cube
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="func">関数オブジェクト</param>
+        /// <param name="src">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public GenericEqualityComparer(Func<T, T, bool> func)
+        public GenericEqualityComparer(Func<T, T, bool> src)
         {
-            _comparer = func;
+            _comparer = src;
         }
 
         #endregion

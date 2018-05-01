@@ -58,8 +58,7 @@ namespace Cube
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query, bool cancel)
-            : this(query, default(U), cancel) { }
+        public QueryEventArgs(T query, bool cancel) : this(query, default(U), cancel) { }
 
         /* ----------------------------------------------------------------- */
         ///

@@ -24,15 +24,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// LogTest
+    /// LoggerTest
     ///
     /// <summary>
-    /// LogOperator のテスト用クラスです。
+    /// Logger のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class LogTest
+    class LoggerTest
     {
         #region Tests
 
@@ -156,7 +156,7 @@ namespace Cube.Tests
         [Test]
         public void ObserveTaskException() => Assert.DoesNotThrow(() =>
         {
-            using (var _ = LogOperator.ObserveTaskException())
+            using (var _ = Logger.ObserveTaskException())
             {
                 Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
                 Task.Delay(100).Wait();

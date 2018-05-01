@@ -22,7 +22,7 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Arguments
+    /// ArgumentCollection
     ///
     /// <summary>
     /// コマンドライン等の引数を解析するクラスです。
@@ -36,13 +36,13 @@ namespace Cube
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Arguments : IReadOnlyList<string>
+    public class ArgumentCollection : IReadOnlyList<string>
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Arguments
+        /// ArgumentCollection
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -51,11 +51,11 @@ namespace Cube
         /// <param name="src">引数一覧</param>
         ///
         /* --------------------------------------------------------------------- */
-        public Arguments(IEnumerable<string> src) : this(src, '-') { }
+        public ArgumentCollection(IEnumerable<string> src) : this(src, '-') { }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Arguments
+        /// ArgumentCollection
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -65,7 +65,7 @@ namespace Cube
         /// <param name="prefix">オプションを示す接頭辞</param>
         ///
         /* --------------------------------------------------------------------- */
-        public Arguments(IEnumerable<string> src, char prefix)
+        public ArgumentCollection(IEnumerable<string> src, char prefix)
         {
             Prefix = prefix;
             Parse(src);
@@ -117,7 +117,7 @@ namespace Cube
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public IDictionary<string, string> Options => _options;
+        public IReadOnlyDictionary<string, string> Options => _options;
 
         #endregion
 
@@ -207,8 +207,8 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly IList<string> _primary = new List<string>();
-        private readonly IDictionary<string, string> _options = new Dictionary<string, string>();
+        private readonly List<string> _primary = new List<string>();
+        private readonly Dictionary<string, string> _options = new Dictionary<string, string>();
         #endregion
     }
 }

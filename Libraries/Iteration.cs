@@ -21,14 +21,14 @@ namespace Cube.Iteration
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IterationOperator
+    /// IterateExtension
     ///
     /// <summary>
-    /// 数値に対する拡張メソッド用クラスです。
+    /// 反復子に対する拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class IterationOperator
+    public static class IterateExtension
     {
         #region Methods
 

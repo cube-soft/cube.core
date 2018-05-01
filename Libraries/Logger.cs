@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using log4net;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -25,14 +24,14 @@ namespace Cube.Log
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// LogOperator
+    /// Logger
     ///
     /// <summary>
     /// Log オブジェクトに対する操作を定義するための拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class LogOperator
+    public static class Logger
     {
         #region Methods
 
@@ -63,7 +62,7 @@ namespace Cube.Log
         {
             TaskScheduler.UnobservedTaskException -= WhenTaskError;
             TaskScheduler.UnobservedTaskException += WhenTaskError;
-            return new AnonymousDisposable(
+            return Disposable.Create(
                 () => TaskScheduler.UnobservedTaskException -= WhenTaskError
             );
         }
@@ -83,7 +82,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Debug(Type type, string message) =>
-            Logger(type).Debug(message);
+            GetCore(type).Debug(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -99,7 +98,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Debug(Type type, string message, Exception err) =>
-            Logger(type).Debug(message, err);
+            GetCore(type).Debug(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,7 +160,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, string message) =>
-            Logger(type).Info(message);
+            GetCore(type).Info(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -177,7 +176,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, string message, Exception err) =>
-            Logger(type).Info(message, err);
+            GetCore(type).Info(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -262,7 +261,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Warn(Type type, string message) =>
-            Logger(type).Warn(message);
+            GetCore(type).Warn(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -278,7 +277,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Warn(Type type, string message, Exception err) =>
-            Logger(type).Warn(message, err);
+            GetCore(type).Warn(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -337,7 +336,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Error(Type type, string message) =>
-            Logger(type).Error(message);
+            GetCore(type).Error(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -353,7 +352,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Error(Type type, string message, Exception err) =>
-            Logger(type).Error(message, err);
+            GetCore(type).Error(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -412,7 +411,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Fatal(Type type, string message) =>
-            Logger(type).Fatal(message);
+            GetCore(type).Fatal(message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -428,7 +427,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void Fatal(Type type, string message, Exception err) =>
-            Logger(type).Fatal(message, err);
+            GetCore(type).Fatal(message, err);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -890,14 +889,14 @@ namespace Cube.Log
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Logger
+        /// GetCore
         ///
         /// <summary>
         /// ログ出力用オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static ILog Logger(Type type) => LogManager.GetLogger(type);
+        private static log4net.ILog GetCore(Type type) => log4net.LogManager.GetLogger(type);
 
         /* ----------------------------------------------------------------- */
         ///

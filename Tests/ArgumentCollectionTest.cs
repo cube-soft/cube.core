@@ -23,15 +23,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ArgumentsTest
+    /// ArgumentCollectionTest
     ///
     /// <summary>
-    /// Arguments のテスト用クラスです。
+    /// ArgumentCollection のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ArgumentsTest
+    class ArgumentCollectionTest
     {
         #region Tests
 
@@ -47,7 +47,7 @@ namespace Cube.Tests
         [TestCaseSource(nameof(Parse_TestCases))]
         public int Parse(int id, IEnumerable<string> args)
         {
-            var src = new Arguments(args);
+            var src = new ArgumentCollection(args);
 
             Assert.That(src[0], Is.Not.Null);
             Assert.That(src[src.Count - 1], Is.Not.Null);
@@ -67,7 +67,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Parse_Empty() => Assert.That(
-            new Arguments(new string[0]).Count,
+            new ArgumentCollection(new string[0]).Count,
             Is.EqualTo(0)
         );
 
@@ -83,7 +83,7 @@ namespace Cube.Tests
         [TestCaseSource(nameof(Parse_Options_TestCases))]
         public string Parse_Options(int id, IEnumerable<string> args, string key)
         {
-            try { return new Arguments(args).Options[key]; }
+            try { return new ArgumentCollection(args).Options[key]; }
             catch { return null; }
         }
 
@@ -98,7 +98,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
         public int Parse_Options_Count(int id, IEnumerable<string> args) =>
-            new Arguments(args).Options.Count;
+            new ArgumentCollection(args).Options.Count;
 
         #endregion
 

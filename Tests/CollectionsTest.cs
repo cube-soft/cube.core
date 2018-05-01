@@ -59,12 +59,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 0)]
-        public int LastIndex_Null()
-        {
-            IList<int> collection = null;
-            return collection.LastIndex();
-        }
+        [Test]
+        public void LastIndex_Null() =>
+            Assert.That(default(List<int>).LastIndex(), Is.EqualTo(0));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,12 +90,9 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = 0)]
-        public int Clamp_Null()
-        {
-            IList<int> collection = null;
-            return collection.Clamp(100);
-        }
+        [Test]
+        public void Clamp_Null() =>
+            Assert.That(default(List<int>).Clamp(100), Is.EqualTo(0));
 
         /* ----------------------------------------------------------------- */
         ///
