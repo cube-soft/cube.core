@@ -24,14 +24,14 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// XuiLogOperator
+    /// LoggerExtension
     ///
     /// <summary>
-    /// Log オブジェクトに対する操作を定義するためのクラスです。
+    /// Logger オブジェクトに対する操作を定義するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class XuiLogOperator
+    public static class LoggerExtension
     {
         #region Methods
 
@@ -48,7 +48,7 @@ namespace Cube.Xui
         /// <returns>監視を解除するためのオブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IDisposable ObserveUiException(Application src)
+        public static IDisposable ObserveUiException(this Application src)
         {
             src.DispatcherUnhandledException -= WhenDispatcherError;
             src.DispatcherUnhandledException += WhenDispatcherError;
@@ -89,7 +89,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-            LogOperator.Error(typeof(AppDomain), e.ExceptionObject.ToString(), e.ExceptionObject as Exception);
+            Logger.Error(typeof(AppDomain), e.ExceptionObject.ToString(), e.ExceptionObject as Exception);
 
         #endregion
     }

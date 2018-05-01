@@ -22,14 +22,14 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableOperator
+    /// BindableExtension
     ///
     /// <summary>
     /// Bindable に関連する拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class BindableOperator
+    public static class BindableExtension
     {
         #region Methods
 

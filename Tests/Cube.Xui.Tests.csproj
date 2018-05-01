@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.8.1\lib\net45\Cube.Core.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Core.1.9.0\lib\net45\Cube.Core.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -46,6 +46,9 @@
     </Reference>
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\..\packages\MvvmLightLibs.5.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
@@ -64,6 +67,7 @@
     <Compile Include="Converters\ImageConverterTest.cs" />
     <Compile Include="Converters\StringConverterTest.cs" />
     <Compile Include="Details\ConvertHelper.cs" />
+    <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="Details\Person.cs" />
     <Compile Include="BindableCollectionTest.cs" />
     <Compile Include="BindableCommandTest.cs" />
@@ -83,9 +87,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
+    <None Include="Packages.config" />
     <None Include="Resouces\App.ico" />
     <None Include="Resouces\Logo.png" />
   </ItemGroup>

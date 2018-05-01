@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.8.1\lib\net45\Cube.Core.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Core.1.9.0\lib\net45\Cube.Core.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -79,15 +79,15 @@
     <Compile Include="Messages\DialogMessage.cs" />
     <Compile Include="Messages\EmptyMessage.cs" />
     <Compile Include="Messages\FileDialogMessage.cs" />
-    <Compile Include="Operations\MessengerOperator.cs" />
-    <Compile Include="Operations\XuiLogOperator.cs" />
     <Compile Include="Triggers\DisposeAction.cs" />
     <Compile Include="Triggers\MessengerTrigger.cs" />
     <Compile Include="Bindable.cs" />
     <Compile Include="BindableCollection.cs" />
     <Compile Include="BindableCommand.cs" />
     <Compile Include="BindableCommandGeneric.cs" />
-    <Compile Include="BindableOperator.cs" />
+    <Compile Include="BindableExtension.cs" />
+    <Compile Include="LoggerExtension.cs" />
+    <Compile Include="MessengerExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
