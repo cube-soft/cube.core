@@ -24,14 +24,14 @@ namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ControlOperator
+    /// ControlExtension
     ///
     /// <summary>
-    /// System.Windows.Forms.Control の拡張メソッドを定義したクラスです。
+    /// System.Windows.Forms.Control の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ControlOperator
+    public static class ControlExtension
     {
         #region Methods
 

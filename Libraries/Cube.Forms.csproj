@@ -41,13 +41,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.8.1\lib\net45\Cube.Core.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Core.1.9.0\lib\net45\Cube.Core.dll</HintPath>
     </Reference>
     <Reference Include="Cube.FileSystem">
-      <HintPath>..\..\packages\Cube.FileSystem.1.8.1\lib\net45\Cube.FileSystem.dll</HintPath>
+      <HintPath>..\..\packages\Cube.FileSystem.1.9.0\lib\net45\Cube.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="Cube.Images">
-      <HintPath>..\..\packages\Cube.Images.1.8.1\lib\net45\Cube.Images.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Images.1.9.0\lib\net45\Cube.Images.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +65,11 @@
     <Compile Include="Events\DeviceEventArgs.cs" />
     <Compile Include="Events\MessageEventArgs.cs" />
     <Compile Include="Events\NavigatingEventArgs.cs" />
+    <Compile Include="Extensions\Bindings.cs" />
+    <Compile Include="Extensions\Controls.cs" />
+    <Compile Include="Extensions\Graphics.cs" />
+    <Compile Include="Extensions\ListView.cs" />
+    <Compile Include="Extensions\Processes.cs" />
     <Compile Include="Models\ButtonPainter.cs" />
     <Compile Include="Models\ButtonStyle.cs" />
     <Compile Include="Models\FontFactory.cs" />
@@ -78,11 +83,6 @@
     <Compile Include="NativeMethods\Gdi32.cs" />
     <Compile Include="NativeMethods\UrlMon.cs" />
     <Compile Include="NativeMethods\User32.cs" />
-    <Compile Include="Operations\Bindings.cs" />
-    <Compile Include="Operations\Controls.cs" />
-    <Compile Include="Operations\Graphics.cs" />
-    <Compile Include="Operations\ListView.cs" />
-    <Compile Include="Operations\Processes.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
     <Compile Include="Views\Mocks\MockView.cs" />
     <Compile Include="Views\IControl.cs" />

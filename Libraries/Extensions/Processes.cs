@@ -15,49 +15,41 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
-namespace Cube.Forms.Controls
+namespace Cube.Forms.Processes
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ListViewOperator
+    /// ProcessExtension
     ///
     /// <summary>
-    /// System.Windows.Forms.ListView の拡張メソッド用クラスです。
+    /// Process の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ListViewOperator
+    public static class ProcessExtension
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Ascend
+        /// Activate
         ///
         /// <summary>
-        /// 昇順にソートします。
+        /// プロセスのメイン画面をアクティブ化します。
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Ascend(
-            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
-            indices.Cast<int>().OrderBy(x => x);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Descend
-        ///
-        /// <summary>
-        /// 降順にソートします。
-        /// </summary>
+        /// <param name="process">Process オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Descend(
-            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
-            indices.Cast<int>().OrderByDescending(x => x);
+        public static void Activate(this System.Diagnostics.Process process)
+        {
+            var h = process?.MainWindowHandle ?? IntPtr.Zero;
+            if (h == IntPtr.Zero) return;
+            if (User32.NativeMethods.IsIconic(h)) User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
+            User32.NativeMethods.SetForegroundWindow(h);
+        }
 
         #endregion
     }

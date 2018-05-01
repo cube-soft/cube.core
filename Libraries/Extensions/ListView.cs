@@ -15,41 +15,49 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Cube.Forms.Processes
+namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ProcessOperator
+    /// ListViewExtension
     ///
     /// <summary>
-    /// Process クラスの拡張メソッド用クラスです。
+    /// System.Windows.Forms.ListView の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ProcessOperator
+    public static class ListViewExtension
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Activate
+        /// Ascend
         ///
         /// <summary>
-        /// プロセスのメイン画面をアクティブ化します。
+        /// 昇順にソートします。
         /// </summary>
         ///
-        /// <param name="process">Process オブジェクト</param>
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<int> Ascend(
+            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
+            indices.Cast<int>().OrderBy(x => x);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Descend
+        ///
+        /// <summary>
+        /// 降順にソートします。
+        /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Activate(this System.Diagnostics.Process process)
-        {
-            var h = process?.MainWindowHandle ?? IntPtr.Zero;
-            if (h == IntPtr.Zero) return;
-            if (User32.NativeMethods.IsIconic(h)) User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
-            User32.NativeMethods.SetForegroundWindow(h);
-        }
+        public static IEnumerable<int> Descend(
+            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
+            indices.Cast<int>().OrderByDescending(x => x);
 
         #endregion
     }

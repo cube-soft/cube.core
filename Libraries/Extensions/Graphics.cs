@@ -23,14 +23,14 @@ namespace Cube.Forms.Drawing
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GraphicsOperator
+    /// GraphicsExtension
     ///
     /// <summary>
-    /// System.Drawing.Graphics の拡張メソッドを定義したクラスです。
+    /// System.Drawing.Graphics の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class GraphicsOperator
+    internal static class GraphicsExtension
     {
         #region Methods
 
