@@ -20,6 +20,15 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 * [log4net](https://logging.apache.org/log4net/)
 
+## Contributing
+
+1. Fork [Cube.FileSystem.SevenZip](https://github.com/cube-soft/Cube.Core/fork) repository.
+2. Create a feature branch from the [master](https://github.com/cube-soft/Cube.Core/tree/master) branch (git checkout -b my-new-feature).
+3. Commit your changes.
+4. Rebase your local changes against the stable (or master) branch.
+5. Run test suite with the [NUnit](http://nunit.org/) console or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
+6. Create new Pull Request.
+
 ## License
 
 Copyright (c) 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)
