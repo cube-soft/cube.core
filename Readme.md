@@ -33,4 +33,4 @@ Or select it from the NuGet packages UI on Visual Studio.
 ## License
 
 Copyright (c) 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)
-The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Core/blob/master/License.txt).
+The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.FileSystem/blob/master/License.txt).
