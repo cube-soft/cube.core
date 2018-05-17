@@ -65,7 +65,7 @@ namespace Cube.Tests
         [TestCase("pi")]
         public void Create_QueryEventArgsSame(string query)
         {
-            var args = new QueryEventArgs<string>(query);
+            var args = QueryEventArgs.Create(query);
             Assert.That(args.Query,  Is.EqualTo(query));
             Assert.That(args.Result, Is.Null);
             Assert.That(args.Cancel, Is.False);

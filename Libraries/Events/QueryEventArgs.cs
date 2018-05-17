@@ -172,6 +172,42 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
+    /// QueryEventArgs
+    ///
+    /// <summary>
+    /// QueryEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// </summary>
+    ///
+    /// <remarks>
+    /// QueryEventArgs(T, U) には対応していません。
+    /// QueryEventArgs(T, U) オブジェクトを生成する場合、new 演算子を
+    /// 用いて生成して下さい。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class QueryEventArgs
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// QueryEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="query">クエリー</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static QueryEventArgs<T> Create<T>(T query) =>
+            new QueryEventArgs<T>(query);
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// QueryEventHandler(T, U)
     ///
     /// <summary>
