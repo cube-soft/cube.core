@@ -110,6 +110,68 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
+    /// QueryEventArgs(T)
+    ///
+    /// <summary>
+    /// クエリーデータを受け渡すためのクラスです。
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Query および Result が同じ型を示します。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class QueryEventArgs<T> : QueryEventArgs<T, T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="query">クエリーデータ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query) : this(query, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="query">クエリーデータ</param>
+        /// <param name="cancel">キャンセルするかどうか</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query, bool cancel) : this(query, default(T), cancel) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="query">クエリーデータ</param>
+        /// <param name="result">結果の初期値</param>
+        /// <param name="cancel">キャンセルするかどうか</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query, T result, bool cancel) : base(query, result, cancel) { }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// QueryEventHandler(T, U)
     ///
     /// <summary>
@@ -119,4 +181,16 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void QueryEventHandler<T, U>(object sender, QueryEventArgs<T, U> e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryEventHandler(T)
+    ///
+    /// <summary>
+    /// イベントを処理するメソッドを表します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void QueryEventHandler<T>(object sender, QueryEventArgs<T> e);
 }
