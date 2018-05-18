@@ -75,9 +75,8 @@ namespace Cube.Forms.Bindings
         public static BindingSource ToBindingSource(this INotifyCollectionChanged src,
             SynchronizationContext ctx)
         {
-            var dest = new BindingSource();
-            dest.DataSource = src;
-            src.CollectionChanged += (s, e) => ctx.Post(_ => dest.ResetBindings(false), null);
+            var dest = new BindingSource { DataSource = src };
+            src.CollectionChanged += (s, e) => ctx.Send(_ => dest.ResetBindings(false), null);
             return dest;
         }
 
