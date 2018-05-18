@@ -80,6 +80,8 @@
     <Compile Include="Models\OnlyExpandableConverter.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\SizeHacker.cs" />
+    <Compile Include="NativeMethods\Structures\DWebBrowserEvents2.cs" />
+    <Compile Include="NativeMethods\Structures\IDocHostShowUI.cs" />
     <Compile Include="NativeMethods\Structures\MinMaxInfo.cs" />
     <Compile Include="NativeMethods\Structures\Point.cs" />
     <Compile Include="NativeMethods\Gdi32.cs" />
@@ -145,7 +147,11 @@
     <Compile Include="Views\Controls\WebControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\WebControl.Subclass.cs">
+    <Compile Include="Views\Controls\WebControl.ActiveXControlEvents.cs">
+      <DependentUpon>WebControl.cs</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Controls\WebControl.ShowUIWebBrowserSite.cs">
       <DependentUpon>WebControl.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
