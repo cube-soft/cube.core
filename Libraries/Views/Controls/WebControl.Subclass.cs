@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -54,9 +55,9 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            public ActiveXControlEvents(WebControl target)
+            public ActiveXControlEvents(WebControl host)
             {
-                Target = target;
+                Host = host;
             }
 
             /* ------------------------------------------------------------- */
@@ -68,7 +69,7 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            public WebControl Target { get; private set; }
+            public WebControl Host { get; private set; }
 
             /* ------------------------------------------------------------- */
             ///
@@ -81,8 +82,13 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             public void BeforeNavigate2(object pDisp, ref object URL,
                 ref object flags, ref object targetFrameName,
-                ref object postData, ref object headers, ref bool cancel) =>
-                Target.RaiseBeforeNavigating((string)URL, (string)targetFrameName, out cancel);
+                ref object postData, ref object headers, ref bool cancel)
+            {
+                var e = new NavigatingEventArgs((string)URL, (string)targetFrameName);
+                Host.OnBeforeNavigating(e);
+                cancel = e.Cancel;
+
+            }
 
             /* ------------------------------------------------------------- */
             ///
@@ -94,8 +100,13 @@ namespace Cube.Forms
             ///
             /* ------------------------------------------------------------- */
             public void NewWindow3(object pDisp, ref bool cancel,
-                ref object flags, ref object URLContext, ref object URL) =>
-                Target.RaiseBeforeNewWindow((string)URL, out cancel);
+                ref object flags, ref object URLContext, ref object URL)
+            {
+                var e = new NavigatingEventArgs((string)URL, string.Empty);
+                Host.OnBeforeNewWindow(e);
+                cancel = e.Cancel;
+
+            }
 
             /* ------------------------------------------------------------- */
             ///
@@ -107,11 +118,12 @@ namespace Cube.Forms
             ///
             /* ------------------------------------------------------------- */
             public void NavigateError(object pDisp, ref object URL,
-                ref object targetFrameName, ref object statusCode, ref bool cancel) =>
-                Target.RaiseNavigatingError(
-                    (string)URL, (string)targetFrameName,
-                    (int)statusCode, out cancel
-                );
+                ref object targetFrameName, ref object statusCode, ref bool cancel)
+            {
+                var e = new NavigatingErrorEventArgs((string)URL, (string)targetFrameName, (int)statusCode);
+                Host.OnNavigatingError(e);
+                cancel = e.Cancel;
+            }
         }
 
         #endregion
@@ -130,6 +142,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
         {
+            #region Methods
+
             /* ------------------------------------------------------------- */
             ///
             /// ShowUIWebBrowserSite
@@ -167,8 +181,12 @@ namespace Cube.Forms
             public int ShowMessage(IntPtr hwnd, string text, string caption,
                 int type, string file, int context, out int result)
             {
-                Host.RaiseMessageShowing(text, caption, type, file, context, out result);
-                return (result != -1) ? 0 : 1;
+                var b = GetButtons(type & 0x0f);
+                var i = GetIcon(type & 0xf0);
+                var e = new MessageEventArgs(text, caption, b, i);
+                Host.OnMessageShowing(e);
+                result = (int)e.Result;
+                return (e.Result != DialogResult.None) ? 1 : 0;
             }
 
             /* ------------------------------------------------------------- */
@@ -186,6 +204,56 @@ namespace Cube.Forms
             /* ------------------------------------------------------------- */
             public int ShowHelp(IntPtr hwnd, string file, int command, int data,
                 IntPtr /* POINT */ mouse, object hit) => 1;
+
+            #endregion
+
+            #region Implementations
+
+            /* ------------------------------------------------------------- */
+            ///
+            /// GetButtons
+            ///
+            /// <summary>
+            /// 表示ボタンを示すオブジェクトを取得します。
+            /// </summary>
+            ///
+            /* ------------------------------------------------------------- */
+            private MessageBoxButtons GetButtons(int src)
+            {
+                switch (src)
+                {
+                    case 0x01: return MessageBoxButtons.OKCancel;
+                    case 0x02: return MessageBoxButtons.AbortRetryIgnore;
+                    case 0x03: return MessageBoxButtons.YesNoCancel;
+                    case 0x04: return MessageBoxButtons.YesNo;
+                    case 0x05: return MessageBoxButtons.RetryCancel;
+                    case 0x06: return MessageBoxButtons.AbortRetryIgnore;
+                    default: return MessageBoxButtons.OK;
+                }
+            }
+
+            /* ------------------------------------------------------------- */
+            ///
+            /// GetIcon
+            ///
+            /// <summary>
+            /// 表示アイコンを示すオブジェクトを取得します。
+            /// </summary>
+            ///
+            /* ------------------------------------------------------------- */
+            private MessageBoxIcon GetIcon(int src)
+            {
+                switch (src)
+                {
+                    case 0x10: return MessageBoxIcon.Error;
+                    case 0x20: return MessageBoxIcon.Question;
+                    case 0x30: return MessageBoxIcon.Warning;
+                    case 0x40: return MessageBoxIcon.Information;
+                    default: return MessageBoxIcon.Warning;
+                }
+            }
+
+            #endregion
         }
 
         #endregion

@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -24,12 +25,14 @@ namespace Cube.Forms
     /// MessageEventArgs
     ///
     /// <summary>
-    /// ダイアログで表示されるメッセージを保持するためのクラスです。
+    /// メッセージボックスに表示する情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public class MessageEventArgs : EventArgs
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// MessageEventArgs
@@ -38,100 +41,138 @@ namespace Cube.Forms
         /// オブジェクトを初期化します。
         /// </summary>
         ///
+        /// <param name="message">メッセージ内容</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public MessageEventArgs(string text, string caption, int type, string file, int context)
+        public MessageEventArgs(string message) :
+            this(message, AssemblyReader.Default.Title) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MessageEventArgs
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="message">メッセージ内容</param>
+        /// <param name="title">メッセージボックスのタイトル</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public MessageEventArgs(string message, string title) :
+            this(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MessageEventArgs
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="message">メッセージ内容</param>
+        /// <param name="buttons">表示ボタン</param>
+        /// <param name="icon">表示アイコン</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public MessageEventArgs(string message,
+            MessageBoxButtons buttons, MessageBoxIcon icon) :
+            this(message, AssemblyReader.Default.Title, buttons, icon) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MessageEventArgs
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="message">メッセージ内容</param>
+        /// <param name="title">メッセージボックスのタイトル</param>
+        /// <param name="buttons">表示ボタン</param>
+        /// <param name="icon">表示アイコン</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public MessageEventArgs(string message, string title,
+            MessageBoxButtons buttons, MessageBoxIcon icon)
         {
-            Text        = text;
-            Caption     = caption;
-            Type        = type;
-            HelpFile    = file;
-            HelpContext = context;
+            Message = message;
+            Title   = title;
+            Buttons = buttons;
+            Icon    = icon;
         }
+
+        #endregion
 
         #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Handled
+        /// Title
         ///
         /// <summary>
-        /// イベントを受け取ったオブジェクトが必要な処理を行ったかどうかを
-        /// 示す値を取得または設定します。
+        /// メッセージボックスのタイトルを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Handled { get; set; }
+        public string Title { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Message
+        ///
+        /// <summary>
+        /// メッセージを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Message { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Icon
+        ///
+        /// <summary>
+        /// メッセージボックスに表示するアイコンを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public MessageBoxIcon Icon { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Buttons
+        ///
+        /// <summary>
+        /// メッセージボックスに表示するボタンを取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public MessageBoxButtons Buttons { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Result
         ///
         /// <summary>
-        /// 実行結果を表す値を取得または設定します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// この値は Handled が true の場合のみ有効となります。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int Result { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Type
-        ///
-        /// <summary>
-        /// メッセージの種類を示す値を取得します。
+        /// 実行結果を示す値を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Type { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// HelpContext
-        ///
-        /// <summary>
-        /// ヘルプコンテキストを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int HelpContext { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Text
-        ///
-        /// <summary>
-        /// メッセージ本文を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Text { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Caption
-        ///
-        /// <summary>
-        /// タイトルを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Caption { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// HelpFile
-        ///
-        /// <summary>
-        /// ヘルプ用ファイルへのパスを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string HelpFile { get; }
+        public DialogResult Result { get; set; }
 
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MessageEventHandler
+    ///
+    /// <summary>
+    /// メッセージボックスを表示するための delegate です。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void MessageEventHandler(object sender, MessageEventArgs e);
 }
