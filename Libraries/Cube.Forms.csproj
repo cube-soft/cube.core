@@ -82,12 +82,14 @@
     <Compile Include="Models\SizeHacker.cs" />
     <Compile Include="NativeMethods\Structures\DWebBrowserEvents2.cs" />
     <Compile Include="NativeMethods\Structures\IDocHostShowUI.cs" />
+    <Compile Include="NativeMethods\Structures\ITaskbarList.cs" />
     <Compile Include="NativeMethods\Structures\MinMaxInfo.cs" />
     <Compile Include="NativeMethods\Structures\Point.cs" />
     <Compile Include="NativeMethods\Gdi32.cs" />
     <Compile Include="NativeMethods\UrlMon.cs" />
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
+    <Compile Include="Views\Controls\TaskbarProgress.cs" />
     <Compile Include="Views\Mocks\MockView.cs" />
     <Compile Include="Views\IControl.cs" />
     <Compile Include="Views\IDpiAwarable.cs" />
