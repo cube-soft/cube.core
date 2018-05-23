@@ -6,7 +6,7 @@ PROJECT  = 'Cube.Forms'
 BRANCHES = [ 'master', 'net35' ]
 COPY     = 'cp -pf'
 CHECKOUT = 'git checkout'
-BUILD    = 'msbuild /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
+BUILD    = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
 RESTORE  = 'nuget restore'
 PACK     = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 
