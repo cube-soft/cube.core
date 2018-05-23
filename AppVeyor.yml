@@ -18,7 +18,7 @@ build:
     publish_nuget: true
     verbosity: minimal
 test_script:
-    - >-
+    - >
       ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe
       -register:user
       -target:nunit3-console.exe
