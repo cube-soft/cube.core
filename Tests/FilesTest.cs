@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
 using Cube.FileSystem.Files;
+using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
 {
