@@ -48,7 +48,7 @@ namespace Cube.Tests
         public bool Request(int id, IList<string> results)
         {
             var index = 0;
-            var query = new Query<string, string>(x =>
+            var query = new Query<string>(x =>
             {
                 if (index >= results.Count) x.Cancel = true;
                 else
@@ -76,7 +76,7 @@ namespace Cube.Tests
         public bool Request_NullSynchronizationContext(int id, IList<string> results)
         {
             var index = 0;
-            var query = new Query<string, string>(x =>
+            var query = new Query<string>(x =>
             {
                 if (index >= results.Count) x.Cancel = true;
                 else
@@ -102,7 +102,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Request_None() => Assert.That(
-            new QueryContoroller().Invoke(new Query<string, string>()),
+            new QueryContoroller().Invoke(new Query<string>()),
             Is.False
         );
 

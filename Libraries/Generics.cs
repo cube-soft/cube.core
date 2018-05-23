@@ -21,14 +21,14 @@ namespace Cube.Generics
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericOperator
+    /// GenericExtension
     ///
     /// <summary>
     /// クラスに対する汎用的な操作を定義するための拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class GenericOperator
+    public static class GenericExtension
     {
         #region Methods
 

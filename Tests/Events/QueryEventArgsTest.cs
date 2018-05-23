@@ -41,17 +41,37 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(1)]
-        [TestCase("pi")]
         [TestCase(true)]
         public void Create_QueryEventArgs<T>(T query)
         {
             var args = new QueryEventArgs<T, string>(query);
-            Assert.That(args.Query, Is.EqualTo(query));
+            Assert.That(args.Query,  Is.EqualTo(query));
             Assert.That(args.Result, Is.Null);
             Assert.That(args.Cancel, Is.False);
 
             args.Result = nameof(Create_QueryEventArgs);
             Assert.That(args.Result, Is.EqualTo(nameof(Create_QueryEventArgs)));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_QueryEventArgsSame
+        ///
+        /// <summary>
+        /// QueryEventArgs(T) オブジェクトを生成するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("pi")]
+        public void Create_QueryEventArgsSame(string query)
+        {
+            var args = QueryEventArgs.Create(query);
+            Assert.That(args.Query,  Is.EqualTo(query));
+            Assert.That(args.Result, Is.Null);
+            Assert.That(args.Cancel, Is.False);
+
+            args.Result = nameof(Create_QueryEventArgsSame);
+            Assert.That(args.Result, Is.EqualTo(nameof(Create_QueryEventArgsSame)));
         }
     }
 }

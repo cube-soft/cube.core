@@ -32,7 +32,7 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class CollectionOperator
+    public static class CollectionExtension
     {
         #region Methods
 

@@ -35,10 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\net35\Release\Cube.Core.Tests.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncBridge">
       <HintPath>..\..\packages\AsyncBridge.0.3.1\lib\net35-client\AsyncBridge.dll</HintPath>
@@ -71,6 +67,7 @@
     <Compile Include="Details\FileHelperTest.cs" />
     <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="Details\Person.cs" />
+    <Compile Include="Details\RegistryHelper.cs" />
     <Compile Include="Details\SerializableData.cs" />
     <Compile Include="Events\EnumerableEventArgsTest.cs" />
     <Compile Include="Events\KeyValueEventArgsTest.cs" />
@@ -78,26 +75,27 @@
     <Compile Include="Events\QueryEventArgsTest.cs" />
     <Compile Include="Events\RelayEventTest.cs" />
     <Compile Include="Events\ValueEventArgsTest.cs" />
-    <Compile Include="Operations\CollectionsTest.cs" />
-    <Compile Include="Operations\DifferenceTest.cs" />
-    <Compile Include="Operations\GenericsTest.cs" />
-    <Compile Include="Operations\IterationTest.cs" />
-    <Compile Include="Operations\LogTest.cs" />
-    <Compile Include="Operations\TaskTest.cs" />
-    <Compile Include="Operations\XmlTest.cs" />
-    <Compile Include="OrderedDictionaryTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />
-    <Compile Include="Settings\SettingsTest.cs" />
-    <Compile Include="Settings\StartupTest.cs" />
-    <Compile Include="ArgumentsTest.cs" />
+    <Compile Include="ArgumentCollectionTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
+    <Compile Include="CollectionsTest.cs" />
+    <Compile Include="DataContractTest.cs" />
+    <Compile Include="DifferenceTest.cs" />
     <Compile Include="DisposableTest.cs" />
     <Compile Include="GenericComparerTest.cs" />
+    <Compile Include="GenericsTest.cs" />
+    <Compile Include="IterationTest.cs" />
+    <Compile Include="LoggerTest.cs" />
     <Compile Include="OnceActionTest.cs" />
+    <Compile Include="OrderedDictionaryTest.cs" />
     <Compile Include="PowerTest.cs" />
     <Compile Include="QueryTest.cs" />
+    <Compile Include="SettingsFolderTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
+    <Compile Include="StartupTest.cs" />
+    <Compile Include="TaskTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
+    <Compile Include="XmlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

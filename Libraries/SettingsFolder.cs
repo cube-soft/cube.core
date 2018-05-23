@@ -15,13 +15,14 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.DataContract;
 using Cube.Tasks;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Cube.Settings
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -46,7 +47,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder() : this(SettingsType.Registry) { }
+        public SettingsFolder() : this(Format.Registry) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,13 +57,10 @@ namespace Cube.Settings
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="type">設定情報の保存方法</param>
+        /// <param name="format">設定情報の保存方法</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(SettingsType type)
-        {
-            Initialize(AssemblyReader.Default, type);
-        }
+        public SettingsFolder(Format format) : this(format, GetLocation(format)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,13 +70,24 @@ namespace Cube.Settings
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="type">設定情報の保存方法</param>
-        /// <param name="path">設定情報の保存場所</param>
+        /// <param name="format">設定情報の保存形式</param>
+        /// <param name="location">設定情報の保存場所</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(SettingsType type, string path)
+        public SettingsFolder(Format format, string location)
         {
-            Initialize(AssemblyReader.Default, type, path);
+            _dispose = new OnceAction<bool>(Dispose);
+            Format   = format;
+            Location = location;
+            Version  = new SoftwareVersion(AssemblyReader.Default.Assembly);
+            Company  = AssemblyReader.Default.Company;
+            Product  = AssemblyReader.Default.Product;
+            Value    = new T();
+
+            Value.PropertyChanged += WhenChanged;
+
+            _autosaver.AutoReset = false;
+            _autosaver.Elapsed += WhenElapsed;
         }
 
         #endregion
@@ -131,25 +140,25 @@ namespace Cube.Settings
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Type
+        /// Format
         ///
         /// <summary>
-        /// 設定情報の保存方法を取得します。
+        /// 設定情報の保存形式を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsType Type { get; set; }
+        public Format Format { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Path
+        /// Location
         ///
         /// <summary>
-        /// 設定情報の保存場所を取得します。
+        /// 設定情報の保存場所を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Path { get; set; }
+        public string Location { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -273,7 +282,7 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event KeyValueEventHandler<SettingsType, string> Saved;
+        public event KeyValueEventHandler<Format, string> Saved;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -284,9 +293,9 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnSaved(KeyValueEventArgs<SettingsType, string> e)
+        protected virtual void OnSaved(KeyValueEventArgs<Format, string> e)
         {
-            e.Key.Save(e.Value, Value);
+            e.Key.Serialize(e.Value, Value);
             Startup.Save();
             Saved?.Invoke(this, e);
         }
@@ -332,7 +341,7 @@ namespace Cube.Settings
         ///
         /* ----------------------------------------------------------------- */
         public void Save() =>
-            OnSaved(KeyValueEventArgs.Create(Type, Path));
+            OnSaved(KeyValueEventArgs.Create(Format, Location));
 
         #region IDisposable
 
@@ -392,39 +401,13 @@ namespace Cube.Settings
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize(AssemblyReader reader, SettingsType type, string path)
+        private static string GetLocation(Format format)
         {
-            Type     = type;
-            Path     = path;
-            Version  = new SoftwareVersion(reader.Assembly);
-            Company  = reader.Company;
-            Product  = reader.Product;
-            Value    = new T();
-
-            Value.PropertyChanged += WhenChanged;
-
-            _autosaver.AutoReset = false;
-            _autosaver.Elapsed += WhenElapsed;
-            _dispose = new OnceAction<bool>(Dispose);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Initialize
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Initialize(AssemblyReader reader, SettingsType type)
-        {
-            var root = type == SettingsType.Registry ?
+            var asm  = AssemblyReader.Default;
+            var root = format == Format.Registry ?
                        "Software" :
                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var path = System.IO.Path.Combine(root, $@"{reader.Company}\{reader.Product}");
-
-            Initialize(reader, type, path);
+            return System.IO.Path.Combine(root, $@"{asm.Company}\{asm.Product}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -438,7 +421,7 @@ namespace Cube.Settings
         /* ----------------------------------------------------------------- */
         private T LoadCore(T alternate)
         {
-            try { return Type.Load<T>(Path); }
+            try { return Format.Deserialize<T>(Location); }
             catch { return alternate; }
         }
 
@@ -479,7 +462,7 @@ namespace Cube.Settings
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
+        private readonly OnceAction<bool> _dispose;
         private readonly Timer _autosaver = new Timer();
         #endregion
     }

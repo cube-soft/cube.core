@@ -146,4 +146,48 @@ namespace Cube
         private readonly SynchronizationContext _context;
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Query(T)
+    ///
+    /// <summary>
+    /// IQuery(T, U) を実装したクラスです。
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Query および Result が同じ型を示します。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Query<T> : Query<T, T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query() : base() { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="callback">コールバック関数</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query(Action<QueryEventArgs<T, T>> callback) : base(callback) { }
+
+        #endregion
+    }
 }

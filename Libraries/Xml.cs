@@ -22,14 +22,14 @@ namespace Cube.Xml
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// XmlOperator
+    /// XmlExtension
     ///
     /// <summary>
     /// XElement クラスの拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class XmlOperator
+    public static class XmlExtension
     {
         #region GetElement
 

@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Cube.Tests
@@ -83,7 +84,7 @@ namespace Cube.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : Cube.ObservableProperty
+    internal class Person : ObservableProperty
     {
         #region Constructors
 
@@ -187,34 +188,50 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Phone
+        /// Contact
         ///
         /// <summary>
-        /// 電話番号を取得または設定します。
+        /// 連絡先を取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Phone
+        public Address Contact
         {
-            get => _phone;
-            set => SetProperty(ref _phone, value);
+            get => _contact;
+            set => SetProperty(ref _contact, value);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Email
+        /// Others
         ///
         /// <summary>
-        /// Email アドレスを取得または設定します。
+        /// その他のアドレスを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
-        public Address Email
+        public IList<Address> Others
         {
-            get => _email;
-            set => SetProperty(ref _email, value);
+            get => _others;
+            set => SetProperty(ref _others, value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Messages
+        ///
+        /// <summary>
+        /// メッセージ一覧を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DataMember]
+        public string[] Messages
+        {
+            get => _messages;
+            set => SetProperty(ref _messages, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -261,6 +278,43 @@ namespace Cube.Tests
 
         #endregion
 
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateDummy
+        ///
+        /// <summary>
+        /// テスト用のダミーデータが設定された Person オブジェクトを
+        /// 生成します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Person CreateDummy() => new Person
+        {
+            Identification = 123,
+            Name           = "山田花子",
+            Sex            = Sex.Female,
+            Age            = 15,
+            Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
+            Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
+            Reserved       = true,
+            Secret         = "dummy data",
+            Others         = new List<Address>
+            {
+                new Address { Type = "PC",     Value = "pc@example.com" },
+                new Address { Type = "Mobile", Value = "mobile@example.com" }
+            },
+            Messages       = new[]
+            {
+                "1st message",
+                "2nd message",
+                "3rd message",
+            }
+        };
+
+        #endregion
+
         #region Implementations
 
         /* ----------------------------------------------------------------- */
@@ -291,8 +345,9 @@ namespace Cube.Tests
             _sex            = Sex.Unknown;
             _age            = 0;
             _creation       = DateTime.MinValue;
-            _phone          = new Address { Type = "Phone", Value = string.Empty };
-            _email          = new Address { Type = "Email", Value = string.Empty };
+            _contact        = new Address { Type = "Phone", Value = string.Empty };
+            _others         = new List<Address>();
+            _messages       = new string[0];
             _reserved       = false;
             _secret         = "secret message";
         }
@@ -305,8 +360,9 @@ namespace Cube.Tests
         private Sex _sex;
         private int _age;
         private DateTime? _creation;
-        private Address _phone;
-        private Address _email;
+        private Address _contact;
+        private IList<Address> _others;
+        private string[] _messages;
         private bool _reserved;
         private string _secret;
         #endregion

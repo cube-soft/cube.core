@@ -37,8 +37,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
@@ -66,9 +64,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ArgumentCollection.cs" />
+    <Compile Include="Collections\CollectionExtension.cs" />
+    <Compile Include="Collections\OrderedDictionary.cs" />
     <Compile Include="Conversions\ByteFormat.cs" />
     <Compile Include="Conversions\TimeFormat.cs" />
     <Compile Include="Conversions\UriFormat.cs" />
+    <Compile Include="DataContract\Format.cs" />
+    <Compile Include="DataContract\PropertyOperator.cs" />
+    <Compile Include="DataContract\RegistryDeserializer.cs" />
+    <Compile Include="DataContract\RegistrySerializer.cs" />
     <Compile Include="Differences\CommonSequence.cs" />
     <Compile Include="Differences\OnpAlgorithm.cs" />
     <Compile Include="Differences\Result.cs" />
@@ -78,30 +83,25 @@
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
-    <Compile Include="Operations\Collections.cs" />
-    <Compile Include="Operations\Generics.cs" />
-    <Compile Include="Operations\Iteration.cs" />
-    <Compile Include="Operations\Log.cs" />
-    <Compile Include="Operations\Tasks.cs" />
-    <Compile Include="Operations\Xml.cs" />
-    <Compile Include="OrderedDictionary.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessengerService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
-    <Compile Include="Settings\SettingsOperator.cs" />
-    <Compile Include="Settings\RegistrySettings.cs" />
-    <Compile Include="Settings\SettingsFolder.cs" />
-    <Compile Include="Settings\Startup.cs" />
-    <Compile Include="Arguments.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="GenericComparer.cs" />
+    <Compile Include="Generics.cs" />
+    <Compile Include="Iteration.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="OnceAction.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="Query.cs" />
+    <Compile Include="SettingsFolder.cs" />
     <Compile Include="SoftwareVersion.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Tasks.cs" />
     <Compile Include="WakeableTimer.cs" />
+    <Compile Include="Xml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,11 +109,4 @@
     <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

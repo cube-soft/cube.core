@@ -45,7 +45,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public OrderedDictionary() { }
+        public OrderedDictionary() : this(null) { }
 
         /* --------------------------------------------------------------------- */
         ///

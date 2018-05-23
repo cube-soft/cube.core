@@ -23,14 +23,14 @@ namespace Cube.Tasks
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskOperator
+    /// TaskExtension
     ///
     /// <summary>
     /// Task の拡張メソッド用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class TaskOperator
+    public static class TaskExtension
     {
         #region Methods
 
@@ -43,12 +43,12 @@ namespace Cube.Tasks
         /// 例外発生時にはログに出力します。
         /// </summary>
         ///
-        /// <param name="task">Task オブジェクト</param>
+        /// <param name="src">Task オブジェクト</param>
         ///
         /* --------------------------------------------------------------------- */
-        public static void Forget(this Task task) => task.ContinueWith(x =>
+        public static void Forget(this Task src) => src.ContinueWith(e =>
         {
-            x.LogWarn(x.Exception.ToString());
+            e.LogWarn(e.Exception.ToString());
         }, TaskContinuationOptions.OnlyOnFaulted);
 
         /* --------------------------------------------------------------------- */
@@ -59,16 +59,16 @@ namespace Cube.Tasks
         /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
-        /// <param name="task">Task オブジェクト</param>
+        /// <param name="src">Task オブジェクト</param>
         /// <param name="value">タイムアウト時間</param>
         ///
         /// <returns>Task オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task task, TimeSpan value)
+        public static async Task Timeout(this Task src, TimeSpan value)
         {
-            var delay = TaskEx.Delay(value);
-            if (await TaskEx.WhenAny(task, delay).ConfigureAwait(false) == delay)
+            var cmp = TaskEx.Delay(value);
+            if (await TaskEx.WhenAny(src, cmp).ConfigureAwait(false) == cmp)
             {
                 throw new TimeoutException();
             }
@@ -82,16 +82,16 @@ namespace Cube.Tasks
         /// タスクにタイムアウトを設定します。
         /// </summary>
         ///
-        /// <param name="task">Task(T) オブジェクト</param>
+        /// <param name="src">Task(T) オブジェクト</param>
         /// <param name="value">タイムアウト時間</param>
         ///
         /// <returns>Task(T) オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task<T> Timeout<T>(this Task<T> task, TimeSpan value)
+        public static async Task<T> Timeout<T>(this Task<T> src, TimeSpan value)
         {
-            await ((Task)task).Timeout(value).ConfigureAwait(false);
-            return await task.ConfigureAwait(false);
+            await ((Task)src).Timeout(value).ConfigureAwait(false);
+            return await src.ConfigureAwait(false);
         }
 
         #endregion
