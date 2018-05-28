@@ -59,10 +59,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EventHub
+        /// Aggregator
         ///
         /// <summary>
-        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// イベント集約用オブジェクトを取得または設定します。
         /// </summary>
         ///
         /// <remarks>
@@ -73,16 +73,16 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEventHub EventHub
+        public IAggregator Aggregator
         {
-            get => _events;
+            get => _aggregator;
             set
             {
-                if (_events == value) return;
-                _events = value;
+                if (_aggregator == value) return;
+                _aggregator = value;
                 foreach (var obj in Controls)
                 {
-                    if (obj is IControl c) c.EventHub = value;
+                    if (obj is IControl c) c.Aggregator = value;
                 }
             }
         }
@@ -203,7 +203,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private IEventHub _events;
+        private IAggregator _aggregator;
         private double _dpi = StandardForm.BaseDpi;
         #endregion
     }

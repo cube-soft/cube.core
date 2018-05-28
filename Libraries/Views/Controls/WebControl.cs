@@ -62,16 +62,33 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EventHub
+        /// Aggregator
         ///
         /// <summary>
-        /// イベントを集約するためのオブジェクトを取得または設定します。
+        /// イベント集約用オブジェクトを取得または設定します。
         /// </summary>
+        ///
+        /// <remarks>
+        /// Controls に登録されている IControl オブジェクトに対して、
+        /// 再帰的に設定します。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEventHub EventHub { get; set; }
+        public IAggregator Aggregator
+        {
+            get => _aggregator;
+            set
+            {
+                if (_aggregator == value) return;
+                _aggregator = value;
+                foreach (var obj in Controls)
+                {
+                    if (obj is IControl c) c.Aggregator = value;
+                }
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -350,8 +367,8 @@ namespace Cube.Forms
         protected override void CreateSink()
         {
             base.CreateSink();
-            _events = new ActiveXControlEvents(this);
-            _cookie = new System.Windows.Forms.AxHost.ConnectionPointCookie(ActiveXInstance, _events, typeof(DWebBrowserEvents2));
+            _ax = new ActiveXControlEvents(this);
+            _cookie = new System.Windows.Forms.AxHost.ConnectionPointCookie(ActiveXInstance, _ax, typeof(DWebBrowserEvents2));
         }
 
         /* --------------------------------------------------------------------- */
@@ -439,9 +456,10 @@ namespace Cube.Forms
 
         #region Fields
         private string _agent = string.Empty;
-        private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie = null;
-        private ActiveXControlEvents _events = null;
+        private IAggregator _aggregator;
         private double _dpi = StandardForm.BaseDpi;
+        private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie;
+        private ActiveXControlEvents _ax;
         #endregion
     }
 }

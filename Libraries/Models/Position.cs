@@ -84,14 +84,14 @@ namespace Cube.Forms
 
     /* --------------------------------------------------------------------- */
     ///
-    /// PositionConversions
+    /// PositionExtension
     ///
     /// <summary>
     /// Position の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class PositionConversions
+    public static class PositionExtension
     {
         #region Methods
 

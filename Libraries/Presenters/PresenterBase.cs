@@ -26,7 +26,7 @@ namespace Cube.Forms
     /// PresenterBase
     ///
     /// <summary>
-    /// View のみを保持する Presenter の基底となるクラスです。
+    /// View のみを保持する Presenter の基底クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -56,11 +56,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="view">View オブジェクト</param>
-        /// <param name="events">EventHub オブジェクト</param>
+        /// <param name="ea">イベント集約オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, IEventHub events) :
-            this(view, events, SynchronizationContext.Current) { }
+        public PresenterBase(TView view, IAggregator ea) :
+            this(view, ea, SynchronizationContext.Current) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -71,15 +71,15 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="view">View オブジェクト</param>
-        /// <param name="events">EventHub オブジェクト</param>
+        /// <param name="ea">イベント集約オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, IEventHub events, SynchronizationContext context)
+        public PresenterBase(TView view, IAggregator ea, SynchronizationContext context)
         {
             _dispose               = new OnceAction<bool>(Dispose);
             View                   = view;
-            EventHub               = events;
+            Aggregator             = ea;
             SynchronizationContext = context;
         }
 
@@ -100,14 +100,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EventHub
+        /// Aggregator
         ///
         /// <summary>
-        /// EventHub オブジェクトを取得または設定します。
+        /// イベント集約オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEventHub EventHub { get; protected set; }
+        public IAggregator Aggregator { get; protected set; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -169,7 +169,10 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Sync(Action action)
         {
-            if (SynchronizationContext != null) SynchronizationContext.Post(_ => action(), null);
+            if (SynchronizationContext != null)
+            {
+                SynchronizationContext.Post(_ => action(), null);
+            }
             else action();
         }
 
@@ -189,7 +192,10 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
         {
-            if (SynchronizationContext != null) SynchronizationContext.Send(_ => action(), null);
+            if (SynchronizationContext != null)
+            {
+                SynchronizationContext.Send(_ => action(), null);
+            }
             else action();
         }
 
@@ -209,8 +215,11 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public TResult SyncWait<TResult>(Func<TResult> func)
         {
-            TResult result = default(TResult);
-            if (SynchronizationContext != null) SynchronizationContext.Send(_ => { result = func(); }, null);
+            var result = default(TResult);
+            if (SynchronizationContext != null)
+            {
+                SynchronizationContext.Send(_ => { result = func(); }, null);
+            }
             else result = func();
             return result;
         }
@@ -268,7 +277,7 @@ namespace Cube.Forms
     /// PresenterBase
     ///
     /// <summary>
-    /// View と Model が 1 対 1 対応する Presenter の基底となるクラスです。
+    /// View および Model から構成される Presenter の基底クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -303,11 +312,11 @@ namespace Cube.Forms
         ///
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
-        /// <param name="events">EventHub オブジェクト</param>
+        /// <param name="ea">イベント集約オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, IEventHub events) :
-            base(view, events)
+        public PresenterBase(TView view, TModel model, IAggregator ea) :
+            base(view, ea)
         {
             Model = model;
         }
@@ -322,12 +331,12 @@ namespace Cube.Forms
         ///
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
-        /// <param name="events">EventHub オブジェクト</param>
+        /// <param name="ea">イベント集約オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, IEventHub events, SynchronizationContext context) :
-            base(view, events, context)
+        public PresenterBase(TView view, TModel model, IAggregator ea,
+            SynchronizationContext context) : base(view, ea, context)
         {
             Model = model;
         }
@@ -355,8 +364,8 @@ namespace Cube.Forms
     /// PresenterBase
     ///
     /// <summary>
-    /// View/Model/EventHub/Settings を持つ Presenter の基底となる
-    /// クラスです。
+    /// View, Model, Aggregator, Settings の 4 種類のオブジェクトから
+    /// 構成される Presenter の基底クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -394,11 +403,11 @@ namespace Cube.Forms
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
         /// <param name="settings">Settings オブジェクト</param>
-        /// <param name="events">EventHub オブジェクト</param>
+        /// <param name="ea">イベント集約オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PresenterBase(TView view, TModel model, TSettings settings, IEventHub events) :
-            base(view, model, events)
+        public PresenterBase(TView view, TModel model, TSettings settings, IAggregator ea) :
+            base(view, model, ea)
         {
             Settings = settings;
         }
@@ -414,13 +423,13 @@ namespace Cube.Forms
         /// <param name="view">View オブジェクト</param>
         /// <param name="model">Model オブジェクト</param>
         /// <param name="settings">Settings オブジェクト</param>
-        /// <param name="events">EventHub オブジェクト</param>
+        /// <param name="ea">イベント集約オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
         public PresenterBase(TView view, TModel model, TSettings settings,
-            IEventHub events, SynchronizationContext context) :
-            base(view, model, events, context)
+            IAggregator ea, SynchronizationContext context) :
+            base(view, model, ea, context)
         {
             Settings = settings;
         }

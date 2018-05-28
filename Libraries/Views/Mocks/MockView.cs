@@ -42,7 +42,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEventHub EventHub { get; set; }
+        public IAggregator Aggregator { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
