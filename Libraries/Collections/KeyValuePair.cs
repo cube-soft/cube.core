@@ -17,18 +17,18 @@
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
 
-namespace Cube
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValue
+    /// KeyValuePair
     ///
     /// <summary>
     /// KeyValuePair(T, U) の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class KeyValue
+    public static class KeyValuePair
     {
         #region Methods
 

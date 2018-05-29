@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Cube
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///

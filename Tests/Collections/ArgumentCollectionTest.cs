@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;

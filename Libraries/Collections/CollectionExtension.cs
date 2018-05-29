@@ -25,7 +25,7 @@ namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CollectionOperator
+    /// CollectionExtension
     ///
     /// <summary>
     /// Collection クラスの拡張メソッド用クラスです。

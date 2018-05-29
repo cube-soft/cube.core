@@ -61,7 +61,7 @@
     <Compile Include="Collections\CollectionExtension.cs" />
     <Compile Include="Collections\GenericComparer.cs" />
     <Compile Include="Collections\GenericEqualityComparer.cs" />
-    <Compile Include="Collections\KeyValue.cs" />
+    <Compile Include="Collections\KeyValuePair.cs" />
     <Compile Include="Collections\OrderedDictionary.cs" />
     <Compile Include="DataContract\Format.cs" />
     <Compile Include="DataContract\PropertyOperator.cs" />
