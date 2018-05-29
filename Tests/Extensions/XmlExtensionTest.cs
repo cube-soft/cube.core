@@ -24,15 +24,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// XmlTest
+    /// XmlExtensionTest
     ///
     /// <summary>
-    /// XmlOperator のテスト用クラスです。
+    /// XmlExtension のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class XmlTest : FileHelper
+    class XmlExtensionTest : FileHelper
     {
         #region Tests
 

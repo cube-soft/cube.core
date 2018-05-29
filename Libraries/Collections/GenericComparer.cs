@@ -16,72 +16,63 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 
-namespace Cube.Conversions
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ByteFormat
+    /// GenericComparer(T)
     ///
     /// <summary>
-    /// バイトサイズの書式に変換する拡張メソッド用クラスです。
+    /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ByteFormat
+    public class GenericComparer<T> : Comparer<T>
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GenericComparer(T)
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="src">関数オブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public GenericComparer(Func<T, T, int> src)
+        {
+            _comparer = src;
+        }
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToPrettyBytes
+        /// Compare
         ///
         /// <summary>
-        /// バイトサイズを読みやすい文字列に変換します。
+        /// 2 つのオブジェクトを比較します。
         /// </summary>
         ///
-        /// <param name="bytes">バイト数</param>
+        /// <param name="x">比較する最初のオブジェクト</param>
+        /// <param name="y">比較する 2 番目のオブジェクト</param>
         ///
-        /// <returns>バイト数を表す文字列</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string ToPrettyBytes(this long bytes)
-        {
-            var units = new[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-            var value = (double)bytes;
-            var index = 0;
-
-            while (value > 1000.0)
-            {
-                value /= 1024.0;
-                ++index;
-                if (index >= units.Length - 1) break;
-            }
-
-            return $"{value:G3} {units[index]}";
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToRoughBytes
-        ///
-        /// <summary>
-        /// バイトサイズの概算値を文字列に変換します。
-        /// </summary>
-        ///
-        /// <param name="bytes">バイト数</param>
-        ///
-        /// <returns>バイト数を表す文字列</returns>
-        ///
-        /// <remarks>
-        /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
-        /// 出力します。
-        /// </remarks>
+        /// <returns>比較結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ToRoughBytes(this long bytes) =>
-            ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
+        public override int Compare(T x, T y) => _comparer(x, y);
 
+        #endregion
+
+        #region Fields
+        private readonly Func<T, T, int> _comparer;
         #endregion
     }
 }

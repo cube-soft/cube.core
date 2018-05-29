@@ -335,7 +335,7 @@ namespace Cube.Collections
         /* --------------------------------------------------------------------- */
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => ((IEnumerable)_core)
             .Cast<DictionaryEntry>()
-            .Select(e => new KeyValuePair<TKey, TValue>((TKey)e.Key, (TValue)e.Value))
+            .Select(e => KeyValue.Create((TKey)e.Key, (TValue)e.Value))
             .GetEnumerator();
 
         /* --------------------------------------------------------------------- */

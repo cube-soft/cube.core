@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
 
 namespace Cube
 {
@@ -82,7 +81,7 @@ namespace Cube
         public AnonymousDisposable(Action dispose)
         {
             System.Diagnostics.Debug.Assert(dispose != null);
-            _dispose = dispose;
+            _dispose = new OnceAction(dispose);
         }
 
         #endregion
@@ -98,12 +97,12 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Dispose() => Interlocked.Exchange(ref _dispose, null)?.Invoke();
+        public void Dispose() => _dispose.Invoke();
 
         #endregion
 
         #region Fields
-        private Action _dispose;
+        private OnceAction _dispose;
         #endregion
     }
 }

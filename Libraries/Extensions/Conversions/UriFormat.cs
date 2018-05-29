@@ -26,7 +26,7 @@ namespace Cube.Conversions
     /// UriFormat
     ///
     /// <summary>
-    /// Sytem.Uri の拡張メソッド用クラスです。
+    /// Sytem.Uri の拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

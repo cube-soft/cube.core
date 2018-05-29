@@ -24,15 +24,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CollectionsTest
+    /// CollectionExtensionTest
     ///
     /// <summary>
-    /// CollectionOperator のテスト用クラスです。
+    /// CollectionExtension のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CollectionsTest
+    class CollectionExtensionTest
     {
         #region Tests
 

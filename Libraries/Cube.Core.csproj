@@ -54,19 +54,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Differences\CommonSequence.cs" />
+    <Compile Include="Collections\Differences\OnpAlgorithm.cs" />
+    <Compile Include="Collections\Differences\Result.cs" />
     <Compile Include="Collections\ArgumentCollection.cs" />
     <Compile Include="Collections\CollectionExtension.cs" />
+    <Compile Include="Collections\GenericComparer.cs" />
+    <Compile Include="Collections\GenericEqualityComparer.cs" />
+    <Compile Include="Collections\KeyValue.cs" />
     <Compile Include="Collections\OrderedDictionary.cs" />
-    <Compile Include="Conversions\ByteFormat.cs" />
-    <Compile Include="Conversions\TimeFormat.cs" />
-    <Compile Include="Conversions\UriFormat.cs" />
     <Compile Include="DataContract\Format.cs" />
     <Compile Include="DataContract\PropertyOperator.cs" />
     <Compile Include="DataContract\RegistryDeserializer.cs" />
     <Compile Include="DataContract\RegistrySerializer.cs" />
-    <Compile Include="Differences\CommonSequence.cs" />
-    <Compile Include="Differences\OnpAlgorithm.cs" />
-    <Compile Include="Differences\Result.cs" />
     <Compile Include="Events\EnumerableEventArgs.cs" />
     <Compile Include="Events\IAggregator.cs" />
     <Compile Include="Events\KeyValueEventArgs.cs" />
@@ -74,14 +74,18 @@
     <Compile Include="Events\QueryEventArgs.cs" />
     <Compile Include="Events\RelayEvent.cs" />
     <Compile Include="Events\ValueEventArgs.cs" />
+    <Compile Include="Extensions\Conversions\ByteFormat.cs" />
+    <Compile Include="Extensions\Conversions\TimeFormat.cs" />
+    <Compile Include="Extensions\Conversions\UriFormat.cs" />
+    <Compile Include="Extensions\GenericExtension.cs" />
+    <Compile Include="Extensions\IterateExtension.cs" />
+    <Compile Include="Extensions\TaskExtension.cs" />
+    <Compile Include="Extensions\XmlExtension.cs" />
     <Compile Include="Processes\Messenger.cs" />
     <Compile Include="Processes\MessengerService.cs" />
     <Compile Include="Processes\MessengerServiceCallback.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Disposable.cs" />
-    <Compile Include="GenericComparer.cs" />
-    <Compile Include="Generics.cs" />
-    <Compile Include="Iteration.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="OnceAction.cs" />
@@ -90,9 +94,7 @@
     <Compile Include="SettingsFolder.cs" />
     <Compile Include="SoftwareVersion.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Tasks.cs" />
     <Compile Include="WakeableTimer.cs" />
-    <Compile Include="Xml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

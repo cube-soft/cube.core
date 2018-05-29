@@ -24,15 +24,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskTest
+    /// TaskExtensionTest
     ///
     /// <summary>
-    /// TaskOperator のテスト用クラスです。
+    /// TaskExtension のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class TaskTest
+    class TaskExtensionTest
     {
         #region Tests
 
