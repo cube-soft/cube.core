@@ -264,7 +264,7 @@ namespace Cube.FileSystem
                 src.CreationTime         = obj.CreationTime;
                 src.LastAccessTime       = obj.LastAccessTime;
                 src.LastWriteTime        = obj.LastWriteTime;
-                src.Length               = TryCast(obj)?.Length ?? 0;
+                src.Length               = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
                 src.IsDirectory          = obj is DirectoryInfo;
                 src.NameWithoutExtension = Path.GetFileNameWithoutExtension(path);
                 src.DirectoryName        = TryCast(obj)?.DirectoryName ??
