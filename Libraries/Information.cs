@@ -237,7 +237,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Controller.Invoke(this, Source);
+        public void Refresh() => Controller.Invoke(this);
 
         #endregion
 
@@ -262,10 +262,12 @@ namespace Cube.FileSystem
             /// Information オブジェクトの情報を更新します。
             /// </summary>
             ///
+            /// <param name="src">更新対象オブジェクト</param>
+            ///
             /* ------------------------------------------------------------- */
-            public virtual void Invoke(Information src, string path)
+            public virtual void Invoke(Information src)
             {
-                var obj = Create(path);
+                var obj = Create(src.Source);
 
                 src.Exists               = obj.Exists;
                 src.Name                 = obj.Name;
@@ -277,9 +279,9 @@ namespace Cube.FileSystem
                 src.LastWriteTime        = obj.LastWriteTime;
                 src.Length               = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
                 src.IsDirectory          = obj is DirectoryInfo;
-                src.NameWithoutExtension = Path.GetFileNameWithoutExtension(path);
+                src.NameWithoutExtension = Path.GetFileNameWithoutExtension(src.Source);
                 src.DirectoryName        = TryCast(obj)?.DirectoryName ??
-                                           Path.GetDirectoryName(path);
+                                           Path.GetDirectoryName(src.Source);
             }
 
             /* ------------------------------------------------------------- */

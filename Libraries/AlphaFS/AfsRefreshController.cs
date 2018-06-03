@@ -40,10 +40,12 @@ namespace Cube.FileSystem
         /// Information オブジェクトの情報を更新します。
         /// </summary>
         ///
+        /// <param name="src">更新対象オブジェクト</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public override void Invoke(Information src, string path)
+        public override void Invoke(Information src)
         {
-            var obj = Create(path);
+            var obj = Create(src.Source);
 
             src.Exists               = obj.Exists;
             src.Name                 = obj.Name;
@@ -55,9 +57,9 @@ namespace Cube.FileSystem
             src.LastWriteTime        = obj.LastWriteTime;
             src.Length               = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
             src.IsDirectory          = obj is DirectoryInfo;
-            src.NameWithoutExtension = Path.GetFileNameWithoutExtension(path);
+            src.NameWithoutExtension = Path.GetFileNameWithoutExtension(src.Source);
             src.DirectoryName        = TryCast(obj)?.DirectoryName ??
-                                       Path.GetDirectoryName(path);
+                                       Path.GetDirectoryName(src.Source);
         }
 
         #endregion
