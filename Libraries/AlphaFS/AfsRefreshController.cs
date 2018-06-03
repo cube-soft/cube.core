@@ -43,7 +43,7 @@ namespace Cube.FileSystem
         /// <param name="src">更新対象オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public override void Invoke(Information src)
+        public override void Invoke(InformationCore src)
         {
             var obj = Create(src.Source);
 

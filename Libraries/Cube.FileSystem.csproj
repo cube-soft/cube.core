@@ -97,6 +97,7 @@
     <Compile Include="NativeMethods\Shell32.cs" />
     <Compile Include="FailedEventArgs.cs" />
     <Compile Include="Information.cs" />
+    <Compile Include="InformationCore.cs" />
     <Compile Include="Io.cs" />
     <Compile Include="IoExtension.cs" />
     <Compile Include="PathFilter.cs" />

@@ -60,7 +60,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public Information(string src, RefreshController controller)
         {
-            Source     = src;
+            Core       = new InformationCore(src);
             Controller = controller;
             Refresh();
         }
@@ -71,14 +71,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Source
+        /// Core
         ///
         /// <summary>
-        /// オリジナルのパスを取得します。
+        /// 内部情報を保持するためのオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source { get; }
+        protected InformationCore Core { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,6 +93,17 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Source
+        ///
+        /// <summary>
+        /// オリジナルのパスを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Source => Core.Source;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Exists
         ///
         /// <summary>
@@ -101,7 +112,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists { get; set; }
+        public bool Exists => Core.Exists;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -112,7 +123,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory { get; set; }
+        public bool IsDirectory => Core.IsDirectory;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -123,7 +134,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name { get; set; }
+        public string Name => Core.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,7 +145,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string NameWithoutExtension { get; set; }
+        public string NameWithoutExtension => Core.NameWithoutExtension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -145,7 +156,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Extension { get; set; }
+        public string Extension => Core.Extension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -156,7 +167,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string FullName { get; set; }
+        public string FullName => Core.FullName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -167,7 +178,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName { get; set; }
+        public string DirectoryName => Core.DirectoryName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -178,7 +189,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public long Length { get; set; }
+        public long Length => Core.Length;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -189,7 +200,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes { get; set; }
+        public FileAttributes Attributes => Core.Attributes;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -200,7 +211,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime CreationTime { get; set; }
+        public DateTime CreationTime => Core.CreationTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -211,7 +222,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime { get; set; }
+        public DateTime LastWriteTime => Core.LastWriteTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -222,7 +233,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime { get; set; }
+        public DateTime LastAccessTime => Core.LastAccessTime;
 
         #endregion
 
@@ -237,7 +248,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Controller.Invoke(this);
+        public void Refresh() => Controller.Invoke(Core);
 
         #endregion
 
@@ -265,7 +276,7 @@ namespace Cube.FileSystem
             /// <param name="src">更新対象オブジェクト</param>
             ///
             /* ------------------------------------------------------------- */
-            public virtual void Invoke(Information src)
+            public virtual void Invoke(InformationCore src)
             {
                 var obj = Create(src.Source);
 
