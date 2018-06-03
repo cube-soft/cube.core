@@ -41,10 +41,10 @@ namespace Cube.FileSystem
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="path">ファイルまたはディレクトリのパス</param>
+        /// <param name="src">ファイルまたはディレクトリのパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string path) : this(path, new RefreshController()) { }
+        public Information(string src) : this(src, new RefreshController()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -54,13 +54,13 @@ namespace Cube.FileSystem
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="path">ファイルまたはディレクトリのパス</param>
+        /// <param name="src">ファイルまたはディレクトリのパス</param>
         /// <param name="controller">情報更新用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string path, RefreshController controller)
+        public Information(string src, RefreshController controller)
         {
-            _source = path;
+            Source     = src;
             Controller = controller;
             Refresh();
         }
@@ -68,6 +68,28 @@ namespace Cube.FileSystem
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Source
+        ///
+        /// <summary>
+        /// オリジナルのパスを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Source { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Controller
+        ///
+        /// <summary>
+        /// 情報更新用オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public RefreshController Controller { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -202,17 +224,6 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public DateTime LastAccessTime { get; set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Controller
-        ///
-        /// <summary>
-        /// 情報更新用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public RefreshController Controller { get; }
-
         #endregion
 
         #region Methods
@@ -226,7 +237,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Controller.Invoke(this, _source);
+        public void Refresh() => Controller.Invoke(this, Source);
 
         #endregion
 
@@ -297,10 +308,6 @@ namespace Cube.FileSystem
             private FileInfo TryCast(FileSystemInfo src) => src as FileInfo;
         }
 
-        #endregion
-
-        #region Fields
-        private readonly string _source;
         #endregion
     }
 }
