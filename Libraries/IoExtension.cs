@@ -137,7 +137,7 @@ namespace Cube.FileSystem.Files
         /// <param name="info">ファイル情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this IO io, IInformation info) =>
+        public static string GetTypeName(this IO io, Information info) =>
             GetTypeName(io, info?.FullName);
 
         /* ----------------------------------------------------------------- */
@@ -198,18 +198,19 @@ namespace Cube.FileSystem.Files
         /// <param name="info">ファイル情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this IO io, IInformation info)
+        public static string GetUniqueName(this IO io, Information info)
         {
             if (info == null) return null;
             if (!info.Exists) return info.FullName;
             if (io == null) return null;
 
-            for (var i = 2; ; ++i)
+            for (var i = 2; i < int.MaxValue; ++i)
             {
                 var name = $"{info.NameWithoutExtension}({i}){info.Extension}";
                 var dest = io.Combine(info.DirectoryName, name);
                 if (!io.Exists(dest)) return dest;
             }
+            return info.FullName;
         }
 
         #endregion

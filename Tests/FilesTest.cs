@@ -111,7 +111,7 @@ namespace Cube.FileSystem.Tests
         {
             Assert.That(IO.GetTypeName(string.Empty), Is.Null);
             Assert.That(IO.GetTypeName(default(string)), Is.Null);
-            Assert.That(IO.GetTypeName(default(IInformation)), Is.Null);
+            Assert.That(IO.GetTypeName(default(Information)), Is.Null);
         }
 
         /* ----------------------------------------------------------------- */

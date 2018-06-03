@@ -45,7 +45,8 @@ namespace Cube.FileSystem
         /// <returns>IInformation オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected override IInformation GetCore(string path) => new AfsInformation(path);
+        protected override Information GetCore(string path) =>
+            new Information(path, new AfsRefreshController());
 
         /* ----------------------------------------------------------------- */
         ///

@@ -91,12 +91,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlphaFS\AfsInformation.cs" />
     <Compile Include="AlphaFS\AfsIo.cs" />
+    <Compile Include="AlphaFS\AfsRefreshController.cs" />
     <Compile Include="NativeMethods\IShellLink.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
     <Compile Include="FailedEventArgs.cs" />
-    <Compile Include="IInformation.cs" />
     <Compile Include="Information.cs" />
     <Compile Include="Io.cs" />
     <Compile Include="IoExtension.cs" />

@@ -25,11 +25,11 @@ namespace Cube.FileSystem
     /// Information
     ///
     /// <summary>
-    /// 標準ライブラリを利用した IInformation の実装クラスです。
+    /// ファイルまたはディレクトリの情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Information : IInformation
+    public class Information
     {
         #region Constructors
 
