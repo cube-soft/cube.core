@@ -20,6 +20,139 @@ using System.Threading;
 
 namespace Cube
 {
+    #region Query(T)
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IQuery(T)
+    ///
+    /// <summary>
+    /// 問い合わせ用プロバイダーを定義します。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IQuery<T>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Request
+        ///
+        /// <summary>
+        /// 問い合わせを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Request(QueryEventArgs<T> value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Query(T)
+    ///
+    /// <summary>
+    /// IQuery(T) を実装したクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Query<T> : IQuery<T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query()
+        {
+            _context = SynchronizationContext.Current;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="callback">コールバック関数</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query(Action<QueryEventArgs<T>> callback) : this()
+        {
+            Requested += (s, e) => callback(e);
+        }
+
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Requested
+        ///
+        /// <summary>
+        /// 問い合わせ時に発生するイベントです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event QueryEventHandler<T> Requested;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnRequested
+        ///
+        /// <summary>
+        /// Requested イベントを発生させます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public virtual void OnRequested(QueryEventArgs<T> e)
+        {
+            if (Requested != null)
+            {
+                if (_context != null) _context.Send(_ => Requested(this, e), null);
+                else Requested(this, e);
+            }
+            else e.Cancel = true;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Request
+        ///
+        /// <summary>
+        /// 問い合わせを実行します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// 問い合わせの結果が無効な場合、Cancel プロパティが true に
+        /// 設定されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Request(QueryEventArgs<T> value) => OnRequested(value);
+
+        #endregion
+
+        #region Fields
+        private readonly SynchronizationContext _context;
+        #endregion
+    }
+
+    #endregion
+
+    #region Query(T, U)
+
     /* --------------------------------------------------------------------- */
     ///
     /// IQuery(T, U)
@@ -27,6 +160,11 @@ namespace Cube
     /// <summary>
     /// 問い合わせ用プロバイダーを定義します。
     /// </summary>
+    ///
+    /// <remarks>
+    /// Query と Result の型が同じ場合 IQuery(T, U) の代わりに IQuery(T) を
+    /// 実装する事を検討下さい。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public interface IQuery<T, U>
@@ -147,47 +285,5 @@ namespace Cube
         #endregion
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Query(T)
-    ///
-    /// <summary>
-    /// IQuery(T, U) を実装したクラスです。
-    /// </summary>
-    ///
-    /// <remarks>
-    /// Query および Result が同じ型を示します。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class Query<T> : Query<T, T>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Query
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Query() : base() { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Query
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="callback">コールバック関数</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Query(Action<QueryEventArgs<T, T>> callback) : base(callback) { }
-
-        #endregion
-    }
+    #endregion
 }
