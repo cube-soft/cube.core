@@ -31,22 +31,27 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     public class AfsIO : IO
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
-        /// GetCore
+        /// GetRefreshableCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリの情報を保持するオブジェクトを
+        /// Information の各種プロパティを更新するためのオブジェクトを
         /// 取得します。
         /// </summary>
         ///
-        /// <param name="path">対象となるパス</param>
-        ///
-        /// <returns>IInformation オブジェクト</returns>
+        /// <remarks>
+        /// Refreshable クラスにはオブジェクト毎に保持する状態が存在
+        /// しないため、複数のオブジェクトで Refreshable オブジェクトを
+        /// 共有する事とします。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected override Information GetCore(string path) =>
-            new Information(path, new AfsRefreshable());
+        protected override IRefreshable GetRefreshableCore() => _shared ?? (
+            _shared = new AfsRefreshable()
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -299,5 +304,11 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected override void CopyCore(string src, string dest, bool overwrite) =>
             File.Copy(src, dest, overwrite);
+
+        #endregion
+
+        #region Fields
+        private static IRefreshable _shared;
+        #endregion
     }
 }

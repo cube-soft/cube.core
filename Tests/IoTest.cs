@@ -36,7 +36,81 @@ namespace Cube.FileSystem.Tests
     {
         #region Tests
 
+         /* ----------------------------------------------------------------- */
+        ///
+        /// Get
+        ///
+        /// <summary>
+        /// Get で取得できるオブジェクトのプロパティを確認します。
+        /// </summary>
+        ///
         /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Get(IO io)
+        {
+            var file = io.Get(Example("Sample.txt"));
+            var dir  = io.Get(file.DirectoryName);
+            var cmp  = new DateTime(2017, 6, 5);
+
+            Assert.That(file.Refreshable,          Is.EqualTo(io.GetRefreshable()));
+            Assert.That(file.FullName,             Is.EqualTo(Example("Sample.txt")));
+            Assert.That(file.Name,                 Is.EqualTo("Sample.txt"));
+            Assert.That(file.NameWithoutExtension, Is.EqualTo("Sample"));
+            Assert.That(file.Extension,            Is.EqualTo(".txt"));
+            Assert.That(file.DirectoryName,        Is.EqualTo(Examples));
+            Assert.That(file.CreationTime,         Is.GreaterThan(cmp));
+            Assert.That(file.LastWriteTime,        Is.GreaterThan(cmp));
+            Assert.That(file.LastAccessTime,       Is.GreaterThan(cmp));
+
+            Assert.That(dir.Refreshable,           Is.EqualTo(io.GetRefreshable()));
+            Assert.That(dir.FullName,              Is.EqualTo(Examples));
+            Assert.That(dir.Name,                  Is.EqualTo("Examples"));
+            Assert.That(dir.NameWithoutExtension,  Is.EqualTo("Examples"));
+            Assert.That(dir.Extension,             Is.Empty);
+            Assert.That(dir.DirectoryName,         Is.Not.Null.And.Not.Empty);
+
+            Assert.DoesNotThrow(() =>
+            {
+                file.Refresh();
+                dir.Refresh();
+            });
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Get_New
+        ///
+        /// <summary>
+        /// Information のコンストラクタを直接実行した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Get_New()
+        {
+            var io  = new IO();
+            var src = new Information(Example("Sample.txt"));
+
+            Assert.That(src.Refreshable,                Is.Not.EqualTo(io.GetRefreshable()));
+            Assert.That(src.Refreshable.GetType().Name, Is.EqualTo(io.GetRefreshable().GetType().Name));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Get_Throws
+        ///
+        /// <summary>
+        /// ファイル情報の取得に失敗するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Get_Throws(IO io) => Assert.That(
+            () => io.Get(string.Empty),
+            Throws.TypeOf<ArgumentException>()
+        );
+
+       /* ----------------------------------------------------------------- */
         ///
         /// GetFiles
         ///
@@ -79,57 +153,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count(), Is.EqualTo(0));
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get_Properties
-        ///
-        /// <summary>
-        /// Get で取得できるオブジェクトのプロパティを確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void Get_Properties(IO io)
-        {
-            var file = io.Get(Example("Sample.txt"));
-            var dir  = io.Get(file.DirectoryName);
-            var cmp  = new DateTime(2017, 6, 5);
-
-            Assert.That(file.FullName,             Is.EqualTo(Example("Sample.txt")));
-            Assert.That(file.Name,                 Is.EqualTo("Sample.txt"));
-            Assert.That(file.NameWithoutExtension, Is.EqualTo("Sample"));
-            Assert.That(file.Extension,            Is.EqualTo(".txt"));
-            Assert.That(file.DirectoryName,        Is.EqualTo(Examples));
-            Assert.That(file.CreationTime,         Is.GreaterThan(cmp));
-            Assert.That(file.LastWriteTime,        Is.GreaterThan(cmp));
-            Assert.That(file.LastAccessTime,       Is.GreaterThan(cmp));
-
-            Assert.That(dir.FullName,              Is.EqualTo(Examples));
-            Assert.That(dir.Name,                  Is.EqualTo("Examples"));
-            Assert.That(dir.NameWithoutExtension,  Is.EqualTo("Examples"));
-            Assert.That(dir.Extension,             Is.Empty);
-            Assert.That(dir.DirectoryName,         Is.Not.Null.And.Not.Empty);
-
-            Assert.DoesNotThrow(() =>
-            {
-                file.Refresh();
-                dir.Refresh();
-            });
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get_Throws
-        ///
-        /// <summary>
-        /// ファイル情報の取得に失敗するテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void Get_Throws(IO io) =>
-            Assert.That(() => io.Get(string.Empty), Throws.TypeOf<ArgumentException>());
 
         /* ----------------------------------------------------------------- */
         ///

@@ -248,7 +248,18 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Refreshable.Invoke(Core);
+        public void Refresh() => OnRefresh();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnRefresh
+        ///
+        /// <summary>
+        /// オブジェクトを最新の状態に更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnRefresh() => Refreshable.Invoke(Core);
 
         #endregion
     }

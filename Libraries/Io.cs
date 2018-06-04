@@ -31,6 +31,10 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     public class IO
     {
+        #region Properties
+
+        #endregion
+
         #region Methods
 
         #region Get
@@ -65,7 +69,44 @@ namespace Cube.FileSystem
         /// <returns>IInformation オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual Information GetCore(string path) => new Information(path);
+        protected virtual Information GetCore(string path) =>
+            new Information(path, GetRefreshable());
+
+        #endregion
+
+        #region GetRefreshable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetRefreshable
+        ///
+        /// <summary>
+        /// Information の各種プロパティを更新するためのオブジェクトを
+        /// 取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IRefreshable GetRefreshable() => GetRefreshableCore();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetRefreshableCore
+        ///
+        /// <summary>
+        /// Information の各種プロパティを更新するためのオブジェクトを
+        /// 取得します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Refreshable クラスにはオブジェクト毎に保持する状態が存在
+        /// しないため、複数のオブジェクトで Refreshable オブジェクトを
+        /// 共有する事とします。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual IRefreshable GetRefreshableCore() => _shared ?? (
+            _shared = new Refreshable()
+        );
 
         #endregion
 
@@ -899,6 +940,10 @@ namespace Cube.FileSystem
             }
         }
 
+        #endregion
+
+        #region Fields
+        private static IRefreshable _shared;
         #endregion
     }
 }
