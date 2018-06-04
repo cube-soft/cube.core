@@ -46,7 +46,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         protected override Information GetCore(string path) =>
-            new Information(path, new AfsRefreshController());
+            new Information(path, new AfsRefreshable());
 
         /* ----------------------------------------------------------------- */
         ///

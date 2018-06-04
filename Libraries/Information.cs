@@ -44,7 +44,7 @@ namespace Cube.FileSystem
         /// <param name="src">ファイルまたはディレクトリのパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src) : this(src, new RefreshController()) { }
+        public Information(string src) : this(src, new Refreshable()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -55,13 +55,13 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <param name="src">ファイルまたはディレクトリのパス</param>
-        /// <param name="controller">情報更新用オブジェクト</param>
+        /// <param name="refreshable">情報更新用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src, RefreshController controller)
+        public Information(string src, IRefreshable refreshable)
         {
-            Core       = new InformationCore(src);
-            Controller = controller;
+            Core        = new InformationCore(src);
+            Refreshable = refreshable;
             Refresh();
         }
 
@@ -82,14 +82,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Controller
+        /// Refreshable
         ///
         /// <summary>
         /// 情報更新用オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public RefreshController Controller { get; }
+        public IRefreshable Refreshable { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -248,78 +248,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Controller.Invoke(Core);
-
-        #endregion
-
-        #region RefreshController
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RefreshController
-        ///
-        /// <summary>
-        /// Information オブジェクトの情報を更新するためのクラスです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public class RefreshController
-        {
-            /* ------------------------------------------------------------- */
-            ///
-            /// Invoke
-            ///
-            /// <summary>
-            /// Information オブジェクトの情報を更新します。
-            /// </summary>
-            ///
-            /// <param name="src">更新対象オブジェクト</param>
-            ///
-            /* ------------------------------------------------------------- */
-            public virtual void Invoke(InformationCore src)
-            {
-                var obj = Create(src.Source);
-
-                src.Exists               = obj.Exists;
-                src.Name                 = obj.Name;
-                src.Extension            = obj.Extension;
-                src.FullName             = obj.FullName;
-                src.Attributes           = obj.Attributes;
-                src.CreationTime         = obj.CreationTime;
-                src.LastAccessTime       = obj.LastAccessTime;
-                src.LastWriteTime        = obj.LastWriteTime;
-                src.Length               = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
-                src.IsDirectory          = obj is DirectoryInfo;
-                src.NameWithoutExtension = Path.GetFileNameWithoutExtension(src.Source);
-                src.DirectoryName        = TryCast(obj)?.DirectoryName ??
-                                           Path.GetDirectoryName(src.Source);
-            }
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// Create
-            ///
-            /// <summary>
-            /// FileSystemInfo オブジェクトを生成します。
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            private FileSystemInfo Create(string path) =>
-                Directory.Exists(path) ?
-                new DirectoryInfo(path) as FileSystemInfo :
-                new FileInfo(path) as FileSystemInfo;
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// TryCast
-            ///
-            /// <summary>
-            /// FileInfo オブジェクトへのキャストを試行します。
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            private FileInfo TryCast(FileSystemInfo src) => src as FileInfo;
-        }
+        public void Refresh() => Refreshable.Invoke(Core);
 
         #endregion
     }

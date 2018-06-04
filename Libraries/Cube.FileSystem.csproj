@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlphaFS\AfsIo.cs" />
-    <Compile Include="AlphaFS\AfsRefreshController.cs" />
+    <Compile Include="AlphaFS\AfsRefreshable.cs" />
     <Compile Include="NativeMethods\IShellLink.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
     <Compile Include="FailedEventArgs.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="Io.cs" />
     <Compile Include="IoExtension.cs" />
     <Compile Include="PathFilter.cs" />
+    <Compile Include="Refreshable.cs" />
     <Compile Include="Shortcut.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
