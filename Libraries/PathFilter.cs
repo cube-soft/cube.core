@@ -101,8 +101,8 @@ namespace Cube.FileSystem
                 if (string.IsNullOrEmpty(_cache))
                 {
                     var path = _io.Combine(EspacedPaths.ToArray());
-                    var head = Kind == PathKind.Inactivation && AllowInactivation ? InactivationStr :
-                               Kind == PathKind.Unc && AllowUncCore() ? UncStr :
+                    var head = Kind == PathKind.Inactivation && AllowInactivation ? InactivationSymbol :
+                               Kind == PathKind.Unc && AllowUncCore() ? UncSymbol :
                                string.Empty;
                     _cache = !string.IsNullOrEmpty(head) ? $"{head}{path}" : path;
                 }
@@ -122,12 +122,7 @@ namespace Cube.FileSystem
         public char EscapeChar
         {
             get => _escapeChar;
-            set
-            {
-                if (_escapeChar == value) return;
-                _escapeChar = value;
-                Reset();
-            }
+            set => Set(ref _escapeChar, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -147,12 +142,7 @@ namespace Cube.FileSystem
         public bool AllowDriveLetter
         {
             get => _allowDriveLetter;
-            set
-            {
-                if (_allowDriveLetter == value) return;
-                _allowDriveLetter = value;
-                Reset();
-            }
+            set => Set(ref _allowDriveLetter, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -175,12 +165,7 @@ namespace Cube.FileSystem
         public bool AllowCurrentDirectory
         {
             get => _allowCurrentDirectory;
-            set
-            {
-                if (_allowCurrentDirectory == value) return;
-                _allowCurrentDirectory = value;
-                Reset();
-            }
+            set => Set(ref _allowCurrentDirectory, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -203,12 +188,7 @@ namespace Cube.FileSystem
         public bool AllowParentDirectory
         {
             get => _allowParentDirectory;
-            set
-            {
-                if (_allowParentDirectory == value) return;
-                _allowParentDirectory = value;
-                Reset();
-            }
+            set => Set(ref _allowParentDirectory, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -231,12 +211,7 @@ namespace Cube.FileSystem
         public bool AllowInactivation
         {
             get => _allowInactivation;
-            set
-            {
-                if (_allowInactivation == value) return;
-                _allowInactivation = value;
-                Reset();
-            }
+            set => Set(ref _allowInactivation, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -254,13 +229,19 @@ namespace Cube.FileSystem
         public bool AllowUnc
         {
             get => _allowUnc;
-            set
-            {
-                if (_allowUnc == value) return;
-                _allowUnc = value;
-                Reset();
-            }
+            set => Set(ref _allowUnc, value);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Kind
+        ///
+        /// <summary>
+        /// パスの種類を示す値を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected PathKind Kind => EscapeOnce().Key;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -275,25 +256,7 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected IEnumerable<string> EspacedPaths => _escaped = _escaped ?? Escape();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Kind
-        ///
-        /// <summary>
-        /// パスの種類を示す値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PathKind Kind
-        {
-            get
-            {
-                var _ = EspacedPaths;
-                return _kind;
-            }
-        }
+        protected IEnumerable<string> EspacedPaths => EscapeOnce().Value;
 
         #endregion
 
@@ -316,47 +279,47 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CurrentDirectoryStr
+        /// CurrentDirectorySymbol
         ///
         /// <summary>
         /// カレントディレクトリを表す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string CurrentDirectoryStr { get; } = ".";
+        public static string CurrentDirectorySymbol { get; } = ".";
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ParentDirectoryStr
+        /// ParentDirectorySymbol
         ///
         /// <summary>
         /// 親ディレクトリを表す文字列を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ParentDirectoryStr { get; } = "..";
+        public static string ParentDirectorySymbol { get; } = "..";
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UncStr
+        /// UncSymbol
         ///
         /// <summary>
         /// UNC パスを表す接頭辞を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string UncStr { get; } = @"\\";
+        public static string UncSymbol { get; } = @"\\";
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InactivationStr
+        /// InactivationSymbol
         ///
         /// <summary>
         /// サービス機能の不活性化を表す接頭辞を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string InactivationStr { get; } = @"\\?\";
+        public static string InactivationSymbol { get; } = @"\\?\";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -488,8 +451,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Reset()
         {
-            _escaped = null;
-            _kind    = PathKind.Normal;
+            _escaped = default(KeyValuePair<PathKind, IEnumerable<string>>);
             _cache   = null;
         }
 
@@ -499,43 +461,58 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Escape
+        /// Set
+        ///
+        /// <summary>
+        /// プロパティに値を設定します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// 設定時に Reset() メソッドが実行されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool Set<T>(ref T field, T value)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            Reset();
+            return true;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EscapeOnce
         ///
         /// <summary>
         /// エスケープ処理を実行します。
         /// </summary>
         ///
+        /// <remarks>
+        /// 既に実行されている場合は何もせずに終了します。再度 EscapeOnce
+        /// メソッドを実行する場合、Reset メソッドを実行して下さい。
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        private IEnumerable<string> Escape()
+        private KeyValuePair<PathKind, IEnumerable<string>> EscapeOnce()
         {
-            if (string.IsNullOrEmpty(RawPath)) return new string[0];
+            if (_escaped.Value == null)
+            {
+                var k = string.IsNullOrEmpty(RawPath)          ? PathKind.Normal :
+                        RawPath.StartsWith(InactivationSymbol) ? PathKind.Inactivation :
+                        RawPath.StartsWith(UncSymbol)          ? PathKind.Unc :
+                        PathKind.Normal;
 
-            _kind = RawPath.StartsWith(InactivationStr) ? PathKind.Inactivation :
-                    RawPath.StartsWith(UncStr) ? PathKind.Unc :
-                    PathKind.Normal;
+                var v = string.IsNullOrEmpty(RawPath) ?
+                        new string[0] :
+                        RawPath.Split(SeparatorChars)
+                               .SkipWhile(s => string.IsNullOrEmpty(s))
+                               .Where((s, i) => !IsRemove(s, i))
+                               .Select((s, i) => Escape(s, i));
 
-            return RawPath.Split(SeparatorChars)
-                          .SkipWhile(s => string.IsNullOrEmpty(s))
-                          .Where((s, i) => !IsRemove(s, i))
-                          .Select((s, i) => Escape(s, i));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsRemove
-        ///
-        /// <summary>
-        /// 除去する文字列かどうかを判別します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool IsRemove(string name, int index)
-        {
-            if (string.IsNullOrEmpty(name)) return true;
-            if (index == 0 && name == "?") return true;
-            if (name == CurrentDirectoryStr && !AllowCurrentDirectoryCore()) return true;
-            if (name == ParentDirectoryStr && !AllowParentDirectoryCore()) return true;
-            return false;
+                _escaped = KeyValuePair.Create(k, v);
+            }
+            return _escaped;
         }
 
         /* ----------------------------------------------------------------- */
@@ -560,9 +537,27 @@ namespace Cube.FileSystem
             }
 
             var s = sb.ToString();
-            var f = (s == CurrentDirectoryStr || s == ParentDirectoryStr);
+            var f = (s == CurrentDirectorySymbol || s == ParentDirectorySymbol);
             var dest = f ? s : s.TrimEnd(new[] { ' ', '.' });
             return IsReserved(dest) ? $"_{dest}" : dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsRemove
+        ///
+        /// <summary>
+        /// 除去する文字列かどうかを判別します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool IsRemove(string name, int index)
+        {
+            if (string.IsNullOrEmpty(name)) return true;
+            if (index == 0 && name == "?") return true;
+            if (name == CurrentDirectorySymbol && !AllowCurrentDirectoryCore()) return true;
+            if (name == ParentDirectorySymbol && !AllowParentDirectoryCore()) return true;
+            return false;
         }
 
         /* ----------------------------------------------------------------- */
@@ -662,8 +657,7 @@ namespace Cube.FileSystem
         private bool _allowParentDirectory = true;
         private bool _allowInactivation = false;
         private bool _allowUnc = true;
-        private IEnumerable<string> _escaped;
-        private PathKind _kind = PathKind.Normal;
+        private KeyValuePair<PathKind, IEnumerable<string>> _escaped;
         private string _cache;
         #endregion
     }
