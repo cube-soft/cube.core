@@ -80,7 +80,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public AnonymousDisposable(Action dispose)
         {
-            System.Diagnostics.Debug.Assert(dispose != null);
             _dispose = new OnceAction(dispose);
         }
 

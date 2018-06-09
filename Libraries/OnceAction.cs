@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Cube
@@ -46,7 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action action)
         {
-            System.Diagnostics.Debug.Assert(action != null);
+            Debug.Assert(action != null);
             _action = action;
         }
 
@@ -98,7 +99,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action<T> action)
         {
-            System.Diagnostics.Debug.Assert(action != null);
+            Debug.Assert(action != null);
             _action = action;
         }
 

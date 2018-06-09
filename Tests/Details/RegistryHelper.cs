@@ -99,7 +99,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey CreateSubKey(string subkey) =>
-            Formatter.Target.CreateSubKey(GetSubKeyName(subkey));
+            Formatter.RootKey.CreateSubKey(GetSubKeyName(subkey));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -111,7 +111,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey OpenSubKey(string subkey) =>
-            Formatter.Target.OpenSubKey(GetSubKeyName(subkey), false);
+            Formatter.RootKey.OpenSubKey(GetSubKeyName(subkey), false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -178,7 +178,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TearDown]
-        protected virtual void Teardown() => Formatter.Target.DeleteSubKeyTree(RootSubKeyName, false);
+        protected virtual void Teardown() => Formatter.RootKey.DeleteSubKeyTree(RootSubKeyName, false);
 
         #endregion
 
