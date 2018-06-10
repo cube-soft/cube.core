@@ -21,7 +21,7 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileManager
+    /// FileFixture
     ///
     /// <summary>
     /// ユニットテストでファイルを使用する際の補助クラスです。
@@ -34,24 +34,24 @@ namespace Cube.FileSystem.Tests
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class FileManager
+    public abstract class FileFixture
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileManager
+        /// FileFixture
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileManager() : this(new IO()) { }
+        protected FileFixture() : this(new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileManager
+        /// FileFixture
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -60,7 +60,7 @@ namespace Cube.FileSystem.Tests
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileManager(IO io)
+        protected FileFixture(IO io)
         {
             IO       = io;
             Root     = IO.Get(Assembly.GetExecutingAssembly().Location).DirectoryName;

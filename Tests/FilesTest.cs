@@ -30,7 +30,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class FilesTest : FileManager
+    class FilesTest : FileFixture
     {
         #region Tests
 

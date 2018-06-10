@@ -32,7 +32,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class IoTest : FileManager
+    class IoTest : FileFixture
     {
         #region Tests
 
