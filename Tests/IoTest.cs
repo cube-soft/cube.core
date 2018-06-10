@@ -166,7 +166,7 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void Create(IO io)
         {
-            var dest = Result(@"Directory\Create.txt");
+            var dest = Result($@"Directory\{nameof(Create)}.txt");
             using (var stream = io.Create(dest)) stream.WriteByte((byte)'A');
             Assert.That(io.Get(dest).Length, Is.EqualTo(1));
         }
@@ -184,7 +184,7 @@ namespace Cube.FileSystem.Tests
         public void OpenWrite(IO io)
         {
             var src  = io.Get(Example("Sample.txt"));
-            var dest = io.Get(Result("OpenWrite.txt"));
+            var dest = io.Get(Result($"{nameof(OpenWrite)}.txt"));
 
             io.Copy(src.FullName, dest.FullName, true);
             io.SetAttributes(dest.FullName, src.Attributes);
@@ -196,7 +196,7 @@ namespace Cube.FileSystem.Tests
             using (var stream = io.OpenWrite(dest.FullName)) stream.WriteByte((byte)'A');
             Assert.That(dest.Length, Is.EqualTo(count));
 
-            var newfile = Result(@"Directory\OpenWrite.txt");
+            var newfile = Result($@"Directory\{nameof(OpenWrite)}.txt");
             using (var stream = io.OpenWrite(newfile)) stream.WriteByte((byte)'A');
             Assert.That(io.Get(newfile).Length, Is.EqualTo(1));
         }
@@ -213,12 +213,33 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void Delete(IO io)
         {
-            var dest = Result("Delete.txt");
+            var dest = Result($"{nameof(Delete)}.txt");
 
             io.Copy(Example("Sample.txt"), dest);
             io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
             io.Delete(dest);
 
+            Assert.That(io.Exists(dest), Is.False);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryDelete
+        ///
+        /// <summary>
+        /// ファイルを削除するテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void TryDelete(IO io)
+        {
+            var dest = Result($"{nameof(TryDelete)}.txt");
+
+            io.Copy(Example("Sample.txt"), dest);
+            io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
+
+            Assert.That(io.TryDelete(dest), Is.True);
             Assert.That(io.Exists(dest), Is.False);
         }
 
@@ -255,7 +276,44 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
         public void Delete_NotFound(IO io) =>
-            Assert.DoesNotThrow(() => io.Delete(Result("NotFound")));
+            Assert.DoesNotThrow(() => io.Delete(Result(nameof(Delete_NotFound))));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryDelete_NotFound
+        ///
+        /// <summary>
+        /// 存在しないファイルの削除を試みた時の挙動を確認します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// 存在しないファイルを削除した時には例外が発生しないため、
+        /// TryDelete の戻り値は true となります。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void TryDelete_NotFound(IO io) =>
+            Assert.That(io.TryDelete(Result(nameof(TryDelete_NotFound))), Is.True);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryDelete_AccessDenied
+        ///
+        /// <summary>
+        /// 使用されているファイルを削除しようとした時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void TryDelete_AccessDenied(IO io)
+        {
+            var src = Result($"{nameof(TryDelete_AccessDenied)}.txt");
+            using (var _ = io.Create(src))
+            {
+                Assert.That(io.TryDelete(src), Is.False);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -273,7 +331,7 @@ namespace Cube.FileSystem.Tests
 
             var name = "SampleDirectory";
             var src  = io.Get(io.Combine(Results, name));
-            var dest = io.Get(io.Combine(Results, $"{name}-Move"));
+            var dest = io.Get(io.Combine(Results, $"{name}-{nameof(Move)}"));
 
             io.Copy(Example(name), src.FullName, false);
             src.Refresh();
@@ -322,7 +380,7 @@ namespace Cube.FileSystem.Tests
             };
 
             var src  = io.Combine(Results, "FileNotFound.txt");
-            var dest = io.Combine(Results, "Moved.txt");
+            var dest = io.Combine(Results, $"{nameof(Move_Failed)}.txt");
             io.Move(src, dest);
 
             Assert.That(failed, Is.True);
@@ -345,8 +403,8 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void Move_Throws(IO io) => Assert.That(
             () => io.Move(
-                io.Combine(Results, "FileNotFound.txt"),
-                io.Combine(Results, "Moved.txt")
+                Result("FileNotFound.txt"),
+                Result($"{nameof(Move_Throws)}.txt")
             ),
             Throws.TypeOf<System.IO.FileNotFoundException>()
         );

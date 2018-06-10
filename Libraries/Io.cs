@@ -407,6 +407,29 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
+        /// TryDelete
+        ///
+        /// <summary>
+        /// ファイルまたはディレクトリの削除を試行します。
+        /// </summary>
+        ///
+        /// <param name="path">削除するファイルのパス</param>
+        ///
+        /// <returns>削除が成功したかどうか</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool TryDelete(string path)
+        {
+            try
+            {
+                DeleteCore(path);
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// DeleteCore
         ///
         /// <summary>
