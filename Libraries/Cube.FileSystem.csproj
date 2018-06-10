@@ -95,6 +95,7 @@
     <Compile Include="AlphaFS\AfsRefreshable.cs" />
     <Compile Include="NativeMethods\IShellLink.cs" />
     <Compile Include="NativeMethods\Shell32.cs" />
+    <Compile Include="Tests\FileManager.cs" />
     <Compile Include="FailedEventArgs.cs" />
     <Compile Include="Information.cs" />
     <Compile Include="InformationCore.cs" />

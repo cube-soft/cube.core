@@ -21,31 +21,37 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHelper
+    /// FileManager
     ///
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// ユニットテストでファイルを使用する際の補助クラスです。
     /// </summary>
     ///
+    /// <remarks>
+    /// このクラスは、主にユニットテスト用クラスの内部処理で利用されます。
+    /// このクラスを直接オブジェクト化する事はできません。必要なクラスに
+    /// 継承する形で利用して下さい。
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
-    class FileHelper
+    public abstract class FileManager
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileHelper
+        /// FileManager
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHelper() : this(new IO()) { }
+        protected FileManager() : this(new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileHelper
+        /// FileManager
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -54,11 +60,13 @@ namespace Cube.FileSystem.Tests
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHelper(IO io)
+        protected FileManager(IO io)
         {
-            IO = io;
-            Root = IO.Get(Assembly.GetExecutingAssembly().Location).DirectoryName;
-            _directory = GetType().FullName;
+            IO       = io;
+            Root     = IO.Get(Assembly.GetExecutingAssembly().Location).DirectoryName;
+            Name     = GetType().FullName;
+            Examples = IO.Combine(Root, nameof(Examples));
+            Results  = IO.Combine(Root, nameof(Results), Name);
 
             if (!IO.Exists(Results)) IO.CreateDirectory(Results);
             Delete(Results);
@@ -100,7 +108,7 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Examples => IO.Combine(Root, "Examples");
+        protected string Examples { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -111,7 +119,22 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Results => IO.Combine(Root, $@"Results\{_directory}");
+        protected string Results { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Name
+        ///
+        /// <summary>
+        /// クラス名を取得します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// テスト結果を格納するディレクトリの生成時に使用します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected string Name { get; }
 
         #endregion
 
@@ -119,33 +142,37 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Example
+        /// GetExamplesWith
         ///
         /// <summary>
-        /// ファイル名に対して Examples フォルダのパスを結合したパスを
-        /// 取得します。
+        /// 指定されたパス一覧の先頭に Examples ディレクトリのパスを結合
+        /// した結果を取得します。
         /// </summary>
         ///
-        /// <param name="filename">ファイル名</param>
-        /// <returns>パス</returns>
+        /// <param name="paths">結合パス一覧</param>
+        ///
+        /// <returns>結合結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Example(string filename) => IO.Combine(Examples, filename);
+        protected string GetExamplesWith(params string[] paths) =>
+            IO.Combine(Examples, IO.Combine(paths));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Example
+        /// GetResultsWith
         ///
         /// <summary>
-        /// ファイル名に対して Results フォルダのパスを結合したパスを
-        /// 取得します。
+        /// 指定されたパス一覧の先頭に Results ディレクトリのパスを結合
+        /// した結果を取得します。
         /// </summary>
         ///
-        /// <param name="filename">ファイル名</param>
-        /// <returns>パス</returns>
+        /// <param name="paths">結合パス一覧</param>
+        ///
+        /// <returns>結合結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Result(string filename) => IO.Combine(Results, filename);
+        protected string GetResultsWith(params string[] paths) =>
+            IO.Combine(Results, IO.Combine(paths));
 
         #endregion
 
@@ -171,10 +198,6 @@ namespace Cube.FileSystem.Tests
             }
         }
 
-        #endregion
-
-        #region Fields
-        private readonly string _directory = string.Empty;
         #endregion
     }
 }

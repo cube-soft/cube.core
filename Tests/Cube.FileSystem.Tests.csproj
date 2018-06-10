@@ -89,7 +89,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Details\FileHelper.cs" />
     <Compile Include="Details\GlobalSetup.cs" />
     <Compile Include="FilesTest.cs" />
     <Compile Include="IoTest.cs" />

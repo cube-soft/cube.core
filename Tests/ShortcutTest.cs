@@ -32,7 +32,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ShortcutTest : FileHelper
+    class ShortcutTest : FileManager
     {
         #region Tests
 
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public bool Create(string name, string link, int index, IList<string> args)
         {
-            var src  = Result(name);
+            var src  = GetResultsWith(name);
             var dest = GetLinkPath(link);
             var sc   = new Shortcut(src)
             {
@@ -73,7 +73,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Create_Empty()
         {
-            var sc = new Shortcut(Result("ScEmpty"))
+            var sc = new Shortcut(GetResultsWith("ScEmpty"))
             {
                 Link         = string.Empty,
                 Arguments    = null,
@@ -109,7 +109,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Delete()
         {
-            var src  = Result("DeleteTest");
+            var src  = GetResultsWith("DeleteTest");
             var dest = GetLinkPath("Cube.FileSystem.dll");
             var sc   = new Shortcut(src)
             {

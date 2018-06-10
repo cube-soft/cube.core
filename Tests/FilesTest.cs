@@ -30,7 +30,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class FilesTest : FileHelper
+    class FilesTest : FileManager
     {
         #region Tests
 
@@ -45,7 +45,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Load() => new IO().Load(
-            Example("Sample.txt"),
+            GetExamplesWith("Sample.txt"),
             e => Assert.That(e.Length, Is.EqualTo(13L))
         );
 
@@ -60,7 +60,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Load_NotFound() => Assert.That(
-            new IO().Load(Example("NotFound.dummy"), e => e.Length, -1),
+            new IO().Load(GetExamplesWith("NotFound.dummy"), e => e.Length, -1),
             Is.EqualTo(-1L)
         );
 
@@ -77,7 +77,7 @@ namespace Cube.FileSystem.Tests
         public void Save()
         {
             var io   = new IO();
-            var dest = Result(nameof(Save));
+            var dest = GetResultsWith(nameof(Save));
 
             io.Save(dest, e => e.WriteByte((byte)'a'));
             Assert.That(io.Get(dest).Length, Is.EqualTo(1));
@@ -95,7 +95,7 @@ namespace Cube.FileSystem.Tests
         [TestCase("Sample.txt",     ExpectedResult = true)]
         [TestCase("NotFound.dummy", ExpectedResult = true)]
         public bool GetTypeName(string filename) =>
-            !string.IsNullOrEmpty(IO.GetTypeName(IO.Get(Example(filename))));
+            !string.IsNullOrEmpty(IO.GetTypeName(IO.Get(GetExamplesWith(filename))));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,21 +126,21 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void GetUniqueName()
         {
-            var src = Result($"UniqueTest.txt");
+            var src = GetResultsWith($"UniqueTest.txt");
             var u1 = IO.GetUniqueName(src);
             Assert.That(u1, Is.EqualTo(src));
 
-            IO.Copy(Example("Sample.txt"), u1);
+            IO.Copy(GetExamplesWith("Sample.txt"), u1);
             var u2 = IO.GetUniqueName(src);
-            Assert.That(u2, Is.EqualTo(Result($"UniqueTest(2).txt")));
+            Assert.That(u2, Is.EqualTo(GetResultsWith($"UniqueTest(2).txt")));
 
-            IO.Copy(Example("Sample.txt"), u2);
+            IO.Copy(GetExamplesWith("Sample.txt"), u2);
             var u3 = IO.GetUniqueName(IO.Get(src));
-            Assert.That(u3, Is.EqualTo(Result($"UniqueTest(3).txt")));
+            Assert.That(u3, Is.EqualTo(GetResultsWith($"UniqueTest(3).txt")));
 
-            IO.Copy(Example("Sample.txt"), u3);
+            IO.Copy(GetExamplesWith("Sample.txt"), u3);
             var u4 = IO.GetUniqueName(u3); // Not src
-            Assert.That(u4, Is.EqualTo(Result($"UniqueTest(3)(2).txt")));
+            Assert.That(u4, Is.EqualTo(GetResultsWith($"UniqueTest(3)(2).txt")));
         }
 
         /* ----------------------------------------------------------------- */
@@ -156,7 +156,7 @@ namespace Cube.FileSystem.Tests
         public void GetUniqueName_Null()
         {
             var dummy = default(IO);
-            var src   = Example("Sample.txt");
+            var src   = GetExamplesWith("Sample.txt");
 
             Assert.That(dummy.GetUniqueName(src), Is.Null);
             Assert.That(dummy.GetUniqueName(IO.Get(src)), Is.Null);
