@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -46,18 +47,18 @@ namespace Cube.Tests
         [TestCaseSource(nameof(TestCases))]
         public void Assembly_Properties(Assembly src, Result expected) {
             var dest = new AssemblyReader(src);
-            Assert.That(!string.IsNullOrEmpty(dest.Location), Is.EqualTo(expected.Location));
-            Assert.That(dest.Assembly,      Is.EqualTo(expected.Assembly));
-            Assert.That(dest.Title,         Is.EqualTo(expected.Title));
-            Assert.That(dest.Description,   Is.EqualTo(expected.Description));
-            Assert.That(dest.Company,       Is.EqualTo(expected.Company));
-            Assert.That(dest.Product,       Is.EqualTo(expected.Product));
-            Assert.That(dest.Copyright,     Is.EqualTo(expected.Copyright));
-            Assert.That(dest.Trademark,     Is.EqualTo(expected.Trademark));
-            Assert.That(dest.Configuration, Is.EqualTo(expected.Configuration));
-            Assert.That(dest.Culture,       Is.EqualTo(expected.Culture));
-            Assert.That(dest.Version,       Is.EqualTo(expected.Version));
-            Assert.That(dest.FileVersion,   Is.EqualTo(expected.FileVersion));
+            Assert.That(dest.Location.HasValue(), Is.EqualTo(expected.Location));
+            Assert.That(dest.Assembly,            Is.EqualTo(expected.Assembly));
+            Assert.That(dest.Title,               Is.EqualTo(expected.Title));
+            Assert.That(dest.Description,         Is.EqualTo(expected.Description));
+            Assert.That(dest.Company,             Is.EqualTo(expected.Company));
+            Assert.That(dest.Product,             Is.EqualTo(expected.Product));
+            Assert.That(dest.Copyright,           Is.EqualTo(expected.Copyright));
+            Assert.That(dest.Trademark,           Is.EqualTo(expected.Trademark));
+            Assert.That(dest.Configuration,       Is.EqualTo(expected.Configuration));
+            Assert.That(dest.Culture,             Is.EqualTo(expected.Culture));
+            Assert.That(dest.Version,             Is.EqualTo(expected.Version));
+            Assert.That(dest.FileVersion,         Is.EqualTo(expected.FileVersion));
         }
 
         /* ----------------------------------------------------------------- */

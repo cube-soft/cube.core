@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using Microsoft.Win32;
 using System;
 using System.Collections;
@@ -71,7 +72,7 @@ namespace Cube.DataContract
             foreach (var pi in type.GetProperties())
             {
                 var name = pi.GetDataMemberName();
-                if (string.IsNullOrEmpty(name)) continue;
+                if (!name.HasValue()) continue;
                 var obj = Get(pi.GetPropertyType(), src, name);
                 if (obj != null) pi.SetValue(dest, obj, null);
             }

@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using Microsoft.Win32;
 
 namespace Cube
@@ -158,12 +159,12 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Load()
         {
-            if (string.IsNullOrEmpty(Name)) return;
+            if (!Name.HasValue()) return;
 
             using (var subkey = Open(false))
             {
                 Command = subkey.GetValue(Name, string.Empty) as string;
-                Enabled = !string.IsNullOrEmpty(Command);
+                Enabled = Command.HasValue();
             }
         }
 
@@ -178,13 +179,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Save()
         {
-            if (string.IsNullOrEmpty(Name)) return;
+            if (!Name.HasValue()) return;
 
             using (var subkey = Open(true))
             {
                 if (Enabled)
                 {
-                    if (!string.IsNullOrEmpty(Command)) subkey.SetValue(Name, Command);
+                    if (Command.HasValue()) subkey.SetValue(Name, Command);
                 }
                 else subkey.DeleteValue(Name, false);
             }

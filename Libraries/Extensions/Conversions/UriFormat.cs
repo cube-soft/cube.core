@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,11 +51,11 @@ namespace Cube.Conversions
         ///
         /* ----------------------------------------------------------------- */
         public static Uri ToUri(this string src) =>
-            string.IsNullOrEmpty(src) ? default(Uri) :
-            src.Contains("://")       ? new Uri(src) :
-            src.StartsWith("//")      ? new Uri("http:" + src) :
-            src.StartsWith("/")       ? new Uri("http://localhost" + src) :
-                                        new Uri("http://" + src);
+           !src.HasValue()       ? default(Uri) :
+            src.Contains("://")  ? new Uri(src) :
+            src.StartsWith("//") ? new Uri("http:" + src) :
+            src.StartsWith("/")  ? new Uri("http://localhost" + src) :
+                                   new Uri("http://" + src);
 
         #endregion
 
@@ -172,11 +173,11 @@ namespace Cube.Conversions
             if (utm == null) return uri;
 
             var query = new Dictionary<string, string>();
-            if (!string.IsNullOrEmpty(utm.Source)) query.Add("utm_source", utm.Source);
-            if (!string.IsNullOrEmpty(utm.Medium)) query.Add("utm_medium", utm.Medium);
-            if (!string.IsNullOrEmpty(utm.Campaign)) query.Add("utm_campaign", utm.Campaign);
-            if (!string.IsNullOrEmpty(utm.Term)) query.Add("utm_term", utm.Term);
-            if (!string.IsNullOrEmpty(utm.Content)) query.Add("utm_content", utm.Content);
+            if (utm.Source.HasValue()) query.Add("utm_source", utm.Source);
+            if (utm.Medium.HasValue()) query.Add("utm_medium", utm.Medium);
+            if (utm.Campaign.HasValue()) query.Add("utm_campaign", utm.Campaign);
+            if (utm.Term.HasValue()) query.Add("utm_term", utm.Term);
+            if (utm.Content.HasValue()) query.Add("utm_content", utm.Content);
             return With(uri, query);
         }
 

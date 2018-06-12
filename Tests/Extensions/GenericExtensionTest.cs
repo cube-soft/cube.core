@@ -26,7 +26,7 @@ namespace Cube.Tests
     /// GenericExtensionTest
     ///
     /// <summary>
-    /// GenericExtensionTest のテスト用クラスです。
+    /// GenericExtension のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

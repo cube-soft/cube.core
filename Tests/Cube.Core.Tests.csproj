@@ -72,6 +72,7 @@
     <Compile Include="Extensions\Conversions\UriFormatTest.cs" />
     <Compile Include="Extensions\GenericExtensionTest.cs" />
     <Compile Include="Extensions\IterateExtensionTest.cs" />
+    <Compile Include="Extensions\StringExtensionTest.cs" />
     <Compile Include="Extensions\TaskExtensionTest.cs" />
     <Compile Include="Extensions\XmlExtensionTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />

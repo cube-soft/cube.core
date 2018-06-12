@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 
 namespace Cube.Conversions
@@ -165,7 +166,7 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static DateTime? ToUniversalTime(this string time, string format)
         {
-            if (string.IsNullOrEmpty(time)) return default(DateTime?);
+            if (!time.HasValue()) return default(DateTime?);
             var dest = DateTime.ParseExact(time, format,
                            System.Globalization.DateTimeFormatInfo.InvariantInfo,
                            System.Globalization.DateTimeStyles.AssumeUniversal |
@@ -236,7 +237,7 @@ namespace Cube.Conversions
         /* ----------------------------------------------------------------- */
         public static DateTime? ToLocalTime(this string time, string format)
         {
-            if (string.IsNullOrEmpty(time)) return default(DateTime?);
+            if (!time.HasValue()) return default(DateTime?);
             var dest = DateTime.ParseExact(time, format,
                            System.Globalization.DateTimeFormatInfo.InvariantInfo,
                            System.Globalization.DateTimeStyles.AssumeLocal
