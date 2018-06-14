@@ -99,7 +99,11 @@ namespace Cube.Forms
             set
             {
                 if (_image.Image == value) return;
-                _panel.SplitterDistance = value?.Width ?? 1;
+
+                var show = (value != null);
+                _panel.Panel1Collapsed  = !show;
+                _panel.SplitterDistance = show ? Math.Max(value.Width, 1) : 1;
+                _panel.SplitterWidth    = show ? 8 : 1;
                 _image.Image = value;
             }
         }
@@ -269,6 +273,8 @@ namespace Cube.Forms
         {
             SuspendLayout();
 
+            var index = 0;
+
             _panel.Dock = System.Windows.Forms.DockStyle.Fill;
             _panel.Margin = new System.Windows.Forms.Padding(0);
             _panel.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
@@ -285,38 +291,38 @@ namespace Cube.Forms
             _image.Margin = new System.Windows.Forms.Padding(0);
 
             _contents.Dock = System.Windows.Forms.DockStyle.Fill;
-            _contents.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            _contents.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             _contents.Margin = new System.Windows.Forms.Padding(0);
             _contents.SuspendLayout();
 
             _product.AutoEllipsis = true;
             _product.AutoSize = true;
             _product.Margin = new System.Windows.Forms.Padding(0);
-            _product.TabIndex = 0;
+            _product.TabIndex = index++;
 
             _version.AutoEllipsis = true;
             _version.AutoSize = true;
             _version.Margin = new System.Windows.Forms.Padding(0);
-            _version.TabIndex = 1;
+            _version.TabIndex = index++;
 
             _platform.AutoEllipsis = true;
             _platform.AutoSize = true;
             _platform.ForeColor = SystemColors.GrayText;
             _platform.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
-            _platform.TabIndex = 2;
+            _platform.TabIndex = index++;
             _platform.Text = Platform;
 
             _others.AutoEllipsis = true;
             _others.AutoSize = true;
             _others.ForeColor = SystemColors.GrayText;
             _others.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
-            _others.TabIndex = 3;
+            _others.TabIndex = index++;
             _others.Text = string.Empty;
             _others.Visible = false;
 
             _copyright.AutoSize = true;
             _copyright.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
-            _copyright.TabIndex = 4;
+            _copyright.TabIndex = index++;
             _copyright.LinkClicked += (s, e) =>
             {
                 if (Uri == null) return;
@@ -325,10 +331,15 @@ namespace Cube.Forms
             };
 
             _contents.Controls.Add(_product);
+            _contents.SetFlowBreak(_product, true);
             _contents.Controls.Add(_version);
+            _contents.SetFlowBreak(_version, true);
             _contents.Controls.Add(_platform);
+            _contents.SetFlowBreak(_platform, true);
             _contents.Controls.Add(_others);
+            _contents.SetFlowBreak(_others, true);
             _contents.Controls.Add(_copyright);
+            _contents.SetFlowBreak(_copyright, true);
 
             _panel.Panel1.Controls.Add(_image);
             _panel.Panel2.Controls.Add(_contents);
