@@ -89,8 +89,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Details\GlobalSetup.cs" />
+    <Compile Include="DisplayFilterTest.cs" />
     <Compile Include="FilesTest.cs" />
+    <Compile Include="GlobalSetup.cs" />
     <Compile Include="IoTest.cs" />
     <Compile Include="PathFilterTest.cs" />
     <Compile Include="ShortcutTest.cs" />
@@ -98,9 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Packages.config" />
     <None Include="Examples\SampleDirectory\FilterDirectory\Filter.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
