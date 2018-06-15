@@ -41,9 +41,9 @@
             this.LayoutPanel.SuspendLayout();
             this.ContentsControl.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // LayoutPanel
-            // 
+            //
             this.LayoutPanel.ColumnCount = 1;
             this.LayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.LayoutPanel.Controls.Add(this.HeaderCaptionControl, 0, 0);
@@ -58,9 +58,9 @@
             this.LayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.LayoutPanel.Size = new System.Drawing.Size(350, 280);
             this.LayoutPanel.TabIndex = 0;
-            // 
+            //
             // HeaderCaptionControl
-            // 
+            //
             this.HeaderCaptionControl.Active = true;
             this.HeaderCaptionControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.HeaderCaptionControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -70,9 +70,9 @@
             this.HeaderCaptionControl.Size = new System.Drawing.Size(350, 30);
             this.HeaderCaptionControl.TabIndex = 0;
             this.HeaderCaptionControl.WindowState = System.Windows.Forms.FormWindowState.Normal;
-            // 
+            //
             // ContentsControl
-            // 
+            //
             this.ContentsControl.BackColor = System.Drawing.SystemColors.Window;
             this.ContentsControl.Controls.Add(this.DemoButton1);
             this.ContentsControl.Controls.Add(this.DemoButton2);
@@ -87,9 +87,9 @@
             this.ContentsControl.Padding = new System.Windows.Forms.Padding(20);
             this.ContentsControl.Size = new System.Drawing.Size(350, 228);
             this.ContentsControl.TabIndex = 2;
-            // 
+            //
             // DemoButton1
-            // 
+            //
             this.DemoButton1.Content = "Version";
             this.DemoButton1.FlatAppearance.BorderSize = 0;
             this.DemoButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -108,9 +108,9 @@
             this.DemoButton1.Styles.NormalStyle.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton1.TabIndex = 0;
             this.DemoButton1.UseVisualStyleBackColor = false;
-            // 
+            //
             // DemoButton2
-            // 
+            //
             this.DemoButton2.Content = "DemoButton1";
             this.DemoButton2.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton2.FlatAppearance.BorderSize = 0;
@@ -130,9 +130,9 @@
             this.DemoButton2.Styles.NormalStyle.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton2.TabIndex = 1;
             this.DemoButton2.UseVisualStyleBackColor = false;
-            // 
+            //
             // DemoButton3
-            // 
+            //
             this.DemoButton3.Content = "DemoButton2";
             this.DemoButton3.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton3.FlatAppearance.BorderSize = 0;
@@ -152,9 +152,9 @@
             this.DemoButton3.Styles.NormalStyle.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton3.TabIndex = 2;
             this.DemoButton3.UseVisualStyleBackColor = false;
-            // 
+            //
             // DemoButton4
-            // 
+            //
             this.DemoButton4.Content = "DemoButton3";
             this.DemoButton4.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton4.FlatAppearance.BorderSize = 0;
@@ -174,9 +174,9 @@
             this.DemoButton4.Styles.NormalStyle.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton4.TabIndex = 3;
             this.DemoButton4.UseVisualStyleBackColor = false;
-            // 
+            //
             // DemoButton5
-            // 
+            //
             this.DemoButton5.Content = "DemoButton4";
             this.DemoButton5.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton5.FlatAppearance.BorderSize = 0;
@@ -196,16 +196,16 @@
             this.DemoButton5.Styles.NormalStyle.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton5.TabIndex = 4;
             this.DemoButton5.UseVisualStyleBackColor = false;
-            // 
+            //
             // FooterControl
-            // 
+            //
             this.FooterControl.Location = new System.Drawing.Point(0, 258);
             this.FooterControl.Name = "FooterControl";
             this.FooterControl.Size = new System.Drawing.Size(350, 22);
             this.FooterControl.TabIndex = 3;
-            // 
+            //
             // MainForm
-            // 
+            //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(350, 280);
             this.Controls.Add(this.LayoutPanel);
