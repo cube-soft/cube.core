@@ -15,8 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using Cube.Log;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
@@ -99,12 +101,12 @@ namespace Cube.Forms
             set
             {
                 if (_image.Image == value) return;
+                _image.Image = value;
 
                 var show = (value != null);
                 _panel.Panel1Collapsed  = !show;
                 _panel.SplitterDistance = show ? Math.Max(value.Width, 1) : 1;
                 _panel.SplitterWidth    = show ? 8 : 1;
-                _image.Image = value;
             }
         }
 
@@ -120,12 +122,8 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Product
         {
-            get => _product.Text;
-            set
-            {
-                if (_product.Text == value) return;
-                _product.Text = value;
-            }
+            get => _product;
+            set => Set(ref _product, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -140,12 +138,26 @@ namespace Cube.Forms
         [Browsable(true)]
         public string Version
         {
-            get => _version.Text;
-            set
-            {
-                if (_version.Text == value) return;
-                _version.Text = value;
-            }
+            get => _version;
+            set => Set(ref _version, value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OneLine
+        ///
+        /// <summary>
+        /// 製品名とバージョン番号を 1 行で記述するかどうかを示す値を
+        /// 取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Browsable(true)]
+        [DefaultValue(false)]
+        public bool OneLine
+        {
+            get => _oneline;
+            set => Set(ref _oneline, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -161,12 +173,7 @@ namespace Cube.Forms
         public string Description
         {
             get => _others.Text;
-            set
-            {
-                if (_others.Text == value) return;
-                _others.Text = value;
-                _others.Visible = !string.IsNullOrEmpty(value);
-            }
+            set => Set(_others, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -182,11 +189,7 @@ namespace Cube.Forms
         public string Copyright
         {
             get => _copyright.Text;
-            set
-            {
-                if (_copyright.Text == value) return;
-                _copyright.Text = value;
-            }
+            set => Set(_copyright, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -262,6 +265,43 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Set
+        ///
+        /// <summary>
+        /// 値を設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Set<T>(ref T field, T value)
+        {
+            if (!EqualityComparer<T>.Default.Equals(field, value))
+            {
+                field = value;
+                var sep = OneLine ? " " : Environment.NewLine;
+                Set(_info, $"{Product}{sep}{Version}");
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Set
+        ///
+        /// <summary>
+        /// ラベルの内容を更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Set(System.Windows.Forms.Label src, string value)
+        {
+            if (!src.Text.Equals(value, StringComparison.InvariantCulture))
+            {
+                src.Text    = value;
+                src.Visible = value.HasValue();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// InitializeLayout
         ///
         /// <summary>
@@ -295,33 +335,28 @@ namespace Cube.Forms
             _contents.Margin = new System.Windows.Forms.Padding(0);
             _contents.SuspendLayout();
 
-            _product.AutoEllipsis = true;
-            _product.AutoSize = true;
-            _product.Margin = new System.Windows.Forms.Padding(0);
-            _product.TabIndex = index++;
-
-            _version.AutoEllipsis = true;
-            _version.AutoSize = true;
-            _version.Margin = new System.Windows.Forms.Padding(0);
-            _version.TabIndex = index++;
+            _info.AutoEllipsis = true;
+            _info.AutoSize = true;
+            _info.Margin = new System.Windows.Forms.Padding(0);
+            _info.TabIndex = index++;
 
             _platform.AutoEllipsis = true;
             _platform.AutoSize = true;
             _platform.ForeColor = SystemColors.GrayText;
-            _platform.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
+            _platform.Margin = new System.Windows.Forms.Padding(0, Space, 0, 0);
             _platform.TabIndex = index++;
             _platform.Text = Platform;
 
             _others.AutoEllipsis = true;
             _others.AutoSize = true;
             _others.ForeColor = SystemColors.GrayText;
-            _others.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
+            _others.Margin = new System.Windows.Forms.Padding(0, Space, 0, 0);
             _others.TabIndex = index++;
             _others.Text = string.Empty;
             _others.Visible = false;
 
             _copyright.AutoSize = true;
-            _copyright.Margin = new System.Windows.Forms.Padding(0, _margin, 0, 0);
+            _copyright.Margin = new System.Windows.Forms.Padding(0, Space, 0, 0);
             _copyright.TabIndex = index++;
             _copyright.LinkClicked += (s, e) =>
             {
@@ -330,10 +365,8 @@ namespace Cube.Forms
                 catch (Exception err) { this.LogWarn(err.ToString()); }
             };
 
-            _contents.Controls.Add(_product);
-            _contents.SetFlowBreak(_product, true);
-            _contents.Controls.Add(_version);
-            _contents.SetFlowBreak(_version, true);
+            _contents.Controls.Add(_info);
+            _contents.SetFlowBreak(_info, true);
             _contents.Controls.Add(_platform);
             _contents.SetFlowBreak(_platform, true);
             _contents.Controls.Add(_others);
@@ -358,12 +391,14 @@ namespace Cube.Forms
         private readonly System.Windows.Forms.SplitContainer _panel = new System.Windows.Forms.SplitContainer();
         private readonly System.Windows.Forms.FlowLayoutPanel _contents = new System.Windows.Forms.FlowLayoutPanel();
         private readonly System.Windows.Forms.PictureBox _image = new System.Windows.Forms.PictureBox();
-        private readonly System.Windows.Forms.Label _product = new System.Windows.Forms.Label();
-        private readonly System.Windows.Forms.Label _version = new System.Windows.Forms.Label();
+        private readonly System.Windows.Forms.Label _info = new System.Windows.Forms.Label();
         private readonly System.Windows.Forms.Label _platform = new System.Windows.Forms.Label();
         private readonly System.Windows.Forms.Label _others = new System.Windows.Forms.Label();
         private readonly System.Windows.Forms.LinkLabel _copyright = new System.Windows.Forms.LinkLabel();
-        private readonly int _margin = 16;
+        private string _product;
+        private string _version;
+        private bool _oneline = false;
+        private const int Space = 16;
         #endregion
     }
 }
