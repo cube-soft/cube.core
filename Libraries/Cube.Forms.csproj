@@ -67,6 +67,7 @@
     <Compile Include="Events\OverwriteEventArgs.cs" />
     <Compile Include="Events\NavigatingEventArgs.cs" />
     <Compile Include="Extensions\Bindings.cs" />
+    <Compile Include="Extensions\ComboBox.cs" />
     <Compile Include="Extensions\Controls.cs" />
     <Compile Include="Extensions\Graphics.cs" />
     <Compile Include="Extensions\Images.cs" />
