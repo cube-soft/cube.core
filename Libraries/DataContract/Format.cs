@@ -67,7 +67,8 @@ namespace Cube.DataContract
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static RegistryKey RootKey { get; set; } = Registry.CurrentUser;
+        public static RegistryKey RootKey { get; set; } =
+            Registry.CurrentUser.OpenSubKey("Software", true);
 
         #endregion
 

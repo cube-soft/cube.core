@@ -404,9 +404,9 @@ namespace Cube
         private static string GetLocation(Format format)
         {
             var asm  = AssemblyReader.Default;
-            var root = format == Format.Registry ?
-                       "Software" :
-                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var root = format != Format.Registry ?
+                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) :
+                       string.Empty;
             return System.IO.Path.Combine(root, $@"{asm.Company}\{asm.Product}");
         }
 
