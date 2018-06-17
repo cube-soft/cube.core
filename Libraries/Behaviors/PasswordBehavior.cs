@@ -181,7 +181,7 @@ namespace Cube.Forms.Behaviors
                 if (_master.UseSystemPasswordChar == value) return;
                 _master.UseSystemPasswordChar = value;
                 if (_confirm.TextLength > 0) _confirm.Text = string.Empty;
-                else UpdateConfirmTextBox();
+                UpdateConfirmTextBox();
             }
         }
 
@@ -285,8 +285,9 @@ namespace Cube.Forms.Behaviors
             var color = show  ? DisabledColor :
                         error ? WarningColor  : DefaultColor;
 
-            _confirm.Enabled   = !show;
-            _confirm.BackColor = color;
+            _confirm.Enabled               = !show;
+            _confirm.UseSystemPasswordChar = !show;
+            _confirm.BackColor             = color;
 
             OnUpdated(EventArgs.Empty);
         }
