@@ -22,7 +22,7 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDialogMessage
+    /// FileSystemDialogMessage
     ///
     /// <summary>
     /// ファイル選択用ダイアログまたはディレクトリ選択用ダイアログに
