@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.Log;
 using Cube.Tasks;
 using System;
 using System.ComponentModel;
@@ -422,7 +423,11 @@ namespace Cube
         private T LoadCore(T alternate)
         {
             try { return Format.Deserialize<T>(Location); }
-            catch { return alternate; }
+            catch (Exception err)
+            {
+                this.LogWarn(err.ToString(), err);
+                return alternate;
+            }
         }
 
         /* ----------------------------------------------------------------- */
