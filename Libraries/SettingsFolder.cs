@@ -20,6 +20,7 @@ using Cube.Log;
 using Cube.Tasks;
 using System;
 using System.ComponentModel;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -75,14 +76,32 @@ namespace Cube
         /// <param name="location">設定情報の保存場所</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Format format, string location)
+        public SettingsFolder(Format format, string location) :
+            this(format, location, Assembly.GetExecutingAssembly()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder(T)
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="format">設定情報の保存形式</param>
+        /// <param name="location">設定情報の保存場所</param>
+        /// <param name="assembly">アセンブリ情報</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder(Format format, string location, Assembly assembly)
         {
+            var reader = new AssemblyReader(assembly);
+
             _dispose = new OnceAction<bool>(Dispose);
             Format   = format;
             Location = location;
-            Version  = new SoftwareVersion(AssemblyReader.Default.Assembly);
-            Company  = AssemblyReader.Default.Company;
-            Product  = AssemblyReader.Default.Product;
+            Version  = new SoftwareVersion(assembly);
+            Company  = reader.Company;
+            Product  = reader.Product;
             Value    = new T();
 
             Value.PropertyChanged += WhenChanged;
