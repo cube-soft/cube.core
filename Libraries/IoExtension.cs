@@ -19,7 +19,7 @@ using Cube.Log;
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.FileSystem.Files
+namespace Cube.FileSystem.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -33,6 +33,8 @@ namespace Cube.FileSystem.Files
     public static class IoExtension
     {
         #region Methods
+
+        #region Load
 
         /* ----------------------------------------------------------------- */
         ///
@@ -98,6 +100,10 @@ namespace Cube.FileSystem.Files
             return true;
         }, false);
 
+        #endregion
+
+        #region Save
+
         /* ----------------------------------------------------------------- */
         ///
         /// Save
@@ -124,6 +130,10 @@ namespace Cube.FileSystem.Files
                 }
             }
         });
+
+        #endregion
+
+        #region GetTypeName
 
         /* ----------------------------------------------------------------- */
         ///
@@ -171,6 +181,10 @@ namespace Cube.FileSystem.Files
             return result != IntPtr.Zero ? dest.szTypeName : null;
         }
 
+        #endregion
+
+        #region GetUniqueName
+
         /* ----------------------------------------------------------------- */
         ///
         /// GetUniqueName
@@ -212,6 +226,48 @@ namespace Cube.FileSystem.Files
             }
             return info.FullName;
         }
+
+        #endregion
+
+        #region ChangeExtension
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ChangeExtension
+        ///
+        /// <summary>
+        /// 拡張子を変更します。
+        /// </summary>
+        ///
+        /// <param name="io">ファイル操作用オブジェクト</param>
+        /// <param name="path">ファイルのパス</param>
+        /// <param name="ext">拡張子</param>
+        ///
+        /// <returns>変更後のパス</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string ChangeExtension(this IO io, string path, string ext) =>
+            ChangeExtension(io, io.Get(path), ext);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ChangeExtension
+        ///
+        /// <summary>
+        /// 拡張子を変更します。
+        /// </summary>
+        ///
+        /// <param name="io">ファイル操作用オブジェクト</param>
+        /// <param name="info">ファイル情報</param>
+        /// <param name="ext">拡張子</param>
+        ///
+        /// <returns>変更後のパス</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string ChangeExtension(this IO io, Information info, string ext) =>
+            io.Combine(info.DirectoryName, $"{info.NameWithoutExtension}{ext}");
+
+        #endregion
 
         #endregion
     }

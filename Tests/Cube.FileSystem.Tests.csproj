@@ -90,8 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisplayFilterTest.cs" />
-    <Compile Include="FilesTest.cs" />
     <Compile Include="GlobalSetup.cs" />
+    <Compile Include="IoExtensionTest.cs" />
     <Compile Include="IoTest.cs" />
     <Compile Include="PathFilterTest.cs" />
     <Compile Include="ShortcutTest.cs" />
