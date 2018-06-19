@@ -132,15 +132,15 @@ namespace Cube.FileSystem.Tests
 
             IO.Copy(GetExamplesWith("Sample.txt"), u1);
             var u2 = IO.GetUniqueName(src);
-            Assert.That(u2, Is.EqualTo(GetResultsWith($"UniqueTest(2).txt")));
+            Assert.That(u2, Is.EqualTo(GetResultsWith($"UniqueTest (1).txt")));
 
             IO.Copy(GetExamplesWith("Sample.txt"), u2);
             var u3 = IO.GetUniqueName(IO.Get(src));
-            Assert.That(u3, Is.EqualTo(GetResultsWith($"UniqueTest(3).txt")));
+            Assert.That(u3, Is.EqualTo(GetResultsWith($"UniqueTest (2).txt")));
 
             IO.Copy(GetExamplesWith("Sample.txt"), u3);
             var u4 = IO.GetUniqueName(u3); // Not src
-            Assert.That(u4, Is.EqualTo(GetResultsWith($"UniqueTest(3)(2).txt")));
+            Assert.That(u4, Is.EqualTo(GetResultsWith($"UniqueTest (2) (1).txt")));
         }
 
         /* ----------------------------------------------------------------- */

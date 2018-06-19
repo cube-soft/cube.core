@@ -218,9 +218,9 @@ namespace Cube.FileSystem.Mixin
             if (!info.Exists) return info.FullName;
             if (io == null) return null;
 
-            for (var i = 2; i < int.MaxValue; ++i)
+            for (var i = 0; i < int.MaxValue; ++i)
             {
-                var name = $"{info.NameWithoutExtension}({i}){info.Extension}";
+                var name = $"{info.NameWithoutExtension} ({i + 1}){info.Extension}";
                 var dest = io.Combine(info.DirectoryName, name);
                 if (!io.Exists(dest)) return dest;
             }
