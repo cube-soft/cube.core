@@ -64,6 +64,7 @@
     <Compile Include="Behaviors\MessageBoxBehavior.cs" />
     <Compile Include="Behaviors\OpenFileBehavior.cs" />
     <Compile Include="Behaviors\PasswordBehavior.cs" />
+    <Compile Include="Behaviors\PathBehavior.cs" />
     <Compile Include="Behaviors\SaveFileBehavior.cs" />
     <Compile Include="Events\DeviceEventArgs.cs" />
     <Compile Include="Events\FileEventArgs.cs" />
