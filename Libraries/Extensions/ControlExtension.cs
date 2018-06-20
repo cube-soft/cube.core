@@ -37,27 +37,25 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// HasEventHandler
+        /// UpdateDpi
         ///
         /// <summary>
-        /// 指定されたイベントに対して、イベントハンドラが設定されているか
-        /// どうかを判別します。
+        /// DPI の変更に応じてレイアウトを更新します。
         /// </summary>
         ///
-        /// <param name="control">判別するコントロール</param>
-        /// <param name="name">イベント名</param>
-        ///
-        /// <returns>
-        /// イベントハンドラが設定されているかどうかを示す値
-        /// </returns>
+        /// <param name="src">更新対象となるコントロール</param>
+        /// <param name="before">変更前の DPI</param>
+        /// <param name="after">変更後の DPI</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool HasEventHandler(this System.Windows.Forms.Control control, string name)
+        public static void UpdateDpi(this IDpiAwarable src, double before, double after)
         {
-            var handler = GetEventHandlerList(control);
-            var key = GetEventKey(control, name);
-            if (handler == null || key == null) return false;
-            return handler[key] != null;
+            if (before > 1.0 && src is IControl control)
+            {
+                var ratio = after / before;
+                if (!(control is IForm)) UpdateLocation(control, ratio);
+                UpdateLayout(control, ratio);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -68,19 +66,19 @@ namespace Cube.Forms.Controls
         /// コントロール中のどの位置にいるのかヒットテストを行います。
         /// </summary>
         ///
-        /// <param name="control">コントロール</param>
+        /// <param name="src">コントロール</param>
         /// <param name="point">コントロールを基準とした座標</param>
         /// <param name="grip">グリップサイズ</param>
         ///
         /// <returns>コントロール中の位置</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Position HitTest(this System.Windows.Forms.Control control, Point point, int grip)
+        public static Position HitTest(this System.Windows.Forms.Control src, Point point, int grip)
         {
             var x = point.X;
             var y = point.Y;
-            var w = control.ClientSize.Width;
-            var h = control.ClientSize.Height;
+            var w = src.ClientSize.Width;
+            var h = src.ClientSize.Height;
 
             var client = (x > grip && x < w - grip && y > grip && y < h - grip);
             var left   = (x >= 0 && x <= grip);
@@ -102,183 +100,33 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UpdateText
+        /// HasEventHandler
         ///
         /// <summary>
-        /// フォームのタイトルを "message - ProductName" と言う表記で
-        /// 更新します。
+        /// 指定されたイベントに対して、イベントハンドラが設定されているか
+        /// どうかを判別します。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
-        /// <param name="message">タイトルに表示するメッセージ</param>
+        /// <param name="src">判別するコントロール</param>
+        /// <param name="name">イベント名</param>
+        ///
+        /// <returns>
+        /// イベントハンドラが設定されているかどうかを示す値
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form, string message) =>
-            UpdateText(form, message, AssemblyReader.Default);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateText
-        ///
-        /// <summary>
-        /// フォームのタイトルを "message - ProductName" と言う表記で
-        /// 更新します。
-        /// </summary>
-        ///
-        /// <param name="form">フォーム</param>
-        /// <param name="message">タイトルに表示するメッセージ</param>
-        /// <param name="assembly">アセンブリ情報</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form,
-            string message, Assembly assembly) =>
-            UpdateText(form, message, new AssemblyReader(assembly));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateText
-        ///
-        /// <summary>
-        /// フォームのタイトルを "message - ProductName" と言う表記で
-        /// 更新します。
-        /// </summary>
-        ///
-        /// <param name="form">フォーム</param>
-        /// <param name="message">タイトルに表示するメッセージ</param>
-        /// <param name="assembly">アセンブリ情報</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form,
-            string message, AssemblyReader assembly)
+        public static bool HasEventHandler(this System.Windows.Forms.Control src, string name)
         {
-            var ss = new System.Text.StringBuilder();
-            ss.Append(message);
-            if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(assembly.Product)) ss.Append(" - ");
-            ss.Append(assembly.Product);
-
-            form.Text = ss.ToString();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateControl
-        ///
-        /// <summary>
-        /// DPI の変更に応じてレイアウトを更新します。
-        /// </summary>
-        ///
-        /// <param name="src">更新対象となるコントロール</param>
-        /// <param name="olddpi">変更前の DPI</param>
-        /// <param name="newdpi">変更後の DPI</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateControl(this IDpiAwarable src, double olddpi, double newdpi)
-        {
-            if (olddpi > 1.0 && src is IControl control)
-            {
-                var ratio = newdpi / olddpi;
-                var x = (int)(control.Location.X * ratio);
-                var y = (int)(control.Location.Y * ratio);
-                control.Location = new Point(x, y);
-            }
-            UpdateLayout(src, olddpi, newdpi);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateForm
-        ///
-        /// <summary>
-        /// DPI の変更に応じてレイアウトを更新します。
-        /// </summary>
-        ///
-        /// <param name="form">更新対象となるフォーム</param>
-        /// <param name="olddpi">変更前の DPI</param>
-        /// <param name="newdpi">変更後の DPI</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateForm(this IForm form, double olddpi, double newdpi) =>
-            UpdateLayout(form, olddpi, newdpi);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BringToFront
-        ///
-        /// <summary>
-        /// フォームを最前面に表示します。
-        /// </summary>
-        ///
-        /// <param name="form">フォーム</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void BringToFront(this System.Windows.Forms.Form form)
-        {
-            form.ResetTopMost();
-            form.Activate();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ResetTopMost
-        ///
-        /// <summary>
-        /// TopMost の値をリセットします。
-        /// </summary>
-        ///
-        /// <param name="form">フォーム</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void ResetTopMost(this System.Windows.Forms.Form form)
-        {
-            var tmp = form.TopMost;
-            form.TopMost = false;
-            form.TopMost = true;
-            form.TopMost = tmp;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetTopMost
-        ///
-        /// <summary>
-        /// フォームを最前面に表示します。
-        /// </summary>
-        ///
-        /// <param name="form">フォーム</param>
-        /// <param name="active">アクティブ状態にするかどうか</param>
-        ///
-        /// <remarks>
-        /// SetTopMost は主に、フォーカスを奪わずに最前面に表示する時に
-        /// 使用します。この場合、最前面に表示された状態でも TopMost
-        /// プロパティは false となります。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void SetTopMost(this System.Windows.Forms.Form form, bool active)
-        {
-            if (active)
-            {
-                form.TopMost = true;
-                form.Activate();
-            }
-            else
-            {
-                const uint SWP_NOSIZE         = 0x0001;
-                const uint SWP_NOMOVE         = 0x0002;
-                const uint SWP_NOACTIVATE     = 0x0010;
-                const uint SWP_NOSENDCHANGING = 0x0400;
-
-                User32.NativeMethods.SetWindowPos(form.Handle,
-                    (IntPtr)(-1), /* HWND_TOPMOST */
-                    0, 0, 0, 0,
-                    SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
-                );
-            }
+            var key = GetEventKey(src, name);
+            var map = GetEventHandlers(src);
+            return key != null && map?[key] != null;
         }
 
         #endregion
 
         #region Implementations
+
+        #region UpdateLayout
 
         /* ----------------------------------------------------------------- */
         ///
@@ -289,69 +137,110 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateLayout(IDpiAwarable src, double olddpi, double newdpi)
+        public static void UpdateLayout(IControl src, double ratio)
         {
-            var control = src as IControl;
-            if (control != null && olddpi > 1.0)
-            {
-                var ratio = newdpi / olddpi;
+            UpdateSize(src, ratio);
+            UpdateFont(src, ratio);
 
-                var w = (int)(control.Size.Width * ratio);
-                var h = (int)(control.Size.Height * ratio);
-                control.Size = new Size(w, h);
-
-                var ml = (int)(control.Margin.Left * ratio);
-                var mt = (int)(control.Margin.Top * ratio);
-                var mr = (int)(control.Margin.Right * ratio);
-                var mb = (int)(control.Margin.Bottom * ratio);
-                control.Margin = new System.Windows.Forms.Padding(ml, mt, mr, mb);
-
-                var pl = (int)(control.Padding.Left * ratio);
-                var pt = (int)(control.Padding.Top * ratio);
-                var pr = (int)(control.Padding.Right * ratio);
-                var pb = (int)(control.Padding.Bottom * ratio);
-                control.Padding = new System.Windows.Forms.Padding(pl, pt, pr, pb);
-
-                if (control.Font != null)
-                {
-                    var name = control.Font.FontFamily.Name;
-                    var size = (float)(control.Font.Size * ratio);
-                    var unit = control.Font.Unit;
-                    var style = control.Font.Style;
-                    control.Font = new Font(name, size, style, unit);
-                }
-            }
-
-            if (control is System.Windows.Forms.Control native)
+            if (src is System.Windows.Forms.Control native)
             {
                 foreach (var c in native.Controls)
                 {
-                    if (c is IDpiAwarable dac) dac.Dpi = control.Dpi;
+                    if (c is IDpiAwarable dac) dac.Dpi = src.Dpi;
                 }
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetEventHandlerList
+        /// UpdateLocation
         ///
         /// <summary>
-        /// 指定されたオブジェクトに設定されているイベントハンドラの一覧を
-        /// 取得します。
+        /// コントロールの位置を更新します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static EventHandlerList GetEventHandlerList(object obj)
+        private static void UpdateLocation(IControl src, double ratio) =>
+            src.Location = new Point(
+                (int)(src.Location.X * ratio),
+                (int)(src.Location.Y * ratio)
+            );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateLayout
+        ///
+        /// <summary>
+        /// コントロールの大きさや余白などを更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void UpdateSize(IControl src, double ratio)
         {
-            Func<Type, MethodInfo> method = null;
-            method = (t) => {
+            src.Size = new Size(
+                (int)(src.Size.Width  * ratio),
+                (int)(src.Size.Height * ratio)
+            );
+
+            src.Margin = new System.Windows.Forms.Padding(
+                (int)(src.Margin.Left   * ratio),
+                (int)(src.Margin.Top    * ratio),
+                (int)(src.Margin.Right  * ratio),
+                (int)(src.Margin.Bottom * ratio)
+            );
+
+            src.Padding = new System.Windows.Forms.Padding(
+                (int)(src.Padding.Left   * ratio),
+                (int)(src.Padding.Top    * ratio),
+                (int)(src.Padding.Right  * ratio),
+                (int)(src.Padding.Bottom * ratio)
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateFont
+        ///
+        /// <summary>
+        /// フォントサイズを更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void UpdateFont(IControl src, double ratio)
+        {
+            if (src.Font == null) return;
+
+            var name  = src.Font.FontFamily.Name;
+            var size  = (float)(src.Font.Size * ratio);
+            var unit  = src.Font.Unit;
+            var style = src.Font.Style;
+
+            src.Font = new Font(name, size, style, unit);
+        }
+
+        #endregion
+
+        #region GetEvent
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetEventHandlers
+        ///
+        /// <summary>
+        /// 指定されたオブジェクトに設定されているイベントハンドラの
+        /// 一覧を取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static EventHandlerList GetEventHandlers(object obj)
+        {
+            MethodInfo method(Type t)
+            {
                 var mi = t.GetMethod("get_Events", GetAllFlags());
                 if (mi == null && t.BaseType != null) mi = method(t.BaseType);
                 return mi;
-            };
-
-            var info = method(obj.GetType());
-            return info?.Invoke(obj, new object[] { }) as EventHandlerList;
+            }
+            return method(obj.GetType())?.Invoke(obj, new object[0]) as EventHandlerList;
         }
 
         /* ----------------------------------------------------------------- */
@@ -365,15 +254,13 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         private static object GetEventKey(object obj, string name)
         {
-            Func<Type, string, FieldInfo> method = null;
-            method = (t, n) => {
+            FieldInfo method(Type t, string n)
+            {
                 var fi = t.GetField($"Event{n}", GetAllFlags());
                 if (fi == null && t.BaseType != null) fi = method(t.BaseType, n);
                 return fi;
-            };
-
-            var info = method(obj.GetType(), name);
-            return info?.GetValue(obj);
+            }
+            return method(obj.GetType(), name)?.GetValue(obj);
         }
 
         /* ----------------------------------------------------------------- */
@@ -385,14 +272,14 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static BindingFlags GetAllFlags()
-        {
-            return BindingFlags.Public |
-                   BindingFlags.NonPublic |
-                   BindingFlags.Instance |
-                   BindingFlags.IgnoreCase |
-                   BindingFlags.Static;
-        }
+        private static BindingFlags GetAllFlags() =>
+            BindingFlags.Public     |
+            BindingFlags.NonPublic  |
+            BindingFlags.Instance   |
+            BindingFlags.IgnoreCase |
+            BindingFlags.Static     ;
+
+        #endregion
 
         #endregion
     }

@@ -384,7 +384,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
         {
-            this.UpdateControl(e.OldValue, e.NewValue);
+            this.UpdateDpi(e.OldValue, e.NewValue);
             DpiChanged?.Invoke(this, e);
         }
 

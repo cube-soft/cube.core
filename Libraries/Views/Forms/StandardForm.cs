@@ -275,7 +275,7 @@ namespace Cube.Forms
         protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
         {
             var need = AutoScaleMode == System.Windows.Forms.AutoScaleMode.Dpi;
-            if (need) this.UpdateForm(e.OldValue, e.NewValue);
+            if (need) this.UpdateDpi(e.OldValue, e.NewValue);
             DpiChanged?.Invoke(this, e);
         }
 
