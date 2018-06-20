@@ -16,7 +16,11 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -33,6 +37,48 @@ namespace Cube.Forms.Controls
     {
         #region Methods
 
+        #region UpdateCulture
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateCulture
+        ///
+        /// <summary>
+        /// 表示言語を更新します。
+        /// </summary>
+        ///
+        /// <param name="src">フォーム</param>
+        /// <param name="name">表示言語名</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void UpdateCulture<T>(T src, string name) where T : Form
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(name);
+            var rm = new ComponentResourceManager(typeof(T));
+            rm.ApplyResources(src, "$this");
+            src.Controls.UpdateCulture(rm);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// UpdateCulture
+        ///
+        /// <summary>
+        /// 表示言語を更新します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void UpdateCulture(this Control.ControlCollection src, ComponentResourceManager rm)
+        {
+            foreach (Control control in src)
+            {
+                rm.ApplyResources(control, control.Name);
+                control.Controls.UpdateCulture(rm);
+            }
+        }
+
+        #endregion
+
         #region UpdateText
 
         /* ----------------------------------------------------------------- */
@@ -44,12 +90,12 @@ namespace Cube.Forms.Controls
         /// 更新します。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
+        /// <param name="src">フォーム</param>
         /// <param name="message">タイトルに表示するメッセージ</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form, string message) =>
-            UpdateText(form, message, AssemblyReader.Default);
+        public static void UpdateText(this Form src, string message) =>
+            UpdateText(src, message, AssemblyReader.Default);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -60,14 +106,13 @@ namespace Cube.Forms.Controls
         /// 更新します。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
+        /// <param name="src">フォーム</param>
         /// <param name="message">タイトルに表示するメッセージ</param>
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form,
-            string message, Assembly assembly) =>
-            UpdateText(form, message, new AssemblyReader(assembly));
+        public static void UpdateText(this Form src, string message, Assembly assembly) =>
+            UpdateText(src, message, new AssemblyReader(assembly));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,20 +123,19 @@ namespace Cube.Forms.Controls
         /// 更新します。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
+        /// <param name="src">フォーム</param>
         /// <param name="message">タイトルに表示するメッセージ</param>
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this System.Windows.Forms.Form form,
-            string message, AssemblyReader assembly)
+        public static void UpdateText(this Form src, string message, AssemblyReader assembly)
         {
             var ss = new System.Text.StringBuilder();
             ss.Append(message);
             if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(assembly.Product)) ss.Append(" - ");
             ss.Append(assembly.Product);
 
-            form.Text = ss.ToString();
+            src.Text = ss.ToString();
         }
 
         #endregion
@@ -106,13 +150,13 @@ namespace Cube.Forms.Controls
         /// フォームを最前面に表示します。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
+        /// <param name="src">フォーム</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void BringToFront(this System.Windows.Forms.Form form)
+        public static void BringToFront(this Form src)
         {
-            form.ResetTopMost();
-            form.Activate();
+            src.ResetTopMost();
+            src.Activate();
         }
 
         /* ----------------------------------------------------------------- */
@@ -123,15 +167,15 @@ namespace Cube.Forms.Controls
         /// TopMost の値をリセットします。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
+        /// <param name="src">フォーム</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void ResetTopMost(this System.Windows.Forms.Form form)
+        public static void ResetTopMost(this Form src)
         {
-            var tmp = form.TopMost;
-            form.TopMost = false;
-            form.TopMost = true;
-            form.TopMost = tmp;
+            var tmp = src.TopMost;
+            src.TopMost = false;
+            src.TopMost = true;
+            src.TopMost = tmp;
         }
 
         /* ----------------------------------------------------------------- */
@@ -142,7 +186,7 @@ namespace Cube.Forms.Controls
         /// フォームを最前面に表示します。
         /// </summary>
         ///
-        /// <param name="form">フォーム</param>
+        /// <param name="src">フォーム</param>
         /// <param name="active">アクティブ状態にするかどうか</param>
         ///
         /// <remarks>
@@ -152,27 +196,31 @@ namespace Cube.Forms.Controls
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static void SetTopMost(this System.Windows.Forms.Form form, bool active)
+        public static void SetTopMost(this Form src, bool active)
         {
             if (active)
             {
-                form.TopMost = true;
-                form.Activate();
+                src.TopMost = true;
+                src.Activate();
             }
-            else
-            {
-                const uint SWP_NOSIZE         = 0x0001;
-                const uint SWP_NOMOVE         = 0x0002;
-                const uint SWP_NOACTIVATE     = 0x0010;
-                const uint SWP_NOSENDCHANGING = 0x0400;
-
-                User32.NativeMethods.SetWindowPos(form.Handle,
-                    (IntPtr)(-1), /* HWND_TOPMOST */
-                    0, 0, 0, 0,
-                    SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
-                );
-            }
+            else src.SetTopMostWithoutActivate();
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetTopMostWithoutActivate
+        ///
+        /// <summary>
+        /// フォームを非アクティブ状態で最前面に表示します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void SetTopMostWithoutActivate(this Form src) =>
+            User32.NativeMethods.SetWindowPos(src.Handle,
+                (IntPtr)(-1), /* HWND_TOPMOST */
+                0, 0, 0, 0,
+                0x0413 // SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
+            );
 
         #endregion
 
