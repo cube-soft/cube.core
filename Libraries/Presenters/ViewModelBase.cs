@@ -254,7 +254,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            SyncWait(() => base.OnPropertyChanged(e));
+            Sync(() => base.OnPropertyChanged(e));
 
         #endregion
 
