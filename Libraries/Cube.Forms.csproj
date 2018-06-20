@@ -69,6 +69,7 @@
     <Compile Include="Events\DeviceEventArgs.cs" />
     <Compile Include="Events\FileEventArgs.cs" />
     <Compile Include="Events\MessageEventArgs.cs" />
+    <Compile Include="Events\Messenger.cs" />
     <Compile Include="Events\OverwriteEventArgs.cs" />
     <Compile Include="Events\NavigatingEventArgs.cs" />
     <Compile Include="Extensions\BindingExtension.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="NativeMethods\UrlMon.cs" />
     <Compile Include="NativeMethods\User32.cs" />
     <Compile Include="Presenters\PresenterBase.cs" />
+    <Compile Include="Presenters\ViewModelBase.cs" />
     <Compile Include="Views\Controls\TaskbarProgress.cs" />
     <Compile Include="Views\Mocks\MockView.cs" />
     <Compile Include="Views\IControl.cs" />

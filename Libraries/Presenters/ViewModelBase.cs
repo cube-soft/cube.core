@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,63 +24,47 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PresenterBase
+    /// ViewModelBase
     ///
     /// <summary>
-    /// View のみを保持する Presenter の基底クラスです。
+    /// ViewModel の基底クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresenterBase<TView> : IDisposable
+    public abstract class ViewModelBase<TMessenger> :
+        ObservableProperty, IDisposable where TMessenger : IAggregator
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PresenterBase
+        /// ViewModelBase
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="view">View オブジェクト</param>
+        /// <param name="messenger">Messenger</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view) : this(view, null) { }
+        protected ViewModelBase(TMessenger messenger) :
+            this(messenger, SynchronizationContext.Current) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PresenterBase
+        /// ViewModelBase
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
+        /// <param name="messenger">Messenger</param>
+        /// <param name="context">同期用コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, IAggregator ea) :
-            this(view, ea, SynchronizationContext.Current) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresenterBase
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
-        /// <param name="context">同期コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, IAggregator ea, SynchronizationContext context)
+        protected ViewModelBase(TMessenger messenger, SynchronizationContext context)
         {
-            _dispose               = new OnceAction<bool>(Dispose);
-            View                   = view;
-            Aggregator             = ea;
+            Messenger              = messenger;
             SynchronizationContext = context;
         }
 
@@ -89,25 +74,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// View
+        /// Messenger
         ///
         /// <summary>
-        /// View オブジェクトを取得します。
+        /// Messenger オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TView View { get; protected set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// イベント集約オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IAggregator Aggregator { get; protected set; }
+        public TMessenger Messenger { get; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -186,7 +160,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="action">
-        /// 同期コンテキスト上で実行する <c>Action</c> オブジェクト
+        /// 同期コンテキスト上で実行する Action オブジェクト
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
@@ -209,7 +183,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="func">
-        /// 同期コンテキスト上で実行する <c>Func(TResult)</c> オブジェクト
+        /// 同期コンテキスト上で実行する Func(TResult) オブジェクト
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
@@ -228,14 +202,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~PresenterBase
+        /// ~ViewModelBase
         ///
         /// <summary>
         /// オブジェクトを破棄します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~PresenterBase() { _dispose.Invoke(false); }
+        ~ViewModelBase() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -267,185 +241,79 @@ namespace Cube.Forms
 
         #endregion
 
+        #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        ///
+        /// <summary>
+        /// プロパティ変更時に実行されます。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
+            SyncWait(() => base.OnPropertyChanged(e));
+
+        #endregion
+
         #region Fields
-        private readonly OnceAction<bool> _dispose;
+        private OnceAction<bool> _dispose;
         #endregion
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// PresenterBase
+    /// ViewModelBase
     ///
     /// <summary>
-    /// View および Model から構成される Presenter の基底クラスです。
+    /// ViewModel の基底クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresenterBase<TView, TModel> : PresenterBase<TView>
+    public abstract class ViewModelBase : ViewModelBase<Messenger>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PresenterBase
+        /// ViewModelBase
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="model">Model オブジェクト</param>
-        ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model) : base(view)
-        {
-            Model = model;
-        }
+        protected ViewModelBase() : this(new Messenger()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PresenterBase
+        /// ViewModelBase
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="model">Model オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
+        /// <param name="messenger">Messenger</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, IAggregator ea) : base(view, ea)
-        {
-            Model = model;
-        }
+        protected ViewModelBase(Messenger messenger) : base(messenger) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PresenterBase
+        /// ViewModelBase
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="model">Model オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
-        /// <param name="context">同期コンテキスト</param>
+        /// <param name="messenger">Messenger</param>
+        /// <param name="context">同期用コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, IAggregator ea,
-            SynchronizationContext context) : base(view, ea, context)
-        {
-            Model = model;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Model
-        ///
-        /// <summary>
-        /// Model オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TModel Model { get; protected set; }
+        protected ViewModelBase(Messenger messenger, SynchronizationContext context) :
+            base(messenger, context) { }
 
         #endregion
     }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// PresenterBase
-    ///
-    /// <summary>
-    /// View, Model, Aggregator, Settings の 4 種類のオブジェクトから
-    /// 構成される Presenter の基底クラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public abstract class PresenterBase<TView, TModel, TSettings> : PresenterBase<TView, TModel>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresenterBase
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="model">Model オブジェクト</param>
-        /// <param name="settings">Settings オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, TSettings settings) : base(view, model)
-        {
-            Settings = settings;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresenterBase
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="model">Model オブジェクト</param>
-        /// <param name="settings">Settings オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, TSettings settings, IAggregator ea) : base(view, model, ea)
-        {
-            Settings = settings;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresenterBase
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="view">View オブジェクト</param>
-        /// <param name="model">Model オブジェクト</param>
-        /// <param name="settings">Settings オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
-        /// <param name="context">同期コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, TSettings settings,
-            IAggregator ea, SynchronizationContext context) : base(view, model, ea, context)
-        {
-            Settings = settings;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Settings
-        ///
-        /// <summary>
-        /// Settings オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TSettings Settings { get; protected set; }
-
-        #endregion
-    }
-
 }
