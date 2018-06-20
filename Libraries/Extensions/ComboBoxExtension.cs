@@ -48,9 +48,13 @@ namespace Cube.Forms.Controls
         public static void Bind<T>(this System.Windows.Forms.ComboBox src,
             IEnumerable<KeyValuePair<string, T>> data)
         {
+            var selected = src.SelectedValue;
+
             src.DataSource    = data;
             src.DisplayMember = "Key";
             src.ValueMember   = "Value";
+
+            if (selected is T) src.SelectedValue = selected;
         }
 
         #endregion
