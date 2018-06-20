@@ -64,6 +64,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected ViewModelBase(TMessenger messenger, SynchronizationContext context)
         {
+            _dispose               = new OnceAction<bool>(Dispose);
             Messenger              = messenger;
             SynchronizationContext = context;
         }
