@@ -477,7 +477,7 @@ namespace Cube.FileSystem
                 char.IsLetter(name[0]) && name[1] == ':') return name + '\\';
 
             var seq  = name.Select(c => InvalidChars.Contains(c) ? EscapeChar : c);
-            var esc  = string.Concat(seq);
+            var esc  = new string(seq.ToArray());
             var dot  = (esc == CurrentDirectorySymbol || esc == ParentDirectorySymbol);
             var dest = dot ? esc : esc.TrimEnd(new[] { ' ', '.' });
 
