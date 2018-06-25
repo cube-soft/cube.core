@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
+using Cube.Log;
 using Microsoft.Win32;
 using System;
 using System.Collections;
@@ -48,7 +50,11 @@ namespace Cube.DataContract
         /// <returns>生成オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public T Invoke<T>(RegistryKey src) => (T)Get(typeof(T), src);
+        public T Invoke<T>(RegistryKey src)
+        {
+            this.LogDebug(src?.Name ?? "null");
+            return (T)Get(typeof(T), src);
+        }
 
         #endregion
 
@@ -71,7 +77,7 @@ namespace Cube.DataContract
             foreach (var pi in type.GetProperties())
             {
                 var name = pi.GetDataMemberName();
-                if (string.IsNullOrEmpty(name)) continue;
+                if (!name.HasValue()) continue;
                 var obj = Get(pi.GetPropertyType(), src, name);
                 if (obj != null) pi.SetValue(dest, obj, null);
             }

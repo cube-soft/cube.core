@@ -60,15 +60,16 @@ namespace Cube.DataContract
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Target
+        /// RootKey
         ///
         /// <summary>
         /// レジストリを対象にシリアライズまたはデシリアライズする際の
-        /// ターゲットとなるサブキーを取得または設定します。
+        /// ルートとなるサブキーを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static RegistryKey Target { get; set; } = Registry.CurrentUser;
+        public static RegistryKey RootKey { get; set; } =
+            Registry.CurrentUser.OpenSubKey("Software", true);
 
         #endregion
 
@@ -93,7 +94,7 @@ namespace Cube.DataContract
         {
             if (format == Format.Registry)
             {
-                using (var k = Target.CreateSubKey(dest)) k.Serialize(src);
+                using (var k = RootKey.CreateSubKey(dest)) k.Serialize(src);
             }
             else Serialize(dest, e => Serialize(format, e, src));
         }
@@ -216,7 +217,7 @@ namespace Cube.DataContract
         {
             if (format == Format.Registry)
             {
-                using (var k = Target.OpenSubKey(src, false)) return k.Deserialize<T>();
+                using (var k = RootKey.OpenSubKey(src, false)) return k.Deserialize<T>();
             }
             else return Deserialize<T>(src, e => Deserialize<T>(format, e));
         }

@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -248,8 +249,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string Normalize(string src) =>
-            !string.IsNullOrEmpty(src) ? src : string.Empty;
+        private string Normalize(string src) => src.HasValue() ? src : string.Empty;
 
         #endregion
     }

@@ -46,7 +46,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         protected RegistryHelper()
         {
-            RootSubKeyName = $@"Software\CubeSoft\{GetType().Name}";
+            SharedSubKeyName = $@"CubeSoft\{GetType().Name}";
         }
 
         #endregion
@@ -55,14 +55,14 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RootSubKeyName
+        /// SharedSubKeyName
         ///
         /// <summary>
-        /// ルートとなるサブキー名を取得します。
+        /// 共通するサブキー名を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string RootSubKeyName { get; }
+        protected string SharedSubKeyName { get; }
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string GetSubKeyName(string subkey) => $@"{RootSubKeyName}\{subkey}";
+        protected string GetSubKeyName(string subkey) => $@"{SharedSubKeyName}\{subkey}";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,7 +100,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey CreateSubKey(string subkey) =>
-            Formatter.Target.CreateSubKey(GetSubKeyName(subkey));
+            Formatter.RootKey.CreateSubKey(GetSubKeyName(subkey));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -112,7 +112,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey OpenSubKey(string subkey) =>
-            Formatter.Target.OpenSubKey(GetSubKeyName(subkey), false);
+            Formatter.RootKey.OpenSubKey(GetSubKeyName(subkey), false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,7 +179,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TearDown]
-        protected virtual void Teardown() => Formatter.Target.DeleteSubKeyTree(RootSubKeyName, false);
+        protected virtual void Teardown() => Formatter.RootKey.DeleteSubKeyTree(SharedSubKeyName, false);
 
         #endregion
 

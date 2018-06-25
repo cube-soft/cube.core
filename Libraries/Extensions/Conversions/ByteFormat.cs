@@ -15,55 +15,73 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Iteration;
-using NUnit.Framework;
+using System;
 
-namespace Cube.Tests
+namespace Cube.Conversions
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IterationTest
+    /// ByteFormat
     ///
     /// <summary>
-    /// Cube.Iteration.Operations のテスト用クラスです。
+    /// バイトサイズの書式に変換する拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class IterationTest
+    public static class ByteFormat
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Times
+        /// ToPrettyBytes
         ///
         /// <summary>
-        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// バイトサイズを読みやすい文字列に変換します。
         /// </summary>
         ///
+        /// <param name="bytes">バイト数</param>
+        ///
+        /// <returns>バイト数を表す文字列</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times()
+        public static string ToPrettyBytes(this long bytes)
         {
-            var actual = 0;
-            10.Times(() => actual++);
-            Assert.That(actual, Is.EqualTo(10));
+            var units = new[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+            var value = (double)bytes;
+            var index = 0;
+
+            while (value > 1000.0)
+            {
+                value /= 1024.0;
+                ++index;
+                if (index >= units.Length - 1) break;
+            }
+
+            return $"{value:G3} {units[index]}";
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Times_WithIndex
+        /// ToRoughBytes
         ///
         /// <summary>
-        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// バイトサイズの概算値を文字列に変換します。
         /// </summary>
         ///
+        /// <param name="bytes">バイト数</param>
+        ///
+        /// <returns>バイト数を表す文字列</returns>
+        ///
+        /// <remarks>
+        /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
+        /// 出力します。
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times_WithIndex()
-        {
-            var actual = 0;
-            10.Times(i => actual += i);
-            Assert.That(actual, Is.EqualTo(45));
-        }
+        public static string ToRoughBytes(this long bytes) =>
+            ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
+
+        #endregion
     }
 }

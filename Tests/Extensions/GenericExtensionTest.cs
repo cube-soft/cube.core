@@ -23,15 +23,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericsTest
+    /// GenericExtensionTest
     ///
     /// <summary>
-    /// Cube.Generics.Operations のテスト用クラスです。
+    /// GenericExtension のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class GenericsTest
+    class GenericExtensionTest
     {
         #region Tests
 

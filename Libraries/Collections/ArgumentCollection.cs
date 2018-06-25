@@ -15,10 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cube
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -171,14 +172,14 @@ namespace Cube
 
             foreach (var s in src)
             {
-                if (string.IsNullOrEmpty(s)) continue;
+                if (!s.HasValue()) continue;
 
                 if (s[0] == Prefix)
                 {
-                    if (!string.IsNullOrEmpty(option)) UpdateOption(option, null);
+                    if (option.HasValue()) UpdateOption(option, null);
                     option = s.TrimStart(Prefix);
                 }
-                else if (!string.IsNullOrEmpty(option))
+                else if (option.HasValue())
                 {
                     UpdateOption(option, s);
                     option = string.Empty;
@@ -186,7 +187,7 @@ namespace Cube
                 else _primary.Add(s);
             }
 
-            if (!string.IsNullOrEmpty(option)) UpdateOption(option, null);
+            if (option.HasValue()) UpdateOption(option, null);
         }
 
         /* --------------------------------------------------------------------- */

@@ -60,9 +60,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conversions\ByteFormatTest.cs" />
-    <Compile Include="Conversions\TimeFormatTest.cs" />
-    <Compile Include="Conversions\UriFormatTest.cs" />
+    <Compile Include="Collections\ArgumentCollectionTest.cs" />
+    <Compile Include="Collections\CollectionExtensionTest.cs" />
+    <Compile Include="Collections\DiffTest.cs" />
+    <Compile Include="Collections\GenericComparerTest.cs" />
+    <Compile Include="Collections\OrderedDictionaryTest.cs" />
     <Compile Include="Details\FileHelper.cs" />
     <Compile Include="Details\FileHelperTest.cs" />
     <Compile Include="Details\GlobalSetup.cs" />
@@ -75,27 +77,26 @@
     <Compile Include="Events\QueryEventArgsTest.cs" />
     <Compile Include="Events\RelayEventTest.cs" />
     <Compile Include="Events\ValueEventArgsTest.cs" />
+    <Compile Include="Extensions\Conversions\ByteFormatTest.cs" />
+    <Compile Include="Extensions\Conversions\TimeFormatTest.cs" />
+    <Compile Include="Extensions\Conversions\UriFormatTest.cs" />
+    <Compile Include="Extensions\GenericExtensionTest.cs" />
+    <Compile Include="Extensions\IterateExtensionTest.cs" />
+    <Compile Include="Extensions\StringExtensionTest.cs" />
+    <Compile Include="Extensions\TaskExtensionTest.cs" />
+    <Compile Include="Extensions\XmlExtensionTest.cs" />
     <Compile Include="Processes\MessengerTest.cs" />
-    <Compile Include="ArgumentCollectionTest.cs" />
     <Compile Include="AssemblyReaderTest.cs" />
-    <Compile Include="CollectionsTest.cs" />
     <Compile Include="DataContractTest.cs" />
-    <Compile Include="DifferenceTest.cs" />
     <Compile Include="DisposableTest.cs" />
-    <Compile Include="GenericComparerTest.cs" />
-    <Compile Include="GenericsTest.cs" />
-    <Compile Include="IterationTest.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="OnceActionTest.cs" />
-    <Compile Include="OrderedDictionaryTest.cs" />
     <Compile Include="PowerTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="SettingsFolderTest.cs" />
     <Compile Include="SoftwareVersionTest.cs" />
     <Compile Include="StartupTest.cs" />
-    <Compile Include="TaskTest.cs" />
     <Compile Include="WakeableTimerTest.cs" />
-    <Compile Include="XmlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

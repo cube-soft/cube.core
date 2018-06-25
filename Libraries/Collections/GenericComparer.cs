@@ -16,71 +16,37 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 
-namespace Cube
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Disposable
+    /// GenericComparer(T)
     ///
     /// <summary>
-    /// IDisposable オブジェクトを生成するためのクラスです。
+    /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Disposable
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// IDisposable オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="dispose">Dispose 時に実行する動作</param>
-        ///
-        /// <returns>IDisposable オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable Create(Action dispose)
-        {
-            if (dispose == null) throw new ArgumentException(nameof(dispose));
-            return new AnonymousDisposable(dispose);
-        }
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// AnonymousDisposable
-    ///
-    /// <summary>
-    /// Dispose 時に特定の動作を実行するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal sealed class AnonymousDisposable : IDisposable
+    public class GenericComparer<T> : Comparer<T>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AnonymousDisposable
+        /// GenericComparer(T)
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="dispose">Dispose 時に実行する動作</param>
+        /// <param name="src">関数オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public AnonymousDisposable(Action dispose)
+        public GenericComparer(Func<T, T, int> src)
         {
-            _dispose = new OnceAction(dispose);
+            _comparer = src;
         }
 
         #endregion
@@ -89,19 +55,24 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispose
+        /// Compare
         ///
         /// <summary>
-        /// 設定された動作を実行します。
+        /// 2 つのオブジェクトを比較します。
         /// </summary>
         ///
+        /// <param name="x">比較する最初のオブジェクト</param>
+        /// <param name="y">比較する 2 番目のオブジェクト</param>
+        ///
+        /// <returns>比較結果</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public void Dispose() => _dispose.Invoke();
+        public override int Compare(T x, T y) => _comparer(x, y);
 
         #endregion
 
         #region Fields
-        private OnceAction _dispose;
+        private readonly Func<T, T, int> _comparer;
         #endregion
     }
 }

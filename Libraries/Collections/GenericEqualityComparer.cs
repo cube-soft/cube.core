@@ -18,64 +18,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace Cube
+namespace Cube.Collections
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GenericComparer(T)
-    ///
-    /// <summary>
-    /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class GenericComparer<T> : Comparer<T>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GenericComparer(T)
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="src">関数オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public GenericComparer(Func<T, T, int> src)
-        {
-            _comparer = src;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Compare
-        ///
-        /// <summary>
-        /// 2 つのオブジェクトを比較します。
-        /// </summary>
-        ///
-        /// <param name="x">比較する最初のオブジェクト</param>
-        /// <param name="y">比較する 2 番目のオブジェクト</param>
-        ///
-        /// <returns>比較結果</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override int Compare(T x, T y) => _comparer(x, y);
-
-        #endregion
-
-        #region Fields
-        private readonly Func<T, T, int> _comparer;
-        #endregion
-    }
-
     /* --------------------------------------------------------------------- */
     ///
     /// GenericEqualityComparer(T)

@@ -125,15 +125,4 @@ namespace Cube
         private readonly ICollection<Action<T>> _subscriptions = new List<Action<T>>();
         #endregion
     }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IEventHub
-    ///
-    /// <summary>
-    /// イベントを集約するためのインターフェースです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IEventHub { }
 }

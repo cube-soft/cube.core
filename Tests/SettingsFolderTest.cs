@@ -55,7 +55,7 @@ namespace Cube.Tests
 
             Assert.That(count,               Is.EqualTo(1));
             Assert.That(dest.Format,         Is.EqualTo(Format.Registry));
-            Assert.That(dest.Location,       Does.StartWith("Software"));
+            Assert.That(dest.Location,       Does.StartWith(AssemblyReader.Default.Company));
             Assert.That(dest.Location,       Does.EndWith(AssemblyReader.Default.Product));
             Assert.That(dest.Company,        Is.EqualTo(AssemblyReader.Default.Company));
             Assert.That(dest.Product,        Is.EqualTo(AssemblyReader.Default.Product));

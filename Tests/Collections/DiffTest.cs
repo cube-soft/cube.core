@@ -25,15 +25,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DifferenceTest
+    /// DiffTest
     ///
     /// <summary>
-    /// Cube.CollectionOperator.Diff のテスト用クラスです。
+    /// Cube.CollectionExtension.Diff のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DifferenceTest
+    class DiffTest
     {
         #region Tests
 

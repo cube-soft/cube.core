@@ -16,9 +16,11 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.Log;
 using Cube.Tasks;
 using System;
 using System.ComponentModel;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -74,14 +76,32 @@ namespace Cube
         /// <param name="location">設定情報の保存場所</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Format format, string location)
+        public SettingsFolder(Format format, string location) :
+            this(format, location, Assembly.GetExecutingAssembly()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingsFolder(T)
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="format">設定情報の保存形式</param>
+        /// <param name="location">設定情報の保存場所</param>
+        /// <param name="assembly">アセンブリ情報</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingsFolder(Format format, string location, Assembly assembly)
         {
+            var reader = new AssemblyReader(assembly);
+
             _dispose = new OnceAction<bool>(Dispose);
             Format   = format;
             Location = location;
-            Version  = new SoftwareVersion(AssemblyReader.Default.Assembly);
-            Company  = AssemblyReader.Default.Company;
-            Product  = AssemblyReader.Default.Product;
+            Version  = new SoftwareVersion(assembly);
+            Company  = reader.Company;
+            Product  = reader.Product;
             Value    = new T();
 
             Value.PropertyChanged += WhenChanged;
@@ -404,9 +424,9 @@ namespace Cube
         private static string GetLocation(Format format)
         {
             var asm  = AssemblyReader.Default;
-            var root = format == Format.Registry ?
-                       "Software" :
-                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var root = format != Format.Registry ?
+                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) :
+                       string.Empty;
             return System.IO.Path.Combine(root, $@"{asm.Company}\{asm.Product}");
         }
 
@@ -422,7 +442,11 @@ namespace Cube
         private T LoadCore(T alternate)
         {
             try { return Format.Deserialize<T>(Location); }
-            catch { return alternate; }
+            catch (Exception err)
+            {
+                this.LogWarn(err.ToString(), err);
+                return alternate;
+            }
         }
 
         /* ----------------------------------------------------------------- */

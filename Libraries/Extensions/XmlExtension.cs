@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -221,8 +222,8 @@ namespace Cube.Xml
         public static string GetValueOrAttribute(this XElement e, string hint)
         {
             if (e == null) return string.Empty;
-            if (!string.IsNullOrEmpty(e.Value)) return e.Value;
-            if (string.IsNullOrEmpty(hint)) return string.Empty;
+            if (e.Value.HasValue()) return e.Value;
+            if (!hint.HasValue()) return string.Empty;
             return (string)e.Attribute(hint) ?? string.Empty;
         }
 
@@ -239,11 +240,10 @@ namespace Cube.Xml
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static XNamespace GetNamespace(this XElement e, string prefix)
-        {
-            if (string.IsNullOrEmpty(prefix)) return e.GetDefaultNamespace();
-            return e.GetNamespaceOfPrefix(prefix);
-        }
+        private static XNamespace GetNamespace(this XElement e, string prefix) =>
+            prefix.HasValue() ?
+            e.GetNamespaceOfPrefix(prefix) :
+            e.GetDefaultNamespace();
 
         #endregion
     }

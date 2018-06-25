@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -187,9 +188,9 @@ namespace Cube
         {
             var ss = new StringBuilder();
 
-            if (!string.IsNullOrEmpty(Prefix)) ss.Append(Prefix);
+            if (Prefix.HasValue()) ss.Append(Prefix);
             AppendNumber(ss);
-            if (!string.IsNullOrEmpty(Suffix)) ss.Append(Suffix);
+            if (Suffix.HasValue()) ss.Append(Suffix);
             if (platform) ss.Append($" ({Platform})");
 
             return ss.ToString();
