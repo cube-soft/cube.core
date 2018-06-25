@@ -45,6 +45,21 @@ namespace Cube.Generics
         /* ----------------------------------------------------------------- */
         public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Quote
+        ///
+        /// <summary>
+        /// 文字列を引用符で囲みます。
+        /// </summary>
+        ///
+        /// <param name="src">文字列</param>
+        ///
+        /// <returns>変換後の文字列</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Quote(this string src) => $"\"{src}\"";
+
         #endregion
     }
 }

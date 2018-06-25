@@ -44,25 +44,28 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("0",          ExpectedResult = true )]
-        [TestCase("Hello",      ExpectedResult = true )]
-        [TestCase("こんにちは", ExpectedResult = true )]
-        [TestCase("",           ExpectedResult = false)]
+        [TestCase("0",             ExpectedResult = true )]
+        [TestCase("Hello",         ExpectedResult = true )]
+        [TestCase("こんにちは",    ExpectedResult = true )]
+        [TestCase("",              ExpectedResult = false)]
+        [TestCase(default(string), ExpectedResult = false)]
         public bool HasValue(string src) => src.HasValue();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// HasValue_Null
+        /// Quote
         ///
         /// <summary>
-        /// default(string) に対して HasValue 拡張メソッドを実行した時の
-        /// 挙動を確認します。
+        /// 文字列を引用符で囲むテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void HasValue_Null() =>
-            Assert.That(default(string).HasValue(), Is.False);
+        [TestCase("Hello",         ExpectedResult = "\"Hello\"")]
+        [TestCase("こんにちは",    ExpectedResult = "\"こんにちは\"")]
+        [TestCase("\"Already\"",   ExpectedResult = "\"\"Already\"\"")]
+        [TestCase("",              ExpectedResult = "\"\"")]
+        [TestCase(default(string), ExpectedResult = "\"\"")]
+        public string Quote(string src) => src.Quote();
 
         #endregion
     }
