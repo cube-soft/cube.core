@@ -81,6 +81,7 @@
     <Compile Include="DisposableTest.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="OnceActionTest.cs" />
+    <Compile Include="OnceQueryTest.cs" />
     <Compile Include="PowerTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="SettingsFolderTest.cs" />
