@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System;
 using System.Threading.Tasks;
 
 namespace Cube.Tests
@@ -59,6 +60,31 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Invoke_Twice
+        ///
+        /// <summary>
+        /// 複数回実行した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Invoke_Twice() => Assert.That(() =>
+        {
+            var dummy = 0;
+            var once  = new OnceAction(() => dummy++) { IgnoreTwice = false };
+            var tasks = new[]
+            {
+                Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
+            };
+
+            Task.WaitAll(tasks);
+        },
+        Throws.TypeOf<AggregateException>().And.InnerException.TypeOf<TwiceException>());
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Invoke
         ///
         /// <summary>
@@ -81,5 +107,30 @@ namespace Cube.Tests
             Task.WaitAll(tasks);
             Assert.That(value, Is.EqualTo(obj));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke_Twice
+        ///
+        /// <summary>
+        /// 複数回実行した時の挙動を確認します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("twice")]
+        public void Invoke_Twice(string obj) => Assert.That(() =>
+        {
+            var dummy = "";
+            var once = new OnceAction<string>(s => dummy += s) { IgnoreTwice = false };
+            var tasks = new[]
+            {
+                Task.Run(() => once.Invoke(obj)),
+                Task.Run(() => once.Invoke(obj)),
+                Task.Run(() => once.Invoke(obj)),
+            };
+
+            Task.WaitAll(tasks);
+        },
+        Throws.TypeOf<AggregateException>().And.InnerException.TypeOf<TwiceException>());
     }
 }

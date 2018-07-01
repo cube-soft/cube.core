@@ -87,6 +87,7 @@
     <Compile Include="Processes\MessengerServiceCallback.cs" />
     <Compile Include="AssemblyReader.cs" />
     <Compile Include="Disposable.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ObservableProperty.cs" />
     <Compile Include="OnceAction.cs" />

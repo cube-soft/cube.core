@@ -53,6 +53,27 @@ namespace Cube
 
         #endregion
 
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IgnoreTwice
+        ///
+        /// <summary>
+        /// 2 回目以降の実行を無視するかどうかを示す値を取得または
+        /// 設定します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// false に設定した場合、2 回目以降の実行時に TwiceException が
+        /// 送出されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IgnoreTwice { get; set; } = true;
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -64,7 +85,12 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke() => Interlocked.Exchange(ref _action, null)?.Invoke();
+        public void Invoke()
+        {
+            var dest = Interlocked.Exchange(ref _action, null);
+            if (dest != null) dest();
+            else if (!IgnoreTwice) throw new TwiceException();
+        }
 
         #endregion
 
@@ -105,6 +131,27 @@ namespace Cube
 
         #endregion
 
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IgnoreTwice
+        ///
+        /// <summary>
+        /// 2 回目以降の実行を無視するかどうかを示す値を取得または
+        /// 設定します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// false に設定した場合、2 回目以降の実行時に TwiceException が
+        /// 送出されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IgnoreTwice { get; set; } = true;
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -118,7 +165,12 @@ namespace Cube
         /// <param name="obj">引数</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke(T obj) => Interlocked.Exchange(ref _action, null)?.Invoke(obj);
+        public void Invoke(T obj)
+        {
+            var dest = Interlocked.Exchange(ref _action, null);
+            if (dest != null) dest(obj);
+            else if (!IgnoreTwice) throw new TwiceException();
+        }
 
         #endregion
 
