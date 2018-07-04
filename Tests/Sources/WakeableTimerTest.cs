@@ -70,11 +70,12 @@ namespace Cube.Tests
             var count = 0;
             using (var timer = new WakeableTimer())
             {
-                timer.Subscribe(() => ++count);
+                var disposable = timer.Subscribe(() => ++count);
                 timer.Interval = TimeSpan.FromMilliseconds(100);
                 timer.Start();
                 Task.Delay(300).Wait();
                 timer.Stop();
+                disposable.Dispose();
             }
             Assert.That(count, Is.AtLeast(2));
         }
@@ -117,17 +118,13 @@ namespace Cube.Tests
             var count = 0;
             using (var timer = new WakeableTimer())
             {
-                var disposable = timer.Subscribe(() => ++count);
+                timer.Subscribe(() => ++count);
                 timer.Interval = TimeSpan.FromMilliseconds(200);
                 timer.Start(TimeSpan.Zero);
                 Task.Delay(100).Wait();
                 timer.Stop();
-                disposable.Dispose();
-                timer.Start(TimeSpan.Zero);
-                Task.Delay(100).Wait();
-                timer.Stop();
             }
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(count, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -183,7 +180,7 @@ namespace Cube.Tests
                 Task.Delay(100).Wait();
                 timer.Stop();
             }
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(count, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */
