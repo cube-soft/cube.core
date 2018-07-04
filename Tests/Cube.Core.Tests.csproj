@@ -85,7 +85,6 @@
     <Compile Include="Sources\OnceQueryTest.cs" />
     <Compile Include="Sources\PowerTest.cs" />
     <Compile Include="Sources\QueryTest.cs" />
-    <Compile Include="Sources\SettingsFolderTest.cs" />
     <Compile Include="Sources\SoftwareVersionTest.cs" />
     <Compile Include="Sources\StartupTest.cs" />
     <Compile Include="Sources\WakeableTimerTest.cs" />
