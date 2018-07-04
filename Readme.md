@@ -4,7 +4,6 @@ Cube.FileSystem
 [![NuGet](https://img.shields.io/nuget/v/Cube.FileSystem.svg)](https://www.nuget.org/packages/Cube.FileSystem/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/6exuqpkn7ct3a790?svg=true)](https://ci.appveyor.com/project/clown/cube-filesystem)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.FileSystem/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.FileSystem)
-[![Codacy](https://api.codacy.com/project/badge/Grade/a04ffe7d50994c7e9e44dc775d928ba9)](https://www.codacy.com/app/clown/Cube.FileSystem)
 
 Cube.FileSystem is an I/O library for CubeSoft applications.
 
