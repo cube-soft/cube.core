@@ -62,7 +62,7 @@ namespace Cube.Tests
         [Test]
         public void ToString_Assembly()
         {
-            var asm   = AssemblyReader.Default;
+            var asm   = Assembly.GetExecutingAssembly().GetReader();
             var major = asm.Version.Major;
             var minor = asm.Version.Minor;
             var arch  = AssemblyReader.Platform;

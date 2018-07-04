@@ -15,8 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using NUnit.Framework;
 using System.IO;
+using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -44,9 +46,9 @@ namespace Cube.Tests
         [Test]
         public void Load()
         {
-            var exec = AssemblyReader.Default.Location;
-            var name = Path.GetFileNameWithoutExtension(exec);
-            var startup = new Startup(name, '"' + exec + '"');
+            var exec    = Assembly.GetExecutingAssembly().GetReader().Location;
+            var name    = Path.GetFileNameWithoutExtension(exec);
+            var startup = new Startup(name, exec.Quote());
             startup.Load();
             Assert.That(startup.Enabled, Is.False);
         }
@@ -63,9 +65,9 @@ namespace Cube.Tests
         [Test]
         public void Save_Delete()
         {
-            var exec = AssemblyReader.Default.Location;
-            var name = Path.GetFileNameWithoutExtension(exec);
-            var command = '"' + exec + '"';
+            var exec    = Assembly.GetExecutingAssembly().GetReader().Location;
+            var name    = Path.GetFileNameWithoutExtension(exec);
+            var command = exec.Quote();
 
             var s0 = new Startup(name)
             {

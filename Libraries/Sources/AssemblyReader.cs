@@ -57,18 +57,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Default
-        ///
-        /// <summary>
-        /// 既定の AssemblyReader オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static AssemblyReader Default { get; } =
-            new AssemblyReader(Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly());
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Platform
         ///
         /// <summary>
@@ -250,6 +238,38 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         private string Normalize(string src) => src.HasValue() ? src : string.Empty;
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// AssemblyReaderExtension
+    ///
+    /// <summary>
+    /// AssemblyReader の拡張用クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class AssemblyReaderExtension
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetReader
+        ///
+        /// <summary>
+        /// AssemblyReader オブジェクトを取得します。
+        /// </summary>
+        ///
+        /// <param name="src">Assembly</param>
+        ///
+        /// <returns>AssemblyReader</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static AssemblyReader GetReader(this Assembly src) =>
+            new AssemblyReader(src);
 
         #endregion
     }

@@ -18,6 +18,7 @@
 using Cube.Log;
 using NUnit.Framework;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Cube.Tests
@@ -73,7 +74,7 @@ namespace Cube.Tests
             try
             {
                 this.LogInfo(nameof(LogInfo));
-                this.LogInfo(AssemblyReader.Default.Assembly);
+                this.LogInfo(Assembly.GetExecutingAssembly());
                 this.LogInfo("Action", () => { });
                 Assert.That(this.LogInfo("Func", () => 2), Is.EqualTo(2));
                 this.LogInfo("Error", () => throw new ArgumentException($"{nameof(LogInfo)} (throw)"));
