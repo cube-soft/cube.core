@@ -30,7 +30,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class FileHelperTest : FileHelper
+    class FileHelperTest : FileFixture
     {
         /* ----------------------------------------------------------------- */
         ///

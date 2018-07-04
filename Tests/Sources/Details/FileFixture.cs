@@ -22,32 +22,35 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHelper
+    /// FileFixture
     ///
     /// <summary>
     /// テストでファイルを使用するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    class FileHelper
+    class FileFixture
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FileHelper
+        /// FileFixture
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileHelper()
+        protected FileFixture()
         {
-            Root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            _folder = GetType().FullName;
+            Root     = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Name     = GetType().FullName;
+            Examples = Path.Combine(Root, nameof(Examples));
+            Results  = Path.Combine(Root, nameof(Results), Name);
+
             if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
-            Clean(Results);
+            Delete(Results);
         }
 
         #endregion
@@ -75,7 +78,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Examples => Path.Combine(Root, "Examples");
+        protected string Examples { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,7 +89,22 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Results => Path.Combine(Root, $@"Results\{_folder}");
+        protected string Results { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Name
+        ///
+        /// <summary>
+        /// クラス名を取得します。
+        /// </summary>
+        ///
+        /// <remarks>
+        /// テスト結果を格納するディレクトリの生成時に使用します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected string Name { get; }
 
         #endregion
 
@@ -94,35 +112,37 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Example
+        /// GetExamplesWith
         ///
         /// <summary>
-        /// ファイル名に対して Examples フォルダのパスを結合したパスを
-        /// 取得します。
+        /// 指定されたパス一覧の先頭に Examples ディレクトリのパスを結合
+        /// した結果を取得します。
         /// </summary>
         ///
-        /// <param name="filename">ファイル名</param>
+        /// <param name="paths">結合パス一覧</param>
         ///
-        /// <returns>パス</returns>
+        /// <returns>結合結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Example(string filename) => Path.Combine(Examples, filename);
+        protected string GetExamplesWith(params string[] paths) =>
+            Path.Combine(Examples, Path.Combine(paths));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Example
+        /// GetResultsWith
         ///
         /// <summary>
-        /// ファイル名に対して Results フォルダのパスを結合したパスを
-        /// 取得します。
+        /// 指定されたパス一覧の先頭に Results ディレクトリのパスを結合
+        /// した結果を取得します。
         /// </summary>
         ///
-        /// <param name="filename">ファイル名</param>
+        /// <param name="paths">結合パス一覧</param>
         ///
-        /// <returns>パス</returns>
+        /// <returns>結合結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string Result(string filename) => Path.Combine(Results, filename);
+        protected string GetResultsWith(params string[] paths) =>
+            Path.Combine(Results, Path.Combine(paths));
 
         #endregion
 
@@ -130,7 +150,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Clean
+        /// Delete
         ///
         /// <summary>
         /// 指定されたフォルダ内に存在する全てのファイルおよびフォルダを
@@ -138,25 +158,21 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Clean(string folder)
+        private void Delete(string directory)
         {
-            foreach (string file in Directory.GetFiles(folder))
+            foreach (string file in Directory.GetFiles(directory))
             {
                 File.SetAttributes(file, FileAttributes.Normal);
                 File.Delete(file);
             }
 
-            foreach (string sub in Directory.GetDirectories(folder))
+            foreach (string sub in Directory.GetDirectories(directory))
             {
-                Clean(sub);
+                Delete(sub);
                 Directory.Delete(sub);
             }
         }
 
-        #endregion
-
-        #region Fields
-        private readonly string _folder = string.Empty;
         #endregion
     }
 }

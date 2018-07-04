@@ -56,11 +56,10 @@
     <Compile Include="Sources\Collections\DiffTest.cs" />
     <Compile Include="Sources\Collections\GenericComparerTest.cs" />
     <Compile Include="Sources\Collections\OrderedDictionaryTest.cs" />
-    <Compile Include="Sources\Details\FileHelper.cs" />
-    <Compile Include="Sources\Details\FileHelperTest.cs" />
+    <Compile Include="Sources\Details\FileFixture.cs" />
     <Compile Include="Sources\Details\GlobalSetup.cs" />
     <Compile Include="Sources\Details\Person.cs" />
-    <Compile Include="Sources\Details\RegistryHelper.cs" />
+    <Compile Include="Sources\Details\RegistryFixture.cs" />
     <Compile Include="Sources\Details\SerializableData.cs" />
     <Compile Include="Sources\Events\EnumerableEventArgsTest.cs" />
     <Compile Include="Sources\Events\KeyValueEventArgsTest.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="Sources\AssemblyReaderTest.cs" />
     <Compile Include="Sources\DataContractTest.cs" />
     <Compile Include="Sources\DisposableTest.cs" />
+    <Compile Include="Sources\FileFixtureTest.cs" />
     <Compile Include="Sources\LoggerTest.cs" />
     <Compile Include="Sources\OnceActionTest.cs" />
     <Compile Include="Sources\OnceQueryTest.cs" />

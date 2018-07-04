@@ -32,7 +32,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class XmlExtensionTest : FileHelper
+    class XmlExtensionTest : FileFixture
     {
         #region Tests
 
@@ -262,7 +262,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private XElement Create(string e) => XDocument.Load(Example(e)).Root;
+        private XElement Create(string e) => XDocument.Load(GetExamplesWith(e)).Root;
 
         #endregion
     }
