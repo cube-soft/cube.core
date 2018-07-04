@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -95,7 +95,7 @@ namespace Cube.Forms.Controls
         ///
         /* ----------------------------------------------------------------- */
         public static void UpdateText(this Form src, string message) =>
-            UpdateText(src, message, AssemblyReader.Default);
+            src.UpdateText(message, src.ProductName);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -108,32 +108,16 @@ namespace Cube.Forms.Controls
         ///
         /// <param name="src">フォーム</param>
         /// <param name="message">タイトルに表示するメッセージ</param>
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="product">製品名</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateText(this Form src, string message, Assembly assembly) =>
-            UpdateText(src, message, new AssemblyReader(assembly));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateText
-        ///
-        /// <summary>
-        /// フォームのタイトルを "message - ProductName" と言う表記で
-        /// 更新します。
-        /// </summary>
-        ///
-        /// <param name="src">フォーム</param>
-        /// <param name="message">タイトルに表示するメッセージ</param>
-        /// <param name="assembly">アセンブリ情報</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateText(this Form src, string message, AssemblyReader assembly)
+        public static void UpdateText(this Form src, string message, string product)
         {
             var ss = new System.Text.StringBuilder();
+
             ss.Append(message);
-            if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(assembly.Product)) ss.Append(" - ");
-            ss.Append(assembly.Product);
+            if (message.HasValue() && product.HasValue()) ss.Append(" - ");
+            ss.Append(product);
 
             src.Text = ss.ToString();
         }
@@ -155,8 +139,8 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         public static void BringToFront(this Form src)
         {
-            src.ResetTopMost();
             src.Activate();
+            src.ResetTopMost();
         }
 
         /* ----------------------------------------------------------------- */
@@ -200,8 +184,8 @@ namespace Cube.Forms.Controls
         {
             if (active)
             {
-                src.TopMost = true;
                 src.Activate();
+                src.TopMost = true;
             }
             else src.SetTopMostWithoutActivate();
         }
@@ -217,7 +201,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         private static void SetTopMostWithoutActivate(this Form src) =>
             User32.NativeMethods.SetWindowPos(src.Handle,
-                (IntPtr)(-1), /* HWND_TOPMOST */
+                (IntPtr)(-1), // HWND_TOPMOST
                 0, 0, 0, 0,
                 0x0413 // SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
             );

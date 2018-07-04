@@ -46,21 +46,10 @@ namespace Cube.Forms
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        public VersionControl() : this(AssemblyReader.Default) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VersionControl
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionControl(Assembly assembly) : this(new AssemblyReader(assembly)) { }
+        public VersionControl(Assembly assembly) : this(assembly.GetReader()) { }
 
         /* ----------------------------------------------------------------- */
         ///

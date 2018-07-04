@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Cube.Forms.Demo
@@ -46,8 +47,9 @@ namespace Cube.Forms.Demo
         {
             InitializeComponent();
 
+            var asm = Assembly.GetExecutingAssembly();
             ContentsControl.Resize += WhenResize;
-            DemoButton1.Click += (s, e) => new VersionForm
+            DemoButton1.Click += (s, e) => new VersionForm(asm)
             {
                 Icon = Icon,
                 Text = Text,

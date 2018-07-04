@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Cube.Forms
@@ -42,10 +43,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="message">メッセージ内容</param>
+        /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageEventArgs(string message) :
-            this(message, AssemblyReader.Default.Title) { }
+        public MessageEventArgs(string message, Assembly assembly) :
+            this(message, assembly.GetReader().Title) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -71,13 +73,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="message">メッセージ内容</param>
+        /// <param name="assembly">アセンブリ情報</param>
         /// <param name="buttons">表示ボタン</param>
         /// <param name="icon">表示アイコン</param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageEventArgs(string message,
+        public MessageEventArgs(string message, Assembly assembly,
             MessageBoxButtons buttons, MessageBoxIcon icon) :
-            this(message, AssemblyReader.Default.Title, buttons, icon) { }
+            this(message, assembly.GetReader().Title, buttons, icon) { }
 
         /* ----------------------------------------------------------------- */
         ///
