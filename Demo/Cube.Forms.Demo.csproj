@@ -62,19 +62,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Sources\Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\Controls\CustomCaptionControl.cs">
+    <Compile Include="Sources\Views\Controls\CustomCaptionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\CustomCaptionControl.Designer.cs">
+    <Compile Include="Sources\Views\Controls\CustomCaptionControl.Designer.cs">
       <DependentUpon>CustomCaptionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Forms\MainForm.cs">
+    <Compile Include="Sources\Views\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\MainForm.Designer.cs">
+    <Compile Include="Sources\Views\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -96,10 +96,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Controls\CustomCaptionControl.resx">
+    <EmbeddedResource Include="Sources\Views\Controls\CustomCaptionControl.resx">
       <DependentUpon>CustomCaptionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\MainForm.resx">
+    <EmbeddedResource Include="Sources\Views\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -113,21 +113,21 @@
     <None Include="App.config" />
     <None Include="App.manifest" />
     <None Include="Packages.config" />
-    <None Include="Resources\Buttons\Close.png" />
-    <None Include="Resources\Buttons\CloseGray.png" />
-    <None Include="Resources\Buttons\Normalize.png" />
-    <None Include="Resources\Buttons\NormalizeGray.png" />
-    <None Include="Resources\Buttons\Maximize.png" />
-    <None Include="Resources\Buttons\MaximizeGray.png" />
-    <None Include="Resources\Buttons\Minimize.png" />
-    <None Include="Resources\Buttons\MinimizeGray.png" />
-    <None Include="Resources\Buttons\Refresh.png" />
-    <None Include="Resources\Logos\Cube.png" />
-    <None Include="Resources\Logos\CubeIce.png" />
-    <None Include="Resources\Logos\CubeLarge.png" />
-    <None Include="Resources\Logos\CubePdf.png" />
-    <None Include="Resources\Logos\CubeSmall.png" />
-    <None Include="Resources\Logos\Title.png" />
+    <None Include="Assets\Buttons\Close.png" />
+    <None Include="Assets\Buttons\CloseGray.png" />
+    <None Include="Assets\Buttons\Normalize.png" />
+    <None Include="Assets\Buttons\NormalizeGray.png" />
+    <None Include="Assets\Buttons\Maximize.png" />
+    <None Include="Assets\Buttons\MaximizeGray.png" />
+    <None Include="Assets\Buttons\Minimize.png" />
+    <None Include="Assets\Buttons\MinimizeGray.png" />
+    <None Include="Assets\Buttons\Refresh.png" />
+    <None Include="Assets\Logos\Cube.png" />
+    <None Include="Assets\Logos\CubeIce.png" />
+    <None Include="Assets\Logos\CubeLarge.png" />
+    <None Include="Assets\Logos\CubePdf.png" />
+    <None Include="Assets\Logos\CubeSmall.png" />
+    <None Include="Assets\Logos\Title.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.Forms.csproj">

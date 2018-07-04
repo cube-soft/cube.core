@@ -61,124 +61,124 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\MessageBoxBehavior.cs" />
-    <Compile Include="Behaviors\OpenFileBehavior.cs" />
-    <Compile Include="Behaviors\PasswordBehavior.cs" />
-    <Compile Include="Behaviors\PathBehavior.cs" />
-    <Compile Include="Behaviors\SaveFileBehavior.cs" />
-    <Compile Include="Events\DeviceEventArgs.cs" />
-    <Compile Include="Events\FileEventArgs.cs" />
-    <Compile Include="Events\MessageEventArgs.cs" />
-    <Compile Include="Events\Messenger.cs" />
-    <Compile Include="Events\OverwriteEventArgs.cs" />
-    <Compile Include="Events\NavigatingEventArgs.cs" />
-    <Compile Include="Extensions\BindingExtension.cs" />
-    <Compile Include="Extensions\ComboBoxExtension.cs" />
-    <Compile Include="Extensions\ControlExtension.cs" />
-    <Compile Include="Extensions\FormExtension.cs" />
-    <Compile Include="Extensions\GraphicsExtension.cs" />
-    <Compile Include="Extensions\ImageExtension.cs" />
-    <Compile Include="Extensions\ListViewExtension.cs" />
-    <Compile Include="Extensions\ProcessExtension.cs" />
-    <Compile Include="Models\ButtonPainter.cs" />
-    <Compile Include="Models\ButtonStyle.cs" />
-    <Compile Include="Models\FontFactory.cs" />
-    <Compile Include="Models\NotifyItem.cs" />
-    <Compile Include="Models\NotifyStyle.cs" />
-    <Compile Include="Models\OnlyExpandableConverter.cs" />
-    <Compile Include="Models\Position.cs" />
-    <Compile Include="Models\SizeHacker.cs" />
-    <Compile Include="NativeMethods\Structures\DWebBrowserEvents2.cs" />
-    <Compile Include="NativeMethods\Structures\IDocHostShowUI.cs" />
-    <Compile Include="NativeMethods\Structures\ITaskbarList.cs" />
-    <Compile Include="NativeMethods\Structures\MinMaxInfo.cs" />
-    <Compile Include="NativeMethods\Structures\Point.cs" />
-    <Compile Include="NativeMethods\Gdi32.cs" />
-    <Compile Include="NativeMethods\UrlMon.cs" />
-    <Compile Include="NativeMethods\User32.cs" />
-    <Compile Include="Presenters\PresenterBase.cs" />
-    <Compile Include="Presenters\ViewModelBase.cs" />
-    <Compile Include="Views\Controls\TaskbarProgress.cs" />
-    <Compile Include="Views\Mocks\MockView.cs" />
-    <Compile Include="Views\IControl.cs" />
-    <Compile Include="Views\IDpiAwarable.cs" />
-    <Compile Include="Views\IForm.cs" />
-    <Compile Include="Views\INotifyForm.cs" />
-    <Compile Include="Views\IWebControl.cs" />
+    <Compile Include="Sources\Behaviors\MessageBoxBehavior.cs" />
+    <Compile Include="Sources\Behaviors\OpenFileBehavior.cs" />
+    <Compile Include="Sources\Behaviors\PasswordBehavior.cs" />
+    <Compile Include="Sources\Behaviors\PathBehavior.cs" />
+    <Compile Include="Sources\Behaviors\SaveFileBehavior.cs" />
+    <Compile Include="Sources\Events\DeviceEventArgs.cs" />
+    <Compile Include="Sources\Events\FileEventArgs.cs" />
+    <Compile Include="Sources\Events\MessageEventArgs.cs" />
+    <Compile Include="Sources\Events\Messenger.cs" />
+    <Compile Include="Sources\Events\OverwriteEventArgs.cs" />
+    <Compile Include="Sources\Events\NavigatingEventArgs.cs" />
+    <Compile Include="Sources\Extensions\BindingExtension.cs" />
+    <Compile Include="Sources\Extensions\ComboBoxExtension.cs" />
+    <Compile Include="Sources\Extensions\ControlExtension.cs" />
+    <Compile Include="Sources\Extensions\FormExtension.cs" />
+    <Compile Include="Sources\Extensions\GraphicsExtension.cs" />
+    <Compile Include="Sources\Extensions\ImageExtension.cs" />
+    <Compile Include="Sources\Extensions\ListViewExtension.cs" />
+    <Compile Include="Sources\Extensions\ProcessExtension.cs" />
+    <Compile Include="Sources\Models\ButtonPainter.cs" />
+    <Compile Include="Sources\Models\ButtonStyle.cs" />
+    <Compile Include="Sources\Models\FontFactory.cs" />
+    <Compile Include="Sources\Models\NotifyItem.cs" />
+    <Compile Include="Sources\Models\NotifyStyle.cs" />
+    <Compile Include="Sources\Models\OnlyExpandableConverter.cs" />
+    <Compile Include="Sources\Models\Position.cs" />
+    <Compile Include="Sources\Models\SizeHacker.cs" />
+    <Compile Include="Sources\NativeMethods\Structures\DWebBrowserEvents2.cs" />
+    <Compile Include="Sources\NativeMethods\Structures\IDocHostShowUI.cs" />
+    <Compile Include="Sources\NativeMethods\Structures\ITaskbarList.cs" />
+    <Compile Include="Sources\NativeMethods\Structures\MinMaxInfo.cs" />
+    <Compile Include="Sources\NativeMethods\Structures\Point.cs" />
+    <Compile Include="Sources\NativeMethods\Gdi32.cs" />
+    <Compile Include="Sources\NativeMethods\UrlMon.cs" />
+    <Compile Include="Sources\NativeMethods\User32.cs" />
+    <Compile Include="Sources\Presenters\PresenterBase.cs" />
+    <Compile Include="Sources\Presenters\ViewModelBase.cs" />
+    <Compile Include="Sources\Views\Controls\TaskbarProgress.cs" />
+    <Compile Include="Sources\Views\Mocks\MockView.cs" />
+    <Compile Include="Sources\Views\IControl.cs" />
+    <Compile Include="Sources\Views\IDpiAwarable.cs" />
+    <Compile Include="Sources\Views\IForm.cs" />
+    <Compile Include="Sources\Views\INotifyForm.cs" />
+    <Compile Include="Sources\Views\IWebControl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\Controls\Buttons\Button.cs">
+    <Compile Include="Sources\Views\Controls\Buttons\Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Buttons\ColorButton.cs">
+    <Compile Include="Sources\Views\Controls\Buttons\ColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Buttons\FlatButton.cs">
+    <Compile Include="Sources\Views\Controls\Buttons\FlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Buttons\FontButton.cs">
+    <Compile Include="Sources\Views\Controls\Buttons\FontButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Buttons\RadioButton.cs">
+    <Compile Include="Sources\Views\Controls\Buttons\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Buttons\ToggleButton.cs">
+    <Compile Include="Sources\Views\Controls\Buttons\ToggleButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Panels\FlowLayoutPanel.cs">
+    <Compile Include="Sources\Views\Controls\Panels\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Panels\Panel.cs">
+    <Compile Include="Sources\Views\Controls\Panels\Panel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\Panels\TableLayoutPanel.cs">
+    <Compile Include="Sources\Views\Controls\Panels\TableLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\CaptionControl.cs">
+    <Compile Include="Sources\Views\Controls\CaptionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\ControlBase.cs">
+    <Compile Include="Sources\Views\Controls\ControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\PictureBox.cs">
+    <Compile Include="Sources\Views\Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\SettingsControl.cs">
+    <Compile Include="Sources\Views\Controls\SettingsControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\SizeGripControl.cs">
+    <Compile Include="Sources\Views\Controls\SizeGripControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\StatusStrip.cs">
+    <Compile Include="Sources\Views\Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\VersionControl.cs">
+    <Compile Include="Sources\Views\Controls\VersionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Controls\WebControl.cs">
+    <Compile Include="Sources\Views\Controls\WebControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\WebControl.ActiveXControlEvents.cs">
+    <Compile Include="Sources\Views\Controls\WebControl.ActiveXControlEvents.cs">
       <DependentUpon>WebControl.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Controls\WebControl.ShowUIWebBrowserSite.cs">
+    <Compile Include="Sources\Views\Controls\WebControl.ShowUIWebBrowserSite.cs">
       <DependentUpon>WebControl.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\Forms\BorderlessForm.cs">
+    <Compile Include="Sources\Views\Forms\BorderlessForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\DeviceAwareForm.cs">
+    <Compile Include="Sources\Views\Forms\DeviceAwareForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\StandardForm.cs">
+    <Compile Include="Sources\Views\Forms\StandardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\NotifyForm.cs">
+    <Compile Include="Sources\Views\Forms\NotifyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Forms\VersionForm.cs">
+    <Compile Include="Sources\Views\Forms\VersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -192,14 +192,15 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
     <None Include="Packages.config" />
-    <None Include="Resources\CloseButton.png" />
-    <None Include="Resources\LogoLarge.png" />
-    <None Include="Resources\LogoSmall.png" />
+    <None Include="Assets\CloseButton.png" />
+    <None Include="Assets\LogoLarge.png" />
+    <None Include="Assets\LogoSmall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
