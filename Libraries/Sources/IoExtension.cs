@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Log;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Cube.FileSystem.Mixin
@@ -51,7 +52,7 @@ namespace Cube.FileSystem.Mixin
         /// <returns>変換結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this IO io, string src, Func<System.IO.Stream, T> func) =>
+        public static T Load<T>(this IO io, string src, Func<Stream, T> func) =>
             Load(io, src, func, default(T));
 
         /* ----------------------------------------------------------------- */
@@ -65,20 +66,19 @@ namespace Cube.FileSystem.Mixin
         /// <param name="io">入出力用オブジェクト</param>
         /// <param name="src">ファイルのパス</param>
         /// <param name="func">入力ストリームに対する処理</param>
-        /// <param name="err">エラー時に返される値</param>
+        /// <param name="error">エラー時に返される値</param>
         ///
         /// <returns>変換結果</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this IO io, string src,
-            Func<System.IO.Stream, T> func, T err) => io.LogWarn(() =>
+        public static T Load<T>(this IO io, string src, Func<Stream, T> func, T error) => io.LogWarn(() =>
         {
             if (io.Exists(src) && io.Get(src).Length > 0)
             {
                 using (var ss = io.OpenRead(src)) return func(ss);
             }
-            return err;
-        }, err);
+            return error;
+        }, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,8 +93,7 @@ namespace Cube.FileSystem.Mixin
         /// <param name="action">入力ストリームに対する処理</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Load(this IO io, string src,
-            Action<System.IO.Stream> action) => io.Load(src, e =>
+        public static void Load(this IO io, string src, Action<Stream> action) => io.Load(src, e =>
         {
             action(e);
             return true;
@@ -117,10 +116,9 @@ namespace Cube.FileSystem.Mixin
         /// <param name="action">出力ストリームに対する処理</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save(this IO io, string dest,
-            Action<System.IO.Stream> action) => io.LogWarn(() =>
+        public static void Save(this IO io, string dest, Action<Stream> action) => io.LogWarn(() =>
         {
-            using (var ss = new System.IO.MemoryStream())
+            using (var ss = new MemoryStream())
             {
                 action(ss);
                 using (var ds = io.Create(dest))

@@ -105,7 +105,9 @@
     <Compile Include="Sources\IoExtension.cs" />
     <Compile Include="Sources\PathFilter.cs" />
     <Compile Include="Sources\Refreshable.cs" />
+    <Compile Include="Sources\SettingsFolder.cs" />
     <Compile Include="Sources\Shortcut.cs" />
+    <Compile Include="Sources\Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
