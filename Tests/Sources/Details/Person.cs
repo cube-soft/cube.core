@@ -278,56 +278,7 @@ namespace Cube.FileSystem.Tests
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateDummy
-        ///
-        /// <summary>
-        /// テスト用のダミーデータが設定された Person オブジェクトを
-        /// 生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Person CreateDummy() => new Person
-        {
-            Identification = 123,
-            Name           = "山田花子",
-            Sex            = Sex.Female,
-            Age            = 15,
-            Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
-            Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
-            Reserved       = true,
-            Secret         = "dummy data",
-            Others         = new List<Address>
-            {
-                new Address { Type = "PC",     Value = "pc@example.com" },
-                new Address { Type = "Mobile", Value = "mobile@example.com" }
-            },
-            Messages       = new[]
-            {
-                "1st message",
-                "2nd message",
-                "3rd message",
-            }
-        };
-
-        #endregion
-
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDeserializing
-        ///
-        /// <summary>
-        /// デシリアライズ直前に実行されます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OnDeserializing]
-        private void OnDeserializing(StreamingContext context) => Reset();
 
         /* ----------------------------------------------------------------- */
         ///

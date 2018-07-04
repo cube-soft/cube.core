@@ -186,18 +186,20 @@ namespace Cube.FileSystem.Tests
                 src.Value.Name    = "AutoSave";
                 src.Value.Age     = 77;
                 src.Value.Sex     = Sex.Female;
+                src.Value.Secret  = "SecretChanged";
 
                 Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2)).Wait();
             }
 
             Assert.That(save,   Is.EqualTo(2), "Saved");
-            Assert.That(change, Is.EqualTo(3), "PropertyChanged");
+            Assert.That(change, Is.EqualTo(4), "PropertyChanged");
 
             using (var dest = OpenSubKey(key))
             {
-                Assert.That(dest.GetValue("Name"), Is.EqualTo("AutoSave"));
-                Assert.That(dest.GetValue("Age"),  Is.EqualTo(77));
-                Assert.That(dest.GetValue("Sex"),  Is.EqualTo(1));
+                Assert.That(dest.GetValue("Name"),   Is.EqualTo("AutoSave"));
+                Assert.That(dest.GetValue("Age"),    Is.EqualTo(77));
+                Assert.That(dest.GetValue("Sex"),    Is.EqualTo(1));
+                Assert.That(dest.GetValue("Secret"), Is.Null);
             }
         }
 
