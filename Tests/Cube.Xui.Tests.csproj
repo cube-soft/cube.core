@@ -63,16 +63,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\BooleanConverterTest.cs" />
-    <Compile Include="Converters\ImageConverterTest.cs" />
-    <Compile Include="Converters\StringConverterTest.cs" />
-    <Compile Include="Details\ConvertHelper.cs" />
-    <Compile Include="Details\GlobalSetup.cs" />
-    <Compile Include="Details\Person.cs" />
-    <Compile Include="BindableCollectionTest.cs" />
-    <Compile Include="BindableCommandTest.cs" />
-    <Compile Include="BindableTest.cs" />
-    <Compile Include="MessengerTest.cs" />
+    <Compile Include="Sources\Converters\BooleanConverterTest.cs" />
+    <Compile Include="Sources\Converters\ImageConverterTest.cs" />
+    <Compile Include="Sources\Converters\StringConverterTest.cs" />
+    <Compile Include="Sources\Details\ConvertHelper.cs" />
+    <Compile Include="Sources\Details\GlobalSetup.cs" />
+    <Compile Include="Sources\Details\Person.cs" />
+    <Compile Include="Sources\BindableCollectionTest.cs" />
+    <Compile Include="Sources\BindableCommandTest.cs" />
+    <Compile Include="Sources\BindableTest.cs" />
+    <Compile Include="Sources\MessengerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +84,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -91,8 +92,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Packages.config" />
-    <None Include="Resouces\App.ico" />
-    <None Include="Resouces\Logo.png" />
+    <None Include="Assets\App.ico" />
+    <None Include="Assets\Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.Xui.csproj">

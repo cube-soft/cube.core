@@ -63,31 +63,31 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\CloseBehavior.cs" />
-    <Compile Include="Behaviors\DialogBehavior.cs" />
-    <Compile Include="Behaviors\DirectoryDialogBehavior.cs" />
-    <Compile Include="Behaviors\EditBehavior.cs" />
-    <Compile Include="Behaviors\FileDialogBehavior.cs" />
-    <Compile Include="Behaviors\MessengerBehavior.cs" />
-    <Compile Include="Behaviors\ShowBehavior.cs" />
-    <Compile Include="Behaviors\UpdateSourceBehavior.cs" />
-    <Compile Include="Behaviors\WindowsFormsBehavior.cs" />
-    <Compile Include="Converters\BooleanConverter.cs" />
-    <Compile Include="Converters\DuplexConverter.cs" />
-    <Compile Include="Converters\ImageConverter.cs" />
-    <Compile Include="Converters\SimplexConverter.cs" />
-    <Compile Include="Messages\DialogMessage.cs" />
-    <Compile Include="Messages\EmptyMessage.cs" />
-    <Compile Include="Messages\FileDialogMessage.cs" />
-    <Compile Include="Triggers\DisposeAction.cs" />
-    <Compile Include="Triggers\MessengerTrigger.cs" />
-    <Compile Include="Bindable.cs" />
-    <Compile Include="BindableCollection.cs" />
-    <Compile Include="BindableCommand.cs" />
-    <Compile Include="BindableCommandGeneric.cs" />
-    <Compile Include="BindableExtension.cs" />
-    <Compile Include="LoggerExtension.cs" />
-    <Compile Include="MessengerExtension.cs" />
+    <Compile Include="Sources\Behaviors\CloseBehavior.cs" />
+    <Compile Include="Sources\Behaviors\DialogBehavior.cs" />
+    <Compile Include="Sources\Behaviors\DirectoryDialogBehavior.cs" />
+    <Compile Include="Sources\Behaviors\EditBehavior.cs" />
+    <Compile Include="Sources\Behaviors\FileDialogBehavior.cs" />
+    <Compile Include="Sources\Behaviors\MessengerBehavior.cs" />
+    <Compile Include="Sources\Behaviors\ShowBehavior.cs" />
+    <Compile Include="Sources\Behaviors\UpdateSourceBehavior.cs" />
+    <Compile Include="Sources\Behaviors\WindowsFormsBehavior.cs" />
+    <Compile Include="Sources\Converters\BooleanConverter.cs" />
+    <Compile Include="Sources\Converters\DuplexConverter.cs" />
+    <Compile Include="Sources\Converters\ImageConverter.cs" />
+    <Compile Include="Sources\Converters\SimplexConverter.cs" />
+    <Compile Include="Sources\Messages\DialogMessage.cs" />
+    <Compile Include="Sources\Messages\EmptyMessage.cs" />
+    <Compile Include="Sources\Messages\FileDialogMessage.cs" />
+    <Compile Include="Sources\Triggers\DisposeAction.cs" />
+    <Compile Include="Sources\Triggers\MessengerTrigger.cs" />
+    <Compile Include="Sources\Bindable.cs" />
+    <Compile Include="Sources\BindableCollection.cs" />
+    <Compile Include="Sources\BindableCommand.cs" />
+    <Compile Include="Sources\BindableCommandGeneric.cs" />
+    <Compile Include="Sources\BindableExtension.cs" />
+    <Compile Include="Sources\LoggerExtension.cs" />
+    <Compile Include="Sources\MessengerExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
