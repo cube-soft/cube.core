@@ -96,7 +96,6 @@
     <Compile Include="Sources\Power.cs" />
     <Compile Include="Sources\Query.cs" />
     <Compile Include="Sources\SoftwareVersion.cs" />
-    <Compile Include="Sources\Startup.cs" />
     <Compile Include="Sources\WakeableTimer.cs" />
   </ItemGroup>
   <ItemGroup>
