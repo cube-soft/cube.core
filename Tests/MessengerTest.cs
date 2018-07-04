@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using GalaSoft.MvvmLight.Messaging;
 using NUnit.Framework;
+using System.Reflection;
 using System.Windows;
 
 namespace Cube.Xui.Tests
@@ -68,15 +69,16 @@ namespace Cube.Xui.Tests
         [Test]
         public void Send_DialogMessage()
         {
+            var asm  = Assembly.GetExecutingAssembly();
             var src  = new Messenger();
             var dest = default(DialogMessage);
 
             src.Register<DialogMessage>(this, e => dest = e);
-            src.Send(new DialogMessage(nameof(Send_DialogMessage)));
+            src.Send(new DialogMessage(nameof(Send_DialogMessage), asm));
 
             Assert.That(dest,          Is.Not.Null);
             Assert.That(dest.Content,  Is.EqualTo(nameof(Send_DialogMessage)));
-            Assert.That(dest.Title,    Is.EqualTo(AssemblyReader.Default.Title));
+            Assert.That(dest.Title,    Is.EqualTo(asm.GetReader().Title));
             Assert.That(dest.Callback, Is.Null);
             Assert.That(dest.Button,   Is.EqualTo(MessageBoxButton.OK));
             Assert.That(dest.Image,    Is.EqualTo(MessageBoxImage.Error));

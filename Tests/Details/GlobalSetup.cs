@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Log;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace Cube.Xui.Tests
 {
@@ -46,7 +47,7 @@ namespace Cube.Xui.Tests
         {
             Logger.Configure();
             Logger.ObserveTaskException();
-            Logger.Info(typeof(GlobalSetup), AssemblyReader.Default.Assembly);
+            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
         }
     }
 }

@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Reflection;
 using System.Windows;
 
 namespace Cube.Xui
@@ -42,10 +43,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="content">メッセージ内容</param>
+        /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage(string content) :
-            this(content, AssemblyReader.Default.Title) { }
+        public DialogMessage(string content, Assembly assembly) :
+            this(content, assembly.GetReader().Title) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -71,11 +73,12 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="content">メッセージ内容</param>
+        /// <param name="assembly">アセンブリ情報</param>
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage(string content, Action<DialogMessage> callback) :
-            this(content, AssemblyReader.Default.Title, callback) { }
+        public DialogMessage(string content, Assembly assembly, Action<DialogMessage> callback) :
+            this(content, assembly.GetReader().Title, callback) { }
 
         /* ----------------------------------------------------------------- */
         ///
