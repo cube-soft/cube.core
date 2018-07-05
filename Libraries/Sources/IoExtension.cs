@@ -17,7 +17,9 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Log;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Cube.FileSystem.Mixin
@@ -207,22 +209,23 @@ namespace Cube.FileSystem.Mixin
         /// </summary>
         ///
         /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="info">ファイル情報</param>
+        /// <param name="src">ファイル情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this IO io, Information info)
+        public static string GetUniqueName(this IO io, Information src)
         {
-            if (info == null) return null;
-            if (!info.Exists) return info.FullName;
-            if (io == null) return null;
+            Debug.Assert(io != null);
 
-            for (var i = 0; i < int.MaxValue; ++i)
-            {
-                var name = $"{info.NameWithoutExtension} ({i + 1}){info.Extension}";
-                var dest = io.Combine(info.DirectoryName, name);
-                if (!io.Exists(dest)) return dest;
-            }
-            return info.FullName;
+            if (src == null) return null;
+            if (!src.Exists) return src.FullName;
+
+            var dir  = src.DirectoryName;
+            var name = src.NameWithoutExtension;
+            var ext  = src.Extension;
+
+            return Enumerable.Range(1, int.MaxValue)
+                             .Select(e => io.Combine(dir, $"{name} ({e}){ext}"))
+                             .First(e => !io.Exists(e));
         }
 
         #endregion
