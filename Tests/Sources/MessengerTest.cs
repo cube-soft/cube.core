@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using GalaSoft.MvvmLight.Messaging;
 using NUnit.Framework;
+using System;
 using System.Reflection;
 using System.Windows;
 
@@ -48,13 +49,55 @@ namespace Cube.Xui.Tests
         [Test]
         public void Send_CloseMessage()
         {
-            var src = new Messenger();
-            var dest = default(CloseMessage);
+            var src   = new TestViewModel();
+            var count = 0;
 
-            src.Register<CloseMessage>(this, e => dest = e);
-            src.Send<CloseMessage>();
+            Messenger.Default.Register<CloseMessage>(this, e =>
+            {
+                Assert.That(e, Is.Not.Null);
+                ++count;
+            });
 
-            Assert.That(dest, Is.Not.Null);
+            src.Test<CloseMessage>();
+            Assert.That(count, Is.EqualTo(1));
+
+            Messenger.Default.Unregister<CloseMessage>(this);
+            src.Test<CloseMessage>();
+            Assert.That(count, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_ErrorMessage
+        ///
+        /// <summary>
+        /// エラーメッセージを送信するテストを実行します。。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_ErrorMessage()
+        {
+            var src   = new TestViewModel();
+            var count = 0;
+
+            Messenger.Default.Register<DialogMessage>(this, e =>
+            {
+                var title = Assembly.GetExecutingAssembly().GetReader().Title;
+                Assert.That(e.Content.Length, Is.AtLeast(1));
+                Assert.That(e.Title,          Is.EqualTo(title));
+                Assert.That(e.Button,         Is.EqualTo(MessageBoxButton.OK));
+                Assert.That(e.Image,          Is.EqualTo(MessageBoxImage.Error));
+                Assert.That(e.Result,         Is.True);
+                ++count;
+            });
+
+            src.Test(() => throw new ArgumentException("Test"));
+            Assert.That(count, Is.EqualTo(1));
+
+            Messenger.Default.Unregister<DialogMessage>(this);
+            src.Test(() => throw new ArgumentException("Test 2"));
+            Assert.That(count, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -168,6 +211,26 @@ namespace Cube.Xui.Tests
             Assert.That(dest.NewButton, Is.True, nameof(dest.NewButton));
             Assert.That(dest.Result,    Is.False, nameof(dest.Result));
             Assert.That(dest.Title,     Is.Null, nameof(dest.Title));
+        }
+
+        #endregion
+
+        #region Helper classes and methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestViewModel
+        ///
+        /// <summary>
+        /// テスト用の ViewModel クラスです。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private class TestViewModel : MessengerViewModel
+        {
+            public TestViewModel() : base(Assembly.GetExecutingAssembly()) { }
+            public void Test<T>() where T : new() => Send<T>();
+            public void Test(Action action) => Send(action);
         }
 
         #endregion

@@ -89,7 +89,7 @@
     <Compile Include="Sources\BindableExtension.cs" />
     <Compile Include="Sources\BindableFunc.cs" />
     <Compile Include="Sources\LoggerExtension.cs" />
-    <Compile Include="Sources\MessengerExtension.cs" />
+    <Compile Include="Sources\MessengerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
