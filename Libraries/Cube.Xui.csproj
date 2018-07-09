@@ -71,6 +71,7 @@
     <Compile Include="Sources\Behaviors\MessengerBehavior.cs" />
     <Compile Include="Sources\Behaviors\ShowBehavior.cs" />
     <Compile Include="Sources\Behaviors\UpdateSourceBehavior.cs" />
+    <Compile Include="Sources\Behaviors\UriBehavior.cs" />
     <Compile Include="Sources\Behaviors\WindowsFormsBehavior.cs" />
     <Compile Include="Sources\Converters\BooleanConverter.cs" />
     <Compile Include="Sources\Converters\DuplexConverter.cs" />
