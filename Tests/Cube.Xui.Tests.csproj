@@ -71,6 +71,7 @@
     <Compile Include="Sources\Details\Person.cs" />
     <Compile Include="Sources\BindableCollectionTest.cs" />
     <Compile Include="Sources\BindableCommandTest.cs" />
+    <Compile Include="Sources\BindableFuncTest.cs" />
     <Compile Include="Sources\BindableTest.cs" />
     <Compile Include="Sources\MessengerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

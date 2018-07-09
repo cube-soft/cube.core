@@ -86,6 +86,7 @@
     <Compile Include="Sources\BindableCommand.cs" />
     <Compile Include="Sources\BindableCommandGeneric.cs" />
     <Compile Include="Sources\BindableExtension.cs" />
+    <Compile Include="Sources\BindableFunc.cs" />
     <Compile Include="Sources\LoggerExtension.cs" />
     <Compile Include="Sources\MessengerExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
