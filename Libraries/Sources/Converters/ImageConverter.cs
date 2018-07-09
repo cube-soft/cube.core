@@ -22,14 +22,14 @@ namespace Cube.Xui.Converters
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ImageOperator
+    /// ImageExtension
     ///
     /// <summary>
     /// BitmapImage オブジェクトに関連する拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ImageOperator
+    public static class ImageExtension
     {
         #region Methods
 
