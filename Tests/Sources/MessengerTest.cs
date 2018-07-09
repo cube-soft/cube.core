@@ -83,9 +83,8 @@ namespace Cube.Xui.Tests
 
             Messenger.Default.Register<DialogMessage>(this, e =>
             {
-                var title = Assembly.GetExecutingAssembly().GetReader().Title;
                 Assert.That(e.Content.Length, Is.AtLeast(1));
-                Assert.That(e.Title,          Is.EqualTo(title));
+                Assert.That(e.Title,          Is.EqualTo("Cube.Xui"));
                 Assert.That(e.Button,         Is.EqualTo(MessageBoxButton.OK));
                 Assert.That(e.Image,          Is.EqualTo(MessageBoxImage.Error));
                 Assert.That(e.Result,         Is.True);
@@ -228,7 +227,6 @@ namespace Cube.Xui.Tests
         /* ----------------------------------------------------------------- */
         private class TestViewModel : MessengerViewModel
         {
-            public TestViewModel() : base(Assembly.GetExecutingAssembly()) { }
             public void Test<T>() where T : new() => Send<T>();
             public void Test(Action action) => Send(action);
         }

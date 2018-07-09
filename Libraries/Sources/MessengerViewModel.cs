@@ -20,6 +20,7 @@ using Cube.Log;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Cube.Xui
@@ -52,8 +53,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected MessengerViewModel(Assembly assembly) :
-            this(assembly, GalaSoft.MvvmLight.Messaging.Messenger.Default) { }
+        protected MessengerViewModel() : this(GalaSoft.MvvmLight.Messaging.Messenger.Default) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -63,14 +63,10 @@ namespace Cube.Xui
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリ情報</param>
         /// <param name="messenger">メッセージ伝搬用オブジェクト</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected MessengerViewModel(Assembly assembly, IMessenger messenger) : base(messenger)
-        {
-            Assembly = assembly;
-        }
+        protected MessengerViewModel(IMessenger messenger) : base(messenger) { }
 
         #endregion
 
@@ -87,20 +83,22 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         public IMessenger Messenger => MessengerInstance;
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Assembly
-        ///
-        /// <summary>
-        /// アセンブリ情報を取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected Assembly Assembly { get; }
-
         #endregion
 
         #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Send(T)
+        ///
+        /// <summary>
+        /// 任意のメッセージを送信します。
+        /// </summary>
+        ///
+        /// <param name="message">メッセージ</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Send<T>(T message) => Messenger.Send(message);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -111,33 +109,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>() where T : new() => Messenger.Send(new T());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// 表示用メッセージを送信します。
-        /// </summary>
-        ///
-        /// <param name="src">表示用メッセージ</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Send(DialogMessage src) => Messenger.Send(src);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// エラーメッセージを送信します。
-        /// </summary>
-        ///
-        /// <param name="err">例外オブジェクト</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Send(Exception err) => Send(err, string.Empty);
+        protected void Send<T>() where T : new() => Send(new T());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,13 +133,28 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="action">実行内容</param>
-        /// <param name="message">例外発生時のメッセージ</param>
+        /// <param name="message">エラーメッセージ</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send(Action action, string message)
+        protected void Send(Action action, string message) => Send(action, message, GetTitle());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// 例外発生時にエラーメッセージを表示します。
+        /// </summary>
+        ///
+        /// <param name="action">実行内容</param>
+        /// <param name="message">エラーメッセージ</param>
+        /// <param name="title">タイトル</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action, string message, string title)
         {
             try { action(); }
-            catch (Exception err) { Send(err, message); }
+            catch (Exception err) { Send(err, message, title); }
         }
 
         /* --------------------------------------------------------------------- */
@@ -179,10 +166,38 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="err">例外オブジェクト</param>
-        /// <param name="message">エラーメッセージ</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send(Exception err, string message)
+        protected void Send(Exception err) => Send(err, string.Empty);
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// エラーメッセージを送信します。
+        /// </summary>
+        ///
+        /// <param name="err">例外オブジェクト</param>
+        /// <param name="message">メッセージ</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Send(Exception err, string message) => Send(err, message, GetTitle());
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// エラーメッセージを送信します。
+        /// </summary>
+        ///
+        /// <param name="err">例外オブジェクト</param>
+        /// <param name="message">エラーメッセージ</param>
+        /// <param name="title">タイトル</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Send(Exception err, string message, string title)
         {
             var ss = new System.Text.StringBuilder();
             if (message.HasValue())
@@ -193,12 +208,33 @@ namespace Cube.Xui
             this.LogError(err.ToString(), err);
 
             ss.Append($"{err.Message} ({err.GetType().Name})");
-            Send(new DialogMessage(ss.ToString(), Assembly.GetReader().Title)
+            Send(new DialogMessage(ss.ToString(), title)
             {
                 Button = System.Windows.MessageBoxButton.OK,
                 Image  = System.Windows.MessageBoxImage.Error,
                 Result = true,
             });
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetTitle
+        ///
+        /// <summary>
+        /// タイトルを取得します。
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private string GetTitle()
+        {
+            var asm = Assembly.GetEntryAssembly() ??
+                      Assembly.GetExecutingAssembly();
+            Debug.Assert(asm != null);
+            return asm.GetReader().Title;
         }
 
         #endregion
