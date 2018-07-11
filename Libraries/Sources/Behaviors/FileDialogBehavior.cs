@@ -28,7 +28,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileDialogBehavior : MessengerBehavior<OpenFileDialogMessage>
+    public class OpenFileDialogBehavior : MessengerBehavior<OpenFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -39,7 +39,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(OpenFileDialogMessage e)
+        protected override void Invoke(OpenFileMessage e)
         {
             var dialog = new OpenFileDialog
             {
@@ -73,7 +73,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileDialogBehavior : MessengerBehavior<SaveFileDialogMessage>
+    public class SaveFileDialogBehavior : MessengerBehavior<SaveFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -84,7 +84,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(SaveFileDialogMessage e)
+        protected override void Invoke(SaveFileMessage e)
         {
             var dialog = new SaveFileDialog
             {

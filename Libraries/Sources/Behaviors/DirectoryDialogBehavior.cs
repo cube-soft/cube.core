@@ -28,7 +28,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DirectoryDialogBehavior : MessengerBehavior<DirectoryDialogMessage>
+    public class DirectoryDialogBehavior : MessengerBehavior<OpenDirectoryMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -39,7 +39,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(DirectoryDialogMessage e)
+        protected override void Invoke(OpenDirectoryMessage e)
         {
             var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 

@@ -140,10 +140,10 @@ namespace Cube.Xui.Tests
         public void Send_OpenFileDialogMessage()
         {
             var src  = new Messenger();
-            var dest = default(OpenFileDialogMessage);
+            var dest = default(OpenFileMessage);
 
-            src.Register<OpenFileDialogMessage>(this, e => e.Callback(e));
-            src.Send(new OpenFileDialogMessage(e => dest = e));
+            src.Register<OpenFileMessage>(this, e => e.Callback(e));
+            src.Send(new OpenFileMessage(e => dest = e));
 
             Assert.That(dest,                  Is.Not.Null);
             Assert.That(dest.Callback,         Is.Not.Null);
@@ -170,10 +170,10 @@ namespace Cube.Xui.Tests
         public void Send_SaveFileDialogMessage()
         {
             var src  = new Messenger();
-            var dest = default(SaveFileDialogMessage);
+            var dest = default(SaveFileMessage);
 
-            src.Register<SaveFileDialogMessage>(this, e => e.Callback(e));
-            src.Send(new SaveFileDialogMessage(e => dest = e));
+            src.Register<SaveFileMessage>(this, e => e.Callback(e));
+            src.Send(new SaveFileMessage(e => dest = e));
 
             Assert.That(dest,                  Is.Not.Null);
             Assert.That(dest.Callback,         Is.Not.Null);
@@ -199,10 +199,10 @@ namespace Cube.Xui.Tests
         public void Send_DirectoryDialogMessage()
         {
             var src = new Messenger();
-            var dest = default(DirectoryDialogMessage);
+            var dest = default(OpenDirectoryMessage);
 
-            src.Register<DirectoryDialogMessage>(this, e => e.Callback(e));
-            src.Send(new DirectoryDialogMessage(e => dest = e));
+            src.Register<OpenDirectoryMessage>(this, e => e.Callback(e));
+            src.Send(new OpenDirectoryMessage(e => dest = e));
 
             Assert.That(dest,           Is.Not.Null);
             Assert.That(dest.Callback,  Is.Not.Null);

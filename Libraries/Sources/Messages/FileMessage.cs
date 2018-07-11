@@ -15,22 +15,23 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
 
 namespace Cube.Xui
 {
+    #region FileSystemMessage
+
     /* --------------------------------------------------------------------- */
     ///
-    /// FileSystemDialogMessage
+    /// FileSystemMessage
     ///
     /// <summary>
-    /// ファイル選択用ダイアログまたはディレクトリ選択用ダイアログに
-    /// 表示する情報を保持するためのクラスです。
+    /// Stores some information to show either the OpenFileDialog or
+    /// SaveFileDialog or FolderBrowserDialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class FileSystemDialogMessage
+    public abstract class FileSystemMessage
     {
         #region Properties
 
@@ -39,7 +40,8 @@ namespace Cube.Xui
         /// FileName
         ///
         /// <summary>
-        /// 選択されたパスを取得または設定します。
+        /// Gets or sets a string containing the full path of the file
+        /// selected in a dialog.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -50,7 +52,7 @@ namespace Cube.Xui
         /// Title
         ///
         /// <summary>
-        /// タイトルを取得または設定します。
+        /// Gets or sets the text that appears in the title bar of a dialog.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -61,7 +63,7 @@ namespace Cube.Xui
         /// Result
         ///
         /// <summary>
-        /// ユーザの実行結果を示す値を取得または設定します。
+        /// Gets or sets the result of the user action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -70,16 +72,21 @@ namespace Cube.Xui
         #endregion
     }
 
+    #endregion
+
+    #region FileMessage
+
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDialogMessage
+    /// FileMessage
     ///
     /// <summary>
-    /// ファイルダイアログに表示する情報を保持するためのクラスです。
+    /// Stores some information to show either the OpenFileDialog or
+    /// SaveFileDialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class FileDialogMessage : FileSystemDialogMessage
+    public abstract class FileMessage : FileSystemMessage
     {
         #region Properties
 
@@ -88,8 +95,9 @@ namespace Cube.Xui
         /// CheckPathExists
         ///
         /// <summary>
-        /// 指定されたファイルの存在チェックを実行するかどうかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether a file dialog
+        /// displays a warning if the user specifies a file name that
+        /// does not exist.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -100,7 +108,8 @@ namespace Cube.Xui
         /// InitialDirectory
         ///
         /// <summary>
-        /// ディレクトリの初期設定を取得または設定します。
+        /// Gets or sets the initial directory that is displayed by a file
+        /// dialog.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -111,7 +120,8 @@ namespace Cube.Xui
         /// Filter
         ///
         /// <summary>
-        /// フィルタを表す文字列を取得または設定します。
+        /// Gets or sets the filter string that determines what types of
+        /// files are displayed from a from dialog.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -120,74 +130,20 @@ namespace Cube.Xui
         #endregion
     }
 
+    #endregion
+
+    #region OpenFileMessage
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DirectoryDialogMessage
+    /// OpenFileMessage
     ///
     /// <summary>
-    /// FolderBrowser に表示する情報を保持するためのクラスです。
+    /// Stores some information to show an OpenFileDialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DirectoryDialogMessage : FileSystemDialogMessage
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DirectoryDialogMessage
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="callback">コールバック用オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DirectoryDialogMessage(Action<DirectoryDialogMessage> callback)
-        {
-            Callback = callback;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Callback
-        ///
-        /// <summary>
-        /// コールバック用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Action<DirectoryDialogMessage> Callback { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewButton
-        ///
-        /// <summary>
-        /// 新規作成ボタンを表示するかどうかを示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool NewButton { get; set; } = true;
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OpenFileDialogMessage
-    ///
-    /// <summary>
-    /// OpenFileDialog に表示する情報を保持するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class OpenFileDialogMessage : FileDialogMessage
+    public class OpenFileMessage : FileMessage
     {
         #region Constructors
 
@@ -196,13 +152,13 @@ namespace Cube.Xui
         /// OpenFileDialogMessage
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance with the specified callback.
         /// </summary>
         ///
-        /// <param name="callback">コールバック用オブジェクト</param>
+        /// <param name="callback">Callback object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileDialogMessage(Action<OpenFileDialogMessage> callback)
+        public OpenFileMessage(OpenFileCallback callback)
         {
             Callback        = callback;
             CheckPathExists = true;
@@ -217,18 +173,20 @@ namespace Cube.Xui
         /// Callback
         ///
         /// <summary>
-        /// コールバック用オブジェクトを取得します。
+        /// Gets or sets the delegation of the user action after
+        /// closing the OpenFileDialog.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Action<OpenFileDialogMessage> Callback { get; }
+        public OpenFileCallback Callback { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Multiselect
         ///
         /// <summary>
-        /// 複数選択可能かどうかを示す値を取得または設定します。
+        /// Gets or sets an option indicating whether OpenFileDialog
+        /// allows users to select multiple files.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -239,7 +197,8 @@ namespace Cube.Xui
         /// FileNames
         ///
         /// <summary>
-        /// 選択されたファイルのパス一覧を取得または設定します。
+        /// Gets an array that contains one file name for each selected
+        /// file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -248,16 +207,20 @@ namespace Cube.Xui
         #endregion
     }
 
+    #endregion
+
+    #region SaveFileMessage
+
     /* --------------------------------------------------------------------- */
     ///
-    /// SaveFileDialogMessage
+    /// SaveFileMessage
     ///
     /// <summary>
-    /// SaveFileDialog に表示する情報を保持するためのクラスです。
+    /// Stores some information to show a SaveFileDialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileDialogMessage : FileDialogMessage
+    public class SaveFileMessage : FileMessage
     {
         #region Constructors
 
@@ -266,13 +229,13 @@ namespace Cube.Xui
         /// SaveFileDialogMessage
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance with the specified callback.
         /// </summary>
         ///
-        /// <param name="callback">コールバック用オブジェクト</param>
+        /// <param name="callback">Callback object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileDialogMessage(Action<SaveFileDialogMessage> callback)
+        public SaveFileMessage(SaveFileCallback callback)
         {
             Callback        = callback;
             CheckPathExists = false;
@@ -287,19 +250,21 @@ namespace Cube.Xui
         /// Callback
         ///
         /// <summary>
-        /// コールバック用オブジェクトを取得します。
+        /// Gets or sets the delegation of the user action after
+        /// closing the SaveileDialog.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Action<SaveFileDialogMessage> Callback { get; }
+        public SaveFileCallback Callback { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// OverwritePrompt
         ///
         /// <summary>
-        /// 上書き確認ダイアログを表示するかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets a value indicating whether SaveFileDialog displays
+        /// a warning if the user specifies the name of a file that already
+        /// exists.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -307,4 +272,122 @@ namespace Cube.Xui
 
         #endregion
     }
+
+    #endregion
+
+    #region OpenDirectoryMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryMessage
+    ///
+    /// <summary>
+    /// Stores some information to show a FolderBrowserDialog.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class OpenDirectoryMessage : FileSystemMessage
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DirectoryDialogMessage
+        ///
+        /// <summary>
+        /// Initializes a new instance with the specified callback.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OpenDirectoryMessage(OpenDirectoryCallback callback)
+        {
+            Callback = callback;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Callback
+        ///
+        /// <summary>
+        /// Gets or sets the delegation of the user action after
+        /// closing the FolderBrowserDialog.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OpenDirectoryCallback Callback { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NewButton
+        ///
+        /// <summary>
+        /// Gets or sets a value indicating whether the New Folder button
+        /// appears in the FolderBrowserDialog.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool NewButton { get; set; } = true;
+
+        #endregion
+    }
+
+    #endregion
+
+    #region Callbacks
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenFileCallback
+    ///
+    /// <summary>
+    /// Represents the method that will handle the user action after
+    /// closing the OpenFileDialog.
+    /// </summary>
+    ///
+    /// <param name="e">
+    /// An object that contains the result of the OpenFileDialog.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public delegate void OpenFileCallback(OpenFileMessage e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SaveFileCallback
+    ///
+    /// <summary>
+    /// Represents the method that will handle the user action after
+    /// closing the SaveFileDialog.
+    /// </summary>
+    ///
+    /// <param name="e">
+    /// An object that contains the result of the SaveFileDialog.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public delegate void SaveFileCallback(SaveFileMessage e);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryCallback
+    ///
+    /// <summary>
+    /// Represents the method that will handle the user action after
+    /// closing the FolderBrowserDialog.
+    /// </summary>
+    ///
+    /// <param name="e">
+    /// An object that contains the result of the FolderBrowserDialog.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public delegate void OpenDirectoryCallback(OpenDirectoryMessage e);
+
+    #endregion
 }

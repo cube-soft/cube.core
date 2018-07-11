@@ -63,6 +63,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Behaviors\CloseBehavior.cs" />
     <Compile Include="Sources\Behaviors\DialogBehavior.cs" />
     <Compile Include="Sources\Behaviors\DirectoryDialogBehavior.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Sources\Converters\SimplexConverter.cs" />
     <Compile Include="Sources\Messages\DialogMessage.cs" />
     <Compile Include="Sources\Messages\EmptyMessage.cs" />
-    <Compile Include="Sources\Messages\FileDialogMessage.cs" />
+    <Compile Include="Sources\Messages\FileMessage.cs" />
     <Compile Include="Sources\Triggers\DisposeAction.cs" />
     <Compile Include="Sources\Triggers\MessengerTrigger.cs" />
     <Compile Include="Sources\Bindable.cs" />
@@ -90,13 +91,10 @@
     <Compile Include="Sources\BindableFunc.cs" />
     <Compile Include="Sources\LoggerExtension.cs" />
     <Compile Include="Sources\MessengerViewModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
-    <None Include="Packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
