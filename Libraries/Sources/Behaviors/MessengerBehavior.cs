@@ -103,7 +103,7 @@ namespace Cube.Xui.Behaviors
         /// OnAttached
         ///
         /// <summary>
-        /// 要素へ接続された時に実行します。
+        /// Called after the action is attached to an AssociatedObject.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -118,7 +118,8 @@ namespace Cube.Xui.Behaviors
         /// OnDetaching
         ///
         /// <summary>
-        /// 要素から解除された時に実行します。
+        /// Called when the action is being detached from its
+        /// AssociatedObject, but before it has actually occurred.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
