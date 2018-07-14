@@ -19,7 +19,7 @@ using Cube.Generics;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.FileSystem.TestService
 {
     /* --------------------------------------------------------------------- */
     ///

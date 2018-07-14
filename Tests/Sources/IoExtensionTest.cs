@@ -18,7 +18,7 @@
 using Cube.FileSystem.Mixin;
 using NUnit.Framework;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.FileSystem.TestService
 {
     /* --------------------------------------------------------------------- */
     ///

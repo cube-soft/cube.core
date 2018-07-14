@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.FileSystem.TestService
 {
     /* ----------------------------------------------------------------- */
     ///

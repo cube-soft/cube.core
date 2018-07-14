@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.FileSystem.TestService
 {
     /* --------------------------------------------------------------------- */
     ///

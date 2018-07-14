@@ -20,7 +20,7 @@ using Microsoft.Win32;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.FileSystem.TestService
 {
     /* --------------------------------------------------------------------- */
     ///
