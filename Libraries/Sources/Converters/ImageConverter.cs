@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.FileSystem;
 using System.IO;
 using System.Windows.Media.Imaging;
 
@@ -25,7 +26,7 @@ namespace Cube.Xui.Converters
     /// ImageExtension
     ///
     /// <summary>
-    /// BitmapImage オブジェクトに関連する拡張用クラスです。
+    /// Provides functionality to convert Image objects.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,24 +39,45 @@ namespace Cube.Xui.Converters
         /// ToBitmapImage
         ///
         /// <summary>
-        /// System.Drawing.Image オブジェクトから BitmapImage オブジェクトに
-        /// 変換します。
+        /// Converts to the BitmapImage object.
         /// </summary>
         ///
+        /// <param name="src">Image object.</param>
+        ///
+        /// <returns>BitmapImage object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this System.Drawing.Image src)
+        public static BitmapImage ToBitmapImage(this System.Drawing.Image src) =>
+            src.ToBitmapImage(false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToBitmapImage
+        ///
+        /// <summary>
+        /// Converts to the BitmapImage object.
+        /// </summary>
+        ///
+        /// <param name="src">Image object.</param>
+        /// <param name="dispose">Whether disposing the source.</param>
+        ///
+        /// <returns>BitmapImage object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static BitmapImage ToBitmapImage(this System.Drawing.Image src, bool dispose)
         {
             if (src == null) return default(BitmapImage);
 
-            using (var ss = new MemoryStream())
+            using (var ss = new StreamProxy(new MemoryStream()))
             {
                 src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
                 var dest = new BitmapImage();
                 dest.BeginInit();
                 dest.CacheOption = BitmapCacheOption.OnLoad;
-                dest.StreamSource = new MemoryStream(ss.ToArray());
+                dest.StreamSource = ss;
                 dest.EndInit();
                 if (dest.CanFreeze) dest.Freeze();
+                if (dispose) src.Dispose();
                 return dest;
             }
         }
@@ -68,8 +90,8 @@ namespace Cube.Xui.Converters
     /// ImageConverter
     ///
     /// <summary>
-    /// System.Drawing.Image オブジェクトから BitmapImage オブジェクトに
-    /// 変換するためのクラスです。
+    /// Provides functionality to convert from an Image object to
+    /// a BitmapImage object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -82,7 +104,7 @@ namespace Cube.Xui.Converters
         /// ImageValueConverter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ImageConverter class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
