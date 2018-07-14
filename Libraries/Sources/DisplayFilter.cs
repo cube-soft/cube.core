@@ -15,6 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
+using Cube.Generics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,14 +28,9 @@ namespace Cube.FileSystem
     /// DisplayFilter
     ///
     /// <summary>
-    /// OpenFileDialog などの Filter に指定する文字列を生成するための
-    /// クラスです。
+    /// Provides functionality to create a string value that is used
+    /// as a filter of either the OpenFileDialog or SaveFileDialog.
     /// </summary>
-    ///
-    /// <remarks>
-    /// 例えば、"テキストファイル (*.txt)|*.txt;*.TXT" のような文字列が
-    /// 生成されます。
-    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public class DisplayFilter
@@ -44,15 +42,14 @@ namespace Cube.FileSystem
         /// DisplayFilter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DisplayFilter class
+        /// with the specfied parameters
         /// </summary>
         ///
-        /// <param name="description">ファイルの種類に関する説明</param>
-        /// <param name="extensions">拡張子一覧</param>
-        ///
-        /// <remarks>
-        /// 拡張子は ".txt" のような形で指定して下さい。
-        /// </remarks>
+        /// <param name="description">Description for the filter.</param>
+        /// <param name="extensions">
+        /// List of target extensions (e.g., ".txt").
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public DisplayFilter(string description, params string[] extensions)
@@ -67,18 +64,15 @@ namespace Cube.FileSystem
         /// DisplayFilter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DisplayFilter class
+        /// with the specfied parameters
         /// </summary>
         ///
-        /// <param name="description">ファイルの種類に関する説明</param>
-        /// <param name="extensions">拡張子一覧</param>
-        /// <param name="ignoreCase">
-        /// 大文字・小文字の区別を無視するかどうか
+        /// <param name="description">Description for the filter.</param>
+        /// <param name="ignoreCase">Ignores case or not.</param>
+        /// <param name="extensions">
+        /// List of target extensions (e.g., ".txt").
         /// </param>
-        ///
-        /// <remarks>
-        /// 拡張子は ".txt" のような形で指定して下さい。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public DisplayFilter(string description, bool ignoreCase, params string[] extensions)
@@ -97,7 +91,7 @@ namespace Cube.FileSystem
         /// Description
         ///
         /// <summary>
-        /// ファイルの種類を表す文字列を取得します。
+        /// Gets a description for the filter.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -108,7 +102,7 @@ namespace Cube.FileSystem
         /// Extensions
         ///
         /// <summary>
-        /// 表示対象となる拡張子一覧を取得します。
+        /// Gets a list of target extensions.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -119,7 +113,8 @@ namespace Cube.FileSystem
         /// IgnoreCase
         ///
         /// <summary>
-        /// 大文字・小文字の区別を無視するかどうかを示す値を取得します。
+        /// Gets a value indicating whether letter cases of the specified
+        /// extensions are ignored.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -134,7 +129,7 @@ namespace Cube.FileSystem
         /// ToString
         ///
         /// <summary>
-        /// 文字列に変換します。
+        /// Converts to a string representing the filter.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -157,7 +152,8 @@ namespace Cube.FileSystem
         /// Format
         ///
         /// <summary>
-        /// IgnoreCase の設定に従って拡張子表記を変換します。
+        /// Converts an extension to a filter string according to the user
+        /// settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -169,6 +165,81 @@ namespace Cube.FileSystem
             var y = src.ToUpper();
 
             return x.Equals(y) ? x : $"{x};{y}";
+        }
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DisplayFilterExtension
+    ///
+    /// <summary>
+    /// Provides functionality to convert from a DisplayFilter collection.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class DisplayFilterExtension
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilter
+        ///
+        /// <summary>
+        /// Gets a string value that represents the filter of either the
+        /// OpenFileDialog or SaveFileDialog.
+        /// </summary>
+        ///
+        /// <param name="src">DisplayFilter collection.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string GetFilter(this IEnumerable<DisplayFilter> src) =>
+            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilterIndex
+        ///
+        /// <summary>
+        /// Gets the index of the first occurrence of the specified path
+        /// in the current DisplayFilter collection.
+        /// </summary>
+        ///
+        /// <param name="src">DisplayFilter collection.</param>
+        /// <param name="path">File path.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static int GetFilterIndex(this IEnumerable<DisplayFilter> src, string path) =>
+            src.GetFilterIndex(path, new IO());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilterIndex
+        ///
+        /// <summary>
+        /// Gets the index of the first occurrence of the specified path
+        /// in the current DisplayFilter collection.
+        /// </summary>
+        ///
+        /// <param name="src">DisplayFilter collection.</param>
+        /// <param name="path">File path.</param>
+        /// <param name="io">I/O handler.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static int GetFilterIndex(this IEnumerable<DisplayFilter> src, string path, IO io)
+        {
+            if (path.HasValue())
+            {
+                var ext = io.Get(path).Extension;
+                var opt = StringComparison.InvariantCultureIgnoreCase;
+
+                return src.Select((e, i) => KeyValuePair.Create(i + 1, e))
+                          .FirstOrDefault(e => e.Value.Extensions.Any(ev => ev.Equals(ext, opt)))
+                          .Key;
+            }
+            return 0;
         }
 
         #endregion

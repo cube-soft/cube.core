@@ -146,25 +146,6 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetUniqueName_Null
-        ///
-        /// <summary>
-        /// 引数に null を指定した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetUniqueName_Null()
-        {
-            var dummy = default(IO);
-            var src   = GetExamplesWith("Sample.txt");
-
-            Assert.That(dummy.GetUniqueName(src), Is.Null);
-            Assert.That(dummy.GetUniqueName(IO.Get(src)), Is.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ChangeExtension
         ///
         /// <summary>

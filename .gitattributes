@@ -22,9 +22,4 @@
 *.jpg           binary
 *.png           binary
 *.ico           binary
-*.7z            binary
-*.zip           binary
-*.tar           binary
-*.tar.gz        binary
-*.tar.bz        binary
-*.tar.xz        binary
+*.svg           binary

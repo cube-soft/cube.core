@@ -15,9 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.FileSystem.Tests
 {
@@ -26,7 +28,7 @@ namespace Cube.FileSystem.Tests
     /// DisplayFilterTest
     ///
     /// <summary>
-    /// DisplayFilter の拡張メソッドのテスト用クラスです。
+    /// Provides a test fixture for the DisplayFilter class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,7 +42,7 @@ namespace Cube.FileSystem.Tests
         /// ToString
         ///
         /// <summary>
-        /// フィルタ用文字列に変換するテストを実行します。
+        /// Tests to convert to a filter string.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,7 +55,7 @@ namespace Cube.FileSystem.Tests
         /// ToString_Null
         ///
         /// <summary>
-        /// null で初期化した時の挙動を確認します。
+        /// Tests to initialize a new instance with null parameters.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -62,6 +64,54 @@ namespace Cube.FileSystem.Tests
             () => new DisplayFilter(null, null).ToString(),
             Throws.TypeOf<ArgumentNullException>()
         );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilter
+        ///
+        /// <summary>
+        /// Tests to get the filter string from a DisplayFilter collection.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetFilter()
+        {
+            var dest = TestCollection.GetFilter();
+            Assert.That(dest, Does.StartWith("All files (*.*)|*.*"));
+            Assert.That(dest, Does.EndWith("Text or customized files (*.txt, *.1)|*.txt;*.1"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilter_Throws
+        ///
+        /// <summary>
+        /// Tests to get the filter string from an empty collection.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetFilter_Throws() => Assert.That(
+            () => new List<DisplayFilter>().GetFilter(),
+            Throws.TypeOf<InvalidOperationException>()
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilter_Throws
+        ///
+        /// <summary>
+        /// Tests to get the filter index.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Test.txt", ExpectedResult = 3)]
+        [TestCase("Test.PNG", ExpectedResult = 5)]
+        [TestCase("Test.pdf", ExpectedResult = 0)]
+        [TestCase("Test",     ExpectedResult = 0)]
+        [TestCase("",         ExpectedResult = 0)]
+        public int GetFilterIndex(string path) => TestCollection.GetFilterIndex(path);
 
         #endregion
 
@@ -72,7 +122,7 @@ namespace Cube.FileSystem.Tests
         /// TestCases
         ///
         /// <summary>
-        /// テストケース一覧を取得します。
+        /// Gets a list of test cases.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -113,6 +163,22 @@ namespace Cube.FileSystem.Tests
                 ).Returns("Text or customized files (*.txt, *.1)|*.txt;*.1");
             }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestCollection
+        ///
+        /// <summary>
+        /// Gets a list of DisplayFilter objects.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static IEnumerable<DisplayFilter> TestCollection =>
+            TestCases.Select(e => new DisplayFilter(
+                e.Arguments[0] as string,
+                e.Arguments[1].TryCast<bool>(),
+                e.Arguments[2] as string[]
+            ));
 
         #endregion
     }
