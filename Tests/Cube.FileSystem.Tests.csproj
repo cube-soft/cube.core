@@ -101,6 +101,7 @@
     <Compile Include="Sources\SettingsFolderTest.cs" />
     <Compile Include="Sources\ShortcutTest.cs" />
     <Compile Include="Sources\StartupTest.cs" />
+    <Compile Include="Sources\StreamProxyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
