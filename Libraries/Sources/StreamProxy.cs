@@ -64,6 +64,7 @@ namespace Cube.FileSystem
         public StreamProxy(Stream stream, bool leaveOpen)
         {
             BaseStream = stream;
+            _leave = leaveOpen;
         }
 
         #region Properties

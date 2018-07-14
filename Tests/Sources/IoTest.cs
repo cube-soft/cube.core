@@ -15,12 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.FileSystem.TestService;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cube.FileSystem.TestService
+namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///

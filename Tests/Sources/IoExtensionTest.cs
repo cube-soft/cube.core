@@ -16,9 +16,10 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.FileSystem.Mixin;
+using Cube.FileSystem.TestService;
 using NUnit.Framework;
 
-namespace Cube.FileSystem.TestService
+namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///

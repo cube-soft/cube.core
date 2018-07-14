@@ -16,11 +16,12 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.FileSystem.TestService;
 using Microsoft.Win32;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Cube.FileSystem.TestService
+namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///

@@ -19,7 +19,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace Cube.FileSystem.TestService
+namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -119,6 +119,26 @@ namespace Cube.FileSystem.TestService
                 () => dest.Write(new byte[] { 9, 9, 9 }, 0, 3),
                 Throws.TypeOf<ObjectDisposedException>()
             );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LeaveOpen
+        ///
+        /// <summary>
+        /// Tests to create a StreamProxy instance with leave open mode.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void LeaveOpen()
+        {
+            var src  = new MemoryStream(new byte[] { 0, 1, 2, 3, 4, 5 });
+            var dest = new StreamProxy(src, true);
+
+            dest.Dispose();
+            var bytes = new byte[3];
+            Assert.That(src.Read(bytes, 0, 3), Is.EqualTo(3));
         }
     }
 }
