@@ -96,7 +96,8 @@
     <Compile Include="Sources\AlphaFS\AfsRefreshable.cs" />
     <Compile Include="Sources\NativeMethods\IShellLink.cs" />
     <Compile Include="Sources\NativeMethods\Shell32.cs" />
-    <Compile Include="Sources\Tests\FileFixture.cs" />
+    <Compile Include="Sources\TestService\FileFixture.cs" />
+    <Compile Include="Sources\TestService\Wait.cs" />
     <Compile Include="Sources\FailedEventArgs.cs" />
     <Compile Include="Sources\DisplayFilter.cs" />
     <Compile Include="Sources\Information.cs" />
@@ -109,7 +110,6 @@
     <Compile Include="Sources\Shortcut.cs" />
     <Compile Include="Sources\Startup.cs" />
     <Compile Include="Sources\StreamProxy.cs" />
-    <Compile Include="Sources\Tests\Wait.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
