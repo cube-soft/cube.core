@@ -26,7 +26,7 @@ namespace Cube.Xui.Converters
     /// Inverse
     ///
     /// <summary>
-    /// 真偽値を反転させるためのクラスです。
+    /// Provides functionality to inverse a boolean value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,7 +39,7 @@ namespace Cube.Xui.Converters
         /// Inverse
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Inverse class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -50,30 +50,31 @@ namespace Cube.Xui.Converters
 
     /* --------------------------------------------------------------------- */
     ///
-    /// BooleanToGeneric
+    /// BooleanToValue(T)
     ///
     /// <summary>
-    /// 真偽値を特定の型に変換させるためのクラスです。
+    /// Provides functionality to convert a boolean to the value of T.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BooleanToGeneric<T> : SimplexConverter
+    public class BooleanToValue<T> : SimplexConverter
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BooleanToGeneric
+        /// BooleanToValue
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToValue class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する値</param>
-        /// <param name="negative">false に対応する値</param>
+        /// <param name="positive">Value for ture.</param>
+        /// <param name="negative">Value for false.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToGeneric(T positive, T negative) :
+        public BooleanToValue(T positive, T negative) :
             this(positive, negative, (e, _, __, ___) => (bool)e) { }
 
         /* ----------------------------------------------------------------- */
@@ -81,15 +82,18 @@ namespace Cube.Xui.Converters
         /// BooleanToGeneric
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToValue class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する値</param>
-        /// <param name="negative">false に対応する値</param>
-        /// <param name="func">真偽判定用オブジェクト</param>
+        /// <param name="positive">Value for ture.</param>
+        /// <param name="negative">Value for false.</param>
+        /// <param name="func">
+        /// Function object that determines whether the source is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToGeneric(T positive, T negative, Func<object, bool> func) :
+        public BooleanToValue(T positive, T negative, Func<object, bool> func) :
             this(positive, negative, (e, _, __, ___) => func(e)) { }
 
         /* ----------------------------------------------------------------- */
@@ -97,15 +101,18 @@ namespace Cube.Xui.Converters
         /// BooleanToGeneric
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToValue class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する値</param>
-        /// <param name="negative">false に対応する値</param>
-        /// <param name="func">真偽判定用オブジェクト</param>
+        /// <param name="positive">Value for ture.</param>
+        /// <param name="negative">Value for false.</param>
+        /// <param name="func">
+        /// Function object that determines whether the source is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToGeneric(T positive, T negative,
+        public BooleanToValue(T positive, T negative,
             Func<object, object, bool> func) :
             this(positive, negative, (e, _, p, __) => func(e, p)) { }
 
@@ -114,15 +121,18 @@ namespace Cube.Xui.Converters
         /// BooleanToGeneric
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToValue class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する値</param>
-        /// <param name="negative">false に対応する値</param>
-        /// <param name="func">真偽判定用オブジェクト</param>
+        /// <param name="positive">Value for ture.</param>
+        /// <param name="negative">Value for false.</param>
+        /// <param name="func">
+        /// Function object that determines whether the source is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToGeneric(T positive, T negative,
+        public BooleanToValue(T positive, T negative,
             Func<object, Type, object, CultureInfo, bool> func) :
             base ((e, t, p, c) => func(e, t, p, c) ? positive : negative) { }
 
@@ -134,11 +144,11 @@ namespace Cube.Xui.Converters
     /// BooleanToInteger
     ///
     /// <summary>
-    /// 真偽値を整数値に変換させるためのクラスです。
+    /// Provides functionality to convert a boolean to the integer value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BooleanToInteger : BooleanToGeneric<int>
+    public class BooleanToInteger : BooleanToValue<int>
     {
         #region Constructors
 
@@ -147,7 +157,7 @@ namespace Cube.Xui.Converters
         /// BooleanToInteger
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToInteger class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -158,7 +168,8 @@ namespace Cube.Xui.Converters
         /// BooleanToInteger
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToInteger class
+        /// with the specified parameters.
         /// </summary>
         ///
         /// <param name="positive">true に対応する整数値</param>
@@ -196,7 +207,7 @@ namespace Cube.Xui.Converters
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BooleanToVisibility : BooleanToGeneric<Visibility>
+    public class BooleanToVisibility : BooleanToValue<Visibility>
     {
         #region Constructors
 

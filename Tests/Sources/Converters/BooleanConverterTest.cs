@@ -82,20 +82,20 @@ namespace Cube.Xui.Tests
 
         #endregion
 
-        #region BooleanToGeneric
+        #region BooleanToValue
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BooleanToGeneric
+        /// BooleanToValue
         ///
         /// <summary>
-        /// BooleanToGeneric(T).Convert のテストを実行します。
+        /// BooleanToValue(T).Convert のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("src", "compared", ExpectedResult = "src")]
-        public string BooleanToGeneric(string src, string compared) =>
-            Convert<string>(new BooleanToGeneric<string>(src, compared,
+        public string BooleanToValue(string src, string compared) =>
+            Convert<string>(new BooleanToValue<string>(src, compared,
                 (x, y) => string.CompareOrdinal((string)x, compared) > 0),
                 src
             );
