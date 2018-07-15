@@ -132,6 +132,24 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// AddOrSet
+        ///
+        /// <summary>
+        /// Tests to add or set values to a dictionary collection.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void AddOrSet()
+        {
+            var src = new Dictionary<string, int>();
+            var key = nameof(AddOrSet);
+            for (var i = 0; i < 10; ++i) src.AddOrSet(key, i);
+            Assert.That(src[key], Is.EqualTo(9));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ToObservable
         ///
         /// <summary>

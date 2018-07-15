@@ -266,6 +266,44 @@ namespace Cube.Collections
         public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
             src ?? Enumerable.Empty<T>();
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AddOrSet(T, U)
+        ///
+        /// <summary>
+        /// Adds or sets the specified key-value pair.
+        /// </summary>
+        ///
+        /// <param name="src">Dictionary collection.</param>
+        /// <param name="key">Key element to be set.</param>
+        /// <param name="value">Value element to be set.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void AddOrSet<T, U>(this IDictionary<T, U> src, T key, U value) =>
+            src.AddOrSet(key, value, (x, y) => y);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AddOrSet(T, U)
+        ///
+        /// <summary>
+        /// Adds or sets the specified key-value pair.
+        /// </summary>
+        ///
+        /// <param name="src">Dictionary collection.</param>
+        /// <param name="key">Key element to be set.</param>
+        /// <param name="value">Value element to be set.</param>
+        /// <param name="selector">
+        /// Function object to select which value is set.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void AddOrSet<T, U>(this IDictionary<T, U> src, T key, U value, Func<U, U, U> selector)
+        {
+            if (src.TryGetValue(key, out var current)) src[key] = selector(current, value);
+            else src.Add(key, value);
+        }
+
         #endregion
 
         #region Implementations
