@@ -38,7 +38,7 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DoWait
+        /// WaitFor
         ///
         /// <summary>
         /// Tests to wait for the specified predicate to be true.
@@ -46,16 +46,16 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void DoWait()
+        public void WaitFor()
         {
             var count = 0;
             Task.Run(() => { for (var i = 0; i < 10; ++i) ++count; });
-            Assert.That(Wait.Do(() => count == 10), Is.True);
+            Assert.That(Wait.For(() => count == 10), Is.True);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DoWait_Timeout
+        /// WaitFor_Timeout
         ///
         /// <summary>
         /// Tests for timeout.
@@ -63,16 +63,16 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void DoWait_Timeout()
+        public void WaitFor_Timeout()
         {
             var count = 0;
             Task.Run(() => { for (var i = 0; i < 5; ++i) ++count; });
-            Assert.That(Wait.Do(() => count == 10, 1000), Is.False);
+            Assert.That(Wait.For(() => count == 10, 1000), Is.False);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DoWait_Cancel
+        /// WaitFor_Cancel
         ///
         /// <summary>
         /// Tests for cancellation.
@@ -80,7 +80,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void DoWait_Cancel()
+        public void WaitFor_Cancel()
         {
             var count = 0;
             var cts   = new CancellationTokenSource();
@@ -89,12 +89,12 @@ namespace Cube.FileSystem.Tests
                 for (var i = 0; i < 100; ++i) ++count;
                 cts.Cancel();
             });
-            Assert.That(Wait.Do(cts.Token), Is.True);
+            Assert.That(Wait.For(cts.Token), Is.True);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DoWait_Cancel_Timeout
+        /// WaitFor_Cancel_Timeout
         ///
         /// <summary>
         /// Tests for timeout.
@@ -102,12 +102,12 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void DoWait_Cancel_Timeout()
+        public void WaitFor_Cancel_Timeout()
         {
             var count = 0;
             var cts = new CancellationTokenSource();
             Task.Run(() => { for (var i = 0; i < 100; ++i) ++count; });
-            Assert.That(Wait.Do(cts.Token, 1000), Is.False);
+            Assert.That(Wait.For(cts.Token, 1000), Is.False);
         }
 
         #endregion
