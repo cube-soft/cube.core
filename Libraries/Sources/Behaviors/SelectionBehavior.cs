@@ -19,32 +19,8 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Cube.Xui
+namespace Cube.Xui.Behaviors
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IListItem
-    ///
-    /// <summary>
-    /// Provides interface to bind to either the ListBoxItem or the
-    /// ListViewItem.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IListItem
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsSelected
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating wheter the item is selected.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        bool IsSelected { get; set; }
-    }
-
     /* --------------------------------------------------------------------- */
     ///
     /// SelectionBehavior
