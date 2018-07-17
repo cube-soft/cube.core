@@ -1,0 +1,273 @@
+﻿/* ------------------------------------------------------------------------- */
+//
+// Copyright (c) 2010 CubeSoft, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+/* ------------------------------------------------------------------------- */
+using Cube.Tasks;
+using System;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+
+namespace Cube.Collections
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CacheCollection(TKey, TValue)
+    ///
+    /// <summary>
+    /// Provides a cache manager of TValue objects.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class CacheCollection<TKey, TValue>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CacheCollection
+        ///
+        /// <summary>
+        /// Initializes a new instance of the CacheCollection class with
+        /// the specified creating action.
+        /// </summary>
+        ///
+        /// <param name="creator">Action that creates an item.</param>
+        ///
+        /// <remarks>
+        /// The creator is executed as an asynchronous operation.
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public CacheCollection(Func<TKey, TValue> creator) : this(creator, null) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CacheCollection
+        ///
+        /// <summary>
+        /// Initializes a new instance of the CacheCollection class with
+        /// the specified parameters.
+        /// </summary>
+        ///
+        /// <param name="creator">Action that creates an item.</param>
+        /// <param name="disposer">
+        /// Action that executes when either the Remove or Clear method
+        /// is called.
+        /// </param>
+        ///
+        /// <remarks>
+        /// The creator is executed as an asynchronous operation.
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public CacheCollection(Func<TKey, TValue> creator, Action<TKey, TValue> disposer)
+        {
+            _creator  = creator;
+            _disposer = disposer;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Count
+        ///
+        /// <summary>
+        /// Gets the number of created items.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int Count => _created.Count;
+
+        #endregion
+
+        #region Events
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Created
+        ///
+        /// <summary>
+        /// Occurs when the creating request is complete.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event KeyValueEventHandler<TKey, TValue> Created;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnCreated
+        ///
+        /// <summary>
+        /// Raises the Created event with the provided arguments.
+        /// </summary>
+        ///
+        /// <param name="e">Arguments of the event being raised.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnCreated(KeyValueEventArgs<TKey, TValue> e) =>
+            Created?.Invoke(this, e);
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetOrCreate
+        ///
+        /// <summary>
+        /// Gets the item associated with the specified TKey object, or
+        /// creates it as an asynchronous operation.
+        /// </summary>
+        ///
+        /// <param name="src">Key value.</param>
+        ///
+        /// <returns>
+        /// default value of the type if the item is under creating.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TValue GetOrCreate(TKey src)
+        {
+            if (_created.TryGetValue(src, out var dest)) return dest;
+            Task.Run(() => Create(src)).Forget();
+            return default(TValue);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryGetValue
+        ///
+        /// <summary>
+        /// Attempts to get the item associated with the specified key
+        /// from the inner cache collection.
+        /// </summary>
+        ///
+        /// <param name="src">Key value.</param>
+        /// <param name="dest">
+        /// When this method returns, contains the object from the
+        /// inner collection that has the specified key, or the
+        /// default value of the type if the operation failed.
+        /// </param>
+        ///
+        /// <returns>
+        /// true if the key was found in the inner collection;
+        /// otherwise, false.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool TryGetValue(TKey src, out TValue dest) =>
+            _created.TryGetValue(src, out dest);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Contains
+        ///
+        /// <summary>
+        /// Gets a value that determines the item associated with the
+        /// specified key exists in the inner cache collection.
+        /// </summary>
+        ///
+        /// <param name="src">Key value.</param>
+        ///
+        /// <returns>
+        /// default(TValue) if the item is under creating.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Contains(TKey src) => _created.ContainsKey(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Remove
+        ///
+        /// <summary>
+        /// Removes the item associated with the specified key.
+        /// </summary>
+        ///
+        /// <param name="src">Key value.</param>
+        ///
+        /// <returns>
+        /// true if the item was removed successfully; otherwise, false.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Remove(TKey src)
+        {
+            var result = _created.TryRemove(src, out var dest);
+            if (result) _disposer?.Invoke(src, dest);
+            _creating.TryRemove(src, out var _);
+            return result;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Clear
+        ///
+        /// <summary>
+        /// Removes all of the created items.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Clear()
+        {
+            if (_disposer != null)
+            {
+                foreach (var kv in _created) _disposer(kv.Key, kv.Value);
+            }
+            _created.Clear();
+            _creating.Clear();
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates the item associated with the specified key.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Create(TKey src)
+        {
+            if (_created.ContainsKey(src) || !_creating.TryAdd(src, 0)) return;
+
+            try
+            {
+                var dest = _creator(src);
+                _created.TryAdd(src, dest);
+                OnCreated(KeyValueEventArgs.Create(src, dest));
+            }
+            finally { _creating.TryRemove(src, out var _); }
+        }
+
+        #endregion
+
+        #region Fields
+        private readonly Func<TKey, TValue> _creator;
+        private readonly Action<TKey, TValue> _disposer;
+        private readonly ConcurrentDictionary<TKey, TValue> _created = new ConcurrentDictionary<TKey, TValue>();
+        private readonly ConcurrentDictionary<TKey, byte> _creating = new ConcurrentDictionary<TKey, byte>();
+        #endregion
+    }
+}
