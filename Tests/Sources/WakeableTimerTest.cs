@@ -144,16 +144,11 @@ namespace Cube.Tests
             using (var timer = new WakeableTimer())
             {
                 timer.Interval = TimeSpan.FromMilliseconds(10);
-                timer.Subscribe(() =>
-                {
-                    ++count;
-                    if (count >= 2) timer.Stop();
-                });
+                timer.Subscribe(() => ++count);
                 timer.Start();
                 Task.Delay(100).Wait();
-                Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
             }
-            Assert.That(count, Is.EqualTo(2));
+            Assert.That(count, Is.AtMost(12));
         }
 
         /* ----------------------------------------------------------------- */
