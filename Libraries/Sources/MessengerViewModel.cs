@@ -17,11 +17,13 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
 using Cube.Log;
+using Cube.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Cube.Xui
 {
@@ -215,6 +217,18 @@ namespace Cube.Xui
                 Result = true,
             });
         }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Async
+        ///
+        /// <summary>
+        /// Executes the specified action as an asynchronous operation and
+        /// returns immeidately.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Async(Action action) => Task.Run(action).Forget();
 
         #endregion
 
