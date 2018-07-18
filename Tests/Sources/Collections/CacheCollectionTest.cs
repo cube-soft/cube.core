@@ -41,56 +41,64 @@ namespace Cube.Tests
         /// GetOrCreate
         ///
         /// <summary>
-        /// Tests the GetOrCreate method of the CacheCollection class.
+        /// Tests the GetOrCreate methods of the CacheCollection class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
         [Test]
         public void GetOrCreate()
         {
-            var count = 0;
-            var key   = 10;
-            var src   = new CacheCollection<int, int>(n => Sigma(n));
+            var cnt = 0;
+            var key = 10;
+            var src = new CacheCollection<int, int>(n => Sigma(n));
 
-            src.Created += (s, e) => ++count;
+            src.Created += (s, e) => ++cnt;
             Parallel.For(0, 10, _ => src.GetOrCreate(key));
             Task.Delay(200).Wait();
 
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(cnt, Is.EqualTo(1));
+            Assert.That(src.Count, Is.EqualTo(1));
             Assert.That(src.TryGetValue(key, out var _), Is.True, nameof(src.TryGetValue));
             Assert.That(src.TryGetValue(999, out var _), Is.False, nameof(src.TryGetValue));
             Assert.That(src.Contains(key), Is.True, nameof(src.Contains));
             Assert.That(src.GetOrCreate(key), Is.EqualTo(55), nameof(src.GetOrCreate));
+
+            src.Remove(key);
+            src.Clear();
+            Assert.That(src.Count, Is.EqualTo(0));
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// RemoveAndClear
+        /// RemoveAndClear_Disposer
         ///
         /// <summary>
         /// Tests the Remove and Clear methods of the CacheCollection class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Test]
-        public void RemoveAndClear()
+        [TestCase(true,  ExpectedResult = 10)]
+        [TestCase(false, ExpectedResult =  0)]
+        public int RemoveAndClear(bool disposer)
         {
-            var count = 0;
-            var src   = new CacheCollection<int, int>(n => Sigma(n), (k, v) => ++count);
+            var cnt = 0;
+            var src = disposer ?
+                      new CacheCollection<int, int>(n => Sigma(n), (k, v) => ++cnt) :
+                      new CacheCollection<int, int>(n => Sigma(n));
 
             Parallel.For(0, 10, i => src.GetOrCreate(i));
             Assert.That(Wait(() => src.Count == 10), "Timeout");
 
             foreach (var kv in src) Assert.That(kv.Value, Is.EqualTo(Sigma(kv.Key)));
 
-            Assert.That(src.Remove(0), Is.True);
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(src.Remove(0),  Is.True);
             Assert.That(src.Remove(20), Is.False);
             Assert.That(src.Count, Is.EqualTo(9));
 
             src.Clear();
-            Assert.That(count, Is.EqualTo(10));
             Assert.That(src.Count, Is.EqualTo(0));
+
+            return cnt;
         }
 
         #endregion

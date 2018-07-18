@@ -77,7 +77,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public CacheCollection(Func<TKey, TValue> creator, Action<TKey, TValue> disposer)
         {
-            _creator  = creator;
+            _creator  = creator ?? throw new ArgumentException(nameof(creator));
             _disposer = disposer;
         }
 
@@ -212,10 +212,10 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public bool Remove(TKey src)
         {
-            var result = _created.TryRemove(src, out var dest);
-            if (result) _disposer?.Invoke(src, dest);
             _creating.TryRemove(src, out var _);
-            return result;
+            var dest = _created.TryRemove(src, out var obj);
+            if (dest) _disposer?.Invoke(src, obj);
+            return dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -229,12 +229,12 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public void Clear()
         {
+            _creating.Clear();
             if (_disposer != null)
             {
                 foreach (var kv in _created) _disposer(kv.Key, kv.Value);
             }
             _created.Clear();
-            _creating.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -289,8 +289,11 @@ namespace Cube.Collections
             try
             {
                 var dest = _creator(src);
-                _created.TryAdd(src, dest);
-                OnCreated(KeyValueEventArgs.Create(src, dest));
+                if (_creating.ContainsKey(src) && _created.TryAdd(src, dest))
+                {
+                    OnCreated(KeyValueEventArgs.Create(src, dest));
+                }
+                else _disposer?.Invoke(src, dest);
             }
             finally { _creating.TryRemove(src, out var _); }
         }
