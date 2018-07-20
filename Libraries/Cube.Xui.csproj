@@ -93,6 +93,7 @@
     <Compile Include="Sources\BindableCommandGeneric.cs" />
     <Compile Include="Sources\BindableExtension.cs" />
     <Compile Include="Sources\BindableFunc.cs" />
+    <Compile Include="Sources\CommandExtension.cs" />
     <Compile Include="Sources\IListItem.cs" />
     <Compile Include="Sources\LoggerExtension.cs" />
     <Compile Include="Sources\MessengerViewModel.cs" />
