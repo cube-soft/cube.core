@@ -60,7 +60,9 @@
     <Compile Include="Sources\Collections\Differences\Result.cs" />
     <Compile Include="Sources\Collections\ArgumentCollection.cs" />
     <Compile Include="Sources\Collections\CacheCollection.cs" />
-    <Compile Include="Sources\Collections\CollectionExtension.cs" />
+    <Compile Include="Sources\Collections\EnumerableExtension.cs" />
+    <Compile Include="Sources\Collections\EnumerableDiff.cs" />
+    <Compile Include="Sources\Collections\EnumerableIndex.cs" />
     <Compile Include="Sources\Collections\GenericComparer.cs" />
     <Compile Include="Sources\Collections\GenericEqualityComparer.cs" />
     <Compile Include="Sources\Collections\KeyValuePair.cs" />

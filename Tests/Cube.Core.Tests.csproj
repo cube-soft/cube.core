@@ -53,7 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Collections\ArgumentCollectionTest.cs" />
     <Compile Include="Sources\Collections\CacheCollectionTest.cs" />
-    <Compile Include="Sources\Collections\CollectionExtensionTest.cs" />
+    <Compile Include="Sources\Collections\EnumerableTest.cs" />
     <Compile Include="Sources\Collections\DiffTest.cs" />
     <Compile Include="Sources\Collections\GenericComparerTest.cs" />
     <Compile Include="Sources\Collections\OrderedDictionaryTest.cs" />
