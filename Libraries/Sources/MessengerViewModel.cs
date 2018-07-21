@@ -281,7 +281,7 @@ namespace Cube.Xui
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected abstract void Dispose(bool disposing);
+        protected virtual void Dispose(bool disposing) { }
 
         #endregion
 
