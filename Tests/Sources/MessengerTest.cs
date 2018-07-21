@@ -42,14 +42,13 @@ namespace Cube.Xui.Tests
         /// Send_CloseMessage
         ///
         /// <summary>
-        /// CloseMessage を送信するテストを実行します。。
+        /// Tests to send a CloseMessage message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send_CloseMessage()
+        public void Send_CloseMessage() => Create(src =>
         {
-            var src   = new TestViewModel();
             var count = 0;
 
             Messenger.Default.Register<CloseMessage>(this, e =>
@@ -64,21 +63,20 @@ namespace Cube.Xui.Tests
             Messenger.Default.Unregister<CloseMessage>(this);
             src.Test<CloseMessage>();
             Assert.That(count, Is.EqualTo(1));
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Send_ErrorMessage
         ///
         /// <summary>
-        /// エラーメッセージを送信するテストを実行します。。
+        /// Tests to send an error message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send_ErrorMessage()
+        public void Send_ErrorMessage() => Create(src =>
         {
-            var src   = new TestViewModel();
             var count = 0;
 
             Messenger.Default.Register<DialogMessage>(this, e =>
@@ -97,26 +95,25 @@ namespace Cube.Xui.Tests
             Messenger.Default.Unregister<DialogMessage>(this);
             src.Test(() => throw new ArgumentException("Test 2"));
             Assert.That(count, Is.EqualTo(1));
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Send_DialogMessage
         ///
         /// <summary>
-        /// DialogMessage を送信するテストを実行します。
+        /// Tests to send a DialogMessage message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send_DialogMessage()
+        public void Send_DialogMessage() => Create(src =>
         {
             var asm  = Assembly.GetExecutingAssembly();
-            var src  = new Messenger();
             var dest = default(DialogMessage);
 
-            src.Register<DialogMessage>(this, e => dest = e);
-            src.Send(new DialogMessage(nameof(Send_DialogMessage), asm));
+            src.Messenger.Register<DialogMessage>(this, e => dest = e);
+            src.Messenger.Send(new DialogMessage(nameof(Send_DialogMessage), asm));
 
             Assert.That(dest,          Is.Not.Null);
             Assert.That(dest.Content,  Is.EqualTo(nameof(Send_DialogMessage)));
@@ -125,25 +122,24 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Button,   Is.EqualTo(MessageBoxButton.OK));
             Assert.That(dest.Image,    Is.EqualTo(MessageBoxImage.Error));
             Assert.That(dest.Result,   Is.True);
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Send_OpenFileDialogMessage
         ///
         /// <summary>
-        /// OpenFileDialogMessage を送信するテストを実行します。
+        /// Tests to send an OpenFileDialogMessage message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send_OpenFileDialogMessage()
+        public void Send_OpenFileDialogMessage() => Create(src =>
         {
-            var src  = new Messenger();
             var dest = default(OpenFileMessage);
 
-            src.Register<OpenFileMessage>(this, e => e.Callback(e));
-            src.Send(new OpenFileMessage(e => dest = e));
+            src.Messenger.Register<OpenFileMessage>(this, e => e.Callback(e));
+            src.Messenger.Send(new OpenFileMessage(e => dest = e));
 
             Assert.That(dest,                  Is.Not.Null);
             Assert.That(dest.Callback,         Is.Not.Null);
@@ -155,25 +151,24 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Result,           Is.False, nameof(dest.Result));
             Assert.That(dest.Title,            Is.Null, nameof(dest.Title));
             Assert.That(dest.Filter,           Does.StartWith("All Files"));
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Send_SaveFileDialogMessage
         ///
         /// <summary>
-        /// SaveFileDialogMessage を送信するテストを実行します。
+        /// Tets to send a SaveFileDialogMessage message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send_SaveFileDialogMessage()
+        public void Send_SaveFileDialogMessage() => Create(src =>
         {
-            var src  = new Messenger();
             var dest = default(SaveFileMessage);
 
-            src.Register<SaveFileMessage>(this, e => e.Callback(e));
-            src.Send(new SaveFileMessage(e => dest = e));
+            src.Messenger.Register<SaveFileMessage>(this, e => e.Callback(e));
+            src.Messenger.Send(new SaveFileMessage(e => dest = e));
 
             Assert.That(dest,                  Is.Not.Null);
             Assert.That(dest.Callback,         Is.Not.Null);
@@ -184,25 +179,24 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Result,           Is.False, nameof(dest.Result));
             Assert.That(dest.Title,            Is.Null, nameof(dest.Title));
             Assert.That(dest.Filter,           Does.StartWith("All Files"));
-        }
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// Send_DirectoryDialogMessage
         ///
         /// <summary>
-        /// DirectoryDialogMessage を送信するテストを実行します。
+        /// Tests to send a DirectoryDialogMessage message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send_DirectoryDialogMessage()
+        public void Send_DirectoryDialogMessage() => Create(src =>
         {
-            var src = new Messenger();
             var dest = default(OpenDirectoryMessage);
 
-            src.Register<OpenDirectoryMessage>(this, e => e.Callback(e));
-            src.Send(new OpenDirectoryMessage(e => dest = e));
+            src.Messenger.Register<OpenDirectoryMessage>(this, e => e.Callback(e));
+            src.Messenger.Send(new OpenDirectoryMessage(e => dest = e));
 
             Assert.That(dest,           Is.Not.Null);
             Assert.That(dest.Callback,  Is.Not.Null);
@@ -210,7 +204,7 @@ namespace Cube.Xui.Tests
             Assert.That(dest.NewButton, Is.True, nameof(dest.NewButton));
             Assert.That(dest.Result,    Is.False, nameof(dest.Result));
             Assert.That(dest.Title,     Is.Null, nameof(dest.Title));
-        }
+        });
 
         #endregion
 
@@ -218,10 +212,25 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the TestVewModel class and execute
+        /// the specified action.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Create(Action<TestViewModel> action)
+        {
+            using (var vm = new TestViewModel()) action(vm);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// TestViewModel
         ///
         /// <summary>
-        /// テスト用の ViewModel クラスです。
+        /// ViewModel for the tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -229,6 +238,7 @@ namespace Cube.Xui.Tests
         {
             public void Test<T>() where T : new() => Send<T>();
             public void Test(Action action) => Send(action);
+            protected override void Dispose(bool disposing) { }
         }
 
         #endregion

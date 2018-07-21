@@ -32,7 +32,7 @@ namespace Cube.Xui
     /// MessengerViewModel
     ///
     /// <summary>
-    /// Messenger プロパティを保持する ViewModel です。
+    /// Provides a Messenger that can be accessible from the other classes.
     /// </summary>
     ///
     /// <remarks>
@@ -42,7 +42,7 @@ namespace Cube.Xui
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessengerViewModel : ViewModelBase
+    public abstract class MessengerViewModel : ViewModelBase, IDisposable
     {
         #region Constructors
 
@@ -51,7 +51,7 @@ namespace Cube.Xui
         /// MessengerViewModel
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the MessengerViewModel class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -62,13 +62,17 @@ namespace Cube.Xui
         /// MessengerViewModel
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the MessengerViewModel class
+        /// with the specified Messenger.
         /// </summary>
         ///
         /// <param name="messenger">メッセージ伝搬用オブジェクト</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected MessengerViewModel(IMessenger messenger) : base(messenger) { }
+        protected MessengerViewModel(IMessenger messenger) : base(messenger)
+        {
+            _dispose = new OnceAction<bool>(Dispose);
+        }
 
         #endregion
 
@@ -79,7 +83,7 @@ namespace Cube.Xui
         /// Messenger
         ///
         /// <summary>
-        /// Messenger オブジェクトを取得します。
+        /// Gets the Messenger instance.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -89,15 +93,17 @@ namespace Cube.Xui
 
         #region Methods
 
+        #region Send
+
         /* --------------------------------------------------------------------- */
         ///
         /// Send(T)
         ///
         /// <summary>
-        /// 任意のメッセージを送信します。
+        /// Sends a message through the Messenger.
         /// </summary>
         ///
-        /// <param name="message">メッセージ</param>
+        /// <param name="message">Message.</param>
         ///
         /* --------------------------------------------------------------------- */
         protected void Send<T>(T message) => Messenger.Send(message);
@@ -107,7 +113,7 @@ namespace Cube.Xui
         /// Send(T)
         ///
         /// <summary>
-        /// 空のメッセージを送信します。
+        /// Sends an empty message of the specified type through the Messenger.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -118,10 +124,10 @@ namespace Cube.Xui
         /// Send
         ///
         /// <summary>
-        /// 例外発生時にエラーメッセージを表示します。
+        /// Sends a message if an exception occurs.
         /// </summary>
         ///
-        /// <param name="action">実行内容</param>
+        /// <param name="action">Action.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected void Send(Action action) => Send(action, string.Empty);
@@ -131,11 +137,11 @@ namespace Cube.Xui
         /// Send
         ///
         /// <summary>
-        /// 例外発生時にエラーメッセージを表示します。
+        /// Sends a message if an exception occurs.
         /// </summary>
         ///
-        /// <param name="action">実行内容</param>
-        /// <param name="message">エラーメッセージ</param>
+        /// <param name="action">Action.</param>
+        /// <param name="message">Error message.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected void Send(Action action, string message) => Send(action, message, GetTitle());
@@ -145,12 +151,12 @@ namespace Cube.Xui
         /// Send
         ///
         /// <summary>
-        /// 例外発生時にエラーメッセージを表示します。
+        /// Sends a message if an exception occurs.
         /// </summary>
         ///
-        /// <param name="action">実行内容</param>
-        /// <param name="message">エラーメッセージ</param>
-        /// <param name="title">タイトル</param>
+        /// <param name="action">Action.</param>
+        /// <param name="message">Error message.</param>
+        /// <param name="title">Title for the error dialog.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected void Send(Action action, string message, string title)
@@ -164,10 +170,10 @@ namespace Cube.Xui
         /// Send
         ///
         /// <summary>
-        /// エラーメッセージを送信します。
+        /// Sends an error message.
         /// </summary>
         ///
-        /// <param name="err">例外オブジェクト</param>
+        /// <param name="err">Exception.</param>
         ///
         /* --------------------------------------------------------------------- */
         protected void Send(Exception err) => Send(err, string.Empty);
@@ -177,11 +183,11 @@ namespace Cube.Xui
         /// Send
         ///
         /// <summary>
-        /// エラーメッセージを送信します。
+        /// Sends an error message.
         /// </summary>
         ///
-        /// <param name="err">例外オブジェクト</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="err">Exception.</param>
+        /// <param name="message">Error message.</param>
         ///
         /* --------------------------------------------------------------------- */
         protected void Send(Exception err, string message) => Send(err, message, GetTitle());
@@ -191,12 +197,12 @@ namespace Cube.Xui
         /// Send
         ///
         /// <summary>
-        /// エラーメッセージを送信します。
+        /// Sends an error message.
         /// </summary>
         ///
-        /// <param name="err">例外オブジェクト</param>
-        /// <param name="message">エラーメッセージ</param>
-        /// <param name="title">タイトル</param>
+        /// <param name="err">Exception.</param>
+        /// <param name="message">Error message.</param>
+        /// <param name="title">Title for the error dialog.</param>
         ///
         /* --------------------------------------------------------------------- */
         protected void Send(Exception err, string message, string title)
@@ -232,6 +238,55 @@ namespace Cube.Xui
 
         #endregion
 
+        #region IDisposable
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~MessengerViewModel
+        ///
+        /// <summary>
+        /// Finalizes the MessengerViewModel.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~MessengerViewModel() { _dispose.Invoke(false); }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases all resources used by the MessengerViewModel.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            _dispose.Invoke(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the MessengerViewModel
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected abstract void Dispose(bool disposing);
+
+        #endregion
+
+        #endregion
+
         #region Implementations
 
         /* --------------------------------------------------------------------- */
@@ -239,7 +294,7 @@ namespace Cube.Xui
         /// GetTitle
         ///
         /// <summary>
-        /// タイトルを取得します。
+        /// Gets the assembly title.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -251,6 +306,10 @@ namespace Cube.Xui
             return asm.GetReader().Title;
         }
 
+        #endregion
+
+        #region Fields
+        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 }
