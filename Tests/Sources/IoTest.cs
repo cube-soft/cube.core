@@ -124,7 +124,7 @@ namespace Cube.FileSystem.Tests
         public void GetFiles(IO io)
         {
             Assert.That(io.GetFiles(Examples).Count(), Is.EqualTo(2));
-            Assert.That(io.GetFiles(GetExamplesWith("Sample.txt")), Is.Null);
+            Assert.That(io.GetFiles(GetExamplesWith("Sample.txt")).Count(), Is.EqualTo(0));
 
             var empty = GetResultsWith("Empty");
             io.CreateDirectory(empty);
@@ -146,7 +146,7 @@ namespace Cube.FileSystem.Tests
         public void GetDirectories(IO io)
         {
             Assert.That(io.GetDirectories(Examples).Count(), Is.EqualTo(1));
-            Assert.That(io.GetDirectories(GetExamplesWith("Sample.txt")), Is.Null);
+            Assert.That(io.GetDirectories(GetExamplesWith("Sample.txt")).Count(), Is.EqualTo(0));
 
             var empty = GetResultsWith("Empty");
             io.CreateDirectory(empty);

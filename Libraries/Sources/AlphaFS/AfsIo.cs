@@ -58,32 +58,28 @@ namespace Cube.FileSystem
         /// GetFilesCore
         ///
         /// <summary>
-        /// ディレクトリ下にあるファイルの一覧を取得します。
+        /// Returns the names of files (including their paths) that
+        /// match the specified search pattern in the specified directory,
+        /// using a value to determine whether to search subdirectories.
         /// </summary>
         ///
-        /// <param name="path">パス</param>
-        ///
-        /// <returns>ファイル一覧</returns>
-        ///
         /* ----------------------------------------------------------------- */
-        protected override string[] GetFilesCore(string path) =>
-            Directory.Exists(path) ? Directory.GetFiles(path) : null;
+        protected override string[] GetFilesCore(string path, string pattern, System.IO.SearchOption option) =>
+            Directory.Exists(path) ? Directory.GetFiles(path, pattern, option) : null;
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetDirectoriesCore
         ///
         /// <summary>
-        /// ディレクトリ下にあるディレクトリの一覧を取得します。
+        /// Returns the names of the subdirectories (including their paths)
+        /// that match the specified search pattern in the specified
+        /// directory, and optionally searches subdirectories.
         /// </summary>
         ///
-        /// <param name="path">パス</param>
-        ///
-        /// <returns>ディレクトリ一覧</returns>
-        ///
         /* ----------------------------------------------------------------- */
-        protected override string[] GetDirectoriesCore(string path) =>
-            Directory.Exists(path) ? Directory.GetDirectories(path) : null;
+        protected override string[] GetDirectoriesCore(string path, string pattern, System.IO.SearchOption option) =>
+            Directory.Exists(path) ? Directory.GetDirectories(path, pattern, option) : null;
 
         /* ----------------------------------------------------------------- */
         ///
