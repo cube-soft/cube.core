@@ -100,6 +100,8 @@ namespace Cube.Collections
 
         #region Events
 
+        #region Created
+
         /* ----------------------------------------------------------------- */
         ///
         /// Created
@@ -124,6 +126,37 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual void OnCreated(KeyValueEventArgs<TKey, TValue> e) =>
             Created?.Invoke(this, e);
+
+        #endregion
+
+        #region Failed
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Failed
+        ///
+        /// <summary>
+        /// Occurs when the creating request is failed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public event KeyValueEventHandler<TKey, Exception> Failed;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnFailed
+        ///
+        /// <summary>
+        /// Raises the Failed event with the provided arguments.
+        /// </summary>
+        ///
+        /// <param name="e">Arguments of the event being raised.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnFailed(KeyValueEventArgs<TKey, Exception> e) =>
+            Failed?.Invoke(this, e);
+
+        #endregion
 
         #endregion
 
@@ -295,6 +328,7 @@ namespace Cube.Collections
                 }
                 else _disposer?.Invoke(src, dest);
             }
+            catch (Exception err) { OnFailed(KeyValueEventArgs.Create(src, err)); }
             finally { _creating.TryRemove(src, out var _); }
         }
 

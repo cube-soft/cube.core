@@ -41,7 +41,7 @@ namespace Cube.Tests
         /// GetOrCreate
         ///
         /// <summary>
-        /// Tests the GetOrCreate methods of the CacheCollection class.
+        /// Tests the GetOrCreate method of the CacheCollection class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -65,6 +65,31 @@ namespace Cube.Tests
 
             src.Remove(key);
             src.Clear();
+            Assert.That(src.Count, Is.EqualTo(0));
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetOrCreate_Failed
+        ///
+        /// <summary>
+        /// Tests to confirm that the GetOrCreate method is failed.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        [Test]
+        public void GetOrCreate_Failed()
+        {
+            var src = new CacheCollection<int, int>(
+                n => throw new ArgumentException(nameof(GetOrCreate_Failed))
+            );
+
+            var failed = 0;
+            src.Failed += (s, e) => ++failed;
+            Parallel.For(0, 10, i => src.GetOrCreate(i));
+            Task.Delay(200).Wait();
+
+            Assert.That(failed, Is.EqualTo(10));
             Assert.That(src.Count, Is.EqualTo(0));
         }
 
