@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.FileSystem.TestService;
 using GalaSoft.MvvmLight.Messaging;
 using NUnit.Framework;
 using System;
@@ -90,7 +91,7 @@ namespace Cube.Xui.Tests
             });
 
             src.Test(() => throw new ArgumentException("Test"));
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(Wait.For(() => count == 1), "Timeout");
 
             Messenger.Default.Unregister<DialogMessage>(this);
             src.Test(() => throw new ArgumentException("Test 2"));

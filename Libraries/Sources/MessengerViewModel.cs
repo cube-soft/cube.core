@@ -140,52 +140,6 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         protected void Send<T>() where T : new() => Send(new T());
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends a message if an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="action">Action.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Send(Action action) => Send(action, string.Empty);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends a message if an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="action">Action.</param>
-        /// <param name="message">Error message.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Send(Action action, string message) => Send(action, message, GetTitle());
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends a message if an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="action">Action.</param>
-        /// <param name="message">Error message.</param>
-        /// <param name="title">Title for the error dialog.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Send(Action action, string message, string title)
-        {
-            try { action(); }
-            catch (Exception err) { Send(err, message, title); }
-        }
-
         /* --------------------------------------------------------------------- */
         ///
         /// Send
@@ -245,59 +199,57 @@ namespace Cube.Xui
             });
         }
 
-        #endregion
-
-        #region SendAsync
-
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// SendAsync
+        /// Send
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately. When an error occurs, a DialogMessage
-        /// object is sent.
+        /// returns immeidately. When an error occurs, the DialogMessage
+        /// object for the error is sent.
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
         ///
-        /* --------------------------------------------------------------------- */
-        protected void SendAsync(Action action) => SendAsync(action, string.Empty);
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action) => Send(action, string.Empty);
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// SendAsync
+        /// Send
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately. When an error occurs, a DialogMessage
-        /// object is sent.
+        /// returns immeidately. When an error occurs, the DialogMessage
+        /// object for the error is sent.
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
-        /// <param name="message">Message when an error occurs.</param>
+        /// <param name="message">Error message.</param>
         ///
-        /* --------------------------------------------------------------------- */
-        protected void SendAsync(Action action, string message) =>
-            SendAsync(action, message, GetTitle());
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action, string message) => Send(action, message, GetTitle());
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// SendAsync
+        /// Send
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately. When an error occurs, a DialogMessage
-        /// object is sent.
+        /// returns immeidately. When an error occurs, the DialogMessage
+        /// object for the error is sent.
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
-        /// <param name="message">Message when an error occurs.</param>
-        /// <param name="title">Title when an error occurs.</param>
+        /// <param name="message">Error message.</param>
+        /// <param name="title">Title for the error dialog.</param>
         ///
-        /* --------------------------------------------------------------------- */
-        protected void SendAsync(Action action, string message, string title) =>
-            Task.Run(() => Send(action, message, title)).Forget();
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action, string message, string title) => Task.Run(() =>
+        {
+            try { action(); }
+            catch (Exception err) { Send(err, message, title); }
+        }).Forget();
 
         #endregion
 
