@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
+using IWshRuntimeLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +31,7 @@ namespace Cube.FileSystem
     /// Shortcut
     ///
     /// <summary>
-    /// ショートカットの作成および削除を行うクラスです。
+    /// Provides functionality to get, create, or delete a shortcut.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -42,33 +44,26 @@ namespace Cube.FileSystem
         /// Shortcut
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Shortcut class.
         /// </summary>
         ///
-        /// <param name="file">ショートカットのパス</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public Shortcut(string file) : this(file, new IO()) { }
+        public Shortcut() : this(new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Shortcut
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Shortcut class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="file">ショートカットのパス</param>
-        /// <param name="io">ファイル操作用オブジェクト</param>
+        /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Shortcut(string file, IO io)
+        public Shortcut(IO io)
         {
-            if (string.IsNullOrEmpty(file)) throw new ArgumentException();
-
-            FileName = file.EndsWith(Extension) ?
-                       file.Substring(0, file.Length - Extension.Length) :
-                       file;
             _io = io;
         }
 
@@ -78,63 +73,41 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Extension
-        ///
-        /// <summary>
-        /// ショートカットを示す拡張子を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static readonly string Extension = ".lnk";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileName
-        ///
-        /// <summary>
-        /// ショートカットのパスを取得します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// このプロパティは末尾の .lnk は除外されます。拡張子を含めた
-        /// パスが必要な場合は FullName を使用して下さい。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string FileName { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// FullName
         ///
         /// <summary>
-        /// ショートカットの完全な名前を取得します。
+        /// Gets or sets the path of the shortcut.
         /// </summary>
         ///
-        /// <remarks>
-        /// FileName に .lnk が付加された値となります。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
-        public string FullName => $"{FileName}.lnk";
+        public string FullName
+        {
+            get => _path;
+            set
+            {
+                _path = !string.IsNullOrEmpty(value) && !value.EndsWith(".lnk") ?
+                        value + ".lnk" :
+                        value;
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Link
+        /// Target
         ///
         /// <summary>
-        /// リンク先のパスを取得または設定します。
+        /// Gets or sets the target path of the shrotcut.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Link { get; set; }
+        public string Target { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Arguments
         ///
         /// <summary>
-        /// リンク先のパスに付加される引数一覧を取得または設定します。
+        /// Gets or sets the arguments of the shortcut.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -145,7 +118,7 @@ namespace Cube.FileSystem
         /// IconLocation
         ///
         /// <summary>
-        /// 表示されるアイコンのパスを取得または設定します。
+        /// Gets or sets the icon location of the shortcut.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -160,12 +133,31 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists =>
-            !string.IsNullOrEmpty(FileName) && _io.Exists(FullName);
+        public bool Exists => !string.IsNullOrEmpty(FullName) && _io.Exists(FullName);
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resolve
+        ///
+        /// <summary>
+        /// Sets the Target property from the FullName property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Resolve()
+        {
+            if (!Exists) return;
+
+            var sh = new WshShell();
+            if (sh.CreateShortcut(FullName) is IWshShortcut dest)
+            {
+                Target = dest.TargetPath.ToString();
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -176,32 +168,21 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Create()
-        {
-            if (string.IsNullOrEmpty(Link) || !_io.Exists(Link)) return;
+        public void Create() => Invoke(sh => {
+            if (string.IsNullOrEmpty(Target) || !_io.Exists(Target)) return;
 
-            var guid = new Guid("00021401-0000-0000-C000-000000000046");
-            var type = Type.GetTypeFromCLSID(guid);
-            var sh   = Activator.CreateInstance(type) as IShellLink;
+            var args = Arguments != null && Arguments.Count() > 0 ?
+                       Arguments.Aggregate((s, o) => s + $" {o.Quote()}").Trim() :
+                       string.Empty;
 
-            Debug.Assert(sh != null);
+            sh.SetPath(Target);
+            sh.SetArguments(args);
+            sh.SetShowCmd(1); // SW_SHOWNORMAL
+            sh.SetIconLocation(GetIconFileName(), GetIconIndex());
 
-            try
-            {
-                var args = Arguments != null && Arguments.Count() > 0 ?
-                           Arguments.Aggregate((s, o) => s + $" \"{o}\"").Trim() :
-                           string.Empty;
-
-                sh.SetPath(Link);
-                sh.SetArguments(args);
-                sh.SetShowCmd(1); // SW_SHOWNORMAL
-                sh.SetIconLocation(GetIconFileName(), GetIconIndex());
-
-                Debug.Assert(sh is IPersistFile);
-                ((IPersistFile)sh).Save(FullName, true);
-            }
-            finally { Marshal.ReleaseComObject(sh); }
-        }
+            Debug.Assert(sh is IPersistFile);
+            ((IPersistFile)sh).Save(FullName, true);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -220,6 +201,27 @@ namespace Cube.FileSystem
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the specified action.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Invoke(Action<IShellLink> action)
+        {
+            var guid = new Guid("00021401-0000-0000-C000-000000000046");
+            var type = Type.GetTypeFromCLSID(guid);
+            var src  = Activator.CreateInstance(type) as IShellLink;
+
+            Debug.Assert(src != null);
+
+            try { action(src); }
+            finally { Marshal.ReleaseComObject(src); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -260,6 +262,7 @@ namespace Cube.FileSystem
 
         #region Fields
         private readonly IO _io;
+        private string _path;
         #endregion
     }
 }
