@@ -23,6 +23,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Cube.Xui
@@ -66,12 +67,28 @@ namespace Cube.Xui
         /// with the specified Messenger.
         /// </summary>
         ///
-        /// <param name="messenger">メッセージ伝搬用オブジェクト</param>
+        /// <param name="messenger">Messenger.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected MessengerViewModel(IMessenger messenger) : base(messenger)
+        protected MessengerViewModel(IMessenger messenger) : this(messenger, SynchronizationContext.Current) { }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// MessengerViewModel
+        ///
+        /// <summary>
+        /// Initializes a new instance of the MessengerViewModel class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="messenger">Messenger.</param>
+        /// <param name="context">Synchronization context.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected MessengerViewModel(IMessenger messenger, SynchronizationContext context) : base(messenger)
         {
             _dispose = new OnceAction<bool>(Dispose);
+            _context = context;
         }
 
         #endregion
@@ -106,7 +123,11 @@ namespace Cube.Xui
         /// <param name="message">Message.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>(T message) => Messenger.Send(message);
+        protected void Send<T>(T message)
+        {
+            if (_context != null) _context.Send(_ => Messenger.Send(message), null);
+            else Messenger.Send(message);
+        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -224,17 +245,59 @@ namespace Cube.Xui
             });
         }
 
+        #endregion
+
+        #region SendAsync
+
         /* --------------------------------------------------------------------- */
         ///
-        /// Async
+        /// SendAsync
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately.
+        /// returns immeidately. When an error occurs, a DialogMessage
+        /// object is sent.
         /// </summary>
         ///
+        /// <param name="action">Action as asynchronously.</param>
+        ///
         /* --------------------------------------------------------------------- */
-        protected void Async(Action action) => Task.Run(action).Forget();
+        protected void SendAsync(Action action) => SendAsync(action, string.Empty);
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SendAsync
+        ///
+        /// <summary>
+        /// Executes the specified action as an asynchronous operation and
+        /// returns immeidately. When an error occurs, a DialogMessage
+        /// object is sent.
+        /// </summary>
+        ///
+        /// <param name="action">Action as asynchronously.</param>
+        /// <param name="message">Message when an error occurs.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void SendAsync(Action action, string message) =>
+            SendAsync(action, message, GetTitle());
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// SendAsync
+        ///
+        /// <summary>
+        /// Executes the specified action as an asynchronous operation and
+        /// returns immeidately. When an error occurs, a DialogMessage
+        /// object is sent.
+        /// </summary>
+        ///
+        /// <param name="action">Action as asynchronously.</param>
+        /// <param name="message">Message when an error occurs.</param>
+        /// <param name="title">Title when an error occurs.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void SendAsync(Action action, string message, string title) =>
+            Task.Run(() => Send(action, message, title)).Forget();
 
         #endregion
 
@@ -310,6 +373,7 @@ namespace Cube.Xui
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
+        private readonly SynchronizationContext _context;
         #endregion
     }
 }
