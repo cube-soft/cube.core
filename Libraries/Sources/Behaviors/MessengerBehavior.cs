@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Windows;
 using System.Windows.Interactivity;
 
@@ -26,59 +26,12 @@ namespace Cube.Xui.Behaviors
     /// MessengerBehavior(T)
     ///
     /// <summary>
-    /// Messenger オブジェクトに登録するための Behavior クラスです。
+    /// Represents the behavior that communicates with a ViewModel object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessengerBehavior<T> : Behavior<DependencyObject>
+    public abstract class MessengerBehavior<T> : Behavior<FrameworkElement>
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Messenger
-        ///
-        /// <summary>
-        /// Messenger オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IMessenger Messenger
-        {
-            get => _messenger;
-            set
-            {
-                if (_messenger == value) return;
-                if (_messenger != null) _messenger.Unregister<T>(AssociatedObject);
-
-                _messenger = value;
-                if (_messenger == null) return;
-                _messenger.Register<T>(AssociatedObject, e => Invoke(e));
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MessengerProperty
-        ///
-        /// <summary>
-        /// Messenger を保持するための DependencyProperty です。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static readonly DependencyProperty MessengerProperty =
-            DependencyProperty.RegisterAttached(
-                nameof(Messenger),
-                typeof(IMessenger),
-                typeof(MessengerBehavior<T>),
-                new PropertyMetadata((s, e) =>
-                {
-                    if (s is MessengerBehavior<T> b) b.Messenger = e.NewValue as IMessenger;
-                })
-            );
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -86,10 +39,10 @@ namespace Cube.Xui.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Invokes the user action.
         /// </summary>
         ///
-        /// <param name="e">パラメータ</param>
+        /// <param name="e">Parameter object.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected abstract void Invoke(T e);
@@ -110,7 +63,10 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            Messenger.Register<T>(AssociatedObject, e => Invoke(e));
+            if (AssociatedObject.DataContext is IMessengerViewModel vm)
+            {
+                _registry = vm.Register<T>(AssociatedObject, e => Invoke(e));
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -125,14 +81,14 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            Messenger.Unregister<T>(AssociatedObject);
+            _registry?.Dispose();
             base.OnDetaching();
         }
 
         #endregion
 
         #region Fields
-        private IMessenger _messenger = GalaSoft.MvvmLight.Messaging.Messenger.Default;
+        private IDisposable _registry;
         #endregion
     }
 }

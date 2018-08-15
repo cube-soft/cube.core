@@ -30,20 +30,46 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
+    /// IMessengerViewModel
+    ///
+    /// <summary>
+    /// Represents interface for communicating with a view component
+    /// through a messenger object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IMessengerViewModel
+    {
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Register(T)
+        ///
+        /// <summary>
+        /// Registers a receiver for a type of message T.
+        /// </summary>
+        ///
+        /// <param name="receiver">Receiver for a message.</param>
+        /// <param name="action">
+        /// Action that will be executed when a message of type T is sent.
+        /// </param>
+        ///
+        /// <returns>Object to unregister.</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        IDisposable Register<T>(object receiver, Action<T> action);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// MessengerViewModel
     ///
     /// <summary>
-    /// Provides a Messenger that can be accessible from the other classes.
+    /// Provides functionality to communicate with the related view
+    /// component through the messenger object.
     /// </summary>
     ///
-    /// <remarks>
-    /// ViewModel の Messenger を Binding する事を前提とした Behavior を
-    /// 数多く定義しているため、Messenger オブジェクトを外部からアクセス
-    /// 可能にしています。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessengerViewModel : ViewModelBase, IDisposable
+    public abstract class MessengerViewModel : ViewModelBase, IMessengerViewModel, IDisposable
     {
         #region Constructors
 
@@ -56,7 +82,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected MessengerViewModel() : this(GalaSoft.MvvmLight.Messaging.Messenger.Default) { }
+        protected MessengerViewModel() : this(Messenger.Default) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -70,7 +96,10 @@ namespace Cube.Xui
         /// <param name="messenger">Messenger.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected MessengerViewModel(IMessenger messenger) : this(messenger, SynchronizationContext.Current) { }
+        protected MessengerViewModel(IMessenger messenger) : this(
+            messenger,
+            SynchronizationContext.Current ?? new SynchronizationContext()
+        ) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -88,27 +117,38 @@ namespace Cube.Xui
         protected MessengerViewModel(IMessenger messenger, SynchronizationContext context) : base(messenger)
         {
             _dispose = new OnceAction<bool>(Dispose);
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         #endregion
 
-        #region Properties
+        #region Methods
+
+        #region IMessengerViewModel
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Messenger
+        /// Register(T)
         ///
         /// <summary>
-        /// Gets the Messenger instance.
+        /// Registers a receiver for a type of message T.
         /// </summary>
         ///
+        /// <param name="receiver">Receiver for a message.</param>
+        /// <param name="action">
+        /// Action that will be executed when a message of type T is sent.
+        /// </param>
+        ///
+        /// <returns>Object to unregister.</returns>
+        ///
         /* --------------------------------------------------------------------- */
-        public IMessenger Messenger => MessengerInstance;
+        public IDisposable Register<T>(object receiver, Action<T> action)
+        {
+            MessengerInstance.Register(receiver, action);
+            return Disposable.Create(() => MessengerInstance.Unregister<T>(receiver));
+        }
 
         #endregion
-
-        #region Methods
 
         #region Send
 
@@ -117,28 +157,24 @@ namespace Cube.Xui
         /// Send(T)
         ///
         /// <summary>
-        /// Sends a message through the Messenger.
+        /// Sends an empty message of type T through the messenger.
         /// </summary>
         ///
-        /// <param name="message">Message.</param>
-        ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>(T message)
-        {
-            if (_context != null) _context.Send(_ => Messenger.Send(message), null);
-            else Messenger.Send(message);
-        }
+        protected void Send<T>() where T : new() => Send(new T());
 
         /* --------------------------------------------------------------------- */
         ///
         /// Send(T)
         ///
         /// <summary>
-        /// Sends an empty message of the specified type through the Messenger.
+        /// Sends a message of type T through the messenger.
         /// </summary>
         ///
+        /// <param name="message">Message object.</param>
+        ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>() where T : new() => Send(new T());
+        protected void Send<T>(T message) => _context.Send(_ => MessengerInstance.Send(message), null);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -148,7 +184,7 @@ namespace Cube.Xui
         /// Sends an error message.
         /// </summary>
         ///
-        /// <param name="err">Exception.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* --------------------------------------------------------------------- */
         protected void Send(Exception err) => Send(err, string.Empty);
@@ -161,7 +197,7 @@ namespace Cube.Xui
         /// Sends an error message.
         /// </summary>
         ///
-        /// <param name="err">Exception.</param>
+        /// <param name="err">Exception object.</param>
         /// <param name="message">Error message.</param>
         ///
         /* --------------------------------------------------------------------- */
@@ -175,29 +211,82 @@ namespace Cube.Xui
         /// Sends an error message.
         /// </summary>
         ///
-        /// <param name="err">Exception.</param>
+        /// <param name="err">Exception object.</param>
         /// <param name="message">Error message.</param>
         /// <param name="title">Title for the error dialog.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send(Exception err, string message, string title)
-        {
-            var ss = new System.Text.StringBuilder();
-            if (message.HasValue())
-            {
-                ss.AppendLine(message);
-                this.LogError(message);
-            }
-            this.LogError(err.ToString(), err);
+        protected void Send(Exception err, string message, string title) => Send(Create(err, message, title));
 
-            ss.Append($"{err.Message} ({err.GetType().Name})");
-            Send(new DialogMessage(ss.ToString(), title)
-            {
-                Button = System.Windows.MessageBoxButton.OK,
-                Image  = System.Windows.MessageBoxImage.Error,
-                Result = true,
-            });
-        }
+        #endregion
+
+        #region Post
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Post(T)
+        ///
+        /// <summary>
+        /// Posts an empty message of type T through the messenger.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Post<T>() where T : new() => Post(new T());
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Post(T)
+        ///
+        /// <summary>
+        /// Posts a message of type T through the messenger.
+        /// </summary>
+        ///
+        /// <param name="message">Message.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Post<T>(T message) => _context.Post(_ => MessengerInstance.Send(message), null);
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Post
+        ///
+        /// <summary>
+        /// Posts an error message.
+        /// </summary>
+        ///
+        /// <param name="error">Exception object.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Post(Exception error) => Post(error, string.Empty);
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Post
+        ///
+        /// <summary>
+        /// Posts an error message.
+        /// </summary>
+        ///
+        /// <param name="error">Exception object.</param>
+        /// <param name="message">Error message.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Post(Exception error, string message) => Post(error, message, GetTitle());
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Post
+        ///
+        /// <summary>
+        /// Posts an error message.
+        /// </summary>
+        ///
+        /// <param name="error">Exception object.</param>
+        /// <param name="message">Error message.</param>
+        /// <param name="title">Title for the error dialog.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected void Post(Exception error, string message, string title) => Post(Create(error, message, title));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -205,39 +294,39 @@ namespace Cube.Xui
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately. When an error occurs, the DialogMessage
-        /// object for the error is sent.
+        /// returns immeidately. When an error occurs, the message of
+        /// type DialogMessage is sent.
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send(Action action) => Send(action, string.Empty);
+        protected void Post(Action action) => Post(action, string.Empty);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Post
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately. When an error occurs, the DialogMessage
-        /// object for the error is sent.
+        /// returns immeidately. When an error occurs, the message of
+        /// type DialogMessage is sent.
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
         /// <param name="message">Error message.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send(Action action, string message) => Send(action, message, GetTitle());
+        protected void Post(Action action, string message) => Post(action, message, GetTitle());
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Post
         ///
         /// <summary>
         /// Executes the specified action as an asynchronous operation and
-        /// returns immeidately. When an error occurs, the DialogMessage
-        /// object for the error is sent.
+        /// returns immeidately. When an error occurs, the message of
+        /// type DialogMessage is sent.
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
@@ -245,10 +334,10 @@ namespace Cube.Xui
         /// <param name="title">Title for the error dialog.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send(Action action, string message, string title) => Task.Run(() =>
+        protected void Post(Action action, string message, string title) => Task.Run(() =>
         {
             try { action(); }
-            catch (Exception err) { Send(err, message, title); }
+            catch (Exception err) { Post(err, message, title); }
         }).Forget();
 
         #endregion
@@ -303,6 +392,35 @@ namespace Cube.Xui
         #endregion
 
         #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the DialogMessage class with the
+        /// specified error information.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private DialogMessage Create(Exception error, string message, string title)
+        {
+            var ss = new System.Text.StringBuilder();
+            if (message.HasValue())
+            {
+                ss.AppendLine(message);
+                this.LogError(message);
+            }
+            this.LogError(error.ToString(), error);
+            ss.Append($"{error.Message} ({error.GetType().Name})");
+
+            return new DialogMessage(ss.ToString(), title)
+            {
+                Button = System.Windows.MessageBoxButton.OK,
+                Image = System.Windows.MessageBoxImage.Error,
+                Result = true,
+            };
+        }
 
         /* --------------------------------------------------------------------- */
         ///

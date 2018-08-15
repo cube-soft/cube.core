@@ -113,8 +113,8 @@ namespace Cube.Xui.Tests
             var asm  = Assembly.GetExecutingAssembly();
             var dest = default(DialogMessage);
 
-            src.Messenger.Register<DialogMessage>(this, e => dest = e);
-            src.Messenger.Send(new DialogMessage(nameof(Send_DialogMessage), asm));
+            src.Register<DialogMessage>(this, e => dest = e);
+            src.Test(new DialogMessage(nameof(Send_DialogMessage), asm));
 
             Assert.That(dest,          Is.Not.Null);
             Assert.That(dest.Content,  Is.EqualTo(nameof(Send_DialogMessage)));
@@ -139,8 +139,8 @@ namespace Cube.Xui.Tests
         {
             var dest = default(OpenFileMessage);
 
-            src.Messenger.Register<OpenFileMessage>(this, e => e.Callback(e));
-            src.Messenger.Send(new OpenFileMessage(e => dest = e));
+            src.Register<OpenFileMessage>(this, e => e.Callback(e));
+            src.Test(new OpenFileMessage(e => dest = e));
 
             Assert.That(dest,                  Is.Not.Null);
             Assert.That(dest.Callback,         Is.Not.Null);
@@ -168,8 +168,8 @@ namespace Cube.Xui.Tests
         {
             var dest = default(SaveFileMessage);
 
-            src.Messenger.Register<SaveFileMessage>(this, e => e.Callback(e));
-            src.Messenger.Send(new SaveFileMessage(e => dest = e));
+            src.Register<SaveFileMessage>(this, e => e.Callback(e));
+            src.Test(new SaveFileMessage(e => dest = e));
 
             Assert.That(dest,                  Is.Not.Null);
             Assert.That(dest.Callback,         Is.Not.Null);
@@ -196,8 +196,8 @@ namespace Cube.Xui.Tests
         {
             var dest = default(OpenDirectoryMessage);
 
-            src.Messenger.Register<OpenDirectoryMessage>(this, e => e.Callback(e));
-            src.Messenger.Send(new OpenDirectoryMessage(e => dest = e));
+            src.Register<OpenDirectoryMessage>(this, e => e.Callback(e));
+            src.Test(new OpenDirectoryMessage(e => dest = e));
 
             Assert.That(dest,           Is.Not.Null);
             Assert.That(dest.Callback,  Is.Not.Null);
@@ -237,8 +237,9 @@ namespace Cube.Xui.Tests
         /* ----------------------------------------------------------------- */
         private class TestViewModel : MessengerViewModel
         {
+            public void Test<T>(T message) => Send(message);
             public void Test<T>() where T : new() => Send<T>();
-            public void Test(Action action) => Send(action);
+            public void Test(Action action) => Post(action);
             protected override void Dispose(bool disposing) { }
         }
 
