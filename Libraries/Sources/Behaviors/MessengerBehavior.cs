@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 using System.Windows;
 using System.Windows.Interactivity;
@@ -63,10 +64,9 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            if (AssociatedObject.DataContext is IMessengerViewModel vm)
-            {
-                _registry = vm.Register<T>(AssociatedObject, e => Invoke(e));
-            }
+            Register();
+            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
+            AssociatedObject.DataContextChanged += WhenDataContextChanged;
         }
 
         /* ----------------------------------------------------------------- */
@@ -81,9 +81,40 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
+            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
             _registry?.Dispose();
             base.OnDetaching();
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Register
+        ///
+        /// <summary>
+        /// Registers the action that is defined by inherited classes.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Register()
+        {
+            _registry?.Dispose();
+            _registry = AssociatedObject
+                        .DataContext
+                        .TryCast<IMessengerViewModel>()?
+                        .Register<T>(AssociatedObject, e => Invoke(e));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenDataContextChanged
+        ///
+        /// <summary>
+        /// Occurs when the DataContext property of the AssociatedObject
+        /// is changed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void WhenDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Register();
 
         #endregion
 
