@@ -117,8 +117,23 @@ namespace Cube.Xui
         protected MessengerViewModel(IMessenger messenger, SynchronizationContext context) : base(messenger)
         {
             _dispose = new OnceAction<bool>(Dispose);
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            Context  = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+        #endregion
+
+        #region Properties
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Context
+        ///
+        /// <summary>
+        /// Gets the synchronization context.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        protected SynchronizationContext Context { get; }
 
         #endregion
 
@@ -174,7 +189,7 @@ namespace Cube.Xui
         /// <param name="message">Message object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>(T message) => _context.Send(_ => MessengerInstance.Send(message), null);
+        protected void Send<T>(T message) => Context.Send(_ => MessengerInstance.Send(message), null);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -244,7 +259,7 @@ namespace Cube.Xui
         /// <param name="message">Message.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Post<T>(T message) => _context.Post(_ => MessengerInstance.Send(message), null);
+        protected void Post<T>(T message) => Context.Post(_ => MessengerInstance.Send(message), null);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -443,7 +458,6 @@ namespace Cube.Xui
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
-        private readonly SynchronizationContext _context;
         #endregion
     }
 }
