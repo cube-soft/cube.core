@@ -15,8 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
-using Cube.Log;
 using Cube.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -191,48 +189,6 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         protected void Send<T>(T message) => Context.Send(_ => MessengerInstance.Send(message), null);
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends an error message.
-        /// </summary>
-        ///
-        /// <param name="err">Exception object.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Send(Exception err) => Send(err, string.Empty);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends an error message.
-        /// </summary>
-        ///
-        /// <param name="err">Exception object.</param>
-        /// <param name="message">Error message.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Send(Exception err, string message) => Send(err, message, GetTitle());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends an error message.
-        /// </summary>
-        ///
-        /// <param name="err">Exception object.</param>
-        /// <param name="message">Error message.</param>
-        /// <param name="title">Title for the error dialog.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Send(Exception err, string message, string title) => Send(Create(err, message, title));
-
         #endregion
 
         #region Post
@@ -261,48 +217,6 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         protected void Post<T>(T message) => Context.Post(_ => MessengerInstance.Send(message), null);
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Post
-        ///
-        /// <summary>
-        /// Posts an error message.
-        /// </summary>
-        ///
-        /// <param name="error">Exception object.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Post(Exception error) => Post(error, string.Empty);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Post
-        ///
-        /// <summary>
-        /// Posts an error message.
-        /// </summary>
-        ///
-        /// <param name="error">Exception object.</param>
-        /// <param name="message">Error message.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Post(Exception error, string message) => Post(error, message, GetTitle());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Post
-        ///
-        /// <summary>
-        /// Posts an error message.
-        /// </summary>
-        ///
-        /// <param name="error">Exception object.</param>
-        /// <param name="message">Error message.</param>
-        /// <param name="title">Title for the error dialog.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected void Post(Exception error, string message, string title) => Post(Create(error, message, title));
-
         /* ----------------------------------------------------------------- */
         ///
         /// Send
@@ -316,7 +230,8 @@ namespace Cube.Xui
         /// <param name="action">Action as asynchronously.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post(Action action) => Post(action, string.Empty);
+        protected void Post(Action action) =>
+            Post(action, e => $"{e.Message} ({e.GetType().Name})");
 
         /* ----------------------------------------------------------------- */
         ///
@@ -329,10 +244,14 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
-        /// <param name="message">Error message.</param>
+        /// <param name="converter">
+        /// Function object that converts from an Exception object to
+        /// the corresponding error message.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post(Action action, string message) => Post(action, message, GetTitle());
+        protected void Post(Action action, Func<Exception, string> converter) =>
+            Post(action, converter, GetTitle());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -345,15 +264,19 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="action">Action as asynchronously.</param>
-        /// <param name="message">Error message.</param>
+        /// <param name="converter">
+        /// Function object that converts from an Exception object to
+        /// the corresponding error message.
+        /// </param>
         /// <param name="title">Title for the error dialog.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post(Action action, string message, string title) => Task.Run(() =>
-        {
-            try { action(); }
-            catch (Exception err) { Post(err, message, title); }
-        }).Forget();
+        protected void Post(Action action, Func<Exception, string> converter, string title) =>
+            Task.Run(() =>
+            {
+                try { action(); }
+                catch (Exception err) { Post(Create(converter(err), title)); }
+            }).Forget();
 
         #endregion
 
@@ -414,28 +337,17 @@ namespace Cube.Xui
         ///
         /// <summary>
         /// Creates a new instance of the DialogMessage class with the
-        /// specified error information.
+        /// specified message and title.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private DialogMessage Create(Exception error, string message, string title)
-        {
-            var ss = new System.Text.StringBuilder();
-            if (message.HasValue())
-            {
-                ss.AppendLine(message);
-                this.LogError(message);
-            }
-            this.LogError(error.ToString(), error);
-            ss.Append($"{error.Message} ({error.GetType().Name})");
-
-            return new DialogMessage(ss.ToString(), title)
+        private DialogMessage Create(string message, string title) =>
+            new DialogMessage(message, title)
             {
                 Button = System.Windows.MessageBoxButton.OK,
-                Image = System.Windows.MessageBoxImage.Error,
+                Image  = System.Windows.MessageBoxImage.Error,
                 Result = true,
             };
-        }
 
         /* --------------------------------------------------------------------- */
         ///
