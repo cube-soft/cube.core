@@ -83,6 +83,7 @@
     <Compile Include="Sources\FileFixtureTest.cs" />
     <Compile Include="Sources\LoggerTest.cs" />
     <Compile Include="Sources\OnceActionTest.cs" />
+    <Compile Include="Sources\OnceInitializerTest.cs" />
     <Compile Include="Sources\OnceQueryTest.cs" />
     <Compile Include="Sources\PowerTest.cs" />
     <Compile Include="Sources\QueryTest.cs" />

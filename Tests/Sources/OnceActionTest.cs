@@ -55,6 +55,7 @@ namespace Cube.Tests
             };
 
             Task.WaitAll(tasks);
+            Assert.That(once.Invoked, Is.True);
             Assert.That(value, Is.EqualTo(1));
         }
 
@@ -105,6 +106,7 @@ namespace Cube.Tests
             };
 
             Task.WaitAll(tasks);
+            Assert.That(once.Invoked, Is.True);
             Assert.That(value, Is.EqualTo(obj));
         }
 

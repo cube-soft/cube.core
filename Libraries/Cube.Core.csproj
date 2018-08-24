@@ -95,6 +95,7 @@
     <Compile Include="Sources\Logger.cs" />
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />
+    <Compile Include="Sources\OnceInitializer.cs" />
     <Compile Include="Sources\OnceQuery.cs" />
     <Compile Include="Sources\Power.cs" />
     <Compile Include="Sources\Query.cs" />

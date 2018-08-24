@@ -72,6 +72,18 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public bool IgnoreTwice { get; set; } = true;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoked
+        ///
+        /// <summary>
+        /// Gets the value indicating whether the specified action has
+        /// been already invoked.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Invoked => _action == null;
+
         #endregion
 
         #region Methods
@@ -149,6 +161,18 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public bool IgnoreTwice { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoked
+        ///
+        /// <summary>
+        /// Gets the value indicating whether the specified action has
+        /// been already invoked.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Invoked => _action == null;
 
         #endregion
 
