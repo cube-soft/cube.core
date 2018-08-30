@@ -43,26 +43,22 @@ namespace Cube.Xui.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(true,  ExpectedResult = 4)]
-        [TestCase(false, ExpectedResult = 2)]
-        public int RaisePropertyChanged(bool redirect)
+        [Test]
+        public void RaisePropertyChanged()
         {
             var ctx = SynchronizationContext.Current;
-            using (var src = new Bindable<Person>(null, redirect, ctx))
-            {
-                var count = 0;
-                Assert.That(src.HasValue, Is.False);
+            var src = new Bindable<Person>(null, ctx);
+            Assert.That(src.HasValue, Is.False);
 
-                src.PropertyChanged += (s, e) => ++count;
-                var value = new Person();
-                src.Value = value;
-                Assert.That(src.HasValue, Is.True);
+            var count = 0;
+            src.PropertyChanged += (s, e) => ++count;
+            var value = new Person();
+            src.Value = value;
+            Assert.That(src.HasValue, Is.True);
 
-                value.Name = "Jack";
-                value.Age  = 20;
-
-                return count;
-            }
+            value.Name = "Jack";
+            value.Age  = 20;
+            Assert.That(count, Is.EqualTo(2));
         }
 
         /* ----------------------------------------------------------------- */
@@ -78,17 +74,14 @@ namespace Cube.Xui.Tests
         public void Bindable_Context()
         {
             var value = new Person();
-            using (var src = new Bindable<Person>(value, true, new SynchronizationContext()))
-            {
-                var count = 0;
-                src.PropertyChanged += (s, e) => ++count;
-                src.Value = value;
+            var src   = new Bindable<Person>(value, new SynchronizationContext());
+            var count = 0;
+            src.PropertyChanged += (s, e) => ++count;
+            src.Value = value;
 
-                value.Name = "Jack";
-                value.Age  = 20;
-
-                Assert.That(count, Is.EqualTo(2));
-            }
+            value.Name = "Jack";
+            value.Age  = 20;
+            Assert.That(count, Is.EqualTo(0));
         }
 
         #endregion

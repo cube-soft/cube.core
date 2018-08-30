@@ -27,7 +27,7 @@ namespace Cube.Xui
     /// Bindable(T)
     ///
     /// <summary>
-    /// 値を Binding 可能にするためのクラスです。
+    /// Provides functionality to make the value as bindable.
     /// </summary>
     ///
     /// <remarks>
@@ -37,7 +37,7 @@ namespace Cube.Xui
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Bindable<T> : INotifyPropertyChanged, IDisposable
+    public class Bindable<T> : INotifyPropertyChanged
     {
         #region Constructors
 
@@ -46,7 +46,7 @@ namespace Cube.Xui
         /// Bindable
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>Bindable</c> class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -57,10 +57,11 @@ namespace Cube.Xui
         /// Bindable
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>Bindable</c> class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">初期値</param>
+        /// <param name="value">Initial value.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Bindable(T value) : this(value, SynchronizationContext.Current) { }
@@ -70,49 +71,61 @@ namespace Cube.Xui
         /// Bindable
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>Bindable</c> class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="context">同期コンテキスト</param>
+        /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(SynchronizationContext context) :
-            this(default(T), context) { }
+        public Bindable(SynchronizationContext context) : this(default(T), context) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Bindable
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>Bindable</c> class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">初期値</param>
-        /// <param name="context">同期コンテキスト</param>
+        /// <param name="value">Initial value.</param>
+        /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(T value, SynchronizationContext context) :
-            this(value, false, context) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Bindable
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="value">初期値</param>
-        /// <param name="redirect">イベントのリダイレクト設定</param>
-        /// <param name="context">同期コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Bindable(T value, bool redirect, SynchronizationContext context)
+        public Bindable(T value, SynchronizationContext context)
         {
-            _dispose     = new OnceAction<bool>(Dispose);
-            _context     = context;
-            IsRedirected = redirect;
-            Value        = value;
+            var field = value;
+
+            _context = context;
+            _getter = () => field;
+            _setter = e =>
+            {
+                if (!Equals(field, default(T)) && field.Equals(e)) return false;
+                field = e;
+                return true;
+            };
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bindable
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>Bindable</c> class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="getter">Delegation to get the value.</param>
+        /// <param name="setter">Delegation to set the value.</param>
+        /// <param name="context">Synchronization context.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Bindable(Func<T> getter, Func<T, bool> setter, SynchronizationContext context)
+        {
+            _getter  = getter;
+            _setter  = setter;
+            _context = context;
         }
 
         #endregion
@@ -124,21 +137,20 @@ namespace Cube.Xui
         /// Value
         ///
         /// <summary>
-        /// 実際の値を取得または設定します。
+        /// Gets or sets the value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public T Value
         {
-            get => _value;
+            get => _getter();
             set
             {
-                if (HasValue && _value.Equals(value)) return;
-                UnsetHandler(_value);
-                _value = value;
-                SetHandler(_value);
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(HasValue));
+                if (_setter(value))
+                {
+                    RaisePropertyChanged();
+                    RaisePropertyChanged(nameof(HasValue));
+                }
             }
         }
 
@@ -147,19 +159,19 @@ namespace Cube.Xui
         /// HasValue
         ///
         /// <summary>
-        /// 有効な値が設定されているかどうかを示す値を取得します。
+        /// Gets the value indicating whether the value is valid.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool HasValue => !Equals(_value, default(T));
+        public bool HasValue => !Equals(Value, default(T));
 
         /* ----------------------------------------------------------------- */
         ///
         /// IsSynchronous
         ///
         /// <summary>
-        /// UI スレッドに対して同期的にイベントを発生させるかどうかを
-        /// 示す値を取得または設定します。
+        /// Gets or sets the value indicating whether the event is fired
+        /// as synchronously.
         /// </summary>
         ///
         /// <remarks>
@@ -170,24 +182,6 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public bool IsSynchronous { get; set; } = true;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsRedirected
-        ///
-        /// <summary>
-        /// PropertyChanged イベントをリダイレクトするかどうかを示す値を
-        /// 取得します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// true の場合、Value.PropertyChanged イベントが発生した時に
-        /// PropertyName を "Value" に設定した状態で PropertyChanged
-        /// イベントを発生させます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool IsRedirected { get; }
-
         #endregion
 
         #region Events
@@ -197,7 +191,7 @@ namespace Cube.Xui
         /// PropertyChanged
         ///
         /// <summary>
-        /// プロパティの内容変更時に発生するイベントです。
+        /// Occurs when a property of the class is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -208,8 +202,11 @@ namespace Cube.Xui
         /// OnPropertyChanged
         ///
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// Raises the <c>PropertyChanged</c> event with the provided
+        /// arguments.
         /// </summary>
+        ///
+        /// <param name="e">Arguments of the event being raised.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
@@ -217,11 +214,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaisePropertyChanged
+        /// OnPropertyChanged
         ///
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// Raises the <c>PropertyChanged</c> event with the specified
+        /// name.
         /// </summary>
+        ///
+        /// <param name="name">Name of property.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected void RaisePropertyChanged([CallerMemberName] string name = null)
@@ -237,113 +237,10 @@ namespace Cube.Xui
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~Bindable
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~Bindable() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを開放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを開放します。
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// マネージオブジェクトを開放するかどうか
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing && Value is INotifyPropertyChanged e)
-            {
-                e.PropertyChanged -= WhenMemberChanged;
-            }
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetHandler
-        ///
-        /// <summary>
-        /// オブジェクトに対してハンドラを設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void SetHandler(T value)
-        {
-            if (IsRedirected && value is INotifyPropertyChanged cvt)
-            {
-                cvt.PropertyChanged -= WhenMemberChanged;
-                cvt.PropertyChanged += WhenMemberChanged;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UnsetHandler
-        ///
-        /// <summary>
-        /// オブジェクトからハンドラの設定を解除します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void UnsetHandler(T value)
-        {
-            if (value is INotifyPropertyChanged cvt)
-            {
-                cvt.PropertyChanged -= WhenMemberChanged;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenMemberChanged
-        ///
-        /// <summary>
-        /// Value の PropertyChanged イベント発生時に実行される
-        /// ハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenMemberChanged(object s, PropertyChangedEventArgs e) =>
-            RaisePropertyChanged(nameof(Value));
-
-        #endregion
-
         #region Fields
-        private T _value;
+        private readonly Func<T> _getter;
+        private readonly Func<T, bool> _setter;
         private readonly SynchronizationContext _context;
-        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 }
