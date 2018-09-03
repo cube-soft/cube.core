@@ -99,6 +99,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         public Person()
         {
+            Context       = null;
+            IsSynchronous = false;
             Reset();
         }
 

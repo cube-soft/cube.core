@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Threading;
 
 namespace Cube
 {
@@ -27,12 +28,13 @@ namespace Cube
     /// ObservableProperty
     ///
     /// <summary>
-    /// INotifyPropertyChanged の汎用的な実装です。
+    /// Represents an implementation of the INotifyPropertyChanged
+    /// interface.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [DataContract]
-    public class ObservableProperty : INotifyPropertyChanged
+    public abstract class ObservableProperty : INotifyPropertyChanged
     {
         #region Constructor
 
@@ -41,16 +43,47 @@ namespace Cube
         /// ObservableProperty
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>ObservableProperty</c>
+        /// class.
         /// </summary>
-        ///
-        /// <remarks>
-        /// このクラスを直接オブジェクト化する事はできません。継承クラスを
-        /// 使用して下さい。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected ObservableProperty() { }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Context
+        ///
+        /// <summary>
+        /// Gets or sets the synchronization context.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [IgnoreDataMember]
+        public SynchronizationContext Context { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsSynchronous
+        ///
+        /// <summary>
+        /// Gets or sets the value indicating whether the event is fired
+        /// as synchronously.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// true の場合は Send メソッド、false の場合は Post メソッドを
+        /// 用いてイベントを伝搬します。また、Context が null の場合、
+        /// このプロパティは無視されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [IgnoreDataMember]
+        public bool IsSynchronous { get; set; } = true;
 
         #endregion
 
@@ -61,7 +94,7 @@ namespace Cube
         /// PropertyChanged
         ///
         /// <summary>
-        /// プロパティが変更された時に発生するイベントです。
+        /// Occurs when a property of the class is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -72,8 +105,11 @@ namespace Cube
         /// OnPropertyChanged
         ///
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// Raises the <c>PropertyChanged</c> event with the provided
+        /// arguments.
         /// </summary>
+        ///
+        /// <param name="e">Arguments of the event being raised.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
@@ -88,28 +124,37 @@ namespace Cube
         /// RaisePropertyChanged
         ///
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// Raises the <c>PropertyChanged</c> event with the specified
+        /// name.
         /// </summary>
         ///
-        /// <param name="name">プロパティの名前</param>
+        /// <param name="name">Name of the property.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void RaisePropertyChanged(string name) =>
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
+        public void RaisePropertyChanged(string name)
+        {
+            var e = new PropertyChangedEventArgs(name);
+            if (Context != null)
+            {
+                if (IsSynchronous) Context.Send(_ => OnPropertyChanged(e), null);
+                else Context.Post(_ => OnPropertyChanged(e), null);
+            }
+            else OnPropertyChanged(e);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// SetProperty
         ///
         /// <summary>
-        /// プロパティに値を設定します。
+        /// Sets the specified value for the specified field.
         /// </summary>
         ///
-        /// <param name="field">設定先の参照</param>
-        /// <param name="value">設定値</param>
-        /// <param name="name">設定するプロパティの名前</param>
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        /// <param name="name">Name of the property.</param>
         ///
-        /// <returns>設定したかどうかを示す値</returns>
+        /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected bool SetProperty<T>(ref T field, T value,
@@ -121,15 +166,15 @@ namespace Cube
         /// SetProperty
         ///
         /// <summary>
-        /// プロパティに値を設定します。
+        /// Sets the specified value for the specified field.
         /// </summary>
         ///
-        /// <param name="field">設定先の参照</param>
-        /// <param name="value">設定値</param>
-        /// <param name="func">比較用オブジェクト</param>
-        /// <param name="name">設定するプロパティの名前</param>
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        /// <param name="func">Function object to compare.</param>
+        /// <param name="name">Name of the property.</param>
         ///
-        /// <returns>設定したかどうかを示す値</returns>
+        /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected bool SetProperty<T>(ref T field, T value,
