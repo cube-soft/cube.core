@@ -16,8 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Cube.Xui
@@ -37,7 +36,7 @@ namespace Cube.Xui
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Bindable<T> : INotifyPropertyChanged
+    public class Bindable<T> : ObservableProperty
     {
         #region Constructors
 
@@ -75,33 +74,19 @@ namespace Cube.Xui
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="context">Synchronization context.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Bindable(SynchronizationContext context) : this(default(T), context) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Bindable
-        ///
-        /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class
-        /// with the specified arguments.
-        /// </summary>
-        ///
         /// <param name="value">Initial value.</param>
         /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Bindable(T value, SynchronizationContext context)
         {
-            var field = value;
+            Context = context;
 
-            _context = context;
+            var field = value;
             _getter = () => field;
             _setter = e =>
             {
-                if (!Equals(field, default(T)) && field.Equals(e)) return false;
+                if (EqualityComparer<T>.Default.Equals(field, e)) return false;
                 field = e;
                 return true;
             };
@@ -116,16 +101,16 @@ namespace Cube.Xui
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="getter">Delegation to get the value.</param>
-        /// <param name="setter">Delegation to set the value.</param>
+        /// <param name="getter">Function to get the value.</param>
+        /// <param name="setter">Function to set the value.</param>
         /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Bindable(Func<T> getter, Func<T, bool> setter, SynchronizationContext context)
         {
+            Context  = context;
             _getter  = getter;
             _setter  = setter;
-            _context = context;
         }
 
         #endregion
@@ -144,95 +129,7 @@ namespace Cube.Xui
         public T Value
         {
             get => _getter();
-            set
-            {
-                if (_setter(value))
-                {
-                    RaisePropertyChanged();
-                    RaisePropertyChanged(nameof(HasValue));
-                }
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// HasValue
-        ///
-        /// <summary>
-        /// Gets the value indicating whether the value is valid.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool HasValue => !Equals(Value, default(T));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsSynchronous
-        ///
-        /// <summary>
-        /// Gets or sets the value indicating whether the event is fired
-        /// as synchronously.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// true の場合は Send メソッド、false の場合は Post メソッドを
-        /// 用いてイベントを伝搬します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool IsSynchronous { get; set; } = true;
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when a property of the class is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Raises the <c>PropertyChanged</c> event with the provided
-        /// arguments.
-        /// </summary>
-        ///
-        /// <param name="e">Arguments of the event being raised.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            PropertyChanged?.Invoke(this, e);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Raises the <c>PropertyChanged</c> event with the specified
-        /// name.
-        /// </summary>
-        ///
-        /// <param name="name">Name of property.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged([CallerMemberName] string name = null)
-        {
-            var e = new PropertyChangedEventArgs(name);
-            if (_context != null)
-            {
-                if (IsSynchronous) _context.Send(_ => OnPropertyChanged(e), null);
-                else _context.Post(_ => OnPropertyChanged(e), null);
-            }
-            else OnPropertyChanged(e);
+            set { if (_setter(value)) RaisePropertyChanged(nameof(Value)); }
         }
 
         #endregion
@@ -240,7 +137,6 @@ namespace Cube.Xui
         #region Fields
         private readonly Func<T> _getter;
         private readonly Func<T, bool> _setter;
-        private readonly SynchronizationContext _context;
         #endregion
     }
 }

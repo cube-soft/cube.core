@@ -161,7 +161,9 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public bool IsRedirected { get; }
 
-        #region IDisposable
+        #endregion
+
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -206,8 +208,6 @@ namespace Cube.Xui
         {
             if (disposing) UnsetHandler(this);
         }
-
-        #endregion
 
         #endregion
 

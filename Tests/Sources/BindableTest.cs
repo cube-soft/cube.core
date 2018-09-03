@@ -48,17 +48,15 @@ namespace Cube.Xui.Tests
         {
             var ctx = SynchronizationContext.Current;
             var src = new Bindable<Person>(null, ctx);
-            Assert.That(src.HasValue, Is.False);
 
             var count = 0;
             src.PropertyChanged += (s, e) => ++count;
             var value = new Person();
             src.Value = value;
-            Assert.That(src.HasValue, Is.True);
 
             value.Name = "Jack";
             value.Age  = 20;
-            Assert.That(count, Is.EqualTo(2));
+            Assert.That(count, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
