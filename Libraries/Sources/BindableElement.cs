@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Input;
 
 namespace Cube.Xui
@@ -46,8 +46,9 @@ namespace Cube.Xui
         /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Func<string> gettext)
+        public BindableElement(Getter<string> gettext)
         {
+            Context   = SynchronizationContext.Current;
             _dispose  = new OnceAction<bool>(Dispose);
             _gettext  = gettext;
             _registry = ResourceCulture.Subscribe(() => RaisePropertyChanged(nameof(Text)));
@@ -137,7 +138,7 @@ namespace Cube.Xui
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
-        private readonly Func<string> _gettext;
+        private readonly Getter<string> _gettext;
         private readonly IDisposable _registry;
         private ICommand _command;
         #endregion
@@ -168,7 +169,7 @@ namespace Cube.Xui
         /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Func<string> gettext) : this(default(T), gettext) { }
+        public BindableElement(Getter<string> gettext) : this(default(T), gettext) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -183,17 +184,8 @@ namespace Cube.Xui
         /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(T value, Func<string> gettext) : base(gettext)
-        {
-            var field = value;
-            _getter = () => field;
-            _setter = e =>
-            {
-                if (EqualityComparer<T>.Default.Equals(field, e)) return false;
-                field = e;
-                return true;
-            };
-        }
+        public BindableElement(T value, Getter<string> gettext) :
+            this(new Accessor<T>(value), gettext) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -209,10 +201,25 @@ namespace Cube.Xui
         /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Func<T> getter, Func<T, bool>setter, Func<string> gettext) : base(gettext)
+        public BindableElement(Getter<T> getter, Setter<T> setter, Getter<string> gettext) :
+            this(new Accessor<T>(getter, setter), gettext) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="accessor">Function to get and set value.</param>
+        /// <param name="gettext">Function to get text.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Accessor<T> accessor, Getter<string> gettext) : base(gettext)
         {
-            _getter = getter;
-            _setter = setter;
+            _accessor = accessor;
         }
 
         #endregion
@@ -230,15 +237,14 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public T Value
         {
-            get => _getter();
-            set { if (_setter(value)) RaisePropertyChanged(nameof(Value)); }
+            get => _accessor.Get();
+            set { if (_accessor.Set(value)) RaisePropertyChanged(nameof(Value)); }
         }
 
         #endregion
 
         #region Fields
-        private readonly Func<T> _getter;
-        private readonly Func<T, bool> _setter;
+        private readonly Accessor<T> _accessor;
         #endregion
     }
 }
