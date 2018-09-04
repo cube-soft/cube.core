@@ -89,6 +89,7 @@
     <Compile Include="Sources\Processes\Messenger.cs" />
     <Compile Include="Sources\Processes\MessengerService.cs" />
     <Compile Include="Sources\Processes\MessengerServiceCallback.cs" />
+    <Compile Include="Sources\Accessor.cs" />
     <Compile Include="Sources\AssemblyReader.cs" />
     <Compile Include="Sources\Disposable.cs" />
     <Compile Include="Sources\Exceptions.cs" />

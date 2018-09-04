@@ -168,8 +168,8 @@ namespace Cube.Tests
         [DataMember]
         public int Age
         {
-            get => _age;
-            set => SetProperty(ref _age, value);
+            get => _age.Get();
+            set { if (_age.Set(value)) RaisePropertyChanged(nameof(Age)); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -345,7 +345,7 @@ namespace Cube.Tests
             _identification = -1;
             _name           = string.Empty;
             _sex            = Sex.Unknown;
-            _age            = 0;
+            _age            = new Accessor<int>(0);
             _creation       = DateTime.MinValue;
             _contact        = new Address { Type = "Phone", Value = string.Empty };
             _others         = new List<Address>();
@@ -360,7 +360,7 @@ namespace Cube.Tests
         private int _identification;
         private string _name;
         private Sex _sex;
-        private int _age;
+        private Accessor<int> _age;
         private DateTime? _creation;
         private Address _contact;
         private IList<Address> _others;

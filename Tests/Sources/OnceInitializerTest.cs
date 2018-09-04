@@ -18,7 +18,7 @@
 using NUnit.Framework;
 using System;
 
-namespace Cube.Tests.Sources
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
