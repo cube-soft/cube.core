@@ -32,7 +32,7 @@ namespace Cube.Xui
     /// BindableCollection(T)
     ///
     /// <summary>
-    /// コレクションを Binding 可能にするためのクラスです。
+    /// Provides functionality to binding a collection.
     /// </summary>
     ///
     /// <remarks>
@@ -51,7 +51,8 @@ namespace Cube.Xui
         /// BindableCollection
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>BindableCollection</c>
+        /// class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -62,70 +63,34 @@ namespace Cube.Xui
         /// BindableCollection
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the <c>BindableCollection</c>
+        /// class with the specified collection.
         /// </summary>
         ///
-        /// <param name="context">同期コンテキスト</param>
+        /// <param name="collection">Collection to be copied.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCollection(SynchronizationContext context) :
-            this(new T[0], context) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BindableCollection
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="collection">コピー元となるコレクション</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BindableCollection(IEnumerable<T> collection) :
-            this(collection, SynchronizationContext.Current) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BindableCollection
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="collection">コピー元となるコレクション</param>
-        /// <param name="context">同期コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BindableCollection(IEnumerable<T> collection, SynchronizationContext context) :
-            this(collection, false, context) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BindableCollection
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="collection">コピー元となるコレクション</param>
-        /// <param name="redirect">イベントのリダイレクト設定</param>
-        /// <param name="context">同期コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BindableCollection(IEnumerable<T> collection, bool redirect, SynchronizationContext context) :
-            base(collection ?? new T[0])
+        public BindableCollection(IEnumerable<T> collection) : base(collection ?? new T[0])
         {
-            _dispose     = new OnceAction<bool>(Dispose);
-            _context     = context;
-            IsRedirected = redirect;
-
+            Context  = SynchronizationContext.Current;
+            _dispose = new OnceAction<bool>(Dispose);
             SetHandler(this);
         }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Context
+        ///
+        /// <summary>
+        /// Gets or sets the synchronization context.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SynchronizationContext Context { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -159,7 +124,7 @@ namespace Cube.Xui
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsRedirected { get; }
+        public bool IsRedirected { get; set; } = false;
 
         #endregion
 
@@ -222,15 +187,8 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (_context != null)
-            {
-                if (IsSynchronous) _context.Send(_ => base.OnPropertyChanged(e), null);
-                else _context.Post(_ => base.OnPropertyChanged(e), null);
-            }
-            else base.OnPropertyChanged(e);
-        }
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
+            Invoke(() => base.OnPropertyChanged(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -241,15 +199,8 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            if (_context != null)
-            {
-                if (IsSynchronous) _context.Send(_ => OnCollectionChangedCore(e), null);
-                else _context.Post(_ => OnCollectionChangedCore(e), null);
-            }
-            else OnCollectionChangedCore(e);
-        }
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e) =>
+            Invoke(() => OnCollectionChangedCore(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -260,8 +211,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnCollectionChangedCore(NotifyCollectionChangedEventArgs e) =>
-            this.LogWarn(() =>
+        private void OnCollectionChangedCore(NotifyCollectionChangedEventArgs e) => this.LogWarn(() =>
         {
             switch (e.Action)
             {
@@ -283,6 +233,25 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the action through the SynchronizationContext.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Invoke(Action action)
+        {
+            if (Context != null)
+            {
+                if (IsSynchronous) Context.Send(_ => action(), null);
+                else Context.Post(_ => action(), null);
+            }
+            else action();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SetHandler
         ///
         /// <summary>
@@ -292,8 +261,6 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         private void SetHandler(IList items)
         {
-            if (!IsRedirected) return;
-
             foreach (var item in items)
             {
                 if (item is INotifyPropertyChanged e)
@@ -332,6 +299,7 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         private void WhenMemberChanged(object s, PropertyChangedEventArgs e)
         {
+            if (!IsRedirected) return;
             var index = IndexOf(s.TryCast<T>());
             if (index < 0) return;
 
@@ -343,7 +311,6 @@ namespace Cube.Xui
         #endregion
 
         #region Fields
-        private readonly SynchronizationContext _context;
         private readonly OnceAction<bool> _dispose;
         #endregion
     }

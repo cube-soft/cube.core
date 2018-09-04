@@ -15,8 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Cube.Xui
@@ -63,34 +61,7 @@ namespace Cube.Xui
         /// <param name="value">Initial value.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(T value) : this(value, SynchronizationContext.Current) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Bindable
-        ///
-        /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="value">Initial value.</param>
-        /// <param name="context">Synchronization context.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Bindable(T value, SynchronizationContext context)
-        {
-            Context = context;
-
-            var field = value;
-            _getter = () => field;
-            _setter = e =>
-            {
-                if (EqualityComparer<T>.Default.Equals(field, e)) return false;
-                field = e;
-                return true;
-            };
-        }
+        public Bindable(T value) : this(new Accessor<T>(value)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,14 +74,27 @@ namespace Cube.Xui
         ///
         /// <param name="getter">Function to get the value.</param>
         /// <param name="setter">Function to set the value.</param>
-        /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Func<T> getter, Func<T, bool> setter, SynchronizationContext context)
+        public Bindable(Getter<T> getter, Setter<T> setter) :
+            this(new Accessor<T>(getter, setter)) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bindable
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>Bindable</c> class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="accessor">Function to get and set value.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Bindable(Accessor<T> accessor)
         {
-            Context  = context;
-            _getter  = getter;
-            _setter  = setter;
+            Context   = SynchronizationContext.Current;
+            _accessor = accessor;
         }
 
         #endregion
@@ -128,15 +112,14 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public T Value
         {
-            get => _getter();
-            set { if (_setter(value)) RaisePropertyChanged(nameof(Value)); }
+            get => _accessor.Get();
+            set { if (_accessor.Set(value)) RaisePropertyChanged(nameof(Value)); }
         }
 
         #endregion
 
         #region Fields
-        private readonly Func<T> _getter;
-        private readonly Func<T, bool> _setter;
+        private readonly Accessor<T> _accessor;
         #endregion
     }
 }

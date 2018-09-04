@@ -59,7 +59,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public static Bindable<T> ToBindable<T>(this T src,
-            SynchronizationContext context) => new Bindable<T>(src, context);
+            SynchronizationContext context) => new Bindable<T>(src) { Context = context };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,24 +88,8 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src,
-            SynchronizationContext context) => new BindableCollection<T>(src, context);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBindable
-        ///
-        /// <summary>
-        /// BindableCollection オブジェクトに変換します。
-        /// </summary>
-        ///
-        /// <param name="src">変換元オブジェクト</param>
-        /// <param name="redirect">リダイレクト設定</param>
-        /// <param name="context">同期用コンテキスト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src,
-            bool redirect, SynchronizationContext context) =>
-            new BindableCollection<T>(src, redirect, context);
+            SynchronizationContext context) =>
+            new BindableCollection<T>(src) { Context = context };
 
         #endregion
     }

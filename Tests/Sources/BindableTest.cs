@@ -47,7 +47,7 @@ namespace Cube.Xui.Tests
         public void RaisePropertyChanged()
         {
             var ctx = SynchronizationContext.Current;
-            var src = new Bindable<Person>(null, ctx);
+            var src = new Bindable<Person> { Context = ctx };
 
             var count = 0;
             src.PropertyChanged += (s, e) => ++count;
@@ -72,7 +72,7 @@ namespace Cube.Xui.Tests
         public void Bindable_Context()
         {
             var value = new Person();
-            var src   = new Bindable<Person>(value, new SynchronizationContext());
+            var src   = new Bindable<Person>(value) { Context = new SynchronizationContext() };
             var count = 0;
             src.PropertyChanged += (s, e) => ++count;
             src.Value = value;

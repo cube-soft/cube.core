@@ -95,7 +95,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Add_Async()
         {
-            using (var src = new BindableCollection<Person>(new SynchronizationContext()))
+            using (var src = new BindableCollection<Person> { Context = new SynchronizationContext() })
             {
                 var count = 0;
                 src.CollectionChanged += (s, e) => ++count;
@@ -149,10 +149,11 @@ namespace Cube.Xui.Tests
         public int RaiseCollectionChanged(bool redirect)
         {
             var ctx = SynchronizationContext.Current;
-            using (var src = Create().ToBindable(redirect, ctx))
+            using (var src = Create().ToBindable(ctx))
             {
                 var count = 0;
 
+                src.IsRedirected = redirect;
                 src.CollectionChanged += (s, e) => ++count;
                 src.Add(new Person { Name = "Ken", Age = 20 });
                 src.Move(0, 2);
