@@ -26,8 +26,7 @@ namespace Cube.Xui
     /// BindableElement
     ///
     /// <summary>
-    /// Represents a bindable element that has two kinds of text (summary
-    /// and description) and a command.
+    /// Represents a bindable element that has text and command.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,20 +43,14 @@ namespace Cube.Xui
         /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="summary">Function to get summary.</param>
-        /// <param name="description">Function to get description.</param>
+        /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Func<string> summary, Func<string> description)
+        public BindableElement(Func<string> gettext)
         {
-            _dispose     = new OnceAction<bool>(Dispose);
-            _summary     = summary;
-            _description = description;
-            _registry    = ResourceCulture.Subscribe(() =>
-            {
-                RaisePropertyChanged(nameof(Summary));
-                RaisePropertyChanged(nameof(Description));
-            });
+            _dispose  = new OnceAction<bool>(Dispose);
+            _gettext  = gettext;
+            _registry = ResourceCulture.Subscribe(() => RaisePropertyChanged(nameof(Text)));
         }
 
         #endregion
@@ -66,25 +59,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Summary
+        /// Text
         ///
         /// <summary>
-        /// Gets the summary text.
+        /// Gets the text.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Summary => _summary();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Description
-        ///
-        /// <summary>
-        /// Gets the description text.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Description => _description();
+        public string Text => _gettext();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,8 +137,7 @@ namespace Cube.Xui
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
-        private readonly Func<string> _summary;
-        private readonly Func<string> _description;
+        private readonly Func<string> _gettext;
         private readonly IDisposable _registry;
         private ICommand _command;
         #endregion
@@ -167,8 +148,7 @@ namespace Cube.Xui
     /// BindableElement(T)
     ///
     /// <summary>
-    /// Represents a bindable element that has two kinds of text (summary
-    /// and description), a command, and a value.
+    /// Represents a bindable element that has text, command, and value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -185,12 +165,10 @@ namespace Cube.Xui
         /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="summary">Function to get summary.</param>
-        /// <param name="description">Function to get description.</param>
+        /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Func<string> summary, Func<string> description) :
-            this(default(T), summary, description) { }
+        public BindableElement(Func<string> gettext) : this(default(T), gettext) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -202,12 +180,10 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="value">Initial value.</param>
-        /// <param name="summary">Function to get summary.</param>
-        /// <param name="description">Function to get description.</param>
+        /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(T value, Func<string> summary, Func<string> description) :
-            base(summary, description)
+        public BindableElement(T value, Func<string> gettext) : base(gettext)
         {
             var field = value;
             _getter = () => field;
@@ -228,15 +204,12 @@ namespace Cube.Xui
         /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="getter">Function to get the value.</param>
-        /// <param name="setter">Function to set the value.</param>
-        /// <param name="summary">Function to get summary.</param>
-        /// <param name="description">Function to get description.</param>
+        /// <param name="getter">Function to get value.</param>
+        /// <param name="setter">Function to set value.</param>
+        /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Func<T> getter, Func<T, bool>setter,
-            Func<string> summary, Func<string> description) :
-            base(summary, description)
+        public BindableElement(Func<T> getter, Func<T, bool>setter, Func<string> gettext) : base(gettext)
         {
             _getter = getter;
             _setter = setter;
