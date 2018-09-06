@@ -119,6 +119,15 @@ namespace Cube.FileSystem.Tests
             Assert.That(sc.Exists, Is.False);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resolve
+        ///
+        /// <summary>
+        /// Tests the Resolve method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
         [Test]
         public void Resolve()
         {
@@ -134,11 +143,20 @@ namespace Cube.FileSystem.Tests
 
             sc0.Create();
             Assert.That(sc0.Exists, Is.True);
-
-            var sc1 = new Shortcut { FullName = src };
-            sc1.Resolve();
-            Assert.That(sc1.Target, Is.EqualTo(dest));
+            Assert.That(Shortcut.Resolve(src).Target, Is.EqualTo(dest));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resolve_Error
+        ///
+        /// <summary>
+        /// Tests to confirm the result with the non-existent link path.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Resolve_Error() => Assert.That(Shortcut.Resolve("dummy"), Is.Null);
 
         #endregion
 

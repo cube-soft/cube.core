@@ -83,12 +83,7 @@ namespace Cube.FileSystem
         public string FullName
         {
             get => _path;
-            set
-            {
-                _path = !string.IsNullOrEmpty(value) && !value.EndsWith(".lnk") ?
-                        value + ".lnk" :
-                        value;
-            }
+            set => _path = Normalize(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -133,7 +128,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => !string.IsNullOrEmpty(FullName) && _io.Exists(FullName);
+        public bool Exists => FullName.HasValue() && _io.Exists(FullName);
 
         #endregion
 
@@ -144,19 +139,43 @@ namespace Cube.FileSystem
         /// Resolve
         ///
         /// <summary>
-        /// Sets the Target property from the FullName property.
+        /// Creates the Shortcut object with the specified link path.
         /// </summary>
         ///
+        /// <param name="link">Link path.</param>
+        ///
+        /// <returns>Shortcut object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public void Resolve()
-        {
-            if (!Exists) return;
+        public static Shortcut Resolve(string link) => Resolve(link, new IO());
 
-            var sh = new WshShell();
-            if (sh.CreateShortcut(FullName) is IWshShortcut dest)
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Resolve
+        ///
+        /// <summary>
+        /// Creates the Shortcut object with the specified link path.
+        /// </summary>
+        ///
+        /// <param name="link">Link path.</param>
+        /// <param name="io">I/O object.</param>
+        ///
+        /// <returns>Shortcut object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Shortcut Resolve(string link, IO io)
+        {
+            var cvt = Normalize(link);
+            if (cvt.HasValue() && io.Exists(cvt))
             {
-                Target = dest.TargetPath.ToString();
+                var sh = new WshShell();
+                if (sh.CreateShortcut(cvt) is IWshShortcut dest) return new Shortcut(io)
+                {
+                    Target       = dest.TargetPath,
+                    IconLocation = dest.IconLocation,
+                };
             }
+            return null;
         }
 
         /* ----------------------------------------------------------------- */
@@ -168,7 +187,8 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Create() => Invoke(sh => {
+        public void Create() => Invoke(sh =>
+        {
             if (string.IsNullOrEmpty(Target) || !_io.Exists(Target)) return;
 
             var args = Arguments != null && Arguments.Count() > 0 ?
@@ -201,6 +221,18 @@ namespace Cube.FileSystem
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Normalize
+        ///
+        /// <summary>
+        /// Normalizes the link path
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string Normalize(string src) =>
+            src.HasValue() && !src.EndsWith(".lnk") ? src + ".lnk" : src;
 
         /* ----------------------------------------------------------------- */
         ///
