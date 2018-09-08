@@ -32,7 +32,7 @@ namespace Cube.FileSystem.TestService
     /* --------------------------------------------------------------------- */
     public static class Wait
     {
-        #region Methods
+        #region Wait.For
 
         /* ----------------------------------------------------------------- */
         ///
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static bool For(Func<bool> predicate) =>
-            For(predicate, 10000);
+            ForAsync(predicate).Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -65,7 +65,7 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static bool For(Func<bool> predicate, TimeSpan timeout) =>
-            For(predicate, (long)timeout.TotalMilliseconds);
+            ForAsync(predicate, timeout).Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,7 +82,7 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static bool For(Func<bool> predicate, long timeout) =>
-            InvokeAsync(predicate, timeout).Result;
+            ForAsync(predicate, timeout).Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,7 +97,7 @@ namespace Cube.FileSystem.TestService
         /// <returns>false for timeout.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool For(CancellationToken token) => For(token, 10000);
+        public static bool For(CancellationToken token) => ForAsync(token).Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -114,7 +114,7 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static bool For(CancellationToken token, long timeout) =>
-            For(token, TimeSpan.FromMilliseconds(timeout));
+            ForAsync(token, timeout).Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,26 +131,66 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static bool For(CancellationToken token, TimeSpan timeout) =>
-            InvokeAsync(token, timeout).Result;
+            ForAsync(token, timeout).Result;
 
         #endregion
 
-        #region Implementations
+        #region Wait.ForAsync
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InvokeAsync
+        /// ForAsync
         ///
         /// <summary>
         /// Waits for the result of the specified predicate to be true
         /// as an asynchronous operation.
         /// </summary>
         ///
+        /// <param name="predicate">Predicate object.</param>
+        ///
+        /// <returns>false for timeout.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        private static async Task<bool> InvokeAsync(Func<bool> predicate, long timeout)
+        public static Task<bool> ForAsync(Func<bool> predicate) =>
+            ForAsync(predicate, 10000);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ForAsync
+        ///
+        /// <summary>
+        /// Waits for the result of the specified predicate to be true
+        /// as an asynchronous operation.
+        /// </summary>
+        ///
+        /// <param name="predicate">Predicate object.</param>
+        /// <param name="timeout">Timeout value.</param>
+        ///
+        /// <returns>false for timeout.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Task<bool> ForAsync(Func<bool> predicate, TimeSpan timeout) =>
+            ForAsync(predicate, (long)timeout.TotalMilliseconds);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ForAsync
+        ///
+        /// <summary>
+        /// Waits for the result of the specified predicate to be true
+        /// as an asynchronous operation.
+        /// </summary>
+        ///
+        /// <param name="predicate">Predicate object.</param>
+        /// <param name="timeout">Timeout value.</param>
+        ///
+        /// <returns>false for timeout.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static async Task<bool> ForAsync(Func<bool> predicate, long timeout)
         {
             var unit = 100;
-            for (var i = 0; i < (timeout / unit) + 1; ++i)
+            for (var i = 0L; i < (timeout / unit) + 1; ++i)
             {
                 if (predicate()) return true;
                 await Task.Delay(unit).ConfigureAwait(false);
@@ -160,14 +200,52 @@ namespace Cube.FileSystem.TestService
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InvokeAsync
+        /// ForAsync
         ///
         /// <summary>
         /// Waits until the CancellationToken is fired.
         /// </summary>
         ///
+        /// <param name="token">Cancellation token.</param>
+        ///
+        /// <returns>false for timeout.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        private static async Task<bool> InvokeAsync(CancellationToken token, TimeSpan timeout)
+        public static Task<bool> ForAsync(CancellationToken token) =>
+            ForAsync(token, 10000);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ForAsync
+        ///
+        /// <summary>
+        /// Waits until the CancellationToken is fired.
+        /// </summary>
+        ///
+        /// <param name="token">Cancellation token.</param>
+        /// <param name="timeout">Timeout value.</param>
+        ///
+        /// <returns>false for timeout.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Task<bool> ForAsync(CancellationToken token, long timeout) =>
+            ForAsync(token, TimeSpan.FromMilliseconds(timeout));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ForAsync
+        ///
+        /// <summary>
+        /// Waits until the CancellationToken is fired.
+        /// </summary>
+        ///
+        /// <param name="token">Cancellation token.</param>
+        /// <param name="timeout">Timeout value.</param>
+        ///
+        /// <returns>false for timeout.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static async Task<bool> ForAsync(CancellationToken token, TimeSpan timeout)
         {
             try { await Task.Delay(timeout, token); }
             catch (OperationCanceledException) { return true; }
