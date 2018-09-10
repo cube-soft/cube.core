@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Collections.Generic;
 
 namespace Cube
@@ -88,6 +89,27 @@ namespace Cube
                 return true;
             };
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Accessor
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>Accessor</c> class with
+        /// the specified delegation.
+        /// </summary>
+        ///
+        /// <param name="getter">Function to get value.</param>
+        ///
+        /// <remarks>
+        /// 生成されたオブジェクトは読み込み専用となり、<c>Set</c>
+        /// メソッド実行時には <c>InvalidOperationException</c> が送出
+        /// されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Accessor(Getter<T> getter) :
+            this(getter, _ => throw new InvalidOperationException(nameof(Set))) { }
 
         /* ----------------------------------------------------------------- */
         ///
