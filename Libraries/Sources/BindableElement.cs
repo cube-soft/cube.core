@@ -197,6 +197,22 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="getter">Function to get value.</param>
+        /// <param name="gettext">Function to get text.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<T> getter, Getter<string> gettext) :
+            this(new Accessor<T>(getter), gettext) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="getter">Function to get value.</param>
         /// <param name="setter">Function to set value.</param>
         /// <param name="gettext">Function to get text.</param>
         ///
