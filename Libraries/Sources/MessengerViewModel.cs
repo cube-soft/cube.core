@@ -189,6 +189,62 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         protected void Send<T>(T message) => Context.Send(_ => MessengerInstance.Send(message), null);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Executes the specified action. When an error occurs,
+        /// the message of type DialogMessage is sent.
+        /// </summary>
+        ///
+        /// <param name="action">Action object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action) => Send(action, e => $"{e.Message} ({e.GetType().Name})");
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Executes the specified action. When an error occurs,
+        /// the message of type DialogMessage is sent.
+        /// </summary>
+        ///
+        /// <param name="action">Action object.</param>
+        /// <param name="converter">
+        /// Function object that converts from an Exception object to
+        /// the corresponding error message.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action, Func<Exception, string> converter) =>
+            Send(action, converter, GetTitle());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Executes the specified action. When an error occurs,
+        /// the message of type DialogMessage is sent.
+        /// </summary>
+        ///
+        /// <param name="action">Action object.</param>
+        /// <param name="converter">
+        /// Function object that converts from an Exception object to
+        /// the corresponding error message.
+        /// </param>
+        /// <param name="title">Title for the error dialog.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Send(Action action, Func<Exception, string> converter, string title)
+        {
+            try { action(); }
+            catch (Exception err) { Send(Create(converter(err), title)); }
+        }
+
         #endregion
 
         #region Post
