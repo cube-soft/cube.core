@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using Cube.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -242,7 +243,11 @@ namespace Cube.Xui
         protected void Send(Action action, Func<Exception, string> converter, string title)
         {
             try { action(); }
-            catch (Exception err) { Send(Create(converter(err), title)); }
+            catch (Exception err)
+            {
+                this.LogWarn(err.ToString(), err);
+                Send(Create(converter(err), title));
+            }
         }
 
         #endregion
@@ -331,7 +336,11 @@ namespace Cube.Xui
             Task.Run(() =>
             {
                 try { action(); }
-                catch (Exception err) { Post(Create(converter(err), title)); }
+                catch (Exception err)
+                {
+                    this.LogWarn(err.ToString(), err);
+                    Post(Create(converter(err), title));
+                }
             }).Forget();
 
         #endregion
