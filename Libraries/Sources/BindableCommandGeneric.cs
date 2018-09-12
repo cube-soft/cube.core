@@ -49,11 +49,20 @@ namespace Cube.Xui
         /// <param name="canExecute">実行可能かどうか</param>
         /// <param name="objects">関連付けるオブジェクト一覧</param>
         ///
+        /// <remarks>
+        /// execute および canExecute を private 変数に代入する記述を
+        /// 削除した場合、該当オブジェクトに対して予期しないタイミングで
+        /// GC によって開放される事があります。
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
         public BindableCommand(Action<T> execute, Func<T, bool> canExecute,
             params INotifyPropertyChanged[] objects) : base(execute, canExecute)
         {
-            _dispose = new OnceAction<bool>(Dispose);
+            _dispose    = new OnceAction<bool>(Dispose);
+            _execute    = execute;
+            _canExecute = canExecute;
+
             AssociatedObjects = objects;
             foreach (var obj in objects) obj.PropertyChanged += WhenChanged;
         }
@@ -148,6 +157,8 @@ namespace Cube.Xui
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
+        private readonly Action<T> _execute;
+        private readonly Func<T, bool> _canExecute;
         #endregion
     }
 }
