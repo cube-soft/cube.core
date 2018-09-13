@@ -33,6 +33,8 @@ namespace Cube.Xui
     {
         #region Methods
 
+        #region ToBindable
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToBindable
@@ -90,6 +92,26 @@ namespace Cube.Xui
         public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src,
             SynchronizationContext context) =>
             new BindableCollection<T>(src) { Context = context };
+
+        #endregion
+
+        #region Raise
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Raise
+        ///
+        /// <summary>
+        /// Raises a PropertyChanged event against the Value property.
+        /// </summary>
+        ///
+        /// <param name="src">Target object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Raise<T>(this Bindable<T> src) =>
+            src.RaisePropertyChanged(nameof(src.Value));
+
+        #endregion
 
         #endregion
     }
