@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Iteration;
+using Cube.Xui.Mixin;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading;

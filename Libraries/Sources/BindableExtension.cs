@@ -18,7 +18,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Cube.Xui
+namespace Cube.Xui.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
