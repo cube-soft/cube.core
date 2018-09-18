@@ -323,10 +323,7 @@ namespace Cube.FileSystem
         {
             if (e.OldValue != null) e.OldValue.PropertyChanged -= WhenChanged;
             if (e.NewValue != null) e.NewValue.PropertyChanged += WhenChanged;
-
             Value = e.NewValue;
-            Startup.Load();
-
             Loaded?.Invoke(this, e);
         }
 
