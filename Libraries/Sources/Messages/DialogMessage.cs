@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Reflection;
 using System.Windows;
 
@@ -77,7 +76,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage(string content, Assembly assembly, Action<DialogMessage> callback) :
+        public DialogMessage(string content, Assembly assembly, DialogCallback callback) :
             this(content, assembly.GetReader().Title, callback) { }
 
         /* ----------------------------------------------------------------- */
@@ -93,7 +92,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage(string content, string title, Action<DialogMessage> callback)
+        public DialogMessage(string content, string title, DialogCallback callback)
         {
             Content  = content;
             Title    = title;
@@ -113,7 +112,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Action<DialogMessage> Callback { get; }
+        public DialogCallback Callback { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -169,8 +168,24 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Result { get; set; } = true;
+        public MessageBoxResult Result { get; set; } = MessageBoxResult.OK;
 
         #endregion
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DialogCallback
+    ///
+    /// <summary>
+    /// Represents the method that will handle the user action after
+    /// closing the MessageBox.
+    /// </summary>
+    ///
+    /// <param name="e">
+    /// An object that contains the result of the MessageBox.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public delegate void DialogCallback(DialogMessage e);
 }

@@ -41,9 +41,7 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Invoke(DialogMessage e)
         {
-            var dest = MessageBox.Show(e.Content, e.Title, e.Button, e.Image);
-            e.Result = dest == MessageBoxResult.OK ||
-                       dest == MessageBoxResult.Yes;
+            e.Result = MessageBox.Show(e.Content, e.Title, e.Button, e.Image);
             e.Callback?.Invoke(e);
         }
     }

@@ -411,7 +411,7 @@ namespace Cube.Xui
             {
                 Button = System.Windows.MessageBoxButton.OK,
                 Image  = System.Windows.MessageBoxImage.Error,
-                Result = true,
+                Result = System.Windows.MessageBoxResult.OK,
             };
 
         /* --------------------------------------------------------------------- */
