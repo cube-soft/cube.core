@@ -86,7 +86,7 @@ namespace Cube.Xui.Tests
                 Assert.That(e.Title,          Is.EqualTo("Cube.Xui"));
                 Assert.That(e.Button,         Is.EqualTo(MessageBoxButton.OK));
                 Assert.That(e.Image,          Is.EqualTo(MessageBoxImage.Error));
-                Assert.That(e.Result,         Is.True);
+                Assert.That(e.Result,         Is.EqualTo(MessageBoxResult.OK));
                 ++count;
             });
 
@@ -122,7 +122,7 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Callback, Is.Null);
             Assert.That(dest.Button,   Is.EqualTo(MessageBoxButton.OK));
             Assert.That(dest.Image,    Is.EqualTo(MessageBoxImage.Error));
-            Assert.That(dest.Result,   Is.True);
+            Assert.That(dest.Result,   Is.EqualTo(MessageBoxResult.OK));
         });
 
         /* ----------------------------------------------------------------- */
