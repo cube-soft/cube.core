@@ -46,21 +46,45 @@ namespace Cube.Xui
         /// <typeparam name="TProperty">Property type.</typeparam>
         ///
         /// <param name="name">Property name.</param>
-        /// <param name="action">Action to set a new value.</param>
+        /// <param name="callback">Action to set a new value.</param>
         ///
         /// <returns>DependencyProperty object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static DependencyProperty Create<TOwner, TProperty>(
-            string name, Action<TOwner, TProperty> action)
+            string name, Action<TOwner, TProperty> callback)
+            where TOwner : DependencyObject =>
+            Create(name, default(TProperty), callback);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the DependencyProperty class
+        /// with the specified types and arguments.
+        /// </summary>
+        ///
+        /// <typeparam name="TOwner">Owner type.</typeparam>
+        /// <typeparam name="TProperty">Property type.</typeparam>
+        ///
+        /// <param name="name">Property name.</param>
+        /// <param name="value">Default value of the property.</param>
+        /// <param name="callback">Action to set a new value.</param>
+        ///
+        /// <returns>DependencyProperty object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DependencyProperty Create<TOwner, TProperty>(
+            string name, TProperty value, Action<TOwner, TProperty> callback)
             where TOwner : DependencyObject =>
             DependencyProperty.RegisterAttached(
                 name,
                 typeof(TProperty),
                 typeof(TOwner),
-                new PropertyMetadata(default(TProperty), (s, e) =>
+                new PropertyMetadata(value, (s, e) =>
                 {
-                    if (s is TOwner owner && e.NewValue is TProperty value) action(owner, value);
+                    if (s is TOwner owner && e.NewValue is TProperty v) callback(owner, v);
                 })
             );
 
