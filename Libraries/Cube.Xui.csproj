@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Behaviors\CloseBehavior.cs" />
+    <Compile Include="Sources\Behaviors\CommandBehavior.cs" />
     <Compile Include="Sources\Behaviors\DialogBehavior.cs" />
     <Compile Include="Sources\Behaviors\DirectoryDialogBehavior.cs" />
     <Compile Include="Sources\Behaviors\EditBehavior.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Sources\BindableElement.cs" />
     <Compile Include="Sources\BindableExtension.cs" />
     <Compile Include="Sources\CommandExtension.cs" />
+    <Compile Include="Sources\DependencyFactory.cs" />
     <Compile Include="Sources\IListItem.cs" />
     <Compile Include="Sources\LoggerExtension.cs" />
     <Compile Include="Sources\MessengerViewModel.cs" />
