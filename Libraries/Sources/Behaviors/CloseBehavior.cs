@@ -109,7 +109,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenClosing(object sender, CancelEventArgs e)
+        private void WhenClosing(object s, CancelEventArgs e)
         {
             if (Command?.CanExecute(e) ?? false) Command.Execute(e);
         }
