@@ -74,6 +74,7 @@
     <Compile Include="Sources\Behaviors\EditBehavior.cs" />
     <Compile Include="Sources\Behaviors\FileDialogBehavior.cs" />
     <Compile Include="Sources\Behaviors\MessengerBehavior.cs" />
+    <Compile Include="Sources\Behaviors\PasswordBehavior.cs" />
     <Compile Include="Sources\Behaviors\SelectionBehavior.cs" />
     <Compile Include="Sources\Behaviors\ShowBehavior.cs" />
     <Compile Include="Sources\Behaviors\UpdateSourceBehavior.cs" />
