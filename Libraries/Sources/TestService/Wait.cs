@@ -152,7 +152,7 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static Task<bool> ForAsync(Func<bool> predicate) =>
-            ForAsync(predicate, 10000);
+            ForAsync(predicate, 3000);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -212,7 +212,7 @@ namespace Cube.FileSystem.TestService
         ///
         /* ----------------------------------------------------------------- */
         public static Task<bool> ForAsync(CancellationToken token) =>
-            ForAsync(token, 10000);
+            ForAsync(token, 3000);
 
         /* ----------------------------------------------------------------- */
         ///
