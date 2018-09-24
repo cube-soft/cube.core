@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Cube.Core</id>
-    <version>1.10.0</version>
+    <version>1.11.0</version>
     <title>Cube.Core</title>
     <authors>CubeSoft</authors>
     <owners>CubeSoft</owners>
@@ -19,7 +19,7 @@
       </group>
       <group targetFramework="net35">
         <dependency id="AsyncBridge" version="0.3.1" />
-        <dependency id="Cube.Backwards" version="1.4.1" />
+        <dependency id="Cube.Backwards" version="1.5.0" />
         <dependency id="log4net" version="2.0.8" />
         <dependency id="TaskParallelLibrary" version="1.0.2856.0" />
       </group>
