@@ -21,6 +21,7 @@ build:
 test_script:
     - >
       ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe
+      -log:Error
       -register:user
       -target:nunit3-console.exe
       -targetargs:Cube.FileSystem.Tests.dll
@@ -28,7 +29,7 @@ test_script:
       -returntargetcode
       -hideskipped:All
       -output:CoverResult.xml
-      -filter:"+[*]* -[AlphaFS]* -[*]*NativeMethods -[*]*Properties.*"
+      -filter:"+[*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov

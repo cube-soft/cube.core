@@ -4,9 +4,9 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
     <copyright>$copyright$</copyright>
+    <authors>CubeSoft</authors>
+    <owners>CubeSoft</owners>
     <description>I/O library for CubeSoft applications.</description>
     <tags>Cube IO</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
