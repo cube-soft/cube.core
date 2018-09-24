@@ -4,9 +4,9 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
     <copyright>$copyright$</copyright>
+    <authors>CubeSoft</authors>
+    <owners>CubeSoft</owners>
     <description>WPF based GUI Library for CubeSoft applications.</description>
     <tags>Cube WPF</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
