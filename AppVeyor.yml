@@ -20,6 +20,7 @@ build:
 test_script:
     - >
       ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe
+      -log:Error
       -register:user
       -target:nunit3-console.exe
       -targetargs:Cube.Core.Tests.dll
