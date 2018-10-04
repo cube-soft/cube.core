@@ -34,6 +34,8 @@ namespace Cube.Collections.Mixin
     {
         #region Methods
 
+        #region IEnumerable<T>
+
         /* ----------------------------------------------------------------- */
         ///
         /// FirstIndex(T)
@@ -197,6 +199,93 @@ namespace Cube.Collections.Mixin
         /* ----------------------------------------------------------------- */
         public static int Clamp<T>(this IEnumerable<T> src, int index) =>
             Math.Max(Math.Min(index, src.LastIndexOf()), 0);
+
+        #endregion
+
+        #region IEnumerable<int>
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OrderBy
+        ///
+        /// <summary>
+        /// Sorts the elements of a sequence in ascending order.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        ///
+        /// <returns>
+        /// IEnumerable(int) whose elements are sorted.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<int> OrderBy(this IEnumerable<int> src) =>
+            src.OrderBy(i => i);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OrderByDecending
+        ///
+        /// <summary>
+        /// Sorts the elements of a sequence in decending order.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        ///
+        /// <returns>
+        /// IEnumerable(int) whose elements are sorted.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<int> OrderByDecending(this IEnumerable<int> src) =>
+            src.OrderByDescending(i => i);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Within
+        ///
+        /// <summary>
+        /// Gets the elements of a sequence that is within the range of
+        /// [begin, end).
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        /// <param name="begin">Lower limit of the range.</param>
+        /// <param name="end">
+        /// Upper limit of the range (The value is not included).
+        /// </param>
+        ///
+        /// <returns>
+        /// IEnumerable(int) whose elements are within the [begin, end).
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<int> Within(this IEnumerable<int> src, int begin, int end) =>
+            src.Where(i => i >= begin && i < end);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Within
+        ///
+        /// <summary>
+        /// Gets the elements of a sequence that is within the range of
+        /// [0, n).
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        /// <param name="n">
+        /// Upper limit of the range (The value is not included).
+        /// </param>
+        ///
+        /// <returns>
+        /// IEnumerable(int) whose elements are within the [0, n).
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<int> Within(this IEnumerable<int> src, int n) =>
+            src.Within(0, n);
+
+        #endregion
 
         #endregion
     }
