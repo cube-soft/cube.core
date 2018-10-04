@@ -177,7 +177,7 @@ namespace Cube.Tests
         {
             src.Interval = TimeSpan.FromHours(1);
             Assert.That(src.LastPublished.HasValue, Is.False);
-            Assert.That(Execute(src, 100, 1), "Timeout");
+            Assert.That(Execute(src, 200, 1), "Timeout");
             Assert.That(src.LastPublished, Is.Not.EqualTo(DateTime.MinValue));
         });
 
