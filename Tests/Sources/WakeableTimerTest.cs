@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Tasks;
 using NUnit.Framework;
 using System;
 using System.Threading;
@@ -204,9 +205,8 @@ namespace Cube.Tests
                 src.Stop();
                 cts.Cancel();
             });
-            src.Start();
 
-            Assert.That(Wait(cts), "Timeout");
+            Assert.That(Execute(src, 0, cts), "Timeout");
             Assert.That(count, Is.EqualTo(1));
         });
 
@@ -239,9 +239,7 @@ namespace Cube.Tests
             Assert.That(count, Is.EqualTo(0));
             Task.Delay(300).Wait();
             Assert.That(count, Is.EqualTo(0));
-
-            src.Start();
-            Assert.That(Wait(cts), "Timeout");
+            Assert.That(Execute(src, 0, cts), "Timeout");
             Assert.That(count, Is.EqualTo(1));
         });
 
@@ -290,6 +288,32 @@ namespace Cube.Tests
         ///
         /// <param name="src">Timer object.</param>
         /// <param name="msec">Initial delay.</param>
+        /// <param name="cts">Cancellation token.</param>
+        ///
+        /// <returns>true for success.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool Execute(WakeableTimer src, int msec, CancellationTokenSource cts)
+        {
+            Task.Run(() =>
+            {
+                if (msec <= 0) src.Start();
+                else src.Start(TimeSpan.FromMilliseconds(msec));
+            }).Forget();
+
+            return Wait(cts);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute
+        ///
+        /// <summary>
+        /// Waits for the timer to execue the specified number of callbacks.
+        /// </summary>
+        ///
+        /// <param name="src">Timer object.</param>
+        /// <param name="msec">Initial delay.</param>
         /// <param name="count">
         /// Number of callbacks that the timer waits.
         /// </param>
@@ -311,10 +335,7 @@ namespace Cube.Tests
                 }
             });
 
-            if (msec <= 0) src.Start();
-            else src.Start(TimeSpan.FromMilliseconds(msec));
-
-            return Wait(cts);
+            return Execute(src, msec, cts);
         }
 
         #endregion
