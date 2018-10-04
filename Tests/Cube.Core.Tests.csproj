@@ -77,11 +77,11 @@
     <Compile Include="Sources\Extensions\StringExtensionTest.cs" />
     <Compile Include="Sources\Extensions\TaskExtensionTest.cs" />
     <Compile Include="Sources\Extensions\XmlExtensionTest.cs" />
-    <Compile Include="Sources\Processes\MessengerTest.cs" />
     <Compile Include="Sources\AssemblyReaderTest.cs" />
     <Compile Include="Sources\DataContractTest.cs" />
     <Compile Include="Sources\DisposableTest.cs" />
     <Compile Include="Sources\FileFixtureTest.cs" />
+    <Compile Include="Sources\IpcTest.cs" />
     <Compile Include="Sources\LoggerTest.cs" />
     <Compile Include="Sources\OnceActionTest.cs" />
     <Compile Include="Sources\OnceInitializerTest.cs" />

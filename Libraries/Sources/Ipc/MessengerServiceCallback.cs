@@ -21,7 +21,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 
-namespace Cube.Processes
+namespace Cube.Ipc
 {
     /* --------------------------------------------------------------------- */
     ///

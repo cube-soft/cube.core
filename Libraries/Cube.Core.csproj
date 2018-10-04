@@ -87,9 +87,9 @@
     <Compile Include="Sources\Extensions\StringExtension.cs" />
     <Compile Include="Sources\Extensions\TaskExtension.cs" />
     <Compile Include="Sources\Extensions\XmlExtension.cs" />
-    <Compile Include="Sources\Processes\Messenger.cs" />
-    <Compile Include="Sources\Processes\MessengerService.cs" />
-    <Compile Include="Sources\Processes\MessengerServiceCallback.cs" />
+    <Compile Include="Sources\Ipc\Messenger.cs" />
+    <Compile Include="Sources\Ipc\MessengerService.cs" />
+    <Compile Include="Sources\Ipc\MessengerServiceCallback.cs" />
     <Compile Include="Sources\Accessor.cs" />
     <Compile Include="Sources\AssemblyReader.cs" />
     <Compile Include="Sources\Disposable.cs" />

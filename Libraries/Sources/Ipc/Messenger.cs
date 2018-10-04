@@ -22,7 +22,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Threading;
 
-namespace Cube.Processes
+namespace Cube.Ipc
 {
     /* --------------------------------------------------------------------- */
     ///
