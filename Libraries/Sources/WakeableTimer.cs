@@ -289,11 +289,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void Reset()
-        {
-            Next = DateTime.Now + Interval;
-            _core.Interval = Interval.TotalMilliseconds;
-        }
+        public virtual void Reset() => OnReset();
 
         #region IDisposable
 
@@ -344,6 +340,21 @@ namespace Cube
         #endregion
 
         #region Protected
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnReset
+        ///
+        /// <summary>
+        /// Resets inner fields.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnReset()
+        {
+            Next = DateTime.Now + Interval;
+            _core.Interval = Interval.TotalMilliseconds;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
