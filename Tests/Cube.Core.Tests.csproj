@@ -67,6 +67,7 @@
     <Compile Include="Sources\Events\ProgressEventArgsTest.cs" />
     <Compile Include="Sources\Events\QueryEventArgsTest.cs" />
     <Compile Include="Sources\Events\RelayEventTest.cs" />
+    <Compile Include="Sources\Events\SubscriptionTest.cs" />
     <Compile Include="Sources\Events\ValueEventArgsTest.cs" />
     <Compile Include="Sources\Extensions\Conversions\ByteFormatTest.cs" />
     <Compile Include="Sources\Extensions\Conversions\TimeFormatTest.cs" />

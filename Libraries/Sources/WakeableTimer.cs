@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Log;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -139,7 +138,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IList<Func<Task>> Subscriptions { get; } = new List<Func<Task>>();
+        protected Subscription Subscription { get; } = new Subscription();
 
         #endregion
 
@@ -253,16 +252,12 @@ namespace Cube
         /// operation to the timer.
         /// </summary>
         ///
-        /// <param name="action">Asynchronous user action.</param>
+        /// <param name="callback">Asynchronous user action.</param>
         ///
         /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable SubscribeAsync(Func<Task> action)
-        {
-            Subscriptions.Add(action);
-            return Disposable.Create(() => Subscriptions.Remove(action));
-        }
+        public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.SubscribeAsync(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -272,16 +267,12 @@ namespace Cube
         /// Sets the specified action to the timer.
         /// </summary>
         ///
-        /// <param name="action">User action.</param>
+        /// <param name="callback">User action.</param>
         ///
         /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action action) => SubscribeAsync(() =>
-        {
-            action();
-            return Task.FromResult(0);
-        });
+        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -367,25 +358,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PublishAsync
-        ///
-        /// <summary>
-        /// Publishes an event as an asynchronous operation to each
-        /// subscription.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual async Task PublishAsync()
-        {
-            foreach (var action in Subscriptions)
-            {
-                if (State != TimerState.Run) return;
-                await action().ConfigureAwait(false);
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Resume
         ///
         /// <summary>
@@ -465,7 +437,7 @@ namespace Cube
             try
             {
                 LastPublished = e.SignalTime;
-                await PublishAsync().ConfigureAwait(false);
+                await Subscription.PublishAsync().ConfigureAwait(false);
             }
             finally
             {

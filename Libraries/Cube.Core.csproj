@@ -77,6 +77,7 @@
     <Compile Include="Sources\Events\ProgressEventArgs.cs" />
     <Compile Include="Sources\Events\QueryEventArgs.cs" />
     <Compile Include="Sources\Events\RelayEvent.cs" />
+    <Compile Include="Sources\Events\Subscription.cs" />
     <Compile Include="Sources\Events\ValueEventArgs.cs" />
     <Compile Include="Sources\Extensions\Conversions\ByteFormat.cs" />
     <Compile Include="Sources\Extensions\Conversions\TimeFormat.cs" />
