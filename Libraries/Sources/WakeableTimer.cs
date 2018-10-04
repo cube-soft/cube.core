@@ -28,7 +28,8 @@ namespace Cube
     /// WakeableTimer
     ///
     /// <summary>
-    /// 端末の電源状態に応じて一時停止、再起動を行うタイマーです。
+    /// Represents the timer that suspends/resumes corresponding to the
+    /// power mode.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,7 +42,7 @@ namespace Cube
         /// WakeableTimer
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the WakeableTimer class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,10 +53,11 @@ namespace Cube
         /// WakeableTimer
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the WakeableTimer class with the
+        /// specified interval.
         /// </summary>
         ///
-        /// <param name="interval">実行周期</param>
+        /// <param name="interval">Execution interval.</param>
         ///
         /* ----------------------------------------------------------------- */
         public WakeableTimer(TimeSpan interval)
@@ -76,7 +78,7 @@ namespace Cube
         /// Interval
         ///
         /// <summary>
-        /// 実行間隔を取得または設定します。
+        /// Gets or sets the execution interval.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -96,7 +98,7 @@ namespace Cube
         /// LastPublished
         ///
         /// <summary>
-        /// 最後に Publish が実行された日時を取得します。
+        /// Gets the time of latest Publishing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -107,7 +109,7 @@ namespace Cube
         /// Next
         ///
         /// <summary>
-        /// 次回の実行予定日時を取得または設定します。
+        /// Gets or sets the time to be published.
         /// </summary>
         ///
         /// <remarks>
@@ -122,7 +124,7 @@ namespace Cube
         /// State
         ///
         /// <summary>
-        /// オブジェクトの状態を取得します。
+        /// Gets the current timer state.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -133,7 +135,7 @@ namespace Cube
         /// Subscriptions
         ///
         /// <summary>
-        /// 購読者一覧を取得します。
+        /// Ges the collection of subscriptions.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -148,7 +150,7 @@ namespace Cube
         /// PowerModeChanged
         ///
         /// <summary>
-        /// 電源状態が変更された時に発生するイベントです。
+        /// Occurs when the power mode of the computer is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -159,7 +161,7 @@ namespace Cube
         /// OnPowerModeChanged
         ///
         /// <summary>
-        /// PowerModeChanged イベントを発生させます。
+        /// Raises the PowerModeChanged event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -178,7 +180,7 @@ namespace Cube
         /// Start
         ///
         /// <summary>
-        /// タイマーを開始します。
+        /// Starts or resumes the timer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -189,10 +191,10 @@ namespace Cube
         /// Start
         ///
         /// <summary>
-        /// タイマーを開始します。
+        /// Starts or resumes the timer with the specified time.
         /// </summary>
         ///
-        /// <param name="delay">初期遅延時間</param>
+        /// <param name="delay">Initial delay.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Start(TimeSpan delay)
@@ -214,7 +216,7 @@ namespace Cube
         /// Stop
         ///
         /// <summary>
-        /// スケジューリングを停止します。
+        /// Stops the timer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -230,7 +232,7 @@ namespace Cube
         /// Suspend
         ///
         /// <summary>
-        /// タイマーを一時停止します。
+        /// Suspends the timer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -247,12 +249,13 @@ namespace Cube
         /// SubscribeAsync
         ///
         /// <summary>
-        /// 一定間隔で実行される非同期処理を登録します。
+        /// Sets the specified action that runs as an asynchronous
+        /// operation to the timer.
         /// </summary>
         ///
-        /// <param name="action">非同期処理を表すオブジェクト</param>
+        /// <param name="action">Asynchronous user action.</param>
         ///
-        /// <returns>登録を解除するためのオブジェクト</returns>
+        /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable SubscribeAsync(Func<Task> action)
@@ -266,12 +269,12 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// 一定間隔で実行される処理を登録します。
+        /// Sets the specified action to the timer.
         /// </summary>
         ///
-        /// <param name="action">処理を表すオブジェクト</param>
+        /// <param name="action">User action.</param>
         ///
-        /// <returns>登録を解除するためのオブジェクト</returns>
+        /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe(Action action) => SubscribeAsync(() =>
@@ -285,7 +288,7 @@ namespace Cube
         /// Reset
         ///
         /// <summary>
-        /// 内部状態をリセットします。
+        /// Resets some condition.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -298,7 +301,7 @@ namespace Cube
         /// ~WakeableTimer
         ///
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// Finalizes the WakeableTimer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -309,7 +312,7 @@ namespace Cube
         /// Dispose
         ///
         /// <summary>
-        /// リソースを破棄します。
+        /// Releases all resources used by the WakeableTimer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -324,8 +327,14 @@ namespace Cube
         /// Dispose
         ///
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// Releases the unmanaged resources used by the WakeableTimer
+        /// and optionally releases the managed resources.
         /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
@@ -361,7 +370,8 @@ namespace Cube
         /// PublishAsync
         ///
         /// <summary>
-        /// イベントを発行します。
+        /// Publishes an event as an asynchronous operation to each
+        /// subscription.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -379,7 +389,7 @@ namespace Cube
         /// Resume
         ///
         /// <summary>
-        /// 一時停止していたタイマーを再開します。
+        /// Resumes the timer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -412,7 +422,8 @@ namespace Cube
         /// UpdateState
         ///
         /// <summary>
-        /// PowerMode に応じて State を変更します。
+        /// Updates the timer state corresponding to the specified power
+        /// mode.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -436,7 +447,7 @@ namespace Cube
         /// WhenPublished
         ///
         /// <summary>
-        /// 一定間隔で実行されるハンドラです。
+        /// Occurs at regular intervals.
         /// </summary>
         ///
         /// <remarks>
@@ -486,19 +497,19 @@ namespace Cube
     /// TimerState
     ///
     /// <summary>
-    /// 各種 Timer オブジェクトの状態を表すための列挙型です。
+    /// Specifies the timer state.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public enum TimerState
     {
-        /// <summary>実行中</summary>
+        /// <summary>Run</summary>
         Run = 0,
-        /// <summary>停止</summary>
+        /// <summary>Stop</summary>
         Stop = 1,
-        /// <summary>一時停止</summary>
+        /// <summary>Suspend</summary>
         Suspend = 2,
-        /// <summary>不明</summary>
+        /// <summary>Unknown</summary>
         Unknown = -1
     }
 }

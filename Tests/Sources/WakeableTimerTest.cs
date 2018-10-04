@@ -27,7 +27,7 @@ namespace Cube.Tests
     /// WakeableTimerTest
     ///
     /// <summary>
-    /// WakeableTimer のテスト用クラスです。
+    /// Tests for the WakeableTimer class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -214,10 +214,10 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Resume_Immediately
+        /// Resume
         ///
         /// <summary>
-        /// Suspend からの復帰後に即実行されるケースのテストを実行します。
+        /// Executes the test of Suspend/Resume commands.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
