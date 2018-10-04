@@ -202,7 +202,7 @@ namespace Cube.Tests
             src.SubscribeAsync(async () =>
             {
                 ++count;
-                await Task.Delay(200);
+                await Task.Delay(200).ConfigureAwait(false);
                 src.Stop();
                 cts.Cancel();
             });
