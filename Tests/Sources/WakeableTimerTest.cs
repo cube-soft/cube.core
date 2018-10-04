@@ -125,18 +125,16 @@ namespace Cube.Tests
             src.Start();
 
             pmc.Mode = PowerModes.Suspend;
-            Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
-            Assert.That(Power.Mode,  Is.EqualTo(PowerModes.Suspend));
+            Assert.That(Power.Mode, Is.EqualTo(PowerModes.Suspend));
+            Assert.That(src.State,  Is.EqualTo(TimerState.Suspend));
 
             pmc.Mode = PowerModes.Resume;
-            Assert.That(src.State, Is.EqualTo(TimerState.Run));
-            Assert.That(Power.Mode,  Is.EqualTo(PowerModes.Resume));
+            Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
+            Assert.That(src.State,  Is.EqualTo(TimerState.Run));
 
             src.Stop();
-            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-            Assert.That(Power.Mode,  Is.EqualTo(PowerModes.Resume));
-
-            Assert.That(count, Is.EqualTo(2), nameof(src.PowerModeChanged));
+            Assert.That(src.State,  Is.EqualTo(TimerState.Stop));
+            Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
         });
 
         /* ----------------------------------------------------------------- */

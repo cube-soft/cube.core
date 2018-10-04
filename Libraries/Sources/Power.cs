@@ -15,8 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Cube
 {
@@ -25,7 +28,7 @@ namespace Cube
     /// Power
     ///
     /// <summary>
-    /// 電源状況を検証するためのクラスです。
+    /// Provides functionality to observe power mode of the computer.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,17 +41,18 @@ namespace Cube
         /// Power
         ///
         /// <summary>
-        /// 静的オブジェクトを初期化します。
+        /// Initializes a static fields of the Power class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         static Power()
         {
             _context = new PowerModeContext(PowerModes.Resume);
-            _context.PropertyChanged += WhenChanged;
-
-            Microsoft.Win32.SystemEvents.PowerModeChanged +=
-                (s, e) => _context.Mode = (PowerModes)((int)e.Mode);
+            _context.PropertyChanged += WhenPropertyChanged;
+            _initializer = new OnceInitializer(
+                () => SystemEvents.PowerModeChanged += WhenModeChanged,
+                () => SystemEvents.PowerModeChanged -= WhenModeChanged
+            );
         }
 
         #endregion
@@ -60,7 +64,7 @@ namespace Cube
         /// Mode
         ///
         /// <summary>
-        /// 電源状態を取得します。
+        /// Gets the power mode.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -68,29 +72,26 @@ namespace Cube
 
         #endregion
 
-        #region Events
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ModeChanged
+        /// Subscribe
         ///
         /// <summary>
-        /// 電源状態が変化した時に発生するイベントです。
+        /// Registers the callback to subscription.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static event EventHandler ModeChanged;
-
-        #endregion
-
-        #region Methods
+        public static IDisposable Subscribe(Action callback) =>
+            _subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Configure
         ///
         /// <summary>
-        /// PowerModeContext オブジェクトを差し換えます。
+        /// Sets the PowerModeContext object.
         /// </summary>
         ///
         /// <remarks>
@@ -101,14 +102,10 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Configure(PowerModeContext context)
         {
-            System.Diagnostics.Debug.Assert(context != null);
-            lock (_lock)
-            {
-                _context.PropertyChanged -= WhenChanged;
-                _context = context;
-                _context.PropertyChanged -= WhenChanged;
-                _context.PropertyChanged += WhenChanged;
-            }
+            Debug.Assert(context != null);
+            Interlocked.Exchange(ref _context, context).PropertyChanged -= WhenPropertyChanged;
+            context.PropertyChanged -= WhenPropertyChanged;
+            context.PropertyChanged += WhenPropertyChanged;
         }
 
         #endregion
@@ -117,27 +114,37 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenChanged
+        /// WhenPropertyChanged
         ///
         /// <summary>
-        /// PowerModeContext.PropertyChanged イベント発生時に実行される
-        /// ハンドラです。必要に応じて ModeChanged イベントを発生させます。
+        /// Occurs when the PropertyChanged event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void WhenChanged(object s, PropertyChangedEventArgs e)
+        private static async void WhenPropertyChanged(object s, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_context.Mode))
-            {
-                ModeChanged?.Invoke(null, EventArgs.Empty);
-            }
+            if (e.PropertyName != nameof(_context.Mode)) return;
+            await _subscription.Publish();
         }
 
-        #region Fields
-        private static PowerModeContext _context;
-        private static readonly object _lock = new object();
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenModeChanged
+        ///
+        /// <summary>
+        /// Occurs when the PowerModeChanged event is fired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void WhenModeChanged(object s, PowerModeChangedEventArgs e) =>
+            _context.Mode = (PowerModes)((int)e.Mode);
+
         #endregion
 
+        #region Fields
+        private static readonly OnceInitializer _initializer;
+        private static readonly Subscription _subscription = new Subscription();
+        private static PowerModeContext _context;
         #endregion
     }
 
@@ -146,7 +153,7 @@ namespace Cube
     /// PowerModeContext
     ///
     /// <summary>
-    /// 電源の状態を保持するためのクラスです。
+    /// Represents the power mode.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -159,10 +166,11 @@ namespace Cube
         /// PowerModeContext
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the PowerModeContext class
+        /// with the specified value.
         /// </summary>
         ///
-        /// <param name="mode">電源状態</param>
+        /// <param name="mode">Initial value for power mode.</param>
         ///
         /* ----------------------------------------------------------------- */
         public PowerModeContext(PowerModes mode)
@@ -179,7 +187,7 @@ namespace Cube
         /// Mode
         ///
         /// <summary>
-        /// 電源状態を取得または設定します。
+        /// Gets or sets the power mode.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -198,8 +206,8 @@ namespace Cube
         /// IgnoreStatusChanged
         ///
         /// <summary>
-        /// PowerModes.StatusChanged を無視するかどうかを示す値を取得
-        /// または設定します。
+        /// Gets or sets the value indicating whether ignoring the
+        /// StatusChanged value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -222,7 +230,7 @@ namespace Cube
     /// PowerModes
     ///
     /// <summary>
-    /// 電源状態を表す列挙型です。
+    /// Specifies the power mode.
     /// </summary>
     ///
     /// <remarks>
@@ -233,11 +241,11 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public enum PowerModes
     {
-        /// <summary>復帰状態</summary>
+        /// <summary>Resume</summary>
         Resume = Microsoft.Win32.PowerModes.Resume,
-        /// <summary>電源状態が変化した事を示す</summary>
+        /// <summary>Status is changed</summary>
         StatusChange = Microsoft.Win32.PowerModes.StatusChange,
-        /// <summary>一時停止中</summary>
+        /// <summary>Suspend</summary>
         Suspend = Microsoft.Win32.PowerModes.Suspend,
     }
 }

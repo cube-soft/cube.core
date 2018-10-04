@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System;
 
 namespace Cube.Tests
 {
@@ -25,34 +24,35 @@ namespace Cube.Tests
     /// PowerTest
     ///
     /// <summary>
-    /// Power のテスト用クラスです。
+    /// Tests for the Power class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class PowerTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// ModeChanged
+        /// Subscribe
         ///
         /// <summary>
-        /// ModeChanged イベントの発生状況を確認します。
+        /// Executes the test for observing the PowerModeChanged event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(true,  ExpectedResult = 2)]
         [TestCase(false, ExpectedResult = 4)]
-        public int ModeChanged(bool ignore)
+        public int Subscribe(bool ignore)
         {
-            var count = 0;
-            void handler(object s, EventArgs e) => ++count;
-
             var mock = new PowerModeContext(Power.Mode);
             Power.Configure(mock);
             mock.IgnoreStatusChanged = ignore;
 
-            Power.ModeChanged += handler;
+            var count  = 0;
+            var powewr = Power.Subscribe(() => ++count);
+
             mock.Mode = PowerModes.Resume;       // Resume -> Resume
             mock.Mode = PowerModes.StatusChange; // Resume -> StatusChange
             mock.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
@@ -60,11 +60,14 @@ namespace Cube.Tests
             mock.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
             mock.Mode = PowerModes.Resume;       // StatusChange -> Resume
 
-            Power.ModeChanged -= handler;
+            powewr.Dispose();
+
             mock.Mode = PowerModes.Suspend;
             mock.Mode = PowerModes.Resume;
 
             return count;
         }
+
+        #endregion
     }
 }

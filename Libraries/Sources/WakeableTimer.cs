@@ -61,11 +61,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public WakeableTimer(TimeSpan interval)
         {
-            _interval = interval;
             _dispose  = new OnceAction<bool>(Dispose);
+            _power    = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
+            _interval = interval;
             _core.AutoReset = false;
             _core.Elapsed += WhenPublished;
-            Power.ModeChanged += (s, e) => OnPowerModeChanged(e);
         }
 
         #endregion
@@ -245,6 +245,21 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Sets the specified action to the timer.
+        /// </summary>
+        ///
+        /// <param name="callback">User action.</param>
+        ///
+        /// <returns>Disposable object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(callback);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SubscribeAsync
         ///
         /// <summary>
@@ -258,21 +273,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.SubscribeAsync(callback);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Sets the specified action to the timer.
-        /// </summary>
-        ///
-        /// <param name="callback">User action.</param>
-        ///
-        /// <returns>Disposable object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -334,6 +334,7 @@ namespace Cube
             {
                 State = TimerState.Stop;
                 _core.Dispose();
+                _power.Dispose();
             }
         }
 
@@ -416,6 +417,30 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// UpdateNext
+        ///
+        /// <summary>
+        /// Updates the Next property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void UpdateNext(DateTime src)
+        {
+            var user = Interval.TotalMilliseconds;
+            var diff = (DateTime.Now - src).TotalMilliseconds;
+            var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
+
+            Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
+
+            if (State == TimerState.Run)
+            {
+                _core.Interval = time;
+                _core.Start();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// WhenPublished
         ///
         /// <summary>
@@ -433,32 +458,17 @@ namespace Cube
         private async void WhenPublished(object s, ElapsedEventArgs e)
         {
             if (State != TimerState.Run) return;
+            LastPublished = e.SignalTime;
 
-            try
-            {
-                LastPublished = e.SignalTime;
-                await Subscription.PublishAsync().ConfigureAwait(false);
-            }
-            finally
-            {
-                var user = Interval.TotalMilliseconds;
-                var diff = (DateTime.Now - LastPublished).Value.TotalMilliseconds;
-                var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
-
-                Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
-
-                if (State == TimerState.Run)
-                {
-                    _core.Interval = time;
-                    _core.Start();
-                }
-            }
+            try { await Subscription.Publish().ConfigureAwait(false); }
+            finally { UpdateNext(e.SignalTime); }
         }
 
         #endregion
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
+        private readonly IDisposable _power;
         private readonly Timer _core = new Timer();
         private TimeSpan _interval;
         #endregion

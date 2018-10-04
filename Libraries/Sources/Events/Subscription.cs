@@ -63,10 +63,25 @@ namespace Cube
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public async Task PublishAsync()
+        public async Task Publish()
         {
             foreach (var kv in _inner) await kv.Value().ConfigureAwait(false);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Add the specified callback to the subscription.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IDisposable Subscribe(Action callback) => SubscribeAsync(() =>
+        {
+            callback();
+            return Task.FromResult(0);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -85,18 +100,6 @@ namespace Cube
             Debug.Assert(ok);
             return Disposable.Create(() => _inner.TryRemove(key, out var _));
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SubscribeAsync
-        ///
-        /// <summary>
-        /// Add the specified callback to the subscription.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action callback) =>
-            SubscribeAsync(() => Task.Run(() => callback()));
 
         #endregion
 
@@ -139,7 +142,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PublishAsync
+        /// Publish
         ///
         /// <summary>
         /// Executes all registered callbacks with the specified value.
@@ -152,10 +155,25 @@ namespace Cube
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public async Task PublishAsync(T src)
+        public async Task Publish(T src)
         {
             foreach (var kv in _inner) await kv.Value(src).ConfigureAwait(false);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Add the specified callback to the subscription.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IDisposable Subscribe(Action<T> callback) => SubscribeAsync(e =>
+        {
+            callback(e);
+            return Task.FromResult(0);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -174,18 +192,6 @@ namespace Cube
             Debug.Assert(ok);
             return Disposable.Create(() => _inner.TryRemove(key, out var _));
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SubscribeAsync
-        ///
-        /// <summary>
-        /// Add the specified callback to the subscription.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<T> callback) =>
-            SubscribeAsync(e => Task.Run(() => callback(e)));
 
         #endregion
 
