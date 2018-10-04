@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tasks;
 using NUnit.Framework;
 using System;
 using System.Threading;
@@ -148,12 +147,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start() => Create(src =>
+        public Task Start() => CreateAsync(async (src) =>
         {
             src.Interval = TimeSpan.FromMilliseconds(100);
             src.Interval = TimeSpan.FromMilliseconds(100); // ignore
             Assert.That(src.LastPublished.HasValue, Is.False);
-            Assert.That(Execute(src, 0, 1), "Timeout");
+            Assert.That(await InvokeAsync(src, 0, 1), "Timeout");
 
             var time = src.LastPublished;
             Assert.That(time, Is.Not.EqualTo(DateTime.MinValue));
@@ -173,11 +172,11 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start_InitialDelay() => Create(src =>
+        public Task Start_InitialDelay() => CreateAsync(async (src) =>
         {
             src.Interval = TimeSpan.FromHours(1);
             Assert.That(src.LastPublished.HasValue, Is.False);
-            Assert.That(Execute(src, 200, 1), "Timeout");
+            Assert.That(await InvokeAsync(src, 200, 1), "Timeout");
             Assert.That(src.LastPublished, Is.Not.EqualTo(DateTime.MinValue));
         });
 
@@ -192,7 +191,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start_Burstly() => Create(src =>
+        public Task Start_Burstly() => CreateAsync(async (src) =>
         {
             var cts   = new CancellationTokenSource();
             var count = 0;
@@ -206,7 +205,7 @@ namespace Cube.Tests
                 cts.Cancel();
             });
 
-            Assert.That(Execute(src, 0, cts), "Timeout");
+            Assert.That(await InvokeAsync(src, 0, cts), "Timeout");
             Assert.That(count, Is.EqualTo(1));
         });
 
@@ -220,7 +219,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Resume() => Create(src =>
+        public Task Resume() => CreateAsync(async (src) =>
         {
             var cts   = new CancellationTokenSource();
             var count = 0;
@@ -237,9 +236,9 @@ namespace Cube.Tests
             src.Suspend();
 
             Assert.That(count, Is.EqualTo(0));
-            Task.Delay(300).Wait();
+            await Task.Delay(300).ConfigureAwait(false);
             Assert.That(count, Is.EqualTo(0));
-            Assert.That(Execute(src, 0, cts), "Timeout");
+            Assert.That(await InvokeAsync(src, 0, cts), "Timeout");
             Assert.That(count, Is.EqualTo(1));
         });
 
@@ -264,23 +263,38 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Wait
+        /// CreateAsync
+        ///
+        /// <summary>
+        /// Creates a new instance of the WakeableTimer and executes
+        /// the specified action as an asynchronous operation.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async Task CreateAsync(Func<WakeableTimer, Task> func)
+        {
+            using (var src = new WakeableTimer()) await func(src).ConfigureAwait(false);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WaitAsync
         ///
         /// <summary>
         /// Waits until the Cancel event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool Wait(CancellationTokenSource cts)
+        private async Task<bool> WaitAsync(CancellationTokenSource cts)
         {
-            try { Task.Delay(3000, cts.Token).Wait(); }
-            catch (AggregateException e) { return e.InnerException is TaskCanceledException; }
+            try { await Task.Delay(3000, cts.Token).ConfigureAwait(false); }
+            catch (TaskCanceledException) { return true; }
             return false;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Execute
+        /// InvokeAsync
         ///
         /// <summary>
         /// Waits for the timer to execue the specified number of callbacks.
@@ -293,20 +307,16 @@ namespace Cube.Tests
         /// <returns>true for success.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        private bool Execute(WakeableTimer src, int msec, CancellationTokenSource cts)
+        private Task<bool> InvokeAsync(WakeableTimer src, int msec, CancellationTokenSource cts)
         {
-            Task.Run(() =>
-            {
-                if (msec <= 0) src.Start();
-                else src.Start(TimeSpan.FromMilliseconds(msec));
-            }).Forget();
-
-            return Wait(cts);
+            if (msec <= 0) src.Start();
+            else src.Start(TimeSpan.FromMilliseconds(msec));
+            return WaitAsync(cts);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Execute
+        /// InvokeAsync
         ///
         /// <summary>
         /// Waits for the timer to execue the specified number of callbacks.
@@ -321,7 +331,7 @@ namespace Cube.Tests
         /// <returns>true for success.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        private bool Execute(WakeableTimer src, int msec, int count)
+        private Task<bool> InvokeAsync(WakeableTimer src, int msec, int count)
         {
             var n   = 0;
             var cts = new CancellationTokenSource();
@@ -335,7 +345,7 @@ namespace Cube.Tests
                 }
             });
 
-            return Execute(src, msec, cts);
+            return InvokeAsync(src, msec, cts);
         }
 
         #endregion
