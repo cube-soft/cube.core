@@ -78,7 +78,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Cube.Processes.IMessenger<IEnumerable<string>> Activator
+        public Cube.Ipc.IMessenger<IEnumerable<string>> Activator
         {
             get => _activator;
             set
@@ -477,7 +477,7 @@ namespace Cube.Forms
 
         #region Fields
         private double _dpi = BaseDpi;
-        private Cube.Processes.IMessenger<IEnumerable<string>> _activator;
+        private Cube.Ipc.IMessenger<IEnumerable<string>> _activator;
         private IAggregator _aggregator;
         private IDisposable _remover;
         #endregion

@@ -30,7 +30,7 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PathBehavior : IDisposable
+    public class PathBehavior : DisposableBase
     {
         #region Constructors
 
@@ -68,7 +68,6 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         public PathBehavior(TextBox src, ToolTip tips)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             _chars   = new[] { '/', '*', '"', '<', '>', '|', '?', ':' };
             _message = _chars.Select(e => e.ToString()).Aggregate((x, y) => $"{x} {y}");
             _tips    = tips;
@@ -84,33 +83,7 @@ namespace Cube.Forms.Behaviors
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~PathBehavior
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~PathBehavior() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを開放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -125,19 +98,15 @@ namespace Cube.Forms.Behaviors
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 _source.TextChanged -= WhenTextChanged;
-                _source.Click       -= WhenClick;
-                _source.Leave       -= WhenLeave;
+                _source.Click -= WhenClick;
+                _source.Leave -= WhenLeave;
             }
         }
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -198,7 +167,6 @@ namespace Cube.Forms.Behaviors
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly TextBox _source;
         private readonly ToolTip _tips;
         private readonly char[]  _chars;

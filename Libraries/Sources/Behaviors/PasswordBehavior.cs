@@ -29,7 +29,7 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PasswordBehavior : IDisposable
+    public class PasswordBehavior : DisposableBase
     {
         #region Constructors
 
@@ -68,7 +68,6 @@ namespace Cube.Forms.Behaviors
             System.Windows.Forms.TextBox confirm,
             System.Windows.Forms.CheckBox showPassword)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             _master  = master  ?? throw new ArgumentNullException();
             _confirm = confirm ?? throw new ArgumentNullException();
             _show = showPassword;
@@ -214,33 +213,7 @@ namespace Cube.Forms.Behaviors
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~PasswordBehavior
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~PasswordBehavior() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを開放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -255,19 +228,15 @@ namespace Cube.Forms.Behaviors
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _master.TextChanged  -= WhenPasswordChanged;
+                _master.TextChanged -= WhenPasswordChanged;
                 _confirm.TextChanged -= WhenConfirmChanged;
                 if (_show != null) _show.CheckedChanged -= WhenShowPasswordChanged;
             }
         }
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -334,7 +303,6 @@ namespace Cube.Forms.Behaviors
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly System.Windows.Forms.TextBox _master;
         private readonly System.Windows.Forms.TextBox _confirm;
         private readonly System.Windows.Forms.CheckBox _show;

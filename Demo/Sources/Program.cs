@@ -44,7 +44,7 @@ namespace Cube.Forms.Demo
         static void Main(string[] args)
         {
             var app = System.Windows.Forms.Application.ProductName;
-            using (var m = new Cube.Processes.Messenger<IEnumerable<string>>(app))
+            using (var m = new Cube.Ipc.Messenger<IEnumerable<string>>(app))
             {
                 if (!m.IsServer) m.Publish(args);
                 else

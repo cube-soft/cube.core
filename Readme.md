@@ -31,5 +31,5 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## License
 
-Copyright © 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)
+Copyright &copy; 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Forms/blob/master/License.txt).

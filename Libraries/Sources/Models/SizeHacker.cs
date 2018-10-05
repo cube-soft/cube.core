@@ -36,7 +36,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class SizeHacker : IDisposable
+    public class SizeHacker : DisposableBase
     {
         #region Constructors
 
@@ -52,8 +52,7 @@ namespace Cube.Forms
         public SizeHacker(Control control, int grip)
         {
             SizeGrip = grip;
-            Root = control;
-            _dispose = new OnceAction<bool>(Dispose);
+            Root     = control;
             StartMonitor(Root);
         }
 
@@ -85,35 +84,7 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Methods
-
-        #region IDisposable
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~SizeHacker
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~SizeHacker() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを解放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -128,7 +99,7 @@ namespace Cube.Forms
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
@@ -136,12 +107,6 @@ namespace Cube.Forms
                 _cursors.Clear();
             }
         }
-
-        #endregion
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -152,8 +117,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenControlAdded(object sender, ControlEventArgs e) =>
-            StartMonitor(e.Control);
+        private void WhenControlAdded(object s, ControlEventArgs e) => StartMonitor(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -164,8 +128,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenControlRemoved(object sender, ControlEventArgs e) =>
-            EndMonitor(e.Control);
+        private void WhenControlRemoved(object s, ControlEventArgs e) => EndMonitor(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -176,12 +139,9 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenMouseMove(object sender, MouseEventArgs e)
+        private void WhenMouseMove(object s, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.None) return;
-
-            var control = sender as Control;
-            if (control == null) return;
+            if (e.Button != MouseButtons.None || !(s is Control control)) return;
 
             var form = control.FindForm();
             if (form == null || form.WindowState != FormWindowState.Normal) return;
@@ -201,10 +161,9 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenMouseDown(object sender, MouseEventArgs e)
+        private void WhenMouseDown(object s, MouseEventArgs e)
         {
-            var control = sender as Control;
-            if (control == null) return;
+            if (!(s is Control control)) return;
 
             var form = control.FindForm();
             if (form == null || form.WindowState != FormWindowState.Normal) return;
@@ -318,7 +277,6 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly IDictionary<Control, Cursor> _cursors = new Dictionary<Control, Cursor>();
         #endregion
     }

@@ -64,9 +64,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected ViewModelBase(TMessenger messenger, SynchronizationContext context)
         {
-            _dispose               = new OnceAction<bool>(Dispose);
-            Messenger              = messenger;
-            SynchronizationContext = context;
+            _dispose  = new OnceAction<bool>(Dispose);
+            Messenger = messenger;
+            Context   = context;
         }
 
         #endregion
@@ -83,17 +83,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public TMessenger Messenger { get; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// SynchronizationContext
-        ///
-        /// <summary>
-        /// オブジェクト初期化時のコンテキストを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public SynchronizationContext SynchronizationContext { get; }
 
         #endregion
 
@@ -144,10 +133,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Sync(Action action)
         {
-            if (SynchronizationContext != null)
-            {
-                SynchronizationContext.Post(_ => action(), null);
-            }
+            if (Context != null) Context.Post(_ => action(), null);
             else action();
         }
 
@@ -167,10 +153,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
         {
-            if (SynchronizationContext != null)
-            {
-                SynchronizationContext.Send(_ => action(), null);
-            }
+            if (Context != null) Context.Send(_ => action(), null);
             else action();
         }
 
@@ -191,10 +174,7 @@ namespace Cube.Forms
         public TResult SyncWait<TResult>(Func<TResult> func)
         {
             var result = default(TResult);
-            if (SynchronizationContext != null)
-            {
-                SynchronizationContext.Send(_ => { result = func(); }, null);
-            }
+            if (Context != null) Context.Send(_ => { result = func(); }, null);
             else result = func();
             return result;
         }

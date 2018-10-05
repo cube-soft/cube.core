@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresenterBase<TView> : IDisposable
+    public abstract class PresenterBase<TView> : DisposableBase
     {
         #region Constructors
 
@@ -77,10 +77,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected PresenterBase(TView view, IAggregator ea, SynchronizationContext context)
         {
-            _dispose               = new OnceAction<bool>(Dispose);
-            View                   = view;
-            Aggregator             = ea;
-            SynchronizationContext = context;
+            View       = view;
+            Aggregator = ea;
+            Context    = context;
         }
 
         #endregion
@@ -111,14 +110,14 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SynchronizationContext
+        /// Context
         ///
         /// <summary>
         /// オブジェクト初期化時のコンテキストを取得します。
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public SynchronizationContext SynchronizationContext { get; }
+        public SynchronizationContext Context { get; }
 
         #endregion
 
@@ -169,10 +168,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Sync(Action action)
         {
-            if (SynchronizationContext != null)
-            {
-                SynchronizationContext.Post(_ => action(), null);
-            }
+            if (Context != null) Context.Post(_ => action(), null);
             else action();
         }
 
@@ -192,10 +188,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void SyncWait(Action action)
         {
-            if (SynchronizationContext != null)
-            {
-                SynchronizationContext.Send(_ => action(), null);
-            }
+            if (Context != null) Context.Send(_ => action(), null);
             else action();
         }
 
@@ -216,27 +209,11 @@ namespace Cube.Forms
         public TResult SyncWait<TResult>(Func<TResult> func)
         {
             var result = default(TResult);
-            if (SynchronizationContext != null)
-            {
-                SynchronizationContext.Send(_ => { result = func(); }, null);
-            }
+            if (Context != null) Context.Send(_ => { result = func(); }, null);
             else result = func();
             return result;
         }
 
-        #region IDisposable
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~PresenterBase
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~PresenterBase() { _dispose.Invoke(false); }
-
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
@@ -246,29 +223,8 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
+        protected override void Dispose(bool disposing) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを解放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing) { }
-
-        #endregion
-
-        #endregion
-
-        #region Fields
-        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 
