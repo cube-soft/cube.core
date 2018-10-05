@@ -60,7 +60,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public Information(string src, IRefreshable refreshable)
         {
-            Core        = new InformationCore(src);
+            Core        = new RefreshableInfo(src);
             Refreshable = refreshable;
             Refresh();
         }
@@ -78,7 +78,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected InformationCore Core { get; }
+        protected RefreshableInfo Core { get; }
 
         /* ----------------------------------------------------------------- */
         ///

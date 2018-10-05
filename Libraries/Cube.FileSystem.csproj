@@ -98,10 +98,10 @@
     <Compile Include="Sources\NativeMethods\Shell32.cs" />
     <Compile Include="Sources\TestService\FileFixture.cs" />
     <Compile Include="Sources\TestService\Wait.cs" />
+    <Compile Include="Sources\ExtensionFilter.cs" />
     <Compile Include="Sources\FailedEventArgs.cs" />
-    <Compile Include="Sources\DisplayFilter.cs" />
     <Compile Include="Sources\Information.cs" />
-    <Compile Include="Sources\InformationCore.cs" />
+    <Compile Include="Sources\RefreshableInfo.cs" />
     <Compile Include="Sources\Io.cs" />
     <Compile Include="Sources\IoExtension.cs" />
     <Compile Include="Sources\PathFilter.cs" />

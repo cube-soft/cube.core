@@ -25,7 +25,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisplayFilter
+    /// ExtensionFilter
     ///
     /// <summary>
     /// Provides functionality to create a string value that is used
@@ -33,16 +33,16 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DisplayFilter
+    public class ExtensionFilter
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisplayFilter
+        /// ExtensionFilter
         ///
         /// <summary>
-        /// Initializes a new instance of the DisplayFilter class
+        /// Initializes a new instance of the ExtensionFilter class
         /// with the specfied parameters
         /// </summary>
         ///
@@ -52,34 +52,34 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public DisplayFilter(string description, params string[] extensions)
+        public ExtensionFilter(string description, params string[] extensions)
         {
-            Description = description;
-            Extensions  = extensions;
+            Text = description;
+            Targets  = extensions;
             IgnoreCase  = true;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisplayFilter
+        /// ExtensionFilter
         ///
         /// <summary>
-        /// Initializes a new instance of the DisplayFilter class
+        /// Initializes a new instance of the ExtensionFilter class
         /// with the specfied parameters
         /// </summary>
         ///
-        /// <param name="description">Description for the filter.</param>
+        /// <param name="text">Description for the filter.</param>
         /// <param name="ignoreCase">Ignores case or not.</param>
-        /// <param name="extensions">
+        /// <param name="targets">
         /// List of target extensions (e.g., ".txt").
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public DisplayFilter(string description, bool ignoreCase, params string[] extensions)
+        public ExtensionFilter(string text, bool ignoreCase, params string[] targets)
         {
-            Description = description;
-            Extensions  = extensions;
-            IgnoreCase  = ignoreCase;
+            Text       = text;
+            Targets    = targets;
+            IgnoreCase = ignoreCase;
         }
 
         #endregion
@@ -88,25 +88,25 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Description
+        /// Text
         ///
         /// <summary>
         /// Gets a description for the filter.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Description { get; }
+        public string Text { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Extensions
+        /// Targets
         ///
         /// <summary>
         /// Gets a list of target extensions.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> Extensions { get; }
+        public IEnumerable<string> Targets { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -135,12 +135,12 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public override string ToString()
         {
-            var e0 = Extensions.Select(e => $"*{e}");
+            var e0 = Targets.Select(e => $"*{e}");
             var s0 = string.Join(", ", e0.ToArray());
             var e1 = e0.Select(e => Format(e));
             var s1 = string.Join(";", e1.ToArray());
 
-            return $"{Description} ({s0})|{s1}";
+            return $"{Text} ({s0})|{s1}";
         }
 
         #endregion
@@ -172,14 +172,15 @@ namespace Cube.FileSystem
 
     /* --------------------------------------------------------------------- */
     ///
-    /// DisplayFilterExtension
+    /// ExtensionFilterCollection
     ///
     /// <summary>
-    /// Provides functionality to convert from a DisplayFilter collection.
+    /// Provides functionality to convert from a collection of
+    /// ExtensionFilter elements.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class DisplayFilterExtension
+    public static class ExtensionFilterCollection
     {
         #region Methods
 
@@ -195,7 +196,7 @@ namespace Cube.FileSystem
         /// <param name="src">DisplayFilter collection.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetFilter(this IEnumerable<DisplayFilter> src) =>
+        public static string GetFilter(this IEnumerable<ExtensionFilter> src) =>
             src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
 
         /* ----------------------------------------------------------------- */
@@ -211,7 +212,7 @@ namespace Cube.FileSystem
         /// <param name="path">File path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static int GetFilterIndex(this IEnumerable<DisplayFilter> src, string path) =>
+        public static int GetFilterIndex(this IEnumerable<ExtensionFilter> src, string path) =>
             src.GetFilterIndex(path, new IO());
 
         /* ----------------------------------------------------------------- */
@@ -228,18 +229,16 @@ namespace Cube.FileSystem
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static int GetFilterIndex(this IEnumerable<DisplayFilter> src, string path, IO io)
+        public static int GetFilterIndex(this IEnumerable<ExtensionFilter> src, string path, IO io)
         {
-            if (path.HasValue())
-            {
-                var ext = io.Get(path).Extension;
-                var opt = StringComparison.InvariantCultureIgnoreCase;
+            if (!path.HasValue()) return 0;
 
-                return src.Select((e, i) => KeyValuePair.Create(i + 1, e))
-                          .FirstOrDefault(e => e.Value.Extensions.Any(ev => ev.Equals(ext, opt)))
-                          .Key;
-            }
-            return 0;
+            var ext = io.Get(path).Extension;
+            var opt = StringComparison.InvariantCultureIgnoreCase;
+
+            return src.Select((e, i) => KeyValuePair.Create(i + 1, e))
+                      .FirstOrDefault(e => e.Value.Targets.Any(e2 => e2.Equals(ext, opt)))
+                      .Key;
         }
 
         #endregion

@@ -24,10 +24,10 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingsTest
+    /// SettingsFolderTest
     ///
     /// <summary>
-    /// Settings のテスト用クラスです。
+    /// Tests for the SettingsFolder class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

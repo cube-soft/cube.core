@@ -25,7 +25,7 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisplayFilterTest
+    /// ExtensionFilterTest
     ///
     /// <summary>
     /// Provides a test fixture for the DisplayFilter class.
@@ -33,7 +33,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DisplayFilterTest
+    class ExtensionFilterTest
     {
         #region Tests
 
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
         public string ToString(string descr, bool ignore, string[] exts) =>
-            new DisplayFilter(descr, ignore, exts).ToString();
+            new ExtensionFilter(descr, ignore, exts).ToString();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -61,7 +61,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void ToString_Null() => Assert.That(
-            () => new DisplayFilter(null, null).ToString(),
+            () => new ExtensionFilter(null, null).ToString(),
             Throws.TypeOf<ArgumentNullException>()
         );
 
@@ -93,7 +93,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void GetFilter_Throws() => Assert.That(
-            () => new List<DisplayFilter>().GetFilter(),
+            () => new List<ExtensionFilter>().GetFilter(),
             Throws.TypeOf<InvalidOperationException>()
         );
 
@@ -173,8 +173,8 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IEnumerable<DisplayFilter> TestCollection =>
-            TestCases.Select(e => new DisplayFilter(
+        private static IEnumerable<ExtensionFilter> TestCollection =>
+            TestCases.Select(e => new ExtensionFilter(
                 e.Arguments[0] as string,
                 e.Arguments[1].TryCast<bool>(),
                 e.Arguments[2] as string[]

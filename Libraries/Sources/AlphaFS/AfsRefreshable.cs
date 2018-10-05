@@ -43,7 +43,7 @@ namespace Cube.FileSystem
         /// <param name="src">更新対象オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke(InformationCore src)
+        public void Invoke(RefreshableInfo src)
         {
             var obj = Create(src.Source);
 

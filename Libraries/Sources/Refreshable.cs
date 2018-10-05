@@ -24,8 +24,7 @@ namespace Cube.FileSystem
     /// IRefreshable
     ///
     /// <summary>
-    /// Information オブジェクトの各種プロパティの内容を更新するための
-    /// インターフェースです。
+    /// Represents the method to refresh the Information class.
     /// </summary>
     ///
     /// <remarks>
@@ -43,13 +42,13 @@ namespace Cube.FileSystem
         /// Invoke
         ///
         /// <summary>
-        /// 更新処理を実行します。
+        /// Invokes the refresh operation.
         /// </summary>
         ///
-        /// <param name="src">更新対象となるオブジェクト</param>
+        /// <param name="src">Object to be refreshed.</param>
         ///
         /* ----------------------------------------------------------------- */
-        void Invoke(InformationCore src);
+        void Invoke(RefreshableInfo src);
     }
 
     /* --------------------------------------------------------------------- */
@@ -57,8 +56,8 @@ namespace Cube.FileSystem
     /// Refreshable
     ///
     /// <summary>
-    /// .NET Framework 標準ライブラリを用いて IRefreshable を実装した
-    /// クラスです。
+    /// Implements the IRefreshable interface by using the standard
+    /// .NET Framework.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -71,13 +70,13 @@ namespace Cube.FileSystem
         /// Invoke
         ///
         /// <summary>
-        /// Information オブジェクトの情報を更新します。
+        /// Invokes the refresh operation.
         /// </summary>
         ///
-        /// <param name="src">更新対象オブジェクト</param>
+        /// <param name="src">Object to be refreshed.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void Invoke(InformationCore src)
+        public virtual void Invoke(RefreshableInfo src)
         {
             var obj = Create(src.Source);
 
@@ -105,7 +104,7 @@ namespace Cube.FileSystem
         /// Create
         ///
         /// <summary>
-        /// FileSystemInfo オブジェクトを生成します。
+        /// Creates a new instance of the FileSystemInfo class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -119,7 +118,7 @@ namespace Cube.FileSystem
         /// TryCast
         ///
         /// <summary>
-        /// FileInfo オブジェクトへのキャストを試行します。
+        /// Tries to cast to the FileInfo class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

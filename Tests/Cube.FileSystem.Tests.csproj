@@ -94,7 +94,7 @@
     <Compile Include="Sources\Details\GlobalSetup.cs" />
     <Compile Include="Sources\Details\Person.cs" />
     <Compile Include="Sources\Details\RegistryFixture.cs" />
-    <Compile Include="Sources\DisplayFilterTest.cs" />
+    <Compile Include="Sources\ExtensionFilterTest.cs" />
     <Compile Include="Sources\IoExtensionTest.cs" />
     <Compile Include="Sources\IoTest.cs" />
     <Compile Include="Sources\PathFilterTest.cs" />
