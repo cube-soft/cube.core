@@ -34,44 +34,46 @@ namespace Cube.FileSystem.Tests
     [TestFixture]
     class StartupTest : FileFixture
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Load
         ///
         /// <summary>
-        /// スタートアップ設定の読み込みテストを実行します。
+        /// Executes the test for loading the startup settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Load()
         {
-            var exec    = Assembly.GetExecutingAssembly().GetReader().Location;
-            var name    = IO.Get(exec).NameWithoutExtension;
-            var startup = new Startup(name, exec.Quote());
-            startup.Load();
-            Assert.That(startup.Enabled, Is.False);
+            var exec = Assembly.GetExecutingAssembly().GetReader().Location;
+            var name = IO.Get(exec).NameWithoutExtension;
+            var src  = new Startup(name) { Command = exec };
+            src.Load();
+            Assert.That(src.Enabled, Is.False);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Save_Delete
+        /// Save
         ///
         /// <summary>
-        /// スタートアップ設定の保存テストを実行します。
+        /// Executes the test for saving the startup settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Save_Delete()
+        public void Save()
         {
-            var exec    = Assembly.GetExecutingAssembly().GetReader().Location;
-            var name    = IO.Get(exec).NameWithoutExtension;
-            var command = exec.Quote();
+            var exec = Assembly.GetExecutingAssembly().GetReader().Location;
+            var name = IO.Get(exec).NameWithoutExtension;
+            var cmd  = exec.Quote();
 
             var s0 = new Startup(name)
             {
-                Command = command,
+                Command = cmd,
                 Enabled = true
             };
             s0.Save();
@@ -79,7 +81,7 @@ namespace Cube.FileSystem.Tests
             var s1 = new Startup(name);
             s1.Load();
             Assert.That(s1.Enabled, Is.True);
-            Assert.That(s1.Command, Is.EqualTo(command));
+            Assert.That(s1.Command, Is.EqualTo(cmd));
 
             s1.Enabled = false;
             s1.Save();
@@ -88,5 +90,7 @@ namespace Cube.FileSystem.Tests
             s2.Load();
             Assert.That(s2.Enabled, Is.False);
         }
+
+        #endregion
     }
 }

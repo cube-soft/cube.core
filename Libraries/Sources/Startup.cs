@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
 using Microsoft.Win32;
+using System;
 
 namespace Cube.FileSystem
 {
@@ -25,7 +26,7 @@ namespace Cube.FileSystem
     /// Startup
     ///
     /// <summary>
-    /// スタートアップ設定を行うためのクラスです。
+    /// Provides functionality to register and delete startup settings.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,48 +39,15 @@ namespace Cube.FileSystem
         /// Startup
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Startup class with the
+        /// specified name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Startup() : this(string.Empty, string.Empty, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Startup
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Startup(string name) : this(name, string.Empty, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Startup
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Startup(string name, string command) : this(name, command, true) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Startup
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Startup(string name, string command, bool enabled)
+        public Startup(string name)
         {
-            Name    = name;
-            Command = command;
-            Enabled = enabled;
+            if (!name.HasValue()) throw new ArgumentException(nameof(name));
+            Name = name;
         }
 
         #endregion
@@ -88,53 +56,21 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RegistryKeyName
-        ///
-        /// <summary>
-        /// スタートアップ設定を保持するレジストリのルートに当たる
-        /// サブキー名を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string RegistryKeyName =>
-            @"Software\Microsoft\Windows\CurrentVersion\Run";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Enabled
-        ///
-        /// <summary>
-        /// スタートアップ設定が有効かどうかを示す値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Enabled
-        {
-            get => _enabled;
-            set => SetProperty(ref _enabled, value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Name
         ///
         /// <summary>
-        /// スタートアップに登録する名前を取得または設定します。
+        /// Gets the name registered in startup programs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
+        public string Name { get; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Command
         ///
         /// <summary>
-        /// スタートアップ時に実行されるコマンドを取得または設定します。
+        /// Gets or sets the command corresponding to the name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -142,6 +78,22 @@ namespace Cube.FileSystem
         {
             get => _command;
             set => SetProperty(ref _command, value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Enabled
+        ///
+        /// <summary>
+        /// Gets or sets the value indicating whether the startup
+        /// settings is enabled.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Enabled
+        {
+            get => _enabled;
+            set => SetProperty(ref _enabled, value);
         }
 
         #endregion
@@ -153,17 +105,15 @@ namespace Cube.FileSystem
         /// Load
         ///
         /// <summary>
-        /// レジストリから設定をロードします。
+        /// Loads settings from the registry.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void Load()
         {
-            if (!Name.HasValue()) return;
-
-            using (var subkey = Open(false))
+            using (var sk = OpenSubkey(false))
             {
-                Command = subkey.GetValue(Name, string.Empty) as string;
+                Command = sk.GetValue(Name, string.Empty) as string;
                 Enabled = Command.HasValue();
             }
         }
@@ -173,21 +123,19 @@ namespace Cube.FileSystem
         /// Save
         ///
         /// <summary>
-        /// レジストリへ設定を保存します。
+        /// Saves settings to the registry.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void Save()
         {
-            if (!Name.HasValue()) return;
-
-            using (var subkey = Open(true))
+            using (var sk = OpenSubkey(true))
             {
                 if (Enabled)
                 {
-                    if (Command.HasValue()) subkey.SetValue(Name, Command);
+                    if (Command.HasValue()) sk.SetValue(Name, Command);
                 }
-                else subkey.DeleteValue(Name, false);
+                else sk.DeleteValue(Name, false);
             }
         }
 
@@ -197,22 +145,22 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Open
+        /// OpenSubkey
         ///
         /// <summary>
-        /// ルートキーを開きます。
+        /// Gets the RegistryKey object for startup programs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private RegistryKey Open(bool writable) =>
-            Registry.CurrentUser.OpenSubKey(RegistryKeyName, writable);
+        private RegistryKey OpenSubkey(bool writable) => Registry.CurrentUser.OpenSubKey(
+            @"Software\Microsoft\Windows\CurrentVersion\Run", writable
+        );
 
         #endregion
 
         #region Fields
-        private bool _enabled = false;
-        private string _name = string.Empty;
         private string _command = string.Empty;
+        private bool _enabled = false;
         #endregion
     }
 }
