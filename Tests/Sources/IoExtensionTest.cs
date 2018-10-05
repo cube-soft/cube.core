@@ -17,7 +17,9 @@
 /* ------------------------------------------------------------------------- */
 using Cube.FileSystem.Mixin;
 using Cube.FileSystem.TestService;
+using Cube.Generics;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace Cube.FileSystem.Tests
 {
@@ -40,14 +42,14 @@ namespace Cube.FileSystem.Tests
         /// Load
         ///
         /// <summary>
-        /// ファイルを読み込むテストを実行します。
+        /// Executes the test for loading from a file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Load() => new IO().Load(
-            GetExamplesWith("Sample.txt"),
-            e => Assert.That(e.Length, Is.EqualTo(13L))
+        public void Load() => Assert.That(
+            IO.Load(GetExamplesWith("Sample.txt"), e => e.Length),
+            Is.EqualTo(13L)
         );
 
         /* ----------------------------------------------------------------- */
@@ -55,13 +57,13 @@ namespace Cube.FileSystem.Tests
         /// Load_NotFound
         ///
         /// <summary>
-        /// 存在しないファイルを読み込もうとした時の挙動を確認します。
+        /// Confirms the behavior when loading from an inexistent file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Load_NotFound() => Assert.That(
-            new IO().Load(GetExamplesWith("NotFound.dummy"), e => e.Length, -1),
+        public void LoadOrDefault_NotFound() => Assert.That(
+            IO.LoadOrDefault(GetExamplesWith("NotFound.dummy"), e => e.Length, -1),
             Is.EqualTo(-1L)
         );
 
@@ -70,49 +72,63 @@ namespace Cube.FileSystem.Tests
         /// Save
         ///
         /// <summary>
-        /// ファイルを保存するテストを実行します。
+        /// Executes the test for saving to a file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Save()
         {
-            var io   = new IO();
             var dest = GetResultsWith(nameof(Save));
-
-            io.Save(dest, e => e.WriteByte((byte)'a'));
-            Assert.That(io.Get(dest).Length, Is.EqualTo(1));
+            IO.Save(dest, e => e.WriteByte((byte)'a'));
+            Assert.That(IO.Get(dest).Length, Is.EqualTo(1));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save_Throws
+        ///
+        /// <summary>
+        /// Confirms the behavior when saving to a file being handled by
+        /// another process.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Save_Throws() => Assert.That(
+            () => IO.Save(Assembly.GetExecutingAssembly().Location, e => e.WriteByte((byte)'a')),
+            Throws.TypeOf<System.IO.IOException>()
+        );
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetTypeName
         ///
         /// <summary>
-        /// ファイルの種類を表す文字列を取得するテストを実行します。
+        /// Executes the test for getting the name of filetype.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("Sample.txt",     ExpectedResult = true)]
         [TestCase("NotFound.dummy", ExpectedResult = true)]
         public bool GetTypeName(string filename) =>
-            !string.IsNullOrEmpty(IO.GetTypeName(IO.Get(GetExamplesWith(filename))));
+            IO.GetTypeName(IO.Get(GetExamplesWith(filename))).HasValue();
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetTypeName_Null
         ///
         /// <summary>
-        /// 引数に null を指定した時の挙動を確認します。
+        /// Confirms the behavior when null is specified.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void GetTypeName_Null()
         {
-            Assert.That(IO.GetTypeName(string.Empty), Is.Null);
-            Assert.That(IO.GetTypeName(default(string)), Is.Null);
-            Assert.That(IO.GetTypeName(default(Information)), Is.Null);
+            Assert.That(IO.GetTypeName(string.Empty), Is.Empty);
+            Assert.That(IO.GetTypeName(default(string)), Is.Empty);
+            Assert.That(IO.GetTypeName(default(Information)), Is.Empty);
         }
 
         /* ----------------------------------------------------------------- */
@@ -120,7 +136,7 @@ namespace Cube.FileSystem.Tests
         /// GetUniqueName
         ///
         /// <summary>
-        /// 一意なパスを取得するテストを実行します。
+        /// Executes the test for getting a unique name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -149,14 +165,14 @@ namespace Cube.FileSystem.Tests
         /// ChangeExtension
         ///
         /// <summary>
-        /// 拡張子を変更するテストを実行します。
+        /// Executes the test for changing the extension of the specified
+        /// path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(@"C:\Foo\Bar\Bas.txt", ".pdf", ExpectedResult = @"C:\Foo\Bar\Bas.pdf")]
         [TestCase(@"C:\Foo\Bar\None",    ".txt", ExpectedResult = @"C:\Foo\Bar\None.txt")]
-        public string ChangeExtension(string src, string ext) =>
-            new IO().ChangeExtension(src, ext);
+        public string ChangeExtension(string src, string ext) => IO.ChangeExtension(src, ext);
 
         #endregion
     }

@@ -49,7 +49,7 @@ namespace Cube.FileSystem.Tests
         public void Create_Registry()
         {
             var count = 0;
-            var dest = new SettingsFolder<Person>(Assembly);
+            var dest  = new SettingsFolder<Person>(Assembly, Format.Registry);
             dest.Loaded += (s, e) => ++count;
             dest.Load();
 
@@ -57,8 +57,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.Format,             Is.EqualTo(Format.Registry));
             Assert.That(dest.Location,           Does.StartWith("CubeSoft"));
             Assert.That(dest.Location,           Does.EndWith("Cube.FileSystem.Tests"));
-            Assert.That(dest.Company,            Is.EqualTo("CubeSoft"));
-            Assert.That(dest.Product,            Is.EqualTo("Cube.FileSystem.Tests"));
             Assert.That(dest.Version.ToString(), Is.EqualTo("1.12.0.0"));
             Assert.That(dest.Value,              Is.Not.Null);
         }
@@ -82,8 +80,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.Format,             Is.EqualTo(Format.Json));
             Assert.That(dest.Location,           Does.StartWith(root));
             Assert.That(dest.Location,           Does.EndWith("Cube.FileSystem.Tests"));
-            Assert.That(dest.Company,            Is.EqualTo("CubeSoft"));
-            Assert.That(dest.Product,            Is.EqualTo("Cube.FileSystem.Tests"));
             Assert.That(dest.Version.ToString(), Is.EqualTo("1.12.0.0"));
             Assert.That(dest.Value,              Is.Not.Null);
         }
