@@ -21,89 +21,82 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Disposable
+    /// DisposableBase
     ///
     /// <summary>
-    /// Provides functionality to create a IDisposable object.
+    /// Represents an implementation of the IDisposable interface.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Disposable
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a IDisposable object from the specified action.
-        /// </summary>
-        ///
-        /// <param name="dispose">Invoke when disposed.</param>
-        ///
-        /// <returns>IDisposable object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable Create(Action dispose)
-        {
-            if (dispose == null) throw new ArgumentException(nameof(dispose));
-            return new AnonymousDisposable(dispose);
-        }
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// AnonymousDisposable
-    ///
-    /// <summary>
-    /// Provides functionality to convert from an action to the instance
-    /// of IDisposable implemented class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal sealed class AnonymousDisposable : IDisposable
+    public abstract class DisposableBase : IDisposable
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AnonymousDisposable
+        /// DisposableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the AnonymousDisposable class
-        /// with the specified action.
+        /// Creates a new instance of the DisposableBase class.
         /// </summary>
         ///
-        /// <param name="dispose">Invoke when disposed.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public AnonymousDisposable(Action dispose)
+        protected DisposableBase()
         {
-            _dispose = new OnceAction(dispose);
+            _dispose = new OnceAction<bool>(Dispose);
         }
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~DisposableBase
+        ///
+        /// <summary>
+        /// Finalizes the DisposableBase.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~DisposableBase() { _dispose.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose
         ///
         /// <summary>
-        /// Executes the provided action.
+        /// Releases all resources used by the DisposableBase.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Dispose() => _dispose.Invoke();
+        public void Dispose()
+        {
+            _dispose.Invoke(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the DisposableBase
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected abstract void Dispose(bool disposing);
 
         #endregion
 
         #region Fields
-        private OnceAction _dispose;
+        private readonly OnceAction<bool> _dispose;
         #endregion
     }
 }

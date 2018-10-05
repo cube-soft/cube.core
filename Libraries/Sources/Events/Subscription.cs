@@ -33,7 +33,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Subscription
+    public class Subscription : DisposableBase
     {
         #region Properties
 
@@ -103,6 +103,30 @@ namespace Cube
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the Subscription
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            _inner.Clear();
+        }
+
+        #endregion
+
         #region Fields
         private readonly ConcurrentDictionary<Guid, Func<Task>> _inner = new ConcurrentDictionary<Guid, Func<Task>>();
         #endregion
@@ -114,14 +138,14 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Subscription
+    /// Subscription(T)
     ///
     /// <summary>
     /// Provides functionality to publish and subscribe operations.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Subscription<T>
+    public class Subscription<T> : DisposableBase
     {
         #region Properties
 
@@ -191,6 +215,30 @@ namespace Cube
 
             Debug.Assert(ok);
             return Disposable.Create(() => _inner.TryRemove(key, out var _));
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the Subscription
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            _inner.Clear();
         }
 
         #endregion

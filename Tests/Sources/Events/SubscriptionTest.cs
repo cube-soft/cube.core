@@ -47,19 +47,21 @@ namespace Cube.Tests
         [Test]
         public void Subscribe()
         {
-            var n   = 0;
-            var src = new Subscription();
-
-            Parallel.ForEach(Enumerable.Range(0, 10), i =>
+            using (var src = new Subscription())
             {
-                var d0 = src.Subscribe(() => ++n);
-                var d1 = src.SubscribeAsync(() => { n *= 2; return Task.FromResult(0); });
+                var n = 0;
 
-                d0.Dispose();
-                d1.Dispose();
-            });
+                Parallel.ForEach(Enumerable.Range(0, 10), i =>
+                {
+                    var d0 = src.Subscribe(() => ++n);
+                    var d1 = src.SubscribeAsync(() => { n *= 2; return Task.FromResult(0); });
 
-            Assert.That(src.Count, Is.EqualTo(0));
+                    d0.Dispose();
+                    d1.Dispose();
+                });
+
+                Assert.That(src.Count, Is.EqualTo(0));
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -74,19 +76,21 @@ namespace Cube.Tests
         [Test]
         public void SubscribeT()
         {
-            var n   = 0;
-            var src = new Subscription<int>();
-
-            Parallel.ForEach(Enumerable.Range(0, 10), i =>
+            using (var src = new Subscription<int>())
             {
-                var d0 = src.Subscribe(e => n += e);
-                var d1 = src.SubscribeAsync(e => { n *= e; return Task.FromResult(0); });
+                var n = 0;
 
-                d0.Dispose();
-                d1.Dispose();
-            });
+                Parallel.ForEach(Enumerable.Range(0, 10), i =>
+                {
+                    var d0 = src.Subscribe(e => n += e);
+                    var d1 = src.SubscribeAsync(e => { n *= e; return Task.FromResult(0); });
 
-            Assert.That(src.Count, Is.EqualTo(0));
+                    d0.Dispose();
+                    d1.Dispose();
+                });
+
+                Assert.That(src.Count, Is.EqualTo(0));
+            }
         }
 
         #endregion
