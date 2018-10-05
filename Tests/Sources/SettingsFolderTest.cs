@@ -59,7 +59,7 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.Location,           Does.EndWith("Cube.FileSystem.Tests"));
             Assert.That(dest.Company,            Is.EqualTo("CubeSoft"));
             Assert.That(dest.Product,            Is.EqualTo("Cube.FileSystem.Tests"));
-            Assert.That(dest.Version.ToString(), Is.EqualTo("1.11.0.0"));
+            Assert.That(dest.Version.ToString(), Is.EqualTo("1.12.0.0"));
             Assert.That(dest.Value,              Is.Not.Null);
         }
 
@@ -84,7 +84,7 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.Location,           Does.EndWith("Cube.FileSystem.Tests"));
             Assert.That(dest.Company,            Is.EqualTo("CubeSoft"));
             Assert.That(dest.Product,            Is.EqualTo("Cube.FileSystem.Tests"));
-            Assert.That(dest.Version.ToString(), Is.EqualTo("1.11.0.0"));
+            Assert.That(dest.Version.ToString(), Is.EqualTo("1.12.0.0"));
             Assert.That(dest.Value,              Is.Not.Null);
         }
 
