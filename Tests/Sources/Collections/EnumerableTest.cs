@@ -49,10 +49,18 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void OrderBy() => Assert.That(
-            new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderBy(),
-            Is.EquivalentTo(new[] { 1, 1, 2, 3, 4, 5, 6, 9 })
-        );
+        public void OrderBy()
+        {
+            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderBy().ToList();
+            Assert.That(src[0], Is.EqualTo(1));
+            Assert.That(src[1], Is.EqualTo(1));
+            Assert.That(src[2], Is.EqualTo(2));
+            Assert.That(src[3], Is.EqualTo(3));
+            Assert.That(src[4], Is.EqualTo(4));
+            Assert.That(src[5], Is.EqualTo(5));
+            Assert.That(src[6], Is.EqualTo(6));
+            Assert.That(src[7], Is.EqualTo(9));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -64,10 +72,19 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void OrderByDecending() => Assert.That(
-            new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderBy(),
-            Is.EquivalentTo(new[] { 9, 6, 5, 4, 3, 2, 1, 1 })
-        );
+        public void OrderByDecending()
+        {
+            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderByDecending().ToList();
+            Assert.That(src[0], Is.EqualTo(9));
+            Assert.That(src[1], Is.EqualTo(6));
+            Assert.That(src[2], Is.EqualTo(5));
+            Assert.That(src[3], Is.EqualTo(4));
+            Assert.That(src[4], Is.EqualTo(3));
+            Assert.That(src[5], Is.EqualTo(2));
+            Assert.That(src[6], Is.EqualTo(1));
+            Assert.That(src[7], Is.EqualTo(1));
+        }
+
 
         /* ----------------------------------------------------------------- */
         ///
