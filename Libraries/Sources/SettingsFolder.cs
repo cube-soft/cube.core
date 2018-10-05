@@ -36,7 +36,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<T> : IDisposable, INotifyPropertyChanged
+    public class SettingsFolder<T> : DisposableBase, INotifyPropertyChanged
         where T : INotifyPropertyChanged, new()
     {
         #region Constructors
@@ -85,7 +85,6 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, Format format, IO io)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             Initialize(format, assembly.GetReader(), io);
         }
 
@@ -136,7 +135,6 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, Format format, string location, IO io)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             Initialize(format, location, assembly.GetReader(), io);
         }
 
@@ -403,18 +401,9 @@ namespace Cube.FileSystem
         public void Save() =>
             OnSaved(KeyValueEventArgs.Create(Format, Location));
 
-        #region IDisposable
+        #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~SettingsFolder
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~SettingsFolder() { _dispose.Invoke(false); }
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -425,32 +414,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
             if (AutoSave) Save();
         }
-
-        #endregion
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -550,7 +518,6 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly Timer _autosaver = new Timer();
         #endregion
     }
