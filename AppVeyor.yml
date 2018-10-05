@@ -36,5 +36,5 @@ after_test:
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
     - codecov -f CoverResults.xml
-    artifacts:
+artifacts:
     - path: Tests
