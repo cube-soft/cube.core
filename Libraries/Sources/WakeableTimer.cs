@@ -32,7 +32,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WakeableTimer : IDisposable
+    public class WakeableTimer : DisposableBase
     {
         #region Constructors
 
@@ -61,7 +61,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public WakeableTimer(TimeSpan interval)
         {
-            _dispose  = new OnceAction<bool>(Dispose);
             _power    = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
             _interval = interval;
             _core.AutoReset = false;
@@ -289,32 +288,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~WakeableTimer
-        ///
-        /// <summary>
-        /// Finalizes the WakeableTimer.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~WakeableTimer() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases all resources used by the WakeableTimer.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dispose
         ///
         /// <summary>
@@ -328,7 +301,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
@@ -467,7 +440,6 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly IDisposable _power;
         private readonly Timer _core = new Timer();
         private TimeSpan _interval;

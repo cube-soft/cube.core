@@ -79,7 +79,7 @@ namespace Cube.Ipc
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Messenger<T> : IMessenger<T> where T : class
+    public class Messenger<T> : DisposableBase, IMessenger<T> where T : class
     {
         #region Constructors
 
@@ -96,7 +96,6 @@ namespace Cube.Ipc
         /* ----------------------------------------------------------------- */
         public Messenger(string id)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             _mutex = new Mutex(false, id);
             IsServer = _mutex.WaitOne(0, false);
 
@@ -153,17 +152,6 @@ namespace Cube.Ipc
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~Messenger
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~Messenger() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dispose
         ///
         /// <summary>
@@ -171,22 +159,7 @@ namespace Cube.Ipc
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを解放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
@@ -200,7 +173,6 @@ namespace Cube.Ipc
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly Mutex _mutex;
         private readonly IMessenger<T> _core;
         #endregion
@@ -215,7 +187,7 @@ namespace Cube.Ipc
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessengerServer<T> : IMessenger<T> where T : class
+    public class MessengerServer<T> : DisposableBase, IMessenger<T> where T : class
     {
         #region Constructors
 
@@ -232,8 +204,6 @@ namespace Cube.Ipc
         /* ----------------------------------------------------------------- */
         public MessengerServer(string id)
         {
-            _dispose = new OnceAction<bool>(Dispose);
-
             var address = new Uri($"net.pipe://localhost/{id}");
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
             _service = new MessengerService<T>();
@@ -285,32 +255,6 @@ namespace Cube.Ipc
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~MessengerServer
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~MessengerServer() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを解放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dispose
         ///
         /// <summary>
@@ -322,7 +266,7 @@ namespace Cube.Ipc
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing) _host.Abort();
         }
@@ -332,7 +276,6 @@ namespace Cube.Ipc
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly MessengerService<T> _service;
         private readonly ServiceHost _host;
         #endregion
@@ -347,7 +290,7 @@ namespace Cube.Ipc
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessengerClient<T> : IMessenger<T> where T : class
+    public class MessengerClient<T> : DisposableBase, IMessenger<T> where T : class
     {
         #region Constructors
 
@@ -368,7 +311,6 @@ namespace Cube.Ipc
             var address = new EndpointAddress(uri);
             var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
 
-            _dispose  = new OnceAction<bool>(Dispose);
             _callback = new MessengerServiceCallback<T>();
             _context  = new InstanceContext(_callback);
             _factory  = new DuplexChannelFactory<IMessengerService>(_callback, binding, address);
@@ -421,32 +363,6 @@ namespace Cube.Ipc
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~MessengerServer
-        ///
-        /// <summary>
-        /// オブジェクトを破棄します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~MessengerClient() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを解放します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dispose
         ///
         /// <summary>
@@ -458,7 +374,7 @@ namespace Cube.Ipc
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
@@ -517,7 +433,6 @@ namespace Cube.Ipc
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly ChannelFactory<IMessengerService> _factory;
         private readonly InstanceContext _context;
         private readonly MessengerServiceCallback<T> _callback;
