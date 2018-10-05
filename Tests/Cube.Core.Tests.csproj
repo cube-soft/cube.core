@@ -77,6 +77,7 @@
     <Compile Include="Sources\Extensions\StringExtensionTest.cs" />
     <Compile Include="Sources\Extensions\TaskExtensionTest.cs" />
     <Compile Include="Sources\Extensions\XmlExtensionTest.cs" />
+    <Compile Include="Sources\AccessorTest.cs" />
     <Compile Include="Sources\AssemblyReaderTest.cs" />
     <Compile Include="Sources\DataContractTest.cs" />
     <Compile Include="Sources\DisposableTest.cs" />
