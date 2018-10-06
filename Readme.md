@@ -18,7 +18,8 @@ Or select it from the NuGet packages UI on Visual Studio.
 ## Dependencies
 
 * [Cube.Core](https://github.com/cube-soft/Cube.Core)
-* [MVVM Light Toolkit](http://www.mvvmlight.net/)
+* [Cube.FileSystem](https://github.com/cube-soft/Cube.FileSystem)
+* [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
 
 ## Contributing
 
@@ -26,10 +27,10 @@ Or select it from the NuGet packages UI on Visual Studio.
 2. Create a feature branch from the [stable](https://github.com/cube-soft/Cube.Xui/tree/stable) branch (git checkout -b my-new-feature origin/stable). The [master](https://github.com/cube-soft/Cube.Xui/tree/master) branch may refer some pre-released NuGet packages. See [AppVeyor.yml](https://github.com/cube-soft/Cube.Xui/blob/master/AppVeyor.yml) if you want to build and commit in the master branch.
 3. Commit your changes.
 4. Rebase your local changes against the stable (or master) branch.
-5. Run test suite with the [NUnit](http://nunit.org/) console or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
+5. Run test suite with the [NUnit](https://nunit.org/) console or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
 6. Create new Pull Request.
 
 ## License
 
-Copyright &copy; 2010 [CubeSoft, Inc.](http://www.cube-soft.jp/)
+Copyright &copy; 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Xui/blob/master/License.txt).
