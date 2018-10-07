@@ -25,7 +25,7 @@ namespace Cube.Tests
     /// SoftwareVersionTest
     ///
     /// <summary>
-    /// SoftwareVersion のテスト用クラスです。
+    /// Tests for the SoftwareVersion class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,7 +39,7 @@ namespace Cube.Tests
         /// Digit
         ///
         /// <summary>
-        /// Digit プロパティの設定テストを実行します。
+        /// Executes the test for setting the digit.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,15 +52,15 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToString_Assembly
+        /// GetString
         ///
         /// <summary>
-        /// バージョンを表す文字列を取得するテストを実行します。
+        /// Executes the test for getting the version string.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ToString_Assembly()
+        public void GetString()
         {
             var asm   = Assembly.GetExecutingAssembly().GetReader();
             var major = asm.Version.Major;
@@ -85,54 +85,32 @@ namespace Cube.Tests
         /// Parse
         ///
         /// <summary>
-        /// バージョンを表す文字列を解析するテストを実行します。
+        /// Executes the test for creating a new instance of the
+        /// SoftwareVersion class with the specified string.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("1.0")]
-        [TestCase("1.0.0")]
-        [TestCase("1.0.0.0")]
-        [TestCase("1.0.0.0-suffix")]
-        [TestCase("v1.0.0.0-suffix")]
-        [TestCase("v1.0.0.0-p21")]
-        [TestCase("p21-v1.0.0.0-suffix")]
-        public void Parse(string src)
+        [TestCase("1.0",                   ExpectedResult = true )]
+        [TestCase("1.0.0",                 ExpectedResult = true )]
+        [TestCase("1.0.0.0",               ExpectedResult = true )]
+        [TestCase("1.0.0.0-suffix",        ExpectedResult = true )]
+        [TestCase("v1.0.0.0-suffix",       ExpectedResult = true )]
+        [TestCase("v1.0.0.0-p21",          ExpectedResult = true )]
+        [TestCase("p21-v1.0.0.0-suffix",   ExpectedResult = true )]
+        [TestCase("1",                     ExpectedResult = false)]
+        [TestCase("InvalidVersionNumber",  ExpectedResult = false)]
+        [TestCase(null,                    ExpectedResult = false)]
+        public bool Parse(string src)
         {
-            var version = new SoftwareVersion(src);
-            Assert.That(version.ToString(false), Is.EqualTo(src));
-        }
+            var dest = new SoftwareVersion(src);
+            var cmp  = new SoftwareVersion(src);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Parse_Invalid
-        ///
-        /// <summary>
-        /// 無効な文字列を設定した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("1")]
-        [TestCase("InvalidVersionNumber")]
-        public void Parse_Invalid(string src)
-        {
-            var version = new SoftwareVersion(src);
-            Assert.That(version.ToString(false), Is.EqualTo("1.0.0.0"));
-        }
+            Assert.That(dest,               Is.EqualTo(cmp));
+            Assert.That(dest,               Is.Not.EqualTo(src));
+            Assert.That(dest,               Is.Not.EqualTo(default(SoftwareVersion)));
+            Assert.That(dest.GetHashCode(), Is.EqualTo(cmp.GetHashCode()));
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Parse_Null
-        ///
-        /// <summary>
-        /// 無効な Assembly オブジェクトを設定した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Parse_Null()
-        {
-            var version = new SoftwareVersion(default(Assembly));
-            Assert.That(version.ToString(false), Is.EqualTo("1.0.0.0"));
+            return dest.ToString() == src;
         }
 
         #endregion
