@@ -123,7 +123,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(Format.Xml )]
         public void Load_Throws(Format format) => Assert.That(
             () => new SettingsFolder<Person>(Assembly, format).Load(),
-            Throws.TypeOf<System.IO.FileNotFoundException>()
+            Throws.InstanceOf<System.IO.IOException>()
         );
 
         /* ----------------------------------------------------------------- */
