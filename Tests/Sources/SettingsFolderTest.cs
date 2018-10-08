@@ -55,19 +55,17 @@ namespace Cube.FileSystem.Tests
             var dest  = new SettingsFolder<Person>(Assembly, format);
 
             dest.Loaded += (s, e) => ++count;
-            dest.Load();
+            dest.LoadOrDefault(new Person());
 
             Assert.That(count,         Is.EqualTo(1));
             Assert.That(dest.Value,    Is.Not.Null);
+            Assert.That(dest.Version,  Is.EqualTo(new SoftwareVersion("1.12.0.0")));
             Assert.That(dest.Format,   Is.EqualTo(format));
             Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
 
             var asm = dest.Assembly;
-            var ver = dest.Version.ToString();
-
-            Assert.That(ver,         Is.EqualTo("1.12.0.0"));
-            Assert.That(asm.Company, Is.EqualTo("CubeSoft"));
-            Assert.That(asm.Product, Is.EqualTo("Cube.FileSystem.Tests"));
+            Assert.That(asm.Company,   Is.EqualTo("CubeSoft"));
+            Assert.That(asm.Product,   Is.EqualTo("Cube.FileSystem.Tests"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -114,6 +112,22 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Load_Throws
+        ///
+        /// <summary>
+        /// Confirms the behavior when the specified file does not exist.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(Format.Json)]
+        [TestCase(Format.Xml )]
+        public void Load_Throws(Format format) => Assert.That(
+            () => new SettingsFolder<Person>(Assembly, format).Load(),
+            Throws.TypeOf<System.IO.FileNotFoundException>()
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ReLoad
         ///
         /// <summary>
@@ -124,18 +138,17 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void ReLoad()
         {
-            var save = 0;
-            var fmt  = Format.Registry;
-            var name = GetKeyName(Default);
-            var src  = new SettingsFolder<Person>(Assembly, fmt, name);
+            var count = 0;
+            var name  = GetKeyName(Default);
+            var src   = new SettingsFolder<Person>(Assembly, Format.Registry, name);
 
-            src.Loaded += (s, e) => ++save;
+            src.Loaded += (s, e) => ++count;
             src.AutoSave = false;
             src.Load();
             src.Value.Name = "Before ReLoad";
             src.Load();
 
-            Assert.That(save, Is.EqualTo(2), "Saved");
+            Assert.That(count, Is.EqualTo(2), nameof(src.Loaded));
             Assert.That(src.Value.Name, Is.EqualTo("山田太郎"));
         }
 
@@ -151,14 +164,13 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void AutoSave()
         {
-            var fmt    = Format.Registry;
             var key    = nameof(AutoSave);
             var name   = GetKeyName(key);
             var save   = 0;
             var change = 0;
             var delay  = TimeSpan.FromMilliseconds(100);
 
-            using (var src = new SettingsFolder<Person>(Assembly, fmt, name))
+            using (var src = new SettingsFolder<Person>(Assembly, Format.Registry, name))
             {
                 src.Saved           += (s, e) => ++save;
                 src.PropertyChanged += (s, e) => ++change;

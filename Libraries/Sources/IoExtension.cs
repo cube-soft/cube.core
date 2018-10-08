@@ -50,17 +50,11 @@ namespace Cube.FileSystem.Mixin
         /// <param name="src">Path of the source file.</param>
         /// <param name="callback">User action.</param>
         ///
-        /// <returns>Executing result.</returns>
-        ///
-        /// <remarks>
-        /// 指定されたファイルが存在しない場合、null を引数にして関数
-        /// オブジェクトが実行されます。
-        /// </remarks>
+        /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Load<T>(this IO io, string src, Func<Stream, T> callback)
         {
-            if (!io.Exists(src)) return callback(null);
             using (var ss = io.OpenRead(src)) return callback(ss);
         }
 
@@ -81,7 +75,7 @@ namespace Cube.FileSystem.Mixin
         /// Returned object when an exception occurs.
         /// </param>
         ///
-        /// <returns>Executing result.</returns>
+        /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T LoadOrDefault<T>(this IO io, string src, Func<Stream, T> callback, T error) =>

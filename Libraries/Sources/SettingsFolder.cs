@@ -433,7 +433,7 @@ namespace Cube.FileSystem
         private T LoadCore() =>
             Format == Format.Registry ?
             Format.Deserialize<T>(Location) :
-            IO.Load(Location, e => (e != null) ? Format.Deserialize<T>(e) : new T());
+            IO.Load(Location, e => Format.Deserialize<T>(e));
 
         /* ----------------------------------------------------------------- */
         ///
