@@ -53,7 +53,6 @@ namespace Cube.FileSystem.Tests
             var dir  = io.Get(file.DirectoryName);
             var cmp  = new DateTime(2017, 6, 5);
 
-            Assert.That(file.Refreshable,          Is.EqualTo(io.GetRefreshable()));
             Assert.That(file.FullName,             Is.EqualTo(GetExamplesWith("Sample.txt")));
             Assert.That(file.Name,                 Is.EqualTo("Sample.txt"));
             Assert.That(file.NameWithoutExtension, Is.EqualTo("Sample"));
@@ -63,7 +62,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(file.LastWriteTime,        Is.GreaterThan(cmp));
             Assert.That(file.LastAccessTime,       Is.GreaterThan(cmp));
 
-            Assert.That(dir.Refreshable,           Is.EqualTo(io.GetRefreshable()));
             Assert.That(dir.FullName,              Is.EqualTo(Examples));
             Assert.That(dir.Name,                  Is.EqualTo("Examples"));
             Assert.That(dir.NameWithoutExtension,  Is.EqualTo("Examples"));
@@ -75,25 +73,6 @@ namespace Cube.FileSystem.Tests
                 file.Refresh();
                 dir.Refresh();
             });
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get_New
-        ///
-        /// <summary>
-        /// Information のコンストラクタを直接実行した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Get_New()
-        {
-            var io  = new IO();
-            var src = new Information(GetExamplesWith("Sample.txt"));
-
-            Assert.That(src.Refreshable,                Is.Not.EqualTo(io.GetRefreshable()));
-            Assert.That(src.Refreshable.GetType().Name, Is.EqualTo(io.GetRefreshable().GetType().Name));
         }
 
         /* ----------------------------------------------------------------- */

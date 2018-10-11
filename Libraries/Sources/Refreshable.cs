@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.IO;
 
 namespace Cube.FileSystem
@@ -61,6 +62,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Serializable]
     public class Refreshable : IRefreshable
     {
         #region Methods

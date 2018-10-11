@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Alphaleonis.Win32.Filesystem;
+using System;
 
 namespace Cube.FileSystem
 {
@@ -28,6 +29,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Serializable]
     public class AfsRefreshable : IRefreshable
     {
         #region Methods
