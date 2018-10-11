@@ -29,6 +29,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Serializable]
     public class RefreshableInfo
     {
         #region Constructors
@@ -45,7 +46,7 @@ namespace Cube.FileSystem
         /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public RefreshableInfo(string src)
+        internal RefreshableInfo(string src)
         {
             Source = src;
         }

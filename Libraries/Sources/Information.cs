@@ -29,6 +29,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Serializable]
     public class Information
     {
         #region Constructors
