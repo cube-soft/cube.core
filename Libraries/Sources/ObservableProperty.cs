@@ -66,7 +66,11 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [IgnoreDataMember]
-        public SynchronizationContext Context { get; set; }
+        public SynchronizationContext Context
+        {
+            get => _context;
+            set => _context = value;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,6 +192,10 @@ namespace Cube
             return true;
         }
 
+        #endregion
+
+        #region Fields
+        [NonSerialized] private SynchronizationContext _context;
         #endregion
     }
 }
