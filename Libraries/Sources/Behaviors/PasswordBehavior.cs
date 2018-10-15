@@ -84,7 +84,6 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-
             SetViewPassword(AssociatedObject, Password);
             AssociatedObject.PasswordChanged -= WhenViewPasswordChanged;
             AssociatedObject.PasswordChanged += WhenViewPasswordChanged;
@@ -102,7 +101,6 @@ namespace Cube.Xui.Behaviors
         protected override void OnDetaching()
         {
             AssociatedObject.PasswordChanged -= WhenViewPasswordChanged;
-
             base.OnDetaching();
         }
 

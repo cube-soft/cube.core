@@ -73,6 +73,7 @@
     <Compile Include="Sources\Behaviors\DirectoryDialogBehavior.cs" />
     <Compile Include="Sources\Behaviors\EditBehavior.cs" />
     <Compile Include="Sources\Behaviors\FileDialogBehavior.cs" />
+    <Compile Include="Sources\Behaviors\FileDropBehavior.cs" />
     <Compile Include="Sources\Behaviors\MessengerBehavior.cs" />
     <Compile Include="Sources\Behaviors\PasswordBehavior.cs" />
     <Compile Include="Sources\Behaviors\SelectionBehavior.cs" />
