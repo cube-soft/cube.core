@@ -19,7 +19,7 @@ using Cube.Xui.Converters;
 using NUnit.Framework;
 using System.Windows.Media.Imaging;
 
-namespace Cube.Xui.Tests
+namespace Cube.Xui.Tests.Converters
 {
     /* --------------------------------------------------------------------- */
     ///

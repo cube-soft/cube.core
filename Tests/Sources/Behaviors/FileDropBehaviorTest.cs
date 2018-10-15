@@ -15,54 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Converters;
+using Cube.Xui.Behaviors;
 using NUnit.Framework;
+using System.Threading;
+using System.Windows;
 
-namespace Cube.Xui.Tests.Converters
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StringConverterTest
+    /// FileDropBehaviorTest
     ///
     /// <summary>
-    /// ValueToString のテスト用クラスです。
+    /// Tests for the FileDropBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class StringConverterTest : ConvertHelper
+    [Apartment(ApartmentState.STA)]
+    class FileDropBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ValueToString
+        /// Properties
         ///
         /// <summary>
-        /// 文字列に変換するテストを実行します。
+        /// Confirms default values of properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ValueToString() => Assert.That(
-            Convert<string>(new ValueToString(), 1),
-            Is.EqualTo("1")
-        );
+        public void Properties()
+        {
+            var view = new Window();
+            var src  = new FileDropBehavior<Window>();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueToString_Null
-        ///
-        /// <summary>
-        /// 引数に null を指定した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ValueToString_Null() => Assert.That(
-            Convert<string>(new ValueToString(), null),
-            Is.Empty
-        );
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
+        }
 
         #endregion
     }

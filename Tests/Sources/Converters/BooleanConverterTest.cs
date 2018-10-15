@@ -20,7 +20,7 @@ using NUnit.Framework;
 using System;
 using System.Windows;
 
-namespace Cube.Xui.Tests
+namespace Cube.Xui.Tests.Converters
 {
     /* --------------------------------------------------------------------- */
     ///
