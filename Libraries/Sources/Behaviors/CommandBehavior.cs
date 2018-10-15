@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -52,6 +53,25 @@ namespace Cube.Xui.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CommandParameter
+        ///
+        /// <summary>
+        /// Gets or sets the command parameter.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public object CommandParameter
+        {
+            get => GetValue(CommandParameterProperty);
+            set => SetValue(CommandParameterProperty, value);
+        }
+
+        #endregion
+
+        #region Dependencies
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// CommandProperty
         ///
         /// <summary>
@@ -60,7 +80,37 @@ namespace Cube.Xui.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public static readonly DependencyProperty CommandProperty =
-            DependencyFactory.Create<CommandBehavior<T>, ICommand>(nameof(Command), (s, e) => s.Command = e);
+            Create<ICommand>(nameof(Command), (s, e) => s.Command = e);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CommandParameterProperty
+        ///
+        /// <summary>
+        /// Gets the DependencyProperty object for the CommandParameter
+        /// property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static readonly DependencyProperty CommandParameterProperty =
+            Create<object>(nameof(CommandParameter), (s, e) => s.CommandParameter = e);
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Creates
+        ///
+        /// <summary>
+        /// Creates a new instance of the DependencyProperty class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static DependencyProperty Create<U>(string name, Action<CommandBehavior<T>, U> action) =>
+            DependencyFactory.Create(name, action);
 
         #endregion
     }
