@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+using Cube.Generics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -24,15 +24,15 @@ namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehavior
+    /// CommandBehavior(TView)
     ///
     /// <summary>
-    /// Represents the inherited Behavior(T) class that has a Command
+    /// Represents the inherited Behavior(TView) class that has a Command
     /// bindable property.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CommandBehavior<T> : Behavior<T> where T : DependencyObject
+    public class CommandBehavior<TView> : Behavior<TView> where TView : DependencyObject
     {
         #region Properties
 
@@ -53,25 +53,6 @@ namespace Cube.Xui.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CommandParameter
-        ///
-        /// <summary>
-        /// Gets or sets the command parameter.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object CommandParameter
-        {
-            get => GetValue(CommandParameterProperty);
-            set => SetValue(CommandParameterProperty, value);
-        }
-
-        #endregion
-
-        #region Dependencies
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// CommandProperty
         ///
         /// <summary>
@@ -80,7 +61,45 @@ namespace Cube.Xui.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public static readonly DependencyProperty CommandProperty =
-            Create<ICommand>(nameof(Command), (s, e) => s.Command = e);
+            DependencyFactory.Create<CommandBehavior<TView>, ICommand>(
+                nameof(Command), (s, e) => s.Command = e);
+
+        #endregion
+
+        #region Dependencies
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CommandBehavior(TView, TParameter)
+    ///
+    /// <summary>
+    /// Represents the inherited Behavior(TView) class that has Command
+    /// and CommandParameter bindable properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class CommandBehavior<TView, TParameter> :
+        CommandBehavior<TView> where TView : DependencyObject
+    {
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CommandParameter
+        ///
+        /// <summary>
+        /// Gets or sets the command parameter.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TParameter CommandParameter
+        {
+            get => GetValue(CommandParameterProperty).TryCast<TParameter>();
+            set => SetValue(CommandParameterProperty, value);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,24 +112,8 @@ namespace Cube.Xui.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public static readonly DependencyProperty CommandParameterProperty =
-            Create<object>(nameof(CommandParameter), (s, e) => s.CommandParameter = e);
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Creates
-        ///
-        /// <summary>
-        /// Creates a new instance of the DependencyProperty class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static DependencyProperty Create<U>(string name, Action<CommandBehavior<T>, U> action) =>
-            DependencyFactory.Create(name, action);
+            DependencyFactory.Create<CommandBehavior<TView, TParameter>, TParameter>(
+                nameof(CommandParameter), (s, e) => s.CommandParameter = e);
 
         #endregion
     }

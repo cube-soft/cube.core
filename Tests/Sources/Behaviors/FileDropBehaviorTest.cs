@@ -54,7 +54,6 @@ namespace Cube.Xui.Tests.Behaviors
 
             src.Attach(view);
             Assert.That(src.Command, Is.Null);
-            Assert.That(src.CommandParameter, Is.Null);
             src.Detach();
         }
 
