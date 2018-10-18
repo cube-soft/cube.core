@@ -48,6 +48,21 @@ namespace Cube
 
         #endregion
 
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Disposed
+        ///
+        /// <summary>
+        /// Gets the value indicating whether the object is disposed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Disposed => _dispose.Invoked;
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */

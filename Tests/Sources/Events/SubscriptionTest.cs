@@ -60,7 +60,8 @@ namespace Cube.Tests
                     d1.Dispose();
                 });
 
-                Assert.That(src.Count, Is.EqualTo(0));
+                Assert.That(src.Disposed, Is.False);
+                Assert.That(src.Count,    Is.EqualTo(0));
             }
         }
 
@@ -89,7 +90,8 @@ namespace Cube.Tests
                     d1.Dispose();
                 });
 
-                Assert.That(src.Count, Is.EqualTo(0));
+                Assert.That(src.Disposed, Is.False);
+                Assert.That(src.Count,    Is.EqualTo(0));
             }
         }
 
