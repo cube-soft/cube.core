@@ -64,17 +64,17 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OrderByDecending
+        /// OrderByDescending
         ///
         /// <summary>
-        /// Executes the test of the OrderByDecending method.
+        /// Executes the test of the OrderByDescending method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void OrderByDecending()
+        public void OrderByDescending()
         {
-            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderByDecending().ToList();
+            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderByDescending().ToList();
             Assert.That(src[0], Is.EqualTo(9));
             Assert.That(src[1], Is.EqualTo(6));
             Assert.That(src[2], Is.EqualTo(5));

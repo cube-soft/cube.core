@@ -224,7 +224,7 @@ namespace Cube.Collections.Mixin
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OrderByDecending
+        /// OrderByDescending
         ///
         /// <summary>
         /// Sorts the elements of a sequence in decending order.
@@ -237,7 +237,7 @@ namespace Cube.Collections.Mixin
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> OrderByDecending(this IEnumerable<int> src) =>
+        public static IEnumerable<int> OrderByDescending(this IEnumerable<int> src) =>
             src.OrderByDescending(i => i);
 
         /* ----------------------------------------------------------------- */
