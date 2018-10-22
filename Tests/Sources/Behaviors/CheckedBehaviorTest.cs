@@ -24,10 +24,10 @@ namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDropBehaviorTest
+    /// CheckedBehaviorTest
     ///
     /// <summary>
-    /// Tests for the FileDropBehavior class.
+    /// Tests for the CheckedBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

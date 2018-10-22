@@ -25,7 +25,7 @@ namespace Cube.Xui.Mixin
     /// BindableExtension
     ///
     /// <summary>
-    /// Bindable に関連する拡張用クラスです。
+    /// Provides extended methods of the Bindable classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,10 +40,10 @@ namespace Cube.Xui.Mixin
         /// ToBindable
         ///
         /// <summary>
-        /// Bindable オブジェクトに変換します。
+        /// Converts to a Bindable(T) object.
         /// </summary>
         ///
-        /// <param name="src">変換元オブジェクト</param>
+        /// <param name="src">Source object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static Bindable<T> ToBindable<T>(this T src) => new Bindable<T>(src);
@@ -53,11 +53,11 @@ namespace Cube.Xui.Mixin
         /// ToBindable
         ///
         /// <summary>
-        /// Bindable オブジェクトに変換します。
+        /// Converts to a Bindable(T) object.
         /// </summary>
         ///
-        /// <param name="src">変換元オブジェクト</param>
-        /// <param name="context">同期用コンテキスト</param>
+        /// <param name="src">Source object.</param>
+        /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static Bindable<T> ToBindable<T>(this T src,
@@ -68,10 +68,10 @@ namespace Cube.Xui.Mixin
         /// ToBindable
         ///
         /// <summary>
-        /// BindableCollection オブジェクトに変換します。
+        /// Converts to a BindableCollection(T) object.
         /// </summary>
         ///
-        /// <param name="src">変換元オブジェクト</param>
+        /// <param name="src">Source object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src) =>
@@ -82,11 +82,11 @@ namespace Cube.Xui.Mixin
         /// ToBindable
         ///
         /// <summary>
-        /// BindableCollection オブジェクトに変換します。
+        /// Converts to a BindableCollection(T) object.
         /// </summary>
         ///
-        /// <param name="src">変換元オブジェクト</param>
-        /// <param name="context">同期用コンテキスト</param>
+        /// <param name="src">Source object.</param>
+        /// <param name="context">Synchronization context.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src,
@@ -99,7 +99,7 @@ namespace Cube.Xui.Mixin
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Raise
+        /// RaiseValueChanged
         ///
         /// <summary>
         /// Raises a PropertyChanged event against the Value property.
@@ -108,7 +108,7 @@ namespace Cube.Xui.Mixin
         /// <param name="src">Target object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Raise<T>(this Bindable<T> src) =>
+        public static void RaiseValueChanged<T>(this Bindable<T> src) =>
             src.RaisePropertyChanged(nameof(src.Value));
 
         #endregion
