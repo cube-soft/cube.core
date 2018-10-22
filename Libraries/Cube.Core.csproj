@@ -99,9 +99,9 @@
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />
     <Compile Include="Sources\OnceInitializer.cs" />
-    <Compile Include="Sources\OnceQuery.cs" />
     <Compile Include="Sources\Power.cs" />
     <Compile Include="Sources\Query.cs" />
+    <Compile Include="Sources\QueryValue.cs" />
     <Compile Include="Sources\SoftwareVersion.cs" />
     <Compile Include="Sources\WakeableTimer.cs" />
   </ItemGroup>

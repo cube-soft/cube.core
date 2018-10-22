@@ -21,15 +21,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceQueryTest
+    /// QueryValueTest
     ///
     /// <summary>
-    /// OnceQuery のテスト用クラスです。
+    /// QueryValue のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class OnceQueryTest
+    class QueryValueTest
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -43,31 +43,14 @@ namespace Cube.Tests
         [TestCase("password")]
         public void Invoke(string obj)
         {
-            var src  = new OnceQuery<string>(obj);
+            var src  = new QueryValue<string>(obj);
             var dest = QueryEventArgs.Create("OnceQuery(T)");
             src.Request(dest);
 
+            Assert.That(src.Value,   Is.EqualTo(obj));
             Assert.That(dest.Result, Is.EqualTo(obj));
             Assert.That(dest.Cancel, Is.False);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Twice
-        ///
-        /// <summary>
-        /// 複数回実行した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("twice")]
-        public void Invoke_Twice(string obj) => Assert.That(() =>
-        {
-            var src  = new OnceQuery<string>(obj);
-            var dest = QueryEventArgs.Create("TwiceQuery(T)");
-            src.Request(dest);
-            src.Request(dest);
-        }, Throws.TypeOf<TwiceException>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -81,30 +64,13 @@ namespace Cube.Tests
         [TestCase(10)]
         public void Invoke(int obj)
         {
-            var src  = new OnceQuery<string, int>(obj);
+            var src  = new QueryValue<string, int>(obj);
             var dest = new QueryEventArgs<string, int>("OnceQuery(T, U)");
             src.Request(dest);
 
+            Assert.That(src.Value,   Is.EqualTo(obj));
             Assert.That(dest.Result, Is.EqualTo(obj));
             Assert.That(dest.Cancel, Is.False);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Twice
-        ///
-        /// <summary>
-        /// 複数回実行した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(-1)]
-        public void Invoke_Twice(int obj) => Assert.That(() =>
-        {
-            var src  = new OnceQuery<string, int>(obj);
-            var dest = new QueryEventArgs<string, int>("TwiceQuery(T)");
-            src.Request(dest);
-            src.Request(dest);
-        }, Throws.TypeOf<TwiceException>());
     }
 }
