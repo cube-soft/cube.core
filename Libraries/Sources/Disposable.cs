@@ -24,7 +24,7 @@ namespace Cube
     /// Disposable
     ///
     /// <summary>
-    /// IDisposable オブジェクトを生成するためのクラスです。
+    /// Provides functionality to create a IDisposable object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,12 +37,12 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// IDisposable オブジェクトを生成します。
+        /// Creates a IDisposable object from the specified action.
         /// </summary>
         ///
-        /// <param name="dispose">Dispose 時に実行する動作</param>
+        /// <param name="dispose">Invoke when disposed.</param>
         ///
-        /// <returns>IDisposable オブジェクト</returns>
+        /// <returns>IDisposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IDisposable Create(Action dispose)
@@ -59,7 +59,8 @@ namespace Cube
     /// AnonymousDisposable
     ///
     /// <summary>
-    /// Dispose 時に特定の動作を実行するためのクラスです。
+    /// Provides functionality to convert from an action to the instance
+    /// of IDisposable implemented class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -72,10 +73,11 @@ namespace Cube
         /// AnonymousDisposable
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the AnonymousDisposable class
+        /// with the specified action.
         /// </summary>
         ///
-        /// <param name="dispose">Dispose 時に実行する動作</param>
+        /// <param name="dispose">Invoke when disposed.</param>
         ///
         /* ----------------------------------------------------------------- */
         public AnonymousDisposable(Action dispose)
@@ -92,7 +94,7 @@ namespace Cube
         /// Dispose
         ///
         /// <summary>
-        /// 設定された動作を実行します。
+        /// Executes the provided action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

@@ -37,6 +37,72 @@ namespace Cube.Tests
     {
         #region Tests
 
+        #region IEnumerable<int>
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OrderBy
+        ///
+        /// <summary>
+        /// Executes the test of the OrderBy method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void OrderBy()
+        {
+            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderBy().ToList();
+            Assert.That(src[0], Is.EqualTo(1));
+            Assert.That(src[1], Is.EqualTo(1));
+            Assert.That(src[2], Is.EqualTo(2));
+            Assert.That(src[3], Is.EqualTo(3));
+            Assert.That(src[4], Is.EqualTo(4));
+            Assert.That(src[5], Is.EqualTo(5));
+            Assert.That(src[6], Is.EqualTo(6));
+            Assert.That(src[7], Is.EqualTo(9));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OrderByDescending
+        ///
+        /// <summary>
+        /// Executes the test of the OrderByDescending method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void OrderByDescending()
+        {
+            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderByDescending().ToList();
+            Assert.That(src[0], Is.EqualTo(9));
+            Assert.That(src[1], Is.EqualTo(6));
+            Assert.That(src[2], Is.EqualTo(5));
+            Assert.That(src[3], Is.EqualTo(4));
+            Assert.That(src[4], Is.EqualTo(3));
+            Assert.That(src[5], Is.EqualTo(2));
+            Assert.That(src[6], Is.EqualTo(1));
+            Assert.That(src[7], Is.EqualTo(1));
+        }
+
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Within
+        ///
+        /// <summary>
+        /// Executes the test of the Within method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Within() => Assert.That(
+            new[] { 3, 1, 4, 1, 5, 9, 2, 6, 0, 0 }.Within(5),
+            Is.EquivalentTo(new[] { 3, 1, 4, 1, 2, 0, 0 })
+        );
+
+        #endregion
+
         #region Get or Set
 
         /* ----------------------------------------------------------------- */
@@ -392,22 +458,7 @@ namespace Cube.Tests
 
         #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToObservable
-        ///
-        /// <summary>
-        /// IList(int) を ObservableCollection(int) に変換するテストを
-        /// 実行しますます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(100)]
-        public void ToObservable(int count)
-        {
-            var src = Enumerable.Range(0, count);
-            Assert.That(src.ToObservable(), Is.EquivalentTo(src));
-        }
+        #region Flatten
 
         /* ----------------------------------------------------------------- */
         ///
@@ -476,6 +527,29 @@ namespace Cube.Tests
             new Tree[0].Flatten(e => e.Children).Count(),
             Is.EqualTo(0)
         );
+
+        #endregion
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToObservable
+        ///
+        /// <summary>
+        /// IList(int) を ObservableCollection(int) に変換するテストを
+        /// 実行しますます。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(100)]
+        public void ToObservable(int count)
+        {
+            var src = Enumerable.Range(0, count);
+            Assert.That(src.ToObservable(), Is.EquivalentTo(src));
+        }
+
+        #endregion
+
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///

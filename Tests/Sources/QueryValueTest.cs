@@ -21,53 +21,56 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PowerTest
+    /// QueryValueTest
     ///
     /// <summary>
-    /// Tests for the Power class.
+    /// QueryValue のテスト用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class PowerTest
+    class QueryValueTest
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Subscribe
+        /// Invoke
         ///
         /// <summary>
-        /// Executes the test for observing the PowerModeChanged event.
+        /// OnceQuery(T) のテストを実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(true,  ExpectedResult = 2)]
-        [TestCase(false, ExpectedResult = 4)]
-        public int Subscribe(bool ignore)
+        [TestCase("password")]
+        public void Invoke(string obj)
         {
-            var mock = new PowerModeContext(Power.Mode);
-            Power.Configure(mock);
-            mock.IgnoreStatusChanged = ignore;
+            var src  = new QueryValue<string>(obj);
+            var dest = QueryEventArgs.Create("OnceQuery(T)");
+            src.Request(dest);
 
-            var count  = 0;
-            var powewr = Power.Subscribe(() => ++count);
-
-            mock.Mode = PowerModes.Resume;       // Resume -> Resume
-            mock.Mode = PowerModes.StatusChange; // Resume -> StatusChange
-            mock.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
-            mock.Mode = PowerModes.Suspend;      // Suspend -> Suspend
-            mock.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
-            mock.Mode = PowerModes.Resume;       // StatusChange -> Resume
-
-            powewr.Dispose();
-
-            mock.Mode = PowerModes.Suspend;
-            mock.Mode = PowerModes.Resume;
-
-            return count;
+            Assert.That(src.Value,   Is.EqualTo(obj));
+            Assert.That(dest.Result, Is.EqualTo(obj));
+            Assert.That(dest.Cancel, Is.False);
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// OnceQuery(T, U) のテストを実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(10)]
+        public void Invoke(int obj)
+        {
+            var src  = new QueryValue<string, int>(obj);
+            var dest = new QueryEventArgs<string, int>("OnceQuery(T, U)");
+            src.Request(dest);
+
+            Assert.That(src.Value,   Is.EqualTo(obj));
+            Assert.That(dest.Result, Is.EqualTo(obj));
+            Assert.That(dest.Cancel, Is.False);
+        }
     }
 }

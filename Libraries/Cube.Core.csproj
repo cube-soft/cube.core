@@ -87,6 +87,7 @@
     <Compile Include="Sources\Events\ProgressEventArgs.cs" />
     <Compile Include="Sources\Events\QueryEventArgs.cs" />
     <Compile Include="Sources\Events\RelayEvent.cs" />
+    <Compile Include="Sources\Events\Subscription.cs" />
     <Compile Include="Sources\Events\ValueEventArgs.cs" />
     <Compile Include="Sources\Extensions\Conversions\ByteFormat.cs" />
     <Compile Include="Sources\Extensions\Conversions\TimeFormat.cs" />
@@ -96,20 +97,21 @@
     <Compile Include="Sources\Extensions\StringExtension.cs" />
     <Compile Include="Sources\Extensions\TaskExtension.cs" />
     <Compile Include="Sources\Extensions\XmlExtension.cs" />
-    <Compile Include="Sources\Processes\Messenger.cs" />
-    <Compile Include="Sources\Processes\MessengerService.cs" />
-    <Compile Include="Sources\Processes\MessengerServiceCallback.cs" />
+    <Compile Include="Sources\Ipc\Messenger.cs" />
+    <Compile Include="Sources\Ipc\MessengerService.cs" />
+    <Compile Include="Sources\Ipc\MessengerServiceCallback.cs" />
     <Compile Include="Sources\Accessor.cs" />
     <Compile Include="Sources\AssemblyReader.cs" />
     <Compile Include="Sources\Disposable.cs" />
+    <Compile Include="Sources\DisposableBase.cs" />
     <Compile Include="Sources\Exceptions.cs" />
     <Compile Include="Sources\Logger.cs" />
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />
     <Compile Include="Sources\OnceInitializer.cs" />
-    <Compile Include="Sources\OnceQuery.cs" />
     <Compile Include="Sources\Power.cs" />
     <Compile Include="Sources\Query.cs" />
+    <Compile Include="Sources\QueryValue.cs" />
     <Compile Include="Sources\SoftwareVersion.cs" />
     <Compile Include="Sources\WakeableTimer.cs" />
   </ItemGroup>

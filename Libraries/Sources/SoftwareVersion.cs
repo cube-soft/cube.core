@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -29,11 +30,11 @@ namespace Cube
     /// SoftwareVersion
     ///
     /// <summary>
-    /// ソフトウェアのバージョンを表すクラスです。
+    /// Represents the software version.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SoftwareVersion
+    public class SoftwareVersion : IEquatable<SoftwareVersion>
     {
         #region Constructors
 
@@ -42,7 +43,7 @@ namespace Cube
         /// SoftwareVersion
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,16 +54,17 @@ namespace Cube
         /// SoftwareVersion
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the class with the specified
+        /// assembly.
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリオブジェクト</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(Assembly assembly)
         {
-            var number = assembly?.GetName().Version;
-            if (number != null) Number = number;
+            Debug.Assert(assembly != null);
+            Number = assembly.GetName().Version;
         }
 
         /* ----------------------------------------------------------------- */
@@ -70,10 +72,11 @@ namespace Cube
         /// SoftwareVersion
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the class with the specified
+        /// string.
         /// </summary>
         ///
-        /// <param name="version">バージョンを表す文字列</param>
+        /// <param name="version">Represents the version.</param>
         ///
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(string version)
@@ -90,7 +93,7 @@ namespace Cube
         /// Number
         ///
         /// <summary>
-        /// バージョン番号を取得または設定します。
+        /// Gets or sets the value that represents the version number.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -101,7 +104,7 @@ namespace Cube
         /// Digit
         ///
         /// <summary>
-        /// Number プロパティの有効桁数を取得または設定します。
+        /// Gets or sets the number of significant digits of version.
         /// </summary>
         ///
         /// <remarks>
@@ -124,7 +127,7 @@ namespace Cube
         /// Prefix
         ///
         /// <summary>
-        /// バージョン番号の先頭に付与する文字列を取得または設定します。
+        /// Gets or sets the prefix of the version.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -135,7 +138,7 @@ namespace Cube
         /// Suffix
         ///
         /// <summary>
-        /// バージョン番号の末尾に付与する文字列を取得または設定します。
+        /// Gets or sets the suffix of the version.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -146,7 +149,7 @@ namespace Cube
         /// Platform
         ///
         /// <summary>
-        /// ソフトウェアのプラットフォームを示す文字列を取得します。
+        /// Gets or sets the platform identification.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -161,10 +164,11 @@ namespace Cube
         /// ToString
         ///
         /// <summary>
-        /// バージョンを表す文字列を取得します。
+        /// Returns the string that represents the version without the
+        /// platform idintification.
         /// </summary>
         ///
-        /// <returns>バージョンを表す文字列</returns>
+        /// <returns>String for the version.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public override string ToString() => ToString(false);
@@ -174,14 +178,14 @@ namespace Cube
         /// ToString
         ///
         /// <summary>
-        /// バージョンを表す文字列を取得します。
+        /// Returns the string that represents the version.
         /// </summary>
         ///
         /// <param name="platform">
-        /// Platform を付与するかどうかを示す値
+        /// Indicates whether the platform identification is displayed.
         /// </param>
         ///
-        /// <returns>バージョンを表す文字列</returns>
+        /// <returns>String for the version.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public string ToString(bool platform)
@@ -196,6 +200,66 @@ namespace Cube
             return ss.ToString();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Equals
+        ///
+        /// <summary>
+        /// Indicates whether the current object is equal to another object
+        /// of the same type.
+        /// </summary>
+        ///
+        /// <param name="other">Object to compare with this object.</param>
+        ///
+        /// <returns>
+        /// true if the current object is equal to the other parameter;
+        /// otherwise, false.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Equals(SoftwareVersion other) =>
+            other != null &&
+            Number == other.Number &&
+            Prefix == other.Prefix &&
+            Suffix == other.Suffix;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Equals
+        ///
+        /// <summary>
+        /// Indicates whether the current object is equal to another object.
+        /// </summary>
+        ///
+        /// <param name="other">Object to compare with this object.</param>
+        ///
+        /// <returns>
+        /// true if the current object is equal to the other parameter;
+        /// otherwise, false.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override bool Equals(object other) =>
+            other != null &&
+            GetType() == other.GetType() &&
+            Equals((SoftwareVersion)other);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Equals
+        ///
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        ///
+        /// <returns>
+        /// 32-bit signed integer hash code.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override int GetHashCode() =>
+            Number.GetHashCode() ^ Prefix.GetHashCode() ^ Suffix.GetHashCode();
+
         #endregion
 
         #region Implementations
@@ -205,17 +269,17 @@ namespace Cube
         /// AppendNumber
         ///
         /// <summary>
-        /// バージョン番号を追加します。
+        /// Appends the version number to the specified object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void AppendNumber(StringBuilder ss)
+        private void AppendNumber(StringBuilder dest)
         {
-            ss.Append($"{Number.Major}.{Number.Minor}");
+            dest.Append($"{Number.Major}.{Number.Minor}");
             if (Digit <= 2) return;
-            ss.Append($".{Number.Build}");
+            dest.Append($".{Number.Build}");
             if (Digit <= 3) return;
-            ss.Append($".{Number.Revision}");
+            dest.Append($".{Number.Revision}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -223,12 +287,14 @@ namespace Cube
         /// Parse
         ///
         /// <summary>
-        /// バージョンを表す文字列を解析します。
+        /// Parses the string that represents the version.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private void Parse(string str)
         {
+            if (!str.HasValue()) return;
+
             var match = Regex.Match(
                 str,
                 @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){1,3})(?<suffix>.*)",

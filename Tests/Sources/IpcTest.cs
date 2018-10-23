@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Processes;
+using Cube.Ipc;
 using Cube.Tasks;
 using NUnit.Framework;
 using System;

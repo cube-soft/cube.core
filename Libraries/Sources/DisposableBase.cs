@@ -15,96 +15,103 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
+using System;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceQueryTest
+    /// DisposableBase
     ///
     /// <summary>
-    /// OnceQuery のテスト用クラスです。
+    /// Represents an implementation of the IDisposable interface.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class OnceQueryTest
+    public abstract class DisposableBase : IDisposable
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// DisposableBase
         ///
         /// <summary>
-        /// OnceQuery(T) のテストを実行します。
+        /// Creates a new instance of the DisposableBase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("password")]
-        public void Invoke(string obj)
+        protected DisposableBase()
         {
-            var src  = new OnceQuery<string>(obj);
-            var dest = QueryEventArgs.Create("OnceQuery(T)");
-            src.Request(dest);
+            _dispose = new OnceAction<bool>(Dispose);
+        }
 
-            Assert.That(dest.Result, Is.EqualTo(obj));
-            Assert.That(dest.Cancel, Is.False);
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Disposed
+        ///
+        /// <summary>
+        /// Gets the value indicating whether the object is disposed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Disposed => _dispose.Invoked;
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~DisposableBase
+        ///
+        /// <summary>
+        /// Finalizes the DisposableBase.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~DisposableBase() { _dispose.Invoke(false); }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases all resources used by the DisposableBase.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            _dispose.Invoke(true);
+            GC.SuppressFinalize(this);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke_Twice
+        /// Dispose
         ///
         /// <summary>
-        /// 複数回実行した時の挙動を確認します。
+        /// Releases the unmanaged resources used by the DisposableBase
+        /// and optionally releases the managed resources.
         /// </summary>
         ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        [TestCase("twice")]
-        public void Invoke_Twice(string obj) => Assert.That(() =>
-        {
-            var src  = new OnceQuery<string>(obj);
-            var dest = QueryEventArgs.Create("TwiceQuery(T)");
-            src.Request(dest);
-            src.Request(dest);
-        }, Throws.TypeOf<TwiceException>());
+        protected abstract void Dispose(bool disposing);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// OnceQuery(T, U) のテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(10)]
-        public void Invoke(int obj)
-        {
-            var src  = new OnceQuery<string, int>(obj);
-            var dest = new QueryEventArgs<string, int>("OnceQuery(T, U)");
-            src.Request(dest);
+        #endregion
 
-            Assert.That(dest.Result, Is.EqualTo(obj));
-            Assert.That(dest.Cancel, Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Twice
-        ///
-        /// <summary>
-        /// 複数回実行した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(-1)]
-        public void Invoke_Twice(int obj) => Assert.That(() =>
-        {
-            var src  = new OnceQuery<string, int>(obj);
-            var dest = new QueryEventArgs<string, int>("TwiceQuery(T)");
-            src.Request(dest);
-            src.Request(dest);
-        }, Throws.TypeOf<TwiceException>());
+        #region Fields
+        private readonly OnceAction<bool> _dispose;
+        #endregion
     }
 }

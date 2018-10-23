@@ -16,60 +16,60 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceQuery(T)
+    /// QueryValue(T)
     ///
     /// <summary>
-    /// 1 度だけ Query(T) を実行するクラスです。
-    /// 2 回目以降の実行時には TwiceException が送出されます。
+    /// Provides functionality to wrap the specified value as the
+    /// IQuery(T) interface.
     /// </summary>
     ///
-    /// <remarks>
-    /// 予め決まっている結果を一度だけ返す時などに利用します。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    public class OnceQuery<T> : IQuery<T>
+    public class QueryValue<T> : IQuery<T>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnceQuery
+        /// QueryValue
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the QueryValue class.
         /// </summary>
         ///
-        /// <param name="result">Request 時に設定される結果</param>
+        /// <param name="value">
+        /// Result when the Request method is invoked.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(T result) : this(e =>
+        public QueryValue(T value)
         {
-            e.Result = result;
-            e.Cancel = false;
-        }) { }
+            Value  = value;
+            _query = new Query<T>(e =>
+            {
+                e.Result = value;
+                e.Cancel = false;
+            });
+        }
+
+        #endregion
+
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnceQuery
+        /// Value
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Gets the value when the Request method is invoked.
         /// </summary>
         ///
-        /// <param name="callback">Request 時に実行される内容</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(Action<QueryEventArgs<T>> callback)
-        {
-            _query = new Query<T>(callback);
-        }
+        public T Value { get; }
 
         #endregion
 
@@ -80,16 +80,11 @@ namespace Cube
         /// Request
         ///
         /// <summary>
-        /// 問い合わせを実行します。
+        /// Requests with the specified query.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<T> value)
-        {
-            var dest = Interlocked.Exchange(ref _query, null);
-            if (dest != null) dest.Request(value);
-            else throw new TwiceException();
-        }
+        public void Request(QueryEventArgs<T> value) => _query.Request(value);
 
         #endregion
 
@@ -100,38 +95,40 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceQuery(T, U)
+    /// QueryValue(T, U)
     ///
     /// <summary>
-    /// 1 度だけ Query(T, U) を実行するクラスです。
-    /// 2 回目以降の実行時には TwiceException が送出されます。
+    /// Provides functionality to wrap the specified value as the
+    /// IQuery(T, U) interface.
     /// </summary>
     ///
-    /// <remarks>
-    /// 予め決まっている結果を一度だけ返す時などに利用します。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    public class OnceQuery<T, U> : IQuery<T, U>
+    public class QueryValue<T, U> : IQuery<T, U>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnceQuery
+        /// QueryValue
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the QueryValue class.
         /// </summary>
         ///
-        /// <param name="result">Request 時に設定される結果</param>
+        /// <param name="value">
+        /// Result when the Request method is invoked.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(U result) : this(e =>
+        public QueryValue(U value)
         {
-            e.Result = result;
-            e.Cancel = false;
-        }) { }
+            Value  = value;
+            _query = new Query<T, U>(e =>
+            {
+                e.Result = Value;
+                e.Cancel = false;
+            });
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -144,10 +141,25 @@ namespace Cube
         /// <param name="callback">Request 時に実行される内容</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(Action<QueryEventArgs<T, U>> callback)
+        public QueryValue(Action<QueryEventArgs<T, U>> callback)
         {
             _query = new Query<T, U>(callback);
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets the value when the Request method is invoked.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public U Value { get; }
 
         #endregion
 
@@ -158,16 +170,11 @@ namespace Cube
         /// Request
         ///
         /// <summary>
-        /// 問い合わせを実行します。
+        /// Requests with the specified query.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<T, U> value)
-        {
-            var dest = Interlocked.Exchange(ref _query, null);
-            if (dest != null) dest.Request(value);
-            else throw new TwiceException();
-        }
+        public void Request(QueryEventArgs<T, U> value) => _query.Request(value);
 
         #endregion
 

@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace Cube.Processes
+namespace Cube.Ipc
 {
     /* --------------------------------------------------------------------- */
     ///
