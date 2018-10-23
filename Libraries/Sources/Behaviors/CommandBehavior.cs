@@ -65,10 +65,6 @@ namespace Cube.Xui.Behaviors
                 nameof(Command), (s, e) => s.Command = e);
 
         #endregion
-
-        #region Dependencies
-
-        #endregion
     }
 
     /* --------------------------------------------------------------------- */
