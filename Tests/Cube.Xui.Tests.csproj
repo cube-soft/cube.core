@@ -67,12 +67,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Sources\Behaviors\CheckedBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\CloseBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\CommandBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\FileDropBehaviorTest.cs" />
     <Compile Include="Sources\Converters\BooleanConverterTest.cs" />
     <Compile Include="Sources\Converters\ImageConverterTest.cs" />
     <Compile Include="Sources\Converters\StringConverterTest.cs" />
     <Compile Include="Sources\Details\ConvertHelper.cs" />
     <Compile Include="Sources\Details\GlobalSetup.cs" />
+    <Compile Include="Sources\Details\MockViewModel.cs" />
     <Compile Include="Sources\Details\Person.cs" />
     <Compile Include="Sources\BindableCollectionTest.cs" />
     <Compile Include="Sources\BindableCommandTest.cs" />
