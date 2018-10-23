@@ -46,6 +46,7 @@ namespace Cube.Xui.Tests.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void Create() => Assert.DoesNotThrow(() =>
         {
             var vm   = new MockViewModel();
@@ -66,6 +67,7 @@ namespace Cube.Xui.Tests.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void Create_WithoutVM() => Assert.DoesNotThrow(() =>
         {
             var view = new Window();
