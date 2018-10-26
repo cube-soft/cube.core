@@ -109,6 +109,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void GetCode_Auto() =>
             Assert.That(Language.Auto.ToCode(), Is.Not.Null.And.Not.Empty);
 
