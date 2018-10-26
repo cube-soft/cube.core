@@ -5,7 +5,8 @@ Cube.FileSystem
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/6exuqpkn7ct3a790?svg=true)](https://ci.appveyor.com/project/clown/cube-filesystem)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.FileSystem/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.FileSystem)
 
-Cube.FileSystem is an I/O library for CubeSoft applications.
+Cube.FileSystem is an I/O library for CubeSoft libraries and applications.
+The library is available for .NET Framework 3.5, 4.5 or more.
 
 ## Installation
 
@@ -31,5 +32,5 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## License
 
-Copyright &copy; 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
+Copyright © 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.FileSystem/blob/master/License.txt).
