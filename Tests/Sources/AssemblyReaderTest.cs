@@ -95,7 +95,7 @@ namespace Cube.Tests
                     Assembly      = Assembly.GetAssembly(typeof(AssemblyReader)),
                     Location      = true,
                     Title         = "Cube.Core",
-                    Description   = "Common library for CubeSoft applications.",
+                    Description   = "Common library for CubeSoft libraries and applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
