@@ -47,8 +47,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static Locale()
         {
-            var current = Lanugage.Auto;
-            bool setter(Lanugage e)
+            var current = Language.Auto;
+            bool setter(Language e)
             {
                 var result = (e != current);
                 if (result) current = e;
@@ -74,7 +74,7 @@ namespace Cube
         /// <param name="value">Language.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Set(Lanugage value)
+        public static void Set(Language value)
         {
             if (_setter(value)) _subscription.Publish().Forget();
         }
@@ -121,46 +121,15 @@ namespace Cube
         /// <param name="setter">Setter function.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Configure(Setter<Lanugage> setter) =>
+        public static void Configure(Setter<Language> setter) =>
             Interlocked.Exchange(ref _setter, setter);
 
         #endregion
 
         #region Fields
-        private static Setter<Lanugage> _setter;
-        private static readonly Setter<Lanugage> _default;
+        private static Setter<Language> _setter;
+        private static readonly Setter<Language> _default;
         private static readonly Subscription _subscription = new Subscription();
         #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Lanugage
-    ///
-    /// <summary>
-    /// Specifies kinds of language.
-    /// </summary>
-    ///
-    /// <seealso href="https://msdn.microsoft.com/ja-jp/library/cc392381.aspx" />
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum Lanugage
-    {
-        /// <summary>Same as the system locale</summary>
-        Auto = 0x0000,
-        /// <summary>English</summary>
-        English = 0x0409,
-        /// <summary>Japanese</summary>
-        Japanese = 0x0411,
-        /// <summary>German</summary>
-        German = 0x0407,
-        /// <summary>Spanish</summary>
-        Spanish = 0x040A,
-        /// <summary>French</summary>
-        French = 0x040C,
-        /// <summary>Russian</summary>
-        Russian = 0x0419,
-        /// <summary>Portuguese</summary>
-        Portuguese = 0x0816,
     }
 }

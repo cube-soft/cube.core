@@ -48,11 +48,11 @@ namespace Cube.Tests
             var count = 0;
             using (Locale.Subscribe(() => ++count))
             {
-                Locale.Set(Lanugage.English);
-                Locale.Set(Lanugage.Japanese);
-                Locale.Set(Lanugage.Japanese);
-                Locale.Set(Lanugage.German);
-                Locale.Set(Lanugage.Auto);
+                Locale.Set(Language.English);
+                Locale.Set(Language.Japanese);
+                Locale.Set(Language.Japanese);
+                Locale.Set(Language.German);
+                Locale.Set(Language.Auto);
             }
             Assert.That(count, Is.EqualTo(4));
         }
@@ -73,14 +73,44 @@ namespace Cube.Tests
             using (Locale.Subscribe(() => ++count))
             {
                 Locale.Configure(e => false);
-                Locale.Set(Lanugage.English);
-                Locale.Set(Lanugage.Japanese);
-                Locale.Set(Lanugage.Japanese);
-                Locale.Set(Lanugage.German);
-                Locale.Set(Lanugage.Auto);
+                Locale.Set(Language.English);
+                Locale.Set(Language.Japanese);
+                Locale.Set(Language.Japanese);
+                Locale.Set(Language.German);
+                Locale.Set(Language.Auto);
             }
             Assert.That(count, Is.EqualTo(0));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetCode
+        ///
+        /// <summary>
+        /// Executes the test to get the language code.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(Language.English,    ExpectedResult = "en")]
+        [TestCase(Language.French,     ExpectedResult = "fr")]
+        [TestCase(Language.German,     ExpectedResult = "de")]
+        [TestCase(Language.Japanese,   ExpectedResult = "ja")]
+        [TestCase(Language.Portuguese, ExpectedResult = "pt")]
+        [TestCase(Language.Russian,    ExpectedResult = "ru")]
+        [TestCase(Language.Spanish,    ExpectedResult = "es")]
+        public string GetCode(Language src) => src.ToCode();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetCode_Auto
+        ///
+        /// <summary>
+        /// Executes the test to get the language code from the Auto value.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void GetCode_Auto() =>
+            Assert.That(Language.Auto.ToCode(), Is.Not.Null.And.Not.Empty);
 
         #endregion
 
