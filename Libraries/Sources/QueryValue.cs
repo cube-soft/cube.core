@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 
 namespace Cube
 {
@@ -128,22 +127,6 @@ namespace Cube
                 e.Result = Value;
                 e.Cancel = false;
             });
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnceQuery
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="callback">Request 時に実行される内容</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryValue(Action<QueryEventArgs<T, U>> callback)
-        {
-            _query = new Query<T, U>(callback);
         }
 
         #endregion
