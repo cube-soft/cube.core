@@ -76,6 +76,10 @@ namespace Cube
         /// Add the specified callback to the subscription.
         /// </summary>
         ///
+        /// <returns>
+        /// Object to remove the registered callback.
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe(Action callback) => SubscribeAsync(() =>
         {
@@ -90,6 +94,10 @@ namespace Cube
         /// <summary>
         /// Add the specified callback to the subscription.
         /// </summary>
+        ///
+        /// <returns>
+        /// Object to remove the registered callback.
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable SubscribeAsync(Func<Task> callback)
@@ -192,6 +200,10 @@ namespace Cube
         /// Add the specified callback to the subscription.
         /// </summary>
         ///
+        /// <returns>
+        /// Object to remove the registered callback.
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe(Action<T> callback) => SubscribeAsync(e =>
         {
@@ -206,6 +218,10 @@ namespace Cube
         /// <summary>
         /// Add the specified callback to the subscription.
         /// </summary>
+        ///
+        /// <returns>
+        /// Object to remove the registered callback.
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable SubscribeAsync(Func<T, Task> callback)

@@ -95,6 +95,7 @@
     <Compile Include="Sources\Disposable.cs" />
     <Compile Include="Sources\DisposableBase.cs" />
     <Compile Include="Sources\Exceptions.cs" />
+    <Compile Include="Sources\Locale.cs" />
     <Compile Include="Sources\Logger.cs" />
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />
