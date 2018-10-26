@@ -86,8 +86,8 @@ namespace Cube.Tests
                     Trademark     = "CubeSoft, Inc.",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 12, 0, 0),
-                    FileVersion   = new Version(1, 12, 0, 0)
+                    Version       = new Version(1, 13, 0, 0),
+                    FileVersion   = new Version(1, 13, 0, 0)
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
@@ -102,8 +102,8 @@ namespace Cube.Tests
                     Trademark     = string.Empty,
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 12, 0, 0),
-                    FileVersion   = new Version(1, 12, 0, 0)
+                    Version       = new Version(1, 13, 0, 0),
+                    FileVersion   = new Version(1, 13, 0, 0)
                 });
 
                 yield return new TestCaseData(null, new Result
