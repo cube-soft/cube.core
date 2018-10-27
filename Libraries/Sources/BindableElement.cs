@@ -48,10 +48,10 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public BindableElement(Getter<string> gettext)
         {
-            Context   = SynchronizationContext.Current;
-            _dispose  = new OnceAction<bool>(Dispose);
-            _gettext  = gettext;
-            _registry = ResourceCulture.Subscribe(() => RaisePropertyChanged(nameof(Text)));
+            Context  = SynchronizationContext.Current;
+            _dispose = new OnceAction<bool>(Dispose);
+            _gettext = gettext;
+            _locale  = Locale.Subscribe(() => RaisePropertyChanged(nameof(Text)));
         }
 
         #endregion
@@ -131,7 +131,7 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) _registry.Dispose();
+            if (disposing) _locale.Dispose();
         }
 
         #endregion
@@ -139,7 +139,7 @@ namespace Cube.Xui
         #region Fields
         private readonly OnceAction<bool> _dispose;
         private readonly Getter<string> _gettext;
-        private readonly IDisposable _registry;
+        private readonly IDisposable _locale;
         private ICommand _command;
         #endregion
     }

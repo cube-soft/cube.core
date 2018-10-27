@@ -102,7 +102,6 @@
     <Compile Include="Sources\IListItem.cs" />
     <Compile Include="Sources\LoggerExtension.cs" />
     <Compile Include="Sources\MessengerViewModel.cs" />
-    <Compile Include="Sources\ResourceCulture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
