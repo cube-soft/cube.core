@@ -84,25 +84,26 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetCode
+        /// GetCultureInfo
         ///
         /// <summary>
-        /// Executes the test to get the language code.
+        /// Executes the test to get the CultureInfo object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Language.English,    ExpectedResult = "en")]
-        [TestCase(Language.French,     ExpectedResult = "fr")]
-        [TestCase(Language.German,     ExpectedResult = "de")]
-        [TestCase(Language.Japanese,   ExpectedResult = "ja")]
-        [TestCase(Language.Portuguese, ExpectedResult = "pt")]
-        [TestCase(Language.Russian,    ExpectedResult = "ru")]
-        [TestCase(Language.Spanish,    ExpectedResult = "es")]
-        public string GetCode(Language src) => src.ToCode();
+        [TestCase(Language.English,    ExpectedResult = "en-us")]
+        [TestCase(Language.French,     ExpectedResult = "fr-fr")]
+        [TestCase(Language.German,     ExpectedResult = "de-de")]
+        [TestCase(Language.Japanese,   ExpectedResult = "ja-jp")]
+        [TestCase(Language.Portuguese, ExpectedResult = "pt-pt")]
+        [TestCase(Language.Russian,    ExpectedResult = "ru-ru")]
+        [TestCase(Language.Spanish,    ExpectedResult = "es-es")]
+        public string GetCultureInfo(Language src) =>
+            src.ToCultureInfo().Name.ToLowerInvariant();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetCode_Auto
+        /// GetCultureInfo_Auto
         ///
         /// <summary>
         /// Executes the test to get the language code from the Auto value.
@@ -110,8 +111,8 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetCode_Auto() =>
-            Assert.That(Language.Auto.ToCode(), Is.Not.Null.And.Not.Empty);
+        public void GetCultureInfo_Auto() =>
+            Assert.That(Language.Auto.ToCultureInfo(), Is.Not.Null);
 
         #endregion
 

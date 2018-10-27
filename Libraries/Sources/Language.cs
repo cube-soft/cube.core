@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
+using System.Globalization;
 
 namespace Cube
 {
@@ -76,7 +74,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static LanguageExtension()
         {
-            _auto = Thread.CurrentThread.CurrentUICulture.Name;
+            _auto = CultureInfo.CurrentCulture;
         }
 
         #endregion
@@ -85,37 +83,24 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToCode
+        /// ToCultureInfo
         ///
         /// <summary>
-        /// Gets the language code from the specified value.
+        /// Gets the CultureInfo object from the specified value.
         /// </summary>
         ///
         /// <param name="src">Language value.</param>
         ///
-        /// <returns>Language code.</returns>
+        /// <returns>CultureInfo object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ToCode(this Language src)
-        {
-            Debug.Assert(src == Language.Auto || _codes.ContainsKey(src));
-            return (src == Language.Auto) ? _auto : _codes[src];
-        }
+        public static CultureInfo ToCultureInfo(this Language src) =>
+            src == Language.Auto ? _auto : new CultureInfo((int)src);
 
         #endregion
 
         #region Fields
-        private static readonly string _auto;
-        private static readonly IDictionary<Language, string> _codes = new Dictionary<Language, string>
-        {
-            { Language.English,    "en" },
-            { Language.Japanese,   "ja" },
-            { Language.German,     "de" },
-            { Language.Spanish,    "es" },
-            { Language.French,     "fr" },
-            { Language.Russian,    "ru" },
-            { Language.Portuguese, "pt" },
-        };
+        private static readonly CultureInfo _auto;
         #endregion
     }
 }
