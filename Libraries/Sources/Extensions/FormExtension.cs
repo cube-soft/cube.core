@@ -18,7 +18,6 @@
 using Cube.Generics;
 using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -48,12 +47,12 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /// <param name="src">フォーム</param>
-        /// <param name="name">表示言語名</param>
+        /// <param name="value">表示言語名</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateCulture<T>(this T src, string name) where T : Form
+        public static void UpdateCulture<T>(this T src, Language value) where T : Form
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(name);
+            Thread.CurrentThread.CurrentUICulture = value.ToCultureInfo();
             var rm = new ComponentResourceManager(typeof(T));
             rm.ApplyResources(src, "$this");
             src.Controls.UpdateCulture(rm);
