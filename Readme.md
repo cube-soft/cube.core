@@ -5,7 +5,8 @@ Cube.Xui
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/brama8ylsuk8xjer?svg=true)](https://ci.appveyor.com/project/clown/cube-xui)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Xui/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Xui)
 
-Cube.Xui is a WPF based GUI library for CubeSoft applications.
+Cube.Xui is a WPF based GUI library.
+The library is available for .NET Framework 3.5, 4.5 or more.
 
 ## Installation
 
@@ -32,5 +33,5 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## License
 
-Copyright &copy; 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
+Copyright © 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Xui/blob/master/License.txt).

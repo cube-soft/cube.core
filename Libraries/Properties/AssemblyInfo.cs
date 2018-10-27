@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("1.12.0.0")]
-[assembly: AssemblyFileVersion("1.12.0.0")]
+[assembly: AssemblyVersion("1.13.0.0")]
+[assembly: AssemblyFileVersion("1.13.0.0")]
 [assembly: AssemblyTitle("Cube.Xui")]
 [assembly: AssemblyProduct("Cube.Xui")]
-[assembly: AssemblyDescription("WPF based GUI Library for CubeSoft applications")]
+[assembly: AssemblyDescription("WPF based GUI library.")]
 [assembly: AssemblyCompany("CubeSoft")]
 [assembly: AssemblyCopyright("Copyright © 2010 CubeSoft, Inc.")]
 [assembly: AssemblyConfiguration("")]
