@@ -29,7 +29,7 @@ namespace Cube.Xui.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    class MockViewModel : IMessengerViewModel
+    class MockViewModel : IMessengerRegistrar
     {
         #region Methods
 

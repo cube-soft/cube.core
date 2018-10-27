@@ -29,7 +29,7 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IMessengerViewModel
+    /// IMessengerRegistrar
     ///
     /// <summary>
     /// Represents interface for communicating with a view component
@@ -37,7 +37,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IMessengerViewModel
+    public interface IMessengerRegistrar
     {
         /* --------------------------------------------------------------------- */
         ///
@@ -68,7 +68,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessengerViewModel : ViewModelBase, IMessengerViewModel, IDisposable
+    public abstract class MessengerViewModel : ViewModelBase, IMessengerRegistrar, IDisposable
     {
         #region Constructors
 

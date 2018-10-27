@@ -100,7 +100,7 @@ namespace Cube.Xui.Behaviors
             _registry?.Dispose();
             _registry = AssociatedObject
                         .DataContext
-                        .TryCast<IMessengerViewModel>()?
+                        .TryCast<IMessengerRegistrar>()?
                         .Register<T>(AssociatedObject, e => Invoke(e));
         }
 
