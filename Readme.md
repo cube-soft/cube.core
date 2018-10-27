@@ -4,7 +4,8 @@ Cube.Forms
 [![NuGet](https://img.shields.io/nuget/v/Cube.Forms.svg)](https://www.nuget.org/packages/Cube.Forms/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/k5a3hpx8q788dpq2?svg=true)](https://ci.appveyor.com/project/clown/cube-forms)
 
-Cube.Forms is a WinForms based GUI library for CubeSoft applications.
+Cube.Forms is a WinForms based GUI library.
+The library is available for .NET Framework 3.5, 4.5 or more.
 
 ## Installation
 
@@ -31,5 +32,5 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## License
 
-Copyright &copy; 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
+Copyright © 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Forms/blob/master/License.txt).
