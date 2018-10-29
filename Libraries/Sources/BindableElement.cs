@@ -51,7 +51,7 @@ namespace Cube.Xui
             Context  = SynchronizationContext.Current;
             _dispose = new OnceAction<bool>(Dispose);
             _gettext = gettext;
-            _locale  = Locale.Subscribe(() => RaisePropertyChanged(nameof(Text)));
+            _remover = Locale.Subscribe(_ => RaisePropertyChanged(nameof(Text)));
         }
 
         #endregion
@@ -131,7 +131,7 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) _locale.Dispose();
+            if (disposing) _remover.Dispose();
         }
 
         #endregion
@@ -139,7 +139,7 @@ namespace Cube.Xui
         #region Fields
         private readonly OnceAction<bool> _dispose;
         private readonly Getter<string> _gettext;
-        private readonly IDisposable _locale;
+        private readonly IDisposable _remover;
         private ICommand _command;
         #endregion
     }
