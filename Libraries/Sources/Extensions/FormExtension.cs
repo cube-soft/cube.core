@@ -50,7 +50,7 @@ namespace Cube.Forms.Controls
         /// <param name="value">表示言語名</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateCulture<T>(this T src, Language value) where T : Form
+        internal static void UpdateCulture<T>(this T src, Language value) where T : Form
         {
             Thread.CurrentThread.CurrentUICulture = value.ToCultureInfo();
             var rm = new ComponentResourceManager(typeof(T));

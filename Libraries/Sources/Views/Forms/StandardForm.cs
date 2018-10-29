@@ -52,9 +52,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public StandardForm()
         {
+            _locale = Locale.Subscribe(e => this.UpdateCulture(e));
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
             Font = FontFactory.Create(Font);
+
             using (var gs = CreateGraphics())
             {
                 Dpi = gs.DpiX;
@@ -361,6 +363,36 @@ namespace Cube.Forms
             return true;
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the StandardForm
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                if (_disposed) return;
+                _disposed = true;
+                if (disposing)
+                {
+                    _activator?.Dispose();
+                    _locale.Dispose();
+                }
+            }
+            finally { base.Dispose(disposing); }
+        }
+
         #endregion
 
         #region Implementations
@@ -480,6 +512,8 @@ namespace Cube.Forms
         private Cube.Ipc.IMessenger<IEnumerable<string>> _activator;
         private IAggregator _aggregator;
         private IDisposable _remover;
+        private readonly IDisposable _locale;
+        private bool _disposed = false;
         #endregion
     }
 }
