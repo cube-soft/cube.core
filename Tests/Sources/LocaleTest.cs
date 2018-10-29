@@ -46,7 +46,7 @@ namespace Cube.Tests
         public void Set()
         {
             var count = 0;
-            using (Locale.Subscribe(() => ++count))
+            using (Locale.Subscribe(_ => ++count))
             {
                 Locale.Set(Language.English);
                 Locale.Set(Language.Japanese);
@@ -70,7 +70,7 @@ namespace Cube.Tests
         public void Configure()
         {
             var count = 0;
-            using (Locale.Subscribe(() => ++count))
+            using (Locale.Subscribe(_ => ++count))
             {
                 Locale.Configure(e => false);
                 Locale.Set(Language.English);

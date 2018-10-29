@@ -76,7 +76,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Set(Language value)
         {
-            if (_setter(value)) _subscription.Publish().Forget();
+            if (_setter(value)) _subscription.Publish(value).Forget();
         }
 
         /* ----------------------------------------------------------------- */
@@ -96,7 +96,7 @@ namespace Cube
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IDisposable Subscribe(Action callback) =>
+        public static IDisposable Subscribe(Action<Language> callback) =>
             _subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
@@ -129,7 +129,7 @@ namespace Cube
         #region Fields
         private static Setter<Language> _setter;
         private static readonly Setter<Language> _default;
-        private static readonly Subscription _subscription = new Subscription();
+        private static readonly Subscription<Language> _subscription = new Subscription<Language>();
         #endregion
     }
 }
