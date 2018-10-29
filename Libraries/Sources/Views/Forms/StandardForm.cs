@@ -52,7 +52,6 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public StandardForm()
         {
-            _locale = Locale.Subscribe(e => this.UpdateCulture(e));
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
             Font = FontFactory.Create(Font);
@@ -384,11 +383,7 @@ namespace Cube.Forms
             {
                 if (_disposed) return;
                 _disposed = true;
-                if (disposing)
-                {
-                    _activator?.Dispose();
-                    _locale.Dispose();
-                }
+                if (disposing) _activator?.Dispose();
             }
             finally { base.Dispose(disposing); }
         }
@@ -512,7 +507,6 @@ namespace Cube.Forms
         private Cube.Ipc.IMessenger<IEnumerable<string>> _activator;
         private IAggregator _aggregator;
         private IDisposable _remover;
-        private readonly IDisposable _locale;
         private bool _disposed = false;
         #endregion
     }
