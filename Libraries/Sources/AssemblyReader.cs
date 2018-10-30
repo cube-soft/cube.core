@@ -86,7 +86,25 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Location => Assembly?.Location;
+        public string Location => Normalize(Assembly?.Location);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DirectoryName
+        ///
+        /// <summary>
+        /// Gets the directory name that the assembly is located.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string DirectoryName
+        {
+            get
+            {
+                var path = Location;
+                return path.HasValue() ? System.IO.Path.GetDirectoryName(path) : path;
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
