@@ -22,7 +22,7 @@ namespace Cube.Generics
     /// StringExtension
     ///
     /// <summary>
-    /// 文字列の拡張用クラスです。
+    /// Provides extended methods for the string class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -35,27 +35,43 @@ namespace Cube.Generics
         /// HasValue
         ///
         /// <summary>
-        /// 1 文字以上の文字を保持しているかどうかを判別します。
+        /// Gets the value indicating whether the specified value has
+        /// one or more character.
         /// </summary>
         ///
-        /// <param name="src">文字列</param>
+        /// <param name="src">Source string.</param>
         ///
-        /// <returns>1 文字以上の文字を保持しているかどうか</returns>
+        /// <returns>true for one mor charecter.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Unify
+        ///
+        /// <summary>
+        /// Converts a null or empty string to the empty one.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        ///
+        /// <returns>Converted string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Unify(this string src) => src ?? string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Quote
         ///
         /// <summary>
-        /// 文字列を引用符で囲みます。
+        /// Quotes the specified string.
         /// </summary>
         ///
-        /// <param name="src">文字列</param>
+        /// <param name="src">Source string.</param>
         ///
-        /// <returns>変換後の文字列</returns>
+        /// <returns>Quoted string.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string Quote(this string src) => $"\"{src}\"";

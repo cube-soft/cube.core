@@ -25,7 +25,7 @@ namespace Cube.Tests
     /// StringExtensionTest
     ///
     /// <summary>
-    /// StringExtension のテスト用クラスです。
+    /// Tests for the StringExtension class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,8 +39,7 @@ namespace Cube.Tests
         /// HasValue
         ///
         /// <summary>
-        /// 1 文字以上の文字列を保持しているかどうかを判別するテストを
-        /// 実行します。
+        /// Executes the test of the HasValue extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,10 +52,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Unify
+        ///
+        /// <summary>
+        /// Executes the test of the Unify extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Hello",         ExpectedResult = "Hello")]
+        [TestCase("こんにちは",    ExpectedResult = "こんにちは")]
+        [TestCase("",              ExpectedResult = "")]
+        [TestCase(default(string), ExpectedResult = "")]
+        public string Unify(string src) => src.Unify();
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Quote
         ///
         /// <summary>
-        /// 文字列を引用符で囲むテストを実行します。
+        /// Executes the test of the Quote extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
