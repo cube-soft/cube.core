@@ -15,41 +15,50 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Log;
+using Cube.Xui.Mixin;
+using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
-using System.Reflection;
-using System.Windows;
 
 namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// CommandTest
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Represents tests of ICommand iplemented classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
+    [TestFixture]
+    class CommandTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// OneTimeSetup
+        /// Execute_Alias
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Executes the test of CanExecute and Execute extended methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [Test]
+        public void Execute_Alias()
         {
-            Logger.Configure();
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
-            Logger.ObserveTaskException();
-            Application.Current.ObserveUiException();
+            var count = 0;
+            var src   = new RelayCommand(() => ++count);
+
+            Assert.That(src.CanExecute(), Is.True);
+
+            src.Execute();
+            src.Execute();
+            src.Execute();
+
+            Assert.That(count, Is.EqualTo(3));
         }
+
+        #endregion
     }
 }

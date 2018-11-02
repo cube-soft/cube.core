@@ -15,45 +15,44 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Mixin;
+using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
 using System;
-using System.Threading;
 
 namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableTest
+    /// BindableElementTest
     ///
     /// <summary>
-    /// Represents tests of the Bindable class.
+    /// Represents tests of the BindableElement(T) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class BindableTest
+    class BindableElementTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set
+        /// Properties
         ///
         /// <summary>
-        /// Executes the test to set value.
+        /// Confirms values of properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Set()
+        [TestCase("Hello, world!", 10)]
+        public void Properties(string text, int n)
         {
-            var n   = 5;
-            var src = new Bindable<int>(() => n, e => { n = e; return true; });
-
-            Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(5));
-            src.Value = 10;
-            Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(10));
+            using (var src = new BindableElement<int>(n, () => text))
+            {
+                Assert.That(src.Text,    Is.EqualTo(text));
+                Assert.That(src.Value,   Is.EqualTo(n));
+                Assert.That(src.Command, Is.Null);
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -69,60 +68,41 @@ namespace Cube.Xui.Tests
         [Test]
         public void Set_Throws()
         {
-            var src = new Bindable<int>(() => 8);
-
-            Assert.That(src.Value, Is.EqualTo(8));
-            Assert.That(() => src.Value = 7, Throws.TypeOf<InvalidOperationException>());
+            using (var src = new BindableElement<string>(() => "Get", () => "Text"))
+            {
+                Assert.That(src.Text,    Is.EqualTo("Text"));
+                Assert.That(src.Value,   Is.EqualTo("Get"));
+                Assert.That(src.Command, Is.Null);
+                Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
+                Assert.DoesNotThrow(() => src.Command = new RelayCommand(() => { }));
+            }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseValueChanged
+        /// SetLanguage
         ///
         /// <summary>
-        /// Confirms the behavior of the PropertyChanged event.
+        /// Executes the test to change the language settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void RaiseValueChanged()
+        public void SetLanguage()
         {
-            var ctx = SynchronizationContext.Current;
-            var src = new Bindable<Person> { Context = ctx };
-
             var count = 0;
-            src.PropertyChanged += (s, e) => ++count;
-            var value = new Person();
-            src.Value = value;
+            using (var src = new BindableElement<int>(() => "Language"))
+            {
+                src.PropertyChanged += (s, e) =>
+                {
+                    Assert.That(e.PropertyName, Is.EqualTo(nameof(src.Text)));
+                    ++count;
+                };
 
-            value.Name = "Jack";
-            value.Age  = 20;
-            src.RaiseValueChanged();
-            Assert.That(count, Is.EqualTo(2));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseValueChanged_Context
-        ///
-        /// <summary>
-        /// Confirms the behavior when a SynchronizationContext object
-        /// is set.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void RaiseValueChanged_Context()
-        {
-            var value = new Person();
-            var src   = value.ToBindable(new SynchronizationContext());
-            var count = 0;
-            src.PropertyChanged += (s, e) => ++count;
-            src.Value = value;
-
-            value.Name = "Jack";
-            value.Age  = 20;
-            Assert.That(count, Is.EqualTo(0));
+                Locale.Set(Language.French);
+                Locale.Set(Language.Russian);
+            }
+            Assert.That(count, Is.InRange(1, 2));
         }
 
         #endregion

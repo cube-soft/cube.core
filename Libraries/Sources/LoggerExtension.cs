@@ -50,15 +50,12 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public static IDisposable ObserveUiException(this Application src)
         {
-            src.DispatcherUnhandledException -= WhenDispatcherError;
-            src.DispatcherUnhandledException += WhenDispatcherError;
-
-            AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
+            if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
             AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
 
             return Disposable.Create(() =>
             {
-                src.DispatcherUnhandledException -= WhenDispatcherError;
+                if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
                 AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
             });
         }
