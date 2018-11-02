@@ -25,7 +25,7 @@ namespace Cube.Xui
     /// DialogMessage
     ///
     /// <summary>
-    /// メッセージボックスに表示する情報を保持するためのクラスです。
+    /// Represents the information to show in the DialogBox.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,11 +38,12 @@ namespace Cube.Xui
         /// DialogMessage
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DialogMessage class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="content">メッセージ内容</param>
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="content">Main text.</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage(string content, Assembly assembly) :
@@ -53,11 +54,12 @@ namespace Cube.Xui
         /// DialogMessage
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DialogMessage class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="content">メッセージ内容</param>
-        /// <param name="title">タイトル</param>
+        /// <param name="content">Main text.</param>
+        /// <param name="title">Title.</param>
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage(string content, string title) :
@@ -68,12 +70,13 @@ namespace Cube.Xui
         /// DialogMessage
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DialogMessage class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="content">メッセージ内容</param>
-        /// <param name="assembly">アセンブリ情報</param>
-        /// <param name="callback">コールバック用オブジェクト</param>
+        /// <param name="content">Main text.</param>
+        /// <param name="assembly">Assembly object.</param>
+        /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage(string content, Assembly assembly, DialogCallback callback) :
@@ -84,12 +87,13 @@ namespace Cube.Xui
         /// DialogMessage
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DialogMessage class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="content">メッセージ内容</param>
-        /// <param name="title">タイトル</param>
-        /// <param name="callback">コールバック用オブジェクト</param>
+        /// <param name="content">Main text.</param>
+        /// <param name="title">Title.</param>
+        /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage(string content, string title, DialogCallback callback)
@@ -108,7 +112,7 @@ namespace Cube.Xui
         /// Callback
         ///
         /// <summary>
-        /// コールバック用オブジェクトを取得します。
+        /// Gets the callback function when the MessageBox is closed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -119,7 +123,7 @@ namespace Cube.Xui
         /// Content
         ///
         /// <summary>
-        /// メッセージ内容を取得または設定します。
+        /// Gets or sets the content that is shown in the MessageBox.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -130,7 +134,7 @@ namespace Cube.Xui
         /// Title
         ///
         /// <summary>
-        /// タイトルを取得または設定します。
+        /// Gets or sets the title of the MessageBox.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -138,21 +142,21 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Button
+        /// Buttons
         ///
         /// <summary>
-        /// 表示ボタンを示す値を取得または設定します。
+        /// Gets or sets the buttons that are shown in the MessageBox.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBoxButton Button { get; set; } = MessageBoxButton.OK;
+        public MessageBoxButton Buttons { get; set; } = MessageBoxButton.OK;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Image
         ///
         /// <summary>
-        /// 表示イメージを示す値を取得または設定します。
+        /// Gets or sets the icon that is shown in the MessageBox.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -163,8 +167,8 @@ namespace Cube.Xui
         /// Result
         ///
         /// <summary>
-        /// メッセージボックス表示後のユーザの行動を示す値を取得または
-        /// 設定します。
+        /// Gets or sets the value that represents the kind of clicking
+        /// button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

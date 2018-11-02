@@ -84,7 +84,7 @@ namespace Cube.Xui.Tests
             {
                 Assert.That(e.Content.Length, Is.AtLeast(1));
                 Assert.That(e.Title,          Is.EqualTo("Cube.Xui"));
-                Assert.That(e.Button,         Is.EqualTo(MessageBoxButton.OK));
+                Assert.That(e.Buttons,        Is.EqualTo(MessageBoxButton.OK));
                 Assert.That(e.Image,          Is.EqualTo(MessageBoxImage.Error));
                 Assert.That(e.Result,         Is.EqualTo(MessageBoxResult.OK));
                 ++count;
@@ -120,7 +120,7 @@ namespace Cube.Xui.Tests
             Assert.That(dest.Content,  Is.EqualTo(nameof(Send_DialogMessage)));
             Assert.That(dest.Title,    Is.EqualTo(asm.GetReader().Title));
             Assert.That(dest.Callback, Is.Null);
-            Assert.That(dest.Button,   Is.EqualTo(MessageBoxButton.OK));
+            Assert.That(dest.Buttons,  Is.EqualTo(MessageBoxButton.OK));
             Assert.That(dest.Image,    Is.EqualTo(MessageBoxImage.Error));
             Assert.That(dest.Result,   Is.EqualTo(MessageBoxResult.OK));
         });
@@ -209,7 +209,7 @@ namespace Cube.Xui.Tests
 
         #endregion
 
-        #region Helper classes and methods
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///

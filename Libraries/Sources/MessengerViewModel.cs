@@ -409,9 +409,9 @@ namespace Cube.Xui
         private DialogMessage Create(string message, string title) =>
             new DialogMessage(message, title)
             {
-                Button = System.Windows.MessageBoxButton.OK,
-                Image  = System.Windows.MessageBoxImage.Error,
-                Result = System.Windows.MessageBoxResult.OK,
+                Buttons = System.Windows.MessageBoxButton.OK,
+                Image   = System.Windows.MessageBoxImage.Error,
+                Result  = System.Windows.MessageBoxResult.OK,
             };
 
         /* --------------------------------------------------------------------- */
@@ -425,8 +425,7 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         private string GetTitle()
         {
-            var asm = Assembly.GetEntryAssembly() ??
-                      Assembly.GetExecutingAssembly();
+            var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             Debug.Assert(asm != null);
             return asm.GetReader().Title;
         }
