@@ -47,23 +47,39 @@ namespace Cube.Xui.Tests.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Create(bool init)
         {
             var view = new TextBox();
-            var src  = new EditBehavior();
+            var src  = new EditBehavior { Editing = init };
 
             src.Attach(view);
-            Assert.That(src.Editing, Is.False);
-            Assert.That(view.Visibility, Is.EqualTo(Visibility.Collapsed));
+            Assert.That(src.Editing,     Is.EqualTo(init));
+            Assert.That(view.Visibility, Is.EqualTo(Convert(src.Editing)));
 
             src.Editing = true;
-            Assert.That(view.Visibility, Is.EqualTo(Visibility.Visible));
+            Assert.That(view.Visibility, Is.EqualTo(Convert(src.Editing)));
 
             src.Editing = false;
-            Assert.That(view.Visibility, Is.EqualTo(Visibility.Collapsed));
+            Assert.That(view.Visibility, Is.EqualTo(Convert(src.Editing)));
             src.Detach();
         }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        ///
+        /// <summary>
+        /// Converts the specified value to the corresponding Visibility.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Visibility Convert(bool value) => value ? Visibility.Visible : Visibility.Collapsed;
 
         #endregion
     }

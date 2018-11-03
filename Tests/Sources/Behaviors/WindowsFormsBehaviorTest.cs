@@ -54,6 +54,7 @@ namespace Cube.Xui.Tests.Behaviors
             var host = new WindowsFormsHost { Child = view };
             var src  = new WindowsFormsBehavior<TextBox>();
 
+            Assert.That(src.Source, Is.Null);
             src.Attach(host);
             Assert.That(src.Source, Is.EqualTo(view));
             Assert.That(src.Parent, Is.EqualTo(host));

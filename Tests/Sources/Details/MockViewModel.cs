@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
 using System;
 
 namespace Cube.Xui.Tests
@@ -29,26 +28,10 @@ namespace Cube.Xui.Tests
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    class MockViewModel : IMessengerRegistrar
+    class MockViewModel : MessengerViewModel
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Register
-        ///
-        /// <summary>
-        /// Registers the action when the message of type T is received.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IDisposable Register<T>(object receiver, Action<T> action)
-        {
-            Assert.That(receiver, Is.Not.Null);
-            Assert.That(action,   Is.Not.Null);
-            return Disposable.Create(() => { });
-        }
-
-        #endregion
+        public void Test<T>(T message) => Send(message);
+        public void Test<T>() where T : new() => Send<T>();
+        public void Test(Action action) => Post(action);
     }
 }

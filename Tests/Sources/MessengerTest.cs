@@ -221,26 +221,9 @@ namespace Cube.Xui.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Create(Action<TestViewModel> action)
+        private void Create(Action<MockViewModel> action)
         {
-            using (var vm = new TestViewModel()) action(vm);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TestViewModel
-        ///
-        /// <summary>
-        /// ViewModel for the tests.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private class TestViewModel : MessengerViewModel
-        {
-            public void Test<T>(T message) => Send(message);
-            public void Test<T>() where T : new() => Send<T>();
-            public void Test(Action action) => Post(action);
-            protected override void Dispose(bool disposing) { }
+            using (var vm = new MockViewModel()) action(vm);
         }
 
         #endregion

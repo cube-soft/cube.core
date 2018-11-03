@@ -49,12 +49,14 @@ namespace Cube.Xui.Tests.Behaviors
         [Test]
         public void Create() => Assert.DoesNotThrow(() =>
         {
-            var vm   = new MockViewModel();
-            var view = new Window { DataContext = vm };
-            var src  = new CloseBehavior();
+            using (var vm = new MockViewModel())
+            {
+                var view = new Window { DataContext = vm };
+                var src  = new CloseBehavior();
 
-            src.Attach(view);
-            src.Detach();
+                src.Attach(view);
+                src.Detach();
+            }
         });
 
         /* ----------------------------------------------------------------- */
