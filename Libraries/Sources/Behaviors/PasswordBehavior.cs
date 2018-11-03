@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -116,14 +114,10 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         private void SetViewPassword(PasswordBox src, string value)
         {
-            if (EqualityComparer<string>.Default.Equals(value, src.Password)) return;
-
-            src.Password = value;
-            if (!value.HasValue()) return;
-
-            src.GetType()
-               .GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)
-               .Invoke(src, new object[] { 0, value.Length }); // shit!
+            if (!EqualityComparer<string>.Default.Equals(value, src.Password))
+            {
+                src.Password = value;
+            }
         }
 
         /* ----------------------------------------------------------------- */

@@ -71,15 +71,7 @@ namespace Cube.Xui.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public static readonly DependencyProperty EditingProperty =
-            DependencyProperty.RegisterAttached(
-                nameof(Editing),
-                typeof(bool),
-                typeof(EditBehavior),
-                new PropertyMetadata(false, (s, e) =>
-                {
-                    if (s is EditBehavior em) em.Editing = (bool)e.NewValue;
-                })
-            );
+            DependencyFactory.Create<EditBehavior, bool>(nameof(Editing), (s, e) => s.Editing = e);
 
         #endregion
 
