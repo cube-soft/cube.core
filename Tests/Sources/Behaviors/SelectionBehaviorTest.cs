@@ -16,49 +16,45 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Xui.Behaviors;
-using Cube.Xui.Mixin;
-using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
+using System.Threading;
 using System.Windows.Controls;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehaviorTest
+    /// SelectionBehaviorTest
     ///
     /// <summary>
-    /// Tests for the CommandBehavior class.
+    /// Tests for the SelectionBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CommandBehaviorTest
+    [Apartment(ApartmentState.STA)]
+    class SelectionBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties()
+        public void Create() => Assert.DoesNotThrow(() =>
         {
-            var src = new CommandBehavior<TextBox, int>();
-            Assert.That(src.Command,          Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
+            var view = new ListView();
+            var src  = new SelectionBehavior();
 
-            src.Command = new RelayCommand(() => { });
-            src.CommandParameter = 10;
-            Assert.That(src.Command,              Is.Not.Null);
-            Assert.That(src.Command.CanExecute(), Is.True);
-            Assert.That(src.CommandParameter,     Is.EqualTo(10));
-        }
+            src.Attach(view);
+            src.Detach();
+        });
 
         #endregion
     }

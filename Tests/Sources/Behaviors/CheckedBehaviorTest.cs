@@ -95,6 +95,7 @@ namespace Cube.Xui.Tests.Behaviors
             src.Attach(view);
             Assert.That(src.Command, Is.Null);
             Assert.That(src.CommandParameter, Is.EqualTo(0));
+            src.Detach();
         }
 
         /* ----------------------------------------------------------------- */
@@ -110,7 +111,7 @@ namespace Cube.Xui.Tests.Behaviors
         public void Properties_Nullable()
         {
             var view = new RadioButton();
-            var src = new UncheckedBehavior<string>();
+            var src  = new UncheckedBehavior<string>();
 
             src.Attach(view);
             Assert.That(src.Command, Is.Null);

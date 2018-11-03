@@ -16,48 +16,70 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Xui.Behaviors;
-using Cube.Xui.Mixin;
-using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
-using System.Windows.Controls;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehaviorTest
+    /// WindowsFormsBehaviorTest
     ///
     /// <summary>
-    /// Tests for the CommandBehavior class.
+    /// Tests for the WindowsFormsBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CommandBehaviorTest
+    [Apartment(ApartmentState.STA)]
+    class WindowsFormsBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties()
+        public void Create()
         {
-            var src = new CommandBehavior<TextBox, int>();
-            Assert.That(src.Command,          Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
+            var view = new TextBox();
+            var host = new WindowsFormsHost { Child = view };
+            var src  = new WindowsFormsBehavior<TextBox>();
 
-            src.Command = new RelayCommand(() => { });
-            src.CommandParameter = 10;
-            Assert.That(src.Command,              Is.Not.Null);
-            Assert.That(src.Command.CanExecute(), Is.True);
-            Assert.That(src.CommandParameter,     Is.EqualTo(10));
+            src.Attach(host);
+            Assert.That(src.Source, Is.EqualTo(view));
+            Assert.That(src.Parent, Is.EqualTo(host));
+            src.Detach();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Empty
+        ///
+        /// <summary>
+        /// Confirms the behavior the specified WindowsFormsHost object
+        /// has no children.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Empty()
+        {
+            var host = new WindowsFormsHost();
+            var src  = new WindowsFormsBehavior<TextBox>();
+
+            src.Attach(host);
+            Assert.That(src.Source, Is.Null);
+            Assert.That(src.Parent, Is.EqualTo(host));
+            src.Detach();
         }
 
         #endregion

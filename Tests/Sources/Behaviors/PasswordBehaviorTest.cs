@@ -16,48 +16,49 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Xui.Behaviors;
-using Cube.Xui.Mixin;
-using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
+using System.Threading;
 using System.Windows.Controls;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehaviorTest
+    /// PasswordBehaviorTest
     ///
     /// <summary>
-    /// Tests for the CommandBehavior class.
+    /// Tests for the PasswordBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CommandBehaviorTest
+    [Apartment(ApartmentState.STA)]
+    class PasswordBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties()
+        public void Create()
         {
-            var src = new CommandBehavior<TextBox, int>();
-            Assert.That(src.Command,          Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
+            var view = new PasswordBox();
+            var src  = new PasswordBehavior();
 
-            src.Command = new RelayCommand(() => { });
-            src.CommandParameter = 10;
-            Assert.That(src.Command,              Is.Not.Null);
-            Assert.That(src.Command.CanExecute(), Is.True);
-            Assert.That(src.CommandParameter,     Is.EqualTo(10));
+            src.Attach(view);
+            src.Password = "Behavior";
+            Assert.That(view.Password, Is.EqualTo(src.Password).And.EqualTo("Behavior"));
+
+            view.Password = "View";
+            Assert.That(src.Password, Is.EqualTo(view.Password).And.EqualTo("View"));
+            src.Detach();
         }
 
         #endregion

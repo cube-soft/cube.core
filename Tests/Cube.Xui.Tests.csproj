@@ -60,17 +60,24 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Behaviors\CheckedBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\CloseBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\ClosingBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\CommandBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\EditBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\FileDropBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\PasswordBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\SelectionBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\WindowsFormsBehaviorTest.cs" />
     <Compile Include="Sources\Converters\BooleanConverterTest.cs" />
     <Compile Include="Sources\Converters\ImageConverterTest.cs" />
     <Compile Include="Sources\Converters\StringConverterTest.cs" />

@@ -16,48 +16,45 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Xui.Behaviors;
-using Cube.Xui.Mixin;
-using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
-using System.Windows.Controls;
+using System.Threading;
+using System.Windows;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehaviorTest
+    /// ClosingBehaviorTest
     ///
     /// <summary>
-    /// Tests for the CommandBehavior class.
+    /// Tests for the ClosingBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CommandBehaviorTest
+    [Apartment(ApartmentState.STA)]
+    class ClosingBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties()
+        public void Create()
         {
-            var src = new CommandBehavior<TextBox, int>();
-            Assert.That(src.Command,          Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
+            var view = new Window();
+            var src  = new ClosingBehavior();
 
-            src.Command = new RelayCommand(() => { });
-            src.CommandParameter = 10;
-            Assert.That(src.Command,              Is.Not.Null);
-            Assert.That(src.Command.CanExecute(), Is.True);
-            Assert.That(src.CommandParameter,     Is.EqualTo(10));
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
         }
 
         #endregion
