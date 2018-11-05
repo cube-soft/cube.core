@@ -60,6 +60,7 @@
     <Compile Include="Sources\Collections\Differences\Result.cs" />
     <Compile Include="Sources\Collections\ArgumentCollection.cs" />
     <Compile Include="Sources\Collections\CacheCollection.cs" />
+    <Compile Include="Sources\Collections\EnumerableBase.cs" />
     <Compile Include="Sources\Collections\EnumerableExtension.cs" />
     <Compile Include="Sources\Collections\EnumerableDiff.cs" />
     <Compile Include="Sources\Collections\EnumerableIndex.cs" />

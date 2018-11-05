@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Cube.Collections
@@ -37,7 +36,7 @@ namespace Cube.Collections
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class ArgumentCollection : IReadOnlyList<string>
+    public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     {
         #region Constructors
 
@@ -136,20 +135,7 @@ namespace Cube.Collections
         /// <returns>反復用オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerator<string> GetEnumerator() => _primary.GetEnumerator();
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// 非オプション要素を取得するための反復用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /// <returns>反復用オブジェクト</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public override IEnumerator<string> GetEnumerator() => _primary.GetEnumerator();
 
         #endregion
 

@@ -32,7 +32,8 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    public class OrderedDictionary<TKey, TValue> : EnumerableBase<KeyValuePair<TKey, TValue>>,
+        IDictionary<TKey, TValue>
     {
         #region Constructors
 
@@ -333,21 +334,10 @@ namespace Cube.Collections
         /// <returns>反復用オブジェクト</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => ((IEnumerable)_core)
+        public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => ((IEnumerable)_core)
             .Cast<DictionaryEntry>()
             .Select(e => KeyValuePair.Create((TKey)e.Key, (TValue)e.Value))
             .GetEnumerator();
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// 反復用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
