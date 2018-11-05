@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
 using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -80,6 +81,21 @@ namespace Cube.Tests
         [TestCase("",              ExpectedResult = "\"\"")]
         [TestCase(default(string), ExpectedResult = "\"\"")]
         public string Quote(string src) => src.Quote();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetName
+        ///
+        /// <summary>
+        /// Executes the test of the GetName extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(Environment.SpecialFolder.System, @"Windows\System32")]
+        public void GetName(Environment.SpecialFolder src, string value) => Assert.That(
+            src.GetName().ToLowerInvariant(),
+            Does.EndWith(value.ToLowerInvariant())
+        );
 
         #endregion
     }

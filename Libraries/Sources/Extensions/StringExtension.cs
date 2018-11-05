@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+
 namespace Cube.Generics
 {
     /* --------------------------------------------------------------------- */
@@ -75,6 +77,22 @@ namespace Cube.Generics
         ///
         /* ----------------------------------------------------------------- */
         public static string Quote(this string src) => $"\"{src}\"";
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetName
+        ///
+        /// <summary>
+        /// Gets the directory name corresponding to the specified value.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        ///
+        /// <returns>Quoted string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string GetName(this Environment.SpecialFolder src) =>
+            Environment.GetFolderPath(src);
 
         #endregion
     }
