@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Tasks;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,7 +32,8 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CacheCollection<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
+    public class CacheCollection<TKey, TValue> : EnumerableBase<KeyValuePair<TKey, TValue>>,
+        IReadOnlyCollection<KeyValuePair<TKey, TValue>>
     {
         #region Constructors
 
@@ -284,23 +284,8 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() =>
+        public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() =>
             _created.GetEnumerator();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IEnumerable.GetEnumerator
-        ///
-        /// <summary>
-        /// Returns an enumerator that iterates through this collection.
-        /// </summary>
-        ///
-        /// <returns>
-        /// An IEnumerator object for this collection.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 

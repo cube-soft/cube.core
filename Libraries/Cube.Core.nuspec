@@ -2,12 +2,12 @@
 <package >
     <metadata>
         <id>Cube.Core</id>
-        <version>1.12.0</version>
+        <version>1.13.0</version>
         <title>Cube.Core</title>
         <authors>CubeSoft</authors>
         <owners>CubeSoft</owners>
-        <copyright>Copyright (c) 2010 CubeSoft, Inc.</copyright>
-        <description>Common library for CubeSoft applications.</description>
+        <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
+        <description>Common library for CubeSoft libraries and applications.</description>
         <tags>Cube</tags>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>

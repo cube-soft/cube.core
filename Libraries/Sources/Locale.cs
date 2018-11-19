@@ -15,60 +15,49 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Tasks;
+using System;
+using System.Threading;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryValue(T)
+    /// Locale
     ///
     /// <summary>
-    /// Provides functionality to wrap the specified value as the
-    /// IQuery(T) interface.
+    /// Provides the event trigger to changed the locale.
     /// </summary>
     ///
+    /// <seealso href="https://msdn.microsoft.com/ja-jp/library/cc392381.aspx" />
+    ///
     /* --------------------------------------------------------------------- */
-    public class QueryValue<T> : IQuery<T>
+    public static class Locale
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// QueryValue
+        /// Locale
         ///
         /// <summary>
-        /// Initializes a new instance of the QueryValue class.
+        /// Initializes static fields.
         /// </summary>
         ///
-        /// <param name="value">
-        /// Result when the Request method is invoked.
-        /// </param>
-        ///
         /* ----------------------------------------------------------------- */
-        public QueryValue(T value)
+        static Locale()
         {
-            Value  = value;
-            _query = new Query<T>(e =>
+            var current = Language.Auto;
+            bool setter(Language e)
             {
-                e.Result = value;
-                e.Cancel = false;
-            });
+                var result = (e != current);
+                if (result) current = e;
+                return result;
+            }
+
+            _default = setter;
+            _setter  = setter;
         }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets the value when the Request method is invoked.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Value { get; }
 
         #endregion
 
@@ -76,93 +65,71 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request
+        /// Set
         ///
         /// <summary>
-        /// Requests with the specified query.
+        /// Sets the specified language as the current locale.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<T> value) => _query.Request(value);
-
-        #endregion
-
-        #region Fields
-        private Query<T> _query;
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// QueryValue(T, U)
-    ///
-    /// <summary>
-    /// Provides functionality to wrap the specified value as the
-    /// IQuery(T, U) interface.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class QueryValue<T, U> : IQuery<T, U>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryValue
-        ///
-        /// <summary>
-        /// Initializes a new instance of the QueryValue class.
-        /// </summary>
-        ///
-        /// <param name="value">
-        /// Result when the Request method is invoked.
-        /// </param>
+        /// <param name="value">Language.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public QueryValue(U value)
+        public static void Set(Language value)
         {
-            Value  = value;
-            _query = new Query<T, U>(e =>
-            {
-                e.Result = Value;
-                e.Cancel = false;
-            });
+            if (_setter(value)) _subscription.Publish(value).Forget();
         }
 
-        #endregion
-
-        #region Properties
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Adds the specified callback to the subscription.
+        /// </summary>
+        ///
+        /// <param name="callback">
+        /// Callback action when the locale changes.
+        /// </param>
+        ///
+        /// <returns>
+        /// Object to remove the registered callback.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IDisposable Subscribe(Action<Language> callback) =>
+            _subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Value
+        /// Configure
         ///
         /// <summary>
-        /// Gets the value when the Request method is invoked.
+        /// Resets the setter function.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public U Value { get; }
-
-        #endregion
-
-        #region Methods
+        public static void Configure() => Configure(_default);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request
+        /// Configure
         ///
         /// <summary>
-        /// Requests with the specified query.
+        /// Updates the setter function of the language.
         /// </summary>
         ///
+        /// <param name="setter">Setter function.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<T, U> value) => _query.Request(value);
+        public static void Configure(Setter<Language> setter) =>
+            Interlocked.Exchange(ref _setter, setter);
 
         #endregion
 
         #region Fields
-        private Query<T, U> _query;
+        private static Setter<Language> _setter;
+        private static readonly Setter<Language> _default;
+        private static readonly Subscription<Language> _subscription = new Subscription<Language>();
         #endregion
     }
 }

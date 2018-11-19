@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -47,18 +46,19 @@ namespace Cube.Tests
         [TestCaseSource(nameof(TestCases))]
         public void Assembly_Properties(Assembly src, Result expected) {
             var dest = new AssemblyReader(src);
-            Assert.That(dest.Location.HasValue(), Is.EqualTo(expected.Location));
-            Assert.That(dest.Assembly,            Is.EqualTo(expected.Assembly));
-            Assert.That(dest.Title,               Is.EqualTo(expected.Title));
-            Assert.That(dest.Description,         Is.EqualTo(expected.Description));
-            Assert.That(dest.Company,             Is.EqualTo(expected.Company));
-            Assert.That(dest.Product,             Is.EqualTo(expected.Product));
-            Assert.That(dest.Copyright,           Is.EqualTo(expected.Copyright));
-            Assert.That(dest.Trademark,           Is.EqualTo(expected.Trademark));
-            Assert.That(dest.Configuration,       Is.EqualTo(expected.Configuration));
-            Assert.That(dest.Culture,             Is.EqualTo(expected.Culture));
-            Assert.That(dest.Version,             Is.EqualTo(expected.Version));
-            Assert.That(dest.FileVersion,         Is.EqualTo(expected.FileVersion));
+            Assert.That(dest.Location,      Does.EndWith(expected.Location));
+            Assert.That(dest.DirectoryName, Does.Contain(expected.Directory));
+            Assert.That(dest.Assembly,      Is.EqualTo(expected.Assembly));
+            Assert.That(dest.Title,         Is.EqualTo(expected.Title));
+            Assert.That(dest.Description,   Is.EqualTo(expected.Description));
+            Assert.That(dest.Company,       Is.EqualTo(expected.Company));
+            Assert.That(dest.Product,       Is.EqualTo(expected.Product));
+            Assert.That(dest.Copyright,     Is.EqualTo(expected.Copyright));
+            Assert.That(dest.Trademark,     Is.EqualTo(expected.Trademark));
+            Assert.That(dest.Configuration, Is.EqualTo(expected.Configuration));
+            Assert.That(dest.Culture,       Is.EqualTo(expected.Culture));
+            Assert.That(dest.Version,       Is.EqualTo(expected.Version));
+            Assert.That(dest.FileVersion,   Is.EqualTo(expected.FileVersion));
         }
 
         /* ----------------------------------------------------------------- */
@@ -77,7 +77,8 @@ namespace Cube.Tests
                 yield return new TestCaseData(Assembly.GetExecutingAssembly(), new Result
                 {
                     Assembly      = Assembly.GetExecutingAssembly(),
-                    Location      = true,
+                    Location      = "Cube.Core.Tests.dll",
+                    Directory     = @"Tests\bin",
                     Title         = "Cube.Core testing project",
                     Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
                     Company       = "CubeSoft",
@@ -86,30 +87,32 @@ namespace Cube.Tests
                     Trademark     = "CubeSoft, Inc.",
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 12, 0, 0),
-                    FileVersion   = new Version(1, 12, 0, 0)
+                    Version       = new Version(1, 13, 0, 0),
+                    FileVersion   = new Version(1, 13, 0, 0)
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
                 {
                     Assembly      = Assembly.GetAssembly(typeof(AssemblyReader)),
-                    Location      = true,
+                    Location      = "Cube.Core.dll",
+                    Directory     = @"Tests\bin",
                     Title         = "Cube.Core",
-                    Description   = "Common library for CubeSoft applications.",
+                    Description   = "Common library for CubeSoft libraries and applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Trademark     = string.Empty,
                     Configuration = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 12, 0, 0),
-                    FileVersion   = new Version(1, 12, 0, 0)
+                    Version       = new Version(1, 13, 0, 0),
+                    FileVersion   = new Version(1, 13, 0, 0)
                 });
 
                 yield return new TestCaseData(null, new Result
                 {
                     Assembly      = null,
-                    Location      = false,
+                    Location      = string.Empty,
+                    Directory     = string.Empty,
                     Title         = string.Empty,
                     Description   = string.Empty,
                     Company       = string.Empty,
@@ -133,10 +136,11 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public class Result
+        internal class Result
         {
             public Assembly Assembly { get; set; }
-            public bool Location { get; set; }
+            public string Location { get; set; }
+            public string Directory { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public string Company { get; set; }

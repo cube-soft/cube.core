@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
 using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -25,7 +26,7 @@ namespace Cube.Tests
     /// StringExtensionTest
     ///
     /// <summary>
-    /// StringExtension のテスト用クラスです。
+    /// Tests for the StringExtension class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,8 +40,7 @@ namespace Cube.Tests
         /// HasValue
         ///
         /// <summary>
-        /// 1 文字以上の文字列を保持しているかどうかを判別するテストを
-        /// 実行します。
+        /// Executes the test of the HasValue extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,10 +53,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Unify
+        ///
+        /// <summary>
+        /// Executes the test of the Unify extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Hello",         ExpectedResult = "Hello")]
+        [TestCase("こんにちは",    ExpectedResult = "こんにちは")]
+        [TestCase("",              ExpectedResult = "")]
+        [TestCase(default(string), ExpectedResult = "")]
+        public string Unify(string src) => src.Unify();
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Quote
         ///
         /// <summary>
-        /// 文字列を引用符で囲むテストを実行します。
+        /// Executes the test of the Quote extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,6 +81,21 @@ namespace Cube.Tests
         [TestCase("",              ExpectedResult = "\"\"")]
         [TestCase(default(string), ExpectedResult = "\"\"")]
         public string Quote(string src) => src.Quote();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetName
+        ///
+        /// <summary>
+        /// Executes the test of the GetName extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(Environment.SpecialFolder.System, @"Windows\System32")]
+        public void GetName(Environment.SpecialFolder src, string value) => Assert.That(
+            src.GetName().ToLowerInvariant(),
+            Does.EndWith(value.ToLowerInvariant())
+        );
 
         #endregion
     }

@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("1.12.0.0")]
-[assembly: AssemblyFileVersion("1.12.0.0")]
+[assembly: AssemblyVersion("1.13.0.0")]
+[assembly: AssemblyFileVersion("1.13.0.0")]
 [assembly: AssemblyTitle("Cube.Core")]
 [assembly: AssemblyProduct("Cube.Core")]
-[assembly: AssemblyDescription("Common library for CubeSoft applications.")]
+[assembly: AssemblyDescription("Common library for CubeSoft libraries and applications.")]
 [assembly: AssemblyCompany("CubeSoft")]
 [assembly: AssemblyCopyright("Copyright © 2010 CubeSoft, Inc.")]
 [assembly: AssemblyTrademark("")]

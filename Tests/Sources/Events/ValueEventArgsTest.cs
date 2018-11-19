@@ -70,6 +70,26 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Create_ValueChangedEventArgs
+        ///
+        /// <summary>
+        /// Executes the test to create a new instance of the
+        /// ValueChangedEventArgs(T) class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(2, 20)]
+        [TestCase(3.1415926, 1.41421356)]
+        [TestCase("Hello, world", "Changed world")]
+        public void Create_ValueChangedEventArgs<T>(T before, T after)
+        {
+            var args = ValueChangedEventArgs.Create(before, after);
+            Assert.That(args.OldValue, Is.EqualTo(before));
+            Assert.That(args.NewValue, Is.EqualTo(after));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// ValueCancelEventArgs_Cancel
         ///
         /// <summary>

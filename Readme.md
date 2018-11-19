@@ -5,7 +5,8 @@ Cube.Core
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/romqhgh1ben6eedn?svg=true)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
 
-Cube.Core is a common library for CubeSoft applications.
+Cube.Core is a common library for other CubeSoft libraries and applications.
+The library is available for .NET Framework 3.5, 4.5 or more.
 
 ## Installation
 
@@ -30,5 +31,5 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## License
 
-Copyright &copy; 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
+Copyright © 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
 The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Core/blob/master/License.txt).

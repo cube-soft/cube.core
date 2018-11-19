@@ -86,7 +86,25 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Location => Assembly?.Location;
+        public string Location => Unify(Assembly?.Location);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DirectoryName
+        ///
+        /// <summary>
+        /// Gets the directory name that the assembly is located.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string DirectoryName
+        {
+            get
+            {
+                var path = Location;
+                return path.HasValue() ? System.IO.Path.GetDirectoryName(path) : path;
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,8 +115,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title =>
-            Normalize(Get<AssemblyTitleAttribute>()?.Title);
+        public string Title => Unify(Get<AssemblyTitleAttribute>()?.Title);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,8 +126,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Description =>
-            Normalize(Get<AssemblyDescriptionAttribute>()?.Description);
+        public string Description => Unify(Get<AssemblyDescriptionAttribute>()?.Description);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -121,8 +137,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Configuration =>
-            Normalize(Get<AssemblyConfigurationAttribute>()?.Configuration);
+        public string Configuration => Unify(Get<AssemblyConfigurationAttribute>()?.Configuration);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,8 +148,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Company =>
-            Normalize(Get<AssemblyCompanyAttribute>()?.Company);
+        public string Company => Unify(Get<AssemblyCompanyAttribute>()?.Company);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -145,8 +159,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Product =>
-            Normalize(Get<AssemblyProductAttribute>()?.Product);
+        public string Product => Unify(Get<AssemblyProductAttribute>()?.Product);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -157,8 +170,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Copyright =>
-            Normalize(Get<AssemblyCopyrightAttribute>()?.Copyright);
+        public string Copyright => Unify(Get<AssemblyCopyrightAttribute>()?.Copyright);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -169,8 +181,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Trademark =>
-            Normalize(Get<AssemblyTrademarkAttribute>()?.Trademark);
+        public string Trademark => Unify(Get<AssemblyTrademarkAttribute>()?.Trademark);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -181,8 +192,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Culture =>
-            Normalize(Get<AssemblyCultureAttribute>()?.Culture);
+        public string Culture => Unify(Get<AssemblyCultureAttribute>()?.Culture);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -193,8 +203,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version Version =>
-            Assembly?.GetName().Version ?? new Version();
+        public Version Version => Assembly?.GetName().Version ?? new Version();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -230,14 +239,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Normalize
+        /// Unify
         ///
         /// <summary>
-        /// null を空文字に正規化します。
+        /// Converts a null or empty string to the empty one.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string Normalize(string src) => src.HasValue() ? src : string.Empty;
+        private string Unify(string src) => src.Unify();
 
         #endregion
     }

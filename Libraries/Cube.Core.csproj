@@ -70,6 +70,7 @@
     <Compile Include="Sources\Collections\Differences\Result.cs" />
     <Compile Include="Sources\Collections\ArgumentCollection.cs" />
     <Compile Include="Sources\Collections\CacheCollection.cs" />
+    <Compile Include="Sources\Collections\EnumerableBase.cs" />
     <Compile Include="Sources\Collections\EnumerableExtension.cs" />
     <Compile Include="Sources\Collections\EnumerableDiff.cs" />
     <Compile Include="Sources\Collections\EnumerableIndex.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="Sources\Disposable.cs" />
     <Compile Include="Sources\DisposableBase.cs" />
     <Compile Include="Sources\Exceptions.cs" />
+    <Compile Include="Sources\Language.cs" />
+    <Compile Include="Sources\Locale.cs" />
     <Compile Include="Sources\Logger.cs" />
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />

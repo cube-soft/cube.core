@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Cube.Collections
@@ -26,7 +25,7 @@ namespace Cube.Collections
     /// ArgumentCollection
     ///
     /// <summary>
-    /// コマンドライン等の引数を解析するクラスです。
+    /// Provides functionality to parse arguments.
     /// </summary>
     ///
     /// <remarks>
@@ -37,7 +36,7 @@ namespace Cube.Collections
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class ArgumentCollection : IReadOnlyList<string>
+    public class ArgumentCollection : EnumerableBase<string>, IReadOnlyList<string>
     {
         #region Constructors
 
@@ -46,10 +45,11 @@ namespace Cube.Collections
         /// ArgumentCollection
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ArgumentCollection class with
+        /// the specified collection.
         /// </summary>
         ///
-        /// <param name="src">引数一覧</param>
+        /// <param name="src">Collection of arguments.</param>
         ///
         /* --------------------------------------------------------------------- */
         public ArgumentCollection(IEnumerable<string> src) : this(src, '-') { }
@@ -59,16 +59,37 @@ namespace Cube.Collections
         /// ArgumentCollection
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ArgumentCollection class with
+        /// the specified parameters.
         /// </summary>
         ///
-        /// <param name="src">引数一覧</param>
-        /// <param name="prefix">オプションを示す接頭辞</param>
+        /// <param name="src">Collection of arguments.</param>
+        /// <param name="prefix">Prefix of optional parameters.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, char prefix)
+        public ArgumentCollection(IEnumerable<string> src, char prefix) :
+            this(src, prefix, false) { }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ArgumentCollection
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ArgumentCollection class with
+        /// the specified parameters.
+        /// </summary>
+        ///
+        /// <param name="src">Collection of arguments.</param>
+        /// <param name="prefix">Prefix of optional parameters.</param>
+        /// <param name="ignore">
+        /// Value indicating whether the class ignores case of optional keys.
+        /// </param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public ArgumentCollection(IEnumerable<string> src, char prefix, bool ignore)
         {
-            Prefix = prefix;
+            Prefix     = prefix;
+            IgnoreCase = ignore;
             Parse(src);
         }
 
@@ -81,18 +102,34 @@ namespace Cube.Collections
         /// Prefix
         ///
         /// <summary>
-        /// オプションを示す接頭辞を取得または設定します。
+        /// Gets the prefix character that represents optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public char Prefix { get; set; }
+        public char Prefix { get; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// IgnoreCase
+        ///
+        /// <summary>
+        /// Gets the value indicating whether the class ignores case of
+        /// optional keys.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// true の場合、Options に格納されるキーは全て小文字に正規化されます。
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        public bool IgnoreCase { get; }
 
         /* --------------------------------------------------------------------- */
         ///
         /// Item(int)
         ///
         /// <summary>
-        /// 非オプション要素を取得します。
+        /// Gets the collection of arguments except for optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -103,7 +140,7 @@ namespace Cube.Collections
         /// Count
         ///
         /// <summary>
-        /// 非オプション要素の数を取得します。
+        /// Gets the number of arguments except for optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -114,7 +151,7 @@ namespace Cube.Collections
         /// Options
         ///
         /// <summary>
-        /// オプション引数一覧を取得します。
+        /// Gets the collection of optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -129,27 +166,15 @@ namespace Cube.Collections
         /// GetEnumerator
         ///
         /// <summary>
-        /// オプション引数以外の要素一覧を取得するための反復用オブジェクトを
-        /// 取得します。
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
         ///
-        /// <returns>反復用オブジェクト</returns>
+        /// <returns>
+        /// Enumerator that can be used to iterate through the collection.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerator<string> GetEnumerator() => _primary.GetEnumerator();
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// 非オプション要素を取得するための反復用オブジェクトを取得します。
-        /// </summary>
-        ///
-        /// <returns>反復用オブジェクト</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public override IEnumerator<string> GetEnumerator() => _primary.GetEnumerator();
 
         #endregion
 
@@ -160,15 +185,13 @@ namespace Cube.Collections
         /// Parse
         ///
         /// <summary>
-        /// コマンドライン等の引数を解析します。
+        /// Parses the specified arguments.
         /// </summary>
-        ///
-        /// <param name="src">引数一覧</param>
         ///
         /* --------------------------------------------------------------------- */
         private void Parse(IEnumerable<string> src)
         {
-            var option = string.Empty;
+            var key = string.Empty;
 
             foreach (var s in src)
             {
@@ -176,18 +199,18 @@ namespace Cube.Collections
 
                 if (s[0] == Prefix)
                 {
-                    if (option.HasValue()) UpdateOption(option, null);
-                    option = s.TrimStart(Prefix);
+                    if (key.HasValue()) UpdateOption(key, null);
+                    key = Normalize(s.TrimStart(Prefix));
                 }
-                else if (option.HasValue())
+                else if (key.HasValue())
                 {
-                    UpdateOption(option, s);
-                    option = string.Empty;
+                    UpdateOption(key, s);
+                    key = string.Empty;
                 }
                 else _primary.Add(s);
             }
 
-            if (option.HasValue()) UpdateOption(option, null);
+            if (key.HasValue()) UpdateOption(key, null);
         }
 
         /* --------------------------------------------------------------------- */
@@ -195,7 +218,7 @@ namespace Cube.Collections
         /// UpdateOption
         ///
         /// <summary>
-        /// オプションの内容を更新します。
+        /// Updates optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -204,6 +227,17 @@ namespace Cube.Collections
             if (_options.ContainsKey(key)) _options[key] = value;
             else _options.Add(key, value);
         }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Normalize
+        ///
+        /// <summary>
+        /// Normalizes the specified value.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private string Normalize(string src) => IgnoreCase ? src.ToLowerInvariant() : src;
 
         #endregion
 

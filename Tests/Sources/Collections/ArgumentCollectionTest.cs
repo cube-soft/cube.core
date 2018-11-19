@@ -90,7 +90,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Parse_Options
+        /// Parse_Options_Count
         ///
         /// <summary>
         /// オプション項目が正常に解析できる事を確認するためのテストです。
@@ -98,8 +98,8 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(Parse_Options_Count_TestCases))]
-        public int Parse_Options_Count(int id, IEnumerable<string> args) =>
-            new ArgumentCollection(args).Options.Count;
+        public int Parse_Options_Count(int id, IEnumerable<string> args, bool ignore) =>
+            new ArgumentCollection(args, '-', ignore).Options.Count;
 
         #endregion
 
@@ -161,13 +161,15 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(0, new List<string> { "foo", "--bar", "bas" }).Returns(1);
-                yield return new TestCaseData(1, new List<string> { "foo", "--bar" }).Returns(1);
-                yield return new TestCaseData(2, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }).Returns(1);
-                yield return new TestCaseData(3, new List<string> { "foo", "--bar", "--hoge", "fuga" }).Returns(2);
-                yield return new TestCaseData(4, new List<string> { "foo", "--bar", "--", "bas" }).Returns(1);
-                yield return new TestCaseData(5, new List<string> { "foo", "bas" }).Returns(0);
-                yield return new TestCaseData(6, new List<string> { "foo", "--", "bas" }).Returns(0);
+                yield return new TestCaseData(0, new List<string> { "foo", "--bar", "bas" }, false).Returns(1);
+                yield return new TestCaseData(1, new List<string> { "foo", "--bar" }, false).Returns(1);
+                yield return new TestCaseData(2, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, false).Returns(1);
+                yield return new TestCaseData(3, new List<string> { "foo", "--bar", "--hoge", "fuga" }, false).Returns(2);
+                yield return new TestCaseData(4, new List<string> { "foo", "--bar", "--", "bas" }, false).Returns(1);
+                yield return new TestCaseData(5, new List<string> { "foo", "bas" }, false).Returns(0);
+                yield return new TestCaseData(6, new List<string> { "foo", "--", "bas" }, false).Returns(0);
+                yield return new TestCaseData(7, new List<string> { "foo", "--Bar", "--bar" }, false).Returns(2);
+                yield return new TestCaseData(7, new List<string> { "foo", "--Bar", "--bar" }, true).Returns(1);
             }
         }
 
