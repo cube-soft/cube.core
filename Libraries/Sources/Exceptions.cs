@@ -24,7 +24,7 @@ namespace Cube
     /// TwiceException
     ///
     /// <summary>
-    /// 2 回実行された事を表す例外クラスです。
+    /// Represents the exception of executing twice.
     /// </summary>
     ///
     /// <remarks>
@@ -40,7 +40,7 @@ namespace Cube
         /// TwiceException
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the TwiceException class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
