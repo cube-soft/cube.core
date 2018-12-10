@@ -56,6 +56,7 @@
     <Compile Include="Sources\Collections\EnumerableTest.cs" />
     <Compile Include="Sources\Collections\DiffTest.cs" />
     <Compile Include="Sources\Collections\GenericComparerTest.cs" />
+    <Compile Include="Sources\Collections\ObservableTest.cs" />
     <Compile Include="Sources\Collections\OrderedDictionaryTest.cs" />
     <Compile Include="Sources\Details\FileFixture.cs" />
     <Compile Include="Sources\Details\GlobalSetup.cs" />

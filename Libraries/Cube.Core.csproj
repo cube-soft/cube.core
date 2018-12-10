@@ -67,6 +67,7 @@
     <Compile Include="Sources\Collections\GenericComparer.cs" />
     <Compile Include="Sources\Collections\GenericEqualityComparer.cs" />
     <Compile Include="Sources\Collections\KeyValuePair.cs" />
+    <Compile Include="Sources\Collections\ObservableBase.cs" />
     <Compile Include="Sources\Collections\OrderedDictionary.cs" />
     <Compile Include="Sources\DataContract\Format.cs" />
     <Compile Include="Sources\DataContract\PropertyOperator.cs" />
