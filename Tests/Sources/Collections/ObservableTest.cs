@@ -55,12 +55,13 @@ namespace Cube.Tests
             Assert.That(src.Context, Is.Null);
             src.Context = new SynchronizationContext();
 
+            for (var i = 0; i < 10; ++i) src.Add(i);
             var count = 0;
             src.CollectionChanged += (s, e) => ++count;
-
             for (var i = 0; i < 10; ++i) src.Add(i);
+
             Assert.That(count,       Is.EqualTo(10), "CollectionChanged");
-            Assert.That(src.Count(), Is.EqualTo(10), "Count");
+            Assert.That(src.Count(), Is.EqualTo(20), "Count");
         }
 
         /* ----------------------------------------------------------------- */
@@ -79,12 +80,13 @@ namespace Cube.Tests
             var src = new TestCollection<int>();
             Assert.That(src.Context, Is.Null);
 
+            for (var i = 0; i < 3; ++i) src.Add(i);
             var count = 0;
             src.CollectionChanged += (s, e) => ++count;
+            for (var i = 0; i < 3; ++i) src.Add(i);
 
-            for (var i = 0; i < 5; ++i) src.Add(i);
-            Assert.That(count,       Is.EqualTo(5), "CollectionChanged");
-            Assert.That(src.Count(), Is.EqualTo(5), "Count");
+            Assert.That(count,       Is.EqualTo(3), "CollectionChanged");
+            Assert.That(src.Count(), Is.EqualTo(6), "Count");
         }
 
         #endregion
