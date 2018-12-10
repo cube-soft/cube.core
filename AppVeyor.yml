@@ -11,6 +11,7 @@ nuget:
 platform: Any CPU
 configuration: Release
 before_build:
+    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
     - nuget restore Cube.Xui.sln
@@ -32,10 +33,9 @@ test_script:
       -output:CoverResults.xml
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I Tests\bin\Release\Cube.Xui.Tests.log Tests\
-    - xcopy /q /Y /I CoverResults.xml Tests\
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+    - xcopy /q /Y /I Tests\bin\Release\Cube.Xui.Tests.log TestLog\
+    - xcopy /q /Y /I CoverResults.xml TestLog\
     - pip install codecov
     - codecov -f CoverResults.xml
 artifacts:
-    - path: Tests
+    - path: TestLog
