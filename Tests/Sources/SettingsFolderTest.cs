@@ -59,7 +59,7 @@ namespace Cube.FileSystem.Tests
 
             Assert.That(count,         Is.EqualTo(1));
             Assert.That(dest.Value,    Is.Not.Null);
-            Assert.That(dest.Version,  Is.EqualTo(new SoftwareVersion("1.13.0.0")));
+            Assert.That(dest.Version,  Is.EqualTo(new SoftwareVersion("1.14.0.0")));
             Assert.That(dest.Format,   Is.EqualTo(format));
             Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
 
