@@ -91,6 +91,21 @@ namespace Cube.Collections.Mixin
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Compact
+        ///
+        /// <summary>
+        /// Removes null objects in the specified sequence.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        ///
+        /// <returns>Removed sequence.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> Compact<T>(this IEnumerable<T> src) => src.OfType<T>();
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Flatten
         ///
         /// <summary>
