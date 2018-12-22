@@ -27,7 +27,7 @@ namespace Cube.Log
     /// Logger
     ///
     /// <summary>
-    /// Log オブジェクトに対する操作を定義するための拡張メソッド用クラスです。
+    /// Provides extended methods for logging.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ namespace Cube.Log
         /// Configure
         ///
         /// <summary>
-        /// 初期設定を行います。
+        /// Initializes settings of logging.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -51,11 +51,11 @@ namespace Cube.Log
         /// ObserveTaskException
         ///
         /// <summary>
-        /// UnobservedTaskException を監視し、取得した例外をログに
-        /// 出力します。
+        /// Observes UnobservedTaskException exceptions and outputs to the
+        /// log file.
         /// </summary>
         ///
-        /// <returns>監視を解除するためのオブジェクト</returns>
+        /// <returns>Disposable object to stop to monitor.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IDisposable ObserveTaskException()
@@ -74,11 +74,11 @@ namespace Cube.Log
         /// Debug
         ///
         /// <summary>
-        /// デバッグ情報をログに出力します。
+        /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Debug(Type type, string message) =>
@@ -89,12 +89,12 @@ namespace Cube.Log
         /// Debug
         ///
         /// <summary>
-        /// デバッグ情報をログに出力します。
+        /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Debug(Type type, string message, Exception err) =>
@@ -105,14 +105,14 @@ namespace Cube.Log
         /// Debug
         ///
         /// <summary>
-        /// 実行時間をデバッグ情報としてログに出力します。
+        /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Debug<T>(Type type, string message, Func<T> func)
@@ -128,12 +128,12 @@ namespace Cube.Log
         /// Debug
         ///
         /// <summary>
-        /// 実行時間をデバッグ情報としてログに出力します。
+        /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="action">Action to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Debug(Type type, string message, Action action) =>
@@ -152,11 +152,11 @@ namespace Cube.Log
         /// Info
         ///
         /// <summary>
-        /// 情報をログに出力します。
+        /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, string message) =>
@@ -167,12 +167,12 @@ namespace Cube.Log
         /// Info
         ///
         /// <summary>
-        /// 情報をログに出力します。
+        /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, string message, Exception err) =>
@@ -183,11 +183,11 @@ namespace Cube.Log
         /// Info
         ///
         /// <summary>
-        /// システム情報をログに出力します。
+        /// Outputs system information as INFO level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Assembly assembly)
@@ -206,14 +206,14 @@ namespace Cube.Log
         /// Info
         ///
         /// <summary>
-        /// 実行時間をログに出力します。
+        /// Monitors the running time and outputs it as INFO level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="type">Target type.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Info<T>(Type type, string message, Func<T> func)
@@ -229,12 +229,12 @@ namespace Cube.Log
         /// Info
         ///
         /// <summary>
-        /// 実行時間をログに出力します。
+        /// Monitors the running time and outputs it as INFO level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="action">Action to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, string message, Action action) =>
@@ -253,11 +253,11 @@ namespace Cube.Log
         /// Warn
         ///
         /// <summary>
-        /// 警告をログに出力します。
+        /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Warn(Type type, string message) =>
@@ -268,12 +268,12 @@ namespace Cube.Log
         /// Warn
         ///
         /// <summary>
-        /// 警告をログに出力します。
+        /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Warn(Type type, string message, Exception err) =>
@@ -284,14 +284,16 @@ namespace Cube.Log
         /// Warn
         ///
         /// <summary>
-        /// 例外発生時に警告としてログに出力します。
+        /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="func">実行内容</param>
-        /// <param name="err">エラー時の値</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="func">Function to monitor.</param>
+        /// <param name="err">
+        /// Value that returns when an exception occurs.
+        /// </param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Warn<T>(Type type, Func<T> func, T err)
@@ -306,11 +308,11 @@ namespace Cube.Log
         /// Warn
         ///
         /// <summary>
-        /// 例外発生時に警告としてログに出力します。
+        /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Warn(Type type, Action action) => Warn(type, () =>
@@ -328,11 +330,11 @@ namespace Cube.Log
         /// Error
         ///
         /// <summary>
-        /// エラーをログに出力します。
+        /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Error(Type type, string message) =>
@@ -343,12 +345,12 @@ namespace Cube.Log
         /// Error
         ///
         /// <summary>
-        /// エラーをログに出力します。
+        /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Error(Type type, string message, Exception err) =>
@@ -359,14 +361,16 @@ namespace Cube.Log
         /// Error
         ///
         /// <summary>
-        /// 例外発生時にエラーとしてログに出力します。
+        /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="func">実行内容</param>
-        /// <param name="err">エラー時の値</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="func">Function to monitor.</param>
+        /// <param name="err">
+        /// Value that returns when an exception occurs.
+        /// </param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Error<T>(Type type, Func<T> func, T err)
@@ -381,11 +385,11 @@ namespace Cube.Log
         /// Error
         ///
         /// <summary>
-        /// 例外発生時にエラーとしてログに出力します。
+        /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Error(Type type, Action action) => Error(type, () =>
@@ -403,11 +407,11 @@ namespace Cube.Log
         /// Fatal
         ///
         /// <summary>
-        /// 致命的なエラーをログに出力します。
+        /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Fatal(Type type, string message) =>
@@ -418,12 +422,12 @@ namespace Cube.Log
         /// Fatal
         ///
         /// <summary>
-        /// 致命的なエラーをログに出力します。
+        /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Fatal(Type type, string message, Exception err) =>
@@ -434,14 +438,16 @@ namespace Cube.Log
         /// Fatal
         ///
         /// <summary>
-        /// 例外発生時に致命的なエラーとしてログに出力します。
+        /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="func">実行内容</param>
-        /// <param name="err">エラー時の値</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="func">Function to monitor.</param>
+        /// <param name="err">
+        /// Value that returns when an exception occurs.
+        /// </param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Fatal<T>(Type type, Func<T> func, T err)
@@ -456,11 +462,11 @@ namespace Cube.Log
         /// Fatal
         ///
         /// <summary>
-        /// 例外発生時に致命的なエラーとしてログに出力します。
+        /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">対象となるオブジェクトの型情報</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="type">Targe type information.</param>
+        /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Fatal(Type type, Action action) => Fatal(type, () =>
