@@ -209,7 +209,7 @@ namespace Cube.Log
         /// Monitors the running time and outputs it as INFO level.
         /// </summary>
         ///
-        /// <param name="type">Target type.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="message">Message string.</param>
         /// <param name="func">Function to monitor.</param>
         ///
@@ -488,11 +488,11 @@ namespace Cube.Log
         /// LogDebug
         ///
         /// <summary>
-        /// デバッグ情報をログに出力します。
+        /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, string message) =>
@@ -503,12 +503,12 @@ namespace Cube.Log
         /// LogDebug
         ///
         /// <summary>
-        /// デバッグ情報をログに出力します。
+        /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, string message, Exception err) =>
@@ -519,14 +519,14 @@ namespace Cube.Log
         /// LogDebug
         ///
         /// <summary>
-        /// 実行時間をデバッグ情報としてログに出力します。
+        /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogDebug<T, U>(this T src, string message, Func<U> func) =>
@@ -537,12 +537,12 @@ namespace Cube.Log
         /// LogDebug
         ///
         /// <summary>
-        /// 実行時間をデバッグ情報としてログに出力します。
+        /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="action">Action to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, string message, Action action) =>
@@ -557,11 +557,11 @@ namespace Cube.Log
         /// LogInfo
         ///
         /// <summary>
-        /// 情報をログに出力します。
+        /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, string message) =>
@@ -572,12 +572,12 @@ namespace Cube.Log
         /// LogInfo
         ///
         /// <summary>
-        /// 情報をログに出力します。
+        /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, string message, Exception err) =>
@@ -588,11 +588,11 @@ namespace Cube.Log
         /// LogInfo
         ///
         /// <summary>
-        /// 情報をログに出力します。
+        /// Outputs system information as INFO level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, Assembly assembly) =>
@@ -603,14 +603,14 @@ namespace Cube.Log
         /// LogInfo
         ///
         /// <summary>
-        /// 実行時間をログに出力します。
+        /// Monitors the running time and outputs it as INFO level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="src">Target object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogInfo<T, U>(this T src, string message, Func<U> func) =>
@@ -621,12 +621,12 @@ namespace Cube.Log
         /// LogInfo
         ///
         /// <summary>
-        /// 実行時間をログに出力します。
+        /// Monitors the running time and outputs it as INFO level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="action">Action to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, string message, Action action) =>
@@ -641,11 +641,11 @@ namespace Cube.Log
         /// LogWarn
         ///
         /// <summary>
-        /// 警告をログに出力します。
+        /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, string message) =>
@@ -656,12 +656,12 @@ namespace Cube.Log
         /// LogWarn
         ///
         /// <summary>
-        /// 警告をログに出力します。
+        /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, string message, Exception err) =>
@@ -672,13 +672,13 @@ namespace Cube.Log
         /// LogWarn
         ///
         /// <summary>
-        /// 例外発生時に警告としてログに出力します。
+        /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogWarn<T, U>(this T src, Func<U> func) =>
@@ -689,14 +689,16 @@ namespace Cube.Log
         /// LogWarn
         ///
         /// <summary>
-        /// 例外発生時に警告としてログに出力します。
+        /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="func">実行内容</param>
-        /// <param name="err">エラー時の値</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="func">Function to monitor.</param>
+        /// <param name="err">
+        /// Value that returns when an exception occurs.
+        /// </param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogWarn<T, U>(this T src, Func<U> func, U err) =>
@@ -707,11 +709,11 @@ namespace Cube.Log
         /// LogWarn
         ///
         /// <summary>
-        /// 例外発生時に警告としてログに出力します。
+        /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, Action action) =>
@@ -726,11 +728,11 @@ namespace Cube.Log
         /// LogError
         ///
         /// <summary>
-        /// エラーをログに出力します。
+        /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, string message) =>
@@ -741,12 +743,12 @@ namespace Cube.Log
         /// LogError
         ///
         /// <summary>
-        /// エラーをログに出力します。
+        /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, string message, Exception err) =>
@@ -757,13 +759,13 @@ namespace Cube.Log
         /// LogError
         ///
         /// <summary>
-        /// 例外発生時にエラーとしてログに出力します。
+        /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogError<T, U>(this T src, Func<U> func) =>
@@ -774,14 +776,16 @@ namespace Cube.Log
         /// LogError
         ///
         /// <summary>
-        /// 例外発生時にエラーとしてログに出力します。
+        /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="func">実行内容</param>
-        /// <param name="err">エラー時の値</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="func">Function to monitor.</param>
+        /// <param name="err">
+        /// Value that returns when an exception occurs.
+        /// </param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogError<T, U>(this T src, Func<U> func, U err) =>
@@ -792,11 +796,11 @@ namespace Cube.Log
         /// LogError
         ///
         /// <summary>
-        /// 例外発生時にエラーとしてログに出力します。
+        /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, Action action) =>
@@ -811,11 +815,11 @@ namespace Cube.Log
         /// LogFatal
         ///
         /// <summary>
-        /// 致命的なエラーをログに出力します。
+        /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, string message) =>
@@ -826,12 +830,12 @@ namespace Cube.Log
         /// LogFatal
         ///
         /// <summary>
-        /// 致命的なエラーをログに出力します。
+        /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="message">メッセージ</param>
-        /// <param name="err">例外情報</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="message">Message string.</param>
+        /// <param name="err">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, string message, Exception err) =>
@@ -842,13 +846,13 @@ namespace Cube.Log
         /// LogFatal
         ///
         /// <summary>
-        /// 例外発生時に致命的なエラーとしてログに出力します。
+        /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="func">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="func">Function to monitor.</param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogFatal<T, U>(this T src, Func<U> func) =>
@@ -859,14 +863,16 @@ namespace Cube.Log
         /// LogFatal
         ///
         /// <summary>
-        /// 例外発生時に致命的なエラーとしてログに出力します。
+        /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="func">実行内容</param>
-        /// <param name="err">エラー時の値</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="func">Function to monitor.</param>
+        /// <param name="err">
+        /// Value that returns when an exception occurs.
+        /// </param>
         ///
-        /// <returns>実行結果</returns>
+        /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static U LogFatal<T, U>(this T src, Func<U> func, U err) =>
@@ -877,11 +883,11 @@ namespace Cube.Log
         /// LogFatal
         ///
         /// <summary>
-        /// 例外発生時にエラーとしてログに出力します。
+        /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">対象となるオブジェクト</param>
-        /// <param name="action">実行内容</param>
+        /// <param name="src">Targe object.</param>
+        /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, Action action) =>
@@ -898,7 +904,7 @@ namespace Cube.Log
         /// GetCore
         ///
         /// <summary>
-        /// ログ出力用オブジェクトを取得します。
+        /// Gets the logger object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -909,7 +915,7 @@ namespace Cube.Log
         /// WhenTaskError
         ///
         /// <summary>
-        /// UnobservedTaskException 発生時に実行されるハンドラです。
+        /// Occurs when the UnobservedTaskException is raised.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
