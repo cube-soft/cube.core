@@ -26,7 +26,7 @@ namespace Cube
     /// OnceAction
     ///
     /// <summary>
-    /// 登録された内容を一度だけ実行するためのクラスです。
+    /// Provides functionality to invoke the specified action once.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,10 +39,11 @@ namespace Cube
         /// OnceAction
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the OnceAction class with the
+        /// specified action.
         /// </summary>
         ///
-        /// <param name="action">一度だけ実行する内容</param>
+        /// <param name="action">Action that is invoked once.</param>
         ///
         /* ----------------------------------------------------------------- */
         public OnceAction(Action action)
@@ -60,8 +61,8 @@ namespace Cube
         /// IgnoreTwice
         ///
         /// <summary>
-        /// 2 回目以降の実行を無視するかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets the value indicating whether to ignore the
+        /// second action.
         /// </summary>
         ///
         /// <remarks>
@@ -93,7 +94,7 @@ namespace Cube
         /// Invoke
         ///
         /// <summary>
-        /// Action を実行します。
+        /// Invokes the specified action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -116,7 +117,8 @@ namespace Cube
     /// OnceAction(T)
     ///
     /// <summary>
-    /// 登録された内容を一度だけ実行するためのクラスです。
+    /// Initializes a new instance of the OnceAction class with the
+    /// specified action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -129,10 +131,11 @@ namespace Cube
         /// OnceAction
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the OnceAction class with the
+        /// specified action.
         /// </summary>
         ///
-        /// <param name="action">一度だけ実行する内容</param>
+        /// <param name="action">Action that is invoked once.</param>
         ///
         /* ----------------------------------------------------------------- */
         public OnceAction(Action<T> action)
@@ -150,8 +153,8 @@ namespace Cube
         /// IgnoreTwice
         ///
         /// <summary>
-        /// 2 回目以降の実行を無視するかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets the value indicating whether to ignore the
+        /// second action.
         /// </summary>
         ///
         /// <remarks>
@@ -183,10 +186,10 @@ namespace Cube
         /// Invoke
         ///
         /// <summary>
-        /// Action(T) を実行します。
+        /// Invokes the specified action with the specified arguments.
         /// </summary>
         ///
-        /// <param name="obj">引数</param>
+        /// <param name="obj">Arguments of the action.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Invoke(T obj)
