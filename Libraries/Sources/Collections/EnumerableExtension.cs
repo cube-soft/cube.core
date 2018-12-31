@@ -40,12 +40,12 @@ namespace Cube.Collections.Mixin
         /// GetOrDefault(T)
         ///
         /// <summary>
-        /// 自身かまたは空の IEnumerable(T) オブジェクトを取得します。
+        /// Returns the specified object or empty IEnumerable(T) object.
         /// </summary>
         ///
-        /// <param name="src">コレクション</param>
+        /// <param name="src">Source collection.</param>
         ///
-        /// <returns>自身かまたは空のコレクション</returns>
+        /// <returns>Self or empty collection.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
