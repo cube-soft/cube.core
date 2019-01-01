@@ -120,7 +120,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Sync
+        /// Post
         ///
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行します。
@@ -131,15 +131,15 @@ namespace Cube.Forms
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Sync(Action action)
+        public void Post(Action action)
         {
-            if (Context != null) Context.Post(_ => action(), null);
+            if (Context != null) Context.Post(z => action(), null);
             else action();
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SyncWait
+        /// Send
         ///
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行し、
@@ -151,7 +151,7 @@ namespace Cube.Forms
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public void SyncWait(Action action)
+        public void Send(Action action)
         {
             if (Context != null) Context.Send(_ => action(), null);
             else action();
@@ -159,7 +159,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SyncWait
+        /// Send
         ///
         /// <summary>
         /// オブジェクト初期化時のスレッド上で各種操作を実行し、
@@ -171,7 +171,7 @@ namespace Cube.Forms
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public TResult SyncWait<TResult>(Func<TResult> func)
+        public TResult Send<TResult>(Func<TResult> func)
         {
             var result = default(TResult);
             if (Context != null) Context.Send(_ => { result = func(); }, null);
@@ -234,7 +234,7 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            Sync(() => base.OnPropertyChanged(e));
+            Post(() => base.OnPropertyChanged(e));
 
         #endregion
 
