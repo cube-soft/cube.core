@@ -91,6 +91,7 @@
     <Compile Include="Sources\PowerTest.cs" />
     <Compile Include="Sources\QueryTest.cs" />
     <Compile Include="Sources\QueryValueTest.cs" />
+    <Compile Include="Sources\RegistryTest.cs" />
     <Compile Include="Sources\SoftwareVersionTest.cs" />
     <Compile Include="Sources\WakeableTimerTest.cs" />
   </ItemGroup>

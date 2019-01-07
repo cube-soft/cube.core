@@ -70,8 +70,9 @@
     <Compile Include="Sources\Collections\ObservableBase.cs" />
     <Compile Include="Sources\Collections\OrderedDictionary.cs" />
     <Compile Include="Sources\DataContract\Format.cs" />
-    <Compile Include="Sources\DataContract\PropertyOperator.cs" />
+    <Compile Include="Sources\DataContract\PropertyExtension.cs" />
     <Compile Include="Sources\DataContract\RegistryDeserializer.cs" />
+    <Compile Include="Sources\DataContract\RegistryExtension.cs" />
     <Compile Include="Sources\DataContract\RegistrySerializer.cs" />
     <Compile Include="Sources\Events\EnumerableEventArgs.cs" />
     <Compile Include="Sources\Events\IAggregator.cs" />
