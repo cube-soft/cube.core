@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
+using System;
 using System.Collections.Generic;
 
 namespace Cube.Collections
@@ -90,6 +91,9 @@ namespace Cube.Collections
         {
             Prefix     = prefix;
             IgnoreCase = ignore;
+            _options   = ignore ?
+                         new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
+                         new Dictionary<string, string>();
             Parse(src);
         }
 
@@ -116,10 +120,6 @@ namespace Cube.Collections
         /// Gets the value indicating whether the class ignores case of
         /// optional keys.
         /// </summary>
-        ///
-        /// <remarks>
-        /// true の場合、Options に格納されるキーは全て小文字に正規化されます。
-        /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
         public bool IgnoreCase { get; }
@@ -200,7 +200,7 @@ namespace Cube.Collections
                 if (s[0] == Prefix)
                 {
                     if (key.HasValue()) UpdateOption(key, null);
-                    key = Normalize(s.TrimStart(Prefix));
+                    key = s.TrimStart(Prefix);
                 }
                 else if (key.HasValue())
                 {
@@ -228,22 +228,11 @@ namespace Cube.Collections
             else _options.Add(key, value);
         }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Normalize
-        ///
-        /// <summary>
-        /// Normalizes the specified value.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private string Normalize(string src) => IgnoreCase ? src.ToLowerInvariant() : src;
-
         #endregion
 
         #region Fields
         private readonly List<string> _primary = new List<string>();
-        private readonly Dictionary<string, string> _options = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _options;
         #endregion
     }
 }
