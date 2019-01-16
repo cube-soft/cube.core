@@ -25,8 +25,11 @@ namespace Cube.Collections
     /// GenericEqualityComparer(T)
     ///
     /// <summary>
-    /// Func(T, T, bool) を EqualityComparer(T) に変換するためのクラスです。
+    /// Provides functionality to convert from the Func(T, T, bool) to
+    /// the instance of EqualityComparer(T) inherited class.
     /// </summary>
+    ///
+    /// <typeparam name="T">The type of objects to compare.</typeparam>
     ///
     /* --------------------------------------------------------------------- */
     public class GenericEqualityComparer<T> : EqualityComparer<T>
@@ -38,15 +41,32 @@ namespace Cube.Collections
         /// GenericEqualityComparer(T)
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the GenericEqualityComparer(T)
+        /// class with the specified comparer.
         /// </summary>
         ///
-        /// <param name="src">関数オブジェクト</param>
+        /// <param name="src">Function to compare.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public GenericEqualityComparer(Func<T, T, bool> src)
+        public GenericEqualityComparer(Func<T, T, bool> src) : this(src, e => 0) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GenericEqualityComparer(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the GenericEqualityComparer(T)
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Function to compare.</param>
+        /// <param name="hash">Function to convert to the hash code.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public GenericEqualityComparer(Func<T, T, bool> src, Func<T, int> hash)
         {
             _comparer = src;
+            _hash     = hash;
         }
 
         #endregion
@@ -79,12 +99,13 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override int GetHashCode(T obj) => throw new InvalidOperationException();
+        public override int GetHashCode(T obj) => _hash(obj);
 
         #endregion
 
         #region Fields
         private readonly Func<T, T, bool> _comparer;
+        private readonly Func<T, int> _hash;
         #endregion
     }
 }

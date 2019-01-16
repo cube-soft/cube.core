@@ -34,12 +34,15 @@ namespace Cube.Tests
     [TestFixture]
     class GenericComparerTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// GenericComparer
         ///
         /// <summary>
-        /// GenericComparer オブジェクトを利用するテストを実行します。
+        /// Executes the test to use an instance of the GenericComparer(T)
+        /// class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -69,30 +72,34 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericEqualityComparer_Throws
+        /// GenericEqualityComparer
         ///
         /// <summary>
-        /// GetHashCode の必要な操作を実行した時の挙動を確認します。
+        /// Executes the test to use an instance of the
+        /// GenericEqualityComparer(T) class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GenericEqualityComparer_Throws()
+        public void GenericEqualityComparer()
         {
-            var key = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
-            var dic = new Dictionary<Person, object>(
-                new GenericEqualityComparer<Person>((x, y) =>
-                {
-                    return x.Name == y.Name &&
-                           x.Age  == y.Age &&
-                           x.Sex  == y.Sex;
-                })
+            var cmp = new GenericEqualityComparer<Person>((x, y) =>
+                x.Name == y.Name &&
+                x.Age  == y.Age  &&
+                x.Sex  == y.Sex
             );
 
-            Assert.That(
-                () => dic.Add(key, new object()),
-                Throws.TypeOf<System.InvalidOperationException>()
-            );
+            var dic = new Dictionary<Person, object>(cmp);
+            var x0  = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
+            var x1  = new Person { Name = "Jack", Age = 30, Sex = Sex.Male };
+            var x2  = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
+
+            dic.Add(x0, new object());
+            dic.Add(x1, new object());
+            Assert.That(dic.Count, Is.EqualTo(2));
+            Assert.That(() => dic.Add(x2, new object()), Throws.TypeOf<System.ArgumentException>());
         }
+
+        #endregion
     }
 }
