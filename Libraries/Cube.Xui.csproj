@@ -96,6 +96,7 @@
     <Compile Include="Sources\BindableCommand.cs" />
     <Compile Include="Sources\BindableCommandGeneric.cs" />
     <Compile Include="Sources\BindableElement.cs" />
+    <Compile Include="Sources\BindableElementGeneric.cs" />
     <Compile Include="Sources\BindableExtension.cs" />
     <Compile Include="Sources\CommandExtension.cs" />
     <Compile Include="Sources\DependencyFactory.cs" />

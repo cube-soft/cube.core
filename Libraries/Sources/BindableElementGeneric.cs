@@ -16,21 +16,20 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
 using System.Windows.Input;
 
 namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableElement
+    /// BindableElement(T)
     ///
     /// <summary>
-    /// Represents a bindable element that has text and command.
+    /// Represents a bindable element that has text, command, and value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : ObservableProperty, IDisposable
+    public class BindableElement<T> : Bindable<T>, IDisposable
     {
         #region Constructors
 
@@ -46,9 +45,72 @@ namespace Cube.Xui
         /// <param name="gettext">Function to get text.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext)
+        public BindableElement(Getter<string> gettext) : this(default(T), gettext) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="value">Initial value.</param>
+        /// <param name="gettext">Function to get text.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(T value, Getter<string> gettext) :
+            this(new Accessor<T>(value), gettext) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="getter">Function to get value.</param>
+        /// <param name="gettext">Function to get text.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<T> getter, Getter<string> gettext) :
+            this(new Accessor<T>(getter), gettext) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="getter">Function to get value.</param>
+        /// <param name="setter">Function to set value.</param>
+        /// <param name="gettext">Function to get text.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<T> getter, Setter<T> setter, Getter<string> gettext) :
+            this(new Accessor<T>(getter, setter), gettext) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="accessor">Function to get and set value.</param>
+        /// <param name="gettext">Function to get text.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Accessor<T> accessor, Getter<string> gettext) : base(accessor)
         {
-            Context  = SynchronizationContext.Current;
             _dispose = new OnceAction<bool>(Dispose);
             _gettext = gettext;
             _remover = Locale.Subscribe(_ => RaisePropertyChanged(nameof(Text)));
@@ -93,7 +155,7 @@ namespace Cube.Xui
         /// ~BindableElement
         ///
         /// <summary>
-        /// Finalizes the <c>BindableElement</c>.
+        /// Finalizes the BindableElement.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -104,7 +166,7 @@ namespace Cube.Xui
         /// Dispose
         ///
         /// <summary>
-        /// Releases all resources used by the <c>BindableElement</c>.
+        /// Releases all resources used by the BindableElement.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
