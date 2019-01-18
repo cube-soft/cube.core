@@ -22,29 +22,31 @@ namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericComparer(T)
+    /// LambdaComparer(T)
     ///
     /// <summary>
-    /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
+    /// Provides functionality to convert from the Func(T, T, bool) to
+    /// the instance of Comparer(T) inherited class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class GenericComparer<T> : Comparer<T>
+    public class LambdaComparer<T> : Comparer<T>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericComparer(T)
+        /// LambdaComparer(T)
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the LambdaComparer(T) with the
+        /// specified function.
         /// </summary>
         ///
-        /// <param name="src">関数オブジェクト</param>
+        /// <param name="src">Function to compare.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public GenericComparer(Func<T, T, int> src)
+        public LambdaComparer(Func<T, T, int> src)
         {
             _comparer = src;
         }
@@ -55,16 +57,20 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compare
+        /// Equals
         ///
         /// <summary>
-        /// 2 つのオブジェクトを比較します。
+        /// Determines whether two objects of type T are equal.
         /// </summary>
         ///
-        /// <param name="x">比較する最初のオブジェクト</param>
-        /// <param name="y">比較する 2 番目のオブジェクト</param>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
         ///
-        /// <returns>比較結果</returns>
+        /// <returns>
+        /// Zero if the specified objects are equal;
+        /// Less than zero if x is less than y;
+        /// otherwise, Greater than zero.
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public override int Compare(T x, T y) => _comparer(x, y);

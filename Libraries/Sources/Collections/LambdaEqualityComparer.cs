@@ -22,7 +22,7 @@ namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericEqualityComparer(T)
+    /// LambdaEqualityComparer(T)
     ///
     /// <summary>
     /// Provides functionality to convert from the Func(T, T, bool) to
@@ -32,30 +32,30 @@ namespace Cube.Collections
     /// <typeparam name="T">The type of objects to compare.</typeparam>
     ///
     /* --------------------------------------------------------------------- */
-    public class GenericEqualityComparer<T> : EqualityComparer<T>
+    public class LambdaEqualityComparer<T> : EqualityComparer<T>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericEqualityComparer(T)
+        /// LambdaEqualityComparer(T)
         ///
         /// <summary>
-        /// Initializes a new instance of the GenericEqualityComparer(T)
+        /// Initializes a new instance of the LambdaEqualityComparer(T)
         /// class with the specified comparer.
         /// </summary>
         ///
         /// <param name="src">Function to compare.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public GenericEqualityComparer(Func<T, T, bool> src) : this(src, e => 0) { }
+        public LambdaEqualityComparer(Func<T, T, bool> src) : this(src, e => 0) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericEqualityComparer(T)
+        /// LambdaEqualityComparer(T)
         ///
         /// <summary>
-        /// Initializes a new instance of the GenericEqualityComparer(T)
+        /// Initializes a new instance of the LambdaEqualityComparer(T)
         /// class with the specified arguments.
         /// </summary>
         ///
@@ -63,7 +63,7 @@ namespace Cube.Collections
         /// <param name="hash">Function to convert to the hash code.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public GenericEqualityComparer(Func<T, T, bool> src, Func<T, int> hash)
+        public LambdaEqualityComparer(Func<T, T, bool> src, Func<T, int> hash)
         {
             _comparer = src;
             _hash     = hash;
@@ -78,13 +78,15 @@ namespace Cube.Collections
         /// Equals
         ///
         /// <summary>
-        /// 2 つのオブジェクトが等しいかどうかを判別します。
+        /// Determines whether two objects of type T are equal.
         /// </summary>
         ///
-        /// <param name="x">比較する最初のオブジェクト</param>
-        /// <param name="y">比較する 2 番目のオブジェクト</param>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
         ///
-        /// <returns>比較結果</returns>
+        /// <returns>
+        /// true if the specified objects are equal; otherwise, false.
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public override bool Equals(T x, T y) => _comparer(x, y);
@@ -94,9 +96,15 @@ namespace Cube.Collections
         /// GetHashCode
         ///
         /// <summary>
-        /// GenericEqualityComparer(T) は GetHashcode(T) を必要とする
-        /// 操作を許可しません。
+        /// Serves as a hash function for the specified object for hashing
+        /// algorithms and data structures, such as a hash table.
         /// </summary>
+        ///
+        /// <param name="obj">
+        /// The object for which to get a hash code.
+        /// </param>
+        ///
+        /// <returns>Hash code for the specified object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public override int GetHashCode(T obj) => _hash(obj);
