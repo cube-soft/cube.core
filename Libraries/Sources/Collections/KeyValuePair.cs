@@ -24,7 +24,7 @@ namespace Cube.Collections
     /// KeyValuePair
     ///
     /// <summary>
-    /// KeyValuePair(T, U) の拡張用クラスです。
+    /// Provides factory methods of the KeyValuePair(T, U) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,13 +37,14 @@ namespace Cube.Collections
         /// Create
         ///
         /// <summary>
-        /// KeyValuePair(T, U) オブジェクトを生成します。
+        /// Creates a new instance of the KeyValuePair(T, U) class with the
+        /// specified key and value.
         /// </summary>
         ///
-        /// <param name="key">キー</param>
-        /// <param name="value">値</param>
+        /// <param name="key">Key.</param>
+        /// <param name="value">Value.</param>
         ///
-        /// <returns>KeyValuePair(T, U) オブジェクト</returns>
+        /// <returns>KeyValuePair(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static KeyValuePair<T, U> Create<T, U>(T key, U value) =>
