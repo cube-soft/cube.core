@@ -346,7 +346,7 @@ namespace Cube.Forms
         private readonly object _lock = new object();
         private readonly SortedDictionary<NotifyPriority, Queue<NotifyItem>> _inner =
             new SortedDictionary<NotifyPriority, Queue<NotifyItem>>(
-              new GenericComparer<NotifyPriority>((x, y) => y.CompareTo(x))
+              new LambdaComparer<NotifyPriority>((x, y) => y.CompareTo(x))
             );
         #endregion
     }
