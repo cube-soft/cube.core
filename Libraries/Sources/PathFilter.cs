@@ -533,7 +533,7 @@ namespace Cube.FileSystem
         {
             var index = src.IndexOf('.');
             var name  = index < 0 ? src : src.Substring(0, index);
-            var cmp   = new GenericEqualityComparer<string>((x, y) => string.Compare(x, y, true) == 0);
+            var cmp   = new LambdaEqualityComparer<string>((x, y) => string.Compare(x, y, true) == 0);
             return ReservedNames.Contains(name, cmp);
         }
 
