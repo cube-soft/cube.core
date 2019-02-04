@@ -34,6 +34,23 @@ namespace Cube.Generics
 
         /* ----------------------------------------------------------------- */
         ///
+        /// FuzzyEquals
+        ///
+        /// <summary>
+        /// Compares the specified string objects in ignoring case.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        /// <param name="cmp">Compared string.</param>
+        ///
+        /// <returns>true for equal; otherwise false.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool FuzzyEquals(this string src, string cmp) =>
+            src.Equals(cmp, StringComparison.InvariantCultureIgnoreCase);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// HasValue
         ///
         /// <summary>
@@ -77,22 +94,6 @@ namespace Cube.Generics
         ///
         /* ----------------------------------------------------------------- */
         public static string Quote(this string src) => $"\"{src}\"";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetName
-        ///
-        /// <summary>
-        /// Gets the directory name corresponding to the specified value.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Quoted string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string GetName(this Environment.SpecialFolder src) =>
-            Environment.GetFolderPath(src);
 
         #endregion
     }

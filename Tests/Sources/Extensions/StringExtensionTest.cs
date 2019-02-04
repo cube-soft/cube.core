@@ -37,6 +37,27 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// FuzzyEquals
+        ///
+        /// <summary>
+        /// Executes the test of the FuzzyEquals extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Hello",      "Hello",      ExpectedResult = true )]
+        [TestCase("Hello",      "world",      ExpectedResult = false)]
+        [TestCase("ABC",        "abc",        ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ＡＢＣ",     ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ａｂｃ",     ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ABC",        ExpectedResult = false)]
+        [TestCase("12,345.678", "12.345,678", ExpectedResult = false)]
+        [TestCase("",           "abc",        ExpectedResult = false)]
+        [TestCase("",           "",           ExpectedResult = true )]
+        [TestCase("",           null,         ExpectedResult = false)]
+        public bool FuzzyEquals(string src, string cmp) => src.FuzzyEquals(cmp);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// HasValue
         ///
         /// <summary>
