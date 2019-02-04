@@ -85,6 +85,7 @@
     <Compile Include="Sources\Extensions\Conversions\ByteFormat.cs" />
     <Compile Include="Sources\Extensions\Conversions\TimeFormat.cs" />
     <Compile Include="Sources\Extensions\Conversions\UriFormat.cs" />
+    <Compile Include="Sources\Extensions\EnvironmentExtension.cs" />
     <Compile Include="Sources\Extensions\GenericExtension.cs" />
     <Compile Include="Sources\Extensions\IterateExtension.cs" />
     <Compile Include="Sources\Extensions\StringExtension.cs" />
