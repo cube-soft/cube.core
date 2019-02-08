@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Iteration;
 using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -25,19 +26,21 @@ namespace Cube.Tests
     /// IterateExtensionTest
     ///
     /// <summary>
-    /// IterateExtension のテスト用クラスです。
+    /// Represents tests for the IterateExtension class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class IterateExtensionTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Times
         ///
         /// <summary>
-        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// Executes the test of Times extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -54,7 +57,7 @@ namespace Cube.Tests
         /// Times_WithIndex
         ///
         /// <summary>
-        /// 指定回数だけ繰り返す拡張メソッドのテストを実行します。
+        /// Executes the test of Times extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -65,5 +68,63 @@ namespace Cube.Tests
             10.Times(i => actual += i);
             Assert.That(actual, Is.EqualTo(45));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Try
+        ///
+        /// <summary>
+        /// Executes the test of Try extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Try()
+        {
+            var n = 0;
+            this.Try(10, () => ThrowIfOdd(++n));
+            Assert.That(n, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Try_Throws
+        ///
+        /// <summary>
+        /// Executes the test of Try extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Try_Throws()
+        {
+            var n = 0;
+            Assert.That(
+                () => this.Try(10, () => { ++n; ThrowIfOdd(1); }),
+                Throws.TypeOf<ArgumentException>()
+                      .And.Message.EqualTo("Odd number")
+            );
+            Assert.That(n, Is.EqualTo(10));
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ThrowIfOdd
+        ///
+        /// <summary>
+        /// Throws if the specified value is odd number.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void ThrowIfOdd(int n)
+        {
+            if (n % 2 != 0) throw new ArgumentException("Odd number");
+        }
+
+        #endregion
     }
 }

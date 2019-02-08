@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using Cube.Log;
 
 namespace Cube.Iteration
 {
@@ -37,33 +38,73 @@ namespace Cube.Iteration
         /// Times
         ///
         /// <summary>
-        /// 指定回数だけ同じ操作を繰り返します。
+        /// Executes the specified action in the specified number of times.
         /// </summary>
         ///
-        /// <param name="n">繰り返し回数</param>
-        /// <param name="action">操作内容</param>
+        /// <param name="n">Number of times.</param>
+        /// <param name="action">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Times(this int n, Action action)
-        {
-            for (var i = 0; i < n; ++i) action();
-        }
+        public static void Times(this int n, Action action) => Times(n, z => action());
 
         /* ----------------------------------------------------------------- */
         ///
         /// Times
         ///
         /// <summary>
-        /// 指定回数だけ同じ操作を繰り返します。
+        /// Executes the specified action in the specified number of times.
         /// </summary>
         ///
-        /// <param name="n">繰り返し回数</param>
-        /// <param name="action">操作内容</param>
+        /// <param name="n">Number of times.</param>
+        /// <param name="action">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Times(this int n, Action<int> action)
         {
             for (var i = 0; i < n; ++i) action(i);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Try
+        ///
+        /// <summary>
+        /// Tries the specified action up to the specified number of times
+        /// until the action succeeds.
+        /// </summary>
+        ///
+        /// <param name="src">Source object.</param>
+        /// <param name="n">Number of trials.</param>
+        /// <param name="action">User action.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Try<T>(this T src, int n, Action action) => src.Try(n, z => action());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Try
+        ///
+        /// <summary>
+        /// Tries the specified action up to the specified number of times
+        /// until the action succeeds.
+        /// </summary>
+        ///
+        /// <param name="src">Source object.</param>
+        /// <param name="n">Number of trials.</param>
+        /// <param name="action">User action.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Try<T>(this T src, int n, Action<int> action)
+        {
+            for (var i = 0; i < n; ++i)
+            {
+                try { action(i); return; }
+                catch (Exception err)
+                {
+                    Logger.Warn(src.GetType(), $"{err.Message} ({i}/{n})");
+                    if (i >= n - 1) throw;
+                }
+            }
         }
 
         #endregion
