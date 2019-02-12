@@ -18,6 +18,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Cube.Log
@@ -62,9 +63,7 @@ namespace Cube.Log
         {
             TaskScheduler.UnobservedTaskException -= WhenTaskError;
             TaskScheduler.UnobservedTaskException += WhenTaskError;
-            return Disposable.Create(
-                () => TaskScheduler.UnobservedTaskException -= WhenTaskError
-            );
+            return Disposable.Create(() => TaskScheduler.UnobservedTaskException -= WhenTaskError);
         }
 
         #region Debug
@@ -93,12 +92,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="err">Exception object.</param>
+        /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Debug(Type type, string message, Exception err) =>
-            GetCore(type).Debug(message, err);
+        public static void Debug(Type type, Exception error) =>
+            GetCore(type).Debug(error.ToString(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,13 +107,13 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
         /// <param name="func">Function to monitor.</param>
+        /// <param name="message">Method name or message.</param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Debug<T>(Type type, string message, Func<T> func)
+        public static T Debug<T>(Type type, Func<T> func, [CallerMemberName] string message = null)
         {
             var sw   = Stopwatch.StartNew();
             var dest = func();
@@ -136,12 +134,12 @@ namespace Cube.Log
         /// <param name="action">Action to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Debug(Type type, string message, Action action) =>
-            Debug(type, message, () =>
+        public static void Debug(Type type, Action action, [CallerMemberName] string message = null)
         {
+            var sw = Stopwatch.StartNew();
             action();
-            return true;
-        });
+            Debug(type, $"{message} ({sw.Elapsed})");
+        }
 
         #endregion
 
@@ -171,12 +169,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="err">Exception object.</param>
+        /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Info(Type type, string message, Exception err) =>
-            GetCore(type).Info(message, err);
+        public static void Info(Type type, Exception error) =>
+            GetCore(type).Info(error.ToString(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -197,52 +194,9 @@ namespace Cube.Log
 
             Info(type, $"{asm.Product} {sv.ToString(true)}");
             Info(type, $"{Environment.OSVersion}");
-            Info(type, $"Microsoft .NET Framework {Environment.Version}");
+            Info(type, $".NET Framework {Environment.Version}");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Info
-        ///
-        /// <summary>
-        /// Monitors the running time and outputs it as INFO level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="func">Function to monitor.</param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Info<T>(Type type, string message, Func<T> func)
-        {
-            var sw = Stopwatch.StartNew();
-            var dest = func();
-            Info(type, $"{message} ({sw.Elapsed})");
-            return dest;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Info
-        ///
-        /// <summary>
-        /// Monitors the running time and outputs it as INFO level.
-        /// </summary>
-        ///
-        /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="action">Action to monitor.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Info(Type type, string message, Action action) =>
-            Info(type, message, () =>
-        {
-            action();
-            return true;
-        });
 
         #endregion
 
@@ -272,12 +226,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="err">Exception object.</param>
+        /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Warn(Type type, string message, Exception err) =>
-            GetCore(type).Warn(message, err);
+        public static void Warn(Type type, Exception error) =>
+            GetCore(type).Warn(error.ToString(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -289,18 +242,18 @@ namespace Cube.Log
         ///
         /// <param name="type">Targe type information.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="err">
+        /// <param name="error">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Warn<T>(Type type, Func<T> func, T err)
+        public static T Warn<T>(Type type, Func<T> func, T error)
         {
             try { return func(); }
-            catch (Exception e) { Warn(type, e.ToString(), e); }
-            return err;
+            catch (Exception e) { Warn(type, e); }
+            return error;
         }
 
         /* ----------------------------------------------------------------- */
@@ -315,11 +268,11 @@ namespace Cube.Log
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Warn(Type type, Action action) => Warn(type, () =>
+        public static void Warn(Type type, Action action)
         {
-            action();
-            return true;
-        }, false);
+            try { action(); }
+            catch (Exception e) { Warn(type, e); }
+        }
 
         #endregion
 
@@ -349,12 +302,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="err">Exception object.</param>
+        /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Error(Type type, string message, Exception err) =>
-            GetCore(type).Error(message, err);
+        public static void Error(Type type, Exception error) =>
+            GetCore(type).Error(error.ToString(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -366,18 +318,18 @@ namespace Cube.Log
         ///
         /// <param name="type">Targe type information.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="err">
+        /// <param name="error">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Error<T>(Type type, Func<T> func, T err)
+        public static T Error<T>(Type type, Func<T> func, T error)
         {
             try { return func(); }
-            catch (Exception e) { Error(type, e.ToString(), e); }
-            return err;
+            catch (Exception e) { Error(type, e); }
+            return error;
         }
 
         /* ----------------------------------------------------------------- */
@@ -392,11 +344,11 @@ namespace Cube.Log
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Error(Type type, Action action) => Error(type, () =>
+        public static void Error(Type type, Action action)
         {
-            action();
-            return true;
-        }, false);
+            try { action(); }
+            catch (Exception e) { Error(type, e); }
+        }
 
         #endregion
 
@@ -426,12 +378,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
-        /// <param name="err">Exception object.</param>
+        /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Fatal(Type type, string message, Exception err) =>
-            GetCore(type).Fatal(message, err);
+        public static void Fatal(Type type, Exception error) =>
+            GetCore(type).Fatal(error.ToString(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -443,18 +394,18 @@ namespace Cube.Log
         ///
         /// <param name="type">Targe type information.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="err">
+        /// <param name="error">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Fatal<T>(Type type, Func<T> func, T err)
+        public static T Fatal<T>(Type type, Func<T> func, T error)
         {
             try { return func(); }
-            catch (Exception e) { Fatal(type, e.ToString(), e); }
-            return err;
+            catch (Exception e) { Fatal(type, e); }
+            return error;
         }
 
         /* ----------------------------------------------------------------- */
@@ -469,11 +420,11 @@ namespace Cube.Log
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Fatal(Type type, Action action) => Fatal(type, () =>
+        public static void Fatal(Type type, Action action)
         {
-            action();
-            return true;
-        }, false);
+            try { action(); }
+            catch (Exception e) { Fatal(type, e); }
+        }
 
         #endregion
 
@@ -502,7 +453,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
-            Error(typeof(TaskScheduler), e.Exception.ToString(), e.Exception);
+            Error(typeof(TaskScheduler), e.Exception);
 
         #endregion
     }
