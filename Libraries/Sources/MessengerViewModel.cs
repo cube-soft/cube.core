@@ -243,10 +243,10 @@ namespace Cube.Xui
         protected void Send(Action action, Func<Exception, string> converter, string title)
         {
             try { action(); }
-            catch (Exception err)
+            catch (Exception e)
             {
-                this.LogWarn(err.ToString(), err);
-                Send(Create(converter(err), title));
+                this.LogWarn(e);
+                Send(Create(converter(e), title));
             }
         }
 
@@ -336,10 +336,10 @@ namespace Cube.Xui
             Task.Run(() =>
             {
                 try { action(); }
-                catch (Exception err)
+                catch (Exception e)
                 {
-                    this.LogWarn(err.ToString(), err);
-                    Post(Create(converter(err), title));
+                    this.LogWarn(e);
+                    Post(Create(converter(e), title));
                 }
             }).Forget();
 

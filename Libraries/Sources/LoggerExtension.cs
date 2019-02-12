@@ -74,7 +74,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
-            s.LogError(e.Exception.ToString(), e.Exception);
+            s.LogError(e.Exception);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,7 +86,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-            Logger.Error(typeof(AppDomain), e.ExceptionObject.ToString(), e.ExceptionObject as Exception);
+            Logger.Error(typeof(AppDomain), e.ExceptionObject as Exception);
 
         #endregion
     }
