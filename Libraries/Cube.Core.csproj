@@ -94,6 +94,8 @@
     <Compile Include="Sources\Ipc\Messenger.cs" />
     <Compile Include="Sources\Ipc\MessengerService.cs" />
     <Compile Include="Sources\Ipc\MessengerServiceCallback.cs" />
+    <Compile Include="Sources\Log\Logger.cs" />
+    <Compile Include="Sources\Log\LoggerExtension.cs" />
     <Compile Include="Sources\Accessor.cs" />
     <Compile Include="Sources\AssemblyReader.cs" />
     <Compile Include="Sources\Disposable.cs" />
@@ -101,7 +103,6 @@
     <Compile Include="Sources\Exceptions.cs" />
     <Compile Include="Sources\Language.cs" />
     <Compile Include="Sources\Locale.cs" />
-    <Compile Include="Sources\Logger.cs" />
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />
     <Compile Include="Sources\OnceInitializer.cs" />
