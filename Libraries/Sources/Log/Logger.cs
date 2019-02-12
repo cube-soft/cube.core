@@ -21,7 +21,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Cube.Log
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
