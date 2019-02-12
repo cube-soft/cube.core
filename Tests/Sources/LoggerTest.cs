@@ -18,6 +18,7 @@
 using Cube.Log;
 using NUnit.Framework;
 using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -113,14 +114,14 @@ namespace Cube.Tests
         [Test]
         public void LogError()
         {
-            var error = new ArgumentException($"{nameof(LogError)} (throw)");
+            var error = new Win32Exception(0);
             this.LogError(nameof(LogError));
             this.LogError(() => throw error);
             Assert.That(this.LogError(() => 4), Is.EqualTo(4));
             Assert.That(this.LogError(() => throw error, -4), Is.EqualTo(-4));
 
             try { throw error; }
-            catch (ArgumentException e) { this.LogError(e); }
+            catch (Win32Exception e) { this.LogError(e); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -135,14 +136,14 @@ namespace Cube.Tests
         [Test]
         public void LogFatal()
         {
-            var error = new ArgumentException($"{nameof(LogFatal)} (throw)");
+            var error = new Win32Exception(0);
             this.LogFatal(nameof(LogFatal));
             this.LogFatal(() => throw error);
             Assert.That(this.LogFatal(() => 5), Is.EqualTo(5));
             Assert.That(this.LogFatal(() => throw error, -5), Is.EqualTo(-5));
 
             try { throw error; }
-            catch (ArgumentException e) { this.LogFatal(e); }
+            catch (Win32Exception e) { this.LogFatal(e); }
         }
 
         /* ----------------------------------------------------------------- */

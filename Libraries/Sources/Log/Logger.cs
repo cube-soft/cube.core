@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -96,7 +97,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static void Debug(Type type, Exception error) =>
-            GetCore(type).Debug(error.ToString(), error);
+            GetCore(type).Debug(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -173,7 +174,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Exception error) =>
-            GetCore(type).Info(error.ToString(), error);
+            GetCore(type).Info(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -190,9 +191,9 @@ namespace Cube
         public static void Info(Type type, Assembly assembly)
         {
             var asm = new AssemblyReader(assembly);
-            var sv  = new SoftwareVersion(assembly);
+            var ver = new SoftwareVersion(assembly);
 
-            Info(type, $"{asm.Product} {sv.ToString(true)}");
+            Info(type, $"{asm.Product} {ver.ToString(true)}");
             Info(type, $"{Environment.OSVersion}");
             Info(type, $".NET Framework {Environment.Version}");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
@@ -230,7 +231,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static void Warn(Type type, Exception error) =>
-            GetCore(type).Warn(error.ToString(), error);
+            GetCore(type).Warn(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -242,19 +243,15 @@ namespace Cube
         ///
         /// <param name="type">Targe type information.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="error">
+        /// <param name="alternative">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Warn<T>(Type type, Func<T> func, T error)
-        {
-            try { return func(); }
-            catch (Exception e) { Warn(type, e); }
-            return error;
-        }
+        public static T Warn<T>(Type type, Func<T> func, T alternative) =>
+            Invoke(func, e => Warn(type, e), alternative);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -268,11 +265,8 @@ namespace Cube
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Warn(Type type, Action action)
-        {
-            try { action(); }
-            catch (Exception e) { Warn(type, e); }
-        }
+        public static void Warn(Type type, Action action) =>
+            Invoke(action, e => Warn(type, e));
 
         #endregion
 
@@ -306,7 +300,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static void Error(Type type, Exception error) =>
-            GetCore(type).Error(error.ToString(), error);
+            GetCore(type).Error(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -318,19 +312,15 @@ namespace Cube
         ///
         /// <param name="type">Targe type information.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="error">
+        /// <param name="alternative">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Error<T>(Type type, Func<T> func, T error)
-        {
-            try { return func(); }
-            catch (Exception e) { Error(type, e); }
-            return error;
-        }
+        public static T Error<T>(Type type, Func<T> func, T alternative) =>
+            Invoke(func, e => Error(type, e), alternative);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -344,11 +334,8 @@ namespace Cube
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Error(Type type, Action action)
-        {
-            try { action(); }
-            catch (Exception e) { Error(type, e); }
-        }
+        public static void Error(Type type, Action action) =>
+            Invoke(action, e => Error(type, e));
 
         #endregion
 
@@ -382,7 +369,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static void Fatal(Type type, Exception error) =>
-            GetCore(type).Fatal(error.ToString(), error);
+            GetCore(type).Fatal(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -394,19 +381,15 @@ namespace Cube
         ///
         /// <param name="type">Targe type information.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="error">
+        /// <param name="alternative">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Fatal<T>(Type type, Func<T> func, T error)
-        {
-            try { return func(); }
-            catch (Exception e) { Fatal(type, e); }
-            return error;
-        }
+        public static T Fatal<T>(Type type, Func<T> func, T alternative) =>
+            Invoke(func, e => Fatal(type, e), alternative);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -420,11 +403,8 @@ namespace Cube
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Fatal(Type type, Action action)
-        {
-            try { action(); }
-            catch (Exception e) { Fatal(type, e); }
-        }
+        public static void Fatal(Type type, Action action) =>
+            Invoke(action, e => Fatal(type, e));
 
         #endregion
 
@@ -442,6 +422,51 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         private static log4net.ILog GetCore(Type type) => log4net.LogManager.GetLogger(type);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetErrorMessage
+        ///
+        /// <summary>
+        /// Gets the error message from the specified exception.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetErrorMessage(Exception src) =>
+            src is Win32Exception we ?
+            $"{we.Message} (0x{we.NativeErrorCode:X8}){Environment.NewLine}{we.StackTrace}" :
+            src.ToString();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the specified function.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static T Invoke<T>(Func<T> func, Action<Exception> error, T alternative)
+        {
+            try { return func(); }
+            catch (Exception e) { error(e); }
+            return alternative;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the specified action.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void Invoke(Action action, Action<Exception> error)
+        {
+            try { action(); }
+            catch (Exception e) { error(e); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
