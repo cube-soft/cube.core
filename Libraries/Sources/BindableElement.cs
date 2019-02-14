@@ -51,7 +51,7 @@ namespace Cube.Xui
             Context  = SynchronizationContext.Current;
             _dispose = new OnceAction<bool>(Dispose);
             _gettext = gettext;
-            _remover = Locale.Subscribe(_ => RaisePropertyChanged(nameof(Text)));
+            _remover = Locale.Subscribe(z => RaisePropertyChanged(nameof(Text)));
         }
 
         #endregion

@@ -188,7 +188,7 @@ namespace Cube.Xui
         /// <param name="message">Message object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>(T message) => Context.Send(_ => MessengerInstance.Send(message), null);
+        protected void Send<T>(T message) => Context.Send(z => MessengerInstance.Send(message), null);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -243,10 +243,10 @@ namespace Cube.Xui
         protected void Send(Action action, Func<Exception, string> converter, string title)
         {
             try { action(); }
-            catch (Exception e)
+            catch (Exception err)
             {
-                this.LogWarn(e);
-                Send(Create(converter(e), title));
+                this.LogWarn(err);
+                Send(Create(converter(err), title));
             }
         }
 
@@ -276,7 +276,7 @@ namespace Cube.Xui
         /// <param name="message">Message.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Post<T>(T message) => Context.Post(_ => MessengerInstance.Send(message), null);
+        protected void Post<T>(T message) => Context.Post(z => MessengerInstance.Send(message), null);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -336,10 +336,10 @@ namespace Cube.Xui
             Task.Run(() =>
             {
                 try { action(); }
-                catch (Exception e)
+                catch (Exception err)
                 {
-                    this.LogWarn(e);
-                    Post(Create(converter(e), title));
+                    this.LogWarn(err);
+                    Post(Create(converter(err), title));
                 }
             }).Forget();
 

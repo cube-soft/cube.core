@@ -244,8 +244,8 @@ namespace Cube.Xui
         {
             if (Context != null)
             {
-                if (IsSynchronous) Context.Send(_ => action(), null);
-                else Context.Post(_ => action(), null);
+                if (IsSynchronous) Context.Send(z => action(), null);
+                else Context.Post(z => action(), null);
             }
             else action();
         }
