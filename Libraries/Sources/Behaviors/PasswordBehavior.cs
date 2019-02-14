@@ -232,9 +232,9 @@ namespace Cube.Forms.Behaviors
         {
             if (disposing)
             {
-                _master.TextChanged -= WhenPasswordChanged;
-                _confirm.TextChanged -= WhenConfirmChanged;
-                if (_show != null) _show.CheckedChanged -= WhenShowPasswordChanged;
+                if (_master  != null) _master.TextChanged  -= WhenPasswordChanged;
+                if (_confirm != null) _confirm.TextChanged -= WhenConfirmChanged;
+                if (_show    != null) _show.CheckedChanged -= WhenShowPasswordChanged;
             }
         }
 

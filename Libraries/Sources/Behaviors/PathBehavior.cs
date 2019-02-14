@@ -69,9 +69,9 @@ namespace Cube.Forms.Behaviors
         public PathBehavior(TextBox src, ToolTip tips)
         {
             _chars   = new[] { '/', '*', '"', '<', '>', '|', '?', ':' };
-            _message = _chars.Select(e => e.ToString()).Aggregate((x, y) => $"{x} {y}");
             _tips    = tips;
             _source  = src;
+            _message = _chars.Select(e => e.ToString()).Aggregate((x, y) => $"{x} {y}");
 
             _source.TextChanged -= WhenTextChanged;
             _source.TextChanged += WhenTextChanged;
