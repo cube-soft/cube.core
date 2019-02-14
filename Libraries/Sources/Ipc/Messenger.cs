@@ -163,8 +163,8 @@ namespace Cube.Ipc
         {
             if (disposing)
             {
-                _core.Dispose();
-                _mutex.Close();
+                _core?.Dispose();
+                _mutex?.Close();
             }
         }
 
@@ -268,7 +268,7 @@ namespace Cube.Ipc
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) _host.Abort();
+            if (disposing) _host?.Abort();
         }
 
         #endregion
@@ -378,10 +378,11 @@ namespace Cube.Ipc
         {
             if (disposing)
             {
-                (_service as IClientChannel)?.Abort();
+                if (_service is IClientChannel cc) cc.Abort();
+
                 _service = null;
-                _context.Abort();
-                _factory.Abort();
+                _context?.Abort();
+                _factory?.Abort();
             }
         }
 
