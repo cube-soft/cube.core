@@ -327,7 +327,7 @@ namespace Cube.Forms
             }
             catch (TaskCanceledException) { /* Ignore user cancel */ }
             catch (OperationCanceledException) { /* Ignore user cancel */ }
-            catch (Exception err) { this.LogWarn(err.ToString()); }
+            catch (Exception err) { this.LogWarn(err); }
             finally
             {
                 VisibleChanged -= m;

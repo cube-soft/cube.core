@@ -146,7 +146,7 @@ namespace Cube.Forms
                 if (action == DBT_DEVICEARRIVAL) OnAttached(args);
                 else if (action == DBT_DEVICEREMOVECOMPLETE) OnDetached(args);
             }
-            catch (Exception err) { this.LogWarn(err.ToString()); }
+            catch (Exception err) { this.LogWarn(err); }
         }
 
         /* ----------------------------------------------------------------- */
