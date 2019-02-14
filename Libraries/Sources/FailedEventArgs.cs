@@ -16,8 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Cube.FileSystem
 {
@@ -44,11 +44,11 @@ namespace Cube.FileSystem
         ///
         /// <param name="name">操作に失敗したメソッド名</param>
         /// <param name="paths">失敗時に指定したパス一覧</param>
-        /// <param name="err">送出された例外オブジェクト</param>
+        /// <param name="error">送出された例外オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public FailedEventArgs(string name, IEnumerable<string> paths, Exception err) :
-            this(name, paths, err, false) { }
+        public FailedEventArgs(string name, IEnumerable<string> paths, Exception error) :
+            this(name, paths, error, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -60,16 +60,16 @@ namespace Cube.FileSystem
         ///
         /// <param name="name">操作に失敗したメソッド名</param>
         /// <param name="paths">失敗時に指定したパス一覧</param>
-        /// <param name="err">送出された例外オブジェクト</param>
+        /// <param name="error">送出された例外オブジェクト</param>
         /// <param name="cancel">キャンセルするかどうかを示す値</param>
         ///
         /* ----------------------------------------------------------------- */
         public FailedEventArgs(string name, IEnumerable<string> paths,
-            Exception err, bool cancel) : base(cancel)
+            Exception error, bool cancel) : base(cancel)
         {
             Name      = name;
             Paths     = paths;
-            Exception = err;
+            Exception = error;
         }
 
         #endregion
