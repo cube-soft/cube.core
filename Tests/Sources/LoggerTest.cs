@@ -57,7 +57,7 @@ namespace Cube.Tests
                 Assert.That(this.LogDebug(() => 1, "Func"), Is.EqualTo(1));
                 this.LogDebug(() => throw new ArgumentException($"{nameof(LogInfo)} (throw)"), "Error");
             }
-            catch (ArgumentException e) { this.LogDebug(e); }
+            catch (ArgumentException err) { this.LogDebug(err); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -77,7 +77,7 @@ namespace Cube.Tests
             this.LogInfo(Assembly.GetExecutingAssembly());
 
             try { throw error; }
-            catch (ArgumentException e) { this.LogInfo(e); }
+            catch (ArgumentException err) { this.LogInfo(err); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -99,7 +99,7 @@ namespace Cube.Tests
             Assert.That(this.LogWarn(() => throw error, -3), Is.EqualTo(-3));
 
             try { throw error; }
-            catch (ArgumentException e) { this.LogWarn(e); }
+            catch (ArgumentException err) { this.LogWarn(err); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -121,7 +121,7 @@ namespace Cube.Tests
             Assert.That(this.LogError(() => throw error, -4), Is.EqualTo(-4));
 
             try { throw error; }
-            catch (Win32Exception e) { this.LogError(e); }
+            catch (Win32Exception err) { this.LogError(err); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -143,7 +143,7 @@ namespace Cube.Tests
             Assert.That(this.LogFatal(() => throw error, -5), Is.EqualTo(-5));
 
             try { throw error; }
-            catch (Win32Exception e) { this.LogFatal(e); }
+            catch (Win32Exception err) { this.LogFatal(err); }
         }
 
         /* ----------------------------------------------------------------- */

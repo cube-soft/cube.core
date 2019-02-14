@@ -449,7 +449,7 @@ namespace Cube
         private static T Invoke<T>(Func<T> func, Action<Exception> error, T alternative)
         {
             try { return func(); }
-            catch (Exception e) { error(e); }
+            catch (Exception err) { error(err); }
             return alternative;
         }
 
@@ -465,7 +465,7 @@ namespace Cube
         private static void Invoke(Action action, Action<Exception> error)
         {
             try { action(); }
-            catch (Exception e) { error(e); }
+            catch (Exception err) { error(err); }
         }
 
         /* ----------------------------------------------------------------- */
