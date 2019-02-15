@@ -16,85 +16,98 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Specialized;
+using System.Runtime.Serialization;
+using System.Threading;
 
-namespace Cube.Generics
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StringExtension
+    /// EnumerableBase
     ///
     /// <summary>
-    /// Provides extended methods for the string class.
+    /// Represents the base class of a dynamic data collection that
+    /// provides notifications when items get added, removed, or when the
+    /// whole list is refreshed.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class StringExtension
+    [DataContract]
+    [Serializable]
+    public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionChanged
     {
-        #region Methods
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FuzzyEquals
+        /// ObservableBase
         ///
         /// <summary>
-        /// Compares the specified string objects in ignoring case.
+        /// Initializes a new instance of the ObservableBase class.
         /// </summary>
         ///
-        /// <param name="src">Source string.</param>
-        /// <param name="cmp">Compared string.</param>
-        ///
-        /// <returns>true for equal; otherwise false.</returns>
-        ///
         /* ----------------------------------------------------------------- */
-        public static bool FuzzyEquals(this string src, string cmp) =>
-            src.Equals(cmp, StringComparison.InvariantCultureIgnoreCase);
+        protected ObservableBase() { }
+
+        #endregion
+
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// HasValue
+        /// Context
         ///
         /// <summary>
-        /// Gets the value indicating whether the specified value has
-        /// one or more character.
+        /// Gets or sets the synchronization context.
         /// </summary>
         ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>true for one mor charecter.</returns>
-        ///
         /* ----------------------------------------------------------------- */
-        public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
+        [IgnoreDataMember]
+        public SynchronizationContext Context
+        {
+            get => _context;
+            set => _context = value;
+        }
+
+        #endregion
+
+        #region Events
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Unify
+        /// CollectionChanged
         ///
         /// <summary>
-        /// Converts a null or empty string to the empty one.
+        /// Occurs when an item is added, removed, changed, moved,
+        /// or the entire list is refreshed.
         /// </summary>
         ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Converted string.</returns>
-        ///
         /* ----------------------------------------------------------------- */
-        public static string Unify(this string src) => src ?? string.Empty;
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Quote
+        /// OnCollectionChanged
         ///
         /// <summary>
-        /// Quotes the specified string.
+        /// Raises the CollectionChanged event with the provided arguments.
         /// </summary>
         ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Quoted string.</returns>
+        /// <param name="e">Arguments of the event being raised.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string Quote(this string src) => $"\"{src}\"";
+        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (CollectionChanged == null) return;
+            if (Context != null) Context.Send(z => CollectionChanged(this, e), null);
+            else CollectionChanged(this, e);
+        }
 
+        #endregion
+
+        #region Fields
+        [NonSerialized] private SynchronizationContext _context;
         #endregion
     }
 }

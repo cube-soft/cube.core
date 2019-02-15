@@ -17,33 +17,37 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube
+namespace Cube.Generics
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TwiceException
+    /// EnvironmentExtension
     ///
     /// <summary>
-    /// Represents the exception of executing twice.
+    /// Provides extended methods for the Environment class.
     /// </summary>
     ///
-    /// <remarks>
-    /// OnceAction および OnceQuery で利用されます。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    [Serializable]
-    public class TwiceException : Exception
+    public static class EnvironmentExtension
     {
-        /* --------------------------------------------------------------------- */
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
         ///
-        /// TwiceException
+        /// GetName
         ///
         /// <summary>
-        /// Initializes a new instance of the TwiceException class.
+        /// Gets the directory name corresponding to the specified value.
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public TwiceException() : base("Invoke twice") { }
+        /// <param name="src">Source string.</param>
+        ///
+        /// <returns>Quoted string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string GetName(this Environment.SpecialFolder src) =>
+            Environment.GetFolderPath(src);
+
+        #endregion
     }
 }

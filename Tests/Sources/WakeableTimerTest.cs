@@ -274,7 +274,7 @@ namespace Cube.Tests
         private bool Wait(CancellationTokenSource cts)
         {
             try { TaskEx.Delay(30000, cts.Token).Wait(); }
-            catch (AggregateException e) { return e.InnerException is TaskCanceledException; }
+            catch (AggregateException err) { return err.InnerException is TaskCanceledException; }
             return false;
         }
 

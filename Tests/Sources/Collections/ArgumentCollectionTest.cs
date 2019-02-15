@@ -84,7 +84,7 @@ namespace Cube.Tests
         [TestCaseSource(nameof(Parse_Options_TestCases))]
         public string Parse_Options(int id, IEnumerable<string> args, string key)
         {
-            try { return new ArgumentCollection(args).Options[key]; }
+            try { return new ArgumentCollection(args, '-', true).Options[key]; }
             catch { return null; }
         }
 
@@ -118,10 +118,12 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(0, new List<string> { "foo", "bar", "bas" }).Returns(3);
-                yield return new TestCaseData(1, new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
-                yield return new TestCaseData(2, new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
-                yield return new TestCaseData(3, new List<string> { "foo", "", "--bar" }).Returns(1);
+                var n = 0;
+
+                yield return new TestCaseData(n++, new List<string> { "foo", "bar", "bas" }).Returns(3);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "--", "bas" }).Returns(2);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--", "bar", "hoge", "fuga" }).Returns(4);
+                yield return new TestCaseData(n++, new List<string> { "foo", "", "--bar" }).Returns(1);
             }
         }
 
@@ -138,13 +140,17 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(0, new List<string> { "foo", "--bar", "bas" }, "bar").Returns("bas");
-                yield return new TestCaseData(1, new List<string> { "foo", "--bar", "bas" }, "bas").Returns(null);
-                yield return new TestCaseData(2, new List<string> { "foo", "--bar" }, "bar").Returns(null);
-                yield return new TestCaseData(3, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, "bar").Returns("hoge");
-                yield return new TestCaseData(4, new List<string> { "foo", "--bar", "--hoge", "fuga" }, "bar").Returns(null);
-                yield return new TestCaseData(5, new List<string> { "foo", "--bar", "--hoge", "fuga" }, "hoge").Returns("fuga");
-                yield return new TestCaseData(6, new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
+                var n = 0;
+
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas" }, "bar").Returns("bas");
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas" }, "BAR").Returns("bas");
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas" }, "bas").Returns(null);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar" }, "bar").Returns(null);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, "bar").Returns("hoge");
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, "Bar").Returns("hoge");
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "--hoge", "fuga" }, "bar").Returns(null);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "--hoge", "fuga" }, "hoge").Returns("fuga");
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "--", "bas" }, "bar").Returns(null);
             }
         }
 
@@ -161,15 +167,17 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(0, new List<string> { "foo", "--bar", "bas" }, false).Returns(1);
-                yield return new TestCaseData(1, new List<string> { "foo", "--bar" }, false).Returns(1);
-                yield return new TestCaseData(2, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, false).Returns(1);
-                yield return new TestCaseData(3, new List<string> { "foo", "--bar", "--hoge", "fuga" }, false).Returns(2);
-                yield return new TestCaseData(4, new List<string> { "foo", "--bar", "--", "bas" }, false).Returns(1);
-                yield return new TestCaseData(5, new List<string> { "foo", "bas" }, false).Returns(0);
-                yield return new TestCaseData(6, new List<string> { "foo", "--", "bas" }, false).Returns(0);
-                yield return new TestCaseData(7, new List<string> { "foo", "--Bar", "--bar" }, false).Returns(2);
-                yield return new TestCaseData(7, new List<string> { "foo", "--Bar", "--bar" }, true).Returns(1);
+                var n = 0;
+
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas" }, false).Returns(1);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar" }, false).Returns(1);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "bas", "--bar", "hoge" }, false).Returns(1);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "--hoge", "fuga" }, false).Returns(2);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--bar", "--", "bas" }, false).Returns(1);
+                yield return new TestCaseData(n++, new List<string> { "foo", "bas" }, false).Returns(0);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--", "bas" }, false).Returns(0);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--Bar", "--bar" }, false).Returns(2);
+                yield return new TestCaseData(n++, new List<string> { "foo", "--Bar", "--bar" }, true).Returns(1);
             }
         }
 

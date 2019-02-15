@@ -40,12 +40,12 @@ namespace Cube.Collections.Mixin
         /// GetOrDefault(T)
         ///
         /// <summary>
-        /// 自身かまたは空の IEnumerable(T) オブジェクトを取得します。
+        /// Returns the specified object or empty IEnumerable(T) object.
         /// </summary>
         ///
-        /// <param name="src">コレクション</param>
+        /// <param name="src">Source collection.</param>
         ///
-        /// <returns>自身かまたは空のコレクション</returns>
+        /// <returns>Self or empty collection.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
@@ -88,6 +88,21 @@ namespace Cube.Collections.Mixin
             if (src.TryGetValue(key, out var current)) src[key] = selector(current, value);
             else src.Add(key, value);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compact
+        ///
+        /// <summary>
+        /// Removes null objects in the specified sequence.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        ///
+        /// <returns>Removed sequence.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> Compact<T>(this IEnumerable<T> src) => src.OfType<T>();
 
         /* ----------------------------------------------------------------- */
         ///

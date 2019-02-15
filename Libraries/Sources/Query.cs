@@ -27,7 +27,7 @@ namespace Cube
     /// IQuery(T)
     ///
     /// <summary>
-    /// 問い合わせ用プロバイダーを定義します。
+    /// Represents the query provider.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube
         /// Request
         ///
         /// <summary>
-        /// 問い合わせを実行します。
+        /// Invokes the request with the specified arguments.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -50,7 +50,7 @@ namespace Cube
     /// Query(T)
     ///
     /// <summary>
-    /// IQuery(T) を実装したクラスです。
+    /// Represents the IQuery(T) implementation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -63,7 +63,7 @@ namespace Cube
         /// Query
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Query class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -77,10 +77,11 @@ namespace Cube
         /// Query
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Query class with the
+        /// specified callback.
         /// </summary>
         ///
-        /// <param name="callback">コールバック関数</param>
+        /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Query(Action<QueryEventArgs<T>> callback) : this()
@@ -97,7 +98,7 @@ namespace Cube
         /// Requested
         ///
         /// <summary>
-        /// 問い合わせ時に発生するイベントです。
+        /// Occurs when the user request is received.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -108,7 +109,7 @@ namespace Cube
         /// OnRequested
         ///
         /// <summary>
-        /// Requested イベントを発生させます。
+        /// Raises the Requested event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -131,7 +132,7 @@ namespace Cube
         /// Request
         ///
         /// <summary>
-        /// 問い合わせを実行します。
+        /// Invokes the request with the specified arguments.
         /// </summary>
         ///
         /// <remarks>
@@ -158,12 +159,12 @@ namespace Cube
     /// IQuery(T, U)
     ///
     /// <summary>
-    /// 問い合わせ用プロバイダーを定義します。
+    /// Represents the query provider.
     /// </summary>
     ///
     /// <remarks>
     /// Query と Result の型が同じ場合 IQuery(T, U) の代わりに IQuery(T) を
-    /// 実装する事を検討下さい。
+    /// 実装する事を検討して下さい。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -174,7 +175,7 @@ namespace Cube
         /// Request
         ///
         /// <summary>
-        /// 問い合わせを実行します。
+        /// Invokes the request with the specified arguments.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -186,7 +187,7 @@ namespace Cube
     /// Query(T, U)
     ///
     /// <summary>
-    /// IQuery(T, U) を実装したクラスです。
+    /// Represents the IQuery(T, U) implementation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -199,7 +200,7 @@ namespace Cube
         /// Query
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Query class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -213,10 +214,11 @@ namespace Cube
         /// Query
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Query class with the
+        /// specified callback.
         /// </summary>
         ///
-        /// <param name="callback">コールバック関数</param>
+        /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Query(Action<QueryEventArgs<T, U>> callback) : this()
@@ -233,7 +235,7 @@ namespace Cube
         /// Requested
         ///
         /// <summary>
-        /// 問い合わせ時に発生するイベントです。
+        /// Occurs when the user request is received.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -244,7 +246,7 @@ namespace Cube
         /// OnRequested
         ///
         /// <summary>
-        /// Requested イベントを発生させます。
+        /// Raises the Requested event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -267,7 +269,7 @@ namespace Cube
         /// Request
         ///
         /// <summary>
-        /// 問い合わせを実行します。
+        /// Invokes the request with the specified arguments.
         /// </summary>
         ///
         /// <remarks>

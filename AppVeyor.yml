@@ -1,4 +1,4 @@
-version: 1.13.0.{build}
+version: 1.14.0.{build}
 branches:
     only:
         - master
@@ -11,6 +11,7 @@ nuget:
 platform: Any CPU
 configuration: Release
 before_build:
+    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - nuget restore Cube.Core.sln
 build:
     parallel: true
@@ -30,10 +31,9 @@ test_script:
       -output:CoverResults.xml
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I Tests\bin\Release\Cube.Core.Tests.log Tests\
-    - xcopy /q /Y /I CoverResults.xml Tests\
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+    - xcopy /q /Y /I Tests\bin\Release\Cube.Core.Tests.log TestLog\
+    - xcopy /q /Y /I CoverResults.xml TestLog\
     - pip install codecov
     - codecov -f CoverResults.xml
 artifacts:
-    - path: Tests
+    - path: TestLog

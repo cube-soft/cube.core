@@ -74,13 +74,15 @@
     <Compile Include="Sources\Collections\EnumerableExtension.cs" />
     <Compile Include="Sources\Collections\EnumerableDiff.cs" />
     <Compile Include="Sources\Collections\EnumerableIndex.cs" />
-    <Compile Include="Sources\Collections\GenericComparer.cs" />
-    <Compile Include="Sources\Collections\GenericEqualityComparer.cs" />
     <Compile Include="Sources\Collections\KeyValuePair.cs" />
+    <Compile Include="Sources\Collections\LambdaComparer.cs" />
+    <Compile Include="Sources\Collections\LambdaEqualityComparer.cs" />
+    <Compile Include="Sources\Collections\ObservableBase.cs" />
     <Compile Include="Sources\Collections\OrderedDictionary.cs" />
     <Compile Include="Sources\DataContract\Format.cs" />
-    <Compile Include="Sources\DataContract\PropertyOperator.cs" />
+    <Compile Include="Sources\DataContract\PropertyExtension.cs" />
     <Compile Include="Sources\DataContract\RegistryDeserializer.cs" />
+    <Compile Include="Sources\DataContract\RegistryExtension.cs" />
     <Compile Include="Sources\DataContract\RegistrySerializer.cs" />
     <Compile Include="Sources\Events\EnumerableEventArgs.cs" />
     <Compile Include="Sources\Events\IAggregator.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Sources\Extensions\Conversions\ByteFormat.cs" />
     <Compile Include="Sources\Extensions\Conversions\TimeFormat.cs" />
     <Compile Include="Sources\Extensions\Conversions\UriFormat.cs" />
+    <Compile Include="Sources\Extensions\EnvironmentExtension.cs" />
     <Compile Include="Sources\Extensions\GenericExtension.cs" />
     <Compile Include="Sources\Extensions\IterateExtension.cs" />
     <Compile Include="Sources\Extensions\StringExtension.cs" />
@@ -101,6 +104,8 @@
     <Compile Include="Sources\Ipc\Messenger.cs" />
     <Compile Include="Sources\Ipc\MessengerService.cs" />
     <Compile Include="Sources\Ipc\MessengerServiceCallback.cs" />
+    <Compile Include="Sources\Log\Logger.cs" />
+    <Compile Include="Sources\Log\LoggerExtension.cs" />
     <Compile Include="Sources\Accessor.cs" />
     <Compile Include="Sources\AssemblyReader.cs" />
     <Compile Include="Sources\Disposable.cs" />
@@ -108,7 +113,6 @@
     <Compile Include="Sources\Exceptions.cs" />
     <Compile Include="Sources\Language.cs" />
     <Compile Include="Sources\Locale.cs" />
-    <Compile Include="Sources\Logger.cs" />
     <Compile Include="Sources\ObservableProperty.cs" />
     <Compile Include="Sources\OnceAction.cs" />
     <Compile Include="Sources\OnceInitializer.cs" />

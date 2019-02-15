@@ -15,64 +15,69 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Collections.Generic;
+using Cube.Generics;
+using Microsoft.Win32;
 
-namespace Cube.Collections
+namespace Cube.DataContract.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericComparer(T)
+    /// RegistryExtension
     ///
     /// <summary>
-    /// Func(T, T, int) を Comparer(T) に変換するためのクラスです。
+    /// Provides extended methods to access values of the registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class GenericComparer<T> : Comparer<T>
+    public static class RegistryExtension
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GenericComparer(T)
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="src">関数オブジェクト</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public GenericComparer(Func<T, T, int> src)
-        {
-            _comparer = src;
-        }
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compare
+        /// GetValue
         ///
         /// <summary>
-        /// 2 つのオブジェクトを比較します。
+        /// Gets a value of type T from the specified arguments.
         /// </summary>
         ///
-        /// <param name="x">比較する最初のオブジェクト</param>
-        /// <param name="y">比較する 2 番目のオブジェクト</param>
+        /// <param name="src">Root key of the target registry.</param>
+        /// <param name="subkey">Name of the registry subkey.</param>
+        /// <param name="name">Name of the getting value.</param>
         ///
-        /// <returns>比較結果</returns>
+        /// <returns>Value of type T.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public override int Compare(T x, T y) => _comparer(x, y);
+        public static T GetValue<T>(this RegistryKey src, string subkey, string name) =>
+            src.GetValue(subkey, name, default(T));
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValue
+        ///
+        /// <summary>
+        /// Gets a value of type T from the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Root key of the target registry.</param>
+        /// <param name="subkey">Name of the registry subkey.</param>
+        /// <param name="name">Name of the getting value.</param>
+        /// <param name="defaultValue">
+        /// Default value to be used when it fails.
+        /// </param>
+        ///
+        /// <returns>Value of type T.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static T GetValue<T>(this RegistryKey src, string subkey, string name, T defaultValue)
+        {
+            using (var sk = src.OpenSubKey(subkey, false))
+            {
+                if (sk == null) return defaultValue;
+                return sk.GetValue(name, defaultValue).TryCast(defaultValue);
+            }
+        }
 
-        #region Fields
-        private readonly Func<T, T, int> _comparer;
         #endregion
     }
 }

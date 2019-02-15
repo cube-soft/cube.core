@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.DataContract.Mixin;
 using Cube.Generics;
 using Microsoft.Win32;
 using System;

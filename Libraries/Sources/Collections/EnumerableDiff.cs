@@ -160,7 +160,7 @@ namespace Cube.Collections.Mixin
             IEnumerable<T> older,
             Func<T, T, bool> compare,
             Condition mask) =>
-            Diff(older, newer, new GenericEqualityComparer<T>(compare), mask);
+            Diff(older, newer, new LambdaEqualityComparer<T>(compare), mask);
 
         #endregion
     }

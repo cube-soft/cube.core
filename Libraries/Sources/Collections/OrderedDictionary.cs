@@ -25,10 +25,10 @@ namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OrderedDictionary
+    /// OrderedDictionary(TKey, TValue)
     ///
     /// <summary>
-    /// 挿入順序を維持する Dictionary(TKey, TValue) クラスです。
+    /// Represents a dictionary that preserves the insertion order.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,10 +39,11 @@ namespace Cube.Collections
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OrderedDictionary
+        /// OrderedDictionary(TKey, TValue)
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the OrderedDictionary(TKey, TValue)
+        /// class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -53,10 +54,11 @@ namespace Cube.Collections
         /// OrderedDictionary
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the OrderedDictionary(TKey, TValue)
+        /// class with the specified collection.
         /// </summary>
         ///
-        /// <param name="cp">コピー元オブジェクト</param>
+        /// <param name="cp">Collection to be copied.</param>
         ///
         /* --------------------------------------------------------------------- */
         public OrderedDictionary(IDictionary<TKey, TValue> cp)
@@ -74,7 +76,7 @@ namespace Cube.Collections
         /// Count
         ///
         /// <summary>
-        /// 要素数を取得します。
+        /// Gets the number of key/values pairs.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -85,7 +87,8 @@ namespace Cube.Collections
         /// IsReadOnly
         ///
         /// <summary>
-        /// 読み取り専用かどうかを示す値を取得します。
+        /// Gets a value indicating whether the OrderedDictionary(TKey, TValue)
+        /// collection is read-only.
         /// </summary>
         ///
         /// <remarks>
@@ -100,7 +103,7 @@ namespace Cube.Collections
         /// Item(TKey)
         ///
         /// <summary>
-        /// キーに対応する値を取得します。
+        /// Gets or sets the value with the specified key.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -126,7 +129,7 @@ namespace Cube.Collections
         /// Item(int)
         ///
         /// <summary>
-        /// インデックスに対応する値を取得または設定します。
+        /// Gets or sets the value at the specified index.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -147,10 +150,11 @@ namespace Cube.Collections
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Key
+        /// Keys
         ///
         /// <summary>
-        /// キー一覧を取得します。
+        /// Gets an ICollection(TKey) object containing the keys in the
+        /// OrderedDictionary(TKey, TValue) collection.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -161,7 +165,8 @@ namespace Cube.Collections
         /// Values
         ///
         /// <summary>
-        /// 値一覧を取得します。
+        /// Gets an ICollection(TValue) object containing the values in the
+        /// OrderedDictionary(TKey, TValue) collection.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -176,12 +181,18 @@ namespace Cube.Collections
         /// Contains
         ///
         /// <summary>
-        /// 要素が含まれているかどうかを判別します。
+        /// Determines whether the OrderedDictionary(TKey, TValue) collection
+        /// contains a specific item.
         /// </summary>
         ///
-        /// <param name="item">要素</param>
+        /// <param name="item">
+        /// Item to locate in the OrderedDictionary(TKey, TValue) collection.
+        /// </param>
         ///
-        /// <returns>含まれているかどうか</returns>
+        /// <returns>
+        /// true if the OrderedDictionary(TKey, TValue) collection contains an
+        /// item; otherwise, false.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         public bool Contains(KeyValuePair<TKey, TValue> item) =>
@@ -192,12 +203,18 @@ namespace Cube.Collections
         /// ContainsKey
         ///
         /// <summary>
-        /// 指定されたキーを持つ要素が含まれているかどうかを判別します。
+        /// Determines whether the OrderedDictionary(TKey, TValue) collection
+        /// contains a specific key.
         /// </summary>
         ///
-        /// <param name="key">キー</param>
+        /// <param name="key">
+        /// Key to locate in the OrderedDictionary(TKey, TValue) collection.
+        /// </param>
         ///
-        /// <returns>含まれているかどうか</returns>
+        /// <returns>
+        /// true if the OrderedDictionary(TKey, TValue) collection contains an
+        /// element with the specified key; otherwise, false.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         public bool ContainsKey(TKey key) => !Equals(key, default(TKey)) && _core.Contains(key);
@@ -207,10 +224,12 @@ namespace Cube.Collections
         /// Add
         ///
         /// <summary>
-        /// 要素を追加します。
+        /// Adds an entry with the specified KeyValuePair(TKey, TValue) object
+        /// into the OrderedDictionary(TKey, TValue) collection with the lowest
+        /// available index.
         /// </summary>
         ///
-        /// <param name="item">要素</param>
+        /// <param name="item">Key/value pair of the entry to add.</param>
         ///
         /* --------------------------------------------------------------------- */
         public void Add(KeyValuePair<TKey, TValue> item) => Add(item.Key, item.Value);
@@ -220,11 +239,13 @@ namespace Cube.Collections
         /// Add
         ///
         /// <summary>
-        /// 要素を追加します。
+        /// Adds an entry with the specified key and value into the
+        /// OrderedDictionary(TKey, TValue) collection with the lowest available
+        /// index.
         /// </summary>
         ///
-        /// <param name="key">キー</param>
-        /// <param name="value">値</param>
+        /// <param name="key">Key of the entry to add.</param>
+        /// <param name="value">Value of the entry to add. </param>
         ///
         /* --------------------------------------------------------------------- */
         public void Add(TKey key, TValue value)
@@ -238,10 +259,15 @@ namespace Cube.Collections
         /// Remove
         ///
         /// <summary>
-        /// 要素を削除します。
+        /// Removes the entry with the specified key/value pair from the
+        /// OrderedDictionary(TKey, TValue) collection.
         /// </summary>
         ///
-        /// <param name="item">要素</param>
+        /// <param name="item">Key/value pair of the entry to remove.</param>
+        ///
+        /// <returns>
+        /// true for success; otherwise, false.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -256,10 +282,15 @@ namespace Cube.Collections
         /// Remove
         ///
         /// <summary>
-        /// キーを持つ要素を削除します。
+        /// Removes the entry with the specified key from the
+        /// OrderedDictionary(TKey, TValue) collection.
         /// </summary>
         ///
-        /// <param name="key">キー</param>
+        /// <param name="key">The key of the entry to remove.</param>
+        ///
+        /// <returns>
+        /// true for success; otherwise, false.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         public bool Remove(TKey key)
@@ -274,7 +305,8 @@ namespace Cube.Collections
         /// Clear
         ///
         /// <summary>
-        /// 全ての要素を削除します。
+        /// Removes all elements from the OrderedDictionary(TKey, TValue)
+        /// collection.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -285,11 +317,12 @@ namespace Cube.Collections
         /// CopyTo
         ///
         /// <summary>
-        /// 要素をコピーします。
+        /// Copies the OrderedDictionary(TKey, TValue) elements to a
+        /// one-dimensional array object at the specified index.
         /// </summary>
         ///
-        /// <param name="dest">コピー先</param>
-        /// <param name="offset">コピー開始位置</param>
+        /// <param name="dest">One-dimensional array object to copy to.</param>
+        /// <param name="offset">Index in array at which copying begins.</param>
         ///
         /* --------------------------------------------------------------------- */
         public void CopyTo(KeyValuePair<TKey, TValue>[] dest, int offset)
@@ -307,13 +340,20 @@ namespace Cube.Collections
         /// TryGetValue
         ///
         /// <summary>
-        /// キーに対応する値の取得を試みます。
+        /// Gets the value associated with the specified key.
         /// </summary>
         ///
-        /// <param name="key">キー</param>
-        /// <param name="dest">値の格納用オブジェクト</param>
+        /// <param name="key">Key of the value to get.</param>
+        /// <param name="dest">
+        /// When this method returns, contains the value associated with the
+        /// specified key, if the key is found; otherwise, the default value
+        /// for the type of the value parameter.
+        /// </param>
         ///
-        /// <returns>取得に成功したかどうか</returns>
+        /// <returns>
+        /// true if the OrderedDictionary(TKey, TValue) contains an element
+        /// with the specified key; otherwise, false.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         public bool TryGetValue(TKey key, out TValue dest)
@@ -328,10 +368,12 @@ namespace Cube.Collections
         /// GetEnumerator
         ///
         /// <summary>
-        /// 反復用オブジェクトを取得します。
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
         ///
-        /// <returns>反復用オブジェクト</returns>
+        /// <returns>
+        /// Enumerator that can be used to iterate through the collection.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => ((IEnumerable)_core)

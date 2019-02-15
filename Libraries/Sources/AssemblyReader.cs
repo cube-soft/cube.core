@@ -27,7 +27,7 @@ namespace Cube
     /// AssemblyReader
     ///
     /// <summary>
-    /// Assembly オブジェクトの各種情報を取得するクラスです。
+    /// Provides functionality to get information of an Assembly object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,10 +40,11 @@ namespace Cube
         /// AssemblyReader
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the AssemblyReader class with
+        /// the specified assembly.
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリオブジェクト</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public AssemblyReader(Assembly assembly)
@@ -60,7 +61,7 @@ namespace Cube
         /// Platform
         ///
         /// <summary>
-        /// ソフトウェアのプラットフォームを示す文字列を取得します。
+        /// Gets the value that represents the executing platform.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -71,7 +72,7 @@ namespace Cube
         /// Assembly
         ///
         /// <summary>
-        /// 対象とする Assembly オブジェクトを取得します。
+        /// Gets the target Assembly object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -82,7 +83,7 @@ namespace Cube
         /// Location
         ///
         /// <summary>
-        /// アセンブリの存在するパスを取得します。
+        /// Gets the assembly location.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -111,7 +112,7 @@ namespace Cube
         /// Title
         ///
         /// <summary>
-        /// タイトル情報を取得します。
+        /// Gets the title of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -122,7 +123,7 @@ namespace Cube
         /// Description
         ///
         /// <summary>
-        /// アセンブリの説明を取得します。
+        /// Gets the description of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -133,7 +134,7 @@ namespace Cube
         /// Configuration
         ///
         /// <summary>
-        /// Configuration 情報を取得します。
+        /// Gets the configuration information of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -144,7 +145,7 @@ namespace Cube
         /// Company
         ///
         /// <summary>
-        /// 会社情報を取得します。
+        /// Gets the company name of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -155,7 +156,7 @@ namespace Cube
         /// Product
         ///
         /// <summary>
-        /// 製品情報を取得します。
+        /// Gets the product name of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -166,7 +167,7 @@ namespace Cube
         /// Copyright
         ///
         /// <summary>
-        /// 著作権情報を取得します。
+        /// Gets the copyright description of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -177,7 +178,7 @@ namespace Cube
         /// Trademark
         ///
         /// <summary>
-        /// 商標情報を取得します。
+        /// Gets the trademark description of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -188,7 +189,7 @@ namespace Cube
         /// Culture
         ///
         /// <summary>
-        /// Culture 情報を取得します。
+        /// Gets the culture information of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -199,7 +200,7 @@ namespace Cube
         /// Version
         ///
         /// <summary>
-        /// バージョン情報を取得します。
+        /// Gets the version information of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -210,7 +211,7 @@ namespace Cube
         /// FileVersion
         ///
         /// <summary>
-        /// ファイルバージョン情報を取得します。
+        /// Gets the file version information of the assembly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -228,7 +229,7 @@ namespace Cube
         /// Get
         ///
         /// <summary>
-        /// CustomAttribute を取得します。
+        /// Gets the object by using the GetCustomAttribute method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -256,7 +257,7 @@ namespace Cube
     /// AssemblyReaderExtension
     ///
     /// <summary>
-    /// AssemblyReader の拡張用クラスです。
+    /// Provides extended methods of the AssemblyReader class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -269,7 +270,8 @@ namespace Cube
         /// GetReader
         ///
         /// <summary>
-        /// AssemblyReader オブジェクトを取得します。
+        /// Creates a new instance of the AssemblyReader class with the
+        /// specified assembly.
         /// </summary>
         ///
         /// <param name="src">Assembly</param>

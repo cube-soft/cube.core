@@ -15,115 +15,119 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Iteration;
+using Cube.DataContract.Mixin;
+using Microsoft.Win32;
 using NUnit.Framework;
-using System;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IterateExtensionTest
+    /// RegistryTest
     ///
     /// <summary>
-    /// Represents tests for the IterateExtension class.
+    /// Represents tests of extended methods for the RegistryKey class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class IterateExtensionTest
+    class RegistryTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Times
+        /// GetValue
         ///
         /// <summary>
-        /// Executes the test of Times extended method.
+        /// Executes the test to get the value of the registry.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Times()
-        {
-            var actual = 0;
-            10.Times(() => actual++);
-            Assert.That(actual, Is.EqualTo(10));
-        }
+        public void GetValue() => Assert.That(
+            Registry.LocalMachine.GetValue<string>(
+                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+                "ProductName"
+            ),
+            Does.StartWith("Windows")
+        );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Times_WithIndex
+        /// GetValue_Unmatched
         ///
         /// <summary>
-        /// Executes the test of Times extended method.
+        /// Confirms the behavior when the specified type is not matched.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Times_WithIndex()
-        {
-            var actual = 0;
-            10.Times(i => actual += i);
-            Assert.That(actual, Is.EqualTo(45));
-        }
+        public void GetValue_Unmatched() => Assert.That(
+            Registry.LocalMachine.GetValue<int>(
+                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+                "ProductName",
+                100
+            ),
+            Is.EqualTo(100)
+        );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Try
+        /// GetValue_NotFound_Subkey
         ///
         /// <summary>
-        /// Executes the test of Try extended method.
+        /// Confirms the behavior when the specified subkey does not
+        /// exist.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Try()
-        {
-            var n = 0;
-            this.Try(10, () => ThrowIfOdd(++n));
-            Assert.That(n, Is.EqualTo(2));
-        }
+        public void GetValue_NotFound_Subkey() => Assert.That(
+            Registry.LocalMachine.GetValue<string>(
+                @"Dummy\NotFound\SubKey",
+                "Dummy"
+            ),
+            Is.Null
+        );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Try_Throws
+        /// GetValue_NotFound_Number
         ///
         /// <summary>
-        /// Executes the test of Try extended method.
+        /// Confirms the behavior when the specified name does not
+        /// exist.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Try_Throws()
-        {
-            var n = 0;
-            Assert.That(
-                () => this.Try(10, () => { ++n; ThrowIfOdd(1); }),
-                Throws.TypeOf<ArgumentException>()
-                      .And.Message.EqualTo("Odd number")
-            );
-            Assert.That(n, Is.EqualTo(10));
-        }
-
-        #endregion
-
-        #region Others
+        public void GetValue_NotFound_Number() => Assert.That(
+            Registry.LocalMachine.GetValue<int>(
+                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+                "DummyValue"
+            ),
+            Is.EqualTo(0)
+        );
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ThrowIfOdd
+        /// GetValue_NotFound_String
         ///
         /// <summary>
-        /// Throws if the specified value is odd number.
+        /// Confirms the behavior when the specified name does not
+        /// exist.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ThrowIfOdd(int n)
-        {
-            if (n % 2 != 0) throw new ArgumentException("Odd number");
-        }
+        [Test]
+        public void GetValue_NotFound_String() => Assert.That(
+            Registry.LocalMachine.GetValue<string>(
+                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+                "DummyValue"
+            ),
+            Is.Null
+        );
 
         #endregion
     }

@@ -21,6 +21,8 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Xml;
 
 namespace Cube.DataContract
 {
@@ -29,14 +31,14 @@ namespace Cube.DataContract
     /// Format
     ///
     /// <summary>
-    /// DataContract オブジェクトをシリアライズ可能なフォーマットを定義
-    /// した列挙型です。
+    /// Specifies formats that can be serialized and deserialized by the
+    /// DataContract module.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public enum Format
     {
-        /// <summary>レジストリ</summary>
+        /// <summary>Registry</summary>
         Registry,
         /// <summary>XML</summary>
         Xml,
@@ -60,16 +62,24 @@ namespace Cube.DataContract
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RootKey
+        /// DefaultKey
         ///
         /// <summary>
         /// レジストリを対象にシリアライズまたはデシリアライズする際の
         /// ルートとなるサブキーを取得または設定します。
         /// </summary>
         ///
+        /// <remarks>
+        /// シリアライズまたはデシリアライズ時に明示的にサブキーを指定しな
+        /// かった場合、このサブキーが利用されます。
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        public static RegistryKey RootKey { get; set; } =
-            Registry.CurrentUser.OpenSubKey("Software", true);
+        public static RegistryKey DefaultKey
+        {
+            get => _defaultKey ?? (_defaultKey = Registry.CurrentUser.OpenSubKey("Software", true));
+            set => _defaultKey = value;
+        }
 
         #endregion
 
@@ -94,7 +104,7 @@ namespace Cube.DataContract
         {
             if (format == Format.Registry)
             {
-                using (var k = RootKey.CreateSubKey(dest)) k.Serialize(src);
+                using (var k = DefaultKey.CreateSubKey(dest)) k.Serialize(src);
             }
             else Serialize(dest, e => Serialize(format, e, src));
         }
@@ -176,8 +186,14 @@ namespace Cube.DataContract
         /// <param name="src">シリアライズ対象オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SerializeXml<T>(this Stream dest, T src) =>
-            new DataContractSerializer(typeof(T)).WriteObject(dest, src);
+        private static void SerializeXml<T>(this Stream dest, T src)
+        {
+            var settings = new XmlWriterSettings { Indent = true };
+            using (var obj = XmlWriter.Create(dest, settings))
+            {
+                new DataContractSerializer(typeof(T)).WriteObject(obj, src);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -192,8 +208,13 @@ namespace Cube.DataContract
         /// <param name="src">シリアライズ対象オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        private static void SerializeJson<T>(this Stream dest, T src) =>
-            new DataContractJsonSerializer(typeof(T)).WriteObject(dest, src);
+        private static void SerializeJson<T>(this Stream dest, T src)
+        {
+            using (var obj = JsonReaderWriterFactory.CreateJsonWriter(dest, Encoding.UTF8, false))
+            {
+                new DataContractJsonSerializer(typeof(T)).WriteObject(obj, src);
+            }
+        }
 
         #endregion
 
@@ -217,9 +238,9 @@ namespace Cube.DataContract
         {
             if (format == Format.Registry)
             {
-                using (var k = RootKey.OpenSubKey(src, false)) return k.Deserialize<T>();
+                using (var k = DefaultKey.OpenSubKey(src, false)) return k.Deserialize<T>();
             }
-            else return Deserialize<T>(src, e => Deserialize<T>(format, e));
+            else return Deserialize(src, e => Deserialize<T>(format, e));
         }
 
         /* ----------------------------------------------------------------- */
@@ -304,6 +325,10 @@ namespace Cube.DataContract
 
         #endregion
 
+        #endregion
+
+        #region Fields
+        private static RegistryKey _defaultKey;
         #endregion
     }
 }

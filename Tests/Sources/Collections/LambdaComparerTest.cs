@@ -23,28 +23,30 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericComparerTest
+    /// LambdaComparerTest
     ///
     /// <summary>
-    /// GenericComparer(T) および GenericEqualityComparer(T) のテスト用
-    /// クラスです。
+    /// Represents tests for LambdaComparer(T) and LambdaEqualityComparer(T)
+    /// classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class GenericComparerTest
+    class LambdaComparerTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericComparer
+        /// Comparer
         ///
         /// <summary>
-        /// GenericComparer オブジェクトを利用するテストを実行します。
+        /// Executes the test to use a LambdaComparer(T) object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GenericComparer()
+        public void Comparer()
         {
             var x0 = new Person { Name = "Mike",  Age = 30, Sex = Sex.Male   };
             var x1 = new Person { Name = "Jenny", Age = 15, Sex = Sex.Female };
@@ -52,7 +54,7 @@ namespace Cube.Tests
             var x3 = new Person { Name = "Mike",  Age = 25, Sex = Sex.Male   };
 
             var src = new List<Person> { x0, x1, x2, x3 };
-            src.Sort(new GenericComparer<Person>((x, y) =>
+            src.Sort(new LambdaComparer<Person>((x, y) =>
             {
                 var r0 = x.Name.CompareTo(y.Name);
                 if (r0 != 0) return r0;
@@ -69,30 +71,33 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GenericEqualityComparer_Throws
+        /// EqualityComparer
         ///
         /// <summary>
-        /// GetHashCode の必要な操作を実行した時の挙動を確認します。
+        /// Executes the test to use an LambdaEqualityComparer(T) object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GenericEqualityComparer_Throws()
+        public void EqualityComparer()
         {
-            var key = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
-            var dic = new Dictionary<Person, object>(
-                new GenericEqualityComparer<Person>((x, y) =>
-                {
-                    return x.Name == y.Name &&
-                           x.Age  == y.Age &&
-                           x.Sex  == y.Sex;
-                })
+            var cmp = new LambdaEqualityComparer<Person>((x, y) =>
+                x.Name == y.Name &&
+                x.Age  == y.Age  &&
+                x.Sex  == y.Sex
             );
 
-            Assert.That(
-                () => dic.Add(key, new object()),
-                Throws.TypeOf<System.InvalidOperationException>()
-            );
+            var dic = new Dictionary<Person, object>(cmp);
+            var x0  = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
+            var x1  = new Person { Name = "Jack", Age = 30, Sex = Sex.Male };
+            var x2  = new Person { Name = "Mike", Age = 30, Sex = Sex.Male };
+
+            dic.Add(x0, new object());
+            dic.Add(x1, new object());
+            Assert.That(dic.Count, Is.EqualTo(2));
+            Assert.That(() => dic.Add(x2, new object()), Throws.TypeOf<System.ArgumentException>());
         }
+
+        #endregion
     }
 }

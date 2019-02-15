@@ -20,18 +20,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Cube.DataContract
+namespace Cube.DataContract.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PropertyOperator
+    /// PropertyExtension
     ///
     /// <summary>
     /// プロパティの変換に関わる拡張用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class PropertyOperator
+    internal static class PropertyExtension
     {
         #region Type
 
