@@ -10,8 +10,8 @@
         <description>Common library for CubeSoft libraries and applications.</description>
         <tags>Cube</tags>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">Apache-2.0</license>
         <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
-        <licenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</licenseUrl>
         <iconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</iconUrl>
         <dependencies>
             <group targetFramework="net45">
