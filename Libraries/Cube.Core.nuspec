@@ -9,8 +9,8 @@
         <owners>CubeSoft</owners>
         <description>Common library for CubeSoft libraries and applications.</description>
         <tags>Cube</tags>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <license type="expression">Apache-2.0</license>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
         <iconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</iconUrl>
     </metadata>
