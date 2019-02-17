@@ -20,7 +20,7 @@ build:
     verbosity: minimal
 test_script:
     - >
-      ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe
+      ..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe
       -log:Error
       -register:user
       -target:nunit3-console.exe
