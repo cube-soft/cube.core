@@ -20,10 +20,10 @@ build:
     verbosity: minimal
 test_script:
     - >
-      ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe
+      ..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe
       -log:Error
       -register:user
-      -target:nunit3-console.exe
+      -target:../packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe
       -targetargs:Cube.Core.Tests.dll
       -targetdir:Tests\bin\Release
       -returntargetcode
