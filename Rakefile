@@ -54,7 +54,7 @@ task :test do
     sh("#{RESTORE} #{SOLUTION}.sln")
     sh("#{BUILD} #{SOLUTION}.sln")
 
-    branch = `git symbolic-ref --short HEAD`
+    branch = `git symbolic-ref --short HEAD`.chomp
     TESTCASES.each { |proj, dir|
         src = branch == 'net35' ?
               "#{dir}/bin/net35/Release/#{proj}.dll" :
