@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using Cube.Log;
 
 namespace Cube.Iteration
 {
@@ -101,8 +100,8 @@ namespace Cube.Iteration
                 try { action(i); return; }
                 catch (Exception err)
                 {
-                    Logger.Warn(src.GetType(), $"{err.Message} ({i}/{n})");
-                    if (i >= n - 1) throw;
+                    Logger.Warn(src.GetType(), $"{err.Message} ({i + 1}/{n})");
+                    if (i + 1 >= n) throw;
                 }
             }
         }
