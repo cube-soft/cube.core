@@ -15,10 +15,12 @@
         <ProjectGuid>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</ProjectGuid>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DocumentationFile>bin\Debug\net45\Cube.Core.xml</DocumentationFile>
+        <OutputPath>bin\Any CPU\Debug\</OutputPath>
+        <DocumentationFile>bin\Any CPU\Debug\net45\Cube.Core.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DocumentationFile>bin\Release\net45\Cube.Core.xml</DocumentationFile>
+        <OutputPath>bin\Any CPU\Release\</OutputPath>
+        <DocumentationFile>bin\Any CPU\Release\net45\Cube.Core.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="log4net" Version="2.0.8" />
