@@ -7,9 +7,9 @@
         <Company>CubeSoft</Company>
         <Description>Common library for CubeSoft libraries and applications.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
         <PackageIconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</PackageIconUrl>
-        <PackageLicenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</PackageLicenseUrl>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
         <ProjectGuid>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</ProjectGuid>
