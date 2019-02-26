@@ -55,7 +55,6 @@ namespace Cube.Tests
             Assert.That(dest.Product,       Is.EqualTo(expected.Product));
             Assert.That(dest.Copyright,     Is.EqualTo(expected.Copyright));
             Assert.That(dest.Trademark,     Is.EqualTo(expected.Trademark));
-            Assert.That(dest.Configuration, Is.EqualTo(expected.Configuration));
             Assert.That(dest.Culture,       Is.EqualTo(expected.Culture));
             Assert.That(dest.Version,       Is.EqualTo(expected.Version));
             Assert.That(dest.FileVersion,   Is.EqualTo(expected.FileVersion));
@@ -85,7 +84,6 @@ namespace Cube.Tests
                     Product       = "Cube.Core.Tests",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Trademark     = "CubeSoft, Inc.",
-                    Configuration = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(1, 15, 0, 0),
                     FileVersion   = new Version(1, 15, 0, 0)
@@ -102,7 +100,6 @@ namespace Cube.Tests
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Trademark     = string.Empty,
-                    Configuration = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(1, 15, 0, 0),
                     FileVersion   = new Version(1, 15, 0, 0)
@@ -119,7 +116,6 @@ namespace Cube.Tests
                     Product       = string.Empty,
                     Copyright     = string.Empty,
                     Trademark     = string.Empty,
-                    Configuration = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(),
                     FileVersion   = new Version()
@@ -147,7 +143,6 @@ namespace Cube.Tests
             public string Product { get; set; }
             public string Copyright { get; set; }
             public string Trademark { get; set; }
-            public string Configuration { get; set; }
             public string Culture { get; set; }
             public Version Version { get; set; }
             public Version FileVersion { get; set; }

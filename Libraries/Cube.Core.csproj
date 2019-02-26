@@ -1,117 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cube</RootNamespace>
-    <AssemblyName>Cube.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\Cube.Core.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\Cube.Core.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sources\Collections\Differences\CommonSequence.cs" />
-    <Compile Include="Sources\Collections\Differences\OnpAlgorithm.cs" />
-    <Compile Include="Sources\Collections\Differences\Result.cs" />
-    <Compile Include="Sources\Collections\ArgumentCollection.cs" />
-    <Compile Include="Sources\Collections\CacheCollection.cs" />
-    <Compile Include="Sources\Collections\EnumerableBase.cs" />
-    <Compile Include="Sources\Collections\EnumerableExtension.cs" />
-    <Compile Include="Sources\Collections\EnumerableDiff.cs" />
-    <Compile Include="Sources\Collections\EnumerableIndex.cs" />
-    <Compile Include="Sources\Collections\KeyValuePair.cs" />
-    <Compile Include="Sources\Collections\LambdaComparer.cs" />
-    <Compile Include="Sources\Collections\LambdaEqualityComparer.cs" />
-    <Compile Include="Sources\Collections\ObservableBase.cs" />
-    <Compile Include="Sources\Collections\OrderedDictionary.cs" />
-    <Compile Include="Sources\DataContract\Format.cs" />
-    <Compile Include="Sources\DataContract\PropertyExtension.cs" />
-    <Compile Include="Sources\DataContract\RegistryDeserializer.cs" />
-    <Compile Include="Sources\DataContract\RegistryExtension.cs" />
-    <Compile Include="Sources\DataContract\RegistrySerializer.cs" />
-    <Compile Include="Sources\Events\EnumerableEventArgs.cs" />
-    <Compile Include="Sources\Events\IAggregator.cs" />
-    <Compile Include="Sources\Events\KeyValueEventArgs.cs" />
-    <Compile Include="Sources\Events\ProgressEventArgs.cs" />
-    <Compile Include="Sources\Events\QueryEventArgs.cs" />
-    <Compile Include="Sources\Events\RelayEvent.cs" />
-    <Compile Include="Sources\Events\Subscription.cs" />
-    <Compile Include="Sources\Events\ValueEventArgs.cs" />
-    <Compile Include="Sources\Extensions\Conversions\ByteFormat.cs" />
-    <Compile Include="Sources\Extensions\Conversions\TimeFormat.cs" />
-    <Compile Include="Sources\Extensions\Conversions\UriFormat.cs" />
-    <Compile Include="Sources\Extensions\EnvironmentExtension.cs" />
-    <Compile Include="Sources\Extensions\GenericExtension.cs" />
-    <Compile Include="Sources\Extensions\IterateExtension.cs" />
-    <Compile Include="Sources\Extensions\StringExtension.cs" />
-    <Compile Include="Sources\Extensions\TaskExtension.cs" />
-    <Compile Include="Sources\Extensions\XmlExtension.cs" />
-    <Compile Include="Sources\Ipc\Messenger.cs" />
-    <Compile Include="Sources\Ipc\MessengerService.cs" />
-    <Compile Include="Sources\Ipc\MessengerServiceCallback.cs" />
-    <Compile Include="Sources\Log\Logger.cs" />
-    <Compile Include="Sources\Log\LoggerExtension.cs" />
-    <Compile Include="Sources\Accessor.cs" />
-    <Compile Include="Sources\AssemblyReader.cs" />
-    <Compile Include="Sources\Disposable.cs" />
-    <Compile Include="Sources\DisposableBase.cs" />
-    <Compile Include="Sources\Exceptions.cs" />
-    <Compile Include="Sources\Language.cs" />
-    <Compile Include="Sources\Locale.cs" />
-    <Compile Include="Sources\ObservableProperty.cs" />
-    <Compile Include="Sources\OnceAction.cs" />
-    <Compile Include="Sources\OnceInitializer.cs" />
-    <Compile Include="Sources\Power.cs" />
-    <Compile Include="Sources\Query.cs" />
-    <Compile Include="Sources\QueryValue.cs" />
-    <Compile Include="Sources\SoftwareVersion.cs" />
-    <Compile Include="Sources\WakeableTimer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Cube.snk" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>Cube</RootNamespace>
+        <TargetFramework>net45</TargetFramework>
+        <Version>1.15.0</Version>
+        <Authors>CubeSoft</Authors>
+        <Company>CubeSoft</Company>
+        <Description>Common library for CubeSoft libraries and applications.</Description>
+        <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
+        <PackageIconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</PackageIconUrl>
+        <PackageLicenseUrl>https://github.com/cube-soft/Cube.Core/blob/master/License.txt</PackageLicenseUrl>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
+        <ProjectGuid>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</ProjectGuid>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DocumentationFile>bin\Debug\net45\Cube.Core.xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DocumentationFile>bin\Release\net45\Cube.Core.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="log4net" Version="2.0.8" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Runtime.Serialization" />
+        <Reference Include="System.ServiceModel" />
+        <Reference Include="System.ServiceModel.Web" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="WindowsBase" />
+    </ItemGroup>
 </Project>

@@ -95,27 +95,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Examples\Sample.opml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Examples\Sample.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Examples\Sample.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Examples\Settings.ja.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Examples\Settings.ja.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Examples\Settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Examples\Settings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Examples\Sample.opml" CopyToOutputDirectory="Always" />
+    <None Include="Examples\Sample.rss" CopyToOutputDirectory="Always" />
+    <None Include="Examples\Sample.txt" CopyToOutputDirectory="Always" />
+    <None Include="Examples\Settings.ja.json" CopyToOutputDirectory="Always" />
+    <None Include="Examples\Settings.ja.xml" CopyToOutputDirectory="Always" />
+    <None Include="Examples\Settings.json" CopyToOutputDirectory="Always" />
+    <None Include="Examples\Settings.xml" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libraries\Cube.Core.csproj">
