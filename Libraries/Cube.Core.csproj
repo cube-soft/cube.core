@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <RootNamespace>Cube</RootNamespace>
-        <TargetFramework>net45</TargetFramework>
         <Version>1.15.0</Version>
         <Authors>CubeSoft</Authors>
         <Company>CubeSoft</Company>
@@ -10,9 +8,10 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
         <PackageIconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</PackageIconUrl>
+        <RootNamespace>Cube</RootNamespace>
+        <TargetFramework>net45</TargetFramework>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
-        <ProjectGuid>{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}</ProjectGuid>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <OutputPath>bin\Any CPU\Debug\</OutputPath>
