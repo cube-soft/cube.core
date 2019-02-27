@@ -13,13 +13,13 @@
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\Cube.Core.Tests.xml</DocumentationFile>
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Core.Tests.xml</DocumentationFile>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
-        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\Cube.Core.Tests.xml</DocumentationFile>
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Core.Tests.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Libraries\Cube.Core.csproj" />
@@ -32,12 +32,6 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
-        <None Include="Examples\Sample.opml" CopyToOutputDirectory="Always" />
-        <None Include="Examples\Sample.rss" CopyToOutputDirectory="Always" />
-        <None Include="Examples\Sample.txt" CopyToOutputDirectory="Always" />
-        <None Include="Examples\Settings.ja.json" CopyToOutputDirectory="Always" />
-        <None Include="Examples\Settings.ja.xml" CopyToOutputDirectory="Always" />
-        <None Include="Examples\Settings.json" CopyToOutputDirectory="Always" />
-        <None Include="Examples\Settings.xml" CopyToOutputDirectory="Always" />
+        <None Include="Examples/**/*" CopyToOutputDirectory="Always" />
     </ItemGroup>
 </Project>

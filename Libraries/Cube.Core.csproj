@@ -17,13 +17,13 @@
         <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\Cube.Core.xml</DocumentationFile>
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Core.xml</DocumentationFile>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
-        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\Cube.Core.xml</DocumentationFile>
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Core.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="log4net" Version="2.0.8" />
