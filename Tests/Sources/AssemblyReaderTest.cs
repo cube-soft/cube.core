@@ -27,19 +27,21 @@ namespace Cube.Tests
     /// AssemblyReaderTest
     ///
     /// <summary>
-    /// AssemblyReader のテスト用クラスです。
+    /// Tests for the AssemblyReader class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class AssemblyReaderTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Assembly_Properties
         ///
         /// <summary>
-        /// 各種プロパティの内容を確認します。
+        /// Confirms properties of the AssemblyReader object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -54,18 +56,23 @@ namespace Cube.Tests
             Assert.That(dest.Company,       Is.EqualTo(expected.Company));
             Assert.That(dest.Product,       Is.EqualTo(expected.Product));
             Assert.That(dest.Copyright,     Is.EqualTo(expected.Copyright));
+            Assert.That(dest.Configuration, Is.EqualTo(expected.Configuration));
             Assert.That(dest.Trademark,     Is.EqualTo(expected.Trademark));
             Assert.That(dest.Culture,       Is.EqualTo(expected.Culture));
             Assert.That(dest.Version,       Is.EqualTo(expected.Version));
             Assert.That(dest.FileVersion,   Is.EqualTo(expected.FileVersion));
         }
 
+        #endregion
+
+        #region TestCases
+
         /* ----------------------------------------------------------------- */
         ///
         /// TestCases
         ///
         /// <summary>
-        /// テストケースを取得します。
+        /// Gets the collection of test cases.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,15 +85,16 @@ namespace Cube.Tests
                     Assembly      = Assembly.GetExecutingAssembly(),
                     Location      = "Cube.Core.Tests.dll",
                     Directory     = @"Tests\bin",
-                    Title         = "Cube.Core testing project",
+                    Title         = "Cube.Core UnitTest",
                     Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
-                    Company       = "CubeSoft",
-                    Product       = "Cube.Core.Tests",
+                    Company       = "CubeSoft, Inc.",
+                    Product       = "Cube.Tests",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
-                    Trademark     = "CubeSoft, Inc.",
+                    Configuration = Configuration,
+                    Trademark     = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(1, 15, 0, 0),
-                    FileVersion   = new Version(1, 15, 0, 0)
+                    FileVersion   = new Version(1, 15, 0, 0),
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
@@ -99,10 +107,11 @@ namespace Cube.Tests
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
+                    Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(1, 15, 0, 0),
-                    FileVersion   = new Version(1, 15, 0, 0)
+                    FileVersion   = new Version(1, 15, 0, 0),
                 });
 
                 yield return new TestCaseData(null, new Result
@@ -115,20 +124,25 @@ namespace Cube.Tests
                     Company       = string.Empty,
                     Product       = string.Empty,
                     Copyright     = string.Empty,
+                    Configuration = string.Empty,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(),
-                    FileVersion   = new Version()
+                    FileVersion   = new Version(),
                 });
             }
         }
+
+        #endregion
+
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
         /// Result
         ///
         /// <summary>
-        /// 期待される結果を保持するための構造体です。
+        /// Represents information of expected results.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -142,10 +156,21 @@ namespace Cube.Tests
             public string Company { get; set; }
             public string Product { get; set; }
             public string Copyright { get; set; }
+            public string Configuration { get; set; }
             public string Trademark { get; set; }
             public string Culture { get; set; }
             public Version Version { get; set; }
             public Version FileVersion { get; set; }
         }
+
+        #endregion
+
+        #region Fields
+        #if DEBUG
+        private static readonly string Configuration = "Debug";
+        #else
+        private static readonly string Configuration = "Release";
+        #endif
+        #endregion
     }
 }
