@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
         <Authors>CubeSoft</Authors>
@@ -10,21 +10,22 @@
         <PackageIconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</PackageIconUrl>
         <RootNamespace>Cube</RootNamespace>
         <TargetFramework>net45</TargetFramework>
+        <Optimize>true</Optimize>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>bin\Any CPU\Debug\</OutputPath>
-        <DocumentationFile>bin\Any CPU\Debug\net45\Cube.Core.xml</DocumentationFile>
+        <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\Cube.Core.xml</DocumentationFile>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <OutputPath>bin\Any CPU\Release\</OutputPath>
-        <DocumentationFile>bin\Any CPU\Release\net45\Cube.Core.xml</DocumentationFile>
+        <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
+        <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\Cube.Core.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="log4net" Version="2.0.8" />
-    </ItemGroup>
-    <ItemGroup>
         <Reference Include="System" />
         <Reference Include="System.Runtime.Serialization" />
         <Reference Include="System.ServiceModel" />

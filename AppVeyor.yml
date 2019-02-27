@@ -25,13 +25,13 @@ test_script:
       -register:user
       -target:nunit3-console.exe
       -targetargs:Cube.Core.Tests.dll
-      -targetdir:Tests\bin\Release
+      -targetdir:"Tests\bin\Any CPU\Release\net45"
       -returntargetcode
       -hideskipped:All
       -output:CoverResults.xml
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I Tests\bin\Release\Cube.Core.Tests.log TestLog\
+    - xcopy /q /Y /I "Tests\bin\Any CPU\Release\net45\Cube.Core.Tests.log" TestLog\
     - xcopy /q /Y /I CoverResults.xml TestLog\
     - pip install codecov
     - codecov -f CoverResults.xml
