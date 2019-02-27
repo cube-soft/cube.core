@@ -12,6 +12,7 @@
         <TargetFramework>net45</TargetFramework>
         <Optimize>true</Optimize>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>

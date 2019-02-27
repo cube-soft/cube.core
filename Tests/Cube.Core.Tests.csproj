@@ -6,10 +6,11 @@
         <Product>Cube.Tests</Product>
         <Description>NUnit framework を用いて Cube.Core プロジェクトをテストします。</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
-        <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <RootNamespace>Cube.Tests</RootNamespace>
+        <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
         <TargetFramework>net45</TargetFramework>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
