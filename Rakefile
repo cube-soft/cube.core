@@ -6,6 +6,7 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 SOLUTION    = 'Cube.FileSystem'
 BRANCHES    = [ 'stable', 'net35' ]
+TESTTOOLS   = [ 'NUnit.ConsoleRunner', 'OpenCover', 'ReportGenerator' ]
 TESTCASES   = { 'Cube.FileSystem.Tests' => 'Tests' }
 
 # --------------------------------------------------------------------------- #
@@ -15,6 +16,7 @@ COPY        = 'cp -pf'
 CHECKOUT    = 'git checkout'
 BUILD       = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
 RESTORE     = 'nuget restore'
+INSTALL     = 'nuget install'
 PACK        = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 TEST        = '../packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe'
 
@@ -28,12 +30,20 @@ task :default do
 end
 
 # --------------------------------------------------------------------------- #
+# Restore
+# --------------------------------------------------------------------------- #
+task :restore do
+    sh("#{RESTORE} #{SOLUTION}.sln")
+    TESTTOOLS.each { |src| sh("#{INSTALL} #{src}") }
+end
+
+# --------------------------------------------------------------------------- #
 # Build
 # --------------------------------------------------------------------------- #
 task :build do
     BRANCHES.each do |branch|
         sh("#{CHECKOUT} #{branch}")
-        sh("#{RESTORE} #{SOLUTION}.sln")
+        Rake::Task[:restore].execute
         sh("#{BUILD} #{SOLUTION}.sln")
     end
 end
@@ -51,15 +61,13 @@ end
 # Test
 # --------------------------------------------------------------------------- #
 task :test do
-    sh("#{RESTORE} #{SOLUTION}.sln")
+    Rake::Task[:restore].execute
     sh("#{BUILD} #{SOLUTION}.sln")
 
     branch = `git symbolic-ref --short HEAD`.chomp
+    fw     = branch == 'net35' ? 'net35' : 'net45'
     TESTCASES.each { |proj, dir|
-        src = branch == 'net35' ?
-              "#{dir}/bin/net35/Release/#{proj}.dll" :
-              "#{dir}/bin/Release/#{proj}.dll"
-        sh("#{TEST} #{src}")
+        sh("#{TEST} \"#{dir}/bin/Any CPU/Release/#{fw}/#{proj}.dll\"")
     }
 end
 
