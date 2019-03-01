@@ -16,13 +16,10 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Generics;
-using IWshRuntimeLibrary;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 namespace Cube.FileSystem
 {
@@ -106,7 +103,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> Arguments { get; set; }
+        public string Arguments { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -116,15 +113,60 @@ namespace Cube.FileSystem
         /// Gets or sets the icon location of the shortcut.
         /// </summary>
         ///
+        /// <remarks>
+        /// The format of IconLocation is IconFileName[,IconIndex].
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
         public string IconLocation { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IconFileName
+        ///
+        /// <summary>
+        /// Gets the icon path of the shortcut.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string IconFileName
+        {
+            get
+            {
+                var index = IconLocation?.LastIndexOf(',') ?? 0;
+                return (index > 0) ? IconLocation.Substring(0, index) : IconLocation;
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IconIndex
+        ///
+        /// <summary>
+        /// Gets the icon index of the shortcut.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int IconIndex
+        {
+            get
+            {
+                var index = IconLocation?.LastIndexOf(',') ?? 0;
+                if (index > 0 && index < IconLocation.Length - 1)
+                {
+                    int.TryParse(IconLocation.Substring(index + 1), out int dest);
+                    return dest;
+                }
+                else return 0;
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Exists
         ///
         /// <summary>
-        /// ショートカットが存在するかどうかを示す値を取得します。
+        /// Gets a value indicating whether the shortcut exists.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -168,12 +210,17 @@ namespace Cube.FileSystem
             var cvt = Normalize(link);
             if (cvt.HasValue() && io.Exists(cvt))
             {
-                var sh = new WshShell();
-                if (sh.CreateShortcut(cvt) is IWshShortcut dest) return new Shortcut(io)
+                var dest = new Shortcut(io);
+                Invoke(sh =>
                 {
-                    Target       = dest.TargetPath,
-                    IconLocation = dest.IconLocation,
-                };
+                    GetPersistFile(sh).Load(cvt, 0);
+
+                    dest.FullName     = cvt;
+                    dest.Target       = GetTarget(sh);
+                    dest.Arguments    = GetArguments(sh);
+                    dest.IconLocation = GetIconLocation(sh);
+                });
+                return dest;
             }
             return null;
         }
@@ -183,7 +230,7 @@ namespace Cube.FileSystem
         /// Create
         ///
         /// <summary>
-        /// ショートカットを作成します。
+        /// Creates a new shortcut with the current settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -191,17 +238,12 @@ namespace Cube.FileSystem
         {
             if (string.IsNullOrEmpty(Target) || !_io.Exists(Target)) return;
 
-            var args = Arguments != null && Arguments.Count() > 0 ?
-                       Arguments.Aggregate((s, o) => s + $" {o.Quote()}").Trim() :
-                       string.Empty;
-
             sh.SetPath(Target);
-            sh.SetArguments(args);
+            sh.SetArguments(Arguments);
             sh.SetShowCmd(1); // SW_SHOWNORMAL
-            sh.SetIconLocation(GetIconFileName(), GetIconIndex());
+            sh.SetIconLocation(IconFileName, IconIndex);
 
-            Debug.Assert(sh is IPersistFile);
-            ((IPersistFile)sh).Save(FullName, true);
+            GetPersistFile(sh).Save(FullName, true);
         });
 
         /* ----------------------------------------------------------------- */
@@ -209,7 +251,7 @@ namespace Cube.FileSystem
         /// Delete
         ///
         /// <summary>
-        /// ショートカットを削除します。
+        /// Delete the shortcut.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -232,7 +274,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         private static string Normalize(string src) =>
-            src.HasValue() && !src.EndsWith(".lnk") ? src + ".lnk" : src;
+            src.HasValue() && !src.FuzzyEndsWith(".lnk") ? src + ".lnk" : src;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -243,52 +285,89 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Invoke(Action<IShellLink> action)
+        private static void Invoke(Action<IShellLink> action)
         {
             var guid = new Guid("00021401-0000-0000-C000-000000000046");
             var type = Type.GetTypeFromCLSID(guid);
-            var src  = Activator.CreateInstance(type) as IShellLink;
 
-            Debug.Assert(src != null);
-
-            try { action(src); }
-            finally { Marshal.ReleaseComObject(src); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetIconFileName
-        ///
-        /// <summary>
-        /// アイコンのファイル名部分を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string GetIconFileName()
-        {
-            var index = IconLocation.LastIndexOf(',');
-            return (index > 0) ? IconLocation.Substring(0, index) : IconLocation;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetIconIndex
-        ///
-        /// <summary>
-        /// アイコンのインデックス部分を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private int GetIconIndex()
-        {
-            var index = IconLocation.LastIndexOf(',');
-            if (index > 0 && index < IconLocation.Length - 1)
+            if (Activator.CreateInstance(type) is IShellLink sh)
             {
-                int.TryParse(IconLocation.Substring(index + 1), out int dest);
-                return dest;
+                try { action(sh); }
+                finally { Marshal.ReleaseComObject(sh); }
             }
-            else return 0;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetTarget
+        ///
+        /// <summary>
+        /// Gets the target path of the specified link.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetTarget(IShellLink src)
+        {
+            var dest = GetBuffer();
+            src.GetPath(dest, dest.Capacity, IntPtr.Zero, 0x0004);
+            return dest.ToString();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetArguments
+        ///
+        /// <summary>
+        /// Gets the arguments of the specified link.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetArguments(IShellLink src)
+        {
+            var dest = GetBuffer();
+            src.GetArguments(dest, dest.Capacity);
+            return dest.ToString();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetIconLocation
+        ///
+        /// <summary>
+        /// Gets the icon location of the specified link.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetIconLocation(IShellLink src)
+        {
+            var path = GetBuffer();
+            src.GetIconLocation(path, path.Capacity, out var index);
+            if (index > 0) path.Append($",{index}");
+            return path.ToString();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetPersistFile
+        ///
+        /// <summary>
+        /// Gets the IPersistFile object from the specified object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static IPersistFile GetPersistFile(IShellLink src) => src as IPersistFile;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetBuffer
+        ///
+        /// <summary>
+        /// Creates a new instance of the StringBuilder class with a
+        /// specific capacity.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static StringBuilder GetBuffer() => new StringBuilder(65536);
 
         #endregion
 

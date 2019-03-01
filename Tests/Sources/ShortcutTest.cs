@@ -27,7 +27,7 @@ namespace Cube.FileSystem.Tests
     /// ShortcutTest
     ///
     /// <summary>
-    /// Shortcut のテスト用クラスです。
+    /// Tests for the Shortcut class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,15 +41,15 @@ namespace Cube.FileSystem.Tests
         /// Create
         ///
         /// <summary>
-        /// ショートカットを作成するテストを実行します。
+        /// Tests the Create method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public bool Create(string name, string link, int index, IList<string> args)
+        public bool Create(string name, string link, int index, string args)
         {
             var src  = GetResultsWith(name);
-            var dest = GetLinkPath(link);
+            var dest = GetTargetPath(link);
             var sc   = new Shortcut
             {
                 FullName     = src,
@@ -70,7 +70,7 @@ namespace Cube.FileSystem.Tests
         /// Create_Empty
         ///
         /// <summary>
-        /// リンク先パスに空文字を指定した時の挙動を確認します。
+        /// Tests the Create method with the empty target path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -94,7 +94,7 @@ namespace Cube.FileSystem.Tests
         /// Delete
         ///
         /// <summary>
-        /// ショートカットを削除するテストを実行します。
+        /// Tests the Delete method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -102,7 +102,7 @@ namespace Cube.FileSystem.Tests
         public void Delete()
         {
             var src  = GetResultsWith("DeleteTest");
-            var dest = GetLinkPath("Cube.FileSystem.dll");
+            var dest = GetTargetPath("Cube.FileSystem.dll");
             var sc   = new Shortcut
             {
                 FullName     = src,
@@ -131,19 +131,24 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Resolve()
         {
-            var src  = GetResultsWith("ResolveTest");
-            var dest = GetLinkPath("Cube.FileSystem.dll");
-            var sc0  = new Shortcut
-            {
-                FullName     = src,
-                Target       = dest,
-                Arguments    = null,
-                IconLocation = dest,
-            };
+            var link = GetResultsWith("ResolveTest");
+            var path = GetTargetPath("Cube.FileSystem.dll");
+            var args = "/foo bar /bas";
 
-            sc0.Create();
-            Assert.That(sc0.Exists, Is.True);
-            Assert.That(Shortcut.Resolve(src).Target, Is.EqualTo(dest));
+            new Shortcut
+            {
+                FullName     = link,
+                Target       = path,
+                Arguments    = "/foo bar /bas",
+                IconLocation = path,
+            }.Create();
+
+            var dest = Shortcut.Resolve(link);
+            Assert.That(dest.Target,       Is.EqualTo(path));
+            Assert.That(dest.IconLocation, Is.EqualTo(path));
+            Assert.That(dest.IconFileName, Is.EqualTo(path));
+            Assert.That(dest.IconIndex,    Is.EqualTo(0));
+            Assert.That(dest.Arguments,    Is.EqualTo(args));
         }
 
         /* ----------------------------------------------------------------- */
@@ -167,7 +172,7 @@ namespace Cube.FileSystem.Tests
         /// TestCases
         ///
         /// <summary>
-        /// ショートカット操作のテスト用データを取得します。
+        /// Gets test cases.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -175,33 +180,13 @@ namespace Cube.FileSystem.Tests
         {
             get
             {
-                yield return new TestCaseData("ScNormal", "Cube.FileSystem.dll", 0,
-                    new List<string> { "/foo", "bar", "/bas" }
-                ).Returns(true);
-
-                yield return new TestCaseData("ScNullArgs", "Cube.FileSystem.dll", 0,
-                    null
-                ).Returns(true);
-
-                yield return new TestCaseData("ScEmptyArgs", "Cube.FileSystem.dll", 0,
-                    new List<string>()
-                ).Returns(true);
-
-                yield return new TestCaseData("ScWrongIconIndex", "Cube.FileSystem.dll", 3,
-                    new List<string> { "/foo" }
-                ).Returns(true);
-
-                yield return new TestCaseData("ScWrongLink", "dummy.exe", 0,
-                    new List<string> { "/foo" }
-                ).Returns(false);
-
-                yield return new TestCaseData("ScWithLnk.lnk", "Cube.FileSystem.dll", 0,
-                    new List<string> { "args" }
-                ).Returns(true);
-
-                yield return new TestCaseData("日本語ショートカット", "Cube.FileSystem.dll", 0,
-                    new List<string> { "args" }
-                ).Returns(true);
+                yield return new TestCaseData("ScNormal", "Cube.FileSystem.dll", 0, "/foo bar /bas").Returns(true);
+                yield return new TestCaseData("ScNullArgs", "Cube.FileSystem.dll", 0, null).Returns(true);
+                yield return new TestCaseData("ScEmptyArgs", "Cube.FileSystem.dll", 0, "").Returns(true);
+                yield return new TestCaseData("ScWrongIconIndex", "Cube.FileSystem.dll", 3, "/foo").Returns(true);
+                yield return new TestCaseData("ScWrongLink", "dummy.exe", 0, "/foo").Returns(false);
+                yield return new TestCaseData("ScWithLnk.lnk", "Cube.FileSystem.dll", 0, "args").Returns(true);
+                yield return new TestCaseData("日本語ショートカット", "Cube.FileSystem.dll", 0, "args").Returns(true);
             }
         }
 
@@ -211,14 +196,14 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetLinkPath
+        /// GetTargetPath
         ///
         /// <summary>
-        /// リンク先のパスを取得します。
+        /// Gets the target path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private string GetLinkPath(string filename)
+        private string GetTargetPath(string filename)
         {
             var asm = Assembly.GetExecutingAssembly().Location;
             var dir = IO.Get(asm).DirectoryName;
