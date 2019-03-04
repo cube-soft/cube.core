@@ -14,6 +14,7 @@ COPY        = 'cp -pf'
 CHECKOUT    = 'git checkout'
 BUILD       = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
 RESTORE     = 'nuget restore'
+INSTALL     = 'nuget install'
 PACK        = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 
 # --------------------------------------------------------------------------- #
@@ -26,12 +27,19 @@ task :default do
 end
 
 # --------------------------------------------------------------------------- #
+# Restore
+# --------------------------------------------------------------------------- #
+task :restore do
+    sh("#{RESTORE} #{SOLUTION}.sln")
+end
+
+# --------------------------------------------------------------------------- #
 # Build
 # --------------------------------------------------------------------------- #
 task :build do
     BRANCHES.each do |branch|
         sh("#{CHECKOUT} #{branch}")
-        sh("#{RESTORE} #{SOLUTION}.sln")
+        Rake::Task[:restore].execute
         sh("#{BUILD} #{SOLUTION}.sln")
     end
 end
@@ -49,4 +57,4 @@ end
 # Clean
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{SOLUTION}.*.nupkg")
-CLEAN.include(%w{dll log}.map{ |e| "**/*.#{e}" })
+CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}/*" })

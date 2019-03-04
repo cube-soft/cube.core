@@ -1,4 +1,4 @@
-version: 1.14.0.{build}
+version: 1.15.0.{build}
 branches:
     only:
         - master
@@ -14,9 +14,9 @@ before_build:
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
     - nuget sources add -name Cube.Images -source https://ci.appveyor.com/nuget/cube.images
-    - nuget restore Cube.Forms.sln
+    - rake restore
 build:
-  parallel: true
-  project: Cube.Forms.sln
-  publish_nuget: true
-  verbosity: minimal
+    parallel: true
+    project: Cube.Forms.sln
+    publish_nuget: true
+    verbosity: minimal
