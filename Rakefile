@@ -64,11 +64,10 @@ task :test do
     Rake::Task[:restore].execute
     sh("#{BUILD} #{SOLUTION}.sln")
 
-    branch = `git symbolic-ref --short HEAD`.chomp
-    fw     = branch == 'net35' ? 'net35' : 'net45'
-    TESTCASES.each { |proj, dir|
-        sh("#{TEST} \"#{dir}/bin/Any CPU/Release/#{fw}/#{proj}.dll\"")
-    }
+    fw  = `git symbolic-ref --short HEAD`.chomp
+    fw  = 'net45' if (fw != 'net35')
+    bin = 'bin/Any CPU/Release'
+    TESTCASES.each { |proj, dir| sh("#{TEST} \"#{dir}/#{bin}/#{fw}/#{proj}.dll\"") }
 end
 
 # --------------------------------------------------------------------------- #
