@@ -11,7 +11,7 @@ nuget:
 platform: Any CPU
 configuration: Release
 before_build:
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+    - "SET PATH=C:\\Cube\\packages\\OpenCover.4.7.922\\tools;%PATH%"
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     - rake restore
 build:
@@ -21,7 +21,7 @@ build:
     verbosity: minimal
 test_script:
     - >
-      ..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe
+      OpenCover.Console.exe
       -log:Error
       -register:user
       -target:nunit3-console.exe
@@ -32,7 +32,7 @@ test_script:
       -output:CoverResults.xml
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I "Tests\bin\Any CPU\Release\net45\Cube.FileSystem.Tests.log" TestLog\
+    - xcopy /q /Y /I "Tests\bin\Any CPU\Release\net45\*.log" TestLog\
     - xcopy /q /Y /I CoverResults.xml TestLog\
     - pip install codecov
     - codecov -f CoverResults.xml

@@ -18,7 +18,6 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Libraries\Cube.FileSystem.csproj" />
-        <PackageReference Include="Cube.Core" Version="1.15.0" />
         <PackageReference Include="NUnit" Version="3.11.0" />
         <Reference Include="System" />
         <Reference Include="System.Management" />
