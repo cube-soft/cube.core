@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
+        <Description>WPF based GUI library.</Description>
         <Authors>CubeSoft</Authors>
         <Company>CubeSoft</Company>
-        <Description>WPF based GUI library.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/cube-soft/Cube.Xui/blob/master/Icon.png?raw=true</PackageIconUrl>
-        <RootNamespace>Cube.Xui</RootNamespace>
+        <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
+        <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>
         <TargetFramework>net45</TargetFramework>
         <Optimize>true</Optimize>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -18,12 +17,12 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Xui.xml</DocumentationFile>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Xui.xml</DocumentationFile>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Cube.FileSystem" Version="1.15.0" />
