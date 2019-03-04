@@ -15,8 +15,6 @@ TESTCASES   = { 'Cube.FileSystem.Tests' => 'Tests' }
 COPY        = 'cp -pf'
 CHECKOUT    = 'git checkout'
 BUILD       = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
-RESTORE     = 'nuget restore'
-INSTALL     = 'nuget install'
 PACK        = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 TEST        = '../packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe'
 
@@ -33,8 +31,8 @@ end
 # Restore
 # --------------------------------------------------------------------------- #
 task :restore do
-    sh("#{RESTORE} #{SOLUTION}.sln")
-    TESTTOOLS.each { |src| sh("#{INSTALL} #{src}") }
+    sh("nuget restore #{SOLUTION}.sln")
+    TESTTOOLS.each { |src| sh("nuget install #{src}") }
 end
 
 # --------------------------------------------------------------------------- #

@@ -9,21 +9,16 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.FileSystem.Tests.xml</DocumentationFile>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.FileSystem.Tests.xml</DocumentationFile>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Libraries\Cube.FileSystem.csproj" />
         <PackageReference Include="NUnit" Version="3.11.0" />
-        <Reference Include="System" />
-        <Reference Include="System.Management" />
-        <Reference Include="System.Runtime.Serialization" />
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
