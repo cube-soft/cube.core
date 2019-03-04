@@ -13,8 +13,6 @@ BRANCHES    = [ 'stable', 'net35' ]
 COPY        = 'cp -pf'
 CHECKOUT    = 'git checkout'
 BUILD       = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
-RESTORE     = 'nuget restore'
-INSTALL     = 'nuget install'
 PACK        = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 
 # --------------------------------------------------------------------------- #
@@ -30,7 +28,7 @@ end
 # Restore
 # --------------------------------------------------------------------------- #
 task :restore do
-    sh("#{RESTORE} #{SOLUTION}.sln")
+    sh("nuget restore #{SOLUTION}.sln")
 end
 
 # --------------------------------------------------------------------------- #
