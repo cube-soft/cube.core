@@ -1,123 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E0A563E9-481C-458A-81DB-3C200C671CF4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cube.Xui.Tests</RootNamespace>
-    <AssemblyName>Cube.Xui.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>bin\Debug\Cube.Xui.Tests.xml</DocumentationFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\Cube.Xui.Tests.xml</DocumentationFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.14.0\lib\net45\Cube.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Cube.FileSystem">
-      <HintPath>..\..\packages\Cube.FileSystem.1.14.0\lib\net45\Cube.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Platform">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sources\Behaviors\CheckedBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\CloseBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\ClosingBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\CommandBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\EditBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\FileDropBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\PasswordBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\SelectionBehaviorTest.cs" />
-    <Compile Include="Sources\Behaviors\WindowsFormsBehaviorTest.cs" />
-    <Compile Include="Sources\Converters\BooleanConverterTest.cs" />
-    <Compile Include="Sources\Converters\ImageConverterTest.cs" />
-    <Compile Include="Sources\Converters\StringConverterTest.cs" />
-    <Compile Include="Sources\Details\ConvertHelper.cs" />
-    <Compile Include="Sources\Details\GlobalSetup.cs" />
-    <Compile Include="Sources\Details\MockViewModel.cs" />
-    <Compile Include="Sources\Details\Person.cs" />
-    <Compile Include="Sources\BindableCollectionTest.cs" />
-    <Compile Include="Sources\BindableCommandTest.cs" />
-    <Compile Include="Sources\BindableElementTest.cs" />
-    <Compile Include="Sources\BindableTest.cs" />
-    <Compile Include="Sources\CommandTest.cs" />
-    <Compile Include="Sources\MessengerTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Packages.config" />
-    <None Include="Assets\App.ico" />
-    <None Include="Assets\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Libraries\Cube.Xui.csproj">
-      <Project>{5b627962-8f88-4161-a18f-7332684f92b7}</Project>
-      <Name>Cube.Xui</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Version>1.15.0</Version>
+        <Authors>CubeSoft</Authors>
+        <Company>CubeSoft</Company>
+        <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
+        <TargetFramework>net45</TargetFramework>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Xui.Tests.xml</DocumentationFile>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Xui.Tests.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Libraries\Cube.Xui.csproj" />
+        <PackageReference Include="NUnit" Version="3.11.0" />
+        <Reference Include="System" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
+        <Reference Include="WindowsFormsIntegration" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="App.config" />
+        <None Include="Assets\*" />
+    </ItemGroup>
 </Project>

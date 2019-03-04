@@ -1,113 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B627962-8F88-4161-A18F-7332684F92B7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cube.Xui</RootNamespace>
-    <AssemblyName>Cube.Xui</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Cube.Xui.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Cube.Xui.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.14.0\lib\net45\Cube.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Cube.FileSystem">
-      <HintPath>..\..\packages\Cube.FileSystem.1.14.0\lib\net45\Cube.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Platform">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sources\Behaviors\CheckedBehavior.cs" />
-    <Compile Include="Sources\Behaviors\CloseBehavior.cs" />
-    <Compile Include="Sources\Behaviors\CommandBehavior.cs" />
-    <Compile Include="Sources\Behaviors\DialogBehavior.cs" />
-    <Compile Include="Sources\Behaviors\DirectoryDialogBehavior.cs" />
-    <Compile Include="Sources\Behaviors\EditBehavior.cs" />
-    <Compile Include="Sources\Behaviors\FileDialogBehavior.cs" />
-    <Compile Include="Sources\Behaviors\FileDropBehavior.cs" />
-    <Compile Include="Sources\Behaviors\MessengerBehavior.cs" />
-    <Compile Include="Sources\Behaviors\PasswordBehavior.cs" />
-    <Compile Include="Sources\Behaviors\SelectionBehavior.cs" />
-    <Compile Include="Sources\Behaviors\ShowBehavior.cs" />
-    <Compile Include="Sources\Behaviors\UpdateSourceBehavior.cs" />
-    <Compile Include="Sources\Behaviors\UriBehavior.cs" />
-    <Compile Include="Sources\Behaviors\WindowsFormsBehavior.cs" />
-    <Compile Include="Sources\Converters\BooleanConverter.cs" />
-    <Compile Include="Sources\Converters\DuplexConverter.cs" />
-    <Compile Include="Sources\Converters\ImageConverter.cs" />
-    <Compile Include="Sources\Converters\SimplexConverter.cs" />
-    <Compile Include="Sources\Messages\DialogMessage.cs" />
-    <Compile Include="Sources\Messages\EmptyMessage.cs" />
-    <Compile Include="Sources\Messages\FileMessage.cs" />
-    <Compile Include="Sources\Triggers\DisposeAction.cs" />
-    <Compile Include="Sources\Triggers\MessengerTrigger.cs" />
-    <Compile Include="Sources\Bindable.cs" />
-    <Compile Include="Sources\BindableCollection.cs" />
-    <Compile Include="Sources\BindableCommand.cs" />
-    <Compile Include="Sources\BindableCommandGeneric.cs" />
-    <Compile Include="Sources\BindableElement.cs" />
-    <Compile Include="Sources\BindableElementGeneric.cs" />
-    <Compile Include="Sources\BindableExtension.cs" />
-    <Compile Include="Sources\CommandExtension.cs" />
-    <Compile Include="Sources\DependencyFactory.cs" />
-    <Compile Include="Sources\IListItem.cs" />
-    <Compile Include="Sources\LoggerExtension.cs" />
-    <Compile Include="Sources\MessengerViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Cube.snk" />
-    <None Include="Packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Version>1.15.0</Version>
+        <Authors>CubeSoft</Authors>
+        <Company>CubeSoft</Company>
+        <Description>WPF based GUI library.</Description>
+        <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
+        <PackageIconUrl>https://github.com/cube-soft/Cube.Xui/blob/master/Icon.png?raw=true</PackageIconUrl>
+        <RootNamespace>Cube.Xui</RootNamespace>
+        <TargetFramework>net45</TargetFramework>
+        <Optimize>true</Optimize>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>../Cube.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Xui.xml</DocumentationFile>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Xui.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Cube.FileSystem" Version="1.15.0" />
+        <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+        <Reference Include="System" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
+        <Reference Include="WindowsFormsIntegration" />
+    </ItemGroup>
 </Project>
