@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
         <Authors>CubeSoft</Authors>
@@ -23,7 +23,6 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Libraries\Cube.Core.csproj" />
-        <PackageReference Include="log4net" Version="2.0.8" />
         <PackageReference Include="NUnit" Version="3.11.0" />
         <Reference Include="System" />
         <Reference Include="System.Runtime.Serialization" />
