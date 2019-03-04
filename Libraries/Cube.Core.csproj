@@ -6,8 +6,8 @@
         <Description>Common library for CubeSoft libraries and applications.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/cube-soft/Cube.Core/blob/master/Icon.png?raw=true</PackageIconUrl>
+        <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
+        <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>
         <RootNamespace>Cube</RootNamespace>
         <TargetFramework>net45</TargetFramework>
         <Optimize>true</Optimize>
@@ -18,21 +18,17 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Core.xml</DocumentationFile>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/Cube.Core.xml</DocumentationFile>
+        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="log4net" Version="2.0.8" />
-        <Reference Include="System" />
-        <Reference Include="System.Runtime.Serialization" />
         <Reference Include="System.ServiceModel" />
         <Reference Include="System.ServiceModel.Web" />
-        <Reference Include="System.Xml" />
-        <Reference Include="System.Xml.Linq" />
         <Reference Include="WindowsBase" />
     </ItemGroup>
 </Project>
