@@ -160,20 +160,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(u4, Is.EqualTo(GetResultsWith($"UniqueTest (2) (1).txt")));
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ChangeExtension
-        ///
-        /// <summary>
-        /// Executes the test for changing the extension of the specified
-        /// path.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\Foo\Bar\Bas.txt", ".pdf", ExpectedResult = @"C:\Foo\Bar\Bas.pdf")]
-        [TestCase(@"C:\Foo\Bar\None",    ".txt", ExpectedResult = @"C:\Foo\Bar\None.txt")]
-        public string ChangeExtension(string src, string ext) => IO.ChangeExtension(src, ext);
-
         #endregion
     }
 }

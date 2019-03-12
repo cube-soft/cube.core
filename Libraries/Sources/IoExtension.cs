@@ -199,46 +199,6 @@ namespace Cube.FileSystem.Mixin
 
         #endregion
 
-        #region ChangeExtension
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ChangeExtension
-        ///
-        /// <summary>
-        /// 拡張子を変更します。
-        /// </summary>
-        ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="path">ファイルのパス</param>
-        /// <param name="ext">拡張子</param>
-        ///
-        /// <returns>変更後のパス</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string ChangeExtension(this IO io, string path, string ext) =>
-            ChangeExtension(io, io.Get(path), ext);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ChangeExtension
-        ///
-        /// <summary>
-        /// 拡張子を変更します。
-        /// </summary>
-        ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="info">ファイル情報</param>
-        /// <param name="ext">拡張子</param>
-        ///
-        /// <returns>変更後のパス</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string ChangeExtension(this IO io, Information info, string ext) =>
-            io.Combine(info.DirectoryName, $"{info.NameWithoutExtension}{ext}");
-
-        #endregion
-
         #endregion
     }
 }
