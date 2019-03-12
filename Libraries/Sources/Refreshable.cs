@@ -22,109 +22,182 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IRefreshable
-    ///
-    /// <summary>
-    /// Represents the method to refresh the Information class.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// Information オブジェクトのプロパティは読み取り専用であるため、
-    /// 外部から更新する事はできません。そのため、更新の際には
-    /// Invoke メソッド経由で取得できるオブジェクトに対して更新処理を
-    /// 実行する必要があります。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IRefreshable
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the refresh operation.
-        /// </summary>
-        ///
-        /// <param name="src">Object to be refreshed.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        void Invoke(RefreshableInfo src);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Refreshable
     ///
     /// <summary>
-    /// Implements the IRefreshable interface by using the standard
-    /// .NET Framework.
+    /// Represents the refreshable file or directory information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class Refreshable : IRefreshable
+    public class Refreshable
     {
-        #region Methods
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Refreshable
         ///
         /// <summary>
-        /// Invokes the refresh operation.
+        /// Initializes a new instance of the Refreshable class with
+        /// the specified path.
         /// </summary>
         ///
-        /// <param name="src">Object to be refreshed.</param>
+        /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void Invoke(RefreshableInfo src)
+        protected internal Refreshable(string src)
         {
-            var obj = Create(src.Source);
-
-            src.Exists               = obj.Exists;
-            src.Name                 = obj.Name;
-            src.Extension            = obj.Extension;
-            src.FullName             = obj.FullName;
-            src.Attributes           = obj.Attributes;
-            src.CreationTime         = obj.CreationTime;
-            src.LastAccessTime       = obj.LastAccessTime;
-            src.LastWriteTime        = obj.LastWriteTime;
-            src.Length               = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
-            src.IsDirectory          = obj is DirectoryInfo;
-            src.NameWithoutExtension = Path.GetFileNameWithoutExtension(src.Source);
-            src.DirectoryName        = TryCast(obj)?.DirectoryName ??
-                                       Path.GetDirectoryName(src.Source);
+            Source = src;
         }
 
         #endregion
 
-        #region Implementations
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Source
         ///
         /// <summary>
-        /// Creates a new instance of the FileSystemInfo class.
+        /// Gets the original path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private FileSystemInfo Create(string path) =>
-            Directory.Exists(path) ?
-            new DirectoryInfo(path) as FileSystemInfo :
-            new FileInfo(path) as FileSystemInfo;
+        public string Source { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TryCast
+        /// Exists
         ///
         /// <summary>
-        /// Tries to cast to the FileInfo class.
+        /// Gets or sets the value indicating whether the Source exists.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private FileInfo TryCast(FileSystemInfo src) => src as FileInfo;
+        public bool Exists { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsDirectory
+        ///
+        /// <summary>
+        /// Gets or sets the value indicating whether the Source is
+        /// directory.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IsDirectory { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Name
+        ///
+        /// <summary>
+        /// Gets or sets the filename.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Name { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NameWithoutExtension
+        ///
+        /// <summary>
+        /// Gets or sets the filename without extension.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string NameWithoutExtension { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Extension
+        ///
+        /// <summary>
+        /// Gets or sets the extension.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Extension { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FullName
+        ///
+        /// <summary>
+        /// Gets or sets the full path.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string FullName { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DirectoryName
+        ///
+        /// <summary>
+        /// Gets or sets the directory name.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string DirectoryName { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Length
+        ///
+        /// <summary>
+        /// Gets or sets the filesize.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public long Length { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Attributes
+        ///
+        /// <summary>
+        /// Gets or sets the attributes of the file or directory.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public FileAttributes Attributes { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreationTime
+        ///
+        /// <summary>
+        /// Gets or sets the creation time of the file or directory.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DateTime CreationTime { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LastWriteTime
+        ///
+        /// <summary>
+        /// Gets or sets the last written time of the file or directory.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DateTime LastWriteTime { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LastAccessTime
+        ///
+        /// <summary>
+        /// Gets or sets the last accessed time of the file or directory.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DateTime LastAccessTime { get; set; }
 
         #endregion
     }

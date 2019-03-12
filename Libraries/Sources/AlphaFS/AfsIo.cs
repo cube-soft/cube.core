@@ -49,8 +49,8 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected override IRefreshable GetRefreshableCore() => _shared ?? (
-            _shared = new AfsRefreshable()
+        protected override Refresher GetRefresherCore() => _shared ?? (
+            _shared = new AfsRefresher()
         );
 
         /* ----------------------------------------------------------------- */
@@ -304,7 +304,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private static IRefreshable _shared;
+        private static Refresher _shared;
         #endregion
     }
 }

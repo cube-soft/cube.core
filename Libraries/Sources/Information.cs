@@ -45,7 +45,7 @@ namespace Cube.FileSystem
         /// <param name="src">ファイルまたはディレクトリのパス</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src) : this(src, new Refreshable()) { }
+        public Information(string src) : this(src, new Refresher()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,14 +56,13 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <param name="src">ファイルまたはディレクトリのパス</param>
-        /// <param name="refreshable">情報更新用オブジェクト</param>
+        /// <param name="refresher">情報更新用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src, IRefreshable refreshable)
+        public Information(string src, Refresher refresher)
         {
-            Core        = new RefreshableInfo(src);
-            Refreshable = refreshable;
-            Refresh();
+            Refresher   = refresher;
+            Refreshable = refresher.Create(src);
         }
 
         #endregion
@@ -72,25 +71,25 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Core
+        /// Refreshable
         ///
         /// <summary>
         /// 内部情報を保持するためのオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected RefreshableInfo Core { get; }
+        protected Refreshable Refreshable { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Refreshable
+        /// Refresher
         ///
         /// <summary>
         /// 情報更新用オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IRefreshable Refreshable { get; }
+        protected Refresher Refresher { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,7 +100,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source => Core.Source;
+        public string Source => Refreshable.Source;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -113,7 +112,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => Core.Exists;
+        public bool Exists => Refreshable.Exists;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -124,7 +123,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory => Core.IsDirectory;
+        public bool IsDirectory => Refreshable.IsDirectory;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -135,7 +134,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name => Core.Name;
+        public string Name => Refreshable.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -146,7 +145,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string NameWithoutExtension => Core.NameWithoutExtension;
+        public string NameWithoutExtension => Refreshable.NameWithoutExtension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -157,7 +156,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Extension => Core.Extension;
+        public string Extension => Refreshable.Extension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -168,7 +167,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string FullName => Core.FullName;
+        public string FullName => Refreshable.FullName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,7 +178,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName => Core.DirectoryName;
+        public string DirectoryName => Refreshable.DirectoryName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -190,7 +189,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public long Length => Core.Length;
+        public long Length => Refreshable.Length;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -201,7 +200,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes => Core.Attributes;
+        public FileAttributes Attributes => Refreshable.Attributes;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -212,7 +211,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime CreationTime => Core.CreationTime;
+        public DateTime CreationTime => Refreshable.CreationTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -223,7 +222,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime => Core.LastWriteTime;
+        public DateTime LastWriteTime => Refreshable.LastWriteTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -234,7 +233,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime => Core.LastAccessTime;
+        public DateTime LastAccessTime => Refreshable.LastAccessTime;
 
         #endregion
 
@@ -249,18 +248,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => OnRefresh();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnRefresh
-        ///
-        /// <summary>
-        /// オブジェクトを最新の状態に更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnRefresh() => Refreshable.Invoke(Core);
+        public void Refresh() => Refresher.Invoke(Refreshable);
 
         #endregion
     }
