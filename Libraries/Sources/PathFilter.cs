@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
+using Cube.Generics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,13 +60,13 @@ namespace Cube.FileSystem
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="path">対象とするパス文字列</param>
+        /// <param name="src">対象とするパス文字列</param>
         /// <param name="io">ファイル操作用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathFilter(string path, IO io)
+        public PathFilter(string src, IO io)
         {
-            RawPath = path;
+            Source = src;
             _io = io;
         }
 
@@ -75,14 +76,25 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RawPath
+        /// Source
         ///
         /// <summary>
         /// オリジナルのパスを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string RawPath { get; }
+        public string Source { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Result
+        ///
+        /// <summary>
+        /// エスケープ処理適用後のパスを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Result => Inner.Value;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,18 +105,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected EscapedObject EscapedResult => EscapeOnce();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EscapedPath
-        ///
-        /// <summary>
-        /// エスケープ処理適用後のパスを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string EscapedPath => EscapedResult.Value;
+        protected EscapedObject Inner => EscapeOnce();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -361,7 +362,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public bool Match(string name, bool ignoreCase) =>
-            EscapedResult.Parts.Any(s => string.Compare(s, name, ignoreCase) == 0);
+            Inner.Parts.Any(s => string.Compare(s, name, ignoreCase) == 0);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -444,18 +445,18 @@ namespace Cube.FileSystem
         {
             if (_result == null)
             {
-                var k = string.IsNullOrEmpty(RawPath)          ? PathKind.Normal :
-                        RawPath.StartsWith(InactivationSymbol) ? PathKind.Inactivation :
-                        RawPath.StartsWith(UncSymbol)          ? PathKind.Unc :
+                var k = !Source.HasValue()                         ? PathKind.Normal :
+                        Source.FuzzyStartsWith(InactivationSymbol) ? PathKind.Inactivation :
+                        Source.FuzzyStartsWith(UncSymbol)          ? PathKind.Unc :
                         PathKind.Normal;
 
-                var v = string.IsNullOrEmpty(RawPath) ?
+                var v = !Source.HasValue() ?
                         new string[0] :
-                        RawPath.Split(SeparatorChars)
-                               .SkipWhile(s => string.IsNullOrEmpty(s))
-                               .Where((s, i) => !IsRemove(s, i))
-                               .Select((s, i) => Escape(s, i))
-                               .ToArray();
+                        Source.Split(SeparatorChars)
+                              .SkipWhile(s => !s.HasValue())
+                              .Where((s, i) => !IsRemove(s, i))
+                              .Select((s, i) => Escape(s, i))
+                              .ToArray();
 
                 _result = new EscapedObject(k, v, Combine(k, v));
             }
@@ -478,7 +479,7 @@ namespace Cube.FileSystem
 
             var seq  = name.Select(c => InvalidChars.Contains(c) ? EscapeChar : c);
             var esc  = new string(seq.ToArray());
-            var dot  = (esc == CurrentDirectorySymbol || esc == ParentDirectorySymbol);
+            var dot  = esc == CurrentDirectorySymbol || esc == ParentDirectorySymbol;
             var dest = dot ? esc : esc.TrimEnd(new[] { ' ', '.' });
 
             return IsReserved(dest) ? $"{EscapeChar}{dest}" : dest;
@@ -499,7 +500,7 @@ namespace Cube.FileSystem
             var head = kind == PathKind.Inactivation && AllowInactivation ? InactivationSymbol :
                        kind == PathKind.Unc && AllowUncCore() ? UncSymbol :
                        string.Empty;
-            return !string.IsNullOrEmpty(head) ? $"{head}{dest}" : dest;
+            return head.HasValue() ? $"{head}{dest}" : dest;
         }
 
         /* ----------------------------------------------------------------- */
@@ -513,7 +514,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private bool IsRemove(string name, int index)
         {
-            if (string.IsNullOrEmpty(name)) return true;
+            if (!name.HasValue()) return true;
             if (index == 0 && name == "?") return true;
             if (name == CurrentDirectorySymbol && !AllowCurrentDirectoryCore()) return true;
             if (name == ParentDirectorySymbol && !AllowParentDirectoryCore()) return true;

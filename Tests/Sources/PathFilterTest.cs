@@ -65,7 +65,7 @@ namespace Cube.FileSystem.Tests
                 AllowInactivation     = false,
                 AllowUnc              = false,
                 EscapeChar            = replaced,
-            }.EscapedPath;
+            }.Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -79,7 +79,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"C:\windows\dir\allow.txt", true,  ExpectedResult = @"C:\windows\dir\allow.txt")]
         [TestCase(@"C:\windows\dir\deny.txt",  false, ExpectedResult = @"C_\windows\dir\deny.txt")]
         public string Escape_DriveLetter(string src, bool drive) =>
-            new PathFilter(src) { AllowDriveLetter = drive }.EscapedPath;
+            new PathFilter(src) { AllowDriveLetter = drive }.Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,7 +97,7 @@ namespace Cube.FileSystem.Tests
             {
                 AllowInactivation     = false,
                 AllowCurrentDirectory = allow,
-            }.EscapedPath;
+            }.Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -115,7 +115,7 @@ namespace Cube.FileSystem.Tests
             {
                 AllowInactivation    = false,
                 AllowParentDirectory = allow,
-            }.EscapedPath;
+            }.Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -137,7 +137,7 @@ namespace Cube.FileSystem.Tests
                 AllowCurrentDirectory = true,
                 AllowParentDirectory  = true,
                 AllowUnc              = true,
-            }.EscapedPath;
+            }.Result;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -156,7 +156,7 @@ namespace Cube.FileSystem.Tests
             {
                 AllowInactivation = inactivation,
                 AllowUnc          = unc
-            }.EscapedPath;
+            }.Result;
 
         /* ----------------------------------------------------------------- */
         ///
