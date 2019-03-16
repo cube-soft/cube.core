@@ -39,10 +39,11 @@ namespace Cube.FileSystem
         /// Information
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Creates a new instance of the Information class with the
+        /// specified path.
         /// </summary>
         ///
-        /// <param name="src">ファイルまたはディレクトリのパス</param>
+        /// <param name="src">Path of the source file.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Information(string src) : this(src, new Refresher()) { }
@@ -52,11 +53,26 @@ namespace Cube.FileSystem
         /// Information
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Creates a new instance of the Information class with the
+        /// specified object.
         /// </summary>
         ///
-        /// <param name="src">ファイルまたはディレクトリのパス</param>
-        /// <param name="refresher">情報更新用オブジェクト</param>
+        /// <param name="src">Copied information.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Information(Information src) : this(src.Source, src.Refresher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Information
+        ///
+        /// <summary>
+        /// Creates a new instance of the Information class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Path of the source file.</param>
+        /// <param name="refresher">Refresher object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Information(string src, Refresher refresher)
