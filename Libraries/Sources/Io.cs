@@ -67,15 +67,15 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         protected virtual Information GetCore(string path) =>
-            new Information(path, GetRefresher());
+            new Information(path, GetController());
 
         #endregion
 
-        #region GetRefreshable
+        #region GetController
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetRefresher
+        /// GetController
         ///
         /// <summary>
         /// Information の各種プロパティを更新するためのオブジェクトを
@@ -83,11 +83,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Refresher GetRefresher() => GetRefresherCore();
+        public Controller GetController() => GetControllerCore();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetRefresherCore
+        /// GetControllerCore
         ///
         /// <summary>
         /// Information の各種プロパティを更新するためのオブジェクトを
@@ -101,8 +101,8 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual Refresher GetRefresherCore() =>
-            _shared ?? (_shared = new Refresher());
+        protected virtual Controller GetControllerCore() =>
+            _shared ?? (_shared = new Controller());
 
         #endregion
 
@@ -1105,7 +1105,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private static Refresher _shared;
+        private static Controller _shared;
         #endregion
     }
 }

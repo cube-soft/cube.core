@@ -35,7 +35,7 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetRefreshableCore
+        /// GetControllerCore
         ///
         /// <summary>
         /// Information の各種プロパティを更新するためのオブジェクトを
@@ -49,8 +49,8 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected override Refresher GetRefresherCore() => _shared ?? (
-            _shared = new AfsRefresher()
+        protected override Controller GetControllerCore() => _shared ?? (
+            _shared = new AfsController()
         );
 
         /* ----------------------------------------------------------------- */
@@ -304,7 +304,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private static Refresher _shared;
+        private static Controller _shared;
         #endregion
     }
 }

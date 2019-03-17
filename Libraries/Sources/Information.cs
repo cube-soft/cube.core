@@ -46,7 +46,7 @@ namespace Cube.FileSystem
         /// <param name="src">Path of the source file.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src) : this(src, new Refresher()) { }
+        public Information(string src) : this(src, new Controller()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -60,7 +60,7 @@ namespace Cube.FileSystem
         /// <param name="src">Copied information.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(Information src) : this(src.Source, src.Refresher) { }
+        public Information(Information src) : this(src.Source, src.Controller) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,13 +72,13 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <param name="src">Path of the source file.</param>
-        /// <param name="refresher">Refresher object.</param>
+        /// <param name="controller">Refresher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src, Refresher refresher)
+        public Information(string src, Controller controller)
         {
-            Refresher   = refresher;
-            Refreshable = refresher.Create(src);
+            Controller  = controller;
+            Refreshable = controller.Create(src);
         }
 
         #endregion
@@ -98,14 +98,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Refresher
+        /// Controller
         ///
         /// <summary>
         /// 情報更新用オブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Refresher Refresher { get; }
+        protected Controller Controller { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -264,7 +264,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Refresher.Invoke(Refreshable);
+        public void Refresh() => Controller.Refresh(Refreshable);
 
         #endregion
     }

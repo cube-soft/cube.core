@@ -15,37 +15,62 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Alphaleonis.Win32.Filesystem;
 using System;
+using System.IO;
 
 namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AfsRefresher
+    /// Controller
     ///
     /// <summary>
-    /// AlphaFS を利用した Information オブジェクトの情報更新用クラスです。
+    /// Provides to create or refresh properties of an Information object.
     /// </summary>
+    ///
+    /// <remarks>
+    /// Information オブジェクトのプロパティは読み取り専用であるため、
+    /// 外部から更新する事はできません。そのため、更新の際には
+    /// Controller クラス経由で更新処理を実行する必要があります。
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class AfsRefresher : Refresher
+    public class Controller
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Create
         ///
         /// <summary>
-        /// Information オブジェクトの情報を更新します。
+        /// Creates a new instance of the Refreshable class with the
+        /// specified path.
         /// </summary>
         ///
-        /// <param name="src">更新対象オブジェクト</param>
+        /// <param name="src">Source path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public override void Invoke(Refreshable src)
+        public virtual Refreshable Create(string src)
+        {
+            var dest = new Refreshable(src);
+            Refresh(dest);
+            return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Refresh
+        ///
+        /// <summary>
+        /// Refreshes the properties of the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Object to be refreshed.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public virtual void Refresh(Refreshable src)
         {
             var obj = CreateCore(src.Source);
 
@@ -73,7 +98,7 @@ namespace Cube.FileSystem
         /// CreateCore
         ///
         /// <summary>
-        /// FileSystemInfo オブジェクトを生成します。
+        /// Creates a new instance of the FileSystemInfo class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -87,7 +112,7 @@ namespace Cube.FileSystem
         /// TryCast
         ///
         /// <summary>
-        /// FileInfo オブジェクトへのキャストを試行します。
+        /// Tries to cast to the FileInfo class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
