@@ -50,9 +50,12 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <param name="src">Source path.</param>
+        /// <param name="options">Optional parameters.</param>
+        ///
+        /// <returns>Controllable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual Controllable Create(string src)
+        public virtual Controllable Create(string src, params object[] options)
         {
             var dest = new Controllable(src);
             Refresh(dest);

@@ -73,12 +73,17 @@ namespace Cube.FileSystem
         ///
         /// <param name="src">Path of the source file.</param>
         /// <param name="controller">Refresher object.</param>
+        /// <param name="options">Optional parameters.</param>
+        ///
+        /// <remarks>
+        /// options は Controller の継承クラス等の拡張用に定義しています。
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src, Controller controller)
+        public Information(string src, Controller controller, params object[] options)
         {
-            Controller  = controller;
-            Refreshable = controller.Create(src);
+            Controller   = controller;
+            Controllable = controller.Create(src, options);
         }
 
         #endregion
@@ -87,14 +92,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Refreshable
+        /// Controllable
         ///
         /// <summary>
         /// 内部情報を保持するためのオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Controllable Refreshable { get; }
+        protected Controllable Controllable { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -116,7 +121,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source => Refreshable.Source;
+        public string Source => Controllable.Source;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -128,7 +133,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => Refreshable.Exists;
+        public bool Exists => Controllable.Exists;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -139,7 +144,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory => Refreshable.IsDirectory;
+        public bool IsDirectory => Controllable.IsDirectory;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -150,7 +155,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name => Refreshable.Name;
+        public string Name => Controllable.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,7 +166,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string NameWithoutExtension => Refreshable.NameWithoutExtension;
+        public string NameWithoutExtension => Controllable.NameWithoutExtension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -172,7 +177,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Extension => Refreshable.Extension;
+        public string Extension => Controllable.Extension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -183,7 +188,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string FullName => Refreshable.FullName;
+        public string FullName => Controllable.FullName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -194,7 +199,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName => Refreshable.DirectoryName;
+        public string DirectoryName => Controllable.DirectoryName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -205,7 +210,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public long Length => Refreshable.Length;
+        public long Length => Controllable.Length;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -216,7 +221,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes => Refreshable.Attributes;
+        public FileAttributes Attributes => Controllable.Attributes;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -227,7 +232,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime CreationTime => Refreshable.CreationTime;
+        public DateTime CreationTime => Controllable.CreationTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -238,7 +243,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime => Refreshable.LastWriteTime;
+        public DateTime LastWriteTime => Controllable.LastWriteTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -249,7 +254,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime => Refreshable.LastAccessTime;
+        public DateTime LastAccessTime => Controllable.LastAccessTime;
 
         #endregion
 
@@ -264,7 +269,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Controller.Refresh(Refreshable);
+        public void Refresh() => Controller.Refresh(Controllable);
 
         #endregion
     }
