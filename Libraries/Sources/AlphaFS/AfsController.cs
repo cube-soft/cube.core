@@ -45,7 +45,7 @@ namespace Cube.FileSystem
         /// <param name="src">更新対象オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public override void Refresh(Refreshable src)
+        public override void Refresh(Controllable src)
         {
             var obj = CreateCore(src.Source);
 

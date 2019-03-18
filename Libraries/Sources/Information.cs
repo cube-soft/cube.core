@@ -94,7 +94,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Refreshable Refreshable { get; }
+        protected Controllable Refreshable { get; }
 
         /* ----------------------------------------------------------------- */
         ///

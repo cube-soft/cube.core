@@ -52,9 +52,9 @@ namespace Cube.FileSystem
         /// <param name="src">Source path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual Refreshable Create(string src)
+        public virtual Controllable Create(string src)
         {
-            var dest = new Refreshable(src);
+            var dest = new Controllable(src);
             Refresh(dest);
             return dest;
         }
@@ -70,7 +70,7 @@ namespace Cube.FileSystem
         /// <param name="src">Object to be refreshed.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void Refresh(Refreshable src)
+        public virtual void Refresh(Controllable src)
         {
             var obj = CreateCore(src.Source);
 
