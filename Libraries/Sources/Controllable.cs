@@ -46,7 +46,7 @@ namespace Cube.FileSystem
         /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Controllable(string src)
+        protected internal Controllable(string src)
         {
             Source = src;
         }
