@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
         <Authors>CubeSoft</Authors>
         <Company>CubeSoft</Company>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <TargetFramework>net45</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,7 +18,7 @@
         <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Libraries\Cube.FileSystem.csproj" />
+        <ProjectReference Include="../Libraries/Cube.FileSystem.csproj" />
         <PackageReference Include="NUnit" Version="3.11.0" />
     </ItemGroup>
     <ItemGroup>
