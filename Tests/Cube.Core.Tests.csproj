@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
         <Description>NUnit framework を用いて Cube.Core プロジェクトをテストします。</Description>
@@ -10,6 +10,7 @@
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
         <TargetFramework>net45</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,7 +23,7 @@
         <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Libraries\Cube.Core.csproj" />
+        <ProjectReference Include="../Libraries/Cube.Core.csproj" />
         <PackageReference Include="NUnit" Version="3.11.0" />
     </ItemGroup>
     <ItemGroup>
