@@ -236,7 +236,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Create() => Invoke(sh =>
         {
-            if (string.IsNullOrEmpty(Target) || !_io.Exists(Target)) return;
+            if (!_io.Exists(Target)) return;
 
             sh.SetPath(Target);
             sh.SetArguments(Arguments);

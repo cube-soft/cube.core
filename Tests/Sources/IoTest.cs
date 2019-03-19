@@ -435,6 +435,23 @@ namespace Cube.FileSystem.Tests
             Throws.TypeOf<System.IO.FileNotFoundException>()
         );
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Exists_NullOrEmpty
+        ///
+        /// <summary>
+        /// Executes the test of Exists method with null or empty values.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Exists_NullOrEmpty(IO io)
+        {
+            Assert.That(io.Exists(string.Empty), Is.False);
+            Assert.That(io.Exists(""),           Is.False);
+            Assert.That(io.Exists(null),         Is.False);
+        }
+
         #endregion
 
         #region TestCases
