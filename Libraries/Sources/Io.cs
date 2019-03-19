@@ -1097,7 +1097,7 @@ namespace Cube.FileSystem
                     if (Failed == null) throw;
                     var args = new FailedEventArgs(name, paths, err);
                     OnFailed(args);
-                    if (args.Cancel) return default(T);
+                    if (args.Cancel) return default;
                 }
             }
         }
