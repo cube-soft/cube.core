@@ -66,7 +66,7 @@ namespace Cube.Xui.Converters
         /* ----------------------------------------------------------------- */
         public static BitmapImage ToBitmapImage(this System.Drawing.Image src, bool dispose)
         {
-            if (src == null) return default(BitmapImage);
+            if (src == null) return default;
 
             using (var ss = new StreamProxy(new MemoryStream()))
             {

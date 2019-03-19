@@ -54,7 +54,7 @@ namespace Cube.Xui
         public static DependencyProperty Create<TOwner, TProperty>(
             string name, Action<TOwner, TProperty> callback)
             where TOwner : DependencyObject =>
-            Create(name, default(TProperty), callback);
+            Create(name, default, callback);
 
         /* ----------------------------------------------------------------- */
         ///

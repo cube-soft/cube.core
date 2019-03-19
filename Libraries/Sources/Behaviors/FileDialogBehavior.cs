@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using Microsoft.Win32;
 
 namespace Cube.Xui.Behaviors
@@ -47,10 +48,10 @@ namespace Cube.Xui.Behaviors
                 Multiselect     = e.Multiselect,
             };
 
-            if (!string.IsNullOrEmpty(e.Title)) dialog.Title = e.Title;
-            if (!string.IsNullOrEmpty(e.FileName)) dialog.FileName = e.FileName;
-            if (!string.IsNullOrEmpty(e.Filter)) dialog.Filter = e.Filter;
-            if (!string.IsNullOrEmpty(e.InitialDirectory)) dialog.InitialDirectory = e.InitialDirectory;
+            if (e.Title.HasValue()) dialog.Title = e.Title;
+            if (e.FileName.HasValue()) dialog.FileName = e.FileName;
+            if (e.Filter.HasValue()) dialog.Filter = e.Filter;
+            if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
             e.Result = dialog.ShowDialog() ?? false;
 
@@ -92,10 +93,10 @@ namespace Cube.Xui.Behaviors
                 OverwritePrompt = e.OverwritePrompt,
             };
 
-            if (!string.IsNullOrEmpty(e.Title)) dialog.Title = e.Title;
-            if (!string.IsNullOrEmpty(e.FileName)) dialog.FileName = e.FileName;
-            if (!string.IsNullOrEmpty(e.Filter)) dialog.Filter = e.Filter;
-            if (!string.IsNullOrEmpty(e.InitialDirectory)) dialog.InitialDirectory = e.InitialDirectory;
+            if (e.Title.HasValue()) dialog.Title = e.Title;
+            if (e.FileName.HasValue()) dialog.FileName = e.FileName;
+            if (e.Filter.HasValue()) dialog.Filter = e.Filter;
+            if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
             e.Result = dialog.ShowDialog() ?? false;
             if (e.Result) e.FileName = dialog.FileName;

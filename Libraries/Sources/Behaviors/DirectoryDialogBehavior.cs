@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System.Windows.Forms;
 
 namespace Cube.Xui.Behaviors
@@ -43,8 +44,8 @@ namespace Cube.Xui.Behaviors
         {
             var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
-            if (!string.IsNullOrEmpty(e.Title)) dialog.Description = e.Title;
-            if (!string.IsNullOrEmpty(e.FileName)) dialog.SelectedPath = e.FileName;
+            if (e.Title.HasValue()) dialog.Description = e.Title;
+            if (e.FileName.HasValue()) dialog.SelectedPath = e.FileName;
 
             e.Result = dialog.ShowDialog() == DialogResult.OK;
             if (e.Result) e.FileName = dialog.SelectedPath;
