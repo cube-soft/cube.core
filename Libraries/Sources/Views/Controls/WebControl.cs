@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Forms.Controls;
+using Cube.Generics;
 using Cube.Log;
 using System;
 using System.ComponentModel;
@@ -49,7 +50,7 @@ namespace Cube.Forms
         {
             get
             {
-                if (string.IsNullOrEmpty(_agent)) _agent = GetUserAgent();
+                if (!_agent.HasValue()) _agent = GetUserAgent();
                 return _agent;
             }
 

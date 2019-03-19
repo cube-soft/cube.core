@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Drawing;
-using System.Collections.Generic;
 using Cube.Forms.Drawing;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Cube.Forms
 {
@@ -271,7 +271,7 @@ namespace Cube.Forms
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private T Select<T>(T normal, T check, T over, T down, T ignore = default(T))
+        private T Select<T>(T normal, T check, T over, T down, T ignore = default)
         {
             var x0 = !EqualityComparer<T>.Default.Equals(check, ignore) && IsChecked ? check : normal;
             var x1 = !EqualityComparer<T>.Default.Equals(over,  ignore) ? over : x0;
