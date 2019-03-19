@@ -9,6 +9,7 @@
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
         <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>
         <TargetFramework>net45</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
@@ -32,6 +33,6 @@
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="Assets\*" />
+        <None Include="Assets/**/*" />
     </ItemGroup>
 </Project>
