@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
-        <Description>NUnit framework を用いて Cube.Core プロジェクトをテストします。</Description>
         <Authors>CubeSoft</Authors>
         <Company>CubeSoft, Inc.</Company>
         <Product>Cube.Tests</Product>
+        <Description>NUnit framework を用いて Cube.Core プロジェクトをテストします。</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <RootNamespace>Cube.Tests</RootNamespace>
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
@@ -13,12 +13,10 @@
         <LangVersion>latest</LangVersion>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
-        <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
         <OutputPath>bin/Any CPU/$(Configuration)/</OutputPath>
         <DocumentationFile>bin/Any CPU/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
