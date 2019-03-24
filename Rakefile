@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 SOLUTION    = 'Cube.FileSystem'
-BRANCHES    = ['master', 'net35']
+BRANCHES    = ['stable', 'net35']
 TESTTOOLS   = ['NUnit.ConsoleRunner', 'OpenCover', 'ReportGenerator']
 TESTCASES   = {"#{SOLUTION}.Tests" => 'Tests'}
 
