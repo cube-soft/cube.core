@@ -1,40 +1,46 @@
 version: 1.15.0.{build}
+image: Visual Studio 2019 Preview
+platform: Any CPU
+configuration: Release
+environment:
+    PROJECT_NAME:  "Cube.FileSystem"
+    TEST_TOOL:     "C:\\Cube\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe"
+    TEST_CORETOOL: "nunit3-console.exe"
+    TEST_SOURCE:   "Tests\\bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
+    TEST_RESULT:   "TestResults"
+    TEST_COVERAGE: "CoverResults.xml"
 branches:
     only:
         - master
 skip_tags: true
-clone_folder: C:\Cube\Cube.FileSystem
-image: Visual Studio 2019 Preview
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-platform: Any CPU
-configuration: Release
+clone_folder: "C:\\Cube\\%PROJECT_NAME%"
 before_build:
-    - "SET PATH=C:\\Cube\\packages\\OpenCover.4.7.922\\tools;%PATH%"
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     - rake restore
 build:
+    project: "%PROJECT_NAME%.sln"
     parallel: true
-    project: Cube.FileSystem.sln
     publish_nuget: true
     verbosity: minimal
 test_script:
     - >
-      OpenCover.Console.exe
+      "%TEST_TOOL%"
       -log:Error
       -register:user
-      -target:nunit3-console.exe
-      -targetargs:Cube.FileSystem.Tests.dll
-      -targetdir:"Tests\bin\Any CPU\Release\net45"
+      -target:"%TEST_CORETOOL%"
+      -targetargs:"%PROJECT_NAME%.Tests.dll"
+      -targetdir:"%TEST_SOURCE%"
       -returntargetcode
       -hideskipped:All
-      -output:CoverResults.xml
+      -output:"%TEST_COVERAGE%"
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I "Tests\bin\Any CPU\Release\net45\*.log" TestLog\
-    - xcopy /q /Y /I CoverResults.xml TestLog\
+    - xcopy /q /Y /I "%TEST_SOURCE%\*.log" "%TEST_RESULT%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULT%\"
     - pip install codecov
-    - codecov -f CoverResults.xml
+    - codecov -f "%TEST_COVERAGE%"
 artifacts:
-    - path: TestLog
+    - path: "%TEST_RESULT%"
