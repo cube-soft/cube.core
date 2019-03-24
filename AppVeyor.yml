@@ -1,22 +1,24 @@
 version: 1.15.0.{build}
+image: Visual Studio 2019 Preview
+platform: Any CPU
+configuration: Release
+environment:
+    PROJECT_NAME:  "Cube.Xui"
 branches:
     only:
         - master
 skip_tags: true
-clone_folder: C:\Cube\Cube.Forms
-image: Visual Studio 2019 Preview
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-platform: Any CPU
-configuration: Release
+clone_folder: "C:\\Cube\\%PROJECT_NAME%"
 before_build:
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
     - nuget sources add -name Cube.Images -source https://ci.appveyor.com/nuget/cube.images
     - rake restore
 build:
+    project: "%PROJECT_NAME%.sln"
     parallel: true
-    project: Cube.Forms.sln
     publish_nuget: true
     verbosity: minimal
