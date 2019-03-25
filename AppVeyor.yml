@@ -18,7 +18,7 @@ nuget:
     disable_publish_on_pr: true
 clone_folder: "C:\\Cube\\%PROJECT_NAME%"
 before_build:
-    - rake restore
+    - nuget restore "%PROJECT_NAME%.sln"
 build:
     project: "%PROJECT_NAME%.sln"
     parallel: true
