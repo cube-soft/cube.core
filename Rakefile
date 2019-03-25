@@ -59,7 +59,6 @@ end
 desc "Restore NuGet packages in the current branch."
 task :restore do
     sh("nuget restore #{SOLUTION}.sln")
-    TESTTOOLS.each { |e| sh("nuget install #{e}") }
 end
 
 # --------------------------------------------------------------------------- #
