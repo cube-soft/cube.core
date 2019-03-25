@@ -56,10 +56,19 @@ steps:
     -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
   displayName: 'Run tests via OpenCover and NUnit'
 
-- script: |
-    xcopy /q /Y /I "Tests\$(PROJECT_BIN)\*.log" "$(TEST_RESULTS)\"
-    xcopy /q /Y /I "$(TEST_COVERAGE)" "$(TEST_RESULTS)\"
-  displayName: 'Copy test results'
+- task: CopyFiles@2
+  inputs:
+    contents: 'Tests\**\*.log'
+    targetFolder: '$(TEST_RESULTS)'
+    overWrite: true
+  displayName: 'Copy log files for testing'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '$(TEST_COVERAGE)'
+    targetFolder: '$(TEST_RESULTS)'
+    overWrite: true
+  displayName: 'Copy coverage results'
 
 - task: ArchiveFiles@2
   inputs:
