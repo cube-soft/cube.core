@@ -13,9 +13,9 @@ variables:
     PROJECT_NAME:       'Cube.Core'
     PROJECT_PLATFORM:   'Any CPU'
     PROJECT_CONFIG:     'Release'
-    PROJECT_BIN:        'bin\\Any CPU\\Release\\net45'
-    TEST_TOOL:          '..\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe'
-    TEST_CORETOOL:      '..\\packages\\NUnit.ConsoleRunner.3.10.0\\tools\\nunit3-console.exe'
+    PROJECT_BIN:        'bin\Any CPU\Release\net45'
+    TEST_TOOL:          '..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe'
     TEST_RESULTS:       'TestResults'
     TEST_COVERAGE:      'CoverResults.xml'
 
@@ -57,9 +57,9 @@ steps:
   displayName: 'Run tests via OpenCover and NUnit'
 
 - script: |
-    xcopy /q /Y /I "Tests\$(PROJECT_BIN)\*.log" "$(TEST_RESULTS)\"
+    xcopy /q /Y /I "Tests\$(PROJECT_BIN)/*.log" "$(TEST_RESULTS)\"
     xcopy /q /Y /I "$(TEST_COVERAGE)" "$(TEST_RESULTS)\"
-  displayName: 'Copy test log'
+  displayName: 'Copy test results'
 
 - task: ArchiveFiles@2
   inputs:
@@ -67,11 +67,17 @@ steps:
     includeRootFolder: true
     archiveType: 'zip'
     replaceExistingArchive: true
-  displayName: 'Archive test log'
+  displayName: 'Archive test results'
 
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: 'Libraries/$(PROJECT_NAME).csproj'
+    packagesToPack: 'Libraries\$(PROJECT_NAME).csproj'
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Create NuGet package'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: '$(PROJECT_NAME)'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Publish NuGet package'
