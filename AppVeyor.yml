@@ -3,12 +3,12 @@ image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
-    PROJECT_NAME:  "Cube.Core"
-    TEST_TOOL:     "C:\\Cube\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe"
-    TEST_CORETOOL: "nunit3-console.exe"
-    TEST_SOURCE:   "Tests\\bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    TEST_RESULT:   "TestResults"
-    TEST_COVERAGE: "CoverResults.xml"
+    PROJECT_NAME:   "Cube.Core"
+    PROJECT_BIN:    "Tests\\bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
+    TEST_TOOL:      "C:\\Cube\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe"
+    TEST_CORETOOL:  "nunit3-console.exe"
+    TEST_RESULTS:   "TestResults"
+    TEST_COVERAGE:  "CoverResults.xml"
 branches:
     only:
         - master
@@ -31,15 +31,15 @@ test_script:
       -register:user
       -target:"%TEST_CORETOOL%"
       -targetargs:"%PROJECT_NAME%.Tests.dll"
-      -targetdir:"%TEST_SOURCE%"
+      -targetdir:"Tests\%PROJECT_BIN%"
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I "%TEST_SOURCE%\*.log" "%TEST_RESULT%\"
-    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULT%\"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_RESULTS%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
     - pip install codecov
     - codecov -f "%TEST_COVERAGE%"
 artifacts:
-    - path: "%TEST_RESULT%"
+    - path: "%TEST_RESULTS%"

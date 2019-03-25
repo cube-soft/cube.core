@@ -21,7 +21,7 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-SOLUTION    = 'Cube.Core'
+REPOSITORY  = 'Cube.Core'
 BRANCHES    = ['master', 'net35']
 TESTTOOLS   = ['NUnit.ConsoleRunner', 'OpenCover', 'ReportGenerator']
 TESTCASES   = {'Cube.Core.Tests' => 'Tests'}
@@ -36,7 +36,7 @@ TEST    = '../packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe'
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{SOLUTION}.*.nupkg")
+CLEAN.include("#{REPOSITORY}.*.nupkg")
 CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}/*" })
 
 # --------------------------------------------------------------------------- #
@@ -52,7 +52,7 @@ desc "Pack nupkg in the net35 branch."
 task :pack do
     BRANCHES.each { |e| Rake::Task[:build].invoke(e) }
     sh("git checkout net35")
-    sh("#{PACK} Libraries/#{SOLUTION}.nuspec")
+    sh("#{PACK} Libraries/#{REPOSITORY}.nuspec")
     sh("git checkout master")
 end
 
@@ -71,17 +71,17 @@ end
 # --------------------------------------------------------------------------- #
 desc "Restore NuGet packages in the current branch."
 task :restore do
-    sh("nuget restore #{SOLUTION}.sln")
+    sh("nuget restore #{REPOSITORY}.sln")
     TESTTOOLS.each { |e| sh("nuget install #{e}") }
 end
 
 # --------------------------------------------------------------------------- #
 # Build
 # --------------------------------------------------------------------------- #
-desc "Build the solution in the specified branch."
+desc "Build the REPOSITORY in the specified branch."
 task :build, [:branch] do |_, e|
     e.with_defaults(branch: '')
     sh("git checkout #{e.branch}") if (!e.branch.empty?)
     Rake::Task[:restore].execute
-    sh("#{BUILD} #{SOLUTION}.sln")
+    sh("#{BUILD} #{REPOSITORY}.sln")
 end
