@@ -24,24 +24,24 @@ variables:
 # --------------------------------------------------------------------------- #
 steps:
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9 or later'
   inputs:
     versionSpec: '>= 4.9'
+  displayName: 'Use NuGet 4.9 or later'
 
 - task: UseRubyVersion@0
-  displayName: 'Use Ruby 2.4 or later'
   inputs:
     versionSpec: '>= 2.4'
+  displayName: 'Use Ruby 2.4 or later'
 
 - script: rake restore
   displayName: 'NuGet restore'
 
 - task: VSBuild@1
-  displayName: 'Build solution'
   inputs:
     solution: '$(PROJECT_NAME).sln'
     platform: '$(PROJECT_PLATFORM)'
     configuration: '$(PROJECT_CONFIG)'
+  displayName: 'Build solution'
 
 - script: >-
     "$(TEST_TOOL)"
@@ -55,3 +55,23 @@ steps:
     -output:"$(TEST_COVERAGE)"
     -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
   displayName: 'Run tests via OpenCover and NUnit'
+
+- script: |
+    xcopy /q /Y /I "Tests\$(PROJECT_BIN)\*.log" "$(TEST_RESULTS)\"
+    xcopy /q /Y /I "$(TEST_COVERAGE)" "$(TEST_RESULTS)\"
+  displayName: 'Copy test log'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(TEST_RESULTS)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    replaceExistingArchive: true
+  displayName: 'Archive test log'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'Libraries/$(PROJECT_NAME).csproj'
+    configuration: '$(PROJECT_CONFIG)'
+  displayName: 'Create NuGet package'
