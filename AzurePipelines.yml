@@ -57,15 +57,16 @@ steps:
   displayName: 'Run tests via OpenCover and NUnit'
 
 - script: |
-    xcopy /q /Y /I "Tests\$(PROJECT_BIN)/*.log" "$(TEST_RESULTS)\"
+    xcopy /q /Y /I "Tests\$(PROJECT_BIN)\*.log" "$(TEST_RESULTS)\"
     xcopy /q /Y /I "$(TEST_COVERAGE)" "$(TEST_RESULTS)\"
   displayName: 'Copy test results'
 
 - task: ArchiveFiles@2
   inputs:
+    archiveFile: '$(Build.ArtifactStagingDirectory)\$(TEST_RESULTS).zip'
     rootFolderOrFile: '$(TEST_RESULTS)'
-    includeRootFolder: true
     archiveType: 'zip'
+    includeRootFolder: true
     replaceExistingArchive: true
   displayName: 'Archive test results'
 
