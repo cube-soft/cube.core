@@ -14,8 +14,8 @@ variables:
     PROJECT_PLATFORM:   'Any CPU'
     PROJECT_CONFIG:     'Release'
     PROJECT_BIN:        'bin\Any CPU\Release\net45'
-    TEST_TOOL:          '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
+    TEST_TOOL:          '$(UserProfile)\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:      '$(UserProfile)\.nuget\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
     TEST_RESULTS:       'TestResults'
     TEST_COVERAGE:      'CoverResults.xml'
 
@@ -31,8 +31,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**\*.sln'
-    nugetConfigPath: 'NuGet.config'
+    restoreSolution: '$(PROJECT_NAME).sln'
   displayName: 'Restore NuGet packages'
 
 - task: VSBuild@1
