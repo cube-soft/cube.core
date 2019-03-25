@@ -77,8 +77,14 @@ steps:
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Create NuGet package'
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/TestResult.xml'
+  displayName: 'Publish test results'
+
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: '$(PROJECT_NAME)'
     targetPath: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Publish NuGet package'
+  displayName: 'Publish artifacts'
