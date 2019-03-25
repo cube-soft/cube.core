@@ -85,13 +85,6 @@ steps:
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Create NuGet package'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'push'
-    publishVstsFeed: 'Cube'
-    allowPackageConflicts: true
-  displayName: 'Publish NuGet package'
-
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: '$(PROJECT_NAME)'
