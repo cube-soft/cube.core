@@ -31,8 +31,8 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
+    restoreSolution: '**\*.sln'
     nugetConfigPath: 'NuGet.config'
-    restoreSolution: '$(PROJECT_NAME).sln'
   displayName: 'Restore NuGet packages'
 
 - task: VSBuild@1
