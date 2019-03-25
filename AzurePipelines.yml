@@ -34,7 +34,7 @@ steps:
   displayName: 'Use Ruby 2.4 or later'
 
 - script: rake restore
-  displayName: 'NuGet restore'
+  displayName: 'Restore NuGet packages'
 
 - task: VSBuild@1
   inputs:
@@ -87,14 +87,21 @@ steps:
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Create NuGet package'
 
-- task: PublishTestResults@2
+- task: NuGetCommand@2
   inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '**/TestResult.xml'
-  displayName: 'Publish test results'
+    command: 'push'
+    publishVstsFeed: 'Cube'
+    allowPackageConflicts: true
+  displayName: 'Publish NuGet package'
 
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: '$(PROJECT_NAME)'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifacts'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**\TestResult.xml'
+  displayName: 'Publish test results'
