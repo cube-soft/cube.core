@@ -1,33 +1,57 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
+# --------------------------------------------------------------------------- #
+# common
+# --------------------------------------------------------------------------- #
 trigger:
-- master
-
+    - master
 pool:
-  vmImage: 'VS2017-Win2016'
+    vmImage: 'VS2017-Win2016'
 
+# --------------------------------------------------------------------------- #
+# variables
+# --------------------------------------------------------------------------- #
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+    PROJECT_NAME:       'Cube.Core'
+    PROJECT_PLATFORM:   'Any CPU'
+    PROJECT_CONFIG:     'Release'
+    PROJECT_BIN:        'bin\\Any CPU\\Release\\net45'
+    TEST_TOOL:          '..\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe'
+    TEST_CORETOOL:      '..\\packages\\NUnit.ConsoleRunner.3.10.0\\tools\\nunit3-console.exe'
+    TEST_RESULTS:       'TestResults'
+    TEST_COVERAGE:      'CoverResults.xml'
 
+# --------------------------------------------------------------------------- #
+# steps
+# --------------------------------------------------------------------------- #
 steps:
 - task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
+  displayName: 'Use NuGet 4.9 or later'
   inputs:
-    restoreSolution: '$(solution)'
+    versionSpec: '>= 4.9'
+
+- task: UseRubyVersion@0
+  displayName: 'Use Ruby 2.4 or later'
+  inputs:
+    versionSpec: '>= 2.4'
+
+- script: rake restore
+  displayName: 'NuGet restore'
 
 - task: VSBuild@1
+  displayName: 'Build solution'
   inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    solution: '$(PROJECT_NAME).sln'
+    platform: '$(PROJECT_PLATFORM)'
+    configuration: '$(PROJECT_CONFIG)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: >-
+    "$(TEST_TOOL)"
+    -log:Error
+    -register:user
+    -target:"$(TEST_CORETOOL)"
+    -targetargs:"$(PROJECT_NAME).Tests.dll"
+    -targetdir:"Tests\$(PROJECT_BIN)"
+    -returntargetcode
+    -hideskipped:All
+    -output:"$(TEST_COVERAGE)"
+    -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
+  displayName: 'Run tests via OpenCover and NUnit'
