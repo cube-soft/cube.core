@@ -3,7 +3,7 @@ image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
-    PROJECT_NAME:  "Cube.Xui"
+    PROJECT_NAME:  "Cube.Forms"
 branches:
     only:
         - master
