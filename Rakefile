@@ -23,7 +23,6 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 REPOSITORY  = 'Cube.Core'
 BRANCHES    = ['master', 'net35']
-TESTTOOLS   = ['NUnit.ConsoleRunner', 'OpenCover', 'ReportGenerator']
 TESTCASES   = {'Cube.Core.Tests' => 'Tests'}
 
 # --------------------------------------------------------------------------- #
@@ -31,7 +30,7 @@ TESTCASES   = {'Cube.Core.Tests' => 'Tests'}
 # --------------------------------------------------------------------------- #
 BUILD   = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
 PACK    = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
-TEST    = '../packages/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe'
+TEST    = '../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe'
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -67,21 +66,12 @@ task :test => [:build] do
 end
 
 # --------------------------------------------------------------------------- #
-# Restore
+# build
 # --------------------------------------------------------------------------- #
-desc "Restore NuGet packages in the current branch."
-task :restore do
-    sh("nuget restore #{REPOSITORY}.sln")
-    TESTTOOLS.each { |e| sh("nuget install #{e}") }
-end
-
-# --------------------------------------------------------------------------- #
-# Build
-# --------------------------------------------------------------------------- #
-desc "Build the REPOSITORY in the specified branch."
+desc "Build the Solution in the specified branch."
 task :build, [:branch] do |_, e|
     e.with_defaults(branch: '')
     sh("git checkout #{e.branch}") if (!e.branch.empty?)
-    Rake::Task[:restore].execute
+    sh("nuget restore #{REPOSITORY}.sln")
     sh("#{BUILD} #{REPOSITORY}.sln")
 end

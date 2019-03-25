@@ -14,8 +14,8 @@ variables:
     PROJECT_PLATFORM:   'Any CPU'
     PROJECT_CONFIG:     'Release'
     PROJECT_BIN:        'bin\Any CPU\Release\net45'
-    TEST_TOOL:          '..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe'
+    TEST_TOOL:          '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
     TEST_RESULTS:       'TestResults'
     TEST_COVERAGE:      'CoverResults.xml'
 
@@ -28,12 +28,10 @@ steps:
     versionSpec: '>= 4.9'
   displayName: 'Use NuGet 4.9 or later'
 
-- task: UseRubyVersion@0
+- task: NuGetCommand@2
   inputs:
-    versionSpec: '>= 2.4'
-  displayName: 'Use Ruby 2.4 or later'
-
-- script: rake restore
+    command: 'restore'
+    restoreSolution: '$(PROJECT_NAME).sln'
   displayName: 'Restore NuGet packages'
 
 - task: VSBuild@1

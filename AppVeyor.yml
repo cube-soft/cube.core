@@ -5,7 +5,7 @@ configuration: Release
 environment:
     PROJECT_NAME:   "Cube.Core"
     PROJECT_BIN:    "bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    TEST_TOOL:      "C:\\Cube\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe"
+    TEST_TOOL:      "C:\\Cube\\packages\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
     TEST_CORETOOL:  "nunit3-console.exe"
     TEST_RESULTS:   "TestResults"
     TEST_COVERAGE:  "CoverResults.xml"
