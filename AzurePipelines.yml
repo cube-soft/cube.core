@@ -61,6 +61,7 @@ steps:
     contents: 'Tests\**\*.log'
     targetFolder: '$(TEST_RESULTS)'
     overWrite: true
+    flattenFolders: true
   displayName: 'Copy log files for testing'
 
 - task: CopyFiles@2
