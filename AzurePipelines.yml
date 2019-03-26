@@ -1,0 +1,87 @@
+trigger:
+    - master
+pool:
+    vmImage: 'VS2017-Win2016'
+variables:
+    PROJECT_NAME:       'Cube.FileSystem'
+    PROJECT_PLATFORM:   'Any CPU'
+    PROJECT_CONFIG:     'Release'
+    PROJECT_BIN:        'bin\Any CPU\Release\net45'
+    TEST_TOOL:          '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
+    TEST_RESULTS:       'TestResults'
+    TEST_COVERAGE:      'CoverResults.xml'
+
+steps:
+- task: NuGetToolInstaller@0
+  inputs:
+    versionSpec: '>= 4.9'
+  displayName: 'Use NuGet 4.9 or later'
+
+- script: |
+    nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
+    nuget restore "$(PROJECT_NAME).sln"
+  displayName: 'Restore NuGet packages'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(PROJECT_NAME).sln'
+    platform: '$(PROJECT_PLATFORM)'
+    configuration: '$(PROJECT_CONFIG)'
+  displayName: 'Build solution'
+
+- script: >-
+    "$(TEST_TOOL)"
+    -log:Error
+    -register:user
+    -target:"$(TEST_CORETOOL)"
+    -targetargs:"$(PROJECT_NAME).Tests.dll"
+    -targetdir:"Tests\$(PROJECT_BIN)"
+    -returntargetcode
+    -hideskipped:All
+    -output:"$(TEST_COVERAGE)"
+    -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
+  displayName: 'Run tests via OpenCover and NUnit'
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'Tests\**\*.log'
+    targetFolder: '$(TEST_RESULTS)'
+    overWrite: true
+    flattenFolders: true
+  displayName: 'Copy log files for testing'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '$(TEST_COVERAGE)'
+    targetFolder: '$(TEST_RESULTS)'
+    overWrite: true
+  displayName: 'Copy coverage results'
+
+- task: ArchiveFiles@2
+  inputs:
+    archiveFile: '$(Build.ArtifactStagingDirectory)\$(TEST_RESULTS).zip'
+    rootFolderOrFile: '$(TEST_RESULTS)'
+    archiveType: 'zip'
+    includeRootFolder: true
+    replaceExistingArchive: true
+  displayName: 'Archive test results'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'Libraries\$(PROJECT_NAME).csproj'
+    configuration: '$(PROJECT_CONFIG)'
+  displayName: 'Create NuGet package'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: '$(PROJECT_NAME)'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Publish artifacts'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**\TestResult.xml'
+  displayName: 'Publish test results'
