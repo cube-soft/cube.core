@@ -3,12 +3,14 @@ image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
-    PROJECT_NAME:  "Cube.FileSystem"
-    PROJECT_BIN:   "bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    TEST_TOOL:     "..\\packages\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
-    TEST_CORETOOL: "nunit3-console.exe"
-    TEST_RESULTS:  "TestResults"
-    TEST_COVERAGE: "CoverResults.xml"
+    PROJECT_NAME:     "Cube.FileSystem"
+    PROJECT_BIN:      "bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
+    PROJECT_PACKAGE:  "..\\packages"
+    TEST_TOOL:        "$(PROJECT_PACKAGE)\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
+    TEST_CORETOOL:    "nunit3-console.exe"
+    TEST_RESULT:      'TestResult.xml'
+    TEST_COVERAGE:    "CoverResults.xml"
+    TEST_LOG:         "TestResults"
 branches:
     only:
         - master
@@ -18,7 +20,6 @@ nuget:
     disable_publish_on_pr: true
 clone_folder: "C:\\Cube\\%PROJECT_NAME%"
 before_build:
-    - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     - nuget restore "%PROJECT_NAME%.sln"
 build:
     project: "%PROJECT_NAME%.sln"
@@ -38,9 +39,7 @@ test_script:
       -output:"%TEST_COVERAGE%"
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_RESULTS%\"
-    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
-    - pip install codecov
-    - codecov -f "%TEST_COVERAGE%"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOG%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOG%\"
 artifacts:
-    - path: "%TEST_RESULTS%"
+    - path: "%TEST_LOG%"

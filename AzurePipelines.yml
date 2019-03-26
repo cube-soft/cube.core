@@ -3,14 +3,16 @@ trigger:
 pool:
     vmImage: 'VS2017-Win2016'
 variables:
-    PROJECT_NAME:       'Cube.FileSystem'
-    PROJECT_PLATFORM:   'Any CPU'
-    PROJECT_CONFIG:     'Release'
-    PROJECT_BIN:        'bin\Any CPU\Release\net45'
-    TEST_TOOL:          '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
-    TEST_RESULTS:       'TestResults'
-    TEST_COVERAGE:      'CoverResults.xml'
+    PROJECT_NAME:     'Cube.FileSystem'
+    PROJECT_PLATFORM: 'Any CPU'
+    PROJECT_CONFIG:   'Release'
+    PROJECT_BIN:      'bin\$(PROJECT_PLATFORM)\$(PROJECT_CONFIG)\net45'
+    PROJECT_PACKAGE:  '..\packages'
+    TEST_TOOL:        '$(PROJECT_PACKAGE)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:    '$(PROJECT_PACKAGE)\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
+    TEST_RESULT:      'TestResult.xml'
+    TEST_COVERAGE:    'CoverResults.xml'
+    TEST_LOG:         '$(Build.ArtifactStagingDirectory)\TestResults'
 
 steps:
 - task: NuGetToolInstaller@0
@@ -19,7 +21,6 @@ steps:
   displayName: 'Use NuGet 4.9 or later'
 
 - script: |
-    nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
     nuget restore "$(PROJECT_NAME).sln"
   displayName: 'Restore NuGet packages'
 
@@ -43,29 +44,16 @@ steps:
     -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
   displayName: 'Run tests via OpenCover and NUnit'
 
-- task: CopyFiles@2
+- task: PublishTestResults@2
   inputs:
-    contents: 'Tests\**\*.log'
-    targetFolder: '$(TEST_RESULTS)'
-    overWrite: true
-    flattenFolders: true
-  displayName: 'Copy log files for testing'
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**\$(TEST_RESULT)'
+  displayName: 'Publish test results'
 
-- task: CopyFiles@2
-  inputs:
-    contents: '$(TEST_COVERAGE)'
-    targetFolder: '$(TEST_RESULTS)'
-    overWrite: true
-  displayName: 'Copy coverage results'
-
-- task: ArchiveFiles@2
-  inputs:
-    archiveFile: '$(Build.ArtifactStagingDirectory)\$(TEST_RESULTS).zip'
-    rootFolderOrFile: '$(TEST_RESULTS)'
-    archiveType: 'zip'
-    includeRootFolder: true
-    replaceExistingArchive: true
-  displayName: 'Archive test results'
+- script: |
+    pip install codecov
+    codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
+  displayName: "Send coverage results to Codecov"
 
 - task: NuGetCommand@2
   inputs:
@@ -74,14 +62,29 @@ steps:
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Create NuGet package'
 
+- task: CopyFiles@2
+  inputs:
+    contents: '**\*.log'
+    targetFolder: '$(TEST_LOG)'
+    overWrite: true
+  displayName: 'Copy log files'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**\$(TEST_RESULT)'
+    targetFolder: '$(TEST_LOG)'
+    overWrite: true
+  displayName: 'Copy test results'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '$(TEST_COVERAGE)'
+    targetFolder: '$(TEST_LOG)'
+    overWrite: true
+  displayName: 'Copy coverage results'
+
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: '$(PROJECT_NAME)'
     targetPath: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Publish artifacts'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '**\TestResult.xml'
-  displayName: 'Publish test results'
+  displayName: 'Publish pipline artifacts'
