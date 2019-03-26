@@ -20,7 +20,8 @@ steps:
     versionSpec: '>= 4.9'
   displayName: 'Use NuGet 4.9 or later'
 
-- script: nuget restore "$(PROJECT_NAME).sln"
+- script: |
+    nuget restore "$(PROJECT_NAME).sln"
   displayName: 'Restore NuGet packages'
 
 - task: VSBuild@1
@@ -93,5 +94,5 @@ steps:
   displayName: 'Publish test results'
 
 - script: |
-    "$(TEST_CODECOV)" -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
+    "$(TEST_CODECOV)" -f "$(TEST_COVERAGE)"
   displayName: "Send coverage results to Codecov"
