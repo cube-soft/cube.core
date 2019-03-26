@@ -5,10 +5,11 @@ configuration: Release
 environment:
     PROJECT_NAME:   "Cube.Core"
     PROJECT_BIN:    "bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    TEST_TOOL:      "C:\\Cube\\packages\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
+    TEST_TOOL:      "..\\packages\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
     TEST_CORETOOL:  "nunit3-console.exe"
-    TEST_RESULTS:   "TestResults"
+    TEST_RESULT:    "TestResult.xml"
     TEST_COVERAGE:  "CoverResults.xml"
+    TEST_LOGS:      "TestResults"
 branches:
     only:
         - master
@@ -30,16 +31,14 @@ test_script:
       -log:Error
       -register:user
       -target:"%TEST_CORETOOL%"
-      -targetargs:"%PROJECT_NAME%.Tests.dll"
-      -targetdir:"Tests\%PROJECT_BIN%"
+      -targetargs:"""Tests\%PROJECT_BIN%\%PROJECT_NAME%.Tests.dll"""
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_RESULTS%\"
-    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
-    - pip install codecov
-    - codecov -f "%TEST_COVERAGE%"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOGS%\"
+    - xcopy /q /Y /I "%TEST_RESULT%" "%TEST_LOGS%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOGS%\"
 artifacts:
-    - path: "%TEST_RESULTS%"
+    - path: "%TEST_LOGS%"

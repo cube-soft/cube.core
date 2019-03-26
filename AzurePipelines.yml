@@ -9,8 +9,10 @@ variables:
     PROJECT_BIN:        'bin\Any CPU\Release\net45'
     TEST_TOOL:          '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
     TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
-    TEST_RESULTS:       'TestResults'
+    TEST_CODECOV:       '..\packages\Codecov\1.3.0\tools\codecov.exe'
+    TEST_RESULT:        'TestResult.xml'
     TEST_COVERAGE:      'CoverResults.xml'
+    TEST_LOGS:          'TestResults'
 
 steps:
 - task: NuGetToolInstaller@0
@@ -33,8 +35,7 @@ steps:
     -log:Error
     -register:user
     -target:"$(TEST_CORETOOL)"
-    -targetargs:"$(PROJECT_NAME).Tests.dll"
-    -targetdir:"Tests\$(PROJECT_BIN)"
+    -targetargs:"""Tests\$(PROJECT_BIN)\$(PROJECT_NAME).Tests.dll"""
     -returntargetcode
     -hideskipped:All
     -output:"$(TEST_COVERAGE)"
@@ -43,23 +44,30 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: 'Tests\**\*.log'
-    targetFolder: '$(TEST_RESULTS)'
+    contents: '$(TEST_RESULT)'
+    targetFolder: '$(TEST_LOGS)'
     overWrite: true
-    flattenFolders: true
-  displayName: 'Copy log files for testing'
+  displayName: 'Copy test results'
 
 - task: CopyFiles@2
   inputs:
     contents: '$(TEST_COVERAGE)'
-    targetFolder: '$(TEST_RESULTS)'
+    targetFolder: '$(TEST_LOGS)'
     overWrite: true
   displayName: 'Copy coverage results'
 
+- task: CopyFiles@2
+  inputs:
+    contents: 'Tests\**\*.log'
+    targetFolder: '$(TEST_LOGS)'
+    overWrite: true
+    flattenFolders: true
+  displayName: 'Copy log files for testing'
+
 - task: ArchiveFiles@2
   inputs:
-    archiveFile: '$(Build.ArtifactStagingDirectory)\$(TEST_RESULTS).zip'
-    rootFolderOrFile: '$(TEST_RESULTS)'
+    archiveFile: '$(Build.ArtifactStagingDirectory)\$(TEST_LOGS).zip'
+    rootFolderOrFile: '$(TEST_LOGS)'
     archiveType: 'zip'
     includeRootFolder: true
     replaceExistingArchive: true
@@ -83,3 +91,7 @@ steps:
     testResultsFormat: 'NUnit'
     testResultsFiles: '**\TestResult.xml'
   displayName: 'Publish test results'
+
+- script: |
+    "$(TEST_CODECOV)" -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
+  displayName: "Send coverage results to Codecov"
