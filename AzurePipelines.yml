@@ -49,6 +49,24 @@ steps:
     -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
   displayName: 'Run tests via OpenCover and NUnit'
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**\$(TEST_RESULT)'
+  displayName: 'Publish test results'
+
+- script: |
+    pip install codecov
+    codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
+  displayName: "Send coverage results to Codecov"
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'Libraries\$(PROJECT_NAME).csproj'
+    configuration: '$(PROJECT_CONFIG)'
+  displayName: 'Create NuGet package'
+
 - task: CopyFiles@2
   inputs:
     contents: '**\*.log'
@@ -79,26 +97,8 @@ steps:
     replaceExistingArchive: true
   displayName: 'Archive test results'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'Libraries\$(PROJECT_NAME).csproj'
-    configuration: '$(PROJECT_CONFIG)'
-  displayName: 'Create NuGet package'
-
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: '$(PROJECT_NAME)'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish pipline artifacts'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '**\$(TEST_RESULT)'
-  displayName: 'Publish test results'
-
-- script: |
-    pip install codecov
-    codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
-  displayName: "Send coverage results to Codecov"

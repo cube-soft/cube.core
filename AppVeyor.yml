@@ -39,7 +39,7 @@ test_script:
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
     - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOGS%\"
-    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\%TEST_RESULT%" "%TEST_LOGS%\"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\%TEST_RESULT%" "%TEST_LOGS%\%PROJECT_NAME%.%TEST_RESULT%"
     - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOGS%\"
 artifacts:
     - path: "%TEST_LOGS%"
