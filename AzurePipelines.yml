@@ -6,18 +6,18 @@ variables:
     PROJECT_NAME:     'Cube.Core'
     PROJECT_PLATFORM: 'Any CPU'
     PROJECT_CONFIG:   'Release'
-    PROJECT_BIN:      'bin\Any CPU\Release\net45'
-    TEST_TOOL:        '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:    '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
+    PROJECT_BIN:      'bin\$(PROJECT_PLATFORM)\$(PROJECT_CONFIG)\net45'
+    PROJECT_PACKAGE:  '..\packages'
+    TEST_TOOL:        '$(PROJECT_PACKAGE)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:    '$(PROJECT_PACKAGE)\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
     TEST_RESULT:      'TestResult.xml'
     TEST_COVERAGE:    'CoverResults.xml'
-    TEST_LOGS:        'TestResults'
+    TEST_LOG:         '$(Build.ArtifactStagingDirectory)\TestResults'
 
 steps:
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '>= 3.7'
-    architecture: 'x64'
   displayName: 'Use Python 3.7 or later'
 
 - task: NuGetToolInstaller@0
@@ -70,21 +70,21 @@ steps:
 - task: CopyFiles@2
   inputs:
     contents: '**\*.log'
-    targetFolder: '$(TEST_LOGS)'
+    targetFolder: '$(TEST_LOG)'
     overWrite: true
   displayName: 'Copy log files'
 
 - task: CopyFiles@2
   inputs:
     contents: '**\$(TEST_RESULT)'
-    targetFolder: '$(TEST_LOGS)'
+    targetFolder: '$(TEST_LOG)'
     overWrite: true
   displayName: 'Copy test results'
 
 - task: CopyFiles@2
   inputs:
     contents: '$(TEST_COVERAGE)'
-    targetFolder: '$(TEST_LOGS)'
+    targetFolder: '$(TEST_LOG)'
     overWrite: true
   displayName: 'Copy coverage results'
 
