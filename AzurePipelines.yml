@@ -15,11 +15,6 @@ variables:
     TEST_LOG:         '$(Build.ArtifactStagingDirectory)\TestResults'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '>= 3.7'
-  displayName: 'Use Python 3.7 or later'
-
 - task: NuGetToolInstaller@0
   inputs:
     versionSpec: '>= 4.9'
