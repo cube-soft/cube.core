@@ -3,16 +3,15 @@ trigger:
 pool:
     vmImage: 'VS2017-Win2016'
 variables:
-    PROJECT_NAME:       'Cube.Core'
-    PROJECT_PLATFORM:   'Any CPU'
-    PROJECT_CONFIG:     'Release'
-    PROJECT_BIN:        'bin\Any CPU\Release\net45'
-    TEST_TOOL:          '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:      '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
-    TEST_CODECOV:       '..\packages\Codecov\1.3.0\tools\codecov.exe'
-    TEST_RESULT:        'TestResult.xml'
-    TEST_COVERAGE:      'CoverResults.xml'
-    TEST_LOGS:          'TestResults'
+    PROJECT_NAME:     'Cube.Core'
+    PROJECT_PLATFORM: 'Any CPU'
+    PROJECT_CONFIG:   'Release'
+    PROJECT_BIN:      'bin\Any CPU\Release\net45'
+    TEST_TOOL:        '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:    '..\packages\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
+    TEST_RESULT:      'TestResult.xml'
+    TEST_COVERAGE:    'CoverResults.xml'
+    TEST_LOGS:        'TestResults'
 
 steps:
 - task: UsePythonVersion@0
@@ -42,7 +41,8 @@ steps:
     -log:Error
     -register:user
     -target:"$(TEST_CORETOOL)"
-    -targetargs:"""Tests\$(PROJECT_BIN)\$(PROJECT_NAME).Tests.dll"""
+    -targetargs:"$(PROJECT_NAME).Tests.dll"
+    -targetdir:"Tests\$(PROJECT_BIN)"
     -returntargetcode
     -hideskipped:All
     -output:"$(TEST_COVERAGE)"
@@ -51,7 +51,14 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: '$(TEST_RESULT)'
+    contents: '**\*.log'
+    targetFolder: '$(TEST_LOGS)'
+    overWrite: true
+  displayName: 'Copy log files'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**\$(TEST_RESULT)'
     targetFolder: '$(TEST_LOGS)'
     overWrite: true
   displayName: 'Copy test results'
@@ -62,14 +69,6 @@ steps:
     targetFolder: '$(TEST_LOGS)'
     overWrite: true
   displayName: 'Copy coverage results'
-
-- task: CopyFiles@2
-  inputs:
-    contents: 'Tests\**\*.log'
-    targetFolder: '$(TEST_LOGS)'
-    overWrite: true
-    flattenFolders: true
-  displayName: 'Copy log files for testing'
 
 - task: ArchiveFiles@2
   inputs:
@@ -91,12 +90,12 @@ steps:
   inputs:
     artifactName: '$(PROJECT_NAME)'
     targetPath: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Publish artifacts'
+  displayName: 'Publish pipline artifacts'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'NUnit'
-    testResultsFiles: '**\TestResult.xml'
+    testResultsFiles: '**\$(TEST_RESULT)'
   displayName: 'Publish test results'
 
 - script: |
