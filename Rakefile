@@ -36,6 +36,7 @@ TEST    = '../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe'
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{REPOSITORY}.*.nupkg")
+CLEAN.include("../packages/cube.*")
 CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}/*" })
 
 # --------------------------------------------------------------------------- #
