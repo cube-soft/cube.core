@@ -101,5 +101,5 @@ steps:
 
 - script: |
     pip install codecov
-    codecov -f "$(TEST_COVERAGE)"
+    codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
   displayName: "Send coverage results to Codecov"
