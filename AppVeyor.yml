@@ -4,10 +4,10 @@ platform: Any CPU
 configuration: Release
 environment:
     PROJECT_NAME:  "Cube.FileSystem"
-    TEST_TOOL:     "C:\\Cube\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe"
+    PROJECT_BIN:   "bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
+    TEST_TOOL:     "..\\packages\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
     TEST_CORETOOL: "nunit3-console.exe"
-    TEST_SOURCE:   "Tests\\bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    TEST_RESULT:   "TestResults"
+    TEST_RESULTS:  "TestResults"
     TEST_COVERAGE: "CoverResults.xml"
 branches:
     only:
@@ -19,7 +19,7 @@ nuget:
 clone_folder: "C:\\Cube\\%PROJECT_NAME%"
 before_build:
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
-    - rake restore
+    - nuget restore "%PROJECT_NAME%.sln"
 build:
     project: "%PROJECT_NAME%.sln"
     parallel: true
@@ -32,15 +32,15 @@ test_script:
       -register:user
       -target:"%TEST_CORETOOL%"
       -targetargs:"%PROJECT_NAME%.Tests.dll"
-      -targetdir:"%TEST_SOURCE%"
+      -targetdir:"Tests\%PROJECT_BIN%"
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
       -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
 after_test:
-    - xcopy /q /Y /I "%TEST_SOURCE%\*.log" "%TEST_RESULT%\"
-    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULT%\"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_RESULTS%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
     - pip install codecov
     - codecov -f "%TEST_COVERAGE%"
 artifacts:
-    - path: "%TEST_RESULT%"
+    - path: "%TEST_RESULTS%"

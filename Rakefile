@@ -21,38 +21,38 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-SOLUTION    = 'Cube.FileSystem'
+REPOSITORY  = 'Cube.FileSystem'
 BRANCHES    = ['stable', 'net35']
-TESTTOOLS   = ['NUnit.ConsoleRunner', 'OpenCover', 'ReportGenerator']
-TESTCASES   = {"#{SOLUTION}.Tests" => 'Tests'}
+TESTCASES   = {"#{REPOSITORY}.Tests" => 'Tests'}
 
 # --------------------------------------------------------------------------- #
 # commands
 # --------------------------------------------------------------------------- #
 BUILD   = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
 PACK    = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
-TEST    = '../packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe'
+TEST    = '../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe'
 
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{SOLUTION}.*.nupkg")
+CLEAN.include("#{REPOSITORY}.*.nupkg")
+CLEAN.include("../packages/cube.*")
 CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}/*" })
 
 # --------------------------------------------------------------------------- #
 # default
 # --------------------------------------------------------------------------- #
-desc "Clean objects and pack nupkg."
+desc "Clean objects and pack NuGet package."
 task :default => [:clean, :pack]
 
 # --------------------------------------------------------------------------- #
 # pack
 # --------------------------------------------------------------------------- #
-desc "Pack nupkg in the net35 branch."
+desc "Pack NuGet package in the net35 branch."
 task :pack do
     BRANCHES.each { |e| Rake::Task[:build].invoke(e) }
     sh("git checkout net35")
-    sh("#{PACK} Libraries/#{SOLUTION}.nuspec")
+    sh("#{PACK} Libraries/#{REPOSITORY}.nuspec")
     sh("git checkout master")
 end
 
@@ -67,21 +67,12 @@ task :test => [:build] do
 end
 
 # --------------------------------------------------------------------------- #
-# Restore
-# --------------------------------------------------------------------------- #
-desc "Restore NuGet packages in the current branch."
-task :restore do
-    sh("nuget restore #{SOLUTION}.sln")
-    TESTTOOLS.each { |e| sh("nuget install #{e}") }
-end
-
-# --------------------------------------------------------------------------- #
-# Build
+# build
 # --------------------------------------------------------------------------- #
 desc "Build the solution in the specified branch."
 task :build, [:branch] do |_, e|
     e.with_defaults(branch: '')
     sh("git checkout #{e.branch}") if (!e.branch.empty?)
-    Rake::Task[:restore].execute
-    sh("#{BUILD} #{SOLUTION}.sln")
+    sh("nuget restore #{REPOSITORY}.sln")
+    sh("#{BUILD} #{REPOSITORY}.sln")
 end
