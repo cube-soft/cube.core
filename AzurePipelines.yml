@@ -32,7 +32,7 @@ steps:
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Build solution'
 
-- script: >-
+- script: >
     "$(TEST_TOOL)"
     -log:Error
     -register:user
@@ -48,7 +48,7 @@ steps:
 - script: |
     pip install codecov
     codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
-  displayName: "Send coverage results to Codecov"
+  displayName: 'Send coverage results to Codecov'
 
 - task: PublishTestResults@2
   inputs:
