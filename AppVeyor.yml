@@ -3,12 +3,15 @@ image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
-    PROJECT_NAME:  "Cube.Xui"
-    TEST_TOOL:     "C:\\Cube\\packages\\OpenCover.4.7.922\\tools\\OpenCover.Console.exe"
-    TEST_CORETOOL: "nunit3-console.exe"
-    TEST_SOURCE:   "Tests\\bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    TEST_RESULT:   "TestResults"
-    TEST_COVERAGE: "CoverResults.xml"
+    PROJECT_NAME:     'Cube.Xui'
+    PROJECT_BIN:      'bin\%PLATFORM%\%CONFIGURATION%\net45'
+    PROJECT_PACKAGE:  '..\packages'
+    TEST_TOOL:        '$(PROJECT_PACKAGE)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:    'nunit3-console.exe'
+    TEST_FILTERS:     '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
+    TEST_RESULT:      'TestResult.xml'
+    TEST_COVERAGE:    'CoverResults.xml'
+    TEST_LOG:         'TestResults'
 branches:
     only:
         - master
@@ -16,13 +19,11 @@ skip_tags: true
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-clone_folder: "C:\\Cube\\%PROJECT_NAME%"
+clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
-    - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
-    - rake restore
+    - nuget restore "%PROJECT_NAME%.sln"
 build:
-    project: "%PROJECT_NAME%.sln"
+    project: '%PROJECT_NAME%.sln'
     parallel: true
     publish_nuget: true
     verbosity: minimal
@@ -33,15 +34,13 @@ test_script:
       -register:user
       -target:"%TEST_CORETOOL%"
       -targetargs:"%PROJECT_NAME%.Tests.dll"
-      -targetdir:"%TEST_SOURCE%"
+      -targetdir:"Tests\%PROJECT_BIN%"
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
-      -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
+      -filter:"%TEST_FILTERS%"
 after_test:
-    - xcopy /q /Y /I "%TEST_SOURCE%\*.log" "%TEST_RESULT%\"
-    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULT%\"
-    - pip install codecov
-    - codecov -f "%TEST_COVERAGE%"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOG%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOG%\"
 artifacts:
-    - path: "%TEST_RESULT%"
+    - path: '%TEST_LOG%'
