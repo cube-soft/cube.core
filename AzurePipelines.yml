@@ -10,6 +10,7 @@ variables:
     PROJECT_PACKAGE:  '..\packages'
     TEST_TOOL:        '$(PROJECT_PACKAGE)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
     TEST_CORETOOL:    '$(PROJECT_PACKAGE)\NUnit.ConsoleRunner\3.10.0\tools\nunit3-console.exe'
+    TEST_FILTERS:     '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
     TEST_RESULT:      'TestResult.xml'
     TEST_COVERAGE:    'CoverResults.xml'
     TEST_LOG:         '$(Build.ArtifactStagingDirectory)\TestResults'
@@ -31,7 +32,7 @@ steps:
     configuration: '$(PROJECT_CONFIG)'
   displayName: 'Build solution'
 
-- script: >-
+- script: >
     "$(TEST_TOOL)"
     -log:Error
     -register:user
@@ -41,19 +42,19 @@ steps:
     -returntargetcode
     -hideskipped:All
     -output:"$(TEST_COVERAGE)"
-    -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
+    -filter:"$(TEST_FILTERS)"
   displayName: 'Run tests via OpenCover and NUnit'
+
+- script: |
+    pip install codecov
+    codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
+  displayName: 'Send coverage results to Codecov'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'NUnit'
     testResultsFiles: '**\$(TEST_RESULT)'
   displayName: 'Publish test results'
-
-- script: |
-    pip install codecov
-    codecov -f "$(TEST_COVERAGE)" -t $(CODECOV_TOKEN)
-  displayName: "Send coverage results to Codecov"
 
 - task: NuGetCommand@2
   inputs:

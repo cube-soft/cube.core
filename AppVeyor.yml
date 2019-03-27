@@ -3,14 +3,15 @@ image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
-    PROJECT_NAME:     "Cube.Core"
-    PROJECT_BIN:      "bin\\%PLATFORM%\\%CONFIGURATION%\\net45"
-    PROJECT_PACKAGE:  "..\\packages"
-    TEST_TOOL:        "$(PROJECT_PACKAGE)\\OpenCover\\4.7.922\\tools\\OpenCover.Console.exe"
-    TEST_CORETOOL:    "nunit3-console.exe"
+    PROJECT_NAME:     'Cube.Core'
+    PROJECT_BIN:      'bin\%PLATFORM%\%CONFIGURATION%\net45'
+    PROJECT_PACKAGE:  '..\packages'
+    TEST_TOOL:        '$(PROJECT_PACKAGE)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:    'nunit3-console.exe'
+    TEST_FILTERS:     '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
     TEST_RESULT:      'TestResult.xml'
-    TEST_COVERAGE:    "CoverResults.xml"
-    TEST_LOG:         "TestResults"
+    TEST_COVERAGE:    'CoverResults.xml'
+    TEST_LOG:         'TestResults'
 branches:
     only:
         - master
@@ -18,11 +19,11 @@ skip_tags: true
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-clone_folder: "C:\\Cube\\%PROJECT_NAME%"
+clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
     - nuget restore "%PROJECT_NAME%.sln"
 build:
-    project: "%PROJECT_NAME%.sln"
+    project: '%PROJECT_NAME%.sln'
     parallel: true
     publish_nuget: true
     verbosity: minimal
@@ -37,9 +38,9 @@ test_script:
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
-      -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
+      -filter:"%TEST_FILTERS%"
 after_test:
     - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOG%\"
     - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOG%\"
 artifacts:
-    - path: "%TEST_LOG%"
+    - path: '%TEST_LOG%'

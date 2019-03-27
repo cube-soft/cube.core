@@ -23,7 +23,7 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 REPOSITORY  = 'Cube.Core'
 BRANCHES    = ['master', 'net35']
-TESTCASES   = {'Cube.Core.Tests' => 'Tests'}
+TESTCASES   = {"#{REPOSITORY}.Tests" => 'Tests'}
 
 # --------------------------------------------------------------------------- #
 # commands
