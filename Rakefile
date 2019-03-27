@@ -61,9 +61,14 @@ end
 # --------------------------------------------------------------------------- #
 desc "Build and test projects in the current branch."
 task :test => [:build] do
-    fw = `git symbolic-ref --short HEAD`.chomp
-    fw = 'net45' if (fw != 'net35')
-    TESTCASES.each { |proj, dir| sh("#{TEST} \"#{dir}/bin/Any CPU/Release/#{fw}/#{proj}.dll\"") }
+    fw  = `git symbolic-ref --short HEAD`.chomp
+    fw  = 'net45' if (fw != 'net35')
+    bin = ['bin', 'Any CPU', 'Release', fw].join('/')
+
+    TESTCASES.each { |proj, root|
+        dir = "#{root}/#{bin}"
+        sh("#{TEST} \"#{dir}/#{proj}.dll\" --work=\"#{dir}\"")
+    }
 end
 
 # --------------------------------------------------------------------------- #
