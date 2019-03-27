@@ -25,7 +25,7 @@ Or select it from the NuGet packages UI on Visual Studio.
 ## Contributing
 
 1. Fork [Cube.FileSystem](https://github.com/cube-soft/Cube.FileSystem/fork) repository.
-2. Create a feature branch from the [stable](https://github.com/cube-soft/Cube.FileSystem/tree/stable) branch (git checkout -b my-new-feature origin/stable). The [master](https://github.com/cube-soft/Cube.FileSystem/tree/master) branch may refer some pre-released NuGet packages. See [AppVeyor.yml](https://github.com/cube-soft/Cube.FileSystem/blob/master/AppVeyor.yml) or [AzurePipelines.yml](https://github.com/cube-soft/Cube.FileSystem/blob/master/AzurePipelines.yml) if you want to build and commit in the master branch.
+2. Create a feature branch from the master or stable branch (e.g. git checkout -b my-new-feature origin/master). Note that the master branch may refer some pre-released NuGet packages. Try the [rake clean](https://github.com/cube-soft/Cube.FileSystem/blob/master/Rakefile) command when build errors occur.
 3. Commit your changes.
 4. Rebase your local changes against the stable (or master) branch.
 5. Run test suite with the [NUnit](https://nunit.org/) console or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
