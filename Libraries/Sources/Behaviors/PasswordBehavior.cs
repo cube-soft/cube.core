@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Generics;
 using System;
 using System.Drawing;
 
@@ -271,8 +272,11 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenPasswordChanged(object sender, EventArgs e) =>
-            _confirm.Text = string.Empty;
+        private void WhenPasswordChanged(object sender, EventArgs e)
+        {
+            if (_confirm.Text.HasValue()) _confirm.Text = string.Empty;
+            else OnUpdated(EventArgs.Empty);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
