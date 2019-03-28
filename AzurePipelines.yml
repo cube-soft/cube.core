@@ -3,7 +3,7 @@ trigger:
 pool:
     vmImage: 'VS2017-Win2016'
 variables:
-    PROJECT_NAME:     'Cube.FileSystem'
+    PROJECT_NAME:     'Cube.Forms'
     PROJECT_PLATFORM: 'Any CPU'
     PROJECT_CONFIG:   'Release'
 
