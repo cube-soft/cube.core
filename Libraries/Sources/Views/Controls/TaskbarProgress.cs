@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Log;
 using System;
 using System.Windows.Forms;
 
@@ -78,10 +79,7 @@ namespace Cube.Forms
         public TaskbarProgressState State
         {
             get => _state;
-            set
-            {
-                if (SetProperty(ref _state, value)) Refresh();
-            }
+            set { if (SetProperty(ref _state, value)) Refresh(); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -96,10 +94,7 @@ namespace Cube.Forms
         public int Value
         {
             get => _value;
-            set
-            {
-                if (SetProperty(ref _value, value)) Refresh();
-            }
+            set { if (SetProperty(ref _value, value)) Refresh(); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -114,10 +109,7 @@ namespace Cube.Forms
         public int Maximum
         {
             get => _maximum;
-            set
-            {
-                if (SetProperty(ref _maximum, value)) Refresh();
-            }
+            set { if (SetProperty(ref _maximum, value)) Refresh(); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -129,7 +121,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsSupported { get; } = Environment.OSVersion.Version >= new Version(6, 1);
+        public bool IsSupported { get; private set; } = Environment.OSVersion.Version >= new Version(6, 1);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -140,9 +132,22 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private ITaskbarList3 Core => _core ?? (
-            _core = (ITaskbarList3)(new TaskbarListInstance())
-        );
+        private ITaskbarList3 Core
+        {
+            get
+            {
+                if (IsSupported && _core == null)
+                {
+                    try { _core = (ITaskbarList3)(new TaskbarListInstance()); }
+                    catch (Exception err)
+                    {
+                        this.LogWarn(err);
+                        IsSupported = false;
+                    }
+                }
+                return _core;
+            }
+        }
 
         #endregion
 
@@ -159,11 +164,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void Refresh()
         {
-            if (!IsSupported) return;
-
             var cvt = Math.Min(Value, Maximum);
-            Core.SetProgressValue(_handle, (ulong)cvt, (ulong)Maximum);
-            Core.SetProgressState(_handle, State);
+            Core?.SetProgressValue(_handle, (ulong)cvt, (ulong)Maximum);
+            Core?.SetProgressState(_handle, State);
         }
 
         #endregion
