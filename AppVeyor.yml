@@ -3,7 +3,7 @@ image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
-    PROJECT_NAME:  "Cube.Forms"
+    PROJECT_NAME: 'Cube.Forms'
 branches:
     only:
         - master
@@ -11,14 +11,11 @@ skip_tags: true
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-clone_folder: "C:\\Cube\\%PROJECT_NAME%"
+clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
-    - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
-    - nuget sources add -name Cube.Images -source https://ci.appveyor.com/nuget/cube.images
-    - rake restore
+    - nuget restore "%PROJECT_NAME%.sln"
 build:
-    project: "%PROJECT_NAME%.sln"
+    project: '%PROJECT_NAME%.sln'
     parallel: true
     publish_nuget: true
     verbosity: minimal

@@ -21,7 +21,7 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-SOLUTION    = 'Cube.Forms'
+REPOSITORY  = 'Cube.Forms'
 BRANCHES    = ['stable', 'net35']
 
 # --------------------------------------------------------------------------- #
@@ -33,8 +33,9 @@ PACK    = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{SOLUTION}.*.nupkg")
-CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}/*" })
+CLEAN.include("#{REPOSITORY}.*.nupkg")
+CLEAN.include("../packages/cube.*")
+CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
 # default
@@ -49,25 +50,17 @@ desc "Pack nupkg in the net35 branch."
 task :pack do
     BRANCHES.each { |e| Rake::Task[:build].invoke(e) }
     sh("git checkout net35")
-    sh("#{PACK} Libraries/#{SOLUTION}.nuspec")
+    sh("#{PACK} Libraries/#{REPOSITORY}.nuspec")
     sh("git checkout master")
 end
 
 # --------------------------------------------------------------------------- #
-# Restore
-# --------------------------------------------------------------------------- #
-desc "Restore NuGet packages in the current branch."
-task :restore do
-    sh("nuget restore #{SOLUTION}.sln")
-end
-
-# --------------------------------------------------------------------------- #
-# Build
+# build
 # --------------------------------------------------------------------------- #
 desc "Build the solution in the specified branch."
 task :build, [:branch] do |_, e|
     e.with_defaults(branch: '')
     sh("git checkout #{e.branch}") if (!e.branch.empty?)
-    Rake::Task[:restore].execute
-    sh("#{BUILD} #{SOLUTION}.sln")
+    sh("nuget restore #{REPOSITORY}.sln")
+    sh("#{BUILD} #{REPOSITORY}.sln")
 end
