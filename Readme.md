@@ -24,9 +24,9 @@ Or select it from the NuGet packages UI on Visual Studio.
 ## Contributing
 
 1. Fork [Cube.Core](https://github.com/cube-soft/Cube.Core/fork) repository.
-2. Create a feature branch from the [master](https://github.com/cube-soft/Cube.Core/tree/master) branch (git checkout -b my-new-feature).
+2. Create a feature branch from the [master](https://github.com/cube-soft/Cube.Core/tree/master) branch (git checkout -b my-new-feature origin/master).
 3. Commit your changes.
-4. Rebase your local changes against the stable (or master) branch.
+4. Rebase your local changes against the master branch.
 5. Run test suite with the [NUnit](https://nunit.org/) console or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
 6. Create new Pull Request.
 
