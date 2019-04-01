@@ -7,7 +7,6 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net45</TargetFramework>
         <LangVersion>latest</LangVersion>
-        <UseWindowsForms>true</UseWindowsForms>
         <Optimize>true</Optimize>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
@@ -27,11 +26,12 @@
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Update="Sources\Views\Forms\MainForm.cs" SubType="Form" />
-        <EmbeddedResource Update="Sources\Views\Forms\MainForm.resx" DependentUpon="MainForm.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="App.config" />
+        <Compile Update="Properties\Resources.Designer.cs" DependentUpon="Resources.resx" AutoGen="True" DesignTime="True" />
+        <Compile Update="Sources\Views\**\*.cs" SubType="Form" />
+        <Compile Update="Sources\Views\**\*.Designer.cs" SubType="Code" />
+        <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+        <EmbeddedResource Update="Sources\Views\**\*.resx" DependentUpon="%(Filename).cs" />
         <None Include="Assets\**\*" />
+        <None Include="App.config" />
     </ItemGroup>
 </Project>

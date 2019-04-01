@@ -21,7 +21,7 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-REPOSITORY  = 'Cube.Forms'
+PROJECT     = 'Cube.Forms'
 BRANCHES    = ['stable', 'net35']
 
 # --------------------------------------------------------------------------- #
@@ -33,7 +33,7 @@ PACK    = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{REPOSITORY}.*.nupkg")
+CLEAN.include("#{PROJECT}.*.nupkg")
 CLEAN.include("../packages/cube.*")
 CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}" })
 
@@ -50,7 +50,7 @@ desc "Pack nupkg in the net35 branch."
 task :pack do
     BRANCHES.each { |e| Rake::Task[:build].invoke(e) }
     sh("git checkout net35")
-    sh("#{PACK} Libraries/#{REPOSITORY}.nuspec")
+    sh("#{PACK} Libraries/#{PROJECT}.nuspec")
     sh("git checkout master")
 end
 
@@ -61,6 +61,6 @@ desc "Build the solution in the specified branch."
 task :build, [:branch] do |_, e|
     e.with_defaults(branch: '')
     sh("git checkout #{e.branch}") if (!e.branch.empty?)
-    sh("nuget restore #{REPOSITORY}.sln")
-    sh("#{BUILD} #{REPOSITORY}.sln")
+    sh("nuget restore #{PROJECT}.sln")
+    sh("#{BUILD} #{PROJECT}.sln")
 end
