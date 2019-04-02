@@ -11,6 +11,7 @@
         <AssemblyName>Cube.Core.Tests</AssemblyName>
         <TargetFramework>net45</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <IsPackable>false</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

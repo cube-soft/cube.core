@@ -15,7 +15,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>../Cube.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>DEBUG;TRACE</DefineConstants>
