@@ -21,9 +21,9 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-REPOSITORY  = 'Cube.Xui'
+PROJECT     = 'Cube.Xui'
 BRANCHES    = ['stable', 'net35']
-TESTCASES   = {"#{REPOSITORY}.Tests" => 'Tests'}
+TESTCASES   = {"#{PROJECT}.Tests" => 'Tests'}
 
 # --------------------------------------------------------------------------- #
 # commands
@@ -35,7 +35,7 @@ TEST    = '../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe'
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{REPOSITORY}.*.nupkg")
+CLEAN.include("#{PROJECT}.*.nupkg")
 CLEAN.include("../packages/cube.*")
 CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}" })
 
@@ -52,7 +52,7 @@ desc "Pack NuGet package in the net35 branch."
 task :pack do
     BRANCHES.each { |e| Rake::Task[:build].invoke(e) }
     sh("git checkout net35")
-    sh("#{PACK} Libraries/#{REPOSITORY}.nuspec")
+    sh("#{PACK} Libraries/#{PROJECT}.nuspec")
     sh("git checkout master")
 end
 
@@ -78,6 +78,6 @@ desc "Build the solution in the specified branch."
 task :build, [:branch] do |_, e|
     e.with_defaults(branch: '')
     sh("git checkout #{e.branch}") if (!e.branch.empty?)
-    sh("nuget restore #{REPOSITORY}.sln")
-    sh("#{BUILD} #{REPOSITORY}.sln")
+    sh("nuget restore #{PROJECT}.sln")
+    sh("#{BUILD} #{PROJECT}.sln")
 end
