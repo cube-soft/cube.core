@@ -1,23 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
         <Version>1.15.0</Version>
-        <Authors>CubeSoft</Authors>
+        <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>WPF based GUI library.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
         <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>
         <TargetFramework>net45</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <UseWindowsForms>true</UseWindowsForms>
+        <UseWPF>true</UseWPF>
         <Optimize>true</Optimize>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
         <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
@@ -26,11 +26,5 @@
     <ItemGroup>
         <PackageReference Include="Cube.FileSystem" Version="1.15.0" />
         <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="System.Xaml" />
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="WindowsBase" />
-        <Reference Include="WindowsFormsIntegration" />
     </ItemGroup>
 </Project>

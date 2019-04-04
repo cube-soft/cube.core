@@ -1,16 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
         <Version>1.15.0</Version>
-        <Authors>CubeSoft</Authors>
+        <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <TargetFramework>net45</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <UseWindowsForms>true</UseWindowsForms>
+        <UseWPF>true</UseWPF>
         <IsPackable>true</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
         <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
@@ -21,12 +21,6 @@
         <PackageReference Include="NUnit" Version="3.11.0" />
         <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" />
         <PackageReference Include="OpenCover" Version="4.7.922" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="System.Xaml" />
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="WindowsBase" />
-        <Reference Include="WindowsFormsIntegration" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
