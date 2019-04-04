@@ -39,6 +39,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Separator
+        ///
+        /// <summary>
+        /// Gets or sets values to separate words.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Separator { get; set; } = "\t";
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Configure
         ///
         /// <summary>
@@ -78,11 +89,11 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Debug(Type type, string message) =>
-            GetCore(type).Debug(message);
+        public static void Debug(Type type, params string[] values) =>
+            GetCore(type).Debug(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,11 +166,11 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Info(Type type, string message) =>
-            GetCore(type).Info(message);
+        public static void Info(Type type, params string[] values) =>
+            GetCore(type).Info(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -212,11 +223,11 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Warn(Type type, string message) =>
-            GetCore(type).Warn(message);
+        public static void Warn(Type type, params string[] values) =>
+            GetCore(type).Warn(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -281,11 +292,11 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Error(Type type, string message) =>
-            GetCore(type).Error(message);
+        public static void Error(Type type, params string[] values) =>
+            GetCore(type).Error(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -350,11 +361,11 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="type">Targe type information.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Fatal(Type type, string message) =>
-            GetCore(type).Fatal(message);
+        public static void Fatal(Type type, params string[] values) =>
+            GetCore(type).Fatal(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -422,6 +433,19 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         private static log4net.ILog GetCore(Type type) => log4net.LogManager.GetLogger(type);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetMessage
+        ///
+        /// <summary>
+        /// Gets the message from the specified arguments.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetMessage(string[] values) =>
+            values.Length == 1 ? values[0] :
+            values.Length >  1 ? string.Join(Separator, values) : string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///

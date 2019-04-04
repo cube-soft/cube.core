@@ -58,6 +58,56 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// FuzzyStartsWith
+        ///
+        /// <summary>
+        /// Executes the test of the FuzzyStartsWith extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Hello",      "Hello",      ExpectedResult = true )]
+        [TestCase("Hello",      "H",          ExpectedResult = true )]
+        [TestCase("Hello",      "world",      ExpectedResult = false)]
+        [TestCase("ABC",        "abc",        ExpectedResult = true )]
+        [TestCase("ABC",        "a",          ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ＡＢＣ",     ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "Ａ",         ExpectedResult = true)]
+        [TestCase("ＡＢＣ",     "ａｂｃ",     ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ａ",         ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ABC",        ExpectedResult = false)]
+        [TestCase("ＡＢＣ",     "A",          ExpectedResult = false)]
+        [TestCase("12,345.678", "12.345,678", ExpectedResult = false)]
+        [TestCase("",           "abc",        ExpectedResult = false)]
+        [TestCase("",           "",           ExpectedResult = true )]
+        public bool FuzzyStartsWith(string src, string cmp) => src.FuzzyStartsWith(cmp);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FuzzyEndsWith
+        ///
+        /// <summary>
+        /// Executes the test of the FuzzyEndsWith extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Hello",      "Hello",      ExpectedResult = true )]
+        [TestCase("Hello",      "o",          ExpectedResult = true )]
+        [TestCase("Hello",      "world",      ExpectedResult = false)]
+        [TestCase("ABC",        "abc",        ExpectedResult = true )]
+        [TestCase("ABC",        "c",          ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ＡＢＣ",     ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "Ｃ",         ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ａｂｃ",     ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ｃ",         ExpectedResult = true )]
+        [TestCase("ＡＢＣ",     "ABC",        ExpectedResult = false)]
+        [TestCase("ＡＢＣ",     "C",          ExpectedResult = false)]
+        [TestCase("12,345.678", "12.345,678", ExpectedResult = false)]
+        [TestCase("",           "abc",        ExpectedResult = false)]
+        [TestCase("",           "",           ExpectedResult = true )]
+        public bool FuzzyEndsWith(string src, string cmp) => src.FuzzyEndsWith(cmp);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// HasValue
         ///
         /// <summary>

@@ -1,39 +1,46 @@
-version: 1.14.0.{build}
+version: 1.15.0.{build}
+image: Visual Studio 2019 Preview
+platform: Any CPU
+configuration: Release
+environment:
+    PROJECT_NAME:     'Cube.Core'
+    PROJECT_BIN:      'bin\%PLATFORM%\%CONFIGURATION%\net45'
+    PROJECT_PACKAGE:  '..\packages'
+    TEST_TOOL:        '$(PROJECT_PACKAGE)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_CORETOOL:    'nunit3-console.exe'
+    TEST_FILTERS:     '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
+    TEST_RESULT:      'TestResult.xml'
+    TEST_COVERAGE:    'CoverResults.xml'
+    TEST_LOG:         'TestResults'
 branches:
     only:
         - master
 skip_tags: true
-clone_folder: C:\Cube\Cube.Core
-image: Visual Studio 2017
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-platform: Any CPU
-configuration: Release
+clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-    - nuget restore Cube.Core.sln
+    - nuget restore "%PROJECT_NAME%.sln"
 build:
+    project: '%PROJECT_NAME%.sln'
     parallel: true
-    project: Cube.Core.sln
     publish_nuget: true
     verbosity: minimal
 test_script:
     - >
-      ..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe
+      "%TEST_TOOL%"
       -log:Error
       -register:user
-      -target:../packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe
-      -targetargs:Cube.Core.Tests.dll
-      -targetdir:Tests\bin\Release
+      -target:"%TEST_CORETOOL%"
+      -targetargs:"%PROJECT_NAME%.Tests.dll"
+      -targetdir:"Tests\%PROJECT_BIN%"
       -returntargetcode
       -hideskipped:All
-      -output:CoverResults.xml
-      -filter:"+[Cube*]* -[*]*NativeMethods -[*]*Properties.*"
+      -output:"%TEST_COVERAGE%"
+      -filter:"%TEST_FILTERS%"
 after_test:
-    - xcopy /q /Y /I Tests\bin\Release\Cube.Core.Tests.log TestLog\
-    - xcopy /q /Y /I CoverResults.xml TestLog\
-    - pip install codecov
-    - codecov -f CoverResults.xml
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOG%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOG%\"
 artifacts:
-    - path: TestLog
+    - path: '%TEST_LOG%'

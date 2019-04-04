@@ -45,11 +45,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="src">Targe object.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogDebug<T>(this T src, string message) =>
-            Logger.Debug(src.GetType(), message);
+        public static void LogDebug<T>(this T src, params string[] values) =>
+            Logger.Debug(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -115,11 +115,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="src">Targe object.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, string message) =>
-            Logger.Info(src.GetType(), message);
+        public static void LogInfo<T>(this T src, params string[] values) =>
+            Logger.Info(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -164,11 +164,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="src">Targe object.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogWarn<T>(this T src, string message) =>
-            Logger.Warn(src.GetType(), message);
+        public static void LogWarn<T>(this T src, params string[] values) =>
+            Logger.Warn(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -200,7 +200,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static U LogWarn<T, U>(this T src, Func<U> func) =>
-            LogWarn(src, func, default(U));
+            LogWarn(src, func, default);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -250,11 +250,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="src">Targe object.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogError<T>(this T src, string message) =>
-            Logger.Error(src.GetType(), message);
+        public static void LogError<T>(this T src, params string[] values) =>
+            Logger.Error(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -286,7 +286,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static U LogError<T, U>(this T src, Func<U> func) =>
-            LogError(src, func, default(U));
+            LogError(src, func, default);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -336,11 +336,11 @@ namespace Cube.Log
         /// </summary>
         ///
         /// <param name="src">Targe object.</param>
-        /// <param name="message">Message string.</param>
+        /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogFatal<T>(this T src, string message) =>
-            Logger.Fatal(src.GetType(), message);
+        public static void LogFatal<T>(this T src, params string[] values) =>
+            Logger.Fatal(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -372,7 +372,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static U LogFatal<T, U>(this T src, Func<U> func) =>
-            LogFatal(src, func, default(U));
+            LogFatal(src, func, default);
 
         /* ----------------------------------------------------------------- */
         ///

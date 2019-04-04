@@ -41,13 +41,49 @@ namespace Cube.Generics
         /// </summary>
         ///
         /// <param name="src">Source string.</param>
-        /// <param name="cmp">Compared string.</param>
+        /// <param name="cmp">String to compare.</param>
         ///
         /// <returns>true for equal; otherwise false.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static bool FuzzyEquals(this string src, string cmp) =>
             src.Equals(cmp, StringComparison.InvariantCultureIgnoreCase);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FuzzyStartsWith
+        ///
+        /// <summary>
+        /// Determines whether the beginning of this string instance
+        /// matches the specified string in ignoring case.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        /// <param name="cmp">String to compare.</param>
+        ///
+        /// <returns>true for match; otherwise, false.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool FuzzyStartsWith(this string src, string cmp) =>
+            src.StartsWith(cmp, StringComparison.InvariantCultureIgnoreCase);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FuzzyStartsWith
+        ///
+        /// <summary>
+        /// Determines whether the end of this string instance matches the
+        /// specified string in ignoring case.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        /// <param name="cmp">String to compare.</param>
+        ///
+        /// <returns>true for match; otherwise, false.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool FuzzyEndsWith(this string src, string cmp) =>
+            src.EndsWith(cmp, StringComparison.InvariantCultureIgnoreCase);
 
         /* ----------------------------------------------------------------- */
         ///
