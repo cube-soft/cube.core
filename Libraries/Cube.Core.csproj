@@ -5,6 +5,7 @@
         <Company>CubeSoft</Company>
         <Description>Common library for CubeSoft libraries and applications.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
+        <PackageTags>Cube</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
         <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>
