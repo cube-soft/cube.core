@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>1.15.0</Version>
-        <Authors>CubeSoft</Authors>
+        <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>WinForms based GUI library.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
@@ -26,6 +26,7 @@
         <PackageReference Include="Cube.Images" Version="1.15.0" />
         <Reference Include="System.Design" />
         <Reference Include="System.Drawing.Design" />
+        <Reference Include="System.Windows.Forms" />
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
