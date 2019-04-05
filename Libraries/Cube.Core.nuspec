@@ -4,8 +4,8 @@
         <version>1.15.0</version>
         <id>Cube.Core</id>
         <title>Cube.Core</title>
-        <authors>clown;cube-soft</authors>
-        <owners>cube-soft</owners>
+        <authors>clown,cube-soft</authors>
+        <owners>clown,cube-soft</owners>
         <description>Common library for CubeSoft libraries and applications.</description>
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <tags>Cube</tags>
