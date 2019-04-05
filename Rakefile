@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT     = 'Cube.Core'
-BRANCHES    = ['master', 'net35']
+BRANCHES    = ['stable', 'net35']
 TESTCASES   = {"#{PROJECT}.Tests" => 'Tests'}
 
 # --------------------------------------------------------------------------- #
@@ -43,14 +43,14 @@ CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}" })
 # default
 # --------------------------------------------------------------------------- #
 desc "Clean objects and pack nupkg."
-task :default => [:clean, :pack]
+task :default => [:pack]
 
 # --------------------------------------------------------------------------- #
 # pack
 # --------------------------------------------------------------------------- #
 desc "Pack nupkg in the net35 branch."
 task :pack do
-    BRANCHES.each { |e| Rake::Task[:build].invoke(e) }
+    Rake::Task[:cleanbuild].execute
     sh("git checkout net35")
     sh("#{PACK} Libraries/#{PROJECT}.nuspec")
     sh("git checkout master")
@@ -72,12 +72,23 @@ task :test => [:build] do
 end
 
 # --------------------------------------------------------------------------- #
+# cleanbuild
+# --------------------------------------------------------------------------- #
+desc "Clean objects and build the solution in stable and net35 branches."
+task :cleanbuild do
+    Rake::Task[:clean].execute
+    BRANCHES.each { |e|
+        sh("rm -fr ../packages/cube.*")
+        sh("git checkout #{e}")
+        Rake::Task[:build].execute
+    }
+end
+
+# --------------------------------------------------------------------------- #
 # build
 # --------------------------------------------------------------------------- #
-desc "Build the solution in the specified branch."
-task :build, [:branch] do |_, e|
-    e.with_defaults(branch: '')
-    sh("git checkout #{e.branch}") if (!e.branch.empty?)
+desc "Build the solution in the current branch."
+task :build do
     sh("nuget restore #{PROJECT}.sln")
     sh("#{BUILD} #{PROJECT}.sln")
 end
