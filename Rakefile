@@ -78,7 +78,7 @@ desc "Clean objects and build the solution in stable and net35 branches."
 task :cleanbuild do
     Rake::Task[:clean].execute
     BRANCHES.each { |e|
-        sh("rm -fr ../packages/cube.*")
+        rm_rf("../packages/cube.*")
         sh("git checkout #{e}")
         Rake::Task[:build].execute
     }
