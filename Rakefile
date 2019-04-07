@@ -29,7 +29,7 @@ PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
 # --------------------------------------------------------------------------- #
 # commands
 # --------------------------------------------------------------------------- #
-BUILD = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
+BUILD = 'msbuild /t:Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU"'
 PACK  = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
 
 # --------------------------------------------------------------------------- #
