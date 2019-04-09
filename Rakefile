@@ -23,21 +23,23 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 PROJECT     = 'Cube.Forms'
 LIBRARY     = '../packages'
+CONFIG      = 'Release'
 BRANCHES    = ['stable', 'net35']
+PLATFORMS   = ['Any CPU']
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
 
 # --------------------------------------------------------------------------- #
 # commands
 # --------------------------------------------------------------------------- #
-BUILD = 'msbuild /t:Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU"'
-PACK  = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
+BUILD = "msbuild -v:m -t:build -p:Configuration=#{CONFIG}"
+PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
 
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
-CLEAN.include("../packages/cube.*")
-CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}" })
+CLEAN.include("#{LIBRARY}/cube.*")
+CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
 # default
@@ -58,12 +60,13 @@ end
 # --------------------------------------------------------------------------- #
 # clean_build
 # --------------------------------------------------------------------------- #
-desc "Clean objects and build the solution in pre-defined branches."
+desc "Clean objects and build the solution in pre-defined branches and platforms."
 task :clean_build => [:clean] do
-    BRANCHES.each { |e|
-        sh("git checkout #{e}")
-        rm_rf("#{LIBRARY}/cube.*")
-        Rake::Task[:build].execute
+    BRANCHES.product(PLATFORMS).each { |e|
+        sh("git checkout #{e[0]}")
+        RakeFileUtils::rm_rf(FileList.new("#{LIBRARY}/cube.*"))
+        Rake::Task[:build].reenable
+        Rake::Task[:build].invoke(e[1])
     }
 end
 
@@ -71,7 +74,8 @@ end
 # build
 # --------------------------------------------------------------------------- #
 desc "Build the solution in the current branch."
-task :build do
+task :build, [:platform] do |_, e|
+    e.with_defaults(:platform => PLATFORMS[0])
     sh("nuget restore #{PROJECT}.sln")
-    sh("#{BUILD} #{PROJECT}.sln")
+    sh(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
