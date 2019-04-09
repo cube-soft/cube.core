@@ -23,23 +23,25 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 PROJECT     = 'Cube.Core'
 LIBRARY     = '../packages'
+CONFIG      = 'Release'
 BRANCHES    = ['stable', 'net35']
+PLATFORMS   = ['Any CPU']
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
 TESTCASES   = {"#{PROJECT}.Tests" => 'Tests'}
 
 # --------------------------------------------------------------------------- #
 # commands
 # --------------------------------------------------------------------------- #
-BUILD = 'msbuild /t:Clean,Build /m /verbosity:minimal /p:Configuration=Release;Platform="Any CPU";GeneratePackageOnBuild=false'
-PACK  = 'nuget pack -Properties "Configuration=Release;Platform=AnyCPU"'
-TEST  = '../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe'
+BUILD  = "msbuild -v:m -t:build -p:Configuration=#{CONFIG}"
+PACK   = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
+TEST   = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
 
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
 CLEAN.include("#{LIBRARY}/cube.*")
-CLEAN.include(%w{bin obj}.map{ |e| "**/#{e}" })
+CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
 # default
@@ -60,12 +62,13 @@ end
 # --------------------------------------------------------------------------- #
 # clean_build
 # --------------------------------------------------------------------------- #
-desc "Clean objects and build the solution in pre-defined branches."
+desc "Clean objects and build the solution in pre-defined branches and platforms."
 task :clean_build => [:clean] do
-    BRANCHES.each { |e|
-        sh("git checkout #{e}")
-        rm_rf("#{LIBRARY}/cube.*")
-        Rake::Task[:build].execute
+    BRANCHES.product(PLATFORMS).each { |e|
+        sh("git checkout #{e[0]}")
+        RakeFileUtils::rm_rf(FileList.new("#{LIBRARY}/cube.*"))
+        Rake::Task[:build].reenable
+        Rake::Task[:build].invoke(e[1])
     }
 end
 
@@ -73,9 +76,10 @@ end
 # build
 # --------------------------------------------------------------------------- #
 desc "Build the solution in the current branch."
-task :build do
+task :build, [:platform] do |_, e|
+    e.with_defaults(:platform => PLATFORMS[0])
     sh("nuget restore #{PROJECT}.sln")
-    sh("#{BUILD} #{PROJECT}.sln")
+    sh(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
 # --------------------------------------------------------------------------- #
@@ -85,10 +89,10 @@ desc "Build and test projects in the current branch."
 task :test => [:build] do
     fw  = `git symbolic-ref --short HEAD`.chomp
     fw  = 'net45' if (fw != 'net35')
-    bin = ['bin', 'Any CPU', 'Release', fw].join('/')
+    bin = ['bin', PLATFORMS[0], CONFIG, fw].join('/')
 
     TESTCASES.each { |proj, root|
         dir = "#{root}/#{bin}"
-        sh("#{TEST} \"#{dir}/#{proj}.dll\" --work=\"#{dir}\"")
+        sh(%(#{TEST} "#{dir}/#{proj}.dll" --work="#{dir}"))
     }
 end
