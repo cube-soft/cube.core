@@ -7,7 +7,7 @@ Cube.Xui
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Xui/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Xui)
 
 Cube.Xui is a WPF based GUI library.
-The library is available for .NET Framework 3.5, 4.5 or more.
+The library is available for .NET Framework 3.5, 4.5 or higher.
 
 ## Installation
 
