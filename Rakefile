@@ -32,9 +32,9 @@ TESTCASES   = {"#{PROJECT}.Tests" => 'Tests'}
 # --------------------------------------------------------------------------- #
 # commands
 # --------------------------------------------------------------------------- #
-BUILD  = "msbuild -v:m -t:build -p:Configuration=#{CONFIG}"
-PACK   = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
-TEST   = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
+BUILD = "msbuild -v:m -t:build -p:Configuration=#{CONFIG}"
+PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
+TEST  = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -87,7 +87,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Build and test projects in the current branch."
 task :test => [:build] do
-    fw  = `git symbolic-ref --short HEAD`.chomp
+    fw  = %x(git symbolic-ref --short HEAD).chomp
     fw  = 'net45' if (fw != 'net35')
     bin = ['bin', PLATFORMS[0], CONFIG, fw].join('/')
 
