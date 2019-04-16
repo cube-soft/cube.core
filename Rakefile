@@ -87,7 +87,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Build and test projects in the current branch."
 task :test => [:build] do
-    fw  = `git symbolic-ref --short HEAD`.chomp
+    fw  = %x(git symbolic-ref --short HEAD).chomp
     fw  = 'net45' if (fw != 'net35')
     bin = ['bin', PLATFORMS[0], CONFIG, fw].join('/')
 
