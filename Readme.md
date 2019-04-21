@@ -7,7 +7,7 @@ Cube.Core
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
 
 Cube.Core is a common library for other CubeSoft libraries and applications.
-The library is available for .NET Framework 3.5, 4.5 or higher.
+The library is available for .NET Framework 3.5, 4.5 or later.
 
 ## Installation
 
