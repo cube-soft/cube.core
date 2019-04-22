@@ -7,7 +7,7 @@ Cube.FileSystem
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.FileSystem/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.FileSystem)
 
 Cube.FileSystem is an I/O library for CubeSoft libraries and applications.
-The library is available for .NET Framework 3.5, 4.5 or higher.
+The library is available for .NET Framework 3.5, 4.5 or later.
 
 ## Installation
 

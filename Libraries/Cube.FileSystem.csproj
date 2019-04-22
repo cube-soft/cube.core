@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>1.15.0</Version>
+        <Version>1.16.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>I/O library for CubeSoft libraries and applications.</Description>
@@ -23,6 +23,6 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AlphaFS" Version="2.2.6" />
-        <PackageReference Include="Cube.Core" Version="1.15.0" />
+        <PackageReference Include="Cube.Core" Version="1.16.0" />
     </ItemGroup>
 </Project>
