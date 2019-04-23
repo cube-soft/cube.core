@@ -18,19 +18,20 @@
 using Cube.Log;
 using System;
 using System.Threading.Tasks;
+using Source = System.Threading.Tasks.Task;
 
-namespace Cube.Tasks
+namespace Cube.Mixin.Tasks
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskExtension
+    /// Extension
     ///
     /// <summary>
-    /// Task の拡張メソッド用クラスです。
+    /// Provides extended methods of the Task and related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class TaskExtension
+    public static class Extension
     {
         #region Methods
 
@@ -39,14 +40,13 @@ namespace Cube.Tasks
         /// Forget
         ///
         /// <summary>
-        /// 実行されたタスクを待たずに終了します。
-        /// 例外発生時にはログに出力します。
+        /// Executes the specified task in the Fire&amp;Forget pattern.
         /// </summary>
         ///
-        /// <param name="src">Task オブジェクト</param>
+        /// <param name="src">Source object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public static void Forget(this Task src) => src.ContinueWith(e =>
+        public static void Forget(this Source src) => src.ContinueWith(e =>
         {
             e.LogWarn(e.Exception.ToString());
         }, TaskContinuationOptions.OnlyOnFaulted);
@@ -56,22 +56,20 @@ namespace Cube.Tasks
         /// Timeout
         ///
         /// <summary>
-        /// タスクにタイムアウトを設定します。
+        /// Sets a timeout of executing the specified task.
         /// </summary>
         ///
-        /// <param name="src">Task オブジェクト</param>
-        /// <param name="value">タイムアウト時間</param>
+        /// <param name="src">Source object.</param>
+        /// <param name="value">Timeout value.</param>
         ///
-        /// <returns>Task オブジェクト</returns>
+        /// <returns>Task object.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task src, TimeSpan value)
+        public static async Source Timeout(this Source src, TimeSpan value)
         {
-            var cmp = Task.Delay(value);
-            if (await Task.WhenAny(src, cmp).ConfigureAwait(false) == cmp)
-            {
-                throw new TimeoutException();
-            }
+            var timeout = Source.Delay(value);
+            var dest = await Source.WhenAny(src, timeout).ConfigureAwait(false);
+            if (dest == timeout) throw new TimeoutException();
         }
 
         /* --------------------------------------------------------------------- */
@@ -79,18 +77,18 @@ namespace Cube.Tasks
         /// Timeout
         ///
         /// <summary>
-        /// タスクにタイムアウトを設定します。
+        /// Sets a timeout of executing the specified task.
         /// </summary>
         ///
-        /// <param name="src">Task(T) オブジェクト</param>
-        /// <param name="value">タイムアウト時間</param>
+        /// <param name="src">Source object.</param>
+        /// <param name="value">Timeout value.</param>
         ///
-        /// <returns>Task(T) オブジェクト</returns>
+        /// <returns>Task(T) object.</returns>
         ///
         /* --------------------------------------------------------------------- */
         public static async Task<T> Timeout<T>(this Task<T> src, TimeSpan value)
         {
-            await ((Task)src).Timeout(value).ConfigureAwait(false);
+            await ((Source)src).Timeout(value).ConfigureAwait(false);
             return await src.ConfigureAwait(false);
         }
 

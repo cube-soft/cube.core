@@ -15,24 +15,24 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tasks;
+using Cube.Mixin.Tasks;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskExtensionTest
+    /// TasksTest
     ///
     /// <summary>
-    /// TaskExtension のテスト用クラスです。
+    /// Tests of extended methods of the Task and related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class TaskExtensionTest
+    class TasksTest
     {
         #region Tests
 
@@ -41,7 +41,7 @@ namespace Cube.Tests
         /// Forget
         ///
         /// <summary>
-        /// Task の Fire&amp;Forget のテストを実行します。
+        /// Tests the Forget extended method.
         /// </summary>
         ///
         /// <remarks>
@@ -50,46 +50,54 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Forget() => Assert.DoesNotThrow(() =>
+        public void Forget()
         {
-            Task.Run(() => throw new InvalidOperationException()).Forget();
-        });
+            Assert.DoesNotThrow(() =>
+            {
+                Task.Run(() => throw new InvalidOperationException()).Forget();
+                Task.Delay(100).Wait();
+            });
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Timeout
         ///
         /// <summary>
-        /// TimeoutException が発生するテストを実行します。
+        /// Tests the Timeout extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Timeout() => Assert.That(
-            () => Task.Run(() => { while (true) { } })
-                      .Timeout(TimeSpan.FromMilliseconds(50))
-                      .Wait(),
-            Throws.TypeOf<AggregateException>()
-                  .And
-                  .InnerException
-                  .TypeOf<TimeoutException>()
-        );
+        public void Timeout()
+        {
+            var n   = 0;
+            var src = Task.Run(() => { while (true) { n = 1; } });
+            Assert.That(
+                () => src.Timeout(TimeSpan.FromMilliseconds(100)).Wait(),
+                Throws.TypeOf<AggregateException>().And.InnerException
+                      .TypeOf<TimeoutException>()
+            );
+            Assert.That(n, Is.EqualTo(1));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Timeout_NotThrow
         ///
         /// <summary>
-        /// Timeout(TimeSpan) 実行後、TimeoutException が発生せずに処理が
-        /// 終了するテストを実行します。
+        /// Tests the Timeout extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(5u, ExpectedResult = 5)]
-        public long Timeout_NotThrow(uint n) =>
-            Task.Run(() => Fibonacci(n))
-                .Timeout(TimeSpan.FromSeconds(100))
-                .Result;
+        [Test]
+        public void Timeout_NoThrow()
+        {
+            var n = Task.Run(() => Fibonacci(5))
+                        .Timeout(TimeSpan.FromSeconds(100))
+                        .Result;
+            Assert.That(n, Is.EqualTo(5L));
+        }
 
         #endregion
 
@@ -100,11 +108,11 @@ namespace Cube.Tests
         /// Fibonacci
         ///
         /// <summary>
-        /// Timeout をテストするためのダミー処理です。
+        /// Executes the dummy operation for tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private long Fibonacci(uint n)
+        private long Fibonacci(int n)
             => n == 0 ? 0 :
                n == 1 ? 1 :
                Fibonacci(n - 1) + Fibonacci(n - 2);

@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tasks;
+using Cube.Mixin.Tasks;
 using NUnit.Framework;
 using System;
 using System.Threading;
