@@ -19,22 +19,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cube.Collections.Mixin
+namespace Cube.Mixin.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableIndex
+    /// EnumerableExtension
     ///
     /// <summary>
-    /// Provides functionality to get an index in the sequence.
+    /// Provides extended methods of the IEnumerable(T) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class EnumerableIndex
+    public static class EnumerableExtension
     {
         #region Methods
 
-        #region IEnumerable<T>
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetOrDefault(T)
+        ///
+        /// <summary>
+        /// Returns the specified object or empty IEnumerable(T) object.
+        /// </summary>
+        ///
+        /// <param name="src">Source collection.</param>
+        ///
+        /// <returns>Self or empty collection.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
+            src ?? Enumerable.Empty<T>();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compact
+        ///
+        /// <summary>
+        /// Removes null objects in the specified sequence.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        ///
+        /// <returns>Removed sequence.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> Compact<T>(this IEnumerable<T> src) => src.OfType<T>();
+
+        #region FirstIndex
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,6 +117,10 @@ namespace Cube.Collections.Mixin
             src?.Select((Value, Index) => new { Value, Index })
                 .FirstOrDefault(e => predicate(e.Value))
                ?.Index ?? -1;
+
+        #endregion
+
+        #region LastIndex
 
         /* ----------------------------------------------------------------- */
         ///
@@ -202,88 +237,41 @@ namespace Cube.Collections.Mixin
 
         #endregion
 
-        #region IEnumerable<int>
+        #region Flatten
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OrderBy
+        /// Flatten
         ///
         /// <summary>
-        /// Sorts the elements of a sequence in ascending order.
+        /// Convert a tree structure to a one-dimensional sequence with
+        /// breadth first search..
         /// </summary>
         ///
         /// <param name="src">Source sequence.</param>
+        /// <param name="children">Conversion function.</param>
         ///
-        /// <returns>
-        /// IEnumerable(int) whose elements are sorted.
-        /// </returns>
+        /// <returns>Converted sequence.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> OrderBy(this IEnumerable<int> src) =>
-            src.OrderBy(i => i);
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> src,
+            Func<T, IEnumerable<T>> children) => src.Flatten((e, s) => children(e));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OrderByDescending
+        /// Flatten
         ///
         /// <summary>
-        /// Sorts the elements of a sequence in decending order.
+        /// Convert a tree structure to a one-dimensional sequence with
+        /// breadth first search..
         /// </summary>
         ///
-        /// <param name="src">Source sequence.</param>
-        ///
-        /// <returns>
-        /// IEnumerable(int) whose elements are sorted.
-        /// </returns>
-        ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> OrderByDescending(this IEnumerable<int> src) =>
-            src.OrderByDescending(i => i);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Within
-        ///
-        /// <summary>
-        /// Gets the elements of a sequence that is within the range of
-        /// [begin, end).
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="begin">Lower limit of the range.</param>
-        /// <param name="end">
-        /// Upper limit of the range (The value is not included).
-        /// </param>
-        ///
-        /// <returns>
-        /// IEnumerable(int) whose elements are within the [begin, end).
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Within(this IEnumerable<int> src, int begin, int end) =>
-            src.Where(i => i >= begin && i < end);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Within
-        ///
-        /// <summary>
-        /// Gets the elements of a sequence that is within the range of
-        /// [0, n).
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="n">
-        /// Upper limit of the range (The value is not included).
-        /// </param>
-        ///
-        /// <returns>
-        /// IEnumerable(int) whose elements are within the [0, n).
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Within(this IEnumerable<int> src, int n) =>
-            src.Within(0, n);
+        private static IEnumerable<T> Flatten<T>(this IEnumerable<T> src,
+            Func<T, IEnumerable<T>, IEnumerable<T>> func) => src.Concat(
+                src.Where(e => func(e, src) != null)
+                   .SelectMany(e => func(e, src).Flatten(func))
+            );
 
         #endregion
 

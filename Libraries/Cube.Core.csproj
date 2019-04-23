@@ -27,6 +27,5 @@
         <PackageReference Include="log4net" Version="2.0.8" />
         <Reference Include="System.ServiceModel" />
         <Reference Include="System.ServiceModel.Web" />
-        <Reference Include="WindowsBase" />
     </ItemGroup>
 </Project>

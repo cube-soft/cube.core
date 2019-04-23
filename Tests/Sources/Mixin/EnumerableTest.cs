@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections.Mixin;
+using Cube.Mixin.Collections;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace Cube.Tests
     /// EnumerableTest
     ///
     /// <summary>
-    /// Tests the extended methods for a sequence.
+    /// Tests extended methods of the IEnumerable(T) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,80 +37,14 @@ namespace Cube.Tests
     {
         #region Tests
 
-        #region IEnumerable<int>
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OrderBy
-        ///
-        /// <summary>
-        /// Executes the test of the OrderBy method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void OrderBy()
-        {
-            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderBy().ToList();
-            Assert.That(src[0], Is.EqualTo(1));
-            Assert.That(src[1], Is.EqualTo(1));
-            Assert.That(src[2], Is.EqualTo(2));
-            Assert.That(src[3], Is.EqualTo(3));
-            Assert.That(src[4], Is.EqualTo(4));
-            Assert.That(src[5], Is.EqualTo(5));
-            Assert.That(src[6], Is.EqualTo(6));
-            Assert.That(src[7], Is.EqualTo(9));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OrderByDescending
-        ///
-        /// <summary>
-        /// Executes the test of the OrderByDescending method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void OrderByDescending()
-        {
-            var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderByDescending().ToList();
-            Assert.That(src[0], Is.EqualTo(9));
-            Assert.That(src[1], Is.EqualTo(6));
-            Assert.That(src[2], Is.EqualTo(5));
-            Assert.That(src[3], Is.EqualTo(4));
-            Assert.That(src[4], Is.EqualTo(3));
-            Assert.That(src[5], Is.EqualTo(2));
-            Assert.That(src[6], Is.EqualTo(1));
-            Assert.That(src[7], Is.EqualTo(1));
-        }
-
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Within
-        ///
-        /// <summary>
-        /// Executes the test of the Within method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Within() => Assert.That(
-            new[] { 3, 1, 4, 1, 5, 9, 2, 6, 0, 0 }.Within(5),
-            Is.EquivalentTo(new[] { 3, 1, 4, 1, 2, 0, 0 })
-        );
-
-        #endregion
-
-        #region Get or Set
+        #region GetOrDefault
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetOrDefault
         ///
         /// <summary>
-        /// GetOrDefault の挙動を確認します。
+        /// Tests of the GetOrDefault extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,7 +62,7 @@ namespace Cube.Tests
         /// GetOrDefault_Null
         ///
         /// <summary>
-        /// null を指定した場合の GetOrDefault の挙動を確認します。
+        /// Tests of the GetOrDefault extended method with the null object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -139,24 +73,6 @@ namespace Cube.Tests
             var src = default(List<int>);
             foreach (var i in src.GetOrDefault()) sum += i;
             Assert.That(sum, Is.EqualTo(0));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// AddOrSet
-        ///
-        /// <summary>
-        /// Tests to add or set values to a dictionary collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void AddOrSet()
-        {
-            var src = new Dictionary<string, int>();
-            var key = nameof(AddOrSet);
-            for (var i = 0; i < 10; ++i) src.AddOrSet(key, i);
-            Assert.That(src[key], Is.EqualTo(9));
         }
 
         #endregion
@@ -522,7 +438,7 @@ namespace Cube.Tests
         /// Flatten
         ///
         /// <summary>
-        /// ツリー構造を平坦化するテストを実行します。
+        /// Tests the Flatten extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -575,7 +491,7 @@ namespace Cube.Tests
         /// Flatten_Empty
         ///
         /// <summary>
-        /// 空の配列に対して Flatten を実行した時の挙動を確認します。
+        /// Tests the Flatten extended method with the empty array.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -587,23 +503,6 @@ namespace Cube.Tests
 
         #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToObservable
-        ///
-        /// <summary>
-        /// IList(int) を ObservableCollection(int) に変換するテストを
-        /// 実行しますます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(100)]
-        public void ToObservable(int count)
-        {
-            var src = Enumerable.Range(0, count);
-            Assert.That(src.ToObservable(), Is.EquivalentTo(src));
-        }
-
         #endregion
 
         #region Others
@@ -613,7 +512,7 @@ namespace Cube.Tests
         /// Tree
         ///
         /// <summary>
-        /// テスト用のツリー構造を持つクラスです。
+        /// Represents the tree structure.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
