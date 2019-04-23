@@ -54,7 +54,7 @@ namespace Cube.Tests.Mixin
             Assert.That(c0, Is.Not.Null);
             var c1 = c0.TryCast<INotifyPropertyChanged>();
             Assert.That(c1, Is.Not.Null);
-            var c2 = c1.TryCast<ObservableProperty>();
+            var c2 = c1.TryCast<ObservableBase>();
             Assert.That(c2, Is.Not.Null);
             var c3 = c0.TryCast<Person>();
             Assert.That(c3, Is.Not.Null);

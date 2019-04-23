@@ -84,7 +84,7 @@ namespace Cube.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : ObservableProperty
+    internal class Person : ObservableBase
     {
         #region Constructors
 

@@ -26,23 +26,22 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableProperty
+    /// ObservableBase
     ///
     /// <summary>
-    /// Represents an implementation of the INotifyPropertyChanged
-    /// interface.
+    /// Provides an implementation of the INotifyPropertyChanged interface.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [DataContract]
     [Serializable]
-    public abstract class ObservableProperty : INotifyPropertyChanged
+    public abstract class ObservableBase : INotifyPropertyChanged
     {
         #region Constructor
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ObservableProperty
+        /// ObservableBase
         ///
         /// <summary>
         /// Initializes a new instance of the <c>ObservableProperty</c>
@@ -50,7 +49,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableProperty() { }
+        protected ObservableBase() { }
 
         #endregion
 
@@ -89,7 +88,11 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [IgnoreDataMember]
-        public bool IsSynchronous { get; set; } = true;
+        public bool IsSynchronous
+        {
+            get => _sync;
+            set => _sync = value;
+        }
 
         #endregion
 
@@ -142,8 +145,8 @@ namespace Cube
             var e = new PropertyChangedEventArgs(name);
             if (Context != null)
             {
-                if (IsSynchronous) Context.Send(_ => OnPropertyChanged(e), null);
-                else Context.Post(_ => OnPropertyChanged(e), null);
+                if (IsSynchronous) Context.Send(z => OnPropertyChanged(e), null);
+                else Context.Post(z => OnPropertyChanged(e), null);
             }
             else OnPropertyChanged(e);
         }
@@ -196,6 +199,7 @@ namespace Cube
 
         #region Fields
         [NonSerialized] private SynchronizationContext _context;
+        [NonSerialized] private bool _sync = true;
         #endregion
     }
 }

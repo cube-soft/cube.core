@@ -157,7 +157,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PowerModeContext : ObservableProperty
+    public class PowerModeContext : ObservableBase
     {
         #region Constructors
 
