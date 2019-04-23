@@ -98,7 +98,7 @@ namespace Cube.Tests.Mixin
                     FileVersion   = new Version(1, 16, 0, 0),
                 });
 
-                yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyExtension)), new Expected
+                yield return new TestCaseData(Assembly.GetAssembly(typeof(Extension)), new Expected
                 {
                     Name          = "Cube.Core",
                     FileName      = "Cube.Core.dll",

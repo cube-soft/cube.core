@@ -26,14 +26,14 @@ namespace Cube.Mixin.Assembly
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AssemblyExtension
+    /// Extension
     ///
     /// <summary>
     /// Provides extended methods of the Assembly class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class AssemblyExtension
+    public static class Extension
     {
         #region Methods
 

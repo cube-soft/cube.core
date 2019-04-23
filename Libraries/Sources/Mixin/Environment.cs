@@ -21,14 +21,14 @@ namespace Cube.Mixin.Environment
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnvironmentExtension
+    /// Extension
     ///
     /// <summary>
     /// Provides extended methods of the Environment class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class EnvironmentExtension
+    public static class Extension
     {
         #region Methods
 

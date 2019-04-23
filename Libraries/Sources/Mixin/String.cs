@@ -21,14 +21,14 @@ namespace Cube.Mixin.String
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StringExtension
+    /// Extension
     ///
     /// <summary>
     /// Provides extended methods for the string class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class StringExtension
+    public static class Extension
     {
         #region Methods
 
