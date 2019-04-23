@@ -90,9 +90,5 @@ task :test => [:build] do
     fw  = %x(git symbolic-ref --short HEAD).chomp
     fw  = 'net45' if (fw != 'net35')
     bin = ['bin', PLATFORMS[0], CONFIG, fw].join('/')
-
-    TESTCASES.each { |proj, root|
-        dir = "#{root}/#{bin}"
-        sh(%(#{TEST} "#{dir}/#{proj}.dll" --work="#{dir}"))
-    }
+    TESTCASES.each { |p, d| sh(%(#{TEST} "#{d}/#{bin}/#{p}.dll" --work="#{d}/#{bin}")) }
 end
