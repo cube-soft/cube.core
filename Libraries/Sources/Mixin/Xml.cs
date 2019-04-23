@@ -19,18 +19,18 @@ using Cube.Mixin.String;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Cube.Xml
+namespace Cube.Mixin.Xml
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// XmlExtension
+    /// Extension
     ///
     /// <summary>
-    /// XElement クラスの拡張メソッド用クラスです。
+    /// Provides extended methods of the XML related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class XmlExtension
+    public static class Extension
     {
         #region GetElement
 
@@ -39,14 +39,14 @@ namespace Cube.Xml
         /// GetElement
         ///
         /// <summary>
-        /// XElement オブジェクトを取得します。
-        /// 取得の際には既定の名前空間を設定します。
+        /// Gets the XElement object corresponding to the specified name
+        /// in the default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="name">要素名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="name">Element name.</param>
         ///
-        /// <returns>XElement オブジェクト</returns>
+        /// <returns>XElement object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static XElement GetElement(this XElement e, string name) =>
@@ -57,21 +57,20 @@ namespace Cube.Xml
         /// GetElement
         ///
         /// <summary>
-        /// XElement オブジェクトを取得します。
-        /// 名前空間が空文字の場合、既定の名前空間を使用します。
+        /// Gets the XElement object corresponding to the specified name
+        /// and namespace. When the specified namespace is empty,
+        /// the method uses the default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="ns">名前空間</param>
-        /// <param name="name">要素名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="ns">Element namespace.</param>
+        /// <param name="name">Element name.</param>
         ///
-        /// <returns>XElement オブジェクト</returns>
+        /// <returns>XElement object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static XElement GetElement(this XElement e, string ns, string name) =>
-            e.GetNamespace(ns) is XNamespace result ?
-            e.Element(result + name) :
-            default(XElement);
+            e.GetNamespace(ns) is XNamespace xns ? e.Element(xns + name) : default;
 
         #endregion
 
@@ -82,14 +81,14 @@ namespace Cube.Xml
         /// GetElements
         ///
         /// <summary>
-        /// XElement オブジェクト一覧を取得します。
-        /// 取得の際には既定の名前空間を設定します。
+        /// Gets the collection of XElement objects corresponding to the
+        /// specified name in the default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="name">要素名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="name">Element name.</param>
         ///
-        /// <returns>XElements オブジェクトの配列</returns>
+        /// <returns>Collection of XElements objects.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetElements(this XElement e, string name) =>
@@ -100,21 +99,20 @@ namespace Cube.Xml
         /// GetElements
         ///
         /// <summary>
-        /// XElement オブジェクト一覧を取得します。
-        /// 名前空間が空文字の場合、既定の名前空間を使用します。
+        /// Gets the collection of XElement objects corresponding to the
+        /// specified name and namespace. When the specified namespace is
+        /// empty, the method uses the default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="ns">名前空間</param>
-        /// <param name="name">要素名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="ns">Element namespace.</param>
+        /// <param name="name">Element name.</param>
         ///
-        /// <returns>XElements オブジェクトの配列</returns>
+        /// <returns>Collection of XElements objects.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetElements(this XElement e, string ns, string name) =>
-            e.GetNamespace(ns) is XNamespace result ?
-            e.Elements(result + name) :
-            new XElement[0];
+            e.GetNamespace(ns) is XNamespace xns ? e.Elements(xns + name) : new XElement[0];
 
         #endregion
 
@@ -125,14 +123,14 @@ namespace Cube.Xml
         /// GetDecendants
         ///
         /// <summary>
-        /// XElement オブジェクト一覧を取得します。
-        /// 取得の際には既定の名前空間を設定します。
+        /// Gets the collection of descendant XElement objects corresponding
+        /// to the specified name in the default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="name">要素名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="name">Element name.</param>
         ///
-        /// <returns>XElements オブジェクトの配列</returns>
+        /// <returns>Collection of XElements objects.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetDescendants(this XElement e, string name) =>
@@ -140,24 +138,24 @@ namespace Cube.Xml
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDescendants
+        /// GetDecendants
         ///
         /// <summary>
-        /// XElement オブジェクト一覧を取得します。
-        /// 名前空間が空文字の場合、既定の名前空間を使用します。
+        /// Gets the collection of descendant XElement objects corresponding
+        /// to the specified name in the default namespace.
+        /// When the specified namespace is empty, the method uses the
+        /// default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="ns">名前空間</param>
-        /// <param name="name">要素名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="ns">Element namespace.</param>
+        /// <param name="name">Element name.</param>
         ///
-        /// <returns>XElements オブジェクトの配列</returns>
+        /// <returns>Collection of XElements objects.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetDescendants(this XElement e, string ns, string name) =>
-            e.GetNamespace(ns) is XNamespace result ?
-            e.Descendants(result + name) :
-            new XElement[0];
+            e.GetNamespace(ns) is XNamespace xns ? e.Descendants(xns + name) : new XElement[0];
 
         #endregion
 
@@ -168,19 +166,19 @@ namespace Cube.Xml
         /// GetValueOrAttribute
         ///
         /// <summary>
-        /// 値を取得します。Value が存在しない場合はヒントに指定された
-        /// 名前に対応する属性値を取得します。
+        /// Gets the value corresponding to the specified name,
+        /// or attribute value corresponding to the specified hint in the
+        /// default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="name">要素名</param>
-        /// <param name="hint">ヒントとなる属性名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="name">Element name.</param>
+        /// <param name="hint">Attribute name to be a hint.</param>
         ///
-        /// <returns>文字列</returns>
+        /// <returns>Value or attribute.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetValueOrAttribute(this XElement e,
-            string name, string hint) =>
+        public static string GetValueOrAttribute(this XElement e, string name, string hint) =>
             e.GetValueOrAttribute(string.Empty, name, hint);
 
         /* ----------------------------------------------------------------- */
@@ -188,20 +186,20 @@ namespace Cube.Xml
         /// GetValueOrAttribute
         ///
         /// <summary>
-        /// 値を取得します。Value が存在しない場合はヒントに指定された
-        /// 名前に対応する属性値を取得します。
+        /// Gets the value corresponding to the specified name,
+        /// or attribute value corresponding to the specified hint in the
+        /// specified namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="ns">名前空間</param>
-        /// <param name="name">要素名</param>
-        /// <param name="hint">ヒントとなる属性名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="ns">Element namespace.</param>
+        /// <param name="name">Element name.</param>
+        /// <param name="hint">Attribute name to be a hint.</param>
         ///
-        /// <returns>文字列</returns>
+        /// <returns>Value or attribute.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetValueOrAttribute(this XElement e,
-            string ns, string name, string hint) =>
+        public static string GetValueOrAttribute(this XElement e, string ns, string name, string hint) =>
             e.GetElement(ns, name).GetValueOrAttribute(hint);
 
         /* ----------------------------------------------------------------- */
@@ -209,14 +207,14 @@ namespace Cube.Xml
         /// GetValueOrAttribute
         ///
         /// <summary>
-        /// 値を取得します。Value が存在しない場合はヒントに指定された
-        /// 名前に対応する属性値を取得します。
+        /// Gets the value of the specified element, or attribute value
+        /// corresponding to the specified hint in the default namespace.
         /// </summary>
         ///
-        /// <param name="e">XML オブジェクト</param>
-        /// <param name="hint">ヒントとなる属性名</param>
+        /// <param name="e">Source object.</param>
+        /// <param name="hint">Attribute name to be a hint.</param>
         ///
-        /// <returns>文字列</returns>
+        /// <returns>Value or attribute.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string GetValueOrAttribute(this XElement e, string hint)
@@ -236,7 +234,7 @@ namespace Cube.Xml
         /// GetNamespace
         ///
         /// <summary>
-        /// XNamespace オブジェクトを取得します。
+        /// Gets the namespace object corresponding to the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

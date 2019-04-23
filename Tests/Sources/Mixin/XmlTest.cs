@@ -15,24 +15,24 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xml;
+using Cube.Mixin.Xml;
 using NUnit.Framework;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// XmlExtensionTest
+    /// XmlTest
     ///
     /// <summary>
-    /// XmlExtension のテスト用クラスです。
+    /// Tests the extended methods of the XML related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class XmlExtensionTest : FileFixture
+    class XmlTest : FileFixture
     {
         #region Tests
 
@@ -43,7 +43,7 @@ namespace Cube.Tests
         /// GetElements_Rss
         ///
         /// <summary>
-        /// Sample.rss に対して GetElements のテストを実行します。
+        /// Tests the GetElement and GetElements methods with the RSS data.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -63,7 +63,7 @@ namespace Cube.Tests
         /// GetElements_Opml
         ///
         /// <summary>
-        /// Sample.opml に対して GetElements のテストを実行します。
+        /// Tests the GetElement and GetElements methods with the OPML data.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -81,7 +81,8 @@ namespace Cube.Tests
         /// GetElements_WrongNamespace
         ///
         /// <summary>
-        /// 無効な名前空間を指定した時の挙動を確認します。
+        /// Confirms the behavior when executing the GetElements method
+        /// with the wrong namespace.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -105,7 +106,7 @@ namespace Cube.Tests
         /// GetDescendants_Rss
         ///
         /// <summary>
-        /// Sample.rss に対して GetDescendants のテストを実行します。
+        /// Tests the GetDescendants method with the RSS data.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -120,7 +121,7 @@ namespace Cube.Tests
         /// GetDescendants_Opml
         ///
         /// <summary>
-        /// Sample.opml に対して GetDescendants のテストを実行します。
+        /// Tests the GetDescendants method with the OPML data.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -135,7 +136,8 @@ namespace Cube.Tests
         /// GetDescendants_WrongNamespace
         ///
         /// <summary>
-        /// 無効な名前空間を指定した時の挙動を確認します。
+        /// Confirms the behavior when executing the GetDescendants method
+        /// with the wrong namespace.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -154,8 +156,7 @@ namespace Cube.Tests
         /// GetValueOrAttribute_Value
         ///
         /// <summary>
-        /// GetValueOrAttribute の結果 Value が取得できるケースの
-        /// テストを実行します。
+        /// Confirms that the GetValueOrAttribute method returns the value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -172,8 +173,8 @@ namespace Cube.Tests
         /// GetValueOrAttribute_Attribute
         ///
         /// <summary>
-        /// GetValueOrAttribute の結果 Attribute が取得できるケースの
-        /// テストを実行します。
+        /// Confirms that the GetValueOrAttribute method returns the
+        /// attribute value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -192,8 +193,7 @@ namespace Cube.Tests
         /// GetValueOrAttribute_NotFound
         ///
         /// <summary>
-        /// GetValueOrAttribute の結果どちらも見つからないケースの
-        /// テストを実行します。
+        /// Confirms that the GetValueOrAttribute method returns the empty.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -212,8 +212,7 @@ namespace Cube.Tests
         /// GetValueOrAttribute_Empty
         ///
         /// <summary>
-        /// GetValueOrAttribute の属性に空文字を指定した時の挙動を
-        /// 確認します。
+        /// Confirms that the GetValueOrAttribute method returns the empty.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -232,8 +231,8 @@ namespace Cube.Tests
         /// GetValueOrAttribute_WrongNamespace
         ///
         /// <summary>
-        /// GetValueOrAttribute に無効な名前空間を指定した時の挙動を
-        /// 確認します。
+        /// Confirms the behavior when executing the GetValueOrAttribute
+        /// method with the wrong namespace.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -258,7 +257,7 @@ namespace Cube.Tests
         /// Create
         ///
         /// <summary>
-        /// テスト用の XElement オブジェクトを生成します。
+        /// Create a new instance of the XElement class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
