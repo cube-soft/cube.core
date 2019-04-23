@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Generics
+namespace Cube.Mixin.String
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -31,6 +31,52 @@ namespace Cube.Generics
     public static class StringExtension
     {
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// HasValue
+        ///
+        /// <summary>
+        /// Gets a value indicating whether the specified string contains
+        /// one or more character.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        ///
+        /// <returns>true for containing one or more charecter.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Unify
+        ///
+        /// <summary>
+        /// Converts a null or empty string to the empty one.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        ///
+        /// <returns>Converted string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Unify(this string src) => src ?? string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Quote
+        ///
+        /// <summary>
+        /// Quotes the specified string.
+        /// </summary>
+        ///
+        /// <param name="src">Source string.</param>
+        ///
+        /// <returns>Quoted string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Quote(this string src) => $"\"{src}\"";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -84,52 +130,6 @@ namespace Cube.Generics
         /* ----------------------------------------------------------------- */
         public static bool FuzzyEndsWith(this string src, string cmp) =>
             src.EndsWith(cmp, StringComparison.InvariantCultureIgnoreCase);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// HasValue
-        ///
-        /// <summary>
-        /// Gets the value indicating whether the specified value has
-        /// one or more character.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>true for one mor charecter.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Unify
-        ///
-        /// <summary>
-        /// Converts a null or empty string to the empty one.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Converted string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Unify(this string src) => src ?? string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Quote
-        ///
-        /// <summary>
-        /// Quotes the specified string.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Quoted string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Quote(this string src) => $"\"{src}\"";
 
         #endregion
     }
