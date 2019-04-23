@@ -15,58 +15,72 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Cube.Generics
+namespace Cube.Mixin.Generics
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericExtension
+    /// Extension
     ///
     /// <summary>
-    /// クラスに対する汎用的な操作を定義するための拡張メソッド用クラスです。
+    /// Provides extended methods of generic classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class GenericExtension
+    public static class Extension
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Assign
+        /// TryCast
         ///
         /// <summary>
-        /// public なプロパティおよびフィールドの値を代入します。
+        /// Tries to cast the specified object to the specified type.
         /// </summary>
         ///
-        /// <param name="dest">代入先オブジェクト</param>
-        /// <param name="src">代入元オブジェクト</param>
+        /// <typeparam name="T">Type to be cast.</typeparam>
+        /// <param name="src">Source object.</param>
+        ///
+        /// <returns>Casted object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Assign<T>(this T dest, T src)
-        {
-            var t = src.GetType();
+        public static T TryCast<T>(this object src) => TryCast(src, default(T));
 
-            foreach (var p in t.GetProperties())
-            {
-                if (p.GetGetMethod() == null || p.GetSetMethod() == null) continue;
-                p.SetValue(dest, p.GetValue(src, null), null);
-            }
-
-            foreach (var f in t.GetFields()) f.SetValue(dest, f.GetValue(src));
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast
+        ///
+        /// <summary>
+        /// Tries to cast the specified object to the specified type.
+        /// </summary>
+        ///
+        /// <typeparam name="T">Type to be cast.</typeparam>
+        /// <param name="src">Source object.</param>
+        /// <param name="error">
+        /// Returned object when the cast is failed.
+        /// </param>
+        ///
+        /// <returns>Casted object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static T TryCast<T>(this object src, T error) => src is T dest ? dest : error;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Copy
         ///
         /// <summary>
-        /// public なプロパティおよびフィールドの値をコピーした
-        /// オブジェクトを生成します。
+        /// Creates a new instance of the type T class and copies values
+        /// from public properties and fields of the specified object.
         /// </summary>
         ///
-        /// <param name="src">コピーするオブジェクト</param>
+        /// <typeparam name="T">Type of object to be created.</typeparam>
+        /// <param name="src">Object to be copied.</param>
+        ///
+        /// <returns>Created object.</returns>
         ///
         /// <remarks>
         /// Serializable 属性を持つクラスの場合、BinaryFormatter を
@@ -83,65 +97,51 @@ namespace Cube.Generics
             return dest;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryCast
-        ///
-        /// <summary>
-        /// オブジェクトを T 型にキャストします。
-        /// </summary>
-        ///
-        /// <param name="src">キャストするオブジェクト</param>
-        ///
-        /// <returns>キャスト結果</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T TryCast<T>(this object src) => TryCast(src, default(T));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryCast
-        ///
-        /// <summary>
-        /// オブジェクトを T 型にキャストします。
-        /// </summary>
-        ///
-        /// <param name="src">キャストするオブジェクト</param>
-        /// <param name="err">キャスト失敗時に返される値</param>
-        ///
-        /// <returns>キャスト結果</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T TryCast<T>(this object src, T err)
-        {
-            try { return (T)src; }
-            catch { return err; }
-        }
-
         #endregion
 
         #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Assign
+        ///
+        /// <summary>
+        /// Copies the public properties and fields.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void Assign<T>(this T dest, T src)
+        {
+            var t = src.GetType();
+
+            foreach (var p in t.GetProperties())
+            {
+                if (p.GetGetMethod() == null || p.GetSetMethod() == null) continue;
+                p.SetValue(dest, p.GetValue(src, null), null);
+            }
+
+            foreach (var f in t.GetFields()) f.SetValue(dest, f.GetValue(src));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// CopyWithBinaryFormatter
         ///
         /// <summary>
-        /// BinaryFormatter を用いてオブジェクトのコピーを生成します。
+        /// Copies values of properties and fields from the specified object
+        /// with the BinaryFormatter object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private static T CopyWithBinaryFormatter<T>(T src)
         {
-            object dest = null;
-            using (var stream = new System.IO.MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, src);
-                stream.Position = 0;
-                dest = formatter.Deserialize(stream);
+                formatter.Serialize(ms, src);
+                ms.Position = 0;
+                return (T)formatter.Deserialize(ms);
             }
-            return (T)dest;
         }
 
         #endregion

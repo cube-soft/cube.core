@@ -15,25 +15,75 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
+using Cube.Mixin.Generics;
 using NUnit.Framework;
 using System;
+using System.ComponentModel;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GenericExtensionTest
+    /// GenericsTest
     ///
     /// <summary>
-    /// GenericExtension のテスト用クラスです。
+    /// Tests the extended methods of generic classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class GenericExtensionTest
+    class GenericsTest
     {
         #region Tests
+
+        #region TryCast
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast
+        ///
+        /// <summary>
+        /// Tests the TryCast extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TryCast()
+        {
+            var c0 = new Person { Identification = 1 };
+            Assert.That(c0, Is.Not.Null);
+            var c1 = c0.TryCast<INotifyPropertyChanged>();
+            Assert.That(c1, Is.Not.Null);
+            var c2 = c1.TryCast<ObservableProperty>();
+            Assert.That(c2, Is.Not.Null);
+            var c3 = c0.TryCast<Person>();
+            Assert.That(c3, Is.Not.Null);
+            var c4 = c3.TryCast<GenericsTest>();
+            Assert.That(c4, Is.Null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryCast_Integer
+        ///
+        /// <summary>
+        /// Tests the TryCast extended method with the int value.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// int から double など継承関係にない型への TryCast は常に失敗します。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TryCast_Integer()
+        {
+            Assert.That(10.TryCast(-1L),     Is.EqualTo(-1L));
+            Assert.That(10.TryCast(-1.0),    Is.EqualTo(-1.0));
+            Assert.That(10.TryCast("error"), Is.EqualTo("error"));
+        }
+
+        #endregion
 
         #region Copy
 
@@ -42,8 +92,7 @@ namespace Cube.Tests
         /// Copy_Serializable
         ///
         /// <summary>
-        /// Serializable 属性が付与されているオブジェクトのコピーの
-        /// テストを実行します。
+        /// Tests the Copy extended method with the serializable object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -71,8 +120,7 @@ namespace Cube.Tests
         /// Copy_NonSerializable
         ///
         /// <summary>
-        /// Serializable 属性が付与されていないオブジェクトのコピーの
-        /// テストを実行します。
+        /// Tests the Copy extended method with the non-serializable object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -89,7 +137,7 @@ namespace Cube.Tests
                 Reserved       = true
             };
             src.Contact.Value = "01-2345-6789";
-            src.Secret      = "Non-DataMember";
+            src.Secret        = "Non-DataMember";
 
             var copy = src.Copy();
             Assert.That(copy.Identification, Is.EqualTo(src.Identification));
@@ -98,94 +146,45 @@ namespace Cube.Tests
             Assert.That(copy.Age,            Is.EqualTo(src.Age));
             Assert.That(copy.Creation,       Is.EqualTo(src.Creation));
             Assert.That(copy.Reserved,       Is.EqualTo(src.Reserved));
-            Assert.That(copy.Contact.Value,    Is.EqualTo(src.Contact.Value));
+            Assert.That(copy.Contact.Value,  Is.EqualTo(src.Contact.Value));
             Assert.That(copy.Secret,         Is.EqualTo(src.Secret));
             Assert.That(copy.Guid,           Is.Not.EqualTo(src.Guid));
         }
 
-        #endregion
-
-        #region Modify after copying
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Copy_Modify_Integer
+        /// Copy_Modify
         ///
         /// <summary>
-        /// コピー後、コピー元オブジェクトの int の値を変更するテストを
-        /// 実行します。
+        /// Confirms the result when creating a copied object and
+        /// modifying properties of the source object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Copy_Modify_Integer()
+        public void Copy_Modify()
         {
-            var src = new Person();
-            src.Identification = 10;
-            var copy = src.Copy();
+            var src = new Person
+            {
+                Identification = 10,
+                Name           = "Copy Serializable",
+                Contact        = new Address
+                {
+                    Type  = "Phone",
+                    Value = "01-2345-6789"
+                },
+            };
+
+            var dest = src.Copy();
+
             src.Identification = 20;
+            src.Name           = "Re-assign";
+            src.Contact.Value  = "98-7654-3210";
 
-            Assert.That(copy.Identification, Is.Not.EqualTo(src.Identification));
+            Assert.That(dest.Identification, Is.Not.EqualTo(src.Identification));
+            Assert.That(dest.Name,           Is.Not.EqualTo(src.Name));
+            Assert.That(dest.Contact.Value,  Is.EqualTo(src.Contact.Value));
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Copy_Modify_String
-        ///
-        /// <summary>
-        /// コピー後、コピー元オブジェクトの string の値を変更するテストを
-        /// 実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Copy_Modify_String()
-        {
-            var src = new Person();
-            src.Name = "Copy Serializable";
-            var copy = src.Copy();
-            src.Name = "Re-assign";
-
-            Assert.That(copy.Name, Is.Not.EqualTo(src.Name));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Copy_Modify_Reference
-        ///
-        /// <summary>
-        /// コピー後、コピー元オブジェクトのクラスの値を変更するテストを
-        /// 実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Copy_Modify_Reference()
-        {
-            var src = new Person();
-            src.Contact.Value = "01-2345-6789";
-            var copy = src.Copy();
-            src.Contact.Value = "98-7654-3210";
-
-            Assert.That(copy.Contact.Value, Is.EqualTo(src.Contact.Value));
-        }
-
-        #endregion
-
-        #region TryCast
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryCast_Failed
-        ///
-        /// <summary>
-        /// TryCast に失敗した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void TryCast_Failed() =>
-            Assert.That(10.TryCast("failed"), Is.EqualTo("failed"));
 
         #endregion
 

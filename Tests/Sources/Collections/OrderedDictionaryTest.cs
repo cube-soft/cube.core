@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
-using Cube.Generics;
+using Cube.Mixin.Generics;
 using NUnit.Framework;
 using System;
 using System.Collections;
