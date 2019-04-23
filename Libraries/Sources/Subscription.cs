@@ -128,10 +128,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            _inner.Clear();
-        }
+        protected override void Dispose(bool disposing) => _inner.Clear();
 
         #endregion
 
@@ -252,10 +249,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            _inner.Clear();
-        }
+        protected override void Dispose(bool disposing) => _inner.Clear();
 
         #endregion
 
