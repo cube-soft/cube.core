@@ -18,18 +18,18 @@
 using Cube.Mixin.Generics;
 using Microsoft.Win32;
 
-namespace Cube.DataContract.Mixin
+namespace Cube.Mixin.Registry
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// RegistryExtension
+    /// Extension
     ///
     /// <summary>
-    /// Provides extended methods to access values of the registry.
+    /// Provides extended methods of the Registry and related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class RegistryExtension
+    public static class Extension
     {
         #region Methods
 

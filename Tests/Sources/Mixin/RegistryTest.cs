@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.DataContract.Mixin;
+using Cube.Mixin.Registry;
 using Microsoft.Win32;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
