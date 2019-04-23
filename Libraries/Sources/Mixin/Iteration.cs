@@ -15,58 +15,52 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Iteration;
-using NUnit.Framework;
 using System;
 
-namespace Cube.Tests
+namespace Cube.Mixin.Iteration
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IterateExtensionTest
+    /// Extension
     ///
     /// <summary>
-    /// Represents tests for the IterateExtension class.
+    /// Provides extended methods about iteration.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class IterateExtensionTest
+    public static class Extension
     {
-        #region Tests
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// Times
         ///
         /// <summary>
-        /// Executes the test of Times extended method.
+        /// Executes the specified action in the specified number of times.
         /// </summary>
         ///
+        /// <param name="n">Number of times.</param>
+        /// <param name="action">User action.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times()
-        {
-            var actual = 0;
-            10.Times(() => actual++);
-            Assert.That(actual, Is.EqualTo(10));
-        }
+        public static void Times(this int n, Action action) => Times(n, z => action());
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Times_WithIndex
+        /// Times
         ///
         /// <summary>
-        /// Executes the test of Times extended method.
+        /// Executes the specified action in the specified number of times.
         /// </summary>
         ///
+        /// <param name="n">Number of times.</param>
+        /// <param name="action">User action.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times_WithIndex()
+        public static void Times(this int n, Action<int> action)
         {
-            var actual = 0;
-            10.Times(i => actual += i);
-            Assert.That(actual, Is.EqualTo(45));
+            for (var i = 0; i < n; ++i) action(i);
         }
 
         /* ----------------------------------------------------------------- */
@@ -74,55 +68,42 @@ namespace Cube.Tests
         /// Try
         ///
         /// <summary>
-        /// Executes the test of Try extended method.
+        /// Tries the specified action up to the specified number of times
+        /// until the action succeeds.
         /// </summary>
         ///
+        /// <param name="src">Source object.</param>
+        /// <param name="n">Number of trials.</param>
+        /// <param name="action">User action.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Try()
-        {
-            var n = 0;
-            this.Try(10, () => ThrowIfOdd(++n));
-            Assert.That(n, Is.EqualTo(2));
-        }
+        public static void Try<T>(this T src, int n, Action action) => src.Try(n, z => action());
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Try_Throws
+        /// Try
         ///
         /// <summary>
-        /// Executes the test of Try extended method.
+        /// Tries the specified action up to the specified number of times
+        /// until the action succeeds.
         /// </summary>
         ///
+        /// <param name="src">Source object.</param>
+        /// <param name="n">Number of trials.</param>
+        /// <param name="action">User action.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Try_Throws()
+        public static void Try<T>(this T src, int n, Action<int> action)
         {
-            var n = 0;
-            Assert.That(
-                () => this.Try(10, () => { ++n; ThrowIfOdd(1); }),
-                Throws.TypeOf<ArgumentException>()
-                      .And.Message.EqualTo("Odd number")
-            );
-            Assert.That(n, Is.EqualTo(10));
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ThrowIfOdd
-        ///
-        /// <summary>
-        /// Throws if the specified value is odd number.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void ThrowIfOdd(int n)
-        {
-            if (n % 2 != 0) throw new ArgumentException("Odd number");
+            for (var i = 0; i < n; ++i)
+            {
+                try { action(i); return; }
+                catch (Exception err)
+                {
+                    Logger.Warn(src.GetType(), $"{err.Message} ({i + 1}/{n})");
+                    if (i + 1 >= n) throw;
+                }
+            }
         }
 
         #endregion
