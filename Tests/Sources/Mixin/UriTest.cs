@@ -15,16 +15,16 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Conversions;
+using Cube.Mixin.Uri;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriFormatTest
+    /// UriTest
     ///
     /// <summary>
     /// Uri クラスの拡張メソッドをテストするためのクラスです。
@@ -32,7 +32,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class UriFormatTest
+    class UriTest
     {
         #region Tests
 
@@ -152,7 +152,7 @@ namespace Cube.Tests
         [Test]
         public void With_Utm() =>
             Assert.That(
-                Create().With(new UtmQuery
+                Create().With(new Utm
                 {
                     Source   = "cube",
                     Medium   = "tests",
@@ -175,7 +175,7 @@ namespace Cube.Tests
         [Test]
         public void With_Utm_Null() =>
             Assert.That(
-                Create().With(default(UtmQuery)),
+                Create().With(default(Utm)),
                 Is.EqualTo(Create())
             );
 
