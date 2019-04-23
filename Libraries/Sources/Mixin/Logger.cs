@@ -16,21 +16,21 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Reflection;
 using System.Runtime.CompilerServices;
+using Source = Cube.Logger;
 
-namespace Cube.Log
+namespace Cube.Mixin.Logger
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// LoggerExtension
+    /// Extension
     ///
     /// <summary>
-    /// Provides extended methods for logging.
+    /// Provides extended methods of the Logger class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class LoggerExtension
+    public static class Extension
     {
         #region Methods
 
@@ -49,7 +49,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, params string[] values) =>
-            Logger.Debug(src.GetType(), values);
+            Source.Debug(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -64,7 +64,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, Exception error) =>
-            Logger.Debug(src.GetType(), error);
+            Source.Debug(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -83,7 +83,7 @@ namespace Cube.Log
         /* ----------------------------------------------------------------- */
         public static U LogDebug<T, U>(this T src, Func<U> func,
             [CallerMemberName] string message = null) =>
-            Logger.Debug(src.GetType(), func, message);
+            Source.Debug(src.GetType(), func, message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,7 +100,7 @@ namespace Cube.Log
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, Action action,
             [CallerMemberName] string message = null) =>
-            Logger.Debug(src.GetType(), action, message);
+            Source.Debug(src.GetType(), action, message);
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, params string[] values) =>
-            Logger.Info(src.GetType(), values);
+            Source.Info(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,7 +134,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, Exception error) =>
-            Logger.Info(src.GetType(), error);
+            Source.Info(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -148,8 +148,8 @@ namespace Cube.Log
         /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, Assembly assembly) =>
-            Logger.Info(src.GetType(), assembly);
+        public static void LogInfo<T>(this T src, System.Reflection.Assembly assembly) =>
+            Source.Info(src.GetType(), assembly);
 
         #endregion
 
@@ -168,7 +168,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, params string[] values) =>
-            Logger.Warn(src.GetType(), values);
+            Source.Warn(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -183,7 +183,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, Exception error) =>
-            Logger.Warn(src.GetType(), error);
+            Source.Warn(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -220,7 +220,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static U LogWarn<T, U>(this T src, Func<U> func, U error) =>
-            Logger.Warn(src.GetType(), func, error);
+            Source.Warn(src.GetType(), func, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -235,7 +235,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, Action action) =>
-            Logger.Warn(src.GetType(), action);
+            Source.Warn(src.GetType(), action);
 
         #endregion
 
@@ -254,7 +254,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, params string[] values) =>
-            Logger.Error(src.GetType(), values);
+            Source.Error(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -269,7 +269,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, Exception error) =>
-            Logger.Error(src.GetType(), error);
+            Source.Error(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -298,15 +298,15 @@ namespace Cube.Log
         ///
         /// <param name="src">Targe object.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="err">
+        /// <param name="error">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static U LogError<T, U>(this T src, Func<U> func, U err) =>
-            Logger.Error(src.GetType(), func, err);
+        public static U LogError<T, U>(this T src, Func<U> func, U error) =>
+            Source.Error(src.GetType(), func, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -321,7 +321,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, Action action) =>
-            Logger.Error(src.GetType(), action);
+            Source.Error(src.GetType(), action);
 
         #endregion
 
@@ -340,7 +340,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, params string[] values) =>
-            Logger.Fatal(src.GetType(), values);
+            Source.Fatal(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -355,7 +355,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, Exception error) =>
-            Logger.Fatal(src.GetType(), error);
+            Source.Fatal(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -384,15 +384,15 @@ namespace Cube.Log
         ///
         /// <param name="src">Targe object.</param>
         /// <param name="func">Function to monitor.</param>
-        /// <param name="err">
+        /// <param name="error">
         /// Value that returns when an exception occurs.
         /// </param>
         ///
         /// <returns>Function result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static U LogFatal<T, U>(this T src, Func<U> func, U err) =>
-            Logger.Fatal(src.GetType(), func, err);
+        public static U LogFatal<T, U>(this T src, Func<U> func, U error) =>
+            Source.Fatal(src.GetType(), func, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -407,7 +407,7 @@ namespace Cube.Log
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, Action action) =>
-            Logger.Fatal(src.GetType(), action);
+            Source.Fatal(src.GetType(), action);
 
         #endregion
 

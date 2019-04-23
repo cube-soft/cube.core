@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Logger;
 using System;
 
 namespace Cube.Mixin.Iteration
@@ -100,7 +101,7 @@ namespace Cube.Mixin.Iteration
                 try { action(i); return; }
                 catch (Exception err)
                 {
-                    Logger.Warn(src.GetType(), $"{err.Message} ({i + 1}/{n})");
+                    src.LogWarn($"{err.Message} ({i + 1}/{n})");
                     if (i + 1 >= n) throw;
                 }
             }

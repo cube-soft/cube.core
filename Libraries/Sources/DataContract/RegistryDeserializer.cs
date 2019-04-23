@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract.Mixin;
-using Cube.Log;
+using Cube.Mixin.Logger;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 using System;
