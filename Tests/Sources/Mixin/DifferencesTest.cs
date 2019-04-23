@@ -15,25 +15,26 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections.Mixin;
+using Cube.Mixin.Differences;
 using Cube.Differences;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DiffTest
+    /// DifferencesTest
     ///
     /// <summary>
-    /// Cube.CollectionExtension.Diff のテスト用クラスです。
+    /// Tests of extended methods defined in the Cube.Mixin.Differences
+    /// namespace.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DiffTest
+    class DifferencesTest
     {
         #region Tests
 
@@ -42,17 +43,17 @@ namespace Cube.Tests
         /// Diff
         ///
         /// <summary>
-        /// 差分検出のテストを実行します。
+        /// Tests of the Diff extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
         public void Diff(string older, string newer, Result<char> expected)
         {
-            var actual = newer.Diff(older).First();
-            Assert.That(actual.Condition, Is.EqualTo(expected.Condition));
-            Assert.That(actual.Older, Is.EquivalentTo(expected.Older));
-            Assert.That(actual.Newer, Is.EquivalentTo(expected.Newer));
+            var dest = newer.Diff(older).First();
+            Assert.That(dest.Condition, Is.EqualTo(expected.Condition));
+            Assert.That(dest.Older, Is.EquivalentTo(expected.Older));
+            Assert.That(dest.Newer, Is.EquivalentTo(expected.Newer));
         }
 
         /* ----------------------------------------------------------------- */
@@ -60,7 +61,8 @@ namespace Cube.Tests
         /// Diff_OlderIsEmpty
         ///
         /// <summary>
-        /// 変更前のテキストが空の場合のテストを実行します。
+        /// Tests of the Diff extended method with the null or empty older
+        /// value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -68,10 +70,10 @@ namespace Cube.Tests
         [TestCase(null)]
         public void Diff_OlderIsEmpty(string older)
         {
-            var actual = "empty".Diff(older).First();
-            Assert.That(actual.Condition, Is.EqualTo(Condition.Inserted));
-            Assert.That(actual.Older, Is.Null);
-            Assert.That(actual.Newer, Is.EquivalentTo("empty"));
+            var dest = "empty".Diff(older).First();
+            Assert.That(dest.Condition, Is.EqualTo(Condition.Inserted));
+            Assert.That(dest.Older, Is.Null);
+            Assert.That(dest.Newer, Is.EquivalentTo("empty"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -79,7 +81,8 @@ namespace Cube.Tests
         /// Diff_NewerIsEmpty
         ///
         /// <summary>
-        /// 変更後のテキストが空の場合のテストを実行します。
+        /// Tests of the Diff extended method with the null or empty newer
+        /// value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -87,10 +90,10 @@ namespace Cube.Tests
         [TestCase(null)]
         public void Diff_NewerIsEmpty(string newer)
         {
-            var actual = newer.Diff("empty").First();
-            Assert.That(actual.Condition, Is.EqualTo(Condition.Deleted));
-            Assert.That(actual.Older, Is.EquivalentTo("empty"));
-            Assert.That(actual.Newer, Is.Null);
+            var dest = newer.Diff("empty").First();
+            Assert.That(dest.Condition, Is.EqualTo(Condition.Deleted));
+            Assert.That(dest.Older, Is.EquivalentTo("empty"));
+            Assert.That(dest.Newer, Is.Null);
         }
 
         /* ----------------------------------------------------------------- */
@@ -98,20 +101,21 @@ namespace Cube.Tests
         /// Diff_IgnoreCase
         ///
         /// <summary>
-        /// 大文字・小文字を無視した比較のテストを実行します。
+        /// Tests of the Diff extended method with the user predicate
+        /// function.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Diff_IgnoreCase()
         {
-            var actual = "AbCdEfG".Diff(
+            var dest = "AbCdEfG".Diff(
                 "aBcDeFg",
                 (x, y) => char.ToLower(x) == char.ToLower(y),
                 Condition.DiffOnly
             );
 
-            Assert.That(actual.Count(), Is.EqualTo(0));
+            Assert.That(dest.Count(), Is.EqualTo(0));
         }
 
         #endregion
@@ -123,7 +127,7 @@ namespace Cube.Tests
         /// TestCases
         ///
         /// <summary>
-        /// テストに使用するデータを取得します。
+        /// Gets test cases.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -145,7 +149,8 @@ namespace Cube.Tests
         /// TestCase
         ///
         /// <summary>
-        /// TestCaseData オブジェクトを生成します。
+        /// Creates a new instance of the TestCaseData class with the
+        /// specified arguments.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

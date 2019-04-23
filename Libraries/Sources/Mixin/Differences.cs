@@ -15,22 +15,23 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using Cube.Differences;
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Collections.Mixin
+namespace Cube.Mixin.Differences
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableDiff
+    /// Extension
     ///
     /// <summary>
-    /// Provides functionality to get the diff between the two sequences.
+    /// Provides extended methods to get diff between the two sequences.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class EnumerableDiff
+    public static class Extension
     {
         #region Methods
 
@@ -39,7 +40,7 @@ namespace Cube.Collections.Mixin
         /// Diff(T)
         ///
         /// <summary>
-        /// Returns the diff between the two sequences.
+        /// Returns diff between the two sequences.
         /// </summary>
         ///
         /// <param name="newer">Newer sequence.</param>
@@ -58,7 +59,7 @@ namespace Cube.Collections.Mixin
         /// Diff(T)
         ///
         /// <summary>
-        /// Returns the diff between the two sequences.
+        /// Returns diff between the two sequences.
         /// </summary>
         ///
         /// <param name="newer">Newer sequence.</param>
@@ -79,7 +80,7 @@ namespace Cube.Collections.Mixin
         /// Diff(T)
         ///
         /// <summary>
-        /// Returns the diff between the two sequences.
+        /// Returns diff between the two sequences.
         /// </summary>
         ///
         /// <param name="newer">Newer sequence.</param>
@@ -100,7 +101,7 @@ namespace Cube.Collections.Mixin
         /// Diff(T)
         ///
         /// <summary>
-        /// Returns the diff between the two sequences.
+        /// Returns diff between the two sequences.
         /// </summary>
         ///
         /// <param name="newer">Newer sequence.</param>
@@ -123,7 +124,7 @@ namespace Cube.Collections.Mixin
         /// Diff(T)
         ///
         /// <summary>
-        /// Returns the diff between the two sequences.
+        /// Returns diff between the two sequences.
         /// </summary>
         ///
         /// <param name="newer">Newer sequence.</param>
@@ -144,7 +145,7 @@ namespace Cube.Collections.Mixin
         /// Diff(T)
         ///
         /// <summary>
-        /// Returns the diff between the two sequences.
+        /// Returns diff between the two sequences.
         /// </summary>
         ///
         /// <param name="newer">Newer sequence.</param>
