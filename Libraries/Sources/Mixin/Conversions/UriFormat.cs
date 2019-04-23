@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.DateTime;
 using Cube.Mixin.String;
 using System;
 using System.Collections.Generic;
