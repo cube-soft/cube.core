@@ -15,16 +15,16 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+using Source = System.Environment;
 
-namespace Cube.Generics
+namespace Cube.Mixin.Environment
 {
     /* --------------------------------------------------------------------- */
     ///
     /// EnvironmentExtension
     ///
     /// <summary>
-    /// Provides extended methods for the Environment class.
+    /// Provides extended methods of the Environment class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,13 +40,14 @@ namespace Cube.Generics
         /// Gets the directory name corresponding to the specified value.
         /// </summary>
         ///
-        /// <param name="src">Source string.</param>
+        /// <param name="src">
+        /// Value that represents the special folder.
+        /// </param>
         ///
-        /// <returns>Quoted string.</returns>
+        /// <returns>Directory name.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetName(this Environment.SpecialFolder src) =>
-            Environment.GetFolderPath(src);
+        public static string GetName(this Source.SpecialFolder src) => Source.GetFolderPath(src);
 
         #endregion
     }
