@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using NUnit.Framework;
 using System.Reflection;
 
@@ -62,22 +63,21 @@ namespace Cube.Tests
         [Test]
         public void GetString()
         {
-            var asm   = Assembly.GetExecutingAssembly().GetReader();
-            var major = asm.Version.Major;
-            var minor = asm.Version.Minor;
-            var arch  = AssemblyReader.Platform;
-
-            var version = new SoftwareVersion(asm.Assembly)
+            var src   = Assembly.GetExecutingAssembly();
+            var major = src.GetVersion().Major;
+            var minor = src.GetVersion().Minor;
+            var pf    = src.GetPlatform();
+            var dest  = new SoftwareVersion(src)
             {
                 Digit  = 2,
                 Prefix = "begin-",
                 Suffix = "-end"
             };
 
-            Assert.That(version.Platform,        Is.EqualTo(arch));
-            Assert.That(version.ToString(true),  Is.EqualTo($"begin-{major}.{minor}-end ({arch})"));
-            Assert.That(version.ToString(false), Is.EqualTo($"begin-{major}.{minor}-end"));
-            Assert.That(version.ToString(),      Is.EqualTo(version.ToString(false)));
+            Assert.That(dest.Platform,        Is.EqualTo(pf));
+            Assert.That(dest.ToString(true),  Is.EqualTo($"begin-{major}.{minor}-end ({pf})"));
+            Assert.That(dest.ToString(false), Is.EqualTo($"begin-{major}.{minor}-end"));
+            Assert.That(dest.ToString(),      Is.EqualTo(dest.ToString(false)));
         }
 
         /* ----------------------------------------------------------------- */

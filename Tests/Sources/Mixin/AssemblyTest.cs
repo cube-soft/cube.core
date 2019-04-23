@@ -15,52 +15,53 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AssemblyReaderTest
+    /// AssemblyTest
     ///
     /// <summary>
-    /// Tests for the AssemblyReader class.
+    /// Tests extended methods of the Assembly class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class AssemblyReaderTest
+    class AssemblyTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Assembly_Properties
+        /// Invoke
         ///
         /// <summary>
-        /// Confirms properties of the AssemblyReader object.
+        /// Confirms the results of extended methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Assembly_Properties(Assembly src, Result expected) {
-            var dest = new AssemblyReader(src);
-            Assert.That(dest.Location,      Does.EndWith(expected.Location));
-            Assert.That(dest.DirectoryName, Does.Contain(expected.Directory));
-            Assert.That(dest.Assembly,      Is.EqualTo(expected.Assembly));
-            Assert.That(dest.Title,         Is.EqualTo(expected.Title));
-            Assert.That(dest.Description,   Is.EqualTo(expected.Description));
-            Assert.That(dest.Company,       Is.EqualTo(expected.Company));
-            Assert.That(dest.Product,       Is.EqualTo(expected.Product));
-            Assert.That(dest.Copyright,     Is.EqualTo(expected.Copyright));
-            Assert.That(dest.Configuration, Is.EqualTo(expected.Configuration));
-            Assert.That(dest.Trademark,     Is.EqualTo(expected.Trademark));
-            Assert.That(dest.Culture,       Is.EqualTo(expected.Culture));
-            Assert.That(dest.Version,       Is.EqualTo(expected.Version));
-            Assert.That(dest.FileVersion,   Is.EqualTo(expected.FileVersion));
+        public void Invoke(Assembly src, Expected expected) {
+            Assert.That(src.GetNameString(),    Is.EqualTo(expected.Name));
+            Assert.That(src.GetLocation(),      Does.EndWith(expected.FileName));
+            Assert.That(src.GetFileName(),      Is.EqualTo(expected.FileName));
+            Assert.That(src.GetDirectoryName(), Does.Contain(expected.DirectoryName));
+            Assert.That(src.GetTitle(),         Is.EqualTo(expected.Title));
+            Assert.That(src.GetDescription(),   Is.EqualTo(expected.Description));
+            Assert.That(src.GetCompany(),       Is.EqualTo(expected.Company));
+            Assert.That(src.GetProduct(),       Is.EqualTo(expected.Product));
+            Assert.That(src.GetCopyright(),     Is.EqualTo(expected.Copyright));
+            Assert.That(src.GetConfiguration(), Is.EqualTo(expected.Configuration));
+            Assert.That(src.GetTrademark(),     Is.EqualTo(expected.Trademark));
+            Assert.That(src.GetCulture(),       Is.EqualTo(expected.Culture));
+            Assert.That(src.GetVersion(),       Is.EqualTo(expected.Version));
+            Assert.That(src.GetFileVersion(),   Is.EqualTo(expected.FileVersion));
         }
 
         #endregion
@@ -80,11 +81,11 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(Assembly.GetExecutingAssembly(), new Result
+                yield return new TestCaseData(Assembly.GetExecutingAssembly(), new Expected
                 {
-                    Assembly      = Assembly.GetExecutingAssembly(),
-                    Location      = "Cube.Core.Tests.dll",
-                    Directory     = @"Tests\bin",
+                    Name          = "Cube.Core.Tests",
+                    FileName      = "Cube.Core.Tests.dll",
+                    DirectoryName = @"Tests\bin",
                     Title         = "Cube.Core UnitTest",
                     Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
                     Company       = "CubeSoft, Inc.",
@@ -97,11 +98,11 @@ namespace Cube.Tests
                     FileVersion   = new Version(1, 16, 0, 0),
                 });
 
-                yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
+                yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyExtension)), new Expected
                 {
-                    Assembly      = Assembly.GetAssembly(typeof(AssemblyReader)),
-                    Location      = "Cube.Core.dll",
-                    Directory     = @"Tests\bin",
+                    Name          = "Cube.Core",
+                    FileName      = "Cube.Core.dll",
+                    DirectoryName = @"Tests\bin",
                     Title         = "Cube.Core",
                     Description   = "Common library for CubeSoft libraries and applications.",
                     Company       = "CubeSoft",
@@ -113,23 +114,6 @@ namespace Cube.Tests
                     Version       = new Version(1, 16, 0, 0),
                     FileVersion   = new Version(1, 16, 0, 0),
                 });
-
-                yield return new TestCaseData(null, new Result
-                {
-                    Assembly      = null,
-                    Location      = string.Empty,
-                    Directory     = string.Empty,
-                    Title         = string.Empty,
-                    Description   = string.Empty,
-                    Company       = string.Empty,
-                    Product       = string.Empty,
-                    Copyright     = string.Empty,
-                    Configuration = string.Empty,
-                    Trademark     = string.Empty,
-                    Culture       = string.Empty,
-                    Version       = new Version(),
-                    FileVersion   = new Version(),
-                });
             }
         }
 
@@ -139,25 +123,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Result
+        /// Expected
         ///
         /// <summary>
         /// Represents information of expected results.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        internal class Result
+        public class Expected
         {
-            public Assembly Assembly { get; set; }
-            public string Location { get; set; }
-            public string Directory { get; set; }
+            public string Name { get; set; }
+            public string FileName { get; set; }
+            public string DirectoryName { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public string Company { get; set; }
             public string Product { get; set; }
             public string Copyright { get; set; }
-            public string Configuration { get; set; }
             public string Trademark { get; set; }
+            public string Configuration { get; set; }
             public string Culture { get; set; }
             public Version Version { get; set; }
             public Version FileVersion { get; set; }

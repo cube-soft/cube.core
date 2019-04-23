@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -201,10 +202,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Assembly assembly)
         {
-            var asm = new AssemblyReader(assembly);
-            var ver = new SoftwareVersion(assembly);
-
-            Info(type, $"{asm.Product} {ver.ToString(true)}");
+            Info(type, $"{assembly.GetProduct()} {new SoftwareVersion(assembly).ToString(true)}");
             Info(type, $"{Environment.OSVersion}");
             Info(type, $".NET Framework {Environment.Version}");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
