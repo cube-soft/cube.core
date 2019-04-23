@@ -17,18 +17,19 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Conversions
+namespace Cube.Mixin.ByteFormat
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ByteFormat
+    /// Extension
     ///
     /// <summary>
-    /// バイトサイズの書式に変換する拡張用クラスです。
+    /// Provides extended methods to convert the byte size to pretty
+    /// readable string.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ByteFormat
+    public static class Extension
     {
         #region Methods
 
@@ -37,12 +38,12 @@ namespace Cube.Conversions
         /// ToPrettyBytes
         ///
         /// <summary>
-        /// バイトサイズを読みやすい文字列に変換します。
+        /// Convert the specified byte size to pretty readable string.
         /// </summary>
         ///
-        /// <param name="bytes">バイト数</param>
+        /// <param name="bytes">Byte size.</param>
         ///
-        /// <returns>バイト数を表す文字列</returns>
+        /// <returns>String that represents the byte size.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string ToPrettyBytes(this long bytes)
@@ -66,12 +67,13 @@ namespace Cube.Conversions
         /// ToRoughBytes
         ///
         /// <summary>
-        /// バイトサイズの概算値を文字列に変換します。
+        /// Convert the specified byte size to readable string in an
+        /// Explorer manner.
         /// </summary>
         ///
-        /// <param name="bytes">バイト数</param>
+        /// <param name="bytes">Byte size.</param>
         ///
-        /// <returns>バイト数を表す文字列</returns>
+        /// <returns>String that represents the byte size.</returns>
         ///
         /// <remarks>
         /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と

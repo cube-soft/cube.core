@@ -15,29 +15,32 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Conversions;
+using Cube.Mixin.ByteFormat;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ByteFormatTest
     ///
     /// <summary>
-    /// バイトサイズの書式に関するテストを行うためのクラスです。
+    /// Tests the extended methods defined in the Cube.Mixin.ByteFormat
+    /// namespace.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class ByteFormatTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// ToPrettyBytes
         ///
         /// <summary>
-        /// ToPrettyBytes のテストを実行します。
+        /// Tests the ToPrettyBytes extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -57,12 +60,14 @@ namespace Cube.Tests
         /// ToRoughBytes
         ///
         /// <summary>
-        /// ToRoughBytes のテストを実行します。
+        /// Tests the ToRoughBytes extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(0L,    ExpectedResult = "0 Bytes")]
         [TestCase(1023L, ExpectedResult = "1 KB")]
         public string ToRoughBytes(long src) => src.ToRoughBytes();
+
+        #endregion
     }
 }
