@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using System.IO;
 using System.Reflection;
 
@@ -25,7 +26,7 @@ namespace Cube.Tests
     /// FileFixture
     ///
     /// <summary>
-    /// テストでファイルを使用するためのクラスです。
+    /// Provides functionality to load or save files for tests.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,13 +39,13 @@ namespace Cube.Tests
         /// FileFixture
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the FileFixture class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected FileFixture()
         {
-            Root     = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Root     = Assembly.GetExecutingAssembly().GetDirectoryName();
             Name     = GetType().FullName;
             Examples = Path.Combine(Root, nameof(Examples));
             Results  = Path.Combine(Root, nameof(Results), Name);
@@ -62,8 +63,7 @@ namespace Cube.Tests
         /// Root
         ///
         /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
+        /// Gets the path of the root directory that has test resources.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -74,7 +74,7 @@ namespace Cube.Tests
         /// Examples
         ///
         /// <summary>
-        /// テスト用ファイルの存在するフォルダへのパスを取得します。
+        /// Gets the path of the directory that has example files for tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -85,7 +85,7 @@ namespace Cube.Tests
         /// Results
         ///
         /// <summary>
-        /// テスト結果を格納するためのフォルダへのパスを取得します。
+        /// Gets the path of the directory that test results is saved.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -96,7 +96,7 @@ namespace Cube.Tests
         /// Name
         ///
         /// <summary>
-        /// クラス名を取得します。
+        /// Gets the class name.
         /// </summary>
         ///
         /// <remarks>
@@ -112,37 +112,41 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetExamplesWith
+        /// Get
         ///
         /// <summary>
-        /// 指定されたパス一覧の先頭に Examples ディレクトリのパスを結合
-        /// した結果を取得します。
+        /// Gets the absolute path with the specified file or directory,
+        /// assuming that it is in the Results directory.
         /// </summary>
         ///
-        /// <param name="paths">結合パス一覧</param>
+        /// <param name="paths">
+        /// List of file or directory names to be combined as a path.
+        /// </param>
         ///
-        /// <returns>結合結果</returns>
+        /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string GetExamplesWith(params string[] paths) =>
-            Path.Combine(Examples, Path.Combine(paths));
+        protected string Get(params string[] paths) =>
+            Path.Combine(Results, Path.Combine(paths));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetResultsWith
+        /// GetSource
         ///
         /// <summary>
-        /// 指定されたパス一覧の先頭に Results ディレクトリのパスを結合
-        /// した結果を取得します。
+        /// Gets the absolute path with the specified file or directory,
+        /// assuming that it is in the Examples directory.
         /// </summary>
         ///
-        /// <param name="paths">結合パス一覧</param>
+        /// <param name="paths">
+        /// List of file or directory names to be combined as a path.
+        /// </param>
         ///
-        /// <returns>結合結果</returns>
+        /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string GetResultsWith(params string[] paths) =>
-            Path.Combine(Results, Path.Combine(paths));
+        protected string GetSource(params string[] paths) =>
+            Path.Combine(Examples, Path.Combine(paths));
 
         #endregion
 
@@ -153,8 +157,7 @@ namespace Cube.Tests
         /// Delete
         ///
         /// <summary>
-        /// 指定されたフォルダ内に存在する全てのファイルおよびフォルダを
-        /// 削除します。
+        /// Deletes all of files and directories in the specified path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

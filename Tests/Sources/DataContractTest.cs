@@ -52,7 +52,7 @@ namespace Cube.Tests
         [TestCase(Format.Json, "Person.json")]
         public void Serialize_File(Format format, string filename)
         {
-            var dest = GetResultsWith(filename);
+            var dest = Get(filename);
             format.Serialize(dest, Person.CreateDummy());
             Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
@@ -203,7 +203,7 @@ namespace Cube.Tests
         [Test]
         public void Serialize_Stream_Throws() => Assert.That(() =>
             {
-                using (var ss = File.Create(GetResultsWith("Person.reg")))
+                using (var ss = File.Create(Get("Person.reg")))
                 {
                     Format.Registry.Serialize(ss, Person.CreateDummy());
                 }
@@ -229,7 +229,7 @@ namespace Cube.Tests
         [TestCase(Format.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
         [TestCase(Format.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
         public string Deserialize_File(Format format, string filename) =>
-            format.Deserialize<Person>(GetExamplesWith(filename)).Name;
+            format.Deserialize<Person>(GetSource(filename)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -273,7 +273,7 @@ namespace Cube.Tests
         public void Deserialize_Stream_Throws() => Assert.That(
             () =>
             {
-                using (var ss = File.OpenRead(GetExamplesWith("Settings.xml")))
+                using (var ss = File.OpenRead(GetSource("Settings.xml")))
                 {
                     Format.Registry.Deserialize<Person>(ss);
                 }

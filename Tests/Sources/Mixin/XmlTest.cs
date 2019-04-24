@@ -261,7 +261,7 @@ namespace Cube.Tests.Mixin
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private XElement Create(string e) => XDocument.Load(GetExamplesWith(e)).Root;
+        private XElement Create(string e) => XDocument.Load(GetSource(e)).Root;
 
         #endregion
     }
