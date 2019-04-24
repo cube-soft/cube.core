@@ -44,8 +44,7 @@ namespace Cube
         /// ObservableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>ObservableProperty</c>
-        /// class.
+        /// Initializes a new instance of the ObservableProperty class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -82,7 +81,7 @@ namespace Cube
         ///
         /// <remarks>
         /// true の場合は Send メソッド、false の場合は Post メソッドを
-        /// 用いてイベントを伝搬します。また、Context が null の場合、
+        /// 用いてイベントを伝搬します。Context が null の場合、
         /// このプロパティは無視されます。
         /// </remarks>
         ///
@@ -114,15 +113,22 @@ namespace Cube
         /// OnPropertyChanged
         ///
         /// <summary>
-        /// Raises the <c>PropertyChanged</c> event with the provided
-        /// arguments.
+        /// Raises the PropertyChanged event with the provided arguments.
         /// </summary>
         ///
         /// <param name="e">Arguments of the event being raised.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            PropertyChanged?.Invoke(this, e);
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged == null) return;
+            if (Context != null)
+            {
+                if (IsSynchronous) Context.Send(z => PropertyChanged(this, e), null);
+                else Context.Post(z => PropertyChanged(this, e), null);
+            }
+            else PropertyChanged(this, e);
+        }
 
         #endregion
 
@@ -133,23 +139,14 @@ namespace Cube
         /// RaisePropertyChanged
         ///
         /// <summary>
-        /// Raises the <c>PropertyChanged</c> event with the specified
-        /// name.
+        /// Raises the PropertyChanged event with the specified name.
         /// </summary>
         ///
         /// <param name="name">Name of the property.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void RaisePropertyChanged(string name)
-        {
-            var e = new PropertyChangedEventArgs(name);
-            if (Context != null)
-            {
-                if (IsSynchronous) Context.Send(z => OnPropertyChanged(e), null);
-                else Context.Post(z => OnPropertyChanged(e), null);
-            }
-            else OnPropertyChanged(e);
-        }
+        public void RaisePropertyChanged(string name) =>
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         /* ----------------------------------------------------------------- */
         ///
