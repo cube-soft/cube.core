@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT     = 'Cube.FileSystem'
-LIBRARY     = '../packages'
+LIB         = '../packages'
 CONFIG      = 'Release'
 BRANCHES    = ['stable', 'net35']
 PLATFORMS   = ['Any CPU']
@@ -40,7 +40,7 @@ TEST  = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
-CLEAN.include("#{LIBRARY}/cube.*")
+CLEAN.include("#{LIB}/cube.*")
 CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
@@ -66,7 +66,7 @@ desc "Clean objects and build the solution in pre-defined branches and platforms
 task :clean_build => [:clean] do
     BRANCHES.product(PLATFORMS).each { |e|
         sh("git checkout #{e[0]}")
-        RakeFileUtils::rm_rf(FileList.new("#{LIBRARY}/cube.*"))
+        RakeFileUtils::rm_rf(FileList.new("#{LIB}/cube.*"))
         Rake::Task[:build].reenable
         Rake::Task[:build].invoke(e[1])
     }
@@ -90,9 +90,5 @@ task :test => [:build] do
     fw  = %x(git symbolic-ref --short HEAD).chomp
     fw  = 'net45' if (fw != 'net35')
     bin = ['bin', PLATFORMS[0], CONFIG, fw].join('/')
-
-    TESTCASES.each { |proj, root|
-        dir = "#{root}/#{bin}"
-        sh(%(#{TEST} "#{dir}/#{proj}.dll" --work="#{dir}"))
-    }
+    TESTCASES.each { |p, d| sh(%(#{TEST} "#{d}/#{bin}/#{p}.dll" --work="#{d}/#{bin}")) }
 end
