@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT     = 'Cube.Forms'
-LIBRARY     = '../packages'
+LIB         = '../packages'
 CONFIG      = 'Release'
 BRANCHES    = ['stable', 'net35']
 PLATFORMS   = ['Any CPU']
@@ -38,7 +38,7 @@ PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
-CLEAN.include("#{LIBRARY}/cube.*")
+CLEAN.include("#{LIB}/cube.*")
 CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
@@ -64,7 +64,7 @@ desc "Clean objects and build the solution in pre-defined branches and platforms
 task :clean_build => [:clean] do
     BRANCHES.product(PLATFORMS).each { |e|
         sh("git checkout #{e[0]}")
-        RakeFileUtils::rm_rf(FileList.new("#{LIBRARY}/cube.*"))
+        RakeFileUtils::rm_rf(FileList.new("#{LIB}/cube.*"))
         Rake::Task[:build].reenable
         Rake::Task[:build].invoke(e[1])
     }
