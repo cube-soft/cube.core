@@ -16,8 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Forms.Controls;
-using Cube.Log;
-using Cube.Tasks;
+using Cube.Mixin.Logger;
+using Cube.Mixin.Tasks;
 using System;
 using System.ComponentModel;
 using System.Drawing;

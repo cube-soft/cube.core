@@ -60,7 +60,7 @@ namespace Cube.Forms
         public VersionForm(Assembly assembly)
         {
             _control = new VersionControl(assembly);
-            InitializeLayout(assembly.GetReader());
+            InitializeLayout();
         }
 
         #endregion
@@ -180,7 +180,7 @@ namespace Cube.Forms
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update(Assembly assembly) => _control.Update(assembly.GetReader());
+        public void Update(Assembly assembly) => _control.Update(assembly);
 
         #endregion
 
@@ -195,7 +195,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void InitializeLayout(AssemblyReader assembly)
+        private void InitializeLayout()
         {
             Size = new Size(400, 270);
             SuspendLayout();

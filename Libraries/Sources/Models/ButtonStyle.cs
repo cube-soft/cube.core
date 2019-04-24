@@ -30,7 +30,7 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(OnlyExpandableConverter))]
-    public class ButtonStyle : ObservableProperty
+    public class ButtonStyle : ObservableBase
     {
         #region Properties
 
@@ -159,7 +159,7 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(OnlyExpandableConverter))]
-    public class ButtonStyleContainer : ObservableProperty
+    public class ButtonStyleContainer : ObservableBase
     {
         #region Constructors
 

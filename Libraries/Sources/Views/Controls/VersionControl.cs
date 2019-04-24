@@ -15,8 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
-using Cube.Log;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.Logger;
+using Cube.Mixin.String;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,7 +65,7 @@ namespace Cube.Forms
         {
             Size = new Size(340, 120);
             InitializeLayout();
-            Update(assembly.GetReader());
+            Update(assembly);
         }
 
         #endregion
@@ -224,13 +225,13 @@ namespace Cube.Forms
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update(AssemblyReader assembly)
+        public void Update(Assembly assembly)
         {
             if (assembly == null) return;
 
-            Product   = assembly.Product;
-            Version   = $"Version {assembly.Version.ToString()}";
-            Copyright = assembly.Copyright;
+            Product   = assembly.GetProduct();
+            Version   = $"Version {assembly.GetVersion().ToString()}";
+            Copyright = assembly.GetCopyright();
         }
 
         #endregion

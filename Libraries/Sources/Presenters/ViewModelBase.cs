@@ -32,7 +32,7 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     public abstract class ViewModelBase<TMessenger> :
-        ObservableProperty, IDisposable where TMessenger : IAggregator
+        ObservableBase, IDisposable where TMessenger : IAggregator
     {
         #region Constructors
 

@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -47,7 +48,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public MessageEventArgs(string message, Assembly assembly) :
-            this(message, assembly.GetReader().Title) { }
+            this(message, assembly.GetTitle()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -80,7 +81,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public MessageEventArgs(string message, Assembly assembly,
             MessageBoxButtons buttons, MessageBoxIcon icon) :
-            this(message, assembly.GetReader().Title, buttons, icon) { }
+            this(message, assembly.GetTitle(), buttons, icon) { }
 
         /* ----------------------------------------------------------------- */
         ///

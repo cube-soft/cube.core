@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Log;
+using Cube.Mixin.Logger;
 using System;
 using System.Windows.Forms;
 
@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class TaskbarProgress : ObservableProperty
+    public class TaskbarProgress : ObservableBase
     {
         #region Constructors
 

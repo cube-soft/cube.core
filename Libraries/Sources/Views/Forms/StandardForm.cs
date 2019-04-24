@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Forms.Controls;
-using Cube.Log;
+using Cube.Mixin.Logger;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -188,7 +188,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string ProductPlatform => AssemblyReader.Platform;
+        public string ProductPlatform => IntPtr.Size == 4 ? "x86" : "x64";
 
         #endregion
 
