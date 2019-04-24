@@ -15,23 +15,19 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.FileSystem;
+using Cube.Mixin.Assembly;
 using System.Reflection;
 
-namespace Cube.FileSystem.TestService
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
     /// FileFixture
     ///
     /// <summary>
-    /// ユニットテストでファイルを使用する際の補助クラスです。
+    /// Provides functionality to load or save files for tests.
     /// </summary>
-    ///
-    /// <remarks>
-    /// このクラスは、主にユニットテスト用クラスの内部処理で利用されます。
-    /// このクラスを直接オブジェクト化する事はできません。必要なクラスに
-    /// 継承する形で利用して下さい。
-    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public abstract class FileFixture
@@ -43,7 +39,7 @@ namespace Cube.FileSystem.TestService
         /// FileFixture
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the FileFixture class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -54,16 +50,17 @@ namespace Cube.FileSystem.TestService
         /// FileFixture
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the FileFixture class with the
+        /// specified I/O handler.
         /// </summary>
-        ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
+        /// 
+        /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected FileFixture(IO io)
         {
             IO       = io;
-            Root     = IO.Get(Assembly.GetExecutingAssembly().Location).DirectoryName;
+            Root     = Assembly.GetExecutingAssembly().GetDirectoryName();
             Name     = GetType().FullName;
             Examples = IO.Combine(Root, nameof(Examples));
             Results  = IO.Combine(Root, nameof(Results), Name);
@@ -81,7 +78,7 @@ namespace Cube.FileSystem.TestService
         /// IO
         ///
         /// <summary>
-        /// ファイル操作用オブジェクトを取得します。
+        /// Gets the I/O handler.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -92,8 +89,7 @@ namespace Cube.FileSystem.TestService
         /// Root
         ///
         /// <summary>
-        /// テスト用リソースの存在するルートディレクトリへのパスを
-        /// 取得、または設定します。
+        /// Gets the path of the root directory that has test resources.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -104,7 +100,7 @@ namespace Cube.FileSystem.TestService
         /// Examples
         ///
         /// <summary>
-        /// テスト用ファイルの存在するフォルダへのパスを取得します。
+        /// Gets the path of the directory that has example files for tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -115,7 +111,7 @@ namespace Cube.FileSystem.TestService
         /// Results
         ///
         /// <summary>
-        /// テスト結果を格納するためのフォルダへのパスを取得します。
+        /// Gets the path of the directory that test results is saved.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -126,7 +122,7 @@ namespace Cube.FileSystem.TestService
         /// Name
         ///
         /// <summary>
-        /// クラス名を取得します。
+        /// Gets the class name.
         /// </summary>
         ///
         /// <remarks>
@@ -142,37 +138,41 @@ namespace Cube.FileSystem.TestService
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetExamplesWith
+        /// Get
         ///
         /// <summary>
-        /// 指定されたパス一覧の先頭に Examples ディレクトリのパスを結合
-        /// した結果を取得します。
+        /// Gets the absolute path with the specified file or directory,
+        /// assuming that it is in the Results directory.
         /// </summary>
         ///
-        /// <param name="paths">結合パス一覧</param>
+        /// <param name="paths">
+        /// List of file or directory names to be combined as a path.
+        /// </param>
         ///
-        /// <returns>結合結果</returns>
+        /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string GetExamplesWith(params string[] paths) =>
-            IO.Combine(Examples, IO.Combine(paths));
+        protected string Get(params string[] paths) =>
+            IO.Combine(Results, IO.Combine(paths));
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetResultsWith
+        /// GetSource
         ///
         /// <summary>
-        /// 指定されたパス一覧の先頭に Results ディレクトリのパスを結合
-        /// した結果を取得します。
+        /// Gets the absolute path with the specified file or directory,
+        /// assuming that it is in the Examples directory.
         /// </summary>
         ///
-        /// <param name="paths">結合パス一覧</param>
+        /// <param name="paths">
+        /// List of file or directory names to be combined as a path.
+        /// </param>
         ///
-        /// <returns>結合結果</returns>
+        /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected string GetResultsWith(params string[] paths) =>
-            IO.Combine(Results, IO.Combine(paths));
+        protected string GetSource(params string[] paths) =>
+            IO.Combine(Examples, IO.Combine(paths));
 
         #endregion
 
@@ -183,8 +183,7 @@ namespace Cube.FileSystem.TestService
         /// Delete
         ///
         /// <summary>
-        /// 指定されたフォルダ内に存在する全てのファイルおよびフォルダを
-        /// 削除します。
+        /// Deletes all of files and directories in the specified path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

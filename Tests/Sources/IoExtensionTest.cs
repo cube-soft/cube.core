@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.FileSystem.Mixin;
-using Cube.FileSystem.TestService;
+using Cube.Tests;
 using Cube.Mixin.String;
 using NUnit.Framework;
 using System.Reflection;
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Load() => Assert.That(
-            IO.Load(GetExamplesWith("Sample.txt"), e => e.Length),
+            IO.Load(GetSource("Sample.txt"), e => e.Length),
             Is.EqualTo(13L)
         );
 
@@ -63,7 +63,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void LoadOrDefault_NotFound() => Assert.That(
-            IO.LoadOrDefault(GetExamplesWith("NotFound.dummy"), e => e.Length, -1),
+            IO.LoadOrDefault(GetSource("NotFound.dummy"), e => e.Length, -1),
             Is.EqualTo(-1L)
         );
 
@@ -79,7 +79,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Save()
         {
-            var dest = GetResultsWith(nameof(Save));
+            var dest = Get(nameof(Save));
             IO.Save(dest, e => e.WriteByte((byte)'a'));
             Assert.That(IO.Get(dest).Length, Is.EqualTo(1));
         }
@@ -112,7 +112,7 @@ namespace Cube.FileSystem.Tests
         [TestCase("Sample.txt",     ExpectedResult = true)]
         [TestCase("NotFound.dummy", ExpectedResult = true)]
         public bool GetTypeName(string filename) =>
-            IO.GetTypeName(IO.Get(GetExamplesWith(filename))).HasValue();
+            IO.GetTypeName(IO.Get(GetSource(filename))).HasValue();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -143,21 +143,21 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void GetUniqueName()
         {
-            var src = GetResultsWith($"UniqueTest.txt");
+            var src = Get($"UniqueTest.txt");
             var u1 = IO.GetUniqueName(src);
             Assert.That(u1, Is.EqualTo(src));
 
-            IO.Copy(GetExamplesWith("Sample.txt"), u1);
+            IO.Copy(GetSource("Sample.txt"), u1);
             var u2 = IO.GetUniqueName(src);
-            Assert.That(u2, Is.EqualTo(GetResultsWith($"UniqueTest (1).txt")));
+            Assert.That(u2, Is.EqualTo(Get($"UniqueTest (1).txt")));
 
-            IO.Copy(GetExamplesWith("Sample.txt"), u2);
+            IO.Copy(GetSource("Sample.txt"), u2);
             var u3 = IO.GetUniqueName(IO.Get(src));
-            Assert.That(u3, Is.EqualTo(GetResultsWith($"UniqueTest (2).txt")));
+            Assert.That(u3, Is.EqualTo(Get($"UniqueTest (2).txt")));
 
-            IO.Copy(GetExamplesWith("Sample.txt"), u3);
+            IO.Copy(GetSource("Sample.txt"), u3);
             var u4 = IO.GetUniqueName(u3); // Not src
-            Assert.That(u4, Is.EqualTo(GetResultsWith($"UniqueTest (2) (1).txt")));
+            Assert.That(u4, Is.EqualTo(Get($"UniqueTest (2) (1).txt")));
         }
 
         #endregion

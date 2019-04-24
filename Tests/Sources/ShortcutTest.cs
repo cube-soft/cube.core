@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem.TestService;
+using Cube.Tests;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Reflection;
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public bool Create(string name, string link, int index, string args)
         {
-            var src  = GetResultsWith(name);
+            var src  = Get(name);
             var dest = GetTargetPath(link);
             var sc   = new Shortcut
             {
@@ -79,7 +79,7 @@ namespace Cube.FileSystem.Tests
         {
             var sc = new Shortcut
             {
-                FullName     = GetResultsWith("ScEmpty"),
+                FullName     = Get("ScEmpty"),
                 Target       = string.Empty,
                 Arguments    = null,
                 IconLocation = string.Empty,
@@ -101,7 +101,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Delete()
         {
-            var src  = GetResultsWith("DeleteTest");
+            var src  = Get("DeleteTest");
             var dest = GetTargetPath("Cube.FileSystem.dll");
             var sc   = new Shortcut
             {
@@ -131,7 +131,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Resolve()
         {
-            var link = GetResultsWith("ResolveTest");
+            var link = Get("ResolveTest");
             var path = GetTargetPath("Cube.FileSystem.dll");
             var args = "/foo bar /bas";
 

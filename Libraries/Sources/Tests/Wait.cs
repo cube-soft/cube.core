@@ -19,7 +19,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Cube.FileSystem.TestService
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
