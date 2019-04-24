@@ -172,15 +172,15 @@ namespace Cube.FileSystem
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ExtensionFilterCollection
+    /// ExtensionFilterConverter
     ///
     /// <summary>
-    /// Provides functionality to convert from a collection of
-    /// ExtensionFilter elements.
+    /// Provides functionality to convert the ExtensionFilter objects
+    /// to system required arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ExtensionFilterCollection
+    public static class ExtensionFilterConverter
     {
         #region Methods
 

@@ -16,10 +16,10 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
-using Cube.FileSystem.Mixin;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
 using Cube.Mixin.Logger;
+using Cube.Mixin.IO;
 using Cube.Mixin.Tasks;
 using System;
 using System.ComponentModel;

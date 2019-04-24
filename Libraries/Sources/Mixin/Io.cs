@@ -15,25 +15,27 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.FileSystem;
 using Cube.Mixin.Logger;
 using Cube.Mixin.String;
 using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Source = Cube.FileSystem.IO;
 
-namespace Cube.FileSystem.Mixin
+namespace Cube.Mixin.IO
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IoExtension
+    /// Extension
     ///
     /// <summary>
-    /// Provides extended methods for the IO class.
+    /// Provides extended methods of the IO class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class IoExtension
+    public static class Extension
     {
         #region Methods
 
@@ -53,7 +55,7 @@ namespace Cube.FileSystem.Mixin
         /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this IO io, string src, Func<Stream, T> callback)
+        public static T Load<T>(this Source io, string src, Func<Stream, T> callback)
         {
             using (var ss = io.OpenRead(src)) return callback(ss);
         }
@@ -78,7 +80,7 @@ namespace Cube.FileSystem.Mixin
         /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T LoadOrDefault<T>(this IO io, string src, Func<Stream, T> callback, T error) =>
+        public static T LoadOrDefault<T>(this Source io, string src, Func<Stream, T> callback, T error) =>
             io.LogWarn(() => io.Load(src, callback), error);
 
         /* ----------------------------------------------------------------- */
@@ -95,7 +97,7 @@ namespace Cube.FileSystem.Mixin
         /// <param name="callback">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save(this IO io, string dest, Action<Stream> callback)
+        public static void Save(this Source io, string dest, Action<Stream> callback)
         {
             using (var ss = new MemoryStream())
             {
@@ -115,14 +117,16 @@ namespace Cube.FileSystem.Mixin
         /// GetTypeName
         ///
         /// <summary>
-        /// ファイルの種類を表す文字列を取得します。
+        /// Gets a value that represents kind of the specified file.
         /// </summary>
         ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="info">ファイル情報</param>
+        /// <param name="io">I/O handler.</param>
+        /// <param name="info">File information.</param>
+        ///
+        /// <returns>Typename of the file.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this IO io, Information info) =>
+        public static string GetTypeName(this Source io, Information info) =>
             GetTypeName(io, info?.FullName);
 
         /* ----------------------------------------------------------------- */
@@ -130,19 +134,22 @@ namespace Cube.FileSystem.Mixin
         /// GetTypeName
         ///
         /// <summary>
-        /// ファイルの種類を表す文字列を取得します。
+        /// Gets a value that represents type of the specified file.
         /// </summary>
         ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="path">対象となるパス</param>
+        /// <param name="io">I/O handler.</param>
+        /// <param name="path">Path of the source file.</param>
+        ///
+        /// <returns>Typename of the file.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this IO io, string path)
+        public static string GetTypeName(this Source io, string path)
         {
             if (!path.HasValue()) return string.Empty;
 
-            var dest   = new Shell32.SHFILEINFO();
-            var status = Shell32.NativeMethods.SHGetFileInfo(path,
+            var dest   = new Cube.FileSystem.Shell32.SHFILEINFO();
+            var status = Cube.FileSystem.Shell32.NativeMethods.SHGetFileInfo(
+                path,
                 0x0080, // FILE_ATTRIBUTE_NORMAL
                 ref dest,
                 (uint)Marshal.SizeOf(dest),
@@ -161,14 +168,16 @@ namespace Cube.FileSystem.Mixin
         /// GetUniqueName
         ///
         /// <summary>
-        /// 指定されたパスを基にした一意なパスを取得します。
+        /// Gets a unique name with the specified path.
         /// </summary>
         ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="path">対象となるパス</param>
+        /// <param name="io">I/O handler.</param>
+        /// <param name="path">Base path.</param>
+        ///
+        /// <returns>Unique name.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this IO io, string path) =>
+        public static string GetUniqueName(this Source io, string path) =>
             GetUniqueName(io, io.Get(path));
 
         /* ----------------------------------------------------------------- */
@@ -176,14 +185,16 @@ namespace Cube.FileSystem.Mixin
         /// GetUniqueName
         ///
         /// <summary>
-        /// IInformation オブジェクトを基にした一意なパスを取得します。
+        /// Gets a unique name with the specified file information.
         /// </summary>
         ///
-        /// <param name="io">ファイル操作用オブジェクト</param>
-        /// <param name="src">ファイル情報</param>
+        /// <param name="io">I/O handler.</param>
+        /// <param name="src">Base information.</param>
+        ///
+        /// <returns>Unique name.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this IO io, Information src)
+        public static string GetUniqueName(this Source io, Information src)
         {
             if (src == null) return null;
             if (!src.Exists) return src.FullName;

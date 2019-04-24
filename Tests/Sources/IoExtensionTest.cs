@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem.Mixin;
+using Cube.Mixin.IO;
 using Cube.Tests;
 using Cube.Mixin.String;
 using NUnit.Framework;
@@ -25,10 +25,10 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FilesTest
+    /// IoExtensionTest
     ///
     /// <summary>
-    /// FileSystem.Operator の拡張メソッドのテスト用クラスです。
+    /// Tests extended methods of the IO class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -95,10 +95,14 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Save_Throws() => Assert.That(
-            () => IO.Save(Assembly.GetExecutingAssembly().Location, e => e.WriteByte((byte)'a')),
-            Throws.TypeOf<System.IO.IOException>()
-        );
+        public void Save_Throws()
+        {
+            var src = Assembly.GetExecutingAssembly().Location;
+            Assert.That(
+                () => IO.Save(src, e => e.WriteByte((byte)'a')),
+                Throws.TypeOf<System.IO.IOException>()
+            );
+        }
 
         /* ----------------------------------------------------------------- */
         ///
