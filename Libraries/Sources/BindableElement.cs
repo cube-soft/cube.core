@@ -30,7 +30,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : ObservableProperty, IDisposable
+    public class BindableElement : ObservableBase, IDisposable
     {
         #region Constructors
 

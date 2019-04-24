@@ -15,8 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Log;
-using Cube.Tasks;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.Logger;
+using Cube.Mixin.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System;
@@ -427,7 +428,7 @@ namespace Cube.Xui
         {
             var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             Debug.Assert(asm != null);
-            return asm.GetReader().Title;
+            return asm.GetTitle();
         }
 
         #endregion

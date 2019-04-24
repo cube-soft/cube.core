@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
-using Cube.Log;
+using Cube.Mixin.Generics;
+using Cube.Mixin.Logger;
 using System;
 using System.Collections;
 using System.Collections.Generic;

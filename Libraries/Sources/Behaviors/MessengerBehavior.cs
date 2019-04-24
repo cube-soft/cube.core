@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
+using Cube.Mixin.Generics;
 using System;
 using System.Windows;
 using System.Windows.Interactivity;

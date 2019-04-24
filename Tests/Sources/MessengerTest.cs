@@ -15,7 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem.TestService;
+using Cube.Mixin.Assembly;
+using Cube.Tests;
 using GalaSoft.MvvmLight.Messaging;
 using NUnit.Framework;
 using System;
@@ -118,7 +119,7 @@ namespace Cube.Xui.Tests
 
             Assert.That(dest,          Is.Not.Null);
             Assert.That(dest.Content,  Is.EqualTo(nameof(Send_DialogMessage)));
-            Assert.That(dest.Title,    Is.EqualTo(asm.GetReader().Title));
+            Assert.That(dest.Title,    Is.EqualTo(asm.GetTitle()));
             Assert.That(dest.Callback, Is.Null);
             Assert.That(dest.Buttons,  Is.EqualTo(MessageBoxButton.OK));
             Assert.That(dest.Image,    Is.EqualTo(MessageBoxImage.Error));

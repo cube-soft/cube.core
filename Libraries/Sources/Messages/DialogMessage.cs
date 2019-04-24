@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using System.Reflection;
 using System.Windows;
 
@@ -47,7 +48,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage(string content, Assembly assembly) :
-            this(content, assembly.GetReader().Title) { }
+            this(content, assembly.GetTitle()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -80,7 +81,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage(string content, Assembly assembly, DialogCallback callback) :
-            this(content, assembly.GetReader().Title, callback) { }
+            this(content, assembly.GetTitle(), callback) { }
 
         /* ----------------------------------------------------------------- */
         ///
