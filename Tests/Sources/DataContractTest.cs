@@ -28,7 +28,7 @@ namespace Cube.Tests
     /// DataContractTest
     ///
     /// <summary>
-    /// DataContract に関するテスト用クラスです。
+    /// Tests methods of the DataContract related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,7 +44,7 @@ namespace Cube.Tests
         /// Serialize_File
         ///
         /// <summary>
-        /// ファイルにシリアライズするテストを実行します。
+        /// Tests the Serialize methods with files.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -62,7 +62,7 @@ namespace Cube.Tests
         /// Serialize_Registry
         ///
         /// <summary>
-        /// レジストリにシリアライズするテストを実行します。
+        /// Tests the Serialize method with the registry subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -121,7 +121,7 @@ namespace Cube.Tests
         /// Serialize_Registry_Remove
         ///
         /// <summary>
-        /// リストの項目を削除して再シリアライズした時の挙動を確認します。
+        /// Tests the Serialize method with objects that have a collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -144,7 +144,7 @@ namespace Cube.Tests
         /// Serialize_Registry_Add
         ///
         /// <summary>
-        /// 配列の項目を増やして再シリアライズした時の挙動を確認します。
+        /// Tests the Serialize method with objects that have a collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -181,7 +181,8 @@ namespace Cube.Tests
         /// Serialize_Registry_Null
         ///
         /// <summary>
-        /// 無効なレジストリにシリアライズした時の挙動を確認します。
+        /// Confirms the behavior when serializing to the invalid registry
+        /// subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -192,16 +193,15 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Serializee_Stream_Throws
+        /// Serialize_Stream_Throws
         ///
         /// <summary>
-        /// Format.Registry を指定した状態でストリームにシリアライズした
-        /// 時の挙動を確認します。
+        /// Tests the Serialize method with the Registry format and stream.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Serializee_Stream_Throws() => Assert.That(() =>
+        public void Serialize_Stream_Throws() => Assert.That(() =>
             {
                 using (var ss = File.Create(GetResultsWith("Person.reg")))
                 {
@@ -220,7 +220,7 @@ namespace Cube.Tests
         /// Deserialize_File
         ///
         /// <summary>
-        /// ファイルからデシリアライズするテストを実行します。
+        /// Tests the Deserialize methods with files.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -236,7 +236,8 @@ namespace Cube.Tests
         /// Deserialize_Registry_Null
         ///
         /// <summary>
-        /// 無効なレジストリキーを設定した時の挙動を確認します。
+        /// Confirms the behavior when deserializing from the invalid
+        /// registry subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -263,8 +264,8 @@ namespace Cube.Tests
         /// Deserialize_Stream_Throws
         ///
         /// <summary>
-        /// Format.Registry を指定した状態でストリームから読み込んだ時の
-        /// 挙動を確認します。
+        /// Tests the Deserialize method with the Registry format and
+        /// stream.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

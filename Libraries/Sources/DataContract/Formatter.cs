@@ -50,8 +50,8 @@ namespace Cube.DataContract
     /// Formatter
     ///
     /// <summary>
-    /// DataContract オブジェクトをシリアライズおよびデシリアライズする
-    /// ためのクラスです。
+    /// Provides functionality to serialize and deserialize the DataContract
+    /// objects.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -64,8 +64,8 @@ namespace Cube.DataContract
         /// DefaultKey
         ///
         /// <summary>
-        /// レジストリを対象にシリアライズまたはデシリアライズする際の
-        /// ルートとなるサブキーを取得または設定します。
+        /// Gets or sets the default registry subkey when serializing or
+        /// deserializing the registry.
         /// </summary>
         ///
         /// <remarks>
@@ -91,19 +91,19 @@ namespace Cube.DataContract
         /// Serialize
         ///
         /// <summary>
-        /// 指定された保存場所にオブジェクトの内容をシリアライズします。
+        /// Serializes objects to the specified location.
         /// </summary>
         ///
-        /// <param name="format">シリアライズ・フォーマット</param>
-        /// <param name="dest">保存場所を表す文字列</param>
-        /// <param name="src">シリアライズ対象オブジェクト</param>
+        /// <param name="format">Serialization format.</param>
+        /// <param name="dest">Saving location.</param>
+        /// <param name="src">Object to be serialized.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Serialize<T>(this Format format, string dest, T src)
         {
             if (format == Format.Registry)
             {
-                using (var k = DefaultKey.CreateSubKey(dest)) k.Serialize(src);
+                using (var k = DefaultKey.CreateSubKey(dest)) Serialize(k, src);
             }
             else Serialize(dest, e => Serialize(format, e, src));
         }
@@ -113,12 +113,12 @@ namespace Cube.DataContract
         /// Serialize
         ///
         /// <summary>
-        /// 指定されたストリームにオブジェクトの内容をシリアライズします。
+        /// Serializes objects to the specified stream.
         /// </summary>
         ///
-        /// <param name="format">シリアライズ・フォーマット</param>
-        /// <param name="dest">保存先ストリーム</param>
-        /// <param name="src">シリアライズ対象オブジェクト</param>
+        /// <param name="format">Serialization format.</param>
+        /// <param name="dest">Saving stream.</param>
+        /// <param name="src">Object to be serialized.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Serialize<T>(this Format format, Stream dest, T src)
@@ -126,10 +126,10 @@ namespace Cube.DataContract
             switch (format)
             {
                 case Format.Xml:
-                    dest.SerializeXml(src);
+                    SerializeXml(dest, src);
                     break;
                 case Format.Json:
-                    dest.SerializeJson(src);
+                    SerializeJson(dest, src);
                     break;
                 default: throw new ArgumentException($"{format}:cannot serialize to stream");
             }
@@ -140,11 +140,11 @@ namespace Cube.DataContract
         /// Serialize
         ///
         /// <summary>
-        /// 指定されたレジストリにオブジェクトの内容をシリアライズします。
+        /// Serializes objects to the specified registry subkey.
         /// </summary>
         ///
-        /// <param name="dest">レジストリ・サブキー</param>
-        /// <param name="src">シリアライズ対象オブジェクト</param>
+        /// <param name="dest">Registry subkey</param>
+        /// <param name="src">Object to be serialized.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Serialize<T>(this RegistryKey dest, T src) =>
@@ -155,7 +155,7 @@ namespace Cube.DataContract
         /// Serialize
         ///
         /// <summary>
-        /// 指定されたファイルにオブジェクトの内容をシリアライズします。
+        /// Serializes objects to the specified file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -177,15 +177,11 @@ namespace Cube.DataContract
         /// SerializeXml
         ///
         /// <summary>
-        /// 指定されたストリームに XML 形式でオブジェクトの内容を
-        /// シリアライズします。
+        /// Serializes objects to the specified stream as XML format.
         /// </summary>
         ///
-        /// <param name="dest">ストリーム</param>
-        /// <param name="src">シリアライズ対象オブジェクト</param>
-        ///
         /* ----------------------------------------------------------------- */
-        private static void SerializeXml<T>(this Stream dest, T src)
+        private static void SerializeXml<T>(Stream dest, T src)
         {
             var settings = new XmlWriterSettings { Indent = true };
             using (var obj = XmlWriter.Create(dest, settings))
@@ -199,15 +195,11 @@ namespace Cube.DataContract
         /// SerializeJson
         ///
         /// <summary>
-        /// 指定されたストリームに JSON 形式でオブジェクトの内容を
-        /// シリアライズします。
+        /// Serializes objects to the specified stream as JSON format.
         /// </summary>
         ///
-        /// <param name="dest">ストリーム</param>
-        /// <param name="src">シリアライズ対象オブジェクト</param>
-        ///
         /* ----------------------------------------------------------------- */
-        private static void SerializeJson<T>(this Stream dest, T src)
+        private static void SerializeJson<T>(Stream dest, T src)
         {
             using (var obj = JsonReaderWriterFactory.CreateJsonWriter(dest, Encoding.UTF8, false, true))
             {
@@ -224,20 +216,20 @@ namespace Cube.DataContract
         /// Deserialize
         ///
         /// <summary>
-        /// 指定された場所の内容をデシリアライズします。
+        /// Deserializes contents of the specified location.
         /// </summary>
         ///
-        /// <param name="format">シリアライズ・フォーマット</param>
-        /// <param name="src">読み込み場所を表す文字列</param>
+        /// <param name="format">Serialization format.</param>
+        /// <param name="src">Location to be loaded.</param>
         ///
-        /// <returns>デシリアライズされたオブジェクト</returns>
+        /// <returns>Deserialized object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Deserialize<T>(this Format format, string src)
         {
             if (format == Format.Registry)
             {
-                using (var k = DefaultKey.OpenSubKey(src, false)) return k.Deserialize<T>();
+                using (var k = DefaultKey.OpenSubKey(src, false)) return Deserialize<T>(k);
             }
             else return Deserialize(src, e => Deserialize<T>(format, e));
         }
@@ -247,21 +239,21 @@ namespace Cube.DataContract
         /// Deserialize
         ///
         /// <summary>
-        /// 指定されたストリームの内容をデシリアライズします。
+        /// Deserializes contents of the specified stream.
         /// </summary>
         ///
-        /// <param name="format">シリアライズ・フォーマット</param>
-        /// <param name="src">読み込みストリーム</param>
+        /// <param name="format">Serialization format.</param>
+        /// <param name="src">Stream to be loaded.</param>
         ///
-        /// <returns>デシリアライズされたオブジェクト</returns>
+        /// <returns>Deserialized object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Deserialize<T>(this Format format, Stream src)
         {
             switch (format)
             {
-                case Format.Xml:  return src.DeserializeXml<T>();
-                case Format.Json: return src.DeserializeJson<T>();
+                case Format.Xml:  return DeserializeXml<T>(src);
+                case Format.Json: return DeserializeJson<T>(src);
                 default: throw new ArgumentException($"{format}:cannot deserialize from stream");
             }
         }
@@ -271,12 +263,12 @@ namespace Cube.DataContract
         /// Deserialize
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下の内容をデシリアライズします。
+        /// Deserializes contents of the specified subkey.
         /// </summary>
         ///
-        /// <param name="src">レジストリ・サブキー</param>
+        /// <param name="src">Registry subkey to be loaded.</param>
         ///
-        /// <returns>デシリアライズされたオブジェクト</returns>
+        /// <returns>Deserialized object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Deserialize<T>(this RegistryKey src) =>
@@ -287,7 +279,7 @@ namespace Cube.DataContract
         /// Deserialize
         ///
         /// <summary>
-        /// 指定されたファイルの内容をデシリアライズします。
+        /// Deserializes contents of the specified file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -301,12 +293,11 @@ namespace Cube.DataContract
         /// DeserializeXml
         ///
         /// <summary>
-        /// 指定されたレストリームの内容を XML 形式としてデシリアライズ
-        /// します。
+        /// Deserializes contents of the specified stream as XML format.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T DeserializeXml<T>(this Stream src) =>
+        private static T DeserializeXml<T>(Stream src) =>
             (T)new DataContractSerializer(typeof(T)).ReadObject(src);
 
         /* ----------------------------------------------------------------- */
@@ -314,12 +305,11 @@ namespace Cube.DataContract
         /// DeserializeJson
         ///
         /// <summary>
-        /// 指定されたレストリームの内容を JSON 形式としてデシリアライズ
-        /// します。
+        /// Deserializes contents of the specified stream as JSON format.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static T DeserializeJson<T>(this Stream src) =>
+        private static T DeserializeJson<T>(Stream src) =>
             (T)new DataContractJsonSerializer(typeof(T)).ReadObject(src);
 
         #endregion
