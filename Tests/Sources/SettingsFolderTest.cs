@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.Mixin.Assembly;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
@@ -46,26 +47,26 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(Format.Registry)]
-        [TestCase(Format.Json    )]
-        [TestCase(Format.Xml     )]
-        public void Create(Format format)
+        [TestCase(Format.Registry, 1)]
+        [TestCase(Format.Json    , 0)]
+        [TestCase(Format.Xml     , 0)]
+        public void Create(Format format, int count)
         {
-            var count = 0;
-            var dest  = new SettingsFolder<Person>(Assembly, format);
+            var n    = 0;
+            var dest = new SettingsFolder<Person>(Assembly, format);
 
-            dest.Loaded += (s, e) => ++count;
-            dest.LoadOrDefault(new Person());
+            dest.Loaded += (s, e) => ++n;
+            dest.TryLoad();
 
-            Assert.That(count,         Is.EqualTo(1));
+            Assert.That(n,             Is.EqualTo(count));
             Assert.That(dest.Value,    Is.Not.Null);
             Assert.That(dest.Version,  Is.EqualTo(new SoftwareVersion("1.16.0.0")));
             Assert.That(dest.Format,   Is.EqualTo(format));
             Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
 
             var asm = dest.Assembly;
-            Assert.That(asm.Company,   Is.EqualTo("CubeSoft"));
-            Assert.That(asm.Product,   Is.EqualTo("Cube.FileSystem.Tests"));
+            Assert.That(asm.GetCompany(), Is.EqualTo("CubeSoft"));
+            Assert.That(asm.GetProduct(), Is.EqualTo("Cube.FileSystem.Tests"));
         }
 
         /* ----------------------------------------------------------------- */

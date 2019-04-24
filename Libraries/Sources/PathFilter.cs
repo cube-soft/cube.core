@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
-using Cube.Generics;
+using Cube.Mixin.String;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
-using Cube.Log;
+using Cube.Mixin.Logger;
+using Cube.Mixin.String;
 using System;
 using System.IO;
 using System.Linq;

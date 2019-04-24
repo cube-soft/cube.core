@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.FileSystem.Mixin;
 using Cube.FileSystem.TestService;
-using Cube.Generics;
+using Cube.Mixin.String;
 using NUnit.Framework;
 using System.Reflection;
 

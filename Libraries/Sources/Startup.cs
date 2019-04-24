@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
+using Cube.Mixin.String;
 using Microsoft.Win32;
 using System;
 
@@ -30,7 +30,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Startup : ObservableProperty
+    public class Startup : ObservableBase
     {
         #region Constructors
 

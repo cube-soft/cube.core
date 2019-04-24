@@ -17,8 +17,10 @@
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
 using Cube.FileSystem.Mixin;
-using Cube.Log;
-using Cube.Tasks;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.Environment;
+using Cube.Mixin.Logger;
+using Cube.Mixin.Tasks;
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -36,7 +38,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<T> : DisposableBase, INotifyPropertyChanged
+    public class SettingsFolder<T> : ObservableBase, INotifyPropertyChanged, IDisposable
         where T : INotifyPropertyChanged, new()
     {
         #region Constructors
@@ -71,10 +73,8 @@ namespace Cube.FileSystem
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly, Format format, IO io)
-        {
-            Initialize(format, assembly.GetReader(), io);
-        }
+        public SettingsFolder(Assembly assembly, Format format, IO io) :
+            this(assembly, format, GetLocation(assembly, format, io), io) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,7 +110,18 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, Format format, string location, IO io)
         {
-            Initialize(format, location, assembly.GetReader(), io);
+            _dispose = new OnceAction<bool>(Dispose);
+            _autosaver.AutoReset = false;
+            _autosaver.Elapsed += (s, e) => Task.Run(() => Save()).Forget();
+
+            Assembly = assembly;
+            IO       = io;
+            Format   = format;
+            Location = location;
+            Version  = new SoftwareVersion(assembly);
+            Value    = new T();
+
+            Value.PropertyChanged += WhenChanged;
         }
 
         #endregion
@@ -122,7 +133,7 @@ namespace Cube.FileSystem
         /// Value
         ///
         /// <summary>
-        /// Gets the user settings.
+        /// Gets the value that represents user settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -137,7 +148,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public AssemblyReader Assembly { get; private set; }
+        public Assembly Assembly { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -216,38 +227,6 @@ namespace Cube.FileSystem
         #endregion
 
         #region Events
-
-        #region PropertyChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when properties are changed.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// この PropertyChanged イベントは Value.PropertyChanged
-        /// イベントを補足して中継するために使用されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            PropertyChanged?.Invoke(this, e);
-
-        #endregion
 
         #region Loaded
 
@@ -329,18 +308,19 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LoadOrDefault
+        /// TryLoad
         ///
         /// <summary>
-        /// Loads user settings or uses the specified value.
+        /// Tries to load user settings.
         /// </summary>
         ///
-        /// <param name="error">Used when an exception occurs.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public void LoadOrDefault(T error) => OnLoaded(ValueChangedEventArgs.Create(
-            Value, this.LogWarn(() => LoadCore(), error)
-        ));
+        public bool TryLoad()
+        {
+            try { Load(); return true; }
+            catch (Exception err) { this.LogWarn(err); }
+            return false;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -353,9 +333,33 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Save() => OnSaved(KeyValueEventArgs.Create(Format, Location));
 
-        #endregion
+        #region IDisposable
 
-        #region Implementations
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ~SettingsFolder
+        ///
+        /// <summary>
+        /// Finalizes the SettingsFolder.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ~SettingsFolder() { _dispose.Invoke(false); }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases all resources used by the SettingsFolder.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose()
+        {
+            _dispose.Invoke(true);
+            GC.SuppressFinalize(this);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -372,53 +376,33 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
             if (AutoSave) this.LogWarn(() => Save());
         }
 
+        #endregion
+
+        #endregion
+
+        #region Implementations
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Initialize
+        /// GetLocation
         ///
         /// <summary>
-        /// Initializes properties and fields of the SettingsFolder class.
+        /// Gets the location of serialization data.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Initialize(Format fmt, AssemblyReader asm, IO io)
+        private static string GetLocation(Assembly asm, Format fmt, IO io)
         {
             var root = fmt != Format.Registry ?
-                       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) :
+                       Environment.SpecialFolder.LocalApplicationData.GetName() :
                        string.Empty;
-            var path = io.Combine(root, asm.Company, asm.Product);
-
-            Initialize(fmt, path, asm, io);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Initialize
-        ///
-        /// <summary>
-        /// Initializes properties and fields of the SettingsFolder class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Initialize(Format fmt, string path, AssemblyReader asm, IO io)
-        {
-            Assembly = asm;
-            IO       = io;
-            Format   = fmt;
-            Location = path;
-            Version  = new SoftwareVersion(asm.Assembly);
-
-            Value = new T();
-            Value.PropertyChanged += WhenChanged;
-
-            _autosaver.AutoReset = false;
-            _autosaver.Elapsed += (s, e) => Task.Run(() => this.LogWarn(() => Save())).Forget();
+            return io.Combine(root, asm.GetCompany(), asm.GetProduct());
         }
 
         /* ----------------------------------------------------------------- */
@@ -465,6 +449,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
+        private readonly OnceAction<bool> _dispose;
         private readonly Timer _autosaver = new Timer();
         #endregion
     }

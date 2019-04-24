@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.FileSystem.TestService;
-using Cube.Generics;
+using Cube.Mixin.String;
 using NUnit.Framework;
 using System.Reflection;
 
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Load()
         {
-            var exec = Assembly.GetExecutingAssembly().GetReader().Location;
+            var exec = Assembly.GetExecutingAssembly().Location;
             var name = IO.Get(exec).NameWithoutExtension;
             var src  = new Startup(name) { Command = exec };
             src.Load();
@@ -67,7 +67,7 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Save()
         {
-            var exec = Assembly.GetExecutingAssembly().GetReader().Location;
+            var exec = Assembly.GetExecutingAssembly().Location;
             var name = IO.Get(exec).NameWithoutExtension;
             var cmd  = exec.Quote();
 
