@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Threading;
 
 namespace Cube
 {
@@ -35,7 +34,7 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [DataContract]
     [Serializable]
-    public abstract class ObservableBase : INotifyPropertyChanged
+    public abstract class ObservableBase : DispatchableBase, INotifyPropertyChanged
     {
         #region Constructor
 
@@ -48,50 +47,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() { }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Context
-        ///
-        /// <summary>
-        /// Gets or sets the synchronization context.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public SynchronizationContext Context
-        {
-            get => _context;
-            set => _context = value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsSynchronous
-        ///
-        /// <summary>
-        /// Gets or sets the value indicating whether the event is fired
-        /// as synchronously.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// true の場合は Send メソッド、false の場合は Post メソッドを
-        /// 用いてイベントを伝搬します。Context が null の場合、
-        /// このプロパティは無視されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public bool IsSynchronous
-        {
-            get => _sync;
-            set => _sync = value;
-        }
+        protected ObservableBase() : base(null) { }
 
         #endregion
 
@@ -102,7 +58,7 @@ namespace Cube
         /// PropertyChanged
         ///
         /// <summary>
-        /// Occurs when a property of the class is changed.
+        /// Occurs when a property is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -121,13 +77,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (PropertyChanged == null) return;
-            if (Context != null)
-            {
-                if (IsSynchronous) Context.Send(z => PropertyChanged(this, e), null);
-                else Context.Post(z => PropertyChanged(this, e), null);
-            }
-            else PropertyChanged(this, e);
+            if (PropertyChanged != null) Invoke(() => PropertyChanged(this, e));
         }
 
         #endregion
@@ -136,17 +86,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaisePropertyChanged
+        /// Refresh
         ///
         /// <summary>
-        /// Raises the PropertyChanged event with the specified name.
+        /// Notifies the update of the specified property by raising the
+        /// PropertyChanged event.
         /// </summary>
         ///
-        /// <param name="name">Name of the property.</param>
+        /// <param name="name">Property name.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void RaisePropertyChanged(string name) =>
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
+        public void Refresh(string name) => OnPropertyChanged(new PropertyChangedEventArgs(name));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,15 +138,10 @@ namespace Cube
         {
             if (func.Equals(field, value)) return false;
             field = value;
-            RaisePropertyChanged(name);
+            Refresh(name);
             return true;
         }
 
-        #endregion
-
-        #region Fields
-        [NonSerialized] private SynchronizationContext _context;
-        [NonSerialized] private bool _sync = true;
         #endregion
     }
 }

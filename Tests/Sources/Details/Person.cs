@@ -100,7 +100,7 @@ namespace Cube.Tests
         public Person()
         {
             Context       = null;
-            IsSynchronous = false;
+            Synchronous = false;
             Reset();
         }
 
@@ -169,7 +169,7 @@ namespace Cube.Tests
         public int Age
         {
             get => _age.Get();
-            set { if (_age.Set(value)) RaisePropertyChanged(nameof(Age)); }
+            set { if (_age.Set(value)) Refresh(nameof(Age)); }
         }
 
         /* ----------------------------------------------------------------- */
