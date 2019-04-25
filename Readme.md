@@ -6,7 +6,7 @@ Cube.Forms
 [![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Forms/_apis/build/status/cube-soft.Cube.Forms?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Forms/_build)
 
 Cube.Forms is a WinForms based GUI library.
-The library is available for .NET Framework 3.5, 4.5 or higher.
+The library is available for .NET Framework 3.5, 4.5 or later.
 
 ## Installation
 
