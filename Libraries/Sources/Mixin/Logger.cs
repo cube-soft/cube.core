@@ -15,23 +15,22 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logger;
 using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Cube.Xui
+namespace Cube.Mixin.Logger
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// LoggerExtension
+    /// XuiExtension
     ///
     /// <summary>
-    /// Logger オブジェクトに対する操作を定義するためのクラスです。
+    /// Provides extended methods of the Logger class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class LoggerExtension
+    public static class XuiExtension
     {
         #region Methods
 
@@ -40,12 +39,12 @@ namespace Cube.Xui
         /// ObserveUiException
         ///
         /// <summary>
-        /// UnhandledException を監視し、取得した例外をログに出力します。
+        /// Monitors UnhandledException and outputs to the log.
         /// </summary>
         ///
-        /// <param name="src">監視対象となるオブジェクト</param>
+        /// <param name="src">Target object.</param>
         ///
-        /// <returns>監視を解除するためのオブジェクト</returns>
+        /// <returns>Object to dispose.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IDisposable ObserveUiException(this Application src)
@@ -69,7 +68,7 @@ namespace Cube.Xui
         /// WhenDispatcherError
         ///
         /// <summary>
-        /// DispatcherUnhandledException 発生時に実行されるハンドラです。
+        /// Executes when a DispatcherUnhandledException occurs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -81,12 +80,12 @@ namespace Cube.Xui
         /// WhenDomainError
         ///
         /// <summary>
-        /// UnhandledException 発生時に実行されるハンドラです。
+        /// Executes when an UnhandledException occurs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-            Logger.Error(typeof(AppDomain), e.ExceptionObject as Exception);
+            Cube.Logger.Error(typeof(AppDomain), e.ExceptionObject as Exception);
 
         #endregion
     }

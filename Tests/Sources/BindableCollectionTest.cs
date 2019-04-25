@@ -16,9 +16,9 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Iteration;
-using Cube.Xui.Mixin;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +29,7 @@ namespace Cube.Xui.Tests
     /// BindableCollectionTest
     ///
     /// <summary>
-    /// BindableCollection のテスト用クラスです。
+    /// Tests methods of the BindableCollection class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,65 +40,32 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Default
+        /// Count
         ///
         /// <summary>
-        /// 既定のコンストラクタで初期化した時の挙動を確認します。
+        /// Tests for for creating an object and getting the Count value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Default() => Assert.That(
-            new BindableCollection<int>().Count,
-            Is.EqualTo(0)
-        );
+        [TestCaseSource(nameof(TestCases))]
+        public int Count(int id, BindableCollection<Person> src) => src.Count;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_EmptyCollection
+        /// AddAsync
         ///
         /// <summary>
-        /// 空のコレクションに対して ToBindable を実行した時の挙動を
-        /// 確認します。
+        /// Tests the Add method as an asynchronous operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_EmptyCollection() => Assert.That(
-            ((IEnumerable<Person>)new Person[0]).ToBindable().Count,
-            Is.EqualTo(0)
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_NullCollection
-        ///
-        /// <summary>
-        /// null に対して ToBindable を実行した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_NullCollection() => Assert.That(
-            default(IEnumerable<Person>).ToBindable().Count,
-            Is.EqualTo(0)
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Add_Async
-        ///
-        /// <summary>
-        /// 非同期で要素を追加した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Add_Async()
+        public void AddAsync()
         {
-            using (var src = new BindableCollection<Person> { Context = new SynchronizationContext() })
+            using (var src = new BindableCollection<Person>())
             {
                 var count = 0;
+                src.Context = new SynchronizationContext();
                 src.CollectionChanged += (s, e) => ++count;
 
                 var tasks = new List<Task>();
@@ -112,17 +79,17 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Add_Async
+        /// RemoveAsync
         ///
         /// <summary>
-        /// 非同期で要素を追加した時の挙動を確認します。
+        /// Tests the Remove method as an asynchronous operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Remove_Async()
+        public void RemoveAsync()
         {
-            using (var src = Create().ToBindable(new SynchronizationContext()))
+            using (var src = Create())
             {
                 var count = 0;
                 src.CollectionChanged += (s, e) => ++count;
@@ -141,7 +108,7 @@ namespace Cube.Xui.Tests
         /// RaiseCollectionChanged
         ///
         /// <summary>
-        /// CollectionChanged イベントの挙動を確認します。
+        /// Tests the CollectionChanged event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -149,8 +116,7 @@ namespace Cube.Xui.Tests
         [TestCase(false, ExpectedResult = 3)]
         public int RaiseCollectionChanged(bool redirect)
         {
-            var ctx = SynchronizationContext.Current;
-            using (var src = Create().ToBindable(ctx))
+            using (var src = Create())
             {
                 var count = 0;
 
@@ -167,24 +133,49 @@ namespace Cube.Xui.Tests
 
         #endregion
 
-        #region Helpers methods
+        #region TestCases
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TestCases
+        ///
+        /// <summary>
+        /// Gets test cases.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<TestCaseData> TestCases
+        {
+            get
+            {
+                var n = 0;
+                yield return new TestCaseData(n++, Create()).Returns(4);
+                yield return new TestCaseData(n++, new BindableCollection<Person>()).Returns(0);
+                yield return new TestCaseData(n++, new BindableCollection<Person>(Enumerable.Empty<Person>())).Returns(0);
+                yield return new TestCaseData(n++, new BindableCollection<Person>(default)).Returns(0);
+            }
+        }
+
+        #endregion
+
+        #region Others
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create
         ///
         /// <summary>
-        /// テストデータを生成します。
+        /// Creates dummy data for tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private IEnumerable<Person> Create() => new[]
+        private static BindableCollection<Person> Create() => new BindableCollection<Person>(new[]
         {
             new Person { Name = "Alice", Age = 13 },
             new Person { Name = "Bob",   Age = 15 },
             new Person { Name = "Mike",  Age = 45 },
             new Person { Name = "Ada",   Age = 40 },
-        };
+        }) { Context = new SynchronizationContext() };
 
         #endregion
     }

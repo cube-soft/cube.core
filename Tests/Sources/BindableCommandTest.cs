@@ -15,17 +15,17 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Mixin;
+using Cube.Mixin.Command;
 using NUnit.Framework;
 
 namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableCollectionTest
+    /// BindableCommandTest
     ///
     /// <summary>
-    /// BindableCollection のテスト用クラスです。
+    /// Tests methods of the BindableCommand class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,17 +38,17 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Destruct
+        /// Execute
         ///
         /// <summary>
-        /// BindableCommand の生成から破棄までのテストを実行します。
+        /// Tests the Execute method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Destruct()
+        public void Execute()
         {
-            var src  = new Person().ToBindable();
+            var src  = new Bindable<Person>(new Person());
             var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
                 () => src.Value.Age > 0,
@@ -56,7 +56,7 @@ namespace Cube.Xui.Tests
             );
 
             src.Value.Age = 20;
-            dest.Execute(null);
+            dest.Execute();
             Assert.That(src.Value.Name, Is.EqualTo("Done"));
         }
 
@@ -65,28 +65,28 @@ namespace Cube.Xui.Tests
         /// RaiseCanExecuteChanged
         ///
         /// <summary>
-        /// CanExecuteChanged イベントの挙動を確認します。
+        /// Tests the CanExecuteChanged event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void RaiseCanExecuteChanged()
         {
-            var src  = new Person().ToBindable();
+            var src = new Bindable<Person>(new Person());
             using (var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
                 () => src.Value.Age > 0,
                 src
             ))
             {
-                Assert.That(dest.CanExecute(null), Is.False);
+                Assert.That(dest.CanExecute(), Is.False);
                 src.Value.Age = 10;
-                Assert.That(dest.CanExecute(null), Is.True);
+                Assert.That(dest.CanExecute(), Is.True);
                 src.Value.Age = -1;
-                Assert.That(dest.CanExecute(null), Is.False);
+                Assert.That(dest.CanExecute(), Is.False);
                 src.Value.Age = 20;
-                Assert.That(dest.CanExecute(null), Is.True);
-                dest.Execute(null);
+                Assert.That(dest.CanExecute(), Is.True);
+                dest.Execute();
                 Assert.That(src.Value.Name, Is.EqualTo("Done"));
             }
         }
@@ -97,17 +97,17 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Destruct_Generic
+        /// Execute_Generic
         ///
         /// <summary>
-        /// BindableCommand(T) の生成から破棄までのテストを実行します。
+        /// Tests the Execute method of the BindableCommand(T) class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Destruct_Generic()
+        public void Execute_Generic()
         {
-            var src  = new Person().ToBindable();
+            var src  = new Bindable<Person>(new Person());
             var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
                 e => e > 0 && src.Value.Age > 0,
@@ -124,14 +124,15 @@ namespace Cube.Xui.Tests
         /// RaiseCanExecuteChanged_Generic
         ///
         /// <summary>
-        /// CanExecuteChanged イベントの挙動を確認します。
+        /// Tests the CanExecuteChanged event of the BindableCommand(T)
+        /// class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void RaiseCanExecuteChanged_Generic()
         {
-            var src = new Person().ToBindable();
+            var src = new Bindable<Person>(new Person());
             using (var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
                 e => e > 0 && src.Value.Age > 0,

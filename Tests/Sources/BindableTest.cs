@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Mixin;
 using NUnit.Framework;
 using System;
 using System.Threading;
@@ -115,7 +114,7 @@ namespace Cube.Xui.Tests
         public void RaiseValueChanged_Context()
         {
             var value = new Person();
-            var src   = value.ToBindable(new SynchronizationContext());
+            var src   = new Bindable<Person>(value) { Context = new SynchronizationContext() };
             var count = 0;
             src.PropertyChanged += (s, e) => ++count;
             src.Value = value;

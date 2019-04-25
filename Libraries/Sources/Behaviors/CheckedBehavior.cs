@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Mixin;
+using Cube.Mixin.Command;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
@@ -78,7 +78,7 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         private void WhenChecked(object s, RoutedEventArgs e)
         {
-            if (Command?.CanExecute() ?? false) Command.Execute();
+            if (Command.CanExecute()) Command.Execute();
         }
 
         #endregion

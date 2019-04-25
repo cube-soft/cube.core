@@ -15,9 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Mixin;
+using Cube.Mixin.Command;
 using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
+using System.Windows.Input;
 
 namespace Cube.Xui.Tests
 {
@@ -37,15 +38,15 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Execute_Alias
+        /// Execute
         ///
         /// <summary>
-        /// Executes the test of CanExecute and Execute extended methods.
+        /// Tests the CanExecute and Execute methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Execute_Alias()
+        public void Execute()
         {
             var count = 0;
             var src   = new RelayCommand(() => ++count);
@@ -57,6 +58,23 @@ namespace Cube.Xui.Tests
             src.Execute();
 
             Assert.That(count, Is.EqualTo(3));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute_Null
+        ///
+        /// <summary>
+        /// Tests the CanExecute and Execute methods with the null object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Execute_Null()
+        {
+            var src = default(ICommand);
+            Assert.That(src.CanExecute(), Is.False);
+            Assert.DoesNotThrow(() => src.Execute());
         }
 
         #endregion

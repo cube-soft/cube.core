@@ -29,8 +29,6 @@ namespace Cube.Xui
     ///
     /// <remarks>
     /// Value プロパティを通じて実際の値にアクセスします。
-    /// PropertyChanged イベントは、コンストラクタで指定された同期
-    /// コンテキストを用いて発生します。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -129,6 +127,21 @@ namespace Cube.Xui
             get => _accessor.Get();
             set { if (_accessor.Set(value)) RaisePropertyChanged(nameof(Value)); }
         }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseValueChanged
+        ///
+        /// <summary>
+        /// Raises a PropertyChanged event against the Value property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void RaiseValueChanged() => RaisePropertyChanged(nameof(Value));
 
         #endregion
 

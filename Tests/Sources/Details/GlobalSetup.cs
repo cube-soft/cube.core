@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Logger;
 using NUnit.Framework;
 using System.Reflection;
 using System.Windows;

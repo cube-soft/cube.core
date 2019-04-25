@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Command;
 using Cube.Xui.Behaviors;
-using Cube.Xui.Mixin;
 using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
 using System.Windows.Controls;
