@@ -174,11 +174,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public ButtonStyleContainer()
         {
-            NormalStyle.PropertyChanged    += (s, e) => RaisePropertyChanged(nameof(NormalStyle));
-            CheckedStyle.PropertyChanged   += (s, e) => RaisePropertyChanged(nameof(CheckedStyle));
-            DisabledStyle.PropertyChanged  += (s, e) => RaisePropertyChanged(nameof(DisabledStyle));
-            MouseOverStyle.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(MouseOverStyle));
-            MouseDownStyle.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(MouseDownStyle));
+            NormalStyle.PropertyChanged    += (s, e) => Refresh(nameof(NormalStyle));
+            CheckedStyle.PropertyChanged   += (s, e) => Refresh(nameof(CheckedStyle));
+            DisabledStyle.PropertyChanged  += (s, e) => Refresh(nameof(DisabledStyle));
+            MouseOverStyle.PropertyChanged += (s, e) => Refresh(nameof(MouseOverStyle));
+            MouseDownStyle.PropertyChanged += (s, e) => Refresh(nameof(MouseDownStyle));
         }
 
         #endregion

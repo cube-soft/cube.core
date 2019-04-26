@@ -61,12 +61,20 @@ namespace Cube.Forms
         /// <param name="messenger">Messenger</param>
         /// <param name="context">同期用コンテキスト</param>
         ///
+        /// <remarks>
+        /// _dispose オブジェクト初期化前に例外が発生しないように、base には
+        /// Vanilla を指定します。
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        protected ViewModelBase(TMessenger messenger, SynchronizationContext context)
+        protected ViewModelBase(TMessenger messenger, SynchronizationContext context) :
+            base(Cube.Dispatcher.Vanilla)
         {
-            _dispose  = new OnceAction<bool>(Dispose);
-            Messenger = messenger;
-            Context   = context;
+            _dispose   = new OnceAction<bool>(Dispose);
+            _post      = new Cube.Dispatcher(context, false);
+            _send      = new Cube.Dispatcher(context, true);
+            Dispatcher = _post;
+            Messenger  = messenger;
         }
 
         #endregion
@@ -131,11 +139,7 @@ namespace Cube.Forms
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Post(Action action)
-        {
-            if (Context != null) Context.Post(z => action(), null);
-            else action();
-        }
+        public void Post(Action action) => _post.Invoke(action);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -151,11 +155,7 @@ namespace Cube.Forms
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Send(Action action)
-        {
-            if (Context != null) Context.Send(_ => action(), null);
-            else action();
-        }
+        public void Send(Action action) => _send.Invoke(action);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -174,8 +174,7 @@ namespace Cube.Forms
         public TResult Send<TResult>(Func<TResult> func)
         {
             var result = default(TResult);
-            if (Context != null) Context.Send(_ => { result = func(); }, null);
-            else result = func();
+            _send.Invoke(() => { result = func(); });
             return result;
         }
 
@@ -239,7 +238,9 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private OnceAction<bool> _dispose;
+        private readonly OnceAction<bool> _dispose;
+        private readonly IDispatcher _send;
+        private readonly IDispatcher _post;
         #endregion
     }
 
