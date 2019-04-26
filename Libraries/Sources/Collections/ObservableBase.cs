@@ -21,7 +21,7 @@ namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableBase
+    /// ObservableBase
     ///
     /// <summary>
     /// Represents the base class of a dynamic data collection that

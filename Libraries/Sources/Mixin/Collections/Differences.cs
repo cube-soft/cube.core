@@ -20,18 +20,18 @@ using Cube.Differences;
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Mixin.Differences
+namespace Cube.Mixin.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// DifferenceExtension
     ///
     /// <summary>
     /// Provides extended methods to get diff between the two sequences.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static class DifferenceExtension
     {
         #region Methods
 

@@ -33,7 +33,7 @@ namespace Cube
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class TwiceException : Exception
+    public class TwiceException : InvalidOperationException
     {
         /* --------------------------------------------------------------------- */
         ///

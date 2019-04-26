@@ -32,8 +32,8 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OrderedDictionary<TKey, TValue> : EnumerableBase<KeyValuePair<TKey, TValue>>,
-        IDictionary<TKey, TValue>
+    public class OrderedDictionary<TKey, TValue> :
+        EnumerableBase<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>
     {
         #region Constructors
 

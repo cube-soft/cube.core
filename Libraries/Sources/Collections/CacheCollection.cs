@@ -77,7 +77,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public CacheCollection(Func<TKey, TValue> creator, Action<TKey, TValue> disposer)
         {
-            _creator  = creator ?? throw new ArgumentException(nameof(creator));
+            _creator  = creator ?? throw new ArgumentNullException();
             _disposer = disposer;
         }
 

@@ -47,7 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static IDisposable Create(Action dispose)
         {
-            if (dispose == null) throw new ArgumentException(nameof(dispose));
+            if (dispose == null) throw new ArgumentNullException();
             return new DisposableCore(dispose);
         }
 

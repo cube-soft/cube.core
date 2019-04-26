@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using System;
-using System.Collections.Generic;
 
 namespace Cube
 {
@@ -44,7 +44,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Publish()
         {
-            foreach (var action in _subscriptions) action();
+            foreach (var callback in _subscription) callback();
         }
 
         /* ----------------------------------------------------------------- */
@@ -55,21 +55,17 @@ namespace Cube
         /// イベント発生時に実行する Action オブジェクトを登録します。
         /// </summary>
         ///
-        /// <param name="action">登録する Action オブジェクト</param>
+        /// <param name="callback">登録する Action オブジェクト</param>
         ///
         /// <returns>購読解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action action)
-        {
-            _subscriptions.Add(action);
-            return Disposable.Create(() => _subscriptions.Remove(action));
-        }
+        public IDisposable Subscribe(Action callback) => _subscription.Subscribe(callback);
 
         #endregion
 
         #region Fields
-        private readonly ICollection<Action> _subscriptions = new List<Action>();
+        private readonly Subscription<Action> _subscription = new Subscription<Action>();
         #endregion
     }
 
@@ -97,7 +93,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Publish(T payload)
         {
-            foreach (var action in _subscriptions) action(payload);
+            foreach (var callback in _subscription) callback(payload);
         }
 
         /* ----------------------------------------------------------------- */
@@ -108,21 +104,17 @@ namespace Cube
         /// イベント発生時に実行する Action オブジェクトを登録します。
         /// </summary>
         ///
-        /// <param name="action">登録する Action オブジェクト</param>
+        /// <param name="callback">登録する Action オブジェクト</param>
         ///
         /// <returns>購読解除用オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<T> action)
-        {
-            _subscriptions.Add(action);
-            return Disposable.Create(() => _subscriptions.Remove(action));
-        }
+        public IDisposable Subscribe(Action<T> callback) => _subscription.Subscribe(callback);
 
         #endregion
 
         #region Fields
-        private readonly ICollection<Action<T>> _subscriptions = new List<Action<T>>();
+        private readonly Subscription<Action<T>> _subscription = new Subscription<Action<T>>();
         #endregion
     }
 }
