@@ -16,9 +16,10 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
-using System.Threading;
 
 namespace Cube.Collections
 {
@@ -35,7 +36,7 @@ namespace Cube.Collections
     /* --------------------------------------------------------------------- */
     [DataContract]
     [Serializable]
-    public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionChanged
+    public abstract class ObservableBase<T> : DispatchableBase, IEnumerable<T>, INotifyCollectionChanged
     {
         #region Constructors
 
@@ -48,27 +49,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() { }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Context
-        ///
-        /// <summary>
-        /// Gets or sets the synchronization context.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public SynchronizationContext Context
-        {
-            get => _context;
-            set => _context = value;
-        }
+        protected ObservableBase() : base(null) { }
 
         #endregion
 
@@ -99,15 +80,45 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (CollectionChanged == null) return;
-            if (Context != null) Context.Send(z => CollectionChanged(this, e), null);
-            else CollectionChanged(this, e);
+            if (CollectionChanged != null) Invoke(() => CollectionChanged(this, e));
         }
 
         #endregion
 
-        #region Fields
-        [NonSerialized] private SynchronizationContext _context;
+        #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetEnumerator
+        ///
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        ///
+        /// <returns>
+        /// IEnumerator(T) object that can be used to iterate through the
+        /// collection.
+        /// </returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        public abstract IEnumerator<T> GetEnumerator();
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetEnumerator
+        ///
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        ///
+        /// <returns>
+        /// IEnumerator object that can be used to iterate through the
+        /// collection.
+        /// </returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
         #endregion
     }
 }
