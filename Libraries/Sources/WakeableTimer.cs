@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using Cube.Mixin.Logger;
 using System;
 using System.Threading.Tasks;
@@ -137,7 +138,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Subscription Subscription { get; } = new Subscription();
+        protected Subscription<Func<Task>> Subscription { get; } = new Subscription<Func<Task>>();
 
         #endregion
 
@@ -255,7 +256,11 @@ namespace Cube
         /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(callback);
+        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(() =>
+        {
+            callback();
+            return Task.FromResult(0);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -271,7 +276,7 @@ namespace Cube
         /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.SubscribeAsync(callback);
+        public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -433,7 +438,10 @@ namespace Cube
             if (State != TimerState.Run) return;
             LastPublished = e.SignalTime;
 
-            try { await Subscription.Publish().ConfigureAwait(false); }
+            try
+            {
+                foreach (var callback in Subscription) await callback().ConfigureAwait(false);
+            }
             finally { UpdateNext(e.SignalTime); }
         }
 

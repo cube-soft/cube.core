@@ -15,7 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using NUnit.Framework;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,47 +49,14 @@ namespace Cube.Tests
         [Test]
         public void Subscribe()
         {
-            using (var src = new Subscription())
+            using (var src = new Subscription<Action>())
             {
                 var n = 0;
 
                 Parallel.ForEach(Enumerable.Range(0, 10), i =>
                 {
-                    var d0 = src.Subscribe(() => ++n);
-                    var d1 = src.SubscribeAsync(() => { n *= 2; return Task.FromResult(0); });
-
-                    d0.Dispose();
-                    d1.Dispose();
-                });
-
-                Assert.That(src.Disposed, Is.False);
-                Assert.That(src.Count,    Is.EqualTo(0));
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SubscribeT
-        ///
-        /// <summary>
-        /// Executes the test for registering and removing subscription.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void SubscribeT()
-        {
-            using (var src = new Subscription<int>())
-            {
-                var n = 0;
-
-                Parallel.ForEach(Enumerable.Range(0, 10), i =>
-                {
-                    var d0 = src.Subscribe(e => n += e);
-                    var d1 = src.SubscribeAsync(e => { n *= e; return Task.FromResult(0); });
-
-                    d0.Dispose();
-                    d1.Dispose();
+                    var dispose = src.Subscribe(() => ++n);
+                    dispose.Dispose();
                 });
 
                 Assert.That(src.Disposed, Is.False);

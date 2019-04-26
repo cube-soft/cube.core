@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using Microsoft.Win32;
 using System;
 using System.ComponentModel;
@@ -121,10 +122,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static async void WhenPropertyChanged(object s, PropertyChangedEventArgs e)
+        private static void WhenPropertyChanged(object s, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(_context.Mode)) return;
-            await _subscription.Publish();
+            foreach (var callback in _subscription) callback();
         }
 
         /* ----------------------------------------------------------------- */
@@ -137,13 +138,13 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenModeChanged(object s, PowerModeChangedEventArgs e) =>
-            _context.Mode = (PowerModes)((int)e.Mode);
+            _context.Mode = (PowerModes)(int)e.Mode;
 
         #endregion
 
         #region Fields
         private static readonly OnceInitializer _initializer;
-        private static readonly Subscription _subscription = new Subscription();
+        private static readonly Subscription<Action> _subscription = new Subscription<Action>();
         private static PowerModeContext _context;
         #endregion
     }

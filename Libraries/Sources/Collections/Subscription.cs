@@ -15,49 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections;
 using System;
-using System.Threading;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
-namespace Cube
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Locale
+    /// Subscription
     ///
     /// <summary>
-    /// Provides the event trigger to changed the locale.
+    /// Provides functionality to add or remove subscribers.
     /// </summary>
     ///
-    /// <seealso href="https://msdn.microsoft.com/ja-jp/library/cc392381.aspx" />
-    ///
     /* --------------------------------------------------------------------- */
-    public static class Locale
+    public class Subscription<T> : EnumerableBase<T>
     {
-        #region Constructors
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Locale
+        /// Count
         ///
         /// <summary>
-        /// Initializes static fields.
+        /// Gets the number of registered callbacks.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        static Locale()
-        {
-            var current = Language.Auto;
-            bool setter(Language e)
-            {
-                var result = (e != current);
-                if (result) current = e;
-                return result;
-            }
+        public int Count => Subscribers.Count;
 
-            _default = setter;
-            _setter  = setter;
-        }
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribers
+        ///
+        /// <summary>
+        /// Gets the collection of subscribers.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ConcurrentDictionary<Guid, T> Subscribers { get; } =
+            new ConcurrentDictionary<Guid, T>();
 
         #endregion
 
@@ -65,31 +63,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set
-        ///
-        /// <summary>
-        /// Sets the specified language as the current locale.
-        /// </summary>
-        ///
-        /// <param name="value">Language.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Set(Language value)
-        {
-            if (!_setter(value)) return;
-            foreach (var callback in _subscription) callback(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Subscribe
         ///
         /// <summary>
-        /// Adds the specified callback to the subscription.
+        /// Add the specified callback to the subscription.
         /// </summary>
         ///
         /// <param name="callback">
-        /// Callback action when the locale changes.
+        /// Callback to be executed when published.
         /// </param>
         ///
         /// <returns>
@@ -97,40 +78,52 @@ namespace Cube
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IDisposable Subscribe(Action<Language> callback) =>
-            _subscription.Subscribe(callback);
+        public IDisposable Subscribe(T callback)
+        {
+            var key = Guid.NewGuid();
+            Subscribers.TryAdd(key, callback);
+            return Disposable.Create(() => Subscribers.TryRemove(key, out _));
+        }
 
-        /* ----------------------------------------------------------------- */
+        /* --------------------------------------------------------------------- */
         ///
-        /// Configure
+        /// GetEnumerator
         ///
         /// <summary>
-        /// Resets the setter function.
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        public static void Configure() => Configure(_default);
-
-        /* ----------------------------------------------------------------- */
+        /// <returns>
+        /// Enumerator that can be used to iterate through the collection.
+        /// </returns>
         ///
-        /// Configure
-        ///
-        /// <summary>
-        /// Updates the setter function of the language.
-        /// </summary>
-        ///
-        /// <param name="setter">Setter function.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Configure(Setter<Language> setter) =>
-            Interlocked.Exchange(ref _setter, setter);
+        /* --------------------------------------------------------------------- */
+        public override IEnumerator<T> GetEnumerator() => Subscribers.Values.GetEnumerator();
 
         #endregion
 
-        #region Fields
-        private static Setter<Language> _setter;
-        private static readonly Setter<Language> _default;
-        private static readonly Subscription<Action<Language>> _subscription = new Subscription<Action<Language>>();
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the SubscriptionReader
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) Subscribers.Clear();
+        }
+
         #endregion
     }
 }
