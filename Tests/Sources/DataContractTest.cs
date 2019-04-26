@@ -201,15 +201,15 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Serialize_Stream_Throws() => Assert.That(() =>
+        public void Serialize_Stream_Throws()
+        {
+            Assert.That(() =>
             {
-                using (var ss = File.Create(Get("Person.reg")))
-                {
-                    Format.Registry.Serialize(ss, Person.CreateDummy());
-                }
-            },
-            Throws.TypeOf<ArgumentException>()
-        );
+                var src  = Format.Registry;
+                var dest = Get("Person.reg");
+                using (var e = File.Create(dest)) src.Serialize(e, Person.CreateDummy());
+            }, Throws.TypeOf<ArgumentException>());
+        }
 
         #endregion
 
@@ -232,6 +232,7 @@ namespace Cube.Tests
         {
             var dest = format.Deserialize<Person>(GetSource(filename));
             Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
+            Assert.DoesNotThrow(() => dest.Refresh(nameof(dest.Name)));
             return dest.Name;
         }
 
@@ -275,16 +276,15 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Deserialize_Stream_Throws() => Assert.That(
-            () =>
+        public void Deserialize_Stream_Throws()
+        {
+            Assert.That(() =>
             {
-                using (var ss = File.OpenRead(GetSource("Settings.xml")))
-                {
-                    Format.Registry.Deserialize<Person>(ss);
-                }
-            },
-            Throws.TypeOf<ArgumentException>()
-        );
+                var src  = GetSource("Settings.xml");
+                var dest = Format.Registry;
+                using (var e = File.OpenRead(src)) dest.Deserialize<Person>(e);
+            }, Throws.TypeOf<ArgumentException>());
+        }
 
         #endregion
 
