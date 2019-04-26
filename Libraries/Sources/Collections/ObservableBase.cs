@@ -16,8 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
 
@@ -36,7 +34,7 @@ namespace Cube.Collections
     /* --------------------------------------------------------------------- */
     [DataContract]
     [Serializable]
-    public abstract class ObservableBase<T> : DispatchableBase, IEnumerable<T>, INotifyCollectionChanged
+    public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionChanged
     {
         #region Constructors
 
@@ -49,7 +47,39 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() : base(null) { }
+        protected ObservableBase() : this(Cube.Dispatcher.Vanilla) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ObservableBase
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ObservableBase class with
+        /// the specified dispatcher.
+        /// </summary>
+        ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ObservableBase(IDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispatcher
+        ///
+        /// <summary>
+        /// Gets or sets the dispatcher object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IDispatcher Dispatcher { get; set; }
 
         #endregion
 
@@ -80,44 +110,8 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (CollectionChanged != null) Invoke(() => CollectionChanged(this, e));
+            if (CollectionChanged != null) Dispatcher.Invoke(() => CollectionChanged(this, e));
         }
-
-        #endregion
-
-        #region Methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        ///
-        /// <returns>
-        /// IEnumerator(T) object that can be used to iterate through the
-        /// collection.
-        /// </returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public abstract IEnumerator<T> GetEnumerator();
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        ///
-        /// <returns>
-        /// IEnumerator object that can be used to iterate through the
-        /// collection.
-        /// </returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
     }

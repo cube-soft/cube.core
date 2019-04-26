@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Threading;
 
 namespace Cube
 {
@@ -44,11 +43,28 @@ namespace Cube
         /// ObservableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the ObservableProperty class.
+        /// Initializes a new instance of the ObservableBase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() { }
+        protected ObservableBase() : this(Cube.Dispatcher.Vanilla) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ObservableBase
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ObservableBase class with
+        /// the specified dispatcher.
+        /// </summary>
+        ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ObservableBase(IDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher;
+        }
 
         #endregion
 
@@ -56,41 +72,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Context
+        /// Dispatcher
         ///
         /// <summary>
-        /// Gets or sets the synchronization context.
+        /// Gets or sets the dispatcher object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [IgnoreDataMember]
-        public SynchronizationContext Context
+        public IDispatcher Dispatcher
         {
-            get => _context;
-            set => _context = value;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Synchronous
-        ///
-        /// <summary>
-        /// Gets or sets the value indicating whether the event is fired
-        /// as synchronously.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// true の場合は Send メソッド、false の場合は Post メソッドを
-        /// 用いてイベントを伝搬します。Context が null の場合、
-        /// このプロパティは無視されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public bool Synchronous
-        {
-            get => _synchronous;
-            set => _synchronous = value;
+            get => _dispatcher;
+            set => _dispatcher = value;
         }
 
         #endregion
@@ -121,7 +114,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (PropertyChanged != null) Invoke(() => PropertyChanged(this, e));
+            if (PropertyChanged != null) Dispatcher.Invoke(() => PropertyChanged(this, e));
         }
 
         #endregion
@@ -141,27 +134,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Refresh(string name) => OnPropertyChanged(new PropertyChangedEventArgs(name));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the specified action with the Synchronization context.
-        /// </summary>
-        ///
-        /// <param name="action">Invoked action.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Invoke(Action action)
-        {
-            if (Context != null)
-            {
-                if (Synchronous) Context.Send(e => action(), null);
-                else Context.Post(e => action(), null);
-            }
-            else action();
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -210,8 +182,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        [NonSerialized] private SynchronizationContext _context;
-        [NonSerialized] private bool _synchronous = true;
+        [NonSerialized] private IDispatcher _dispatcher;
         #endregion
     }
 }

@@ -97,12 +97,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Person()
-        {
-            Context       = null;
-            Synchronous = false;
-            Reset();
-        }
+        public Person() { Reset(); }
 
         #endregion
 

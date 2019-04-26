@@ -247,6 +247,7 @@ namespace Cube.Tests
             var dest     = default(RegistryKey).Deserialize<Person>();
             var expected = new Person();
 
+            Assert.That(dest.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
             Assert.That(dest.Identification, Is.EqualTo(expected.Identification));
             Assert.That(dest.Name,           Is.EqualTo(expected.Name));
             Assert.That(dest.Age,            Is.EqualTo(expected.Age));
