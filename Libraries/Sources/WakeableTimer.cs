@@ -240,7 +240,7 @@ namespace Cube
             if (State != TimerState.Run) return;
             _core.Stop();
             State = TimerState.Suspend;
-            this.LogDebug($"Suspend\tInterval:{Interval}");
+            this.LogDebug(nameof(Suspend), $"Interval:{Interval}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -355,8 +355,7 @@ namespace Cube
             State = TimerState.Run;
             Next  = now + time;
 
-            this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
-                LastPublished, Next, Interval));
+            this.LogDebug(nameof(Resume), $"Last:{LastPublished}", $"Next:{Next}", $"Interval:{Interval}");
 
             _core.Interval = Math.Max(time.Value.TotalMilliseconds, 1);
             _core.Start();
