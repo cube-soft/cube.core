@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Specialized;
-using System.Runtime.Serialization;
 
 namespace Cube.Collections
 {
@@ -32,8 +30,6 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    [Serializable]
     public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionChanged
     {
         #region Constructors
