@@ -48,62 +48,30 @@ namespace Cube
         public static IDisposable Create(Action dispose)
         {
             if (dispose == null) throw new ArgumentException(nameof(dispose));
-            return new AnonymousDisposable(dispose);
+            return new DisposableCore(dispose);
         }
 
         #endregion
-    }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// AnonymousDisposable
-    ///
-    /// <summary>
-    /// Provides functionality to convert from an action to the instance
-    /// of IDisposable implemented class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal sealed class AnonymousDisposable : IDisposable
-    {
-        #region Constructors
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AnonymousDisposable
+        /// DisposableCore
         ///
         /// <summary>
-        /// Initializes a new instance of the AnonymousDisposable class
-        /// with the specified action.
+        /// Represents an implementation to execute the provided action
+        /// as an IDisposable manner.
         /// </summary>
         ///
-        /// <param name="dispose">Invoke when disposed.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public AnonymousDisposable(Action dispose)
+        private class DisposableCore : IDisposable
         {
-            _dispose = new OnceAction(dispose);
+            public DisposableCore(Action src) { _dispose = new OnceAction(src); }
+            public void Dispose() => _dispose.Invoke();
+            private readonly OnceAction _dispose;
         }
 
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Executes the provided action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose() => _dispose.Invoke();
-
-        #endregion
-
-        #region Fields
-        private OnceAction _dispose;
         #endregion
     }
 }
