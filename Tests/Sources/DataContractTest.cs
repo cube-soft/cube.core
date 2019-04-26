@@ -228,8 +228,12 @@ namespace Cube.Tests
         [TestCase(Format.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
         [TestCase(Format.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
         [TestCase(Format.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
-        public string Deserialize_File(Format format, string filename) =>
-            format.Deserialize<Person>(GetSource(filename)).Name;
+        public string Deserialize_File(Format format, string filename)
+        {
+            var dest = format.Deserialize<Person>(GetSource(filename));
+            Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
+            return dest.Name;
+        }
 
         /* ----------------------------------------------------------------- */
         ///

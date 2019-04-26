@@ -181,6 +181,25 @@ namespace Cube
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDeserializing
+        ///
+        /// <summary>
+        /// Occurs before deserializing.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OnDeserializing]
+        private void OnDeserializing(StreamingContext context)
+        {
+            Dispatcher = Cube.Dispatcher.Vanilla;
+        }
+
+        #endregion
+
         #region Fields
         [NonSerialized] private IDispatcher _dispatcher;
         #endregion
