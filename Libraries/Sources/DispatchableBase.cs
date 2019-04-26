@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.Serialization;
 using System.Threading;
 
 namespace Cube
@@ -31,9 +30,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    [Serializable]
-    public abstract class DispatchableBase
+    public abstract class DispatchableBase : DisposableBase
     {
         #region Constructors
 
@@ -67,12 +64,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public SynchronizationContext Context
-        {
-            get => _context;
-            set => _context = value;
-        }
+        public SynchronizationContext Context { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,12 +82,7 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public bool Synchronous
-        {
-            get => _synchronous;
-            set => _synchronous = value;
-        }
+        public bool Synchronous { get; set; } = true;
 
         #endregion
 
@@ -122,11 +109,6 @@ namespace Cube
             else action();
         }
 
-        #endregion
-
-        #region Fields
-        [NonSerialized] private SynchronizationContext _context;
-        [NonSerialized] private bool _synchronous = true;
         #endregion
     }
 }

@@ -182,7 +182,7 @@ namespace Cube.Collections
         {
             if (_created.TryGetValue(src, out var dest)) return dest;
             Task.Run(() => Create(src)).Forget();
-            return default(TValue);
+            return default;
         }
 
         /* ----------------------------------------------------------------- */
@@ -293,6 +293,23 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { /* TODO */ }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Create
         ///
         /// <summary>
@@ -314,7 +331,7 @@ namespace Cube.Collections
                 else _disposer?.Invoke(src, dest);
             }
             catch (Exception err) { OnFailed(KeyValueEventArgs.Create(src, err)); }
-            finally { _creating.TryRemove(src, out var _); }
+            finally { _creating.TryRemove(src, out _); }
         }
 
         #endregion

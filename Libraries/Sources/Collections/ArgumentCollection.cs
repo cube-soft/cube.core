@@ -180,6 +180,30 @@ namespace Cube.Collections
 
         #region Implementations
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _primary.Clear();
+                _options.Clear();
+            }
+        }
+
         /* --------------------------------------------------------------------- */
         ///
         /// Parse

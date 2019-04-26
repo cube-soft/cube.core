@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Threading;
 
 namespace Cube
 {
@@ -34,7 +35,7 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [DataContract]
     [Serializable]
-    public abstract class ObservableBase : DispatchableBase, INotifyPropertyChanged
+    public abstract class ObservableBase : INotifyPropertyChanged
     {
         #region Constructor
 
@@ -47,7 +48,50 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() : base(null) { }
+        protected ObservableBase() { }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Context
+        ///
+        /// <summary>
+        /// Gets or sets the synchronization context.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [IgnoreDataMember]
+        public SynchronizationContext Context
+        {
+            get => _context;
+            set => _context = value;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Synchronous
+        ///
+        /// <summary>
+        /// Gets or sets the value indicating whether the event is fired
+        /// as synchronously.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// true の場合は Send メソッド、false の場合は Post メソッドを
+        /// 用いてイベントを伝搬します。Context が null の場合、
+        /// このプロパティは無視されます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        [IgnoreDataMember]
+        public bool Synchronous
+        {
+            get => _synchronous;
+            set => _synchronous = value;
+        }
 
         #endregion
 
@@ -100,6 +144,27 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the specified action with the Synchronization context.
+        /// </summary>
+        ///
+        /// <param name="action">Invoked action.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Invoke(Action action)
+        {
+            if (Context != null)
+            {
+                if (Synchronous) Context.Send(e => action(), null);
+                else Context.Post(e => action(), null);
+            }
+            else action();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SetProperty
         ///
         /// <summary>
@@ -142,6 +207,11 @@ namespace Cube
             return true;
         }
 
+        #endregion
+
+        #region Fields
+        [NonSerialized] private SynchronizationContext _context;
+        [NonSerialized] private bool _synchronous = true;
         #endregion
     }
 }
