@@ -23,29 +23,30 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableEventArgsTest
+    /// CollectionEventArgsTest
     ///
     /// <summary>
-    /// EnumerableEventArgs のテスト用クラスです。
+    /// Tests methods of the CollectionEventArgs class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class EnumerableEventArgsTest
+    class CollectionEventArgsTest
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Array
         ///
         /// <summary>
-        /// 配列で EnumerableEventArgs(T) を初期化するテストを実行します。
+        /// Tests to create a new instance of the CollectionEventArgs(T)
+        /// class with the array object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_Array()
         {
-            var args = EnumerableEventArgs.Create(new[]
+            var args = CollectionEventArgs.Create(new[]
             {
                 3, 1, 4, 1, 5, 9, 2, 6,
             });
@@ -58,15 +59,15 @@ namespace Cube.Tests
         /// Create_List
         ///
         /// <summary>
-        /// List(T) で EnumerableCancelEventArgs(T) を初期化するテストを
-        /// 実行します。
+        /// Tests to create a new instance of the CollectionEventArgs(T)
+        /// class with the List(T) object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_List()
         {
-            var args = EnumerableEventArgs.Create(new List<int>
+            var args = CollectionEventArgs.Create(new List<int>
             {
                 3, 1, 4, 1, 5, 9,
             }, true);
@@ -80,19 +81,38 @@ namespace Cube.Tests
         /// Create_Cancel
         ///
         /// <summary>
-        /// EnumerableCancelEventArgs(T) を初期化するテストを実行します。
+        /// Tests to create a new instance of the CollectionCancelEventArgs(T)
+        /// class with the provided arguments.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_Cancel()
         {
-            var args = new EnumerableCancelEventArgs<string>(new List<string>
+            var args = CollectionEventArgs.Create(new List<string>
             {
                 "Hello", "world", "This", "is", "a", "test", "program",
-            });
+            }, true);
 
             Assert.That(args.Value.Count(), Is.EqualTo(7));
+            Assert.That(args.Cancel, Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Cancel_Default
+        ///
+        /// <summary>
+        /// Tests to create a new instance of the CollectionCancelEventArgs(T)
+        /// class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Cancel_Default()
+        {
+            var args = new CollectionCancelEventArgs<string>(Enumerable.Empty<string>());
+            Assert.That(args.Value.Count(), Is.EqualTo(0));
             Assert.That(args.Cancel, Is.False);
         }
     }

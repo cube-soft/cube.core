@@ -21,9 +21,61 @@ using System.ComponentModel;
 
 namespace Cube
 {
+    #region CollectionEventArgs
+
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableEventArgs(T)
+    /// CollectionEventArgs
+    ///
+    /// <summary>
+    /// CollectionEventArgs(T), CollectionEventArgs(T) オブジェクトを
+    /// 生成するための補助クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class CollectionEventArgs
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// CollectionEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="value">設定値</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static CollectionEventArgs<T> Create<T>(IEnumerable<T> value) =>
+            new CollectionEventArgs<T>(value);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// CollectionEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="value">設定値</param>
+        /// <param name="cancel">キャンセルするかどうか</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static CollectionCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
+            new CollectionCancelEventArgs<T>(value, cancel);
+
+        #endregion
+    }
+
+    #endregion
+
+    #region CollectionEventArgs<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CollectionEventArgs(T)
     ///
     /// <summary>
     /// イベントハンドラに特定の型のコレクションを伝搬させるための
@@ -31,13 +83,13 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class EnumerableEventArgs<T> : EventArgs
+    public class CollectionEventArgs<T> : EventArgs
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EnumerableEventArgs(T)
+        /// CollectionEventArgs(T)
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -46,7 +98,7 @@ namespace Cube
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EnumerableEventArgs(IEnumerable<T> value)
+        public CollectionEventArgs(IEnumerable<T> value)
         {
             Value = value;
         }
@@ -69,9 +121,13 @@ namespace Cube
         #endregion
     }
 
+    #endregion
+
+    #region CollectionCancelEventArgs<T>
+
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableCancelEventArgs(T)
+    /// CollectionCancelEventArgs(T)
     ///
     /// <summary>
     /// イベントハンドラに特定の型のコレクションを伝搬させるための
@@ -79,7 +135,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class EnumerableCancelEventArgs<T> : CancelEventArgs
+    public class CollectionCancelEventArgs<T> : CancelEventArgs
     {
         #region Constructors
 
@@ -94,7 +150,7 @@ namespace Cube
         /// <param name="value">設定値</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EnumerableCancelEventArgs(IEnumerable<T> value) :
+        public CollectionCancelEventArgs(IEnumerable<T> value) :
             this(value, false) { }
 
         /* ----------------------------------------------------------------- */
@@ -109,7 +165,7 @@ namespace Cube
         /// <param name="cancel">キャンセルするかどうか</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EnumerableCancelEventArgs(IEnumerable<T> value, bool cancel) :
+        public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) :
             base(cancel)
         {
             Value = value;
@@ -133,55 +189,13 @@ namespace Cube
         #endregion
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// EnumerableEventArgs
-    ///
-    /// <summary>
-    /// EnumerableEventArgs(T), EnumerableEventArgs(T) オブジェクトを
-    /// 生成するための補助クラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class EnumerableEventArgs
-    {
-        #region Methods
+    #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// EnumerableEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="value">設定値</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static EnumerableEventArgs<T> Create<T>(IEnumerable<T> value) =>
-            new EnumerableEventArgs<T>(value);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// EnumerableCancelEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static EnumerableCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
-            new EnumerableCancelEventArgs<T>(value, cancel);
-
-        #endregion
-    }
+    #region Handlers
 
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableEventHandler(T)
+    /// CollectionEventHandler(T)
     ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
@@ -189,11 +203,11 @@ namespace Cube
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void EnumerableEventHandler<T>(object sender, EnumerableEventArgs<T> e);
+    public delegate void CollectionEventHandler<T>(object sender, CollectionEventArgs<T> e);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableCancelEventHandler(T)
+    /// CollectionCancelEventHandler(T)
     ///
     /// <summary>
     /// イベントを処理するメソッドを表します。
@@ -201,5 +215,7 @@ namespace Cube
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void EnumerableCancelEventHandler<T>(object sender, EnumerableCancelEventArgs<T> e);
+    public delegate void CollectionCancelEventHandler<T>(object sender, CollectionCancelEventArgs<T> e);
+
+    #endregion
 }
