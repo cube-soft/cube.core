@@ -36,7 +36,7 @@ namespace Cube.Mixin.Collections
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetOrDefault(T)
+        /// GetOrEmpty(T)
         ///
         /// <summary>
         /// Returns the specified object or empty IEnumerable(T) object.
@@ -47,7 +47,7 @@ namespace Cube.Mixin.Collections
         /// <returns>Self or empty collection.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<T> GetOrDefault<T>(this IEnumerable<T> src) =>
+        public static IEnumerable<T> GetOrEmpty<T>(this IEnumerable<T> src) =>
             src ?? Enumerable.Empty<T>();
 
         /* ----------------------------------------------------------------- */

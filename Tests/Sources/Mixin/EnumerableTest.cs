@@ -37,11 +37,11 @@ namespace Cube.Tests.Mixin
     {
         #region Tests
 
-        #region GetOrDefault
+        #region GetOrEmpty
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetOrDefault
+        /// GetOrEmpty
         ///
         /// <summary>
         /// Tests of the GetOrDefault extended method.
@@ -49,17 +49,17 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetOrDefault()
+        public void GetOrEmpty()
         {
             var sum = 0;
             var src = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            foreach (var i in src.GetOrDefault()) sum += i;
+            foreach (var i in src.GetOrEmpty()) sum += i;
             Assert.That(sum, Is.EqualTo(55));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetOrDefault_Null
+        /// GetOrEmpty_Null
         ///
         /// <summary>
         /// Tests of the GetOrDefault extended method with the null object.
@@ -67,11 +67,11 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetOrDefault_Null()
+        public void GetOrEmpty_Null()
         {
             var sum = 0;
             var src = default(List<int>);
-            foreach (var i in src.GetOrDefault()) sum += i;
+            foreach (var i in src.GetOrEmpty()) sum += i;
             Assert.That(sum, Is.EqualTo(0));
         }
 
