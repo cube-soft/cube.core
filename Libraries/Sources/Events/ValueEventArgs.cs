@@ -20,6 +20,78 @@ using System.ComponentModel;
 
 namespace Cube
 {
+    #region ValueEventArgs
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ValueEventArgs
+    ///
+    /// <summary>
+    /// ValueEventArgs(T), ValueCancelEventArgs(T), ValueChangedEventArgs(T)
+    /// オブジェクトを生成するための補助クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class ValueEventArgs
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// ValueEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="value">設定値</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ValueEventArgs<T> Create<T>(T value) =>
+            new ValueEventArgs<T>(value);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// ValueCancelEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="value">設定値</param>
+        /// <param name="cancel">キャンセルするかどうか</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) =>
+            new ValueCancelEventArgs<T>(value, cancel);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// ValueChangedEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="oldvalue">変更前の値</param>
+        /// <param name="newvalue">変更後の値</param>
+        /// 
+        /// <remarks>
+        /// bool 型の値を指定すると ValueCancelEventArgs(T) のオブジェクトが
+        /// 生成される場合があります。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ValueChangedEventArgs<T> Create<T>(T oldvalue, T newvalue) =>
+            new ValueChangedEventArgs<T>(oldvalue, newvalue);
+
+        #endregion
+    }
+
+    #endregion
+
+    #region ValueEventArgs<T>
+
     /* --------------------------------------------------------------------- */
     ///
     /// ValueEventArgs(T)
@@ -66,6 +138,10 @@ namespace Cube
 
         #endregion
     }
+
+    #endregion
+
+    #region ValueCancelEventArgs<T>
 
     /* --------------------------------------------------------------------- */
     ///
@@ -128,6 +204,10 @@ namespace Cube
         #endregion
     }
 
+    #endregion
+
+    #region ValueChangedEventArgs<T>
+
     /* --------------------------------------------------------------------- */
     ///
     /// ValueChangedEventArgs(T)
@@ -188,83 +268,9 @@ namespace Cube
         #endregion
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ValueEventArgs
-    ///
-    /// <summary>
-    /// ValueEventArgs(T), ValueCancelEventArgs(T) オブジェクトを生成する
-    /// ための補助クラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class ValueEventArgs
-    {
-        #region Methods
+    #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// ValueEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="value">設定値</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ValueEventArgs<T> Create<T>(T value) =>
-            new ValueEventArgs<T>(value);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// ValueCancelEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) =>
-            new ValueCancelEventArgs<T>(value, cancel);
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ValueChangedEventArgs
-    ///
-    /// <summary>
-    /// ValueChangedEventArgs(T) オブジェクトを生成するための
-    /// 補助クラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class ValueChangedEventArgs
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// ValueChangedEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="oldvalue">変更前の値</param>
-        /// <param name="newvalue">変更後の値</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ValueChangedEventArgs<T> Create<T>(T oldvalue, T newvalue) =>
-            new ValueChangedEventArgs<T>(oldvalue, newvalue);
-
-        #endregion
-    }
+    #region ValueEventHandlers
 
     /* --------------------------------------------------------------------- */
     ///
@@ -301,4 +307,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void ValueChangedEventHandler<T>(object sender, ValueChangedEventArgs<T> e);
+
+    #endregion
 }
