@@ -19,6 +19,43 @@ using System;
 
 namespace Cube
 {
+    #region ProgressEventArgs
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProgressEventArgs
+    ///
+    /// <summary>
+    /// ProgressEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class ProgressEventArgs
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// ProgressEventArgs(T) オブジェクトを生成します。
+        /// </summary>
+        ///
+        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
+        /// <param name="value">ユーザデータ</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ProgressEventArgs<T> Create<T>(double ratio, T value) =>
+            new ProgressEventArgs<T>(ratio, value);
+
+        #endregion
+    }
+
+    #endregion
+
+    #region ProgressEventArgs<T>
+
     /* --------------------------------------------------------------------- */
     ///
     /// ProgressEventArgs(T)
@@ -79,36 +116,9 @@ namespace Cube
         #endregion
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ProgressEventArgs
-    ///
-    /// <summary>
-    /// ProgressEventArgs(T) オブジェクトを生成するための補助クラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class ProgressEventArgs
-    {
-        #region Methods
+    #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// ProgressEventArgs(T) オブジェクトを生成します。
-        /// </summary>
-        ///
-        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
-        /// <param name="value">ユーザデータ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ProgressEventArgs<T> Create<T>(double ratio, T value) =>
-            new ProgressEventArgs<T>(ratio, value);
-
-        #endregion
-    }
+    #region ProgressEventHandlers
 
     /* --------------------------------------------------------------------- */
     ///
@@ -121,4 +131,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void ProgressEventHandler<T>(object sender, ProgressEventArgs<T> e);
+
+    #endregion
 }

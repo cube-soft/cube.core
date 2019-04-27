@@ -191,7 +191,7 @@ namespace Cube
 
     #endregion
 
-    #region Handlers
+    #region CollectionEventHandlers
 
     /* --------------------------------------------------------------------- */
     ///
