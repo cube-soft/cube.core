@@ -33,6 +33,8 @@ namespace Cube.Tests
     [TestFixture]
     class OnceActionTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -45,10 +47,12 @@ namespace Cube.Tests
         [Test]
         public void Invoke()
         {
-            var value = 0;
-            var once  = new OnceAction(() => value++);
+            var dest  = 0;
+            var once  = new OnceAction(() => dest++);
             var tasks = new[]
             {
+                Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
                 Task.Run(() => once.Invoke()),
                 Task.Run(() => once.Invoke()),
                 Task.Run(() => once.Invoke()),
@@ -56,7 +60,7 @@ namespace Cube.Tests
 
             Task.WaitAll(tasks);
             Assert.That(once.Invoked, Is.True);
-            Assert.That(value, Is.EqualTo(1));
+            Assert.That(dest, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -69,20 +73,24 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Invoke_Twice() => Assert.That(() =>
+        public void Invoke_Twice()
         {
-            var dummy = 0;
-            var once  = new OnceAction(() => dummy++) { IgnoreTwice = false };
+            var dest  = 0;
+            var once  = new OnceAction(() => dest++) { IgnoreTwice = false };
             var tasks = new[]
             {
                 Task.Run(() => once.Invoke()),
                 Task.Run(() => once.Invoke()),
                 Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
+                Task.Run(() => once.Invoke()),
             };
 
-            Task.WaitAll(tasks);
-        },
-        Throws.TypeOf<AggregateException>().And.InnerException.TypeOf<TwiceException>());
+            Assert.That(() => Task.WaitAll(tasks),
+                Throws.TypeOf<AggregateException>().And.InnerException
+                      .TypeOf<TwiceException>());
+            Assert.That(dest, Is.EqualTo(1));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,21 +101,23 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("once")]
-        public void Invoke(string obj)
+        public void Invoke_Generics()
         {
-            var value = "";
-            var once  = new OnceAction<string>(s => value += s);
+            var src   = "once";
+            var dest  = "";
+            var once  = new OnceAction<string>(s => dest += s);
             var tasks = new[]
             {
-                Task.Run(() => once.Invoke(obj)),
-                Task.Run(() => once.Invoke(obj)),
-                Task.Run(() => once.Invoke(obj)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
             };
 
             Task.WaitAll(tasks);
             Assert.That(once.Invoked, Is.True);
-            Assert.That(value, Is.EqualTo(obj));
+            Assert.That(dest, Is.EqualTo(src));
         }
 
         /* ----------------------------------------------------------------- */
@@ -119,20 +129,44 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("twice")]
-        public void Invoke_Twice(string obj) => Assert.That(() =>
+        [Test]
+        public void Invoke_Generics_Twice()
         {
-            var dummy = "";
-            var once = new OnceAction<string>(s => dummy += s) { IgnoreTwice = false };
+            var src   = "twice";
+            var dest  = "";
+            var once  = new OnceAction<string>(s => dest += s) { IgnoreTwice = false };
             var tasks = new[]
             {
-                Task.Run(() => once.Invoke(obj)),
-                Task.Run(() => once.Invoke(obj)),
-                Task.Run(() => once.Invoke(obj)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
+                Task.Run(() => once.Invoke(src)),
             };
 
-            Task.WaitAll(tasks);
-        },
-        Throws.TypeOf<AggregateException>().And.InnerException.TypeOf<TwiceException>());
+            Assert.That(() => Task.WaitAll(tasks),
+                Throws.TypeOf<AggregateException>().And.InnerException
+                      .TypeOf<TwiceException>());
+            Assert.That(dest, Is.EqualTo(src));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Null_Throws
+        ///
+        /// <summary>
+        /// Confirms exceptions when creating a new instance of the
+        /// OnceAction class with a null object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Null_Throws()
+        {
+            Assert.That(() => new OnceAction(null),      Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new OnceAction<int>(null), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        #endregion
     }
 }

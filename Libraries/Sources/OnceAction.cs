@@ -48,8 +48,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action action)
         {
-            Debug.Assert(action != null);
-            _action = action;
+            _action = action ?? throw new ArgumentNullException();
         }
 
         #endregion
