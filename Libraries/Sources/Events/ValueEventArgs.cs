@@ -97,7 +97,7 @@ namespace Cube
     /// ValueEventArgs(T)
     ///
     /// <summary>
-    /// イベントハンドラに特定の型の値を渡すためのクラスです。
+    /// Provides a value of type T to use for events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -110,10 +110,11 @@ namespace Cube
         /// ValueEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ValueEventArgs class with
+        /// the specified value.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public ValueEventArgs(T value)
@@ -130,7 +131,7 @@ namespace Cube
         /// Value
         ///
         /// <summary>
-        /// 値を取得します。
+        /// Gets a value to use for the event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -148,7 +149,7 @@ namespace Cube
     /// ValueCancelEventArgs(T)
     ///
     /// <summary>
-    /// イベントハンドラに特定の型の値を渡すためのクラスです。
+    /// Provides data for a cancelable event with a value of type T.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -161,10 +162,11 @@ namespace Cube
         /// ValueCancelEventArgs
         ///
         /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// Initializes a new instance of the ValueCancelEventArgs class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public ValueCancelEventArgs(T value) : this(value, false) { }
@@ -174,11 +176,14 @@ namespace Cube
         /// ValueCancelEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ValueCancelEventArgs class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="value">Value to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public ValueCancelEventArgs(T value, bool cancel) : base(cancel)
@@ -213,7 +218,8 @@ namespace Cube
     /// ValueChangedEventArgs(T)
     ///
     /// <summary>
-    /// 値の変更に関連するイベントに使用するクラスです。
+    /// Provides values that represent before and after changing for user
+    /// events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -223,14 +229,15 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ValueChangedEventArgs
+        /// ValueChangedEventArgs(T)
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ValueChangedEventArgs class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="oldvalue">変更前の値</param>
-        /// <param name="newvalue">変更後の値</param>
+        /// <param name="oldvalue">Value before changed.</param>
+        /// <param name="newvalue">Value after changed.</param>
         ///
         /* ----------------------------------------------------------------- */
         public ValueChangedEventArgs(T oldvalue, T newvalue)
@@ -248,7 +255,7 @@ namespace Cube
         /// OldValue
         ///
         /// <summary>
-        /// 変更前のオブジェクトを取得します。
+        /// Gets the value before changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -259,7 +266,7 @@ namespace Cube
         /// NewValue
         ///
         /// <summary>
-        /// 変更後のオブジェクトを取得します。
+        /// Gets the value after changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -277,7 +284,7 @@ namespace Cube
     /// ValueEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -289,7 +296,7 @@ namespace Cube
     /// ValueCancelEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -301,7 +308,7 @@ namespace Cube
     /// ValueChangedEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
