@@ -27,8 +27,8 @@ namespace Cube
     /// ValueEventArgs
     ///
     /// <summary>
-    /// ValueEventArgs(T), ValueCancelEventArgs(T), ValueChangedEventArgs(T)
-    /// オブジェクトを生成するための補助クラスです。
+    /// Provides methods to create a new instance of the ValueEventArgs(T),
+    /// ValueCancelEventArgs(T), or ValueChangedEventArgs(T) classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,10 +41,11 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// ValueEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the ValueEventArgs(T) class with the
+        /// specified value.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static ValueEventArgs<T> Create<T>(T value) =>
@@ -55,11 +56,14 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// ValueCancelEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the ValueCancelEventArgs(T) class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="value">Value to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) =>
@@ -70,11 +74,12 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// ValueChangedEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the ValueChangedEventArgs(T) class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="oldvalue">変更前の値</param>
-        /// <param name="newvalue">変更後の値</param>
+        /// <param name="oldvalue">Value before changed.</param>
+        /// <param name="newvalue">Value after changed.</param>
         /// 
         /// <remarks>
         /// bool 型の値を指定すると ValueCancelEventArgs(T) のオブジェクトが
@@ -163,7 +168,8 @@ namespace Cube
         ///
         /// <summary>
         /// Initializes a new instance of the ValueCancelEventArgs class
-        /// with the specified arguments.
+        /// with the specified value. The Cancel property is set to
+        /// false.
         /// </summary>
         ///
         /// <param name="value">Value to use for the event.</param>
@@ -255,7 +261,7 @@ namespace Cube
         /// OldValue
         ///
         /// <summary>
-        /// Gets the value before changed.
+        /// Gets a value before changed by the event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -266,7 +272,7 @@ namespace Cube
         /// NewValue
         ///
         /// <summary>
-        /// Gets the value after changed.
+        /// Gets a value after changed by the event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
