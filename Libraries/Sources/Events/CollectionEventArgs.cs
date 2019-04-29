@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Cube
 {
@@ -28,8 +27,8 @@ namespace Cube
     /// CollectionEventArgs
     ///
     /// <summary>
-    /// CollectionEventArgs(T), CollectionEventArgs(T) オブジェクトを
-    /// 生成するための補助クラスです。
+    /// Provides methods to create an instance of the CollectionEventArgs(T)
+    /// or CollectionEventArgs(T) classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -42,10 +41,11 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// CollectionEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the CollectionEventArgs(T) class
+        /// with the specified value.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static CollectionEventArgs<T> Create<T>(IEnumerable<T> value) =>
@@ -56,11 +56,14 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// CollectionEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the CollectionEventArgs(T) class
+        /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="value">Value to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public static CollectionCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
@@ -78,12 +81,11 @@ namespace Cube
     /// CollectionEventArgs(T)
     ///
     /// <summary>
-    /// イベントハンドラに特定の型のコレクションを伝搬させるための
-    /// クラスです。
+    /// Provides a value of type IEnumerable(T) to use for events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CollectionEventArgs<T> : EventArgs
+    public class CollectionEventArgs<T> : ValueEventArgs<IEnumerable<T>>
     {
         #region Constructors
 
@@ -92,31 +94,14 @@ namespace Cube
         /// CollectionEventArgs(T)
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Creates a new instance of the CollectionEventArgs class with
+        /// the specified value.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public CollectionEventArgs(IEnumerable<T> value)
-        {
-            Value = value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// 値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<T> Value { get; }
+        public CollectionEventArgs(IEnumerable<T> value) : base(value) { }
 
         #endregion
     }
@@ -130,61 +115,46 @@ namespace Cube
     /// CollectionCancelEventArgs(T)
     ///
     /// <summary>
-    /// イベントハンドラに特定の型のコレクションを伝搬させるための
-    /// クラスです。
+    /// Provides data for a cancelable event with a value of type
+    /// IEnumerable(T).
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CollectionCancelEventArgs<T> : CancelEventArgs
+    public class CollectionCancelEventArgs<T> : ValueCancelEventArgs<IEnumerable<T>>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EnumerableCancelEventArgs(T)
+        /// CollectionCancelEventArgs
         ///
         /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// Initializes a new instance of the CollectionCancelEventArgs
+        /// class with the specified value. The Cancel property is set
+        /// to false.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public CollectionCancelEventArgs(IEnumerable<T> value) :
-            this(value, false) { }
+        public CollectionCancelEventArgs(IEnumerable<T> value) : this(value, false) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EnumerableCancelEventArgs
+        /// CollectionCancelEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the CollectionCancelEventArgs
+        /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="value">Value to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) :
-            base(cancel)
-        {
-            Value = value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// 値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<T> Value { get; }
+        public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) : base(value, cancel) { }
 
         #endregion
     }
@@ -198,7 +168,7 @@ namespace Cube
     /// CollectionEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -210,7 +180,7 @@ namespace Cube
     /// CollectionCancelEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
