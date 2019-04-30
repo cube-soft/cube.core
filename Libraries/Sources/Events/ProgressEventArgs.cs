@@ -26,7 +26,8 @@ namespace Cube
     /// ProgressEventArgs
     ///
     /// <summary>
-    /// ProgressEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// Provides methods to create a new instance of the
+    /// ProgressEventArgs(T) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,11 +40,12 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// ProgressEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the ProgressEventArgs(T) class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
-        /// <param name="value">ユーザデータ</param>
+        /// <param name="ratio">Current progress ratio.</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static ProgressEventArgs<T> Create<T>(double ratio, T value) =>
@@ -61,11 +63,11 @@ namespace Cube
     /// ProgressEventArgs(T)
     ///
     /// <summary>
-    /// 進捗状況を保持するためのクラスです。
+    /// Provides progress ratio and a value of type T to use for events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ProgressEventArgs<T> : EventArgs
+    public class ProgressEventArgs<T> : ValueEventArgs<T>
     {
         #region Constructors
 
@@ -74,17 +76,17 @@ namespace Cube
         /// ProgressEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Creates a new instance of the ProgressEventArgs(T) class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
-        /// <param name="value">ユーザデータ</param>
+        /// <param name="ratio">Current progress ratio.</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ProgressEventArgs(double ratio, T value)
+        public ProgressEventArgs(double ratio, T value) : base(value)
         {
             Ratio = ratio;
-            Value = value;
         }
 
         #endregion
@@ -96,22 +98,11 @@ namespace Cube
         /// Ratio
         ///
         /// <summary>
-        /// 進捗状況を表す値を取得します。
+        /// Gets a current progress ratio.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public double Ratio { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// ユーザデータを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Value { get; }
 
         #endregion
     }
@@ -125,7 +116,7 @@ namespace Cube
     /// ProgressEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
