@@ -27,7 +27,8 @@ namespace Cube
     /// QueryEventArgs
     ///
     /// <summary>
-    /// QueryEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// provides methods to create a new instance of the QueryEventArgs(T)
+    /// class.
     /// </summary>
     ///
     /// <remarks>
@@ -46,10 +47,11 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// QueryEventArgs(T) オブジェクトを生成します。
+        /// Initializes a new instance of the QueryEventArgs(T) class with
+        /// the specified query.
         /// </summary>
         ///
-        /// <param name="query">クエリー</param>
+        /// <param name="query">Query to use for event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static QueryEventArgs<T> Create<T>(T query) =>
@@ -67,7 +69,7 @@ namespace Cube
     /// QueryEventArgs(T)
     ///
     /// <summary>
-    /// クエリーデータを受け渡すためのクラスです。
+    /// Provides a query and result to use for events.
     /// </summary>
     ///
     /// <remarks>
@@ -84,10 +86,11 @@ namespace Cube
         /// QueryEventArgs
         ///
         /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified query. The Cancel property is set to false.
         /// </summary>
         ///
-        /// <param name="query">クエリーデータ</param>
+        /// <param name="query">Query to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(T query) : this(query, false) { }
@@ -97,11 +100,14 @@ namespace Cube
         /// QueryEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(T query, bool cancel) : this(query, default(T), cancel) { }
@@ -111,12 +117,15 @@ namespace Cube
         /// QueryEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="result">結果の初期値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="result">Initial value of the result.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(T query, T result, bool cancel) : base(query, result, cancel) { }
@@ -133,7 +142,7 @@ namespace Cube
     /// QueryEventArgs(T, U)
     ///
     /// <summary>
-    /// クエリーデータを受け渡すためのクラスです。
+    /// Provides a query and result to use for events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -146,10 +155,11 @@ namespace Cube
         /// QueryEventArgs
         ///
         /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified query. The Cancel property is set to false.
         /// </summary>
         ///
-        /// <param name="query">クエリーデータ</param>
+        /// <param name="query">Query to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(T query) : this(query, false) { }
@@ -159,11 +169,14 @@ namespace Cube
         /// QueryEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(T query, bool cancel) : this(query, default(U), cancel) { }
@@ -173,12 +186,15 @@ namespace Cube
         /// QueryEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="result">結果の初期値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="result">Initial value of the result.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public QueryEventArgs(T query, U result, bool cancel) : base(cancel)
@@ -196,7 +212,7 @@ namespace Cube
         /// Query
         ///
         /// <summary>
-        /// イベント発生元から受け取ったクエリーデータを取得します。
+        /// Gets the query to use for the event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -207,7 +223,7 @@ namespace Cube
         /// Result
         ///
         /// <summary>
-        /// クエリーデータに対する結果を取得または設定します。
+        /// Gets the result of the event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -225,7 +241,7 @@ namespace Cube
     /// QueryEventHandler(T, U)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -237,7 +253,7 @@ namespace Cube
     /// QueryEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
