@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.String;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Cube.Mixin.Xml
@@ -112,7 +113,7 @@ namespace Cube.Mixin.Xml
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetElements(this XElement e, string ns, string name) =>
-            e.GetNamespace(ns) is XNamespace xns ? e.Elements(xns + name) : new XElement[0];
+            e.GetNamespace(ns) is XNamespace xns ? e.Elements(xns + name) : Enumerable.Empty<XElement>();
 
         #endregion
 
@@ -155,7 +156,7 @@ namespace Cube.Mixin.Xml
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<XElement> GetDescendants(this XElement e, string ns, string name) =>
-            e.GetNamespace(ns) is XNamespace xns ? e.Descendants(xns + name) : new XElement[0];
+            e.GetNamespace(ns) is XNamespace xns ? e.Descendants(xns + name) : Enumerable.Empty<XElement>();
 
         #endregion
 

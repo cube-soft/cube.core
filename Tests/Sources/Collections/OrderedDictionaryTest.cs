@@ -277,16 +277,16 @@ namespace Cube.Tests
         {
             var src = Create();
 
-            Assert.That(src.TryGetValue("Linus", out string s0), Is.True);
+            Assert.That(src.TryGetValue("Linus", out var s0), Is.True);
             Assert.That(s0, Is.EqualTo("Torvalds"));
 
-            Assert.That(src.TryGetValue("Bjarne", out string s1), Is.False);
+            Assert.That(src.TryGetValue("Bjarne", out var s1), Is.False);
             Assert.That(s1, Is.Null);
 
-            Assert.That(src.TryGetValue("", out string s2), Is.False);
+            Assert.That(src.TryGetValue("", out var s2), Is.False);
             Assert.That(s2, Is.Null);
 
-            Assert.That(src.TryGetValue(null, out string s3), Is.False);
+            Assert.That(src.TryGetValue(null, out var s3), Is.False);
             Assert.That(s3, Is.Null);
         }
 

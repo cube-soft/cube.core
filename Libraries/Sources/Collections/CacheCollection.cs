@@ -245,7 +245,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public bool Remove(TKey src)
         {
-            _creating.TryRemove(src, out var _);
+            _creating.TryRemove(src, out _);
             var dest = _created.TryRemove(src, out var obj);
             if (dest) _disposer?.Invoke(src, obj);
             return dest;
