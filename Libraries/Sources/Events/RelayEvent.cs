@@ -25,7 +25,7 @@ namespace Cube
     /// RelayEvent
     ///
     /// <summary>
-    /// イベントを中継するためのクラスです。
+    /// Provides functionality to relay events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube
         /// Publish
         ///
         /// <summary>
-        /// 購読者にイベントを配信します。
+        /// Publishes an event to subscribers.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,12 +52,12 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// イベント発生時に実行する Action オブジェクトを登録します。
+        /// Subscribes the event with the specified callback.
         /// </summary>
         ///
-        /// <param name="callback">登録する Action オブジェクト</param>
+        /// <param name="callback">Callback function.</param>
         ///
-        /// <returns>購読解除用オブジェクト</returns>
+        /// <returns>Object to release.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe(Action callback) => _subscription.Subscribe(callback);
@@ -74,7 +74,7 @@ namespace Cube
     /// RelayEvent(T)
     ///
     /// <summary>
-    /// イベントを中継するためのクラスです。
+    /// Provides functionality to relay events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -87,8 +87,10 @@ namespace Cube
         /// Publish
         ///
         /// <summary>
-        /// 購読者にイベントを配信します。
+        /// Publishes an event to subscribers.
         /// </summary>
+        /// 
+        /// <param name="payload">Payload data.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Publish(T payload)
@@ -101,12 +103,12 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// イベント発生時に実行する Action オブジェクトを登録します。
+        /// Subscribes the event with the specified callback.
         /// </summary>
         ///
-        /// <param name="callback">登録する Action オブジェクト</param>
+        /// <param name="callback">Callback function.</param>
         ///
-        /// <returns>購読解除用オブジェクト</returns>
+        /// <returns>Object to release.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe(Action<T> callback) => _subscription.Subscribe(callback);
