@@ -94,7 +94,7 @@ namespace Cube.Xui.Tests
 
             value.Name = "Jack";
             value.Age  = 20;
-            src.RaiseValueChanged();
+            src.Refresh();
             Assert.That(count, Is.EqualTo(2));
 
             src.Value = value;

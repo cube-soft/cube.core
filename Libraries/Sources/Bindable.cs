@@ -140,14 +140,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseValueChanged
+        /// Refresh
         ///
         /// <summary>
         /// Raises a PropertyChanged event against the Value property.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void RaiseValueChanged() => Refresh(nameof(Value));
+        public void Refresh() => Refresh(nameof(Value));
 
         #endregion
 
