@@ -18,8 +18,8 @@
 using Cube.DataContract;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
-using Cube.Mixin.Logger;
 using Cube.Mixin.IO;
+using Cube.Mixin.Logger;
 using Cube.Mixin.Tasks;
 using System;
 using System.ComponentModel;
@@ -38,7 +38,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<T> : ObservableBase, INotifyPropertyChanged, IDisposable
+    public class SettingsFolder<T> : ObservableBase, IDisposable
         where T : INotifyPropertyChanged, new()
     {
         #region Constructors
@@ -304,7 +304,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() => OnLoaded(ValueChangedEventArgs.Create(Value, LoadCore()));
+        public void Load() => OnLoaded(ValueEventArgs.Create(Value, LoadCore()));
 
         /* ----------------------------------------------------------------- */
         ///
