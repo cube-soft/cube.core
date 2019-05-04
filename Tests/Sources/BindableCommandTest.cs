@@ -48,7 +48,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Execute()
         {
-            var src  = new Bindable<Person>(new Person());
+            var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
                 () => src.Value.Age > 0,
@@ -72,7 +72,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void RaiseCanExecuteChanged()
         {
-            var src = new Bindable<Person>(new Person());
+            var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             using (var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
                 () => src.Value.Age > 0,
@@ -107,7 +107,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Execute_Generic()
         {
-            var src  = new Bindable<Person>(new Person());
+            var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
                 e => e > 0 && src.Value.Age > 0,
@@ -132,7 +132,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void RaiseCanExecuteChanged_Generic()
         {
-            var src = new Bindable<Person>(new Person());
+            var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             using (var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
                 e => e > 0 && src.Value.Age > 0,

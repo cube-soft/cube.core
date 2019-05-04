@@ -43,9 +43,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext) : this(default(T), gettext) { }
+        public BindableElement(Getter<string> gettext, IDispatcher dispatcher) :
+            this(default(T), gettext, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,10 +60,11 @@ namespace Cube.Xui
         ///
         /// <param name="value">Initial value.</param>
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(T value, Getter<string> gettext) :
-            this(new Accessor<T>(value), gettext) { }
+        public BindableElement(T value, Getter<string> gettext, IDispatcher dispatcher) :
+            this(new Accessor<T>(value), gettext, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -74,10 +77,11 @@ namespace Cube.Xui
         ///
         /// <param name="getter">Function to get value.</param>
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<T> getter, Getter<string> gettext) :
-            this(new Accessor<T>(getter), gettext) { }
+        public BindableElement(Getter<T> getter, Getter<string> gettext, IDispatcher dispatcher) :
+            this(new Accessor<T>(getter), gettext, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -91,10 +95,11 @@ namespace Cube.Xui
         /// <param name="getter">Function to get value.</param>
         /// <param name="setter">Function to set value.</param>
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<T> getter, Setter<T> setter, Getter<string> gettext) :
-            this(new Accessor<T>(getter, setter), gettext) { }
+        public BindableElement(Getter<T> getter, Setter<T> setter, Getter<string> gettext, IDispatcher dispatcher) :
+            this(new Accessor<T>(getter, setter), gettext, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -107,13 +112,15 @@ namespace Cube.Xui
         ///
         /// <param name="accessor">Function to get and set value.</param>
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Accessor<T> accessor, Getter<string> gettext) : base(accessor)
+        public BindableElement(Accessor<T> accessor, Getter<string> gettext, IDispatcher dispatcher) :
+            base(accessor, dispatcher)
         {
             _dispose = new OnceAction<bool>(Dispose);
             _gettext = gettext;
-            _remover = Locale.Subscribe(z => RaisePropertyChanged(nameof(Text)));
+            _remover = Locale.Subscribe(e => Refresh(nameof(Text)));
         }
 
         #endregion

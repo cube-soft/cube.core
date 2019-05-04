@@ -47,7 +47,7 @@ namespace Cube.Xui.Tests
         [TestCase("Hello, world!", 10)]
         public void Properties(string text, int n)
         {
-            using (var src = new BindableElement<int>(n, () => text))
+            using (var src = new BindableElement<int>(n, () => text, Dispatcher.Vanilla))
             {
                 Assert.That(src.Text,    Is.EqualTo(text));
                 Assert.That(src.Value,   Is.EqualTo(n));
@@ -68,7 +68,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Set_Throws()
         {
-            using (var src = new BindableElement<string>(() => "Get", () => "Text"))
+            using (var src = new BindableElement<string>(() => "Get", () => "Text", Dispatcher.Vanilla))
             {
                 Assert.That(src.Text,    Is.EqualTo("Text"));
                 Assert.That(src.Value,   Is.EqualTo("Get"));
@@ -91,7 +91,7 @@ namespace Cube.Xui.Tests
         public void SetLanguage()
         {
             var count = 0;
-            using (var src = new BindableElement<int>(() => "Language"))
+            using (var src = new BindableElement<int>(() => "Language", Dispatcher.Vanilla))
             {
                 src.PropertyChanged += (s, e) =>
                 {

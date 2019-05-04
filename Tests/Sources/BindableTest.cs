@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
 using System;
-using System.Threading;
 
 namespace Cube.Xui.Tests
 {
@@ -48,7 +47,7 @@ namespace Cube.Xui.Tests
         public void Set()
         {
             var n   = 5;
-            var src = new Bindable<int>(() => n, e => { n = e; return true; });
+            var src = new Bindable<int>(() => n, e => { n = e; return true; }, Dispatcher.Vanilla);
 
             Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(5));
             src.Value = 10;
@@ -68,7 +67,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Set_Throws()
         {
-            var src = new Bindable<int>(() => 8);
+            var src = new Bindable<int>(() => 8, Dispatcher.Vanilla);
 
             Assert.That(src.Value, Is.EqualTo(8));
             Assert.That(() => src.Value = 7, Throws.TypeOf<InvalidOperationException>());
@@ -76,7 +75,7 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseValueChanged
+        /// Refresh
         ///
         /// <summary>
         /// Confirms the behavior of the PropertyChanged event.
@@ -84,10 +83,9 @@ namespace Cube.Xui.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void RaiseValueChanged()
+        public void Refresh()
         {
-            var ctx = SynchronizationContext.Current;
-            var src = new Bindable<Person> { Context = ctx };
+            var src = new Bindable<Person>(Dispatcher.Vanilla);
 
             var count = 0;
             src.PropertyChanged += (s, e) => ++count;
@@ -98,30 +96,9 @@ namespace Cube.Xui.Tests
             value.Age  = 20;
             src.RaiseValueChanged();
             Assert.That(count, Is.EqualTo(2));
-        }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseValueChanged_Context
-        ///
-        /// <summary>
-        /// Confirms the behavior when a SynchronizationContext object
-        /// is set.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void RaiseValueChanged_Context()
-        {
-            var value = new Person();
-            var src   = new Bindable<Person>(value) { Context = new SynchronizationContext() };
-            var count = 0;
-            src.PropertyChanged += (s, e) => ++count;
             src.Value = value;
-
-            value.Name = "Jack";
-            value.Age  = 20;
-            Assert.That(count, Is.EqualTo(0));
+            Assert.That(count, Is.EqualTo(2));
         }
 
         #endregion
