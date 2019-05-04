@@ -177,7 +177,7 @@ namespace Cube.Forms
                 if (_dpi == value) return;
                 var prev = _dpi;
                 _dpi = value;
-                DpiChanged?.Invoke(this, ValueChangedEventArgs.Create(prev, value));
+                DpiChanged?.Invoke(this, ValueEventArgs.Create(prev, value));
             }
         }
 

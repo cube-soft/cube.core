@@ -113,7 +113,7 @@ namespace Cube.Forms
                 if (_dpi == value) return;
                 var old = _dpi;
                 _dpi = value;
-                OnDpiChanged(ValueChangedEventArgs.Create(old, value));
+                OnDpiChanged(ValueEventArgs.Create(old, value));
             }
         }
 
@@ -235,7 +235,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event EnumerableEventHandler<string> Received;
+        public event CollectionEventHandler<string> Received;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -246,7 +246,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(EnumerableEventArgs<string> e) =>
+        protected virtual void OnReceived(CollectionEventArgs<string> e) =>
             Received?.Invoke(this, e);
 
         #endregion
@@ -480,7 +480,7 @@ namespace Cube.Forms
 
                 Activate();
                 BringToFront();
-                OnReceived(EnumerableEventArgs.Create(args));
+                OnReceived(CollectionEventArgs.Create(args));
             }
         }
 
