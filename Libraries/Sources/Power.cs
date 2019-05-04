@@ -19,7 +19,6 @@ using Cube.Collections;
 using Microsoft.Win32;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading;
 
 namespace Cube
@@ -103,7 +102,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Configure(PowerModeContext context)
         {
-            Debug.Assert(context != null);
+            if (context == null) throw new ArgumentNullException();
             Interlocked.Exchange(ref _context, context).PropertyChanged -= WhenPropertyChanged;
             context.PropertyChanged -= WhenPropertyChanged;
             context.PropertyChanged += WhenPropertyChanged;
