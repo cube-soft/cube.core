@@ -62,10 +62,10 @@ namespace Cube.Xui.Tests
         [Test]
         public void AddAsync()
         {
-            using (var src = new BindableCollection<Person>())
+            var dispatcher = new Dispatcher(new SynchronizationContext(), true);
+            using (var src = new BindableCollection<Person>(dispatcher))
             {
                 var count = 0;
-                src.Context = new SynchronizationContext();
                 src.CollectionChanged += (s, e) => ++count;
 
                 var tasks = new List<Task>();
@@ -73,7 +73,7 @@ namespace Cube.Xui.Tests
                 Task.WaitAll(tasks.ToArray());
 
                 Assert.That(src.Count, Is.EqualTo(4));
-                Assert.That(count,     Is.EqualTo(4));
+                Assert.That(count, Is.EqualTo(4));
             }
         }
 
@@ -150,9 +150,9 @@ namespace Cube.Xui.Tests
             {
                 var n = 0;
                 yield return new TestCaseData(n++, Create()).Returns(4);
-                yield return new TestCaseData(n++, new BindableCollection<Person>()).Returns(0);
-                yield return new TestCaseData(n++, new BindableCollection<Person>(Enumerable.Empty<Person>())).Returns(0);
-                yield return new TestCaseData(n++, new BindableCollection<Person>(default)).Returns(0);
+                yield return new TestCaseData(n++, new BindableCollection<Person>(Dispatcher.Vanilla)).Returns(0);
+                yield return new TestCaseData(n++, new BindableCollection<Person>(Enumerable.Empty<Person>(), Dispatcher.Vanilla)).Returns(0);
+                yield return new TestCaseData(n++, new BindableCollection<Person>(default, Dispatcher.Vanilla)).Returns(0);
             }
         }
 
@@ -175,7 +175,7 @@ namespace Cube.Xui.Tests
             new Person { Name = "Bob",   Age = 15 },
             new Person { Name = "Mike",  Age = 45 },
             new Person { Name = "Ada",   Age = 40 },
-        }) { Context = new SynchronizationContext() };
+        }, new Dispatcher(new SynchronizationContext(), true));
 
         #endregion
     }

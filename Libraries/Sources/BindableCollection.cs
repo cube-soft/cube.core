@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Threading;
+using System.Linq;
 
 namespace Cube.Xui
 {
@@ -55,8 +55,10 @@ namespace Cube.Xui
         /// class.
         /// </summary>
         ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public BindableCollection() : this(new T[0]) { }
+        public BindableCollection(IDispatcher dispatcher) : this(default, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -68,12 +70,14 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="collection">Collection to be copied.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCollection(IEnumerable<T> collection) : base(collection ?? new T[0])
+        public BindableCollection(IEnumerable<T> collection, IDispatcher dispatcher) :
+            base(collection ?? Enumerable.Empty<T>())
         {
-            Context  = SynchronizationContext.Current;
-            _dispose = new OnceAction<bool>(Dispose);
+            _dispose   = new OnceAction<bool>(Dispose);
+            Dispatcher = dispatcher;
             SetHandler(this);
         }
 
@@ -83,31 +87,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Context
+        /// Dispatcher
         ///
         /// <summary>
-        /// Gets or sets the synchronization context.
+        /// Gets or sets the dispatcher object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SynchronizationContext Context { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsSynchronous
-        ///
-        /// <summary>
-        /// UI スレッドに対して同期的にイベントを発生させるかどうかを
-        /// 示す値を取得または設定します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// true の場合は Send メソッド、false の場合は Post メソッドを
-        /// 用いてイベントを伝搬します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool IsSynchronous { get; set; } = true;
+        public IDispatcher Dispatcher { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,7 +175,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            Invoke(() => base.OnPropertyChanged(e));
+            Dispatcher.Invoke(() => base.OnPropertyChanged(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -200,7 +187,7 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e) =>
-            Invoke(() => OnCollectionChangedCore(e));
+            Dispatcher.Invoke(() => OnCollectionChangedCore(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -230,25 +217,6 @@ namespace Cube.Xui
             }
             base.OnCollectionChanged(e);
         });
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action through the SynchronizationContext.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Invoke(Action action)
-        {
-            if (Context != null)
-            {
-                if (IsSynchronous) Context.Send(z => action(), null);
-                else Context.Post(z => action(), null);
-            }
-            else action();
-        }
 
         /* ----------------------------------------------------------------- */
         ///
