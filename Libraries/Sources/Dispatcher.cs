@@ -162,9 +162,35 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Invoke(Action action)
         {
-            if (Synchronous) Context.Send(e => action(), null);
-            else Context.Post(e => action(), null);
+            if (Synchronous) Send(action);
+            else Post(action);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Sends the specified action with the Synchronization context.
+        /// </summary>
+        ///
+        /// <param name="action">Invoked action.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Send(Action action) => Context.Send(e => action(), null);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Post
+        ///
+        /// <summary>
+        /// Posts the specified action with the Synchronization context.
+        /// </summary>
+        ///
+        /// <param name="action">Invoked action.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Post(Action action) => Context.Post(e => action(), null);
 
         #endregion
 
