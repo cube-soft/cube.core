@@ -8,8 +8,9 @@
         <LangVersion>latest</LangVersion>
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
-        <IsPackable>true</IsPackable>
+        <IsPackable>false</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
