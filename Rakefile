@@ -24,7 +24,7 @@ require 'rake/clean'
 PROJECT     = 'Cube.Forms'
 LIB         = '../packages'
 CONFIG      = 'Release'
-BRANCHES    = ['stable', 'net35']
+BRANCHES    = ['master', 'net35']
 PLATFORMS   = ['Any CPU']
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
 
