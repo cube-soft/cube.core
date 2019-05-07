@@ -20,162 +20,15 @@ using System.ComponentModel;
 
 namespace Cube
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// QueryEventArgs(T, U)
-    ///
-    /// <summary>
-    /// クエリーデータを受け渡すためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class QueryEventArgs<T, U> : CancelEventArgs
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
-        ///
-        /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="query">クエリーデータ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query) : this(query, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query, bool cancel) : this(query, default(U), cancel) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="result">結果の初期値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query, U result, bool cancel) : base(cancel)
-        {
-            Query  = query;
-            Result = result;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Query
-        ///
-        /// <summary>
-        /// イベント発生元から受け取ったクエリーデータを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Query { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Result
-        ///
-        /// <summary>
-        /// クエリーデータに対する結果を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public U Result { get; set; }
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// QueryEventArgs(T)
-    ///
-    /// <summary>
-    /// クエリーデータを受け渡すためのクラスです。
-    /// </summary>
-    ///
-    /// <remarks>
-    /// Query および Result が同じ型を示します。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class QueryEventArgs<T> : QueryEventArgs<T, T>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
-        ///
-        /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="query">クエリーデータ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query) : this(query, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query, bool cancel) : this(query, default(T), cancel) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// QueryEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="query">クエリーデータ</param>
-        /// <param name="result">結果の初期値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public QueryEventArgs(T query, T result, bool cancel) : base(query, result, cancel) { }
-
-        #endregion
-    }
+    #region QueryEventArgs
 
     /* --------------------------------------------------------------------- */
     ///
     /// QueryEventArgs
     ///
     /// <summary>
-    /// QueryEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// provides methods to create a new instance of the QueryEventArgs(T)
+    /// class.
     /// </summary>
     ///
     /// <remarks>
@@ -194,10 +47,11 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// QueryEventArgs(T) オブジェクトを生成します。
+        /// Initializes a new instance of the QueryEventArgs(T) class with
+        /// the specified query.
         /// </summary>
         ///
-        /// <param name="query">クエリー</param>
+        /// <param name="query">Query to use for event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static QueryEventArgs<T> Create<T>(T query) =>
@@ -206,12 +60,188 @@ namespace Cube
         #endregion
     }
 
+    #endregion
+
+    #region QueryEventArgs<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryEventArgs(T)
+    ///
+    /// <summary>
+    /// Provides a query and result to use for events.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Query および Result が同じ型を示します。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class QueryEventArgs<T> : QueryEventArgs<T, T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified query. The Cancel property is set to false.
+        /// </summary>
+        ///
+        /// <param name="query">Query to use for the event.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query) : this(query, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query, bool cancel) : this(query, default(T), cancel) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="result">Initial value of the result.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query, T result, bool cancel) : base(query, result, cancel) { }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region QueryEventArgs<T, U>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryEventArgs(T, U)
+    ///
+    /// <summary>
+    /// Provides a query and result to use for events.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class QueryEventArgs<T, U> : CancelEventArgs
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified query. The Cancel property is set to false.
+        /// </summary>
+        ///
+        /// <param name="query">Query to use for the event.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query) : this(query, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query, bool cancel) : this(query, default(U), cancel) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// QueryEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the QueryEventArgs class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="query">Query to use for the event.</param>
+        /// <param name="result">Initial value of the result.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public QueryEventArgs(T query, U result, bool cancel) : base(cancel)
+        {
+            Query  = query;
+            Result = result;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// Gets the query to use for the event.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public T Query { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Result
+        ///
+        /// <summary>
+        /// Gets the result of the event.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public U Result { get; set; }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region QueryEventHandlers
+
     /* --------------------------------------------------------------------- */
     ///
     /// QueryEventHandler(T, U)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -223,10 +253,12 @@ namespace Cube
     /// QueryEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void QueryEventHandler<T>(object sender, QueryEventArgs<T> e);
+
+    #endregion
 }

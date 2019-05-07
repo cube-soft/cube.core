@@ -15,7 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Log;
+using Cube.Collections;
+using Cube.Mixin.Logger;
 using System;
 using System.Threading.Tasks;
 using System.Timers;
@@ -137,7 +138,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Subscription Subscription { get; } = new Subscription();
+        protected Subscription<Func<Task>> Subscription { get; } = new Subscription<Func<Task>>();
 
         #endregion
 
@@ -239,7 +240,7 @@ namespace Cube
             if (State != TimerState.Run) return;
             _core.Stop();
             State = TimerState.Suspend;
-            this.LogDebug($"Suspend\tInterval:{Interval}");
+            this.LogDebug(nameof(Suspend), $"Interval:{Interval}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -255,7 +256,11 @@ namespace Cube
         /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(callback);
+        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(() =>
+        {
+            callback();
+            return TaskEx.FromResult(0);
+        });
 
         /* ----------------------------------------------------------------- */
         ///
@@ -271,7 +276,7 @@ namespace Cube
         /// <returns>Disposable object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.SubscribeAsync(callback);
+        public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -350,8 +355,7 @@ namespace Cube
             State = TimerState.Run;
             Next  = now + time;
 
-            this.LogDebug(string.Format("Resume\tLast:{0}\tNext:{1}\tInterval:{2}",
-                LastPublished, Next, Interval));
+            this.LogDebug(nameof(Resume), $"Last:{LastPublished}", $"Next:{Next}", $"Interval:{Interval}");
 
             _core.Interval = Math.Max(time.Value.TotalMilliseconds, 1);
             _core.Start();
@@ -433,7 +437,10 @@ namespace Cube
             if (State != TimerState.Run) return;
             LastPublished = e.SignalTime;
 
-            try { await Subscription.Publish().ConfigureAwait(false); }
+            try
+            {
+                foreach (var callback in Subscription) await callback().ConfigureAwait(false);
+            }
             finally { UpdateNext(e.SignalTime); }
         }
 

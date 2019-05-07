@@ -16,153 +16,18 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 
 namespace Cube
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// KeyValueEventArgs(T, U)
-    ///
-    /// <summary>
-    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class KeyValueEventArgs<T, U> : EventArgs
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// KeyValueEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="key">設定するキー</param>
-        /// <param name="value">設定値</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public KeyValueEventArgs(T key, U value)
-        {
-            Key   = key;
-            Value = value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Key
-        ///
-        /// <summary>
-        /// キーを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Key { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// 値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public U Value { get; }
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// KeyValueCancelEventArgs(T, U)
-    ///
-    /// <summary>
-    /// イベントハンドラに特定の型の Key-Value ペアを渡すためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class KeyValueCancelEventArgs<T, U> : CancelEventArgs
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// KeyValueCancelEventArgs
-        ///
-        /// <summary>
-        /// Cancel の値を false に設定してオブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="key">設定するキー</param>
-        /// <param name="value">設定値</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public KeyValueCancelEventArgs(T key, U value) :
-            this(key, value, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// KeyValueCancelEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="key">設定するキー</param>
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public KeyValueCancelEventArgs(T key, U value, bool cancel) : base(cancel)
-        {
-            Key   = key;
-            Value = value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Key
-        ///
-        /// <summary>
-        /// キーを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Key { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// 値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public U Value { get; }
-
-        #endregion
-    }
+    #region KeyValueEventArgs
 
     /* --------------------------------------------------------------------- */
     ///
     /// KeyValueEventArgs
     ///
     /// <summary>
-    /// KeyValueEventArgs(T, U), KeyValueCancelEventArgs(T, U)
-    /// オブジェクトを生成するための補助クラスです。
+    /// Provides methods to create a new instance of the
+    /// KeyValueEventArgs(T, U) or KeyValueCancelEventArgs(T, U) classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -175,11 +40,12 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// KeyValueEventArgs(T, U) オブジェクトを生成します。
+        /// Creates a new instance of the KeyValueEventArgs(T, U) class
+        /// with the specified key and value.
         /// </summary>
         ///
-        /// <param name="key">設定するキー</param>
-        /// <param name="value">設定値</param>
+        /// <param name="key">Key to use for the event.</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static KeyValueEventArgs<T, U> Create<T, U>(T key, U value) =>
@@ -190,12 +56,15 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// KeyValueCancelEventArgs(T, U) オブジェクトを生成します。
+        /// Creates a new instance of the KeyValueCancelEventArgs(T, U)
+        /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="key">設定するキー</param>
-        /// <param name="value">設定値</param>
-        /// <param name="cancel">キャンセルするかどうか</param>
+        /// <param name="key">Key to use for the event.</param>
+        /// <param name="value">Value to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel) =>
@@ -204,12 +73,141 @@ namespace Cube
         #endregion
     }
 
+    #endregion
+
+    #region KeyValueEventArgs<T, U>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// KeyValueEventArgs(T, U)
+    ///
+    /// <summary>
+    /// Provides Key-Value data to use for events.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class KeyValueEventArgs<T, U> : ValueEventArgs<U>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueEventArgs
+        ///
+        /// <summary>
+        /// Creates a new instance of the KeyValueEventArgs class with the
+        /// specified key and value.
+        /// </summary>
+        ///
+        /// <param name="key">Key to use for the event.</param>
+        /// <param name="value">Value to use for the event.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public KeyValueEventArgs(T key, U value) : base(value)
+        {
+            Key = key;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Key
+        ///
+        /// <summary>
+        /// Gets a key to use for the event.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public T Key { get; }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region KeyValueCancelEventArgs<T, U>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// KeyValueCancelEventArgs(T, U)
+    ///
+    /// <summary>
+    /// Provides data for a cancelable event with Key-Value data.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class KeyValueCancelEventArgs<T, U> : ValueCancelEventArgs<U>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the KeyValueCancelEventArgs class
+        /// with the specified key and value. The Cancel property is set
+        /// to false.
+        /// </summary>
+        ///
+        /// <param name="key">Key to use for the event.</param>
+        /// <param name="value">Value to use for the event.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public KeyValueCancelEventArgs(T key, U value) : this(key, value, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// KeyValueCancelEventArgs
+        ///
+        /// <summary>
+        /// Initializes a new instance of the KeyValueCancelEventArgs class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="key">Key to use for the event.</param>
+        /// <param name="value">Value to use for the event.</param>
+        /// <param name="cancel">
+        /// true to cancel the event; otherwise, false.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public KeyValueCancelEventArgs(T key, U value, bool cancel) : base(value, cancel)
+        {
+            Key = key;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Key
+        ///
+        /// <summary>
+        /// Gets a key to use for the event.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public T Key { get; }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region KeyValueEventHandlers
+
     /* --------------------------------------------------------------------- */
     ///
     /// KeyValueEventHandler(T, U)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -221,10 +219,12 @@ namespace Cube
     /// KeyValueCanelEventHandler(T, U)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void KeyValueCanelEventHandler<T, U>(object sender, KeyValueCancelEventArgs<T, U> e);
+
+    #endregion
 }

@@ -30,7 +30,7 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class EnumerableBase<T> : IEnumerable<T>
+    public abstract class EnumerableBase<T> : DisposableBase, IEnumerable<T>
     {
         #region Constructors
 

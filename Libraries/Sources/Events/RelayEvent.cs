@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections;
 using System;
-using System.Collections.Generic;
 
 namespace Cube
 {
@@ -25,7 +25,7 @@ namespace Cube
     /// RelayEvent
     ///
     /// <summary>
-    /// イベントを中継するためのクラスです。
+    /// Provides functionality to relay events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,13 +38,13 @@ namespace Cube
         /// Publish
         ///
         /// <summary>
-        /// 購読者にイベントを配信します。
+        /// Publishes an event to subscribers.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void Publish()
         {
-            foreach (var action in _subscriptions) action();
+            foreach (var callback in _subscription) callback();
         }
 
         /* ----------------------------------------------------------------- */
@@ -52,24 +52,20 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// イベント発生時に実行する Action オブジェクトを登録します。
+        /// Subscribes the event with the specified callback.
         /// </summary>
         ///
-        /// <param name="action">登録する Action オブジェクト</param>
+        /// <param name="callback">Callback function.</param>
         ///
-        /// <returns>購読解除用オブジェクト</returns>
+        /// <returns>Object to release.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action action)
-        {
-            _subscriptions.Add(action);
-            return Disposable.Create(() => _subscriptions.Remove(action));
-        }
+        public IDisposable Subscribe(Action callback) => _subscription.Subscribe(callback);
 
         #endregion
 
         #region Fields
-        private readonly ICollection<Action> _subscriptions = new List<Action>();
+        private readonly Subscription<Action> _subscription = new Subscription<Action>();
         #endregion
     }
 
@@ -78,7 +74,7 @@ namespace Cube
     /// RelayEvent(T)
     ///
     /// <summary>
-    /// イベントを中継するためのクラスです。
+    /// Provides functionality to relay events.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -91,13 +87,15 @@ namespace Cube
         /// Publish
         ///
         /// <summary>
-        /// 購読者にイベントを配信します。
+        /// Publishes an event to subscribers.
         /// </summary>
+        /// 
+        /// <param name="payload">Payload data.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Publish(T payload)
         {
-            foreach (var action in _subscriptions) action(payload);
+            foreach (var callback in _subscription) callback(payload);
         }
 
         /* ----------------------------------------------------------------- */
@@ -105,24 +103,20 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// イベント発生時に実行する Action オブジェクトを登録します。
+        /// Subscribes the event with the specified callback.
         /// </summary>
         ///
-        /// <param name="action">登録する Action オブジェクト</param>
+        /// <param name="callback">Callback function.</param>
         ///
-        /// <returns>購読解除用オブジェクト</returns>
+        /// <returns>Object to release.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action<T> action)
-        {
-            _subscriptions.Add(action);
-            return Disposable.Create(() => _subscriptions.Remove(action));
-        }
+        public IDisposable Subscribe(Action<T> callback) => _subscription.Subscribe(callback);
 
         #endregion
 
         #region Fields
-        private readonly ICollection<Action<T>> _subscriptions = new List<Action<T>>();
+        private readonly Subscription<Action<T>> _subscription = new Subscription<Action<T>>();
         #endregion
     }
 }

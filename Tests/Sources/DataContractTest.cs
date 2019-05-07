@@ -28,7 +28,7 @@ namespace Cube.Tests
     /// DataContractTest
     ///
     /// <summary>
-    /// DataContract に関するテスト用クラスです。
+    /// Tests methods of the DataContract related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,7 +44,7 @@ namespace Cube.Tests
         /// Serialize_File
         ///
         /// <summary>
-        /// ファイルにシリアライズするテストを実行します。
+        /// Tests the Serialize methods with files.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,7 +52,7 @@ namespace Cube.Tests
         [TestCase(Format.Json, "Person.json")]
         public void Serialize_File(Format format, string filename)
         {
-            var dest = GetResultsWith(filename);
+            var dest = Get(filename);
             format.Serialize(dest, Person.CreateDummy());
             Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
@@ -62,7 +62,7 @@ namespace Cube.Tests
         /// Serialize_Registry
         ///
         /// <summary>
-        /// レジストリにシリアライズするテストを実行します。
+        /// Tests the Serialize method with the registry subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -121,7 +121,7 @@ namespace Cube.Tests
         /// Serialize_Registry_Remove
         ///
         /// <summary>
-        /// リストの項目を削除して再シリアライズした時の挙動を確認します。
+        /// Tests the Serialize method with objects that have a collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -144,7 +144,7 @@ namespace Cube.Tests
         /// Serialize_Registry_Add
         ///
         /// <summary>
-        /// 配列の項目を増やして再シリアライズした時の挙動を確認します。
+        /// Tests the Serialize method with objects that have a collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -181,7 +181,8 @@ namespace Cube.Tests
         /// Serialize_Registry_Null
         ///
         /// <summary>
-        /// 無効なレジストリにシリアライズした時の挙動を確認します。
+        /// Confirms the behavior when serializing to the invalid registry
+        /// subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -192,24 +193,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Serializee_Stream_Throws
+        /// Serialize_Stream_Throws
         ///
         /// <summary>
-        /// Format.Registry を指定した状態でストリームにシリアライズした
-        /// 時の挙動を確認します。
+        /// Tests the Serialize method with the Registry format and stream.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Serializee_Stream_Throws() => Assert.That(() =>
+        public void Serialize_Stream_Throws()
+        {
+            Assert.That(() =>
             {
-                using (var ss = File.Create(GetResultsWith("Person.reg")))
-                {
-                    Format.Registry.Serialize(ss, Person.CreateDummy());
-                }
-            },
-            Throws.TypeOf<ArgumentException>()
-        );
+                var src  = Format.Registry;
+                var dest = Get("Person.reg");
+                using (var e = File.Create(dest)) src.Serialize(e, Person.CreateDummy());
+            }, Throws.TypeOf<ArgumentException>());
+        }
 
         #endregion
 
@@ -220,7 +220,7 @@ namespace Cube.Tests
         /// Deserialize_File
         ///
         /// <summary>
-        /// ファイルからデシリアライズするテストを実行します。
+        /// Tests the Deserialize methods with files.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -228,15 +228,21 @@ namespace Cube.Tests
         [TestCase(Format.Json, "Settings.json",    ExpectedResult = "Mike Davis")]
         [TestCase(Format.Xml,  "Settings.ja.xml",  ExpectedResult = "鈴木一朗")]
         [TestCase(Format.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
-        public string Deserialize_File(Format format, string filename) =>
-            format.Deserialize<Person>(GetExamplesWith(filename)).Name;
+        public string Deserialize_File(Format format, string filename)
+        {
+            var dest = format.Deserialize<Person>(GetSource(filename));
+            Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
+            Assert.DoesNotThrow(() => dest.Refresh(nameof(dest.Name)));
+            return dest.Name;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Deserialize_Registry_Null
         ///
         /// <summary>
-        /// 無効なレジストリキーを設定した時の挙動を確認します。
+        /// Confirms the behavior when deserializing from the invalid
+        /// registry subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -246,6 +252,7 @@ namespace Cube.Tests
             var dest     = default(RegistryKey).Deserialize<Person>();
             var expected = new Person();
 
+            Assert.That(dest.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
             Assert.That(dest.Identification, Is.EqualTo(expected.Identification));
             Assert.That(dest.Name,           Is.EqualTo(expected.Name));
             Assert.That(dest.Age,            Is.EqualTo(expected.Age));
@@ -263,22 +270,21 @@ namespace Cube.Tests
         /// Deserialize_Stream_Throws
         ///
         /// <summary>
-        /// Format.Registry を指定した状態でストリームから読み込んだ時の
-        /// 挙動を確認します。
+        /// Tests the Deserialize method with the Registry format and
+        /// stream.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Deserialize_Stream_Throws() => Assert.That(
-            () =>
+        public void Deserialize_Stream_Throws()
+        {
+            Assert.That(() =>
             {
-                using (var ss = File.OpenRead(GetExamplesWith("Settings.xml")))
-                {
-                    Format.Registry.Deserialize<Person>(ss);
-                }
-            },
-            Throws.TypeOf<ArgumentException>()
-        );
+                var src  = GetSource("Settings.xml");
+                var dest = Format.Registry;
+                using (var e = File.OpenRead(src)) dest.Deserialize<Person>(e);
+            }, Throws.TypeOf<ArgumentException>());
+        }
 
         #endregion
 

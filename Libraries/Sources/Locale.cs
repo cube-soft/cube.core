@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tasks;
+using Cube.Collections;
 using System;
 using System.Threading;
 
@@ -76,7 +76,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Set(Language value)
         {
-            if (_setter(value)) _subscription.Publish(value).Forget();
+            if (!_setter(value)) return;
+            foreach (var callback in _subscription) callback(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -129,7 +130,7 @@ namespace Cube
         #region Fields
         private static Setter<Language> _setter;
         private static readonly Setter<Language> _default;
-        private static readonly Subscription<Language> _subscription = new Subscription<Language>();
+        private static readonly Subscription<Action<Language>> _subscription = new Subscription<Action<Language>>();
         #endregion
     }
 }

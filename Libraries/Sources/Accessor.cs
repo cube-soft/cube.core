@@ -109,7 +109,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public Accessor(Getter<T> getter) :
-            this(getter, _ => throw new InvalidOperationException(nameof(Set))) { }
+            this(getter, e => throw new InvalidOperationException(nameof(Set))) { }
 
         /* ----------------------------------------------------------------- */
         ///

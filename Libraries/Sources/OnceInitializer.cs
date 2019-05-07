@@ -29,7 +29,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class OnceInitializer : IDisposable
+    public sealed class OnceInitializer : DisposableBase
     {
         #region Constructors
 
@@ -54,7 +54,7 @@ namespace Cube
         public OnceInitializer(Action initialize, Action dispose)
         {
             _initializer = new OnceAction(initialize);
-            _disposer    = new OnceAction(dispose);
+            _disposer    = dispose;
         }
 
         #endregion
@@ -88,38 +88,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Invoke()
         {
-            if (!_disposer.Invoked) _initializer.Invoke();
-            else throw new ObjectDisposedException(GetType().Name);
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~OnceInitializer
-        ///
-        /// <summary>
-        /// Finalizes the instance of the <c>OnceInitializer</c> class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~OnceInitializer() { Dispose(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases all resources used by the class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (Disposed) throw new ObjectDisposedException(GetType().Name);
+            if (!_initializer.Invoked) _initializer.Invoke();
         }
 
         /* ----------------------------------------------------------------- */
@@ -137,13 +107,13 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        void Dispose(bool disposing) => _disposer.Invoke();
+        protected override void Dispose(bool disposing) => _disposer?.Invoke();
 
         #endregion
 
         #region Fields
         private readonly OnceAction _initializer;
-        private readonly OnceAction _disposer;
+        private readonly Action _disposer;
         #endregion
     }
 }

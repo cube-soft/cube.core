@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tasks;
+using Cube.Mixin.Tasks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -77,7 +77,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public CacheCollection(Func<TKey, TValue> creator, Action<TKey, TValue> disposer)
         {
-            _creator  = creator ?? throw new ArgumentException(nameof(creator));
+            _creator  = creator ?? throw new ArgumentNullException();
             _disposer = disposer;
         }
 
@@ -182,7 +182,7 @@ namespace Cube.Collections
         {
             if (_created.TryGetValue(src, out var dest)) return dest;
             TaskEx.Run(() => Create(src)).Forget();
-            return default(TValue);
+            return default;
         }
 
         /* ----------------------------------------------------------------- */
@@ -245,7 +245,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public bool Remove(TKey src)
         {
-            _creating.TryRemove(src, out var _);
+            _creating.TryRemove(src, out _);
             var dest = _created.TryRemove(src, out var obj);
             if (dest) _disposer?.Invoke(src, obj);
             return dest;
@@ -293,6 +293,23 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { /* TODO */ }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Create
         ///
         /// <summary>
@@ -314,7 +331,7 @@ namespace Cube.Collections
                 else _disposer?.Invoke(src, dest);
             }
             catch (Exception err) { OnFailed(KeyValueEventArgs.Create(src, err)); }
-            finally { _creating.TryRemove(src, out var _); }
+            finally { _creating.TryRemove(src, out _); }
         }
 
         #endregion

@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -35,10 +36,26 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Configure_Throws
+        ///
+        /// <summary>
+        /// Tests the Configure method with a null object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Configure_Throws()
+        {
+            var src = default(PowerModeContext);
+            Assert.That(() => Power.Configure(src), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Subscribe
         ///
         /// <summary>
-        /// Executes the test for observing the PowerModeChanged event.
+        /// Tests the Subscribe method and PowerModeChanged event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

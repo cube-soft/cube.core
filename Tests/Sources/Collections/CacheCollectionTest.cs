@@ -53,13 +53,13 @@ namespace Cube.Tests
             var src = new CacheCollection<int, int>(n => Sigma(n));
 
             src.Created += (s, e) => ++cnt;
-            Parallel.For(0, 10, _ => src.GetOrCreate(key));
+            Parallel.For(0, 10, e => src.GetOrCreate(key));
             TaskEx.Delay(200).Wait();
 
             Assert.That(cnt, Is.EqualTo(1));
             Assert.That(src.Count, Is.EqualTo(1));
-            Assert.That(src.TryGetValue(key, out var _), Is.True, nameof(src.TryGetValue));
-            Assert.That(src.TryGetValue(999, out var _), Is.False, nameof(src.TryGetValue));
+            Assert.That(src.TryGetValue(key, out _), Is.True, nameof(src.TryGetValue));
+            Assert.That(src.TryGetValue(999, out _), Is.False, nameof(src.TryGetValue));
             Assert.That(src.Contains(key), Is.True, nameof(src.Contains));
             Assert.That(src.GetOrCreate(key), Is.EqualTo(55), nameof(src.GetOrCreate));
 

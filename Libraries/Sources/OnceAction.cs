@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Diagnostics;
 using System.Threading;
 
 namespace Cube
@@ -48,8 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action action)
         {
-            Debug.Assert(action != null);
-            _action = action;
+            _action = action ?? throw new ArgumentNullException();
         }
 
         #endregion
@@ -61,8 +59,8 @@ namespace Cube
         /// IgnoreTwice
         ///
         /// <summary>
-        /// Gets or sets the value indicating whether to ignore the
-        /// second action.
+        /// Gets or sets a value indicating whether to ignore the second
+        /// action.
         /// </summary>
         ///
         /// <remarks>
@@ -78,8 +76,8 @@ namespace Cube
         /// Invoked
         ///
         /// <summary>
-        /// Gets the value indicating whether the specified action has
-        /// been already invoked.
+        /// Gets a value indicating whether the provided action has been
+        /// already invoked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -100,9 +98,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Invoke()
         {
-            var dest = Interlocked.Exchange(ref _action, null);
-            if (dest != null) dest();
-            else if (!IgnoreTwice) throw new TwiceException();
+            if (!Invoked)
+            {
+                var dest = Interlocked.Exchange(ref _action, null);
+                if (dest != null)
+                {
+                    dest();
+                    return;
+                }
+            }
+
+            if (!IgnoreTwice) throw new TwiceException();
         }
 
         #endregion
@@ -140,8 +146,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action<T> action)
         {
-            Debug.Assert(action != null);
-            _action = action;
+            _action = action ?? throw new ArgumentNullException();
         }
 
         #endregion
@@ -153,8 +158,8 @@ namespace Cube
         /// IgnoreTwice
         ///
         /// <summary>
-        /// Gets or sets the value indicating whether to ignore the
-        /// second action.
+        /// Gets or sets a value indicating whether to ignore the second
+        /// action.
         /// </summary>
         ///
         /// <remarks>
@@ -170,8 +175,8 @@ namespace Cube
         /// Invoked
         ///
         /// <summary>
-        /// Gets the value indicating whether the specified action has
-        /// been already invoked.
+        /// Gets a value indicating whether the provided action has been
+        /// already invoked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -194,9 +199,17 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Invoke(T obj)
         {
-            var dest = Interlocked.Exchange(ref _action, null);
-            if (dest != null) dest(obj);
-            else if (!IgnoreTwice) throw new TwiceException();
+            if (!Invoked)
+            {
+                var dest = Interlocked.Exchange(ref _action, null);
+                if (dest != null)
+                {
+                    dest(obj);
+                    return;
+                }
+            }
+
+            if (!IgnoreTwice) throw new TwiceException();
         }
 
         #endregion

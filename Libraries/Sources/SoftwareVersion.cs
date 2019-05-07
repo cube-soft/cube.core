@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.String;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -47,7 +47,10 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion() { }
+        public SoftwareVersion()
+        {
+            Platform = IntPtr.Size == 4 ? "x86" : "x64";
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,13 +61,13 @@ namespace Cube
         /// assembly.
         /// </summary>
         ///
-        /// <param name="assembly">Assembly object.</param>
+        /// <param name="src">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(Assembly assembly)
+        public SoftwareVersion(Assembly src)
         {
-            Debug.Assert(assembly != null);
-            Number = assembly.GetName().Version;
+            Number   = src.GetVersion();
+            Platform = src.GetPlatform();
         }
 
         /* ----------------------------------------------------------------- */
@@ -76,13 +79,12 @@ namespace Cube
         /// string.
         /// </summary>
         ///
-        /// <param name="version">Represents the version.</param>
+        /// <param name="version">
+        /// String value that represents the version.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(string version)
-        {
-            Parse(version);
-        }
+        public SoftwareVersion(string version) : this() { Parse(version); }
 
         #endregion
 
@@ -153,7 +155,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Platform => AssemblyReader.Platform;
+        public string Platform { get; }
 
         #endregion
 

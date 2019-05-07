@@ -43,8 +43,7 @@ namespace Cube.Tests
         /// Invoke
         ///
         /// <summary>
-        /// Executes the test to confirm that CollectinChanged events are
-        /// raised.
+        /// Confirms that CollectinChanged events are fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,8 +51,33 @@ namespace Cube.Tests
         public void Invoke()
         {
             var src = new TestCollection<int>();
-            Assert.That(src.Context, Is.Null);
-            src.Context = new SynchronizationContext();
+            Assert.That(src.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
+
+            for (var i = 0; i < 3; ++i) src.Add(i);
+            var count = 0;
+            src.CollectionChanged += (s, e) => ++count;
+            for (var i = 0; i < 3; ++i) src.Add(i);
+
+            Assert.That(count, Is.EqualTo(3), "CollectionChanged");
+            Assert.That(src.Count(), Is.EqualTo(6), "Count");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke_Dispatcher
+        ///
+        /// <summary>
+        /// Confirms that CollectinChanged events are fired with the
+        /// provided dispatcher.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Invoke_Dispatcher()
+        {
+            var src = new TestCollection<int>();
+            Assert.That(src.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
+            src.Dispatcher = new Dispatcher(new SynchronizationContext(), true);
 
             for (var i = 0; i < 10; ++i) src.Add(i);
             var count = 0;
@@ -62,31 +86,6 @@ namespace Cube.Tests
 
             Assert.That(count,       Is.EqualTo(10), "CollectionChanged");
             Assert.That(src.Count(), Is.EqualTo(20), "Count");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Null
-        ///
-        /// <summary>
-        /// Executes the test to confirm that CollectinChanged events are
-        /// raised when the Context property is null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke_Null()
-        {
-            var src = new TestCollection<int>();
-            Assert.That(src.Context, Is.Null);
-
-            for (var i = 0; i < 3; ++i) src.Add(i);
-            var count = 0;
-            src.CollectionChanged += (s, e) => ++count;
-            for (var i = 0; i < 3; ++i) src.Add(i);
-
-            Assert.That(count,       Is.EqualTo(3), "CollectionChanged");
-            Assert.That(src.Count(), Is.EqualTo(6), "Count");
         }
 
         #endregion
@@ -145,6 +144,27 @@ namespace Cube.Tests
         ///
         /* --------------------------------------------------------------------- */
         public override IEnumerator<T> GetEnumerator() => _inner.GetEnumerator();
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) => _inner.Clear();
 
         #endregion
 

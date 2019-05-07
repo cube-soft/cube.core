@@ -84,7 +84,7 @@ namespace Cube.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : ObservableProperty
+    internal class Person : ObservableBase
     {
         #region Constructors
 
@@ -97,12 +97,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Person()
-        {
-            Context       = null;
-            IsSynchronous = false;
-            Reset();
-        }
+        public Person() { Reset(); }
 
         #endregion
 
@@ -169,7 +164,7 @@ namespace Cube.Tests
         public int Age
         {
             get => _age.Get();
-            set { if (_age.Set(value)) RaisePropertyChanged(nameof(Age)); }
+            set { if (_age.Set(value)) Refresh(nameof(Age)); }
         }
 
         /* ----------------------------------------------------------------- */

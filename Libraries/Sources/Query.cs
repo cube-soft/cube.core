@@ -117,7 +117,7 @@ namespace Cube
         {
             if (Requested != null)
             {
-                if (_context != null) _context.Send(_ => Requested(this, e), null);
+                if (_context != null) _context.Send(z => Requested(this, e), null);
                 else Requested(this, e);
             }
             else e.Cancel = true;
@@ -254,7 +254,7 @@ namespace Cube
         {
             if (Requested != null)
             {
-                if (_context != null) _context.Send(_ => Requested(this, e), null);
+                if (_context != null) _context.Send(z => Requested(this, e), null);
                 else Requested(this, e);
             }
             else e.Cancel = true;

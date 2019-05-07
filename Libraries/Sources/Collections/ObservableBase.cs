@@ -15,16 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Specialized;
-using System.Runtime.Serialization;
-using System.Threading;
 
 namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableBase
+    /// ObservableBase
     ///
     /// <summary>
     /// Represents the base class of a dynamic data collection that
@@ -33,8 +30,6 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    [Serializable]
     public abstract class ObservableBase<T> : EnumerableBase<T>, INotifyCollectionChanged
     {
         #region Constructors
@@ -48,7 +43,24 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() { }
+        protected ObservableBase() : this(Cube.Dispatcher.Vanilla) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ObservableBase
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ObservableBase class with
+        /// the specified dispatcher.
+        /// </summary>
+        ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ObservableBase(IDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher;
+        }
 
         #endregion
 
@@ -56,19 +68,14 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Context
+        /// Dispatcher
         ///
         /// <summary>
-        /// Gets or sets the synchronization context.
+        /// Gets or sets the dispatcher object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public SynchronizationContext Context
-        {
-            get => _context;
-            set => _context = value;
-        }
+        public IDispatcher Dispatcher { get; set; }
 
         #endregion
 
@@ -99,15 +106,9 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (CollectionChanged == null) return;
-            if (Context != null) Context.Send(z => CollectionChanged(this, e), null);
-            else CollectionChanged(this, e);
+            if (CollectionChanged != null) Dispatcher.Invoke(() => CollectionChanged(this, e));
         }
 
-        #endregion
-
-        #region Fields
-        [NonSerialized] private SynchronizationContext _context;
         #endregion
     }
 }

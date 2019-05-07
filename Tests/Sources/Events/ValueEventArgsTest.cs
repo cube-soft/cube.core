@@ -31,6 +31,8 @@ namespace Cube.Tests
     [TestFixture]
     class ValueEventArgsTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create_ValueEventArgs
@@ -61,6 +63,7 @@ namespace Cube.Tests
         [TestCase(-1, true)]
         [TestCase(1.41421356, false)]
         [TestCase("Cancel!Cancel!", true)]
+        [TestCase(true, false)]
         public void Create_ValueCancelEventArgs<T>(T value, bool cancel)
         {
             var args = ValueEventArgs.Create(value, cancel);
@@ -81,9 +84,10 @@ namespace Cube.Tests
         [TestCase(2, 20)]
         [TestCase(3.1415926, 1.41421356)]
         [TestCase("Hello, world", "Changed world")]
+        [TestCase(false, true)]
         public void Create_ValueChangedEventArgs<T>(T before, T after)
         {
-            var args = ValueChangedEventArgs.Create(before, after);
+            var args = ValueEventArgs.Create(before, after);
             Assert.That(args.OldValue, Is.EqualTo(before));
             Assert.That(args.NewValue, Is.EqualTo(after));
         }
@@ -97,8 +101,13 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = false)]
-        public bool ValueCancelEventArgs_Cancel() =>
-            new ValueCancelEventArgs<int>(1).Cancel;
+        [Test]
+        public void ValueCancelEventArgs_Cancel()
+        {
+            var src = new ValueCancelEventArgs<int>(1);
+            Assert.That(src.Cancel, Is.False);
+        }
+
+        #endregion
     }
 }

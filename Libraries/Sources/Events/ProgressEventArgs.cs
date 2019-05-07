@@ -19,72 +19,15 @@ using System;
 
 namespace Cube
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ProgressEventArgs(T)
-    ///
-    /// <summary>
-    /// 進捗状況を保持するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ProgressEventArgs<T> : EventArgs
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ProgressEventArgs
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
-        /// <param name="value">ユーザデータ</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ProgressEventArgs(double ratio, T value)
-        {
-            Ratio = ratio;
-            Value = value;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Ratio
-        ///
-        /// <summary>
-        /// 進捗状況を表す値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public double Ratio { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// ユーザデータを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Value { get; }
-
-        #endregion
-    }
+    #region ProgressEventArgs
 
     /* --------------------------------------------------------------------- */
     ///
     /// ProgressEventArgs
     ///
     /// <summary>
-    /// ProgressEventArgs(T) オブジェクトを生成するための補助クラスです。
+    /// Provides methods to create a new instance of the
+    /// ProgressEventArgs(T) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -97,11 +40,12 @@ namespace Cube
         /// Create
         ///
         /// <summary>
-        /// ProgressEventArgs(T) オブジェクトを生成します。
+        /// Creates a new instance of the ProgressEventArgs(T) class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="ratio">進捗状況（パーセンテージ等）</param>
-        /// <param name="value">ユーザデータ</param>
+        /// <param name="ratio">Current progress ratio.</param>
+        /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static ProgressEventArgs<T> Create<T>(double ratio, T value) =>
@@ -110,15 +54,74 @@ namespace Cube
         #endregion
     }
 
+    #endregion
+
+    #region ProgressEventArgs<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProgressEventArgs(T)
+    ///
+    /// <summary>
+    /// Provides progress ratio and a value of type T to use for events.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class ProgressEventArgs<T> : ValueEventArgs<T>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ProgressEventArgs
+        ///
+        /// <summary>
+        /// Creates a new instance of the ProgressEventArgs(T) class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="ratio">Current progress ratio.</param>
+        /// <param name="value">Value to use for the event.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ProgressEventArgs(double ratio, T value) : base(value)
+        {
+            Ratio = ratio;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Ratio
+        ///
+        /// <summary>
+        /// Gets a current progress ratio.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public double Ratio { get; }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region ProgressEventHandlers
+
     /* --------------------------------------------------------------------- */
     ///
     /// ProgressEventHandler(T)
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the method to invoke an event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
     public delegate void ProgressEventHandler<T>(object sender, ProgressEventArgs<T> e);
+
+    #endregion
 }
