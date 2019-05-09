@@ -111,14 +111,14 @@ namespace Cube.Collections
         {
             get
             {
-                if (Equals(key, default(TKey))) throw new ArgumentNullException();
+                if (Equals(key, default(TKey))) throw new ArgumentNullException(nameof(key));
                 if (ContainsKey(key)) return (TValue)_core[key];
                 else throw new KeyNotFoundException(key.ToString());
             }
 
             set
             {
-                if (Equals(key, default(TKey))) throw new ArgumentNullException();
+                if (Equals(key, default(TKey))) throw new ArgumentNullException(nameof(key));
                 if (ContainsKey(key)) _core[key] = value;
                 else throw new KeyNotFoundException(key.ToString());
             }
@@ -250,7 +250,7 @@ namespace Cube.Collections
         /* --------------------------------------------------------------------- */
         public void Add(TKey key, TValue value)
         {
-            if (Equals(key, default(TKey))) throw new ArgumentNullException();
+            if (Equals(key, default(TKey))) throw new ArgumentNullException(nameof(key));
             _core.Add(key, value);
         }
 
@@ -327,7 +327,7 @@ namespace Cube.Collections
         /* --------------------------------------------------------------------- */
         public void CopyTo(KeyValuePair<TKey, TValue>[] dest, int offset)
         {
-            if (dest == null) throw new ArgumentNullException();
+            if (dest == null) throw new ArgumentNullException(nameof(dest));
             if (offset < 0 || offset >= dest.Length) throw new ArgumentOutOfRangeException();
             if (dest.Length - offset < _core.Count) throw new ArgumentException("too small array");
 
