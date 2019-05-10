@@ -67,10 +67,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Null_Throws() => Assert.That(
-            () => Disposable.Create(null),
-            Throws.TypeOf<ArgumentNullException>()
-        );
+        public void Create_Null_Throws()
+        {
+            Assert.That(() => Disposable.Create(null),
+                Throws.TypeOf<ArgumentNullException>().And
+                      .Property("ParamName").EqualTo("dispose"));
+        }
 
         #endregion
     }
