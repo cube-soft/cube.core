@@ -68,13 +68,19 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Invoke_Throws() => Assert.That(() =>
+        public void Invoke_Throws()
         {
             var dest = 0;
             var src  = new OnceInitializer(() => ++dest, () => --dest);
-            src.Invoke();
-            src.Dispose();
-            src.Invoke();
-        }, Throws.TypeOf<ObjectDisposedException>());
+
+            Assert.That(() =>
+            {
+                src.Invoke();
+                src.Dispose();
+                src.Invoke();
+            }, Throws.TypeOf<ObjectDisposedException>());
+
+            Assert.That(dest, Is.EqualTo(0));
+        }
     }
 }
