@@ -101,6 +101,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Test]
         public void Invoke_Generics()
         {
             var src   = "once";
