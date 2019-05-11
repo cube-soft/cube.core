@@ -39,67 +39,71 @@ namespace Cube.Tests
         /// Create_Integer
         ///
         /// <summary>
-        /// Executes the test for initializing with the default value
-        /// of type int.
+        /// Tests the default constructor with int type.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Integer() => Assert.That(
-            new Accessor<int>().Get(), Is.EqualTo(0)
-        );
+        public void Create_Integer()
+        {
+            var src = new Accessor<int>();
+            Assert.That(src.Get(), Is.EqualTo(0));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create_String
         ///
         /// <summary>
-        /// Executes the test for initializing with the default value
-        /// of type string.
+        /// Tests the default constructor with string type.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_String() => Assert.That(
-            new Accessor<string>().Get(), Is.Null
-        );
+        public void Create_String()
+        {
+            var src = new Accessor<string>();
+            Assert.That(src.Get(), Is.Null);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create_DateTime
         ///
         /// <summary>
-        /// Executes the test for initializing with the default value
-        /// of type DateTime.
+        /// Tests the default constructor with DateTime type.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_DateTime() => Assert.That(
-            new Accessor<DateTime>().Get(), Is.EqualTo(DateTime.MinValue)
-        );
+        public void Create_DateTime()
+        {
+            var src = new Accessor<DateTime>();
+            Assert.That(src.Get(), Is.EqualTo(DateTime.MinValue));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Nullable
         ///
         /// <summary>
-        /// Executes the test for initializing with the default value
-        /// of type Nullable(DateTime).
+        /// Tests the default constructor with Nullable type.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Nullable() => Assert.That(
-            new Accessor<DateTime?>().Get(), Is.Null
-        );
+        public void Create_Nullable()
+        {
+            var src = new Accessor<DateTime?>();
+            Assert.That(src.Get(), Is.Null);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Create_Delegate
         ///
         /// <summary>
-        /// Executes the test for initializing with delegations.
+        /// Tests the constructor with setter and getter delegates.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -111,24 +115,25 @@ namespace Cube.Tests
 
             Assert.That(src.Get(), Is.EqualTo(100));
             src.Set(200);
-            Assert.That(src.Get(), Is.EqualTo(n).And.EqualTo(200));
+            Assert.That(src.Get(), Is.EqualTo(200));
+            Assert.That(src.Get(), Is.EqualTo(n));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set_Throws
+        /// Set_InvalidOperationException
         ///
         /// <summary>
-        /// Confirms the behavior when trying to set value to the
-        /// Accessor taht is not pecified the setter delegation.
+        /// Tests the Set method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Set_Throws() => Assert.That(
-            () => new Accessor<int>(() => 10).Set(1000),
-            Throws.TypeOf<InvalidOperationException>()
-        );
+        public void Set_InvalidOperationException()
+        {
+            var src = new Accessor<int>(() => 10);
+            Assert.That(() => src.Set(1000), Throws.InvalidOperationException);
+        }
 
         #endregion
     }

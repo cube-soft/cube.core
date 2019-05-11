@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System;
 using System.Threading;
 
 namespace Cube.Tests
@@ -35,7 +34,7 @@ namespace Cube.Tests
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Throws
+        /// Create_ArgumentNullException
         ///
         /// <summary>
         /// Confirms the behavior when creating a new instance.
@@ -44,10 +43,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Throws()
+        public void Create_ArgumentNullException()
         {
             Assert.That(SynchronizationContext.Current, Is.Null);
-            Assert.That(() => new Dispatcher(true), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => new Dispatcher(true), Throws.ArgumentNullException);
         }
     }
 }

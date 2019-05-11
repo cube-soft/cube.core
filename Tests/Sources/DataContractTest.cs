@@ -187,28 +187,32 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Serialize_Registry_Null() => Assert.DoesNotThrow(
-            () => default(RegistryKey).Serialize(Person.CreateDummy())
-        );
+        public void Serialize_Registry_Null()
+        {
+            var src  = default(RegistryKey);
+            var data = Person.CreateDummy();
+            Assert.DoesNotThrow(() => src.Serialize(data));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Serialize_Stream_Throws
+        /// Serialize_ArgumentException
         ///
         /// <summary>
-        /// Tests the Serialize method with the Registry format and stream.
+        /// Tests the Serialize method with Registry format and stream.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Serialize_Stream_Throws()
+        public void Serialize_ArgumentException()
         {
-            Assert.That(() =>
+            var dest = Get("Person.reg");
+            using (var e = File.Create(dest))
             {
                 var src  = Format.Registry;
-                var dest = Get("Person.reg");
-                using (var e = File.Create(dest)) src.Serialize(e, Person.CreateDummy());
-            }, Throws.TypeOf<ArgumentException>());
+                var data = Person.CreateDummy();
+                Assert.That(() => src.Serialize(e, data), Throws.ArgumentException);
+            }
         }
 
         #endregion
@@ -267,7 +271,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Deserialize_Stream_Throws
+        /// Deserialize_ArgumentException
         ///
         /// <summary>
         /// Tests the Deserialize method with the Registry format and
@@ -276,18 +280,18 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Deserialize_Stream_Throws()
+        public void Deserialize_ArgumentException()
         {
-            Assert.That(() =>
+            var src = GetSource("Settings.xml");
+            using (var e = File.OpenRead(src))
             {
-                var src  = GetSource("Settings.xml");
                 var dest = Format.Registry;
-                using (var e = File.OpenRead(src)) dest.Deserialize<Person>(e);
-            }, Throws.TypeOf<ArgumentException>());
+                Assert.That(() => dest.Deserialize<Person>(e), Throws.ArgumentException);
+            }
         }
-
-        #endregion
-
-        #endregion
     }
+
+    #endregion
+
+    #endregion
 }

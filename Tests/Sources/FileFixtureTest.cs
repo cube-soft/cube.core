@@ -41,8 +41,8 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = true)]
-        public bool Examples_Exists() => Directory.Exists(Examples);
+        [Test]
+        public void Examples_Exists() => Assert.That(Directory.Exists(Examples));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -53,7 +53,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = true)]
-        public bool Results_Exists() => Directory.Exists(Results);
+        [Test]
+        public void Results_Exists() => Assert.That(Directory.Exists(Results));
     }
 }

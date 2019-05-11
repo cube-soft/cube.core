@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System;
 
 namespace Cube.Tests
 {
@@ -25,7 +24,7 @@ namespace Cube.Tests
     /// DisposableTest
     ///
     /// <summary>
-    /// Disposable のテスト用クラスです。
+    /// Test the Disposable class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,39 +38,35 @@ namespace Cube.Tests
         /// Create_Dispose
         ///
         /// <summary>
-        /// IDisposable オブジェクトを生成して Dispose するテストを
-        /// 実行します。
+        /// Tests the Disposable.Create method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create_Dispose()
         {
-            var count = 0;
-            var disposable = Disposable.Create(() => count++);
+            var dest = 0;
+            var src  = Disposable.Create(() => dest++);
 
-            disposable.Dispose();
-            Assert.That(count, Is.EqualTo(1));
-            Assert.DoesNotThrow(() => disposable.Dispose());
-            Assert.That(count, Is.EqualTo(1));
+            src.Dispose();
+            Assert.That(dest, Is.EqualTo(1));
+            Assert.DoesNotThrow(() => src.Dispose());
+            Assert.That(dest, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Null_Throws
+        /// Create_ArgumentNullException
         ///
         /// <summary>
-        /// Disposable.Create メソッドに null オブジェクトを指定した時の
-        /// 挙動を確認します。
+        /// Tests the Disposable.Create method with the null object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Null_Throws()
+        public void Create_ArgumentNullException()
         {
-            Assert.That(() => Disposable.Create(null),
-                Throws.TypeOf<ArgumentNullException>().And
-                      .Property("ParamName").EqualTo("dispose"));
+            Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
         }
 
         #endregion

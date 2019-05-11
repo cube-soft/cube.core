@@ -58,12 +58,12 @@ namespace Cube.Tests
             using (var client = new MessengerClient<string>(id))
             {
                 var cts = new CancellationTokenSource();
-                Action<string> h = (x) =>
+                void h(string x)
                 {
                     actual = x;
                     server.Publish(x);
                     cts.Cancel();
-                };
+                }
 
                 IDisposable uns = null;
 
@@ -81,7 +81,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_DuplicateServer_Throws
+        /// Create_InvalidOperationException
         ///
         /// <summary>
         /// サーバを 2 つ生成しようとするテストを実行します。
@@ -95,15 +95,15 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_DuplicateServer_Throws() => Assert.That(() =>
+        public void Create_InvalidOperationException()
         {
             var id = nameof(MessengerTest);
             using (var s1 = new Messenger<string>(id))
             {
                 Assert.That(s1.IsServer, Is.True);
-                using (var s2 = new Messenger<string>(id)) { }
+                Assert.That(() => new Messenger<string>(id), Throws.InvalidOperationException);
             }
-        }, Throws.TypeOf<InvalidOperationException>());
+        }
 
         #endregion
     }

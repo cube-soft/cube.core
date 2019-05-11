@@ -164,12 +164,8 @@ namespace Cube.Tests
         [Test]
         public void Create_Null_Throws()
         {
-            Assert.That(() => new OnceAction(null),
-                Throws.TypeOf<ArgumentNullException>().And
-                      .Property("ParamName").EqualTo("action"));
-            Assert.That(() => new OnceAction<int>(null),
-                Throws.TypeOf<ArgumentNullException>().And
-                      .Property("ParamName").EqualTo("action"));
+            Assert.That(() => new OnceAction(null),      Throws.ArgumentNullException);
+            Assert.That(() => new OnceAction<int>(null), Throws.ArgumentNullException);
         }
 
         #endregion
