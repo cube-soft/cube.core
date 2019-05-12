@@ -49,7 +49,7 @@ namespace Cube.FileSystem.Tests
         public void Load()
         {
             var exec = Assembly.GetExecutingAssembly().Location;
-            var name = IO.Get(exec).NameWithoutExtension;
+            var name = IO.Get(exec).BaseName;
             var src  = new Startup(name) { Command = exec };
             src.Load();
             Assert.That(src.Enabled, Is.False);
@@ -68,7 +68,7 @@ namespace Cube.FileSystem.Tests
         public void Save()
         {
             var exec = Assembly.GetExecutingAssembly().Location;
-            var name = IO.Get(exec).NameWithoutExtension;
+            var name = IO.Get(exec).BaseName;
             var cmd  = exec.Quote();
 
             var s0 = new Startup(name)

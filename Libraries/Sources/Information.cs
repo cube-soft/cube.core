@@ -25,7 +25,7 @@ namespace Cube.FileSystem
     /// Information
     ///
     /// <summary>
-    /// ファイルまたはディレクトリの情報を保持するためのクラスです。
+    /// Represents the file or directory information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -95,7 +95,7 @@ namespace Cube.FileSystem
         /// Controllable
         ///
         /// <summary>
-        /// 内部情報を保持するためのオブジェクトを取得します。
+        /// Gets the inner object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -106,7 +106,7 @@ namespace Cube.FileSystem
         /// Controller
         ///
         /// <summary>
-        /// 情報更新用オブジェクトを取得します。
+        /// Gets the controller object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -117,7 +117,7 @@ namespace Cube.FileSystem
         /// Source
         ///
         /// <summary>
-        /// オリジナルのパスを取得します。
+        /// Gets the original path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,8 +128,7 @@ namespace Cube.FileSystem
         /// Exists
         ///
         /// <summary>
-        /// ファイルまたはディレクトリが存在するかどうかを示す値を
-        /// 取得します。
+        /// Gets the value indicating whether the Source exists.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -151,7 +150,7 @@ namespace Cube.FileSystem
         /// Name
         ///
         /// <summary>
-        /// ファイル名を取得します。
+        /// Gets the filename.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -159,21 +158,21 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// NameWithoutExtension
+        /// BaseName
         ///
         /// <summary>
-        /// 拡張子を除いたファイル名を取得します。
+        /// Gets the filename without extension.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string NameWithoutExtension => Controllable.NameWithoutExtension;
+        public string BaseName => Controllable.BaseName;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Extension
         ///
         /// <summary>
-        /// 拡張子を取得します。
+        /// Gets the extension part of the filename.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -184,7 +183,7 @@ namespace Cube.FileSystem
         /// FullName
         ///
         /// <summary>
-        /// 完全なパスを取得します。
+        /// Gets the full path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -195,7 +194,7 @@ namespace Cube.FileSystem
         /// DirectoryName
         ///
         /// <summary>
-        /// ファイルまたはディレクトリの親ディレクトリのパスを取得します。
+        /// Gets the directory name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -206,7 +205,7 @@ namespace Cube.FileSystem
         /// Length
         ///
         /// <summary>
-        /// ファイルサイズを取得します。
+        /// Gets the filesize.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -217,7 +216,7 @@ namespace Cube.FileSystem
         /// Attributes
         ///
         /// <summary>
-        /// ファイルまたはディレクトリの属性を取得します。
+        /// Gets the attributes of the file or directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -228,7 +227,7 @@ namespace Cube.FileSystem
         /// CreationTime
         ///
         /// <summary>
-        /// ファイルまたはディレクトリの作成日時を取得します。
+        /// Gets the creation time of the file or directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -239,7 +238,7 @@ namespace Cube.FileSystem
         /// LastWriteTime
         ///
         /// <summary>
-        /// ファイルまたはディレクトリの最終更新日時を取得します。
+        /// Gets the last written time of the file or directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -250,7 +249,7 @@ namespace Cube.FileSystem
         /// LastAccessTime
         ///
         /// <summary>
-        /// ファイルまたはディレクトリの最終アクセス日時を取得します。
+        /// Gets the last accessed time of the file or directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -265,7 +264,7 @@ namespace Cube.FileSystem
         /// Refresh
         ///
         /// <summary>
-        /// オブジェクトを最新の状態に更新します。
+        /// Refreshes file or directory information.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

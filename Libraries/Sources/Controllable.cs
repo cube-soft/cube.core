@@ -102,21 +102,21 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// NameWithoutExtension
+        /// BaseName
         ///
         /// <summary>
         /// Gets or sets the filename without extension.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string NameWithoutExtension { get; set; }
+        public string BaseName { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Extension
         ///
         /// <summary>
-        /// Gets or sets the extension.
+        /// Gets or sets the extension part of the filename.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

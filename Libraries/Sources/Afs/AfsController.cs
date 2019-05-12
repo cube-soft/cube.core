@@ -49,19 +49,19 @@ namespace Cube.FileSystem
         {
             var obj = CreateCore(src.Source);
 
-            src.Exists               = obj.Exists;
-            src.Name                 = obj.Name;
-            src.Extension            = obj.Extension;
-            src.FullName             = obj.FullName;
-            src.Attributes           = obj.Attributes;
-            src.CreationTime         = obj.CreationTime;
-            src.LastAccessTime       = obj.LastAccessTime;
-            src.LastWriteTime        = obj.LastWriteTime;
-            src.Length               = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
-            src.IsDirectory          = obj is DirectoryInfo;
-            src.NameWithoutExtension = Path.GetFileNameWithoutExtension(src.Source);
-            src.DirectoryName        = TryCast(obj)?.DirectoryName ??
-                                       Path.GetDirectoryName(src.Source);
+            src.Exists         = obj.Exists;
+            src.Name           = obj.Name;
+            src.Extension      = obj.Extension;
+            src.FullName       = obj.FullName;
+            src.Attributes     = obj.Attributes;
+            src.CreationTime   = obj.CreationTime;
+            src.LastAccessTime = obj.LastAccessTime;
+            src.LastWriteTime  = obj.LastWriteTime;
+            src.Length         = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
+            src.IsDirectory    = obj is DirectoryInfo;
+            src.BaseName       = Path.GetFileNameWithoutExtension(src.Source);
+            src.DirectoryName  = TryCast(obj)?.DirectoryName ??
+                                 Path.GetDirectoryName(src.Source);
         }
 
         #endregion

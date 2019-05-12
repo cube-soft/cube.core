@@ -182,7 +182,7 @@ namespace Cube.Mixin.IO
         {
             var src  = io.Get(e);
             var dir  = src.DirectoryName;
-            var name = src.NameWithoutExtension;
+            var name = src.BaseName;
             var ext  = src.Extension;
             return io.Combine(dir, $"{name} ({i}){ext}");
         });
