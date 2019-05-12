@@ -178,35 +178,34 @@ namespace Cube.Mixin.IO
         ///
         /* ----------------------------------------------------------------- */
         public static string GetUniqueName(this Source io, string path) =>
-            GetUniqueName(io, io.Get(path));
+            io.GetUniqueName(path, (e, i) =>
+        {
+            var src  = io.Get(e);
+            var dir  = src.DirectoryName;
+            var name = src.NameWithoutExtension;
+            var ext  = src.Extension;
+            return io.Combine(dir, $"{name} ({i}){ext}");
+        });
 
         /* ----------------------------------------------------------------- */
         ///
         /// GetUniqueName
         ///
         /// <summary>
-        /// Gets a unique name with the specified file information.
+        /// Gets a unique name with the specified path.
         /// </summary>
         ///
         /// <param name="io">I/O handler.</param>
-        /// <param name="src">Base information.</param>
+        /// <param name="path">Path to check.</param>
+        /// <param name="converter">Function to convert path.</param>
         ///
         /// <returns>Unique name.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this Source io, Information src)
-        {
-            if (src == null) return null;
-            if (!src.Exists) return src.FullName;
-
-            var dir  = src.DirectoryName;
-            var name = src.NameWithoutExtension;
-            var ext  = src.Extension;
-
-            return Enumerable.Range(1, int.MaxValue)
-                             .Select(e => io.Combine(dir, $"{name} ({e}){ext}"))
-                             .First(e => !io.Exists(e));
-        }
+        public static string GetUniqueName(this Source io, string path, Func<string, int, string> converter) =>
+            io.Exists(path) ?
+            Enumerable.Range(1, int.MaxValue).Select(e => converter(path, e)).First(e => !io.Exists(e)) :
+            path;
 
         #endregion
 

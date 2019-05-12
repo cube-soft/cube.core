@@ -62,10 +62,12 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void LoadOrDefault_NotFound() => Assert.That(
-            IO.LoadOrDefault(GetSource("NotFound.dummy"), e => e.Length, -1),
-            Is.EqualTo(-1L)
-        );
+        public void LoadOrDefault_NotFound()
+        {
+            var src  = GetSource("NotFound.dummy");
+            var dest = IO.LoadOrDefault(src, e => e.Length, -1L);
+            Assert.That(dest, Is.EqualTo(-1L));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -156,7 +158,7 @@ namespace Cube.FileSystem.Tests
             Assert.That(u2, Is.EqualTo(Get($"UniqueTest (1).txt")));
 
             IO.Copy(GetSource("Sample.txt"), u2);
-            var u3 = IO.GetUniqueName(IO.Get(src));
+            var u3 = IO.GetUniqueName(src);
             Assert.That(u3, Is.EqualTo(Get($"UniqueTest (2).txt")));
 
             IO.Copy(GetSource("Sample.txt"), u3);
