@@ -47,7 +47,9 @@ namespace Cube.Tests
         public void Configure_Throws()
         {
             var src = default(PowerModeContext);
-            Assert.That(() => Power.Configure(src), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => Power.Configure(src),
+                Throws.TypeOf<ArgumentNullException>().And
+                      .Property("ParamName").EqualTo("context"));
         }
 
         /* ----------------------------------------------------------------- */

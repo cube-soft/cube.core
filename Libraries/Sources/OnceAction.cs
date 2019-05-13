@@ -47,7 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action action)
         {
-            _action = action ?? throw new ArgumentNullException();
+            _action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
         #endregion
@@ -146,7 +146,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public OnceAction(Action<T> action)
         {
-            _action = action ?? throw new ArgumentNullException();
+            _action = action ?? throw new ArgumentNullException(nameof(action));
         }
 
         #endregion

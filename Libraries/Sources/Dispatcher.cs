@@ -78,6 +78,10 @@ namespace Cube
         /// synchronous method.
         /// </param>
         ///
+        /// <exception cref="ArgumentNullException">
+        /// SynchronizationContext.Current is null.
+        /// </exception>
+        ///
         /* ----------------------------------------------------------------- */
         public Dispatcher(bool synchronous) : this(SynchronizationContext.Current, synchronous) { }
 
@@ -96,11 +100,15 @@ namespace Cube
         /// synchronous method.
         /// </param>
         ///
+        /// <exception cref="ArgumentNullException">
+        /// Specified SynchronizationContext object is null.
+        /// </exception>
+        ///
         /* ----------------------------------------------------------------- */
         public Dispatcher(SynchronizationContext context, bool synchronous)
         {
             Synchronous = synchronous;
-            Context     = context ?? throw new ArgumentNullException();
+            Context     = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         #endregion
@@ -120,17 +128,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Context
-        ///
-        /// <summary>
-        /// Gets or sets the synchronization context.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SynchronizationContext Context { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Synchronous
         ///
         /// <summary>
@@ -144,6 +141,17 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public bool Synchronous { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Context
+        ///
+        /// <summary>
+        /// Gets the synchronization context.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected SynchronizationContext Context { get; }
 
         #endregion
 

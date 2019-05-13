@@ -16,44 +16,37 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System.IO;
+using System.Threading;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHelperTest
+    /// DispatcherTest
     ///
     /// <summary>
-    /// FileHelper のテスト用クラスです。
+    /// Tests the Dispatcher class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class FileHelperTest : FileFixture
+    class DispatcherTest
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
+        /// Create_ArgumentNullException
         ///
         /// <summary>
-        /// Examples フォルダが存在するかどうかのテストを実行します。
+        /// Confirms the behavior when creating a new instance.
+        /// Note that SynchronizationContext.Current is null.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Examples_Exists() => Assert.That(Directory.Exists(Examples));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Results_Exists
-        ///
-        /// <summary>
-        /// Results フォルダが存在するかどうかのテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Results_Exists() => Assert.That(Directory.Exists(Results));
+        public void Create_ArgumentNullException()
+        {
+            Assert.That(SynchronizationContext.Current, Is.Null);
+            Assert.That(() => new Dispatcher(true), Throws.ArgumentNullException);
+        }
     }
 }

@@ -133,10 +133,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Add_Throws() => Assert.That(
-            () => Create().Add(null, null),
-            Throws.TypeOf<ArgumentNullException>()
-        );
+        public void Add_Throws()
+        {
+            Assert.That(() => Create().Add(null, null),
+                Throws.TypeOf<ArgumentNullException>().And
+                      .Property("ParamName").EqualTo("key"));
+        }
 
         /* ----------------------------------------------------------------- */
         ///

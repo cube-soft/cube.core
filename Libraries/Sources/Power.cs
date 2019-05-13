@@ -102,7 +102,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Configure(PowerModeContext context)
         {
-            if (context == null) throw new ArgumentNullException();
+            if (context == null) throw new ArgumentNullException(nameof(context));
             Interlocked.Exchange(ref _context, context).PropertyChanged -= WhenPropertyChanged;
             context.PropertyChanged -= WhenPropertyChanged;
             context.PropertyChanged += WhenPropertyChanged;
