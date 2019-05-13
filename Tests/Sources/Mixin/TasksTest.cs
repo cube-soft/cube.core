@@ -52,11 +52,9 @@ namespace Cube.Tests.Mixin
         [Test]
         public void Forget()
         {
-            Assert.DoesNotThrow(() =>
-            {
-                Task.Run(() => throw new InvalidOperationException()).Forget();
-                Task.Delay(100).Wait();
-            });
+            // Assert.DoesNotThrow
+            Task.Run(() => throw new InvalidOperationException()).Forget();
+            Task.Delay(100).Wait();
         }
 
         /* ----------------------------------------------------------------- */

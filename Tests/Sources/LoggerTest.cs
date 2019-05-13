@@ -169,14 +169,15 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ObserveTaskException() => Assert.DoesNotThrow(() =>
+        public void ObserveTaskException()
         {
             using (Logger.ObserveTaskException())
             {
+                // Assert.DoesNotThrow
                 Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
                 Task.Delay(100).Wait();
             }
-        });
+        }
 
         #endregion
     }

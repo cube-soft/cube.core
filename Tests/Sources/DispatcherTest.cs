@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cube.Tests
 {
@@ -32,6 +33,8 @@ namespace Cube.Tests
     [TestFixture]
     class DispatcherTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
         /// Create_ArgumentNullException
@@ -48,5 +51,26 @@ namespace Cube.Tests
             Assert.That(SynchronizationContext.Current, Is.Null);
             Assert.That(() => new Dispatcher(true), Throws.ArgumentNullException);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Post
+        ///
+        /// <summary>
+        /// Tests the Invoke method with the non-synchronous option.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Post()
+        {
+            var dest = 0;
+            var src  = new Dispatcher(new SynchronizationContext(), false);
+            src.Invoke(() => dest++);
+            Task.Delay(100).Wait();
+            Assert.That(dest, Is.EqualTo(1));
+        }
+
+        #endregion
     }
 }
