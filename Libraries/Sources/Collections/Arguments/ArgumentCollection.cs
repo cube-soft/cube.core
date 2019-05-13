@@ -55,7 +55,7 @@ namespace Cube.Collections
         /// <param name="src">Source arguments.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src) : this(src, ArgumentKind.Windows) { }
+        public ArgumentCollection(IEnumerable<string> src) : this(src, Argument.Windows) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -70,7 +70,7 @@ namespace Cube.Collections
         /// <param name="kind">Prefix kind of optional parameters.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, ArgumentKind kind) :
+        public ArgumentCollection(IEnumerable<string> src, Argument kind) :
             this(src, kind, false) { }
 
         /* --------------------------------------------------------------------- */
@@ -89,7 +89,7 @@ namespace Cube.Collections
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, ArgumentKind kind, bool ignoreCase)
+        public ArgumentCollection(IEnumerable<string> src, Argument kind, bool ignoreCase)
         {
             Kind       = kind;
             IgnoreCase = ignoreCase;
@@ -112,7 +112,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentKind Kind { get; }
+        public Argument Kind { get; }
 
         /* --------------------------------------------------------------------- */
         ///

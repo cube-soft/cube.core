@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Cube.Collections
 {
-    #region ArgumentConverter
+    #region IArgumentConverter
 
     /* --------------------------------------------------------------------- */
     ///
@@ -198,7 +198,7 @@ namespace Cube.Collections
     ///
     /// <remarks>
     /// '/Foo', '-Foo', '--Foo' の 3 種類を許容し、全て同じ単一のオプションと
-    /// 見なします。すなわち、POSIX のように -a -b -c を -abc を省略する事は
+    /// 見なします。すなわち、POSIX のように -a -b -c を -abc と省略する事は
     /// できません。
     /// </remarks>
     ///

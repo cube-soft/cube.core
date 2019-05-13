@@ -20,18 +20,18 @@ using System.Collections.Generic;
 
 namespace Cube.Collections
 {
-    #region ArgumentKind
+    #region Argument
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ArgumentKind
+    /// Argument
     ///
     /// <summary>
-    /// Specifies the prefix kind of optional parameters.
+    /// Specifies prefix kinds of optional parameters.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum ArgumentKind
+    public enum Argument
     {
         /// <summary>Allows only the '-' prefix, and option names are all one character.</summary>
         Posix,
@@ -45,35 +45,35 @@ namespace Cube.Collections
 
     #endregion
 
-    #region ArgumentKindExtension
+    #region ArgumentExtension
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ArgumentKindExtension
+    /// ArgumentExtension
     ///
     /// <summary>
-    /// Provides extended methods of the ArgumentKind enum.
+    /// Provides extended methods of the Argument enum.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class ArgumentKindExtension
+    internal static class ArgumentExtension
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Map
         ///
         /// <summary>
-        /// Gets the map of ArgumentKind values and converters.
+        /// Gets the map of Argument values and converters.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IDictionary<ArgumentKind, IArgumentConverter> Map { get; } =
-            new Dictionary<ArgumentKind, IArgumentConverter>
+        private static IDictionary<Argument, IArgumentConverter> Map { get; } =
+            new Dictionary<Argument, IArgumentConverter>
             {
-                { ArgumentKind.Posix,   new PosixArgumentConverter()   },
-                { ArgumentKind.Gnu,     new GnuArgumentConverter()     },
-                { ArgumentKind.Dos,     new DosArgumentConverter()     },
-                { ArgumentKind.Windows, new WindowsArgumentConverter() },
+                { Argument.Posix,   new PosixArgumentConverter()   },
+                { Argument.Gnu,     new GnuArgumentConverter()     },
+                { Argument.Dos,     new DosArgumentConverter()     },
+                { Argument.Windows, new WindowsArgumentConverter() },
             };
 
         /* ----------------------------------------------------------------- */
@@ -85,7 +85,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IArgumentConverter Get(this ArgumentKind src) =>
+        public static IArgumentConverter Get(this Argument src) =>
             Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
     }
 
