@@ -15,25 +15,35 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Cube.Collections
 {
-    #region IArgumentConverter
+    #region ArgumentConverter
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IArgumentConverter
+    /// ArgumentConverter
     ///
     /// <summary>
-    /// Represents the interface to normalize option parameters.
+    /// Represents interface to normalize the provided arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal interface IArgumentConverter
+    internal abstract class ArgumentConverter
     {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ArgumentConverter
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ArgumentConverter class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ArgumentConverter() { }
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -47,7 +57,19 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        IEnumerable<string> Invoke(IEnumerable<string> src);
+        public abstract IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the KeyValuePair class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected KeyValuePair<bool, string> Create(bool key, string value) =>
+            KeyValuePair.Create(key, value);
     }
 
     #endregion
@@ -70,7 +92,7 @@ namespace Cube.Collections
     /// <seealso href="http://pubs.opengroup.org/onlinepubs/009696899/basedefs/xbd_chap12.html" />
     ///
     /* --------------------------------------------------------------------- */
-    internal class PosixArgumentConverter : IArgumentConverter
+    internal class PosixArgumentConverter : ArgumentConverter
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -85,8 +107,8 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> Invoke(IEnumerable<string> src) =>
-            src.Select(e => e.Unify()).SelectMany(e => Convert(e));
+        public override IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
+            src.SelectMany(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,10 +119,10 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual IEnumerable<string> Convert(string src) =>
+        protected virtual IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
             src.StartsWith("-") ?
-            src.Skip(1).Select(c => $"{ArgumentFactory.Prefix}{c}") :
-            new[] { src };
+            src.Skip(1).Select(c => Create(true, c.ToString())) :
+            new[] { Create(false, src) };
     }
 
     #endregion
@@ -129,9 +151,9 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override IEnumerable<string> Convert(string src) =>
+        protected override IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
             src.StartsWith("--") ?
-            new[] { $"{ArgumentFactory.Prefix}{src.Substring(2)}" } :
+            new[] { Create(true, src.Substring(2)) } :
             base.Convert(src);
     }
 
@@ -152,7 +174,7 @@ namespace Cube.Collections
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    internal class DosArgumentConverter : IArgumentConverter
+    internal class DosArgumentConverter : ArgumentConverter
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -167,8 +189,8 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> Invoke(IEnumerable<string> src) =>
-            src.Select(e => e.Unify()).Select(e => Convert(e));
+        public override IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
+            src.Select(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,8 +201,10 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual string Convert(string src) =>
-            src.StartsWith("/") ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" : src;
+        protected virtual KeyValuePair<bool, string> Convert(string src) =>
+            src.StartsWith("/") ?
+            Create(true, src.Substring(1)) :
+            Create(false, src);
     }
 
     #endregion
@@ -213,9 +237,9 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override string Convert(string src) =>
-            src.StartsWith("--") ? $"{ArgumentFactory.Prefix}{src.Substring(2)}" :
-            src.StartsWith("-")  ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" :
+        protected override KeyValuePair<bool, string> Convert(string src) =>
+            src.StartsWith("--") ? Create(true, src.Substring(2)) :
+            src.StartsWith("-")  ? Create(true, src.Substring(1)) :
             base.Convert(src);
     }
 

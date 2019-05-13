@@ -49,7 +49,7 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ArgumentCollection class with
-        /// the specified collection.
+        /// the specified arguments.
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
@@ -63,7 +63,7 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ArgumentCollection class with
-        /// the specified parameters.
+        /// the specified arguments.
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
@@ -79,7 +79,7 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ArgumentCollection class with
-        /// the specified parameters.
+        /// the specified arguments.
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
@@ -119,8 +119,8 @@ namespace Cube.Collections
         /// IgnoreCase
         ///
         /// <summary>
-        /// Gets the value indicating whether the class ignores case of
-        /// optional keys.
+        /// Gets the value indicating whether to ignore the case of optional
+        /// keys.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -218,21 +218,21 @@ namespace Cube.Collections
         private void Invoke(IEnumerable<string> src)
         {
             var key = string.Empty;
-            var cvt = Kind.Get().Invoke(src).Where(e => e.HasValue());
+            var cvt = Kind.Get().Invoke(src.Where(e => e.HasValue()));
 
             foreach (var arg in cvt)
             {
-                if (arg[0] == ArgumentFactory.Prefix)
+                if (arg.Key)
                 {
                     if (key.HasValue()) _options.AddOrSet(key, string.Empty);
-                    key = arg.Substring(1);
+                    key = arg.Value;
                 }
                 else if (key.HasValue())
                 {
-                    _options.AddOrSet(key, arg);
+                    _options.AddOrSet(key, arg.Value);
                     key = string.Empty;
                 }
-                else _oprands.Add(arg);
+                else _oprands.Add(arg.Value);
             }
 
             if (key.HasValue()) _options.AddOrSet(key, string.Empty);

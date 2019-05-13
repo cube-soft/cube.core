@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Cube.Collections
 {
-    #region Argument
+    #region ArgumentKind
 
     /* --------------------------------------------------------------------- */
     ///
@@ -45,34 +45,19 @@ namespace Cube.Collections
 
     #endregion
 
-    #region ArgumentExtension
+    #region ArgumentKindExtension
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ArgumentFactory
+    /// ArgumentKindExtension
     ///
     /// <summary>
-    /// Provides extended methods of the ArgumentType enum.
+    /// Provides extended methods of the ArgumentKind enum.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class ArgumentFactory
+    internal static class ArgumentKindExtension
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Prefix
-        ///
-        /// <summary>
-        /// Gets the universal prefix character in the project.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// IArgumentConverter による Prefix 正規化に使用します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static char Prefix { get; } = ' ';
-
         /* ----------------------------------------------------------------- */
         ///
         /// Map
@@ -82,8 +67,8 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IDictionary<ArgumentKind, IArgumentConverter> Map { get; } =
-            new Dictionary<ArgumentKind, IArgumentConverter>
+        private static IDictionary<ArgumentKind, ArgumentConverter> Map { get; } =
+            new Dictionary<ArgumentKind, ArgumentConverter>
             {
                 { ArgumentKind.Posix,   new PosixArgumentConverter()   },
                 { ArgumentKind.Gnu,     new GnuArgumentConverter()     },
@@ -100,7 +85,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IArgumentConverter Get(this ArgumentKind src) =>
+        public static ArgumentConverter Get(this ArgumentKind src) =>
             Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
     }
 
