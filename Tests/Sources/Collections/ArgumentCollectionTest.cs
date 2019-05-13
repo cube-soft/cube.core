@@ -78,6 +78,24 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Parse_ArgumentException
+        ///
+        /// <summary>
+        /// Tests the constructor with the invalid ArgumentType value.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Parse_ArgumentException()
+        {
+            Assert.That(
+                () => new ArgumentCollection(Enumerable.Empty<string>(), (ArgumentType)999),
+                Throws.ArgumentException
+            );
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Parse
         ///
         /// <summary>
@@ -148,12 +166,21 @@ namespace Cube.Tests
                 ).Returns("baz");
 
                 yield return new TestCaseData(n++,
-                    new List<string> { "foo", "/bar", "baz", "-hoge", "fuga" },
+                    new List<string> { "foo", "/bar", "-baz", "--hoge", "fuga" },
                     ArgumentType.Posix,
                     false,  // ignore case
-                    3,      // number of operands (foo, /bar, baz)
-                    4,      // number of options (h, o, g, e)
+                    2,      // number of operands (foo, /bar)
+                    8,      // number of options (b, a, z, -, h, o, g, e)
                     "e"
+                ).Returns("fuga");
+
+                yield return new TestCaseData(n++,
+                    new List<string> { "foo", "/bar", "-baz", "--hoge", "fuga" },
+                    ArgumentType.Gnu,
+                    false,  // ignore case
+                    2,      // number of operands (foo, /bar)
+                    4,      // number of options (b, a, z, hoge)
+                    "hoge"
                 ).Returns("fuga");
 
                 yield return new TestCaseData(n++,

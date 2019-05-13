@@ -33,12 +33,14 @@ namespace Cube.Collections
     /* --------------------------------------------------------------------- */
     public enum ArgumentType
     {
-        /// <summary>Allows '/', '-', and '--' prefix.</summary>
-        Windows,
-        /// <summary>Allows only the '/' prefix.</summary>
-        Dos,
-        /// <summary>Allows only the '-' prefix, and option names are all one character..</summary>
+        /// <summary>Allows only the '-' prefix, and option names are all one character.</summary>
         Posix,
+        /// <summary>Allows '-' and '--' prefix, the latter is known as long-named options.</summary>
+        Gnu,
+        /// <summary>Allows only the '/' prefix, and treated as long-named options.</summary>
+        Dos,
+        /// <summary>Allows '/', '-', and '--' prefix, and all of them are treated as long-named options.</summary>
+        Windows,
     }
 
     #endregion
@@ -83,9 +85,10 @@ namespace Cube.Collections
         private static IDictionary<ArgumentType, IArgumentConverter> Map { get; } =
             new Dictionary<ArgumentType, IArgumentConverter>
             {
-                { ArgumentType.Windows, new WindowsArgumentConverter() },
-                { ArgumentType.Dos,     new DosArgumentConverter()     },
                 { ArgumentType.Posix,   new PosixArgumentConverter()   },
+                { ArgumentType.Gnu,     new GnuArgumentConverter()     },
+                { ArgumentType.Dos,     new DosArgumentConverter()     },
+                { ArgumentType.Windows, new WindowsArgumentConverter() },
             };
 
         /* ----------------------------------------------------------------- */

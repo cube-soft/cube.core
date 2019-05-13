@@ -52,110 +52,6 @@ namespace Cube.Collections
 
     #endregion
 
-    #region DosArgumentConverter
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// DosArgumentConverter
-    ///
-    /// <summary>
-    /// Provides functionality to normalize the DOS based argument options.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// '/Foo' と言う形のみをオプションとして許容します。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal class DosArgumentConverter : IArgumentConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the normalization.
-        /// </summary>
-        ///
-        /// <param name="src">Source arguments.</param>
-        ///
-        /// <returns>Normalized arguments.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<string> Invoke(IEnumerable<string> src) =>
-            src.Select(e => e.Unify())
-               .Select(e => Convert(e));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Convert
-        ///
-        /// <summary>
-        /// Converts the specified argument.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string Convert(string src) =>
-            src.StartsWith("/") ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" : src;
-    }
-
-    #endregion
-
-    #region WindowsArgumentConverter
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// WindowsArgumentConverter
-    ///
-    /// <summary>
-    /// Provides functionality to normalize the Windows based argument
-    /// options.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// '/Foo', '-Foo', '--Foo' の 3 種類を許容し、全て同じ単一のオプションと
-    /// 見なします。すなわち、POSIX のように -a -b -c を -abc を省略する事は
-    /// できません。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal class WindowsArgumentConverter : IArgumentConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the normalization.
-        /// </summary>
-        ///
-        /// <param name="src">Source arguments.</param>
-        ///
-        /// <returns>Normalized arguments.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<string> Invoke(IEnumerable<string> src) =>
-            src.Select(e => e.Unify())
-               .Select(e => Convert(e));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Convert
-        ///
-        /// <summary>
-        /// Converts the specified argument.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string Convert(string src) =>
-            src.StartsWith("--") ? $"{ArgumentFactory.Prefix}{src.Substring(2)}" :
-            src.StartsWith("-")  ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" :
-            src.StartsWith("/")  ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" :
-            src;
-    }
-
-    #endregion
-
     #region PosixArgumentConverter
 
     /* --------------------------------------------------------------------- */
@@ -163,8 +59,7 @@ namespace Cube.Collections
     /// PosixArgumentConverter
     ///
     /// <summary>
-    /// Provides functionality to normalize the Windows based argument
-    /// options.
+    /// Provides functionality to normalize the POSIX based arguments.
     /// </summary>
     ///
     /// <remarks>
@@ -191,8 +86,7 @@ namespace Cube.Collections
         ///
         /* ----------------------------------------------------------------- */
         public IEnumerable<string> Invoke(IEnumerable<string> src) =>
-            src.Select(e => e.Unify())
-               .SelectMany(e => Convert(e));
+            src.Select(e => e.Unify()).SelectMany(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -203,10 +97,126 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private IEnumerable<string> Convert(string src) =>
+        protected virtual IEnumerable<string> Convert(string src) =>
             src.StartsWith("-") ?
             src.Skip(1).Select(c => $"{ArgumentFactory.Prefix}{c}") :
             new[] { src };
+    }
+
+    #endregion
+
+    #region GnuArgumentConverter
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GnuArgumentConverter
+    ///
+    /// <summary>
+    /// Provides functionality to normalize the GNU based arguments.
+    /// </summary>
+    ///
+    /// <seealso href="https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html" />
+    ///
+    /* --------------------------------------------------------------------- */
+    internal class GnuArgumentConverter : PosixArgumentConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        ///
+        /// <summary>
+        /// Converts the specified argument.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override IEnumerable<string> Convert(string src) =>
+            src.StartsWith("--") ?
+            new[] { $"{ArgumentFactory.Prefix}{src.Substring(2)}" } :
+            base.Convert(src);
+    }
+
+    #endregion
+
+    #region DosArgumentConverter
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DosArgumentConverter
+    ///
+    /// <summary>
+    /// Provides functionality to normalize the DOS based arguments.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// '/Foo' と言う形のみをオプションとして許容します。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal class DosArgumentConverter : IArgumentConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the normalization.
+        /// </summary>
+        ///
+        /// <param name="src">Source arguments.</param>
+        ///
+        /// <returns>Normalized arguments.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IEnumerable<string> Invoke(IEnumerable<string> src) =>
+            src.Select(e => e.Unify()).Select(e => Convert(e));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        ///
+        /// <summary>
+        /// Converts the specified argument.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual string Convert(string src) =>
+            src.StartsWith("/") ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" : src;
+    }
+
+    #endregion
+
+    #region WindowsArgumentConverter
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WindowsArgumentConverter
+    ///
+    /// <summary>
+    /// Provides functionality to normalize the Windows based arguments.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// '/Foo', '-Foo', '--Foo' の 3 種類を許容し、全て同じ単一のオプションと
+    /// 見なします。すなわち、POSIX のように -a -b -c を -abc を省略する事は
+    /// できません。
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal class WindowsArgumentConverter : DosArgumentConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        ///
+        /// <summary>
+        /// Converts the specified argument.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override string Convert(string src) =>
+            src.StartsWith("--") ? $"{ArgumentFactory.Prefix}{src.Substring(2)}" :
+            src.StartsWith("-")  ? $"{ArgumentFactory.Prefix}{src.Substring(1)}" :
+            base.Convert(src);
     }
 
     #endregion
