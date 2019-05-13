@@ -96,7 +96,7 @@ namespace Cube.Collections
             _options   = ignoreCase ?
                          new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
                          new Dictionary<string, string>();
-            Parse(src);
+            Invoke(src);
         }
 
         #endregion
@@ -135,7 +135,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public string this[int index] => _inner[index];
+        public string this[int index] => _oprands[index];
 
         /* --------------------------------------------------------------------- */
         ///
@@ -146,7 +146,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public int Count => _inner.Count;
+        public int Count => _oprands.Count;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -176,7 +176,7 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* --------------------------------------------------------------------- */
-        public override IEnumerator<string> GetEnumerator() => _inner.GetEnumerator();
+        public override IEnumerator<string> GetEnumerator() => _oprands.GetEnumerator();
 
         #endregion
 
@@ -201,21 +201,21 @@ namespace Cube.Collections
         {
             if (disposing)
             {
-                _inner.Clear();
+                _oprands.Clear();
                 _options.Clear();
             }
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Parse
+        /// Invoke
         ///
         /// <summary>
         /// Parses the specified arguments.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void Parse(IEnumerable<string> src)
+        private void Invoke(IEnumerable<string> src)
         {
             var key = string.Empty;
             var cvt = Prefix.Get().Invoke(src).Where(e => e.HasValue());
@@ -232,7 +232,7 @@ namespace Cube.Collections
                     _options.AddOrSet(key, arg);
                     key = string.Empty;
                 }
-                else _inner.Add(arg);
+                else _oprands.Add(arg);
             }
 
             if (key.HasValue()) _options.AddOrSet(key, string.Empty);
@@ -241,7 +241,7 @@ namespace Cube.Collections
         #endregion
 
         #region Fields
-        private readonly List<string> _inner = new List<string>();
+        private readonly List<string> _oprands = new List<string>();
         private readonly Dictionary<string, string> _options;
         #endregion
     }

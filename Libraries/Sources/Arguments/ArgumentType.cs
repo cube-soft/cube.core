@@ -35,8 +35,10 @@ namespace Cube.Collections
     {
         /// <summary>Allows '/', '-', and '--' prefix.</summary>
         Windows,
-        /// <summary>Allows only '/' prefix.</summary>
+        /// <summary>Allows only the '/' prefix.</summary>
         Dos,
+        /// <summary>Allows only the '-' prefix, and option names are all one character..</summary>
+        Posix,
     }
 
     #endregion
@@ -83,6 +85,7 @@ namespace Cube.Collections
             {
                 { ArgumentType.Windows, new WindowsArgumentConverter() },
                 { ArgumentType.Dos,     new DosArgumentConverter()     },
+                { ArgumentType.Posix,   new PosixArgumentConverter()   },
             };
 
         /* ----------------------------------------------------------------- */

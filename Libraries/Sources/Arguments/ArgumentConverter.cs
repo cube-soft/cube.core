@@ -155,4 +155,59 @@ namespace Cube.Collections
     }
 
     #endregion
+
+    #region PosixArgumentConverter
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PosixArgumentConverter
+    ///
+    /// <summary>
+    /// Provides functionality to normalize the Windows based argument
+    /// options.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// '-foption_argument' の形式はサポートせず、'-f', '-o', '-p' ... と
+    /// 解釈する事とします。
+    /// </remarks>
+    ///
+    /// <seealso href="http://pubs.opengroup.org/onlinepubs/009696899/basedefs/xbd_chap12.html" />
+    ///
+    /* --------------------------------------------------------------------- */
+    internal class PosixArgumentConverter : IArgumentConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the normalization.
+        /// </summary>
+        ///
+        /// <param name="src">Source arguments.</param>
+        ///
+        /// <returns>Normalized arguments.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IEnumerable<string> Invoke(IEnumerable<string> src) =>
+            src.Select(e => e.Unify())
+               .SelectMany(e => Convert(e));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        ///
+        /// <summary>
+        /// Converts the specified argument.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IEnumerable<string> Convert(string src) =>
+            src.StartsWith("-") ?
+            src.Skip(1).Select(c => $"{ArgumentFactory.Prefix}{c}") :
+            new[] { src };
+    }
+
+    #endregion
 }

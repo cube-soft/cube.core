@@ -89,13 +89,13 @@ namespace Cube.Tests
         public string Parse(
             int id,
             IEnumerable<string> args, ArgumentType prefix, bool ignoreCase,
-            int main, int options, string key
+            int operands, int options, string key
         ) {
             try
             {
                 var src = new ArgumentCollection(args, prefix, ignoreCase);
-                Assert.That(src.Count, Is.EqualTo(main), $"{id}");
-                Assert.That(src.Options.Count, Is.EqualTo(options), $"{id}");
+                Assert.That(src.Count, Is.EqualTo(operands), $"No.{id}");
+                Assert.That(src.Options.Count, Is.EqualTo(options), $"No.{id}");
                 return src.Options[key];
             }
             catch { return "exception"; }
@@ -124,7 +124,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "bar", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    3,      // number of main arguments
+                    3,      // number of operands
                     0,      // number of options
                     "dummy"
                 ).Returns("exception");
@@ -133,7 +133,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "/bar", "baz", "-hoge", "--fuga" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     3,      // number of options
                     "bar"
                 ).Returns("baz");
@@ -142,16 +142,25 @@ namespace Cube.Tests
                     new List<string> { "foo", "/bar", "baz", "-hoge", "--fuga" },
                     ArgumentType.Dos,
                     false,  // ignore case
-                    3,      // number of main arguments (foo, -hoge, --fuga)
+                    3,      // number of operands (foo, -hoge, --fuga)
                     1,      // number of options
                     "bar"
                 ).Returns("baz");
 
                 yield return new TestCaseData(n++,
+                    new List<string> { "foo", "/bar", "baz", "-hoge", "fuga" },
+                    ArgumentType.Posix,
+                    false,  // ignore case
+                    3,      // number of operands (foo, /bar, baz)
+                    4,      // number of options (h, o, g, e)
+                    "e"
+                ).Returns("fuga");
+
+                yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "baz" },
                     ArgumentType.Windows,
                     true,   // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     1,      // number of options
                     "BAR"
                 ).Returns("baz");
@@ -160,7 +169,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     1,      // number of options
                     "BAR"
                 ).Returns("exception");
@@ -169,7 +178,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     1,      // number of options
                     "baz"
                 ).Returns("exception");
@@ -178,7 +187,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("");
@@ -187,7 +196,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "--hoge", "fuga" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     2,      // number of options
                     "bar"
                 ).Returns("");
@@ -196,7 +205,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "--hoge", "fuga" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     2,      // number of options
                     "hoge"
                 ).Returns("fuga");
@@ -205,7 +214,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--Bar", "baz", "--bar", "hoge" },
                     ArgumentType.Windows,
                     true,   // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     1,      // number of options
                     "Bar"
                 ).Returns("hoge");
@@ -214,7 +223,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--Bar", "baz", "--bar", "hoge" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     2,      // number of options
                     "Bar"
                 ).Returns("baz");
@@ -223,7 +232,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    2,      // number of main arguments
+                    2,      // number of operands
                     0,      // number of options
                     "dummy"
                 ).Returns("exception");
@@ -232,7 +241,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "/", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    2,      // number of main arguments
+                    2,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("");
@@ -241,7 +250,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "-", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    2,      // number of main arguments
+                    2,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("");
@@ -250,7 +259,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "--", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    2,      // number of main arguments
+                    2,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("");
@@ -259,7 +268,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "/bar", "/", "baz" },
                     ArgumentType.Dos,
                     false,  // ignore case
-                    2,      // number of main arguments
+                    2,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("");
@@ -268,7 +277,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "/bar", "-", "baz" },
                     ArgumentType.Dos,
                     false,  // ignore case
-                    2,      // number of main arguments
+                    2,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("-");
@@ -277,7 +286,7 @@ namespace Cube.Tests
                     new List<string> { "foo", "--bar", "", "baz" },
                     ArgumentType.Windows,
                     false,  // ignore case
-                    1,      // number of main arguments
+                    1,      // number of operands
                     1,      // number of options
                     "bar"
                 ).Returns("baz");
