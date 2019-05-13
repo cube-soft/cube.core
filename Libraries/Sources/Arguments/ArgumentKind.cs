@@ -67,8 +67,8 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IDictionary<ArgumentKind, ArgumentConverter> Map { get; } =
-            new Dictionary<ArgumentKind, ArgumentConverter>
+        private static IDictionary<ArgumentKind, IArgumentConverter> Map { get; } =
+            new Dictionary<ArgumentKind, IArgumentConverter>
             {
                 { ArgumentKind.Posix,   new PosixArgumentConverter()   },
                 { ArgumentKind.Gnu,     new GnuArgumentConverter()     },
@@ -85,7 +85,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static ArgumentConverter Get(this ArgumentKind src) =>
+        public static IArgumentConverter Get(this ArgumentKind src) =>
             Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
     }
 

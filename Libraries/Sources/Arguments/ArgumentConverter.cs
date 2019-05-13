@@ -24,26 +24,15 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ArgumentConverter
+    /// IArgumentConverter
     ///
     /// <summary>
     /// Represents interface to normalize the provided arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal abstract class ArgumentConverter
+    internal interface IArgumentConverter
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ArgumentConverter
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ArgumentConverter class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ArgumentConverter() { }
-
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -57,19 +46,7 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public abstract IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the KeyValuePair class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected KeyValuePair<bool, string> Create(bool key, string value) =>
-            KeyValuePair.Create(key, value);
+        IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src);
     }
 
     #endregion
@@ -92,7 +69,7 @@ namespace Cube.Collections
     /// <seealso href="http://pubs.opengroup.org/onlinepubs/009696899/basedefs/xbd_chap12.html" />
     ///
     /* --------------------------------------------------------------------- */
-    internal class PosixArgumentConverter : ArgumentConverter
+    internal class PosixArgumentConverter : IArgumentConverter
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -107,7 +84,7 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public override IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
+        public IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
             src.SelectMany(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
@@ -121,8 +98,8 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
             src.StartsWith("-") ?
-            src.Skip(1).Select(c => Create(true, c.ToString())) :
-            new[] { Create(false, src) };
+            src.Skip(1).Select(c => KeyValuePair.Create(true, c.ToString())) :
+            new[] { KeyValuePair.Create(false, src) };
     }
 
     #endregion
@@ -153,7 +130,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected override IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
             src.StartsWith("--") ?
-            new[] { Create(true, src.Substring(2)) } :
+            new[] { KeyValuePair.Create(true, src.Substring(2)) } :
             base.Convert(src);
     }
 
@@ -174,7 +151,7 @@ namespace Cube.Collections
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    internal class DosArgumentConverter : ArgumentConverter
+    internal class DosArgumentConverter : IArgumentConverter
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -189,7 +166,7 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public override IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
+        public IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
             src.Select(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
@@ -203,8 +180,8 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual KeyValuePair<bool, string> Convert(string src) =>
             src.StartsWith("/") ?
-            Create(true, src.Substring(1)) :
-            Create(false, src);
+            KeyValuePair.Create(true, src.Substring(1)) :
+            KeyValuePair.Create(false, src);
     }
 
     #endregion
@@ -238,8 +215,8 @@ namespace Cube.Collections
         ///
         /* ----------------------------------------------------------------- */
         protected override KeyValuePair<bool, string> Convert(string src) =>
-            src.StartsWith("--") ? Create(true, src.Substring(2)) :
-            src.StartsWith("-")  ? Create(true, src.Substring(1)) :
+            src.StartsWith("--") ? KeyValuePair.Create(true, src.Substring(2)) :
+            src.StartsWith("-")  ? KeyValuePair.Create(true, src.Substring(1)) :
             base.Convert(src);
     }
 
