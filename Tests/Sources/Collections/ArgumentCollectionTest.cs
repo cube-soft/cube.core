@@ -71,7 +71,7 @@ namespace Cube.Tests
         [Test]
         public void Parse_Empty()
         {
-            var src = new ArgumentCollection(Enumerable.Empty<string>(), ArgumentType.Dos);
+            var src = new ArgumentCollection(Enumerable.Empty<string>(), ArgumentKind.Dos);
             Assert.That(src.Count,         Is.EqualTo(0));
             Assert.That(src.Options.Count, Is.EqualTo(0));
         }
@@ -81,17 +81,16 @@ namespace Cube.Tests
         /// Parse_ArgumentException
         ///
         /// <summary>
-        /// Tests the constructor with the invalid ArgumentType value.
+        /// Tests the constructor with the invalid ArgumentKind value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Parse_ArgumentException()
         {
-            Assert.That(
-                () => new ArgumentCollection(Enumerable.Empty<string>(), (ArgumentType)999),
-                Throws.ArgumentException
-            );
+            var src  = Enumerable.Empty<string>();
+            var type = (ArgumentKind)999;
+            Assert.That(() => new ArgumentCollection(src, type), Throws.ArgumentException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -106,17 +105,21 @@ namespace Cube.Tests
         [TestCaseSource(nameof(TestCases))]
         public string Parse(
             int id,
-            IEnumerable<string> args, ArgumentType prefix, bool ignoreCase,
+            IEnumerable<string> args, ArgumentKind kind, bool ignoreCase,
             int operands, int options, string key
         ) {
-            try
+            using (var src = new ArgumentCollection(args, kind, ignoreCase))
             {
-                var src = new ArgumentCollection(args, prefix, ignoreCase);
-                Assert.That(src.Count, Is.EqualTo(operands), $"No.{id}");
-                Assert.That(src.Options.Count, Is.EqualTo(options), $"No.{id}");
-                return src.Options[key];
+                var msg = $"No.{id}";
+
+                Assert.That(src.Kind,          Is.EqualTo(kind),       msg);
+                Assert.That(src.IgnoreCase,    Is.EqualTo(ignoreCase), msg);
+                Assert.That(src.Count,         Is.EqualTo(operands),   msg);
+                Assert.That(src.Options.Count, Is.EqualTo(options),    msg);
+
+                try { return src.Options[key]; }
+                catch { return "exception"; }
             }
-            catch { return "exception"; }
         }
 
         #endregion
@@ -140,7 +143,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "bar", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     3,      // number of operands
                     0,      // number of options
@@ -149,7 +152,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "/bar", "baz", "-hoge", "--fuga" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     3,      // number of options
@@ -158,7 +161,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "/bar", "baz", "-hoge", "--fuga" },
-                    ArgumentType.Dos,
+                    ArgumentKind.Dos,
                     false,  // ignore case
                     3,      // number of operands (foo, -hoge, --fuga)
                     1,      // number of options
@@ -167,7 +170,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "/bar", "-baz", "--hoge", "fuga" },
-                    ArgumentType.Posix,
+                    ArgumentKind.Posix,
                     false,  // ignore case
                     2,      // number of operands (foo, /bar)
                     8,      // number of options (b, a, z, -, h, o, g, e)
@@ -176,7 +179,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "/bar", "-baz", "--hoge", "fuga" },
-                    ArgumentType.Gnu,
+                    ArgumentKind.Gnu,
                     false,  // ignore case
                     2,      // number of operands (foo, /bar)
                     4,      // number of options (b, a, z, hoge)
@@ -185,7 +188,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     true,   // ignore case
                     1,      // number of operands
                     1,      // number of options
@@ -194,7 +197,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     1,      // number of options
@@ -203,7 +206,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     1,      // number of options
@@ -212,7 +215,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     1,      // number of options
@@ -221,7 +224,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "--hoge", "fuga" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     2,      // number of options
@@ -230,7 +233,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "--hoge", "fuga" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     2,      // number of options
@@ -239,7 +242,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--Bar", "baz", "--bar", "hoge" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     true,   // ignore case
                     1,      // number of operands
                     1,      // number of options
@@ -248,7 +251,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--Bar", "baz", "--bar", "hoge" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     2,      // number of options
@@ -257,7 +260,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     2,      // number of operands
                     0,      // number of options
@@ -266,7 +269,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "/", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     2,      // number of operands
                     1,      // number of options
@@ -275,7 +278,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "-", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     2,      // number of operands
                     1,      // number of options
@@ -284,7 +287,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "--", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     2,      // number of operands
                     1,      // number of options
@@ -293,7 +296,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "/bar", "/", "baz" },
-                    ArgumentType.Dos,
+                    ArgumentKind.Dos,
                     false,  // ignore case
                     2,      // number of operands
                     1,      // number of options
@@ -302,7 +305,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "/bar", "-", "baz" },
-                    ArgumentType.Dos,
+                    ArgumentKind.Dos,
                     false,  // ignore case
                     2,      // number of operands
                     1,      // number of options
@@ -311,7 +314,7 @@ namespace Cube.Tests
 
                 yield return new TestCaseData(n++,
                     new List<string> { "foo", "--bar", "", "baz" },
-                    ArgumentType.Windows,
+                    ArgumentKind.Windows,
                     false,  // ignore case
                     1,      // number of operands
                     1,      // number of options

@@ -55,7 +55,7 @@ namespace Cube.Collections
         /// <param name="src">Source arguments.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src) : this(src, ArgumentType.Windows) { }
+        public ArgumentCollection(IEnumerable<string> src) : this(src, ArgumentKind.Windows) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -67,11 +67,11 @@ namespace Cube.Collections
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
-        /// <param name="prefix">Prefix type of optional parameters.</param>
+        /// <param name="kind">Prefix kind of optional parameters.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, ArgumentType prefix) :
-            this(src, prefix, false) { }
+        public ArgumentCollection(IEnumerable<string> src, ArgumentKind kind) :
+            this(src, kind, false) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -83,15 +83,15 @@ namespace Cube.Collections
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
-        /// <param name="prefix">Prefix type of optional parameters.</param>
+        /// <param name="kind">Prefix kind of optional parameters.</param>
         /// <param name="ignoreCase">
         /// Value indicating whether to ignore the case of optional keys.
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, ArgumentType prefix, bool ignoreCase)
+        public ArgumentCollection(IEnumerable<string> src, ArgumentKind kind, bool ignoreCase)
         {
-            Prefix     = prefix;
+            Kind       = kind;
             IgnoreCase = ignoreCase;
             _options   = ignoreCase ?
                          new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
@@ -105,14 +105,14 @@ namespace Cube.Collections
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Prefix
+        /// Kind
         ///
         /// <summary>
-        /// Gets the prefix type of optional parameters.
+        /// Gets the prefix kind of optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentType Prefix { get; }
+        public ArgumentKind Kind { get; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -218,7 +218,7 @@ namespace Cube.Collections
         private void Invoke(IEnumerable<string> src)
         {
             var key = string.Empty;
-            var cvt = Prefix.Get().Invoke(src).Where(e => e.HasValue());
+            var cvt = Kind.Get().Invoke(src).Where(e => e.HasValue());
 
             foreach (var arg in cvt)
             {

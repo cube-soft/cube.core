@@ -24,14 +24,14 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ArgumentType
+    /// ArgumentKind
     ///
     /// <summary>
-    /// Specifies the prefix type of optional parameters.
+    /// Specifies the prefix kind of optional parameters.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum ArgumentType
+    public enum ArgumentKind
     {
         /// <summary>Allows only the '-' prefix, and option names are all one character.</summary>
         Posix,
@@ -78,17 +78,17 @@ namespace Cube.Collections
         /// Map
         ///
         /// <summary>
-        /// Gets the map of Argument and convert implementation.
+        /// Gets the map of ArgumentKind values and converters.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IDictionary<ArgumentType, IArgumentConverter> Map { get; } =
-            new Dictionary<ArgumentType, IArgumentConverter>
+        private static IDictionary<ArgumentKind, IArgumentConverter> Map { get; } =
+            new Dictionary<ArgumentKind, IArgumentConverter>
             {
-                { ArgumentType.Posix,   new PosixArgumentConverter()   },
-                { ArgumentType.Gnu,     new GnuArgumentConverter()     },
-                { ArgumentType.Dos,     new DosArgumentConverter()     },
-                { ArgumentType.Windows, new WindowsArgumentConverter() },
+                { ArgumentKind.Posix,   new PosixArgumentConverter()   },
+                { ArgumentKind.Gnu,     new GnuArgumentConverter()     },
+                { ArgumentKind.Dos,     new DosArgumentConverter()     },
+                { ArgumentKind.Windows, new WindowsArgumentConverter() },
             };
 
         /* ----------------------------------------------------------------- */
@@ -96,11 +96,11 @@ namespace Cube.Collections
         /// Get
         ///
         /// <summary>
-        /// Gets the converter from the specified prefix type.
+        /// Gets the converter from the specified kind.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IArgumentConverter Get(this ArgumentType src) =>
+        public static IArgumentConverter Get(this ArgumentKind src) =>
             Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
     }
 
