@@ -19,7 +19,7 @@ using Cube.Net35;
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Differences
+namespace Cube.Collections.Differences
 {
     /* --------------------------------------------------------------------- */
     ///

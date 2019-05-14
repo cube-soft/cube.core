@@ -60,7 +60,33 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke_Throws
+        /// Invoke
+        ///
+        /// <summary>
+        /// Tests to initialize and destroy through the OnceInitializer
+        /// instance without disposer.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Invoke_NoDisposer()
+        {
+            var dest = 0;
+            var src  = new OnceInitializer(() => ++dest, null);
+
+            src.Invoke();
+            src.Invoke();
+            src.Invoke();
+            Assert.That(src.Invoked, Is.True);
+            Assert.That(dest, Is.EqualTo(1));
+
+            src.Dispose();
+            Assert.That(dest, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke_ObjectDisposedException
         ///
         /// <summary>
         /// Tests to raise the ObjectDisposedException exception.
@@ -68,7 +94,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Invoke_Throws()
+        public void Invoke_ObjectDisposedException()
         {
             var dest = 0;
             var src  = new OnceInitializer(() => ++dest, () => --dest);

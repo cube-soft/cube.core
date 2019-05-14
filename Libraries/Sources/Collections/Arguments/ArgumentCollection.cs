@@ -15,9 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Collections;
 using Cube.Mixin.String;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.Collections
 {
@@ -47,13 +49,13 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ArgumentCollection class with
-        /// the specified collection.
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Collection of arguments.</param>
+        /// <param name="src">Source arguments.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src) : this(src, '-') { }
+        public ArgumentCollection(IEnumerable<string> src) : this(src, Argument.Windows) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -61,15 +63,15 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ArgumentCollection class with
-        /// the specified parameters.
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Collection of arguments.</param>
-        /// <param name="prefix">Prefix of optional parameters.</param>
+        /// <param name="src">Source arguments.</param>
+        /// <param name="kind">Prefix kind of optional parameters.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, char prefix) :
-            this(src, prefix, false) { }
+        public ArgumentCollection(IEnumerable<string> src, Argument kind) :
+            this(src, kind, false) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -77,24 +79,24 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ArgumentCollection class with
-        /// the specified parameters.
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Collection of arguments.</param>
-        /// <param name="prefix">Prefix of optional parameters.</param>
-        /// <param name="ignore">
-        /// Value indicating whether the class ignores case of optional keys.
+        /// <param name="src">Source arguments.</param>
+        /// <param name="kind">Prefix kind of optional parameters.</param>
+        /// <param name="ignoreCase">
+        /// Value indicating whether to ignore the case of optional keys.
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, char prefix, bool ignore)
+        public ArgumentCollection(IEnumerable<string> src, Argument kind, bool ignoreCase)
         {
-            Prefix     = prefix;
-            IgnoreCase = ignore;
-            _options   = ignore ?
+            Kind       = kind;
+            IgnoreCase = ignoreCase;
+            _options   = ignoreCase ?
                          new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
                          new Dictionary<string, string>();
-            Parse(src);
+            Invoke(src);
         }
 
         #endregion
@@ -103,22 +105,22 @@ namespace Cube.Collections
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Prefix
+        /// Kind
         ///
         /// <summary>
-        /// Gets the prefix character that represents optional parameters.
+        /// Gets the prefix kind of optional parameters.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public char Prefix { get; }
+        public Argument Kind { get; }
 
         /* --------------------------------------------------------------------- */
         ///
         /// IgnoreCase
         ///
         /// <summary>
-        /// Gets the value indicating whether the class ignores case of
-        /// optional keys.
+        /// Gets the value indicating whether to ignore the case of optional
+        /// keys.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -133,7 +135,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public string this[int index] => _primary[index];
+        public string this[int index] => _oprands[index];
 
         /* --------------------------------------------------------------------- */
         ///
@@ -144,7 +146,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public int Count => _primary.Count;
+        public int Count => _oprands.Count;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -174,7 +176,7 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* --------------------------------------------------------------------- */
-        public override IEnumerator<string> GetEnumerator() => _primary.GetEnumerator();
+        public override IEnumerator<string> GetEnumerator() => _oprands.GetEnumerator();
 
         #endregion
 
@@ -199,63 +201,47 @@ namespace Cube.Collections
         {
             if (disposing)
             {
-                _primary.Clear();
+                _oprands.Clear();
                 _options.Clear();
             }
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Parse
+        /// Invoke
         ///
         /// <summary>
         /// Parses the specified arguments.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void Parse(IEnumerable<string> src)
+        private void Invoke(IEnumerable<string> src)
         {
             var key = string.Empty;
+            var cvt = Kind.Get().Invoke(src.Where(e => e.HasValue()));
 
-            foreach (var s in src)
+            foreach (var arg in cvt)
             {
-                if (!s.HasValue()) continue;
-
-                if (s[0] == Prefix)
+                if (arg.Key)
                 {
-                    if (key.HasValue()) UpdateOption(key, null);
-                    key = s.TrimStart(Prefix);
+                    if (key.HasValue()) _options.AddOrSet(key, string.Empty);
+                    key = arg.Value;
                 }
                 else if (key.HasValue())
                 {
-                    UpdateOption(key, s);
+                    _options.AddOrSet(key, arg.Value);
                     key = string.Empty;
                 }
-                else _primary.Add(s);
+                else _oprands.Add(arg.Value);
             }
 
-            if (key.HasValue()) UpdateOption(key, null);
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// UpdateOption
-        ///
-        /// <summary>
-        /// Updates optional parameters.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void UpdateOption(string key, string value)
-        {
-            if (_options.ContainsKey(key)) _options[key] = value;
-            else _options.Add(key, value);
+            if (key.HasValue()) _options.AddOrSet(key, string.Empty);
         }
 
         #endregion
 
         #region Fields
-        private readonly List<string> _primary = new List<string>();
+        private readonly List<string> _oprands = new List<string>();
         private readonly Dictionary<string, string> _options;
         #endregion
     }

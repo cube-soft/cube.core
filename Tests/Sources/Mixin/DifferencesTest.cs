@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Collections.Differences;
 using Cube.Mixin.Collections;
-using Cube.Differences;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +70,8 @@ namespace Cube.Tests.Mixin
         [TestCase(null)]
         public void Diff_OlderIsEmpty(string older)
         {
-            var dest = "empty".Diff(older).First();
+            var newer = "empty";
+            var dest  = newer.Diff(older).First();
             Assert.That(dest.Condition, Is.EqualTo(Condition.Inserted));
             Assert.That(dest.Older, Is.Null);
             Assert.That(dest.Newer, Is.EquivalentTo("empty"));
@@ -109,11 +110,9 @@ namespace Cube.Tests.Mixin
         [Test]
         public void Diff_IgnoreCase()
         {
-            var dest = "AbCdEfG".Diff(
-                "aBcDeFg",
-                (x, y) => char.ToLower(x) == char.ToLower(y),
-                Condition.DiffOnly
-            );
+            var newer = "AbCdEfG";
+            var older = "aBcDeFg";
+            var dest  = newer.Diff(older, (x, y) => char.ToLower(x) == char.ToLower(y), Condition.DiffOnly);
 
             Assert.That(dest.Count(), Is.EqualTo(0));
         }

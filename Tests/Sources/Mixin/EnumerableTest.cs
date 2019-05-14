@@ -108,7 +108,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndex_Empty()
         {
             var src = Enumerable.Empty<int>();
-            Assert.That(() => src.FirstIndex(e => e < 20), Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => src.FirstIndex(e => e < 20), Throws.InvalidOperationException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -124,7 +124,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndex_Default()
         {
             var src = default(List<int>);
-            Assert.That(() => src.FirstIndex(e => e < 20), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => src.FirstIndex(e => e < 20), Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -140,7 +140,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndex_NeverMatch()
         {
             var src = Enumerable.Range(1, 10);
-            Assert.That(() => src.FirstIndex(e => e > 100), Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => src.FirstIndex(e => e > 100), Throws.InvalidOperationException);
         }
 
         #endregion
@@ -254,10 +254,11 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void LastIndex_Empty() => Assert.That(
-            () => new List<int>().LastIndex(),
-            Throws.TypeOf<InvalidOperationException>()
-        );
+        public void LastIndex_Empty()
+        {
+            var src = Enumerable.Empty<int>();
+            Assert.That(() => src.LastIndex(), Throws.InvalidOperationException);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -272,7 +273,7 @@ namespace Cube.Tests.Mixin
         public void LastIndex_Default()
         {
             var src = default(List<int>);
-            Assert.That(() => src.LastIndex(), Throws.TypeOf<ArgumentNullException>());
+            Assert.That(() => src.LastIndex(), Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -288,7 +289,7 @@ namespace Cube.Tests.Mixin
         public void LastIndex_NeverMatch()
         {
             var src = Enumerable.Range(1, 10);
-            Assert.That(() => src.LastIndex(e => e > 100), Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => src.LastIndex(e => e > 100), Throws.InvalidOperationException);
         }
 
         #endregion

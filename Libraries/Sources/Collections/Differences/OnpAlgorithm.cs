@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Cube.Differences
+namespace Cube.Collections.Differences
 {
     /* --------------------------------------------------------------------- */
     ///

@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
-using Cube.Differences;
+using Cube.Collections.Differences;
 using System;
 using System.Collections.Generic;
 
