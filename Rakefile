@@ -21,11 +21,12 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-PROJECT     = 'Cube.Forms'
-LIB         = '../packages'
-CONFIG      = 'Release'
-BRANCHES    = ['master', 'net35']
-PLATFORMS   = ['Any CPU']
+PROJECT     = "Cube.Forms"
+MAIN        = "#{PROJECT}"
+LIB         = "../packages"
+CONFIG      = "Release"
+BRANCHES    = ["master", "net35"]
+PLATFORMS   = ["Any CPU"]
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
 
 # --------------------------------------------------------------------------- #
@@ -39,12 +40,12 @@ PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
 CLEAN.include("#{LIB}/cube.*")
-CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
+CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
 # default
 # --------------------------------------------------------------------------- #
-desc "Build the solution and create NuGet packages."
+desc "Clean, build, and create NuGet packages."
 task :default => [:clean, :build_all, :pack]
 
 # --------------------------------------------------------------------------- #
@@ -52,9 +53,7 @@ task :default => [:clean, :build_all, :pack]
 # --------------------------------------------------------------------------- #
 desc "Create NuGet packages in the net35 branch."
 task :pack do
-    sh("git checkout net35")
-    PACKAGES.each { |e| sh("#{PACK} #{e}") }
-    sh("git checkout master")
+    checkout("net35") { PACKAGES.each { |e| sh("#{PACK} #{e}") }}
 end
 
 # --------------------------------------------------------------------------- #
@@ -72,10 +71,20 @@ end
 # --------------------------------------------------------------------------- #
 desc "Build projects in pre-defined branches and platforms."
 task :build_all do
-    BRANCHES.product(PLATFORMS).each { |e|
-        sh("git checkout #{e[0]}")
-        Rake::Task[:build].reenable
-        Rake::Task[:build].invoke(e[1])
+    BRANCHES.product(PLATFORMS).each { |set|
+        checkout(set[0]) do
+            Rake::Task[:build].reenable
+            Rake::Task[:build].invoke(set[1])
+        end
     }
+end
+
+# --------------------------------------------------------------------------- #
+# checkout
+# --------------------------------------------------------------------------- #
+def checkout(branch, &callback)
+    sh("git checkout #{branch}")
+    callback.call()
+ensure
     sh("git checkout master")
 end

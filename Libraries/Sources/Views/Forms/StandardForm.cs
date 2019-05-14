@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Forms.Controls;
-using Cube.Mixin.Logger;
+using Cube.Mixin.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
