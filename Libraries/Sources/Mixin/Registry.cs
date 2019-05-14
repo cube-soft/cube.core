@@ -35,6 +35,25 @@ namespace Cube.Mixin.Registry
 
         /* ----------------------------------------------------------------- */
         ///
+        /// SetValue
+        ///
+        /// <summary>
+        /// Sets the specified value.
+        /// </summary>
+        ///
+        /// <param name="src">Root key of the target registry.</param>
+        /// <param name="subkey">Name of the registry subkey.</param>
+        /// <param name="name">Name of the setting value.</param>
+        /// <param name="value">Value to set.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SetValue<T>(this RegistryKey src, string subkey, string name, T value)
+        {
+            using (var sk = src.CreateSubKey(subkey)) sk.SetValue(name, value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetValue
         ///
         /// <summary>

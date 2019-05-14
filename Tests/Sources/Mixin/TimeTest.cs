@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.DateTime;
+using Cube.Mixin.Time;
 using NUnit.Framework;
 using System;
 
@@ -23,7 +23,7 @@ namespace Cube.Tests.Mixin
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DateTimeTest
+    /// TimeTest
     ///
     /// <summary>
     /// Tests extended methods of the DateTime and related classes.
@@ -31,7 +31,7 @@ namespace Cube.Tests.Mixin
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DateTimeTest
+    class TimeTest
     {
         #region Tests
 
