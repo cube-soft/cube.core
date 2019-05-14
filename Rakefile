@@ -21,13 +21,14 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-PROJECT     = 'Cube.FileSystem'
-LIB         = '../packages'
-CONFIG      = 'Release'
-BRANCHES    = ['master', 'net35']
-PLATFORMS   = ['Any CPU']
+PROJECT     = "Cube.FileSystem"
+MAIN        = "#{PROJECT}"
+LIB         = "../packages"
+CONFIG      = "Release"
+BRANCHES    = ["master", "net35"]
+PLATFORMS   = ["Any CPU"]
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
-TESTCASES   = {"#{PROJECT}.Tests" => 'Tests'}
+TESTCASES   = {"#{PROJECT}.Tests" => "Tests"}
 
 # --------------------------------------------------------------------------- #
 # commands
@@ -41,7 +42,7 @@ TEST  = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
 CLEAN.include("#{LIB}/cube.*")
-CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
+CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
 # default
@@ -54,9 +55,7 @@ task :default => [:clean, :build_all, :test_all, :pack]
 # --------------------------------------------------------------------------- #
 desc "Create NuGet packages in the net35 branch."
 task :pack do
-    sh("git checkout net35")
-    PACKAGES.each { |e| sh("#{PACK} #{e}") }
-    sh("git checkout master")
+    checkout("net35") { PACKAGES.each { |e| sh("#{PACK} #{e}") }}
 end
 
 # --------------------------------------------------------------------------- #
@@ -65,8 +64,8 @@ end
 desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
-    sh("nuget restore #{PROJECT}.sln")
-    sh(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
+    sh("nuget restore #{MAIN}.sln")
+    sh(%(#{BUILD} -p:Platform="#{e.platform}" #{MAIN}.sln))
 end
 
 # --------------------------------------------------------------------------- #
@@ -74,12 +73,12 @@ end
 # --------------------------------------------------------------------------- #
 desc "Build projects in pre-defined branches and platforms."
 task :build_all do
-    BRANCHES.product(PLATFORMS).each { |e|
-        sh("git checkout #{e[0]}")
-        Rake::Task[:build].reenable
-        Rake::Task[:build].invoke(e[1])
+    BRANCHES.product(PLATFORMS).each { |set|
+        checkout(set[0]) do
+            Rake::Task[:build].reenable
+            Rake::Task[:build].invoke(set[1])
+        end
     }
-    sh("git checkout master")
 end
 
 # --------------------------------------------------------------------------- #
@@ -104,9 +103,15 @@ end
 # --------------------------------------------------------------------------- #
 desc "Test projects in pre-defined branches."
 task :test_all do
-    BRANCHES.each { |e|
-        sh("git checkout #{e}")
-        Rake::Task[:test].execute
-    }
+    BRANCHES.each { |e| checkout(e) { Rake::Task[:test].execute }}
+end
+
+# --------------------------------------------------------------------------- #
+# checkout
+# --------------------------------------------------------------------------- #
+def checkout(branch, &callback)
+    sh("git checkout #{branch}")
+    callback.call()
+ensure
     sh("git checkout master")
 end
