@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Time;
 using Cube.Mixin.String;
+using Cube.Mixin.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,7 +127,7 @@ namespace Cube.Mixin.Uri
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static Source With(this Source src, System.DateTime? time) =>
+        public static Source With(this Source src, DateTime time) =>
             With(src, "ts", time.ToUnixTime());
 
         /* ----------------------------------------------------------------- */

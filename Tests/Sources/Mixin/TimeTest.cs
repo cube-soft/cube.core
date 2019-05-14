@@ -90,7 +90,7 @@ namespace Cube.Tests.Mixin
         [TestCase(2999, 12, 31, 23, 59, 59)]
         public void Convert_Unix_Utc(int y, int m, int d, int hh, int mm, int ss)
         {
-            var src  = (DateTime?)new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
+            var src  = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
             var dest = src.ToUnixTime().ToUniversalTime();
             Assert.That(dest, Is.EqualTo(src));
         }
@@ -112,7 +112,7 @@ namespace Cube.Tests.Mixin
         [TestCase(2999, 12, 31, 23, 59, 59)]
         public void Convert_Unix_Local(int y, int m, int d, int hh, int mm, int ss)
         {
-            var src  = (DateTime?)new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
+            var src  = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
             var dest = src.ToUnixTime().ToLocalTime();
             Assert.That(dest, Is.EqualTo(src));
         }
@@ -128,11 +128,10 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("2017/02/03 12:34:55", "yyyy/MM/dd HH:mm:ss", 2017, 2, 3, 12, 34, 55)]
-        [TestCase("", "", 1, 1, 1, 0, 0, 0)]
         public void Parse_UniversalTime(string src, string fmt, int y, int m, int d, int hh, int mm, int ss)
         {
             var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Utc);
-            var dest     = src.ToUniversalTime(fmt) ?? CreateMinValue(DateTimeKind.Utc);
+            var dest     = src.ToUniversalTime(fmt);
 
             Assert.That(dest.Kind, Is.EqualTo(DateTimeKind.Utc));
             Assert.That(dest,      Is.EqualTo(expected));
@@ -149,31 +148,50 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("2017/02/03 12:34:55", "yyyy/MM/dd HH:mm:ss", 2017, 2, 3, 12, 34, 55)]
-        [TestCase("", "", 1, 1, 1, 0, 0, 0)]
         public void Parse_LocalTime(string src, string fmt, int y, int m, int d, int hh, int mm, int ss)
         {
             var expected = new DateTime(y, m, d, hh, mm, ss, 0, DateTimeKind.Local);
-            var dest     = src.ToLocalTime(fmt) ?? CreateMinValue(DateTimeKind.Local);
+            var dest     = src.ToLocalTime(fmt);
 
             Assert.That(dest.Kind, Is.EqualTo(DateTimeKind.Local));
             Assert.That(dest,      Is.EqualTo(expected));
         }
 
-        #endregion
-
-        #region Others
-
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateMinValue
+        /// Parse_FormatException
         ///
         /// <summary>
-        /// Creates a new instance of the DateTime class with the specified
-        /// kind.
+        /// Tests the ToUniversalTime and ToLocalTime methods with the
+        /// empty string.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private DateTime CreateMinValue(DateTimeKind kind) => new DateTime(1, 1, 1, 0, 0, 0, kind);
+        [TestCase("2017/02/03 12:34:55", "")]
+        [TestCase("", "yyyy/MM/dd HH:mm:ss")]
+        public void Parse_FormatException(string src, string fmt)
+        {
+            Assert.That(() => src.ToUniversalTime(fmt), Throws.TypeOf<FormatException>());
+            Assert.That(() => src.ToLocalTime(fmt),     Throws.TypeOf<FormatException>());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_ArgumentNullException
+        ///
+        /// <summary>
+        /// Tests the ToUniversalTime and ToLocalTime methods with the
+        /// null string.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("2017/02/03 12:34:55", default(string))]
+        [TestCase(default(string), "yyyy/MM/dd HH:mm:ss")]
+        public void Parse_ArgumentNullException(string src, string fmt)
+        {
+            Assert.That(() => src.ToUniversalTime(fmt), Throws.ArgumentNullException);
+            Assert.That(() => src.ToLocalTime(fmt),     Throws.ArgumentNullException);
+        }
 
         #endregion
     }

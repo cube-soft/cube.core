@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
 using System;
-using System.Diagnostics;
 
 namespace Cube.Mixin.Time
 {
@@ -49,10 +47,10 @@ namespace Cube.Mixin.Time
         /// <returns>Converted UNIX time.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static long ToUnixTime(this DateTime? src)
+        public static long ToUnixTime(this DateTime src)
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return (long)(src?.ToUniversalTime().Subtract(epoch).TotalSeconds ?? 0.0);
+            return (long)src.ToUniversalTime().Subtract(epoch).TotalSeconds;
         }
 
         #endregion
@@ -72,7 +70,7 @@ namespace Cube.Mixin.Time
         /// <returns>Converted object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime? ToUniversalTime(this long unix) =>
+        public static DateTime ToUniversalTime(this long unix) =>
             new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unix);
 
         /* ----------------------------------------------------------------- */
@@ -93,7 +91,7 @@ namespace Cube.Mixin.Time
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime? ToUniversalTime(this int unix) => ToUniversalTime((uint)unix);
+        public static DateTime ToUniversalTime(this int unix) => ToUniversalTime((uint)unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,9 +108,8 @@ namespace Cube.Mixin.Time
         /// <returns>DateTime object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime? ToUniversalTime(this string src, string format)
+        public static DateTime ToUniversalTime(this string src, string format)
         {
-            if (!src.HasValue()) return default;
             var dest = DateTime.ParseExact(src, format,
                            System.Globalization.DateTimeFormatInfo.InvariantInfo,
                            System.Globalization.DateTimeStyles.AssumeUniversal |
@@ -138,12 +135,7 @@ namespace Cube.Mixin.Time
         /// <returns>Converted object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime? ToLocalTime(this long unix)
-        {
-            var dest = ToUniversalTime(unix);
-            Debug.Assert(dest.HasValue);
-            return dest.Value.ToLocalTime();
-        }
+        public static DateTime ToLocalTime(this long unix) => unix.ToUniversalTime().ToLocalTime();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -163,7 +155,7 @@ namespace Cube.Mixin.Time
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime? ToLocalTime(this int unix) => ToLocalTime((uint)unix);
+        public static DateTime ToLocalTime(this int unix) => ToLocalTime((uint)unix);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -180,9 +172,8 @@ namespace Cube.Mixin.Time
         /// <returns>DateTime object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static DateTime? ToLocalTime(this string src, string format)
+        public static DateTime ToLocalTime(this string src, string format)
         {
-            if (!src.HasValue()) return default;
             var dest = DateTime.ParseExact(src, format,
                            System.Globalization.DateTimeFormatInfo.InvariantInfo,
                            System.Globalization.DateTimeStyles.AssumeLocal
