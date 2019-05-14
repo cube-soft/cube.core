@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Command;
+using Cube.Mixin.Commands;
 using NUnit.Framework;
 
 namespace Cube.Xui.Tests

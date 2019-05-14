@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Generics;
-using Cube.Mixin.Logger;
+using Cube.Mixin.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;

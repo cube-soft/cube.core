@@ -15,18 +15,16 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Windows;
-using System.Windows.Threading;
+using System.Windows.Input;
 
-namespace Cube.Mixin.Logger
+namespace Cube.Mixin.Commands
 {
     /* --------------------------------------------------------------------- */
     ///
     /// XuiExtension
     ///
     /// <summary>
-    /// Provides extended methods of the Logger class.
+    /// Provides extended methods of the ICommand interface.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -36,56 +34,35 @@ namespace Cube.Mixin.Logger
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ObserveUiException
+        /// Execute
         ///
         /// <summary>
-        /// Monitors UnhandledException and outputs to the log.
+        /// Execute the command without any parameters.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
-        ///
-        /// <returns>Object to dispose.</returns>
+        /// <param name="src">Command object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static IDisposable ObserveUiException(this Application src)
-        {
-            if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
-            AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
-
-            return Disposable.Create(() =>
-            {
-                if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
-                AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
-            });
-        }
-
-        #endregion
-
-        #region Implementations
+        public static void Execute(this ICommand src) => src?.Execute(null);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenDispatcherError
+        /// CanExecute
         ///
         /// <summary>
-        /// Executes when a DispatcherUnhandledException occurs.
+        /// Returns a value that determines the specified command
+        /// can be executed with any parameters.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
-            s.LogError(e.Exception);
-
-        /* ----------------------------------------------------------------- */
+        /// <param name="src">Command object.</param>
         ///
-        /// WhenDomainError
-        ///
-        /// <summary>
-        /// Executes when an UnhandledException occurs.
-        /// </summary>
+        /// <returns>
+        /// false for the specified object is null; otherwise, returns the
+        /// result of ICommand.CanExecute(null).
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-            Cube.Logger.Error(typeof(AppDomain), e.ExceptionObject as Exception);
+        public static bool CanExecute(this ICommand src) => src?.CanExecute(null) ?? false;
 
         #endregion
     }

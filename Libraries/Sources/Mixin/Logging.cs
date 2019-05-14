@@ -15,90 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
+using System;
+using System.Windows;
+using System.Windows.Threading;
 
-namespace Cube.Xui.Tests
+namespace Cube.Mixin.Logging
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableTest
+    /// XuiExtension
     ///
     /// <summary>
-    /// Represents tests of the Bindable class.
+    /// Provides extended methods of the Logger class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class BindableTest
+    public static class XuiExtension
     {
-        #region Tests
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set
+        /// ObserveUiException
         ///
         /// <summary>
-        /// Executes the test to set value.
+        /// Monitors UnhandledException and outputs to the log.
+        /// </summary>
+        ///
+        /// <param name="src">Target object.</param>
+        ///
+        /// <returns>Object to dispose.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IDisposable ObserveUiException(this Application src)
+        {
+            if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
+            AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
+
+            return Disposable.Create(() =>
+            {
+                if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
+                AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
+            });
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenDispatcherError
+        ///
+        /// <summary>
+        /// Executes when a DispatcherUnhandledException occurs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Set()
-        {
-            var n   = 5;
-            var src = new Bindable<int>(() => n, e => { n = e; return true; }, Dispatcher.Vanilla);
-
-            Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(5));
-            src.Value = 10;
-            Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(10));
-        }
+        private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
+            s.LogError(e.Exception);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set_InvalidOperationException
+        /// WhenDomainError
         ///
         /// <summary>
-        /// Confirms the behavior when setting value without any setter
-        /// functions.
+        /// Executes when an UnhandledException occurs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Set_InvalidOperationException()
-        {
-            var src = new Bindable<int>(() => 8, Dispatcher.Vanilla);
-
-            Assert.That(src.Value, Is.EqualTo(8));
-            Assert.That(() => src.Value = 7, Throws.InvalidOperationException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Refresh
-        ///
-        /// <summary>
-        /// Confirms the behavior of the PropertyChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Refresh()
-        {
-            var src = new Bindable<Person>(Dispatcher.Vanilla);
-
-            var count = 0;
-            src.PropertyChanged += (s, e) => ++count;
-            var value = new Person();
-            src.Value = value;
-
-            value.Name = "Jack";
-            value.Age  = 20;
-            src.Refresh();
-            Assert.That(count, Is.EqualTo(2));
-
-            src.Value = value;
-            Assert.That(count, Is.EqualTo(2));
-        }
+        private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
+            Cube.Logger.Error(typeof(AppDomain), e.ExceptionObject as Exception);
 
         #endregion
     }

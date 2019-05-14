@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Command;
+using Cube.Mixin.Commands;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
