@@ -49,10 +49,7 @@ namespace Cube
         {
             _context = new PowerModeContext(PowerModes.Resume);
             _context.PropertyChanged += WhenPropertyChanged;
-            _initializer = new OnceInitializer(
-                () => SystemEvents.PowerModeChanged += WhenModeChanged,
-                () => SystemEvents.PowerModeChanged -= WhenModeChanged
-            );
+            SystemEvents.PowerModeChanged += WhenModeChanged;
         }
 
         #endregion
@@ -83,8 +80,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IDisposable Subscribe(Action callback) =>
-            _subscription.Subscribe(callback);
+        public static IDisposable Subscribe(Action callback) => _subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -142,7 +138,6 @@ namespace Cube
         #endregion
 
         #region Fields
-        private static readonly OnceInitializer _initializer;
         private static readonly Subscription<Action> _subscription = new Subscription<Action>();
         private static PowerModeContext _context;
         #endregion
