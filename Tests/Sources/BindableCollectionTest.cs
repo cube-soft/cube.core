@@ -68,8 +68,7 @@ namespace Cube.Xui.Tests
                 var count = 0;
                 src.CollectionChanged += (s, e) => ++count;
 
-                var tasks = new List<Task>();
-                foreach (var item in Create()) tasks.Add(Task.Run(() => src.Add(item)));
+                var tasks = Create().Select(e => Task.Run(() => src.Add(e)));
                 Task.WaitAll(tasks.ToArray());
 
                 Assert.That(src.Count, Is.EqualTo(4));
@@ -94,8 +93,7 @@ namespace Cube.Xui.Tests
                 var count = 0;
                 src.CollectionChanged += (s, e) => ++count;
 
-                var tasks = new List<Task>();
-                4.Times(() => tasks.Add(Task.Run(() => src.RemoveAt(0))));
+                var tasks = 4.Make(i => Task.Run(() => src.RemoveAt(0)));
                 Task.WaitAll(tasks.ToArray());
 
                 Assert.That(src.Count, Is.EqualTo(0));
