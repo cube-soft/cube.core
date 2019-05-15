@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.Mixin.Registry;
 using Microsoft.Win32;
 using NUnit.Framework;
 using System;
@@ -86,33 +87,15 @@ namespace Cube.Tests
                 Assert.That(k.GetValue("ID"),       Is.EqualTo(123));
                 Assert.That(k.GetValue("Secret"),   Is.Null);
 
-                using (var sk = k.OpenSubKey("Contact", false))
-                {
-                    Assert.That(sk.GetValue("Type"),  Is.EqualTo("Phone"));
-                    Assert.That(sk.GetValue("Value"), Is.EqualTo("080-9876-5432"));
-                }
-
-                using (var sk = k.OpenSubKey("Others", false))
-                {
-                    using (var ssk = sk.OpenSubKey("0", false))
-                    {
-                        Assert.That(ssk.GetValue("Type"),  Is.EqualTo("PC"));
-                        Assert.That(ssk.GetValue("Value"), Is.EqualTo("pc@example.com"));
-                    }
-
-                    using (var ssk = sk.OpenSubKey("1", false))
-                    {
-                        Assert.That(ssk.GetValue("Type"),  Is.EqualTo("Mobile"));
-                        Assert.That(ssk.GetValue("Value"), Is.EqualTo("mobile@example.com"));
-                    }
-                }
-
-                using (var sk = k.OpenSubKey("Messages", false))
-                {
-                    using (var ssk = sk.OpenSubKey("0", false)) Assert.That(ssk.GetValue(""), Is.EqualTo("1st message"));
-                    using (var ssk = sk.OpenSubKey("1", false)) Assert.That(ssk.GetValue(""), Is.EqualTo("2nd message"));
-                    using (var ssk = sk.OpenSubKey("2", false)) Assert.That(ssk.GetValue(""), Is.EqualTo("3rd message"));
-                }
+                Assert.That(k.GetValue<string>(@"Contact", "Type"),   Is.EqualTo("Phone"));
+                Assert.That(k.GetValue<string>(@"Contact", "Value"),  Is.EqualTo("080-9876-5432"));
+                Assert.That(k.GetValue<string>(@"Others\0", "Type"),  Is.EqualTo("PC"));
+                Assert.That(k.GetValue<string>(@"Others\0", "Value"), Is.EqualTo("pc@example.com"));
+                Assert.That(k.GetValue<string>(@"Others\1", "Type"),  Is.EqualTo("Mobile"));
+                Assert.That(k.GetValue<string>(@"Others\1", "Value"), Is.EqualTo("mobile@example.com"));
+                Assert.That(k.GetValue<string>(@"Messages\0", ""),    Is.EqualTo("1st message"));
+                Assert.That(k.GetValue<string>(@"Messages\1", ""),    Is.EqualTo("2nd message"));
+                Assert.That(k.GetValue<string>(@"Messages\2", ""),    Is.EqualTo("3rd message"));
             }
         }
 

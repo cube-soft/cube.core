@@ -21,40 +21,34 @@ namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceInitializer
+    /// DisposableOnceAction
     ///
     /// <summary>
-    /// Provides functionality to initialize and destroy an object
-    /// only once.
+    /// Provides functionality to invoke the provided action only once.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class OnceInitializer : DisposableBase
+    public sealed class DisposableOnceAction : DisposableBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnceInitializer
+        /// DisposableOnceAction
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>OnceInitializer</c>
+        /// Initializes a new instance of the DisposableOnceAction
         /// with the specified actions.
         /// </summary>
         ///
-        /// <param name="initialize">
-        /// Action when the Invoke method is invoked.
-        /// </param>
-        ///
-        /// <param name="dispose">
-        /// Action when the Dispose method is invoked.
-        /// </param>
+        /// <param name="action">Action to be invoked.</param>
+        /// <param name="dispose">Action to be invoked when disposing.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceInitializer(Action initialize, Action dispose)
+        public DisposableOnceAction(Action action, Action<bool> dispose)
         {
-            _initializer = new OnceAction(initialize);
-            _disposer    = dispose;
+            _action  = new OnceAction(action);
+            _dispose = dispose ?? throw new ArgumentNullException(nameof(dispose));
         }
 
         #endregion
@@ -66,12 +60,29 @@ namespace Cube
         /// Invoked
         ///
         /// <summary>
-        /// Gets the value indicating whether the Invoke method has been
+        /// Gets a value indicating whether the provided action has been
         /// already invoked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Invoked => _initializer.Invoked;
+        public bool Invoked => _action.Invoked;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IgnoreTwice
+        ///
+        /// <summary>
+        /// Gets or sets a value indicating whether to ignore the second
+        /// or later call. If set to false, TwiceException will be thrown
+        /// on the second or later.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IgnoreTwice
+        {
+            get => _action.IgnoreTwice;
+            set => _action.IgnoreTwice = value;
+        }
 
         #endregion
 
@@ -79,17 +90,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnceInitializer
+        /// Invoke
         ///
         /// <summary>
-        /// Invokes the action that is specified at construction.
+        /// Invokes the provided action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public void Invoke()
         {
-            if (Disposed) throw new ObjectDisposedException(GetType().Name);
-            if (!_initializer.Invoked) _initializer.Invoke();
+            if (!Disposed) _action.Invoke();
+            else throw new ObjectDisposedException(GetType().Name);
         }
 
         /* ----------------------------------------------------------------- */
@@ -107,13 +118,13 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) => _disposer?.Invoke();
+        protected override void Dispose(bool disposing) => _dispose(disposing);
 
         #endregion
 
         #region Fields
-        private readonly OnceAction _initializer;
-        private readonly Action _disposer;
+        private readonly OnceAction _action;
+        private readonly Action<bool> _dispose;
         #endregion
     }
 }

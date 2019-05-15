@@ -20,6 +20,8 @@ using System.Threading;
 
 namespace Cube
 {
+    #region OnceAction
+
     /* --------------------------------------------------------------------- */
     ///
     /// OnceAction
@@ -29,10 +31,8 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OnceAction
+    public sealed class OnceAction : Once<Action>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnceAction
@@ -45,47 +45,7 @@ namespace Cube
         /// <param name="action">Action that is invoked once.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceAction(Action action)
-        {
-            _action = action ?? throw new ArgumentNullException(nameof(action));
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IgnoreTwice
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether to ignore the second
-        /// action.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// false に設定した場合、2 回目以降の実行時に TwiceException が
-        /// 送出されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool IgnoreTwice { get; set; } = true;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoked
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the provided action has been
-        /// already invoked.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Invoked => _action == null;
-
-        #endregion
-
-        #region Methods
+        public OnceAction(Action action) : base(action) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -96,27 +56,12 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke()
-        {
-            if (!Invoked)
-            {
-                var dest = Interlocked.Exchange(ref _action, null);
-                if (dest != null)
-                {
-                    dest();
-                    return;
-                }
-            }
-
-            if (!IgnoreTwice) throw new TwiceException();
-        }
-
-        #endregion
-
-        #region Fields
-        private Action _action;
-        #endregion
+        public void Invoke() => Invoke(e => e());
     }
+
+    #endregion
+
+    #region OnceAction<T>
 
     /* --------------------------------------------------------------------- */
     ///
@@ -128,10 +73,8 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OnceAction<T>
+    public sealed class OnceAction<T> : Once<Action<T>>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnceAction
@@ -144,47 +87,7 @@ namespace Cube
         /// <param name="action">Action that is invoked once.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceAction(Action<T> action)
-        {
-            _action = action ?? throw new ArgumentNullException(nameof(action));
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IgnoreTwice
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether to ignore the second
-        /// action.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// false に設定した場合、2 回目以降の実行時に TwiceException が
-        /// 送出されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool IgnoreTwice { get; set; } = true;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoked
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the provided action has been
-        /// already invoked.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Invoked => _action == null;
-
-        #endregion
-
-        #region Methods
+        public OnceAction(Action<T> action) : base(action) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -197,16 +100,95 @@ namespace Cube
         /// <param name="obj">Arguments of the action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke(T obj)
+        public void Invoke(T obj) => Invoke(e => e(obj));
+    }
+
+    #endregion
+
+    #region Once<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Once(T)
+    ///
+    /// <summary>
+    /// Represents the base class of OnceAction classes.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public abstract class Once<T> where T : class
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Once
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Once class with the specified
+        /// value.
+        /// </summary>
+        ///
+        /// <param name="value">Value that is invoked once.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Once(T value)
+        {
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IgnoreTwice
+        ///
+        /// <summary>
+        /// Gets or sets a value indicating whether to ignore the second
+        /// or later call. If set to false, TwiceException will be thrown
+        /// on the second or later.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool IgnoreTwice { get; set; } = true;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoked
+        ///
+        /// <summary>
+        /// Gets a value indicating whether the provided action has been
+        /// already invoked.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Invoked => _value == null;
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Gets the provided value and invokes the specified callback.
+        /// </summary>
+        ///
+        /// <param name="action">
+        /// Action to be invoked only in the first call.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Invoke(Action<T> action)
         {
             if (!Invoked)
             {
-                var dest = Interlocked.Exchange(ref _action, null);
-                if (dest != null)
-                {
-                    dest(obj);
-                    return;
-                }
+                var obj = Interlocked.Exchange(ref _value, null);
+                if (obj != null) { action(obj); return; }
             }
 
             if (!IgnoreTwice) throw new TwiceException();
@@ -215,7 +197,9 @@ namespace Cube
         #endregion
 
         #region Fields
-        private Action<T> _action;
+        private T _value;
         #endregion
     }
+
+    #endregion
 }

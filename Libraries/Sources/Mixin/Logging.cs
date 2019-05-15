@@ -17,9 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Runtime.CompilerServices;
-using Source = Cube.Logger;
 
-namespace Cube.Mixin.Logger
+namespace Cube.Mixin.Logging
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -49,7 +48,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, params string[] values) =>
-            Source.Debug(src.GetType(), values);
+            Logger.Debug(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -64,7 +63,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, Exception error) =>
-            Source.Debug(src.GetType(), error);
+            Logger.Debug(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -83,7 +82,7 @@ namespace Cube.Mixin.Logger
         /* ----------------------------------------------------------------- */
         public static U LogDebug<T, U>(this T src, Func<U> func,
             [CallerMemberName] string message = null) =>
-            Source.Debug(src.GetType(), func, message);
+            Logger.Debug(src.GetType(), func, message);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,7 +99,7 @@ namespace Cube.Mixin.Logger
         /* ----------------------------------------------------------------- */
         public static void LogDebug<T>(this T src, Action action,
             [CallerMemberName] string message = null) =>
-            Source.Debug(src.GetType(), action, message);
+            Logger.Debug(src.GetType(), action, message);
 
         #endregion
 
@@ -119,7 +118,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, params string[] values) =>
-            Source.Info(src.GetType(), values);
+            Logger.Info(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -134,7 +133,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, Exception error) =>
-            Source.Info(src.GetType(), error);
+            Logger.Info(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -149,7 +148,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogInfo<T>(this T src, System.Reflection.Assembly assembly) =>
-            Source.Info(src.GetType(), assembly);
+            Logger.Info(src.GetType(), assembly);
 
         #endregion
 
@@ -168,7 +167,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, params string[] values) =>
-            Source.Warn(src.GetType(), values);
+            Logger.Warn(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -183,7 +182,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, Exception error) =>
-            Source.Warn(src.GetType(), error);
+            Logger.Warn(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -220,7 +219,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static U LogWarn<T, U>(this T src, Func<U> func, U error) =>
-            Source.Warn(src.GetType(), func, error);
+            Logger.Warn(src.GetType(), func, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -235,7 +234,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogWarn<T>(this T src, Action action) =>
-            Source.Warn(src.GetType(), action);
+            Logger.Warn(src.GetType(), action);
 
         #endregion
 
@@ -254,7 +253,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, params string[] values) =>
-            Source.Error(src.GetType(), values);
+            Logger.Error(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -269,7 +268,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, Exception error) =>
-            Source.Error(src.GetType(), error);
+            Logger.Error(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -306,7 +305,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static U LogError<T, U>(this T src, Func<U> func, U error) =>
-            Source.Error(src.GetType(), func, error);
+            Logger.Error(src.GetType(), func, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -321,7 +320,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogError<T>(this T src, Action action) =>
-            Source.Error(src.GetType(), action);
+            Logger.Error(src.GetType(), action);
 
         #endregion
 
@@ -340,7 +339,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, params string[] values) =>
-            Source.Fatal(src.GetType(), values);
+            Logger.Fatal(src.GetType(), values);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -355,7 +354,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, Exception error) =>
-            Source.Fatal(src.GetType(), error);
+            Logger.Fatal(src.GetType(), error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -392,7 +391,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static U LogFatal<T, U>(this T src, Func<U> func, U error) =>
-            Source.Fatal(src.GetType(), func, error);
+            Logger.Fatal(src.GetType(), func, error);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -407,7 +406,7 @@ namespace Cube.Mixin.Logger
         ///
         /* ----------------------------------------------------------------- */
         public static void LogFatal<T>(this T src, Action action) =>
-            Source.Fatal(src.GetType(), action);
+            Logger.Fatal(src.GetType(), action);
 
         #endregion
 

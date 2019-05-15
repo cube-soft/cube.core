@@ -15,10 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logger;
+using Cube.Mixin.Logging;
 using System;
 using System.Threading.Tasks;
-using Source = System.Threading.Tasks.Task;
 
 namespace Cube.Mixin.Tasks
 {
@@ -46,7 +45,7 @@ namespace Cube.Mixin.Tasks
         /// <param name="src">Source object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public static void Forget(this Source src) => src.ContinueWith(e =>
+        public static void Forget(this Task src) => src.ContinueWith(e =>
         {
             e.LogWarn(e.Exception.ToString());
         }, TaskContinuationOptions.OnlyOnFaulted);
@@ -65,7 +64,7 @@ namespace Cube.Mixin.Tasks
         /// <returns>Task object.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public static async Source Timeout(this Source src, TimeSpan value)
+        public static async Task Timeout(this Task src, TimeSpan value)
         {
             var timeout = TaskEx.Delay(value);
             var dest = await TaskEx.WhenAny(src, timeout).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Cube.Mixin.Tasks
         /* --------------------------------------------------------------------- */
         public static async Task<T> Timeout<T>(this Task<T> src, TimeSpan value)
         {
-            await ((Source)src).Timeout(value).ConfigureAwait(false);
+            await ((Task)src).Timeout(value).ConfigureAwait(false);
             return await src.ConfigureAwait(false);
         }
 

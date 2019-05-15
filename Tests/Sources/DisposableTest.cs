@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -43,15 +44,54 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Dispose()
+        public void Create_Disposable()
         {
-            var dest = 0;
-            var src  = Disposable.Create(() => dest++);
+            var n   = 0;
+            var src = Disposable.Create(() => n++);
 
             src.Dispose();
-            Assert.That(dest, Is.EqualTo(1));
-            Assert.DoesNotThrow(() => src.Dispose());
-            Assert.That(dest, Is.EqualTo(1));
+            Assert.That(n, Is.EqualTo(1));
+            src.Dispose(); // ignore
+            Assert.That(n, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_DisposableOnceAction
+        ///
+        /// <summary>
+        /// Tests the DisposableOnceAction class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_DisposableOnceAction()
+        {
+            var n   = 0;
+            var src = new DisposableOnceAction(() => n++, e => n--);
+
+            Assert.That(src.IgnoreTwice, Is.True);
+            Assert.That(src.Invoked, Is.False);
+            Assert.That(src.Disposed, Is.False);
+
+            src.Invoke();
+            Assert.That(src.Invoked, Is.True);
+            Assert.That(n, Is.EqualTo(1));
+
+            src.Invoke(); // ignore
+            Assert.That(n, Is.EqualTo(1));
+
+            src.IgnoreTwice = false;
+            Assert.That(() => src.Invoke(), Throws.TypeOf<TwiceException>());
+            Assert.That(n, Is.EqualTo(1));
+
+            src.Dispose();
+            Assert.That(src.Disposed, Is.True);
+            Assert.That(n, Is.EqualTo(0));
+
+            src.Dispose(); // ignore
+            src.IgnoreTwice = true;
+            Assert.That(() => src.Invoke(), Throws.TypeOf<ObjectDisposedException>());
         }
 
         /* ----------------------------------------------------------------- */
@@ -59,7 +99,7 @@ namespace Cube.Tests
         /// Create_ArgumentNullException
         ///
         /// <summary>
-        /// Tests the Disposable.Create method with the null object.
+        /// Tests the creating methods with the null object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -67,6 +107,8 @@ namespace Cube.Tests
         public void Create_ArgumentNullException()
         {
             Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
+            Assert.That(() => new DisposableOnceAction(null, e => { }), Throws.ArgumentNullException);
+            Assert.That(() => new DisposableOnceAction(() => { }, null), Throws.ArgumentNullException);
         }
 
         #endregion

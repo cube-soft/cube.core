@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.Mixin.Registry;
 using Cube.Net35;
 using Microsoft.Win32;
 using NUnit.Framework;
@@ -127,15 +128,15 @@ namespace Cube.Tests
 
                 using (var sk = k.CreateSubKey(nameof(Person.Others)))
                 {
-                    using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
-                    using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
+                    sk.SetValue("0", "PC", "pc@example.com");
+                    sk.SetValue("1", "Mobile", "mobile@example.com");
                 }
 
                 using (var sk = k.CreateSubKey(nameof(Person.Messages)))
                 {
-                    using (var ssk = sk.CreateSubKey("0")) ssk.SetValue("", "1st message");
-                    using (var ssk = sk.CreateSubKey("1")) ssk.SetValue("", "2nd message");
-                    using (var ssk = sk.CreateSubKey("2")) ssk.SetValue("", "3rd message");
+                    sk.SetValue("0", "", "1st message");
+                    sk.SetValue("1", "", "2nd message");
+                    sk.SetValue("2", "", "3rd message");
                 }
             }
         }
