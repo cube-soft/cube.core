@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
+using Cube.Mixin.Collections;
 using Cube.Mixin.String;
 using System.Collections.Generic;
 using System.Linq;
@@ -489,7 +490,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private string Combine(PathKind kind, string[] parts)
         {
-            var dest = string.Join(SeparatorChar.ToString(), parts);
+            var dest = parts.Join(SeparatorChar.ToString());
             var head = kind == PathKind.Inactivation && AllowInactivation ? InactivationSymbol :
                        kind == PathKind.Unc && GetAllowUnc() ? UncSymbol :
                        string.Empty;

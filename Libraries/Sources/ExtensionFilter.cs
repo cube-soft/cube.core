@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
+using Cube.Mixin.Collections;
 using Cube.Mixin.String;
 using System;
 using System.Collections.Generic;
@@ -135,10 +136,9 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public override string ToString()
         {
-            var e0 = Targets.Select(e => $"*{e}");
-            var s0 = string.Join(", ", e0.ToArray());
-            var e1 = e0.Select(e => Format(e));
-            var s1 = string.Join(";", e1.ToArray());
+            var src = Targets.Select(e => $"*{e}");
+            var s0  = src.Join(", ");
+            var s1  = src.Join(";", e => Format(e));
 
             return $"{Text} ({s0})|{s1}";
         }
