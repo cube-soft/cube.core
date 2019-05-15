@@ -311,7 +311,9 @@ namespace Cube.Mixin.Collections
         ///
         /* ----------------------------------------------------------------- */
         public static string Join(this IEnumerable<string> src, string separator) =>
-            src.Aggregate((x, y) => x + separator + y);
+            src.Any() ?
+            src.Aggregate((x, y) => x + separator + y) :
+            string.Empty;
 
         #endregion
 
