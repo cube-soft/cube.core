@@ -255,7 +255,7 @@ namespace Cube.FileSystem
             if (e.OldValue != null) e.OldValue.PropertyChanged -= WhenChanged;
             if (e.NewValue != null) e.NewValue.PropertyChanged += WhenChanged;
             Value = e.NewValue;
-            Loaded?.Invoke(this, e);
+            if (Loaded != null) Dispatcher.Invoke(() => Loaded(this, e));
         }
 
         #endregion
@@ -286,7 +286,7 @@ namespace Cube.FileSystem
         {
             if (e.Key == Format.Registry) e.Key.Serialize(e.Value, Value);
             else IO.Save(e.Value, ss => e.Key.Serialize(ss, Value));
-            Saved?.Invoke(this, e);
+            if (Saved != null) Dispatcher.Invoke(() => Saved(this, e));
         }
 
         #endregion
