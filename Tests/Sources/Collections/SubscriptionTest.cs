@@ -18,7 +18,6 @@
 using Cube.Collections;
 using NUnit.Framework;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cube.Tests
@@ -42,7 +41,7 @@ namespace Cube.Tests
         /// Subscribe
         ///
         /// <summary>
-        /// Executes the test for registering and removing subscription.
+        /// Tests to subscribe and clear the subscription.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,7 +52,7 @@ namespace Cube.Tests
             {
                 var n = 0;
 
-                Parallel.ForEach(Enumerable.Range(0, 10), i =>
+                Parallel.For(0, 10, i =>
                 {
                     var dispose = src.Subscribe(() => ++n);
                     dispose.Dispose();

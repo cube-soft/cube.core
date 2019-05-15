@@ -15,8 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.Mixin.Iteration
 {
@@ -32,6 +33,22 @@ namespace Cube.Mixin.Iteration
     public static class Extension
     {
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Make
+        ///
+        /// <summary>
+        /// Makes the specified number of sequence with the specified
+        /// function.
+        /// </summary>
+        ///
+        /// <param name="n">Number of sequence.</param>
+        /// <param name="func">Function to create an element.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> Make<T>(this int n, Func<int, T> func) =>
+            Enumerable.Range(0, n).Select(i => func(i));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -59,12 +76,11 @@ namespace Cube.Mixin.Iteration
         /// until the action succeeds.
         /// </summary>
         ///
-        /// <param name="src">Source object.</param>
         /// <param name="n">Number of trials.</param>
         /// <param name="action">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Try<T>(this T src, int n, Action action) => src.Try(n, z => action());
+        public static bool Try(this int n, Action<int> action) => n.Try(action, new List<Exception>());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -75,22 +91,19 @@ namespace Cube.Mixin.Iteration
         /// until the action succeeds.
         /// </summary>
         ///
-        /// <param name="src">Source object.</param>
         /// <param name="n">Number of trials.</param>
         /// <param name="action">User action.</param>
+        /// <param name="errors">Collection to store exceptions.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Try<T>(this T src, int n, Action<int> action)
+        public static bool Try(this int n, Action<int> action, ICollection<Exception> errors)
         {
             for (var i = 0; i < n; ++i)
             {
-                try { action(i); return; }
-                catch (Exception err)
-                {
-                    src.LogWarn($"{err.Message} ({i + 1}/{n})");
-                    if (i + 1 >= n) throw;
-                }
+                try { action(i); return true; }
+                catch (Exception err) { errors.Add(err); }
             }
+            return false;
         }
 
         #endregion
