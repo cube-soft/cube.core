@@ -45,12 +45,12 @@ namespace Cube.Tests.Mixin
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("http://www.cube-soft.jp/1.html",  ExpectedResult = "http://www.cube-soft.jp/1.html")]
+        [TestCase("http://www.cube-soft.jp/1.html", ExpectedResult = "http://www.cube-soft.jp/1.html")]
         [TestCase("https://www.cube-soft.jp/2.html", ExpectedResult = "https://www.cube-soft.jp/2.html")]
-        [TestCase("www.cube-soft.jp/3.html",         ExpectedResult = "http://www.cube-soft.jp/3.html")]
-        [TestCase("//www.cube-soft.jp/4.html",       ExpectedResult = "http://www.cube-soft.jp/4.html")]
-        [TestCase("/5.html",                         ExpectedResult = "http://localhost/5.html")]
-        [TestCase("",                                ExpectedResult = "")]
+        [TestCase("www.cube-soft.jp/3.html", ExpectedResult = "http://www.cube-soft.jp/3.html")]
+        [TestCase("//www.cube-soft.jp/4.html", ExpectedResult = "http://www.cube-soft.jp/4.html")]
+        [TestCase("/5.html", ExpectedResult = "http://localhost/5.html")]
+        [TestCase("", ExpectedResult = "")]
         public string ToUri(string src) => src.ToUri()?.ToString() ?? string.Empty;
 
         /* ----------------------------------------------------------------- */
@@ -65,11 +65,12 @@ namespace Cube.Tests.Mixin
         [TestCase("string", "value")]
         [TestCase("int", 5)]
         [TestCase("double", 3.14)]
-        public void With_Value<T>(string key, T value) =>
-            Assert.That(
-                Create().With(key, value).ToString,
-                Is.EqualTo($"{Create()}?{key}={value}")
-            );
+        public void With_Value<T>(string key, T value)
+        {
+            var dest = $"{Create()}?{key}={value}";
+            var src  = Create().With(key, value);
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -81,11 +82,35 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(2015, 3, 19, 14, 57, 57, 1426777077)]
-        public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix) =>
-            Assert.That(
-                Create().With(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc)).ToString(),
-                Is.EqualTo($"{Create()}?ts={unix}")
-            );
+        public void With_DateTime(int y, int m, int d, int hh, int mm, int ss, long unix)
+        {
+            var dest = $"{Create()}?ts={unix}";
+            var src  = Create().With(new DateTime(y, m, d, hh, mm, ss, DateTimeKind.Utc));
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With_Query
+        ///
+        /// <summary>
+        /// Tests the With extended method with the specified dictionary.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Query()
+        {
+            var dest = $"{Create()}?key1=value1&key2=value2&key3=value3";
+            var src  = Create().With(new Dictionary<string, string>
+            {
+                { "key1", "value1" },
+                { "key2", "value2" },
+                { "key3", "value3" },
+            });
+
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -97,11 +122,12 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void With_MultiQuery() =>
-            Assert.That(
-                Create().With("key1", "value1").With("key2", "value2").ToString(),
-                Is.EqualTo($"{Create()}?key1=value1&key2=value2")
-            );
+        public void With_MultiQuery()
+        {
+            var dest = $"{Create()}?key1=value1&key2=value2";
+            var src  = Create().With("key1", "value1").With("key2", "value2");
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -129,16 +155,18 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void With_SoftwareVersion() =>
-            Assert.That(
-                Create().With(new SoftwareVersion
-                {
-                    Number = new Version(1, 2, 0, 0),
-                    Digit  = 2,
-                    Suffix = "beta"
-                }).ToString(),
-                Is.EqualTo($"{Create()}?ver=1.2beta")
-            );
+        public void With_SoftwareVersion()
+        {
+            var dest = $"{Create()}?ver=1.2beta";
+            var src  = Create().With(new SoftwareVersion
+            {
+                Number = new Version(1, 2, 0, 0),
+                Digit = 2,
+                Suffix = "beta"
+            });
+
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -150,18 +178,20 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void With_Utm() =>
-            Assert.That(
-                Create().With(new Utm
-                {
-                    Source   = "cube",
-                    Medium   = "tests",
-                    Campaign = "january",
-                    Term     = "dummy",
-                    Content = "content"
-                }).ToString(),
-                Is.EqualTo($"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content")
-            );
+        public void With_Utm()
+        {
+            var dest = $"{Create()}?utm_source=cube&utm_medium=tests&utm_campaign=january&utm_term=dummy&utm_content=content";
+            var src  = Create().With(new Utm
+            {
+                Source   = "cube",
+                Medium   = "tests",
+                Campaign = "january",
+                Term     = "dummy",
+                Content  = "content"
+            });
+
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -173,11 +203,12 @@ namespace Cube.Tests.Mixin
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void With_Utm_Null() =>
-            Assert.That(
-                Create().With(default(Utm)),
-                Is.EqualTo(Create())
-            );
+        public void With_Utm_Null()
+        {
+            var dest = Create();
+            var src  = Create().With(default(Utm));
+            Assert.That(src, Is.EqualTo(dest));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -193,9 +224,9 @@ namespace Cube.Tests.Mixin
         [TestCase("http://www.example.net")]
         public void WithoutQuery(string url)
         {
-            var src = new Uri(url);
-            var expected = new Uri($"{src.Scheme}://{src.Host}{src.AbsolutePath}");
-            Assert.That(src.WithoutQuery(), Is.EqualTo(expected));
+            var src  = new Uri(url);
+            var dest = new Uri($"{src.Scheme}://{src.Host}{src.AbsolutePath}");
+            Assert.That(src.WithoutQuery(), Is.EqualTo(dest));
         }
 
         #endregion

@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Assembly;
+using Cube.Mixin.Collections;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -443,7 +444,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private static string GetMessage(string[] values) =>
             values.Length == 1 ? values[0] :
-            values.Length >  1 ? string.Join(Separator, values) : string.Empty;
+            values.Length >  1 ? values.Join(Separator) : string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///

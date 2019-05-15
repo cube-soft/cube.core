@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Collections;
 using Cube.Mixin.String;
 using Cube.Mixin.Time;
 using System;
@@ -83,7 +84,7 @@ namespace Cube.Mixin.Uri
             if (src == null || query == null || query.Count <= 0) return src;
 
             var dest = new UriBuilder(src);
-            var str  = string.Join("&", query.Select(x => $"{x.Key}={x.Value}").ToArray());
+            var str  = query.Join("&", e => $"{e.Key}={e.Value}");
             dest.Query = dest.Query.Length > 1 ?
                          $"{dest.Query.Substring(1)}&{str}" :
                          str;

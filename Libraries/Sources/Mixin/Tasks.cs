@@ -45,10 +45,8 @@ namespace Cube.Mixin.Tasks
         /// <param name="src">Source object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public static void Forget(this Task src) => src.ContinueWith(e =>
-        {
-            e.LogWarn(e.Exception.ToString());
-        }, TaskContinuationOptions.OnlyOnFaulted);
+        public static void Forget(this Task src) =>
+            src.ContinueWith(e => e.LogWarn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
 
         /* --------------------------------------------------------------------- */
         ///
