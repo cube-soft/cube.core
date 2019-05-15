@@ -42,7 +42,7 @@ TEST  = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
 # --------------------------------------------------------------------------- #
 CLEAN.include("#{PROJECT}.*.nupkg")
 CLEAN.include("#{LIB}/cube.*")
-CLEAN.include(['bin', 'obj'].map{ |e| "**/#{e}" })
+CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
 
 # --------------------------------------------------------------------------- #
 # default

@@ -45,20 +45,6 @@ namespace Cube.Mixin.Iteration
         /// <param name="action">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Times(this int n, Action action) => Times(n, z => action());
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Times
-        ///
-        /// <summary>
-        /// Executes the specified action in the specified number of times.
-        /// </summary>
-        ///
-        /// <param name="n">Number of times.</param>
-        /// <param name="action">User action.</param>
-        ///
-        /* ----------------------------------------------------------------- */
         public static void Times(this int n, Action<int> action)
         {
             for (var i = 0; i < n; ++i) action(i);

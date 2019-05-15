@@ -306,7 +306,16 @@ namespace Cube.Collections
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) { /* TODO */ }
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            _creating.Clear();
+            if (_disposer != null)
+            {
+                foreach (var kv in _created) _disposer(kv.Key, kv.Value);
+            }
+            _created.Clear();
+        }
 
         /* ----------------------------------------------------------------- */
         ///

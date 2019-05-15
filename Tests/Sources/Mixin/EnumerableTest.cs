@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Collections;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -446,6 +445,25 @@ namespace Cube.Tests.Mixin
             Assert.That(src.Count(),           Is.EqualTo(0));
             Assert.That(src.Compact().Count(), Is.EqualTo(0));
         }
+
+        #endregion
+
+        #region Join
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Join
+        ///
+        /// <summary>
+        /// Tests the Join extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(0, ExpectedResult = "")]
+        [TestCase(1, ExpectedResult = "k0=v0")]
+        [TestCase(2, ExpectedResult = "k0=v0&k1=v1")]
+        [TestCase(3, ExpectedResult = "k0=v0&k1=v1&k2=v2")]
+        public string Join(int n) => Enumerable.Range(0, n).Join("&", i => $"k{i}=v{i}");
 
         #endregion
 

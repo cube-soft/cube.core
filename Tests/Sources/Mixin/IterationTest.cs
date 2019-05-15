@@ -47,26 +47,9 @@ namespace Cube.Tests.Mixin
         [Test]
         public void Times()
         {
-            var actual = 0;
-            10.Times(() => actual++);
-            Assert.That(actual, Is.EqualTo(10));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Times_WithIndex
-        ///
-        /// <summary>
-        /// Executes the test of Times extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times_WithIndex()
-        {
-            var actual = 0;
-            10.Times(i => actual += i);
-            Assert.That(actual, Is.EqualTo(45));
+            var dest = 0;
+            10.Times(i => dest += i);
+            Assert.That(dest, Is.EqualTo(45));
         }
 
         /* ----------------------------------------------------------------- */

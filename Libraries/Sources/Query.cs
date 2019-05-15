@@ -20,7 +20,7 @@ using System.Threading;
 
 namespace Cube
 {
-    #region Query(T)
+    #region Query<T>
 
     /* --------------------------------------------------------------------- */
     ///
@@ -67,10 +67,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Query()
-        {
-            _context = SynchronizationContext.Current;
-        }
+        public Query() { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -113,13 +110,9 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void OnRequested(QueryEventArgs<T> e)
+        protected virtual void OnRequested(QueryEventArgs<T> e)
         {
-            if (Requested != null)
-            {
-                if (_context != null) _context.Send(z => Requested(this, e), null);
-                else Requested(this, e);
-            }
+            if (Requested != null) _dispatcher.Invoke(() => Requested(this, e));
             else e.Cancel = true;
         }
 
@@ -135,24 +128,19 @@ namespace Cube
         /// Invokes the request with the specified arguments.
         /// </summary>
         ///
-        /// <remarks>
-        /// 問い合わせの結果が無効な場合、Cancel プロパティが true に
-        /// 設定されます。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         public void Request(QueryEventArgs<T> value) => OnRequested(value);
 
         #endregion
 
         #region Fields
-        private readonly SynchronizationContext _context;
+        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
         #endregion
     }
 
     #endregion
 
-    #region Query(T, U)
+    #region Query<T, U>
 
     /* --------------------------------------------------------------------- */
     ///
@@ -204,10 +192,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Query()
-        {
-            _context = SynchronizationContext.Current;
-        }
+        public Query() { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -252,11 +237,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public virtual void OnRequested(QueryEventArgs<T, U> e)
         {
-            if (Requested != null)
-            {
-                if (_context != null) _context.Send(z => Requested(this, e), null);
-                else Requested(this, e);
-            }
+            if (Requested != null) _dispatcher.Invoke(() => Requested(this, e));
             else e.Cancel = true;
         }
 
@@ -283,7 +264,39 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly SynchronizationContext _context;
+        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
+        #endregion
+    }
+
+    #endregion
+
+    #region QueryDispatcher
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryDispatcher
+    ///
+    /// <summary>
+    /// Provides functionality to create a dispatcher.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal static class QueryDispatcher
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the IDispatcher implemented class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IDispatcher Create() =>
+            SynchronizationContext.Current != null ? new Dispatcher(true) : Dispatcher.Vanilla;
+
         #endregion
     }
 
