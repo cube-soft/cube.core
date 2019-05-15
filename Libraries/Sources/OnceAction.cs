@@ -178,21 +178,17 @@ namespace Cube
         /// Gets the provided value and invokes the specified callback.
         /// </summary>
         ///
-        /// <param name="callback">
+        /// <param name="action">
         /// Action to be invoked only in the first call.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Invoke(Action<T> callback)
+        protected void Invoke(Action<T> action)
         {
             if (!Invoked)
             {
                 var obj = Interlocked.Exchange(ref _value, null);
-                if (obj != null)
-                {
-                    callback(obj);
-                    return;
-                }
+                if (obj != null) { action(obj); return; }
             }
 
             if (!IgnoreTwice) throw new TwiceException();
