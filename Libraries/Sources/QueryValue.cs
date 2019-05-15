@@ -87,7 +87,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private Query<T> _query;
+        private readonly Query<T> _query;
         #endregion
     }
 
@@ -161,7 +161,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private Query<T, U> _query;
+        private readonly Query<T, U> _query;
         #endregion
     }
 }

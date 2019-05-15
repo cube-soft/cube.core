@@ -35,7 +35,7 @@ namespace Cube.Tests
     {
         #region Tests
 
-        #region Query(T, U)
+        #region Query<T, U>
 
         /* ----------------------------------------------------------------- */
         ///
@@ -95,7 +95,7 @@ namespace Cube.Tests
 
         #endregion
 
-        #region Query(T)
+        #region Query<T>
 
         /* ----------------------------------------------------------------- */
         ///
@@ -176,22 +176,24 @@ namespace Cube.Tests
         {
             get
             {
-                yield return new TestCaseData(0,
+                var n = 0;
+
+                yield return new TestCaseData(n++,
                     new List<string> { "first", "second", "success" },
                     new SynchronizationContext()
                 ).Returns(true);
 
-                yield return new TestCaseData(1,
+                yield return new TestCaseData(n++,
                     new List<string> { "first", "second", "success" },
                     new SynchronizationContext()
                 ).Returns(true);
 
-                yield return new TestCaseData(2,
+                yield return new TestCaseData(n++,
                     new List<string> { "first", "failed" },
                     default(SynchronizationContext)
                 ).Returns(false);
 
-                yield return new TestCaseData(3,
+                yield return new TestCaseData(n++,
                     new List<string> { "first", "failed" },
                     default(SynchronizationContext)
                 ).Returns(false);
