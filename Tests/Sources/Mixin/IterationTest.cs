@@ -18,6 +18,8 @@
 using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cube.Tests.Mixin
 {
@@ -37,10 +39,28 @@ namespace Cube.Tests.Mixin
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Make
+        ///
+        /// <summary>
+        /// Tests the Make extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Make()
+        {
+            var src = 10.Make(i => i * 2);
+            Assert.That(src.Count(), Is.EqualTo(10));
+            Assert.That(src.First(), Is.EqualTo(0));
+            Assert.That(src.Last(),  Is.EqualTo(18));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Times
         ///
         /// <summary>
-        /// Executes the test of Times extended method.
+        /// Tests the Times extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -57,7 +77,7 @@ namespace Cube.Tests.Mixin
         /// Try
         ///
         /// <summary>
-        /// Executes the test of Try extended method.
+        /// Tests the Try extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -65,29 +85,26 @@ namespace Cube.Tests.Mixin
         public void Try()
         {
             var n = 0;
-            this.Try(10, () => ThrowIfOdd(++n));
+            Assert.That(10.Try(i => ThrowIfOdd(++n)), Is.True);
             Assert.That(n, Is.EqualTo(2));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Try_Throws
+        /// Try_False
         ///
         /// <summary>
-        /// Executes the test of Try extended method.
+        /// Tests the Try extended method with the function that always
+        /// fails.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Try_Throws()
+        public void Try_False()
         {
-            var n = 0;
-            Assert.That(
-                () => this.Try(10, () => { ++n; ThrowIfOdd(1); }),
-                Throws.TypeOf<ArgumentException>()
-                      .And.Message.EqualTo("Odd number")
-            );
-            Assert.That(n, Is.EqualTo(10));
+            var errors = new List<Exception>();
+            Assert.That(10.Try(i =>ThrowIfOdd(1), errors), Is.False);
+            Assert.That(errors.Count, Is.EqualTo(10));
         }
 
         #endregion

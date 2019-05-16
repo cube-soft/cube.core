@@ -44,7 +44,7 @@ namespace Cube.Mixin.Registry
         /// <param name="src">Root key of the target registry.</param>
         /// <param name="subkey">Name of the registry subkey.</param>
         /// <param name="name">Name of the setting value.</param>
-        /// <param name="value">Value to set.</param>
+        /// <param name="value">Value to be set.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void SetValue<T>(this RegistryKey src, string subkey, string name, T value)
@@ -82,7 +82,7 @@ namespace Cube.Mixin.Registry
         /// <param name="subkey">Name of the registry subkey.</param>
         /// <param name="name">Name of the getting value.</param>
         /// <param name="defaultValue">
-        /// Default value to be used when it fails.
+        /// Value to be used when the specified subkey or name does not exist.
         /// </param>
         ///
         /// <returns>Value of type T.</returns>
@@ -92,8 +92,9 @@ namespace Cube.Mixin.Registry
         {
             using (var sk = src.OpenSubKey(subkey, false))
             {
-                if (sk == null) return defaultValue;
-                return sk.GetValue(name, defaultValue).TryCast(defaultValue);
+                return sk != null ?
+                       sk.GetValue(name, defaultValue).TryCast(defaultValue) :
+                       defaultValue;
             }
         }
 
