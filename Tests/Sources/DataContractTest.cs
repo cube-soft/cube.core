@@ -16,11 +16,13 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract;
+using Cube.Mixin.Iteration;
 using Cube.Mixin.Registry;
 using Microsoft.Win32;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Cube.Tests
 {
@@ -138,21 +140,7 @@ namespace Cube.Tests
             var src  = Person.CreateDummy();
 
             Format.Registry.Serialize(name, src);
-
-            src.Messages = new[]
-            {
-                " 1st change",
-                " 2nd change",
-                " 3rd change",
-                " 4th change",
-                " 5th change",
-                " 6th change",
-                " 7th change",
-                " 8th change",
-                " 9th change",
-                "10th change",
-            };
-
+            src.Messages = 10.Make(i => $"{i}th message").ToArray();
             Format.Registry.Serialize(name, src);
 
             var dest = Format.Registry.Deserialize<Person>(name);
