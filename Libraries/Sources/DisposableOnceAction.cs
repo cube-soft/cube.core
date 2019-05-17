@@ -47,8 +47,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public DisposableOnceAction(Action action, Action<bool> dispose)
         {
-            _action  = new OnceAction(action);
             _dispose = dispose ?? throw new ArgumentNullException(nameof(dispose));
+            _action  = new OnceAction(action);
         }
 
         #endregion
