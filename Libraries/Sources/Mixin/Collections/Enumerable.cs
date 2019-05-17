@@ -65,6 +65,65 @@ namespace Cube.Mixin.Collections
         /* ----------------------------------------------------------------- */
         public static IEnumerable<T> Compact<T>(this IEnumerable<T> src) => src.OfType<T>();
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Concat
+        ///
+        /// <summary>
+        /// Concats the specified items to the specified source sequence.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        /// <param name="items">Items to be added.</param>
+        ///
+        /// <returns>Merged sequence.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> src, params T[] items) =>
+            src.Concat(items.AsEnumerable());
+
+        #region Join
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Join
+        ///
+        /// <summary>
+        /// Concats the specified sequence with the specified separator.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        /// <param name="separator">Concat separator.</param>
+        /// <param name="formatter">Function to convert to string.</param>
+        ///
+        /// <returns>Concat string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Join<T>(this IEnumerable<T> src, string separator, Func<T, string> formatter) =>
+            src.Select(e => formatter(e)).Join(separator);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Join
+        ///
+        /// <summary>
+        /// Concats the specified string sequence with the specified
+        /// separator.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        /// <param name="separator">Concat separator.</param>
+        ///
+        /// <returns>Concat string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string Join(this IEnumerable<string> src, string separator) =>
+            src.Any() ?
+            src.Aggregate((x, y) => x + separator + y) :
+            string.Empty;
+
+        #endregion
+
         #region FirstIndex
 
         /* ----------------------------------------------------------------- */
@@ -272,48 +331,6 @@ namespace Cube.Mixin.Collections
                 src.Where(e => func(e, src) != null)
                    .SelectMany(e => func(e, src).Flatten(func))
             );
-
-        #endregion
-
-        #region Join
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Join
-        ///
-        /// <summary>
-        /// Concats the specified sequence with the specified separator.
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="separator">Concat separator.</param>
-        /// <param name="formatter">Function to convert to string.</param>
-        ///
-        /// <returns>Concat string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Join<T>(this IEnumerable<T> src, string separator, Func<T, string> formatter) =>
-            src.Select(e => formatter(e)).Join(separator);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Join
-        ///
-        /// <summary>
-        /// Concats the specified string sequence with the specified
-        /// separator.
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="separator">Concat separator.</param>
-        ///
-        /// <returns>Concat string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Join(this IEnumerable<string> src, string separator) =>
-            src.Any() ?
-            src.Aggregate((x, y) => x + separator + y) :
-            string.Empty;
 
         #endregion
 
