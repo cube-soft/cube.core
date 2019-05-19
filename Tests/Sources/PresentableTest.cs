@@ -68,16 +68,22 @@ namespace Cube.Tests
         public void Send()
         {
             var n = 0;
+            void action(int i) => ++n;
+
             using (var src = new Presenter(new SynchronizationContext()))
             {
-                using (src.Subscribe<int>(e => ++n))
+                using (src.Subscribe<int>(action))
+                using (src.Subscribe<int>(action))
                 {
                     5.Times(i => src.TestSend<int>());
-                    Assert.That(n, Is.EqualTo(5));
+                    Assert.That(n, Is.EqualTo(10));
+
+                    5.Times(i => src.TestSend<long>());
+                    Assert.That(n, Is.EqualTo(10));
                 }
 
                 5.Times(i => src.TestSend<int>());
-                Assert.That(n, Is.EqualTo(5));
+                Assert.That(n, Is.EqualTo(10));
             }
         }
 
