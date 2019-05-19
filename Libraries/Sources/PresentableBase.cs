@@ -321,9 +321,11 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Func<Exception, ExceptionMessage> converter) =>
-            Task.Run(() => action())
-                .ContinueWith(e => Send(converter(e.Exception)), TaskContinuationOptions.OnlyOnFaulted);
+        protected Task Track(Action action, Func<Exception, ExceptionMessage> converter) => Task.Run(() =>
+        {
+            try { action(); }
+            catch (Exception err) { Send(converter(err)); }
+        });
 
         #endregion
 
