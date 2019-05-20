@@ -28,7 +28,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessengerBehavior<TViewModel>
+    public class ShowBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
         where TView : Window, new()
     {
         /* ----------------------------------------------------------------- */
@@ -57,7 +57,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> : MessengerBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
         where TView : Window, new()
     {
         /* ----------------------------------------------------------------- */

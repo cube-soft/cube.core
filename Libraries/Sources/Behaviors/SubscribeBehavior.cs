@@ -24,14 +24,15 @@ namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MessengerBehavior(T)
+    /// SubscribeBehavior(T)
     ///
     /// <summary>
-    /// Represents the behavior that communicates with a ViewModel object.
+    /// Represents the behavior that communicates with a presentable
+    /// object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessengerBehavior<T> : Behavior<FrameworkElement>
+    public abstract class SubscribeBehavior<T> : Behavior<FrameworkElement>
     {
         #region Methods
 
@@ -64,7 +65,7 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            Register();
+            Subscribe();
             AssociatedObject.DataContextChanged -= WhenDataContextChanged;
             AssociatedObject.DataContextChanged += WhenDataContextChanged;
         }
@@ -82,26 +83,26 @@ namespace Cube.Xui.Behaviors
         protected override void OnDetaching()
         {
             AssociatedObject.DataContextChanged -= WhenDataContextChanged;
-            _registry?.Dispose();
+            _subscriber?.Dispose();
             base.OnDetaching();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Register
+        /// Subscribe
         ///
         /// <summary>
-        /// Registers the action that is defined by inherited classes.
+        /// Subscribes the action that is defined by inherited classes.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Register()
+        private void Subscribe()
         {
-            _registry?.Dispose();
-            _registry = AssociatedObject
-                        .DataContext
-                        .TryCast<IMessengerRegistrar>()?
-                        .Register<T>(AssociatedObject, e => Invoke(e));
+            _subscriber?.Dispose();
+            _subscriber = AssociatedObject
+                .DataContext
+                .TryCast<IPresentable>()?
+                .Subscribe<T>(e => Invoke(e));
         }
 
         /* ----------------------------------------------------------------- */
@@ -114,12 +115,12 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Register();
+        private void WhenDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Subscribe();
 
         #endregion
 
         #region Fields
-        private IDisposable _registry;
+        private IDisposable _subscriber;
         #endregion
     }
 }

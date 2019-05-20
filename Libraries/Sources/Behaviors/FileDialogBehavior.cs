@@ -29,7 +29,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileDialogBehavior : MessengerBehavior<OpenFileMessage>
+    public class OpenFileDialogBehavior : SubscribeBehavior<OpenFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -74,7 +74,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileDialogBehavior : MessengerBehavior<SaveFileMessage>
+    public class SaveFileDialogBehavior : SubscribeBehavior<SaveFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///

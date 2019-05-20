@@ -29,7 +29,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DirectoryDialogBehavior : MessengerBehavior<OpenDirectoryMessage>
+    public class DirectoryDialogBehavior : SubscribeBehavior<OpenDirectoryMessage>
     {
         /* ----------------------------------------------------------------- */
         ///

@@ -31,7 +31,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseBehavior : MessengerBehavior<CloseMessage>
+    public class CloseBehavior : SubscribeBehavior<CloseMessage>
     {
         #region Implementations
 

@@ -28,7 +28,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpdateSourceBehavior : MessengerBehavior<UpdateSourcesMessage>
+    public class UpdateSourceBehavior : SubscribeBehavior<UpdateSourcesMessage>
     {
         /* ----------------------------------------------------------------- */
         ///

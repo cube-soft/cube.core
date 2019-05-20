@@ -29,7 +29,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UriBehavior : MessengerBehavior<Uri>
+    public class UriBehavior : SubscribeBehavior<Uri>
     {
         /* ----------------------------------------------------------------- */
         ///

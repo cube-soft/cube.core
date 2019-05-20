@@ -47,7 +47,7 @@ namespace Cube.Xui.Tests.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create() => Assert.DoesNotThrow(() =>
+        public void Create()
         {
             using (var vm = new MockViewModel())
             {
@@ -57,7 +57,7 @@ namespace Cube.Xui.Tests.Behaviors
                 src.Attach(view);
                 src.Detach();
             }
-        });
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -70,14 +70,33 @@ namespace Cube.Xui.Tests.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_WithoutVM() => Assert.DoesNotThrow(() =>
+        public void Create_WithoutVM()
         {
             var view = new Window();
             var src  = new CloseBehavior();
 
             src.Attach(view);
             src.Detach();
-        });
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MockViewModel
+        ///
+        /// <summary>
+        /// Represents the mock viewmodel.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private class MockViewModel : PresentableBase
+        {
+            public MockViewModel() : base(new Aggregator(), new SynchronizationContext()) { }
+            protected override void Dispose(bool disposing) { }
+        }
 
         #endregion
     }

@@ -28,7 +28,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogBehavior : MessengerBehavior<DialogMessage>
+    public class DialogBehavior : SubscribeBehavior<DialogMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
