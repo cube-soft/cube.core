@@ -385,7 +385,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Func<Exception, ExceptionMessage> converter) => Task.Run(() =>
+        protected Task Track(Action action, Func<Exception, DialogMessage> converter) => Task.Run(() =>
         {
             try { action(); }
             catch (Exception err) { Send(converter(err)); }
@@ -407,11 +407,13 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private ExceptionMessage Convert(Exception src) => new ExceptionMessage
+        private DialogMessage Convert(Exception src) => new DialogMessage
         {
-            Title = "Error",
-            Text  = $"{src.Message} ({src.GetType().Name})",
-            Value = src,
+            Title   = "Error",
+            Value   = $"{src.Message} ({src.GetType().Name})",
+            Icon    = DialogIcon.Error,
+            Buttons = DialogButtons.Ok,
+            Result  = DialogResult.Ok,
         };
 
         /* ----------------------------------------------------------------- */

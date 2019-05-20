@@ -19,6 +19,8 @@ using System;
 
 namespace Cube
 {
+    #region Message
+
     /* --------------------------------------------------------------------- */
     ///
     /// Message
@@ -28,7 +30,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Message<T>
+    public class Message<TValue>
     {
         #region Properties
 
@@ -41,41 +43,78 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Text
-        ///
-        /// <summary>
-        /// Gets or sets the text.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Text { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Value
         ///
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets the user defined value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public T Value { get; set; }
+        public TValue Value { get; set; }
 
         #endregion
     }
 
+    #endregion
+
+    #region CallbackMessage<T>
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ExceptionMessage
+    /// CallbackMessage
     ///
     /// <summary>
-    /// Represents the message that has an exception.
+    /// Represents the message that has a callback function.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ExceptionMessage : Message<Exception> { }
+    public class CallbackMessage<TValue, TAction> : Message<TValue> where TAction : Delegate
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Callback
+        ///
+        /// <summary>
+        /// Gets or sets the callback function that is invoked by a view.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TAction Callback { get; set; }
+    }
+
+    #endregion
+
+    #region CloseMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CloseMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when closing a window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class CloseMessage { }
+
+    #endregion
+
+    #region UpdateSourcesMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// UpdateSourcesMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when updating source values.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class UpdateSourcesMessage { }
+
+    #endregion
 }
