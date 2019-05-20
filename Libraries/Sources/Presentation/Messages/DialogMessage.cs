@@ -143,6 +143,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public enum DialogStatus
     {
+        /// <summary>The message box returns no result.</summary>
+        None = 0,
         /// <summary>The result value of the message box is OK.</summary>
         Ok = 1,
         /// <summary>The result value of the message box is Cancel.</summary>
