@@ -130,36 +130,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// イベント集約用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// Controls に登録されている IControl オブジェクトに対して、
-        /// 再帰的に設定します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IAggregator Aggregator
-        {
-            get => _aggregator;
-            set
-            {
-                if (_aggregator == value) return;
-                _aggregator = value;
-                foreach (var obj in Controls)
-                {
-                    if (obj is IControl c) c.Aggregator = value;
-                }
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ShortcutKeys
         ///
         /// <summary>
@@ -505,7 +475,6 @@ namespace Cube.Forms
         #region Fields
         private double _dpi = BaseDpi;
         private Cube.Ipc.IMessenger<IEnumerable<string>> _activator;
-        private IAggregator _aggregator;
         private IDisposable _remover;
         private bool _disposed = false;
         #endregion

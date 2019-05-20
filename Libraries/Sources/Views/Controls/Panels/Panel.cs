@@ -37,36 +37,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// イベント集約用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// Controls に登録されている IControl オブジェクトに対して、
-        /// 再帰的に設定します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IAggregator Aggregator
-        {
-            get => _aggregator;
-            set
-            {
-                if (_aggregator == value) return;
-                _aggregator = value;
-                foreach (var obj in Controls)
-                {
-                    if (obj is IControl c) c.Aggregator = value;
-                }
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dpi
         ///
         /// <summary>
@@ -181,7 +151,6 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private IAggregator _aggregator;
         private double _dpi = StandardForm.BaseDpi;
         #endregion
     }

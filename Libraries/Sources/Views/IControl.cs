@@ -29,6 +29,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
+    [Obsolete("The interface will be removed in the future version.")]
     public interface IControl : IDpiAwarable
     {
         #region Properties
@@ -110,17 +111,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         System.Windows.Forms.Padding Padding { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// イベント集約用オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        IAggregator Aggregator { get; set; }
 
         #endregion
 

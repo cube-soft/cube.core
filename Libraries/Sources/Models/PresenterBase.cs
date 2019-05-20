@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Cube.Forms
 {
@@ -30,7 +29,8 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresenterBase<TView> : DisposableBase
+    [Obsolete("The class and inherited classes will be removed in Cube.Forms 1.17.0")]
+    public abstract class PresenterBase<TView> : PresentableBase
     {
         #region Constructors
 
@@ -59,7 +59,7 @@ namespace Cube.Forms
         /// <param name="ea">イベント集約オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, IAggregator ea) :
+        protected PresenterBase(TView view, Aggregator ea) :
             this(view, ea, SynchronizationContext.Current) { }
 
         /* ----------------------------------------------------------------- */
@@ -71,16 +71,12 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <param name="view">View オブジェクト</param>
-        /// <param name="ea">イベント集約オブジェクト</param>
+        /// <param name="aggregator">イベント集約オブジェクト</param>
         /// <param name="context">同期コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, IAggregator ea, SynchronizationContext context)
-        {
-            View       = view;
-            Aggregator = ea;
-            Context    = context;
-        }
+        protected PresenterBase(TView view, Aggregator aggregator, SynchronizationContext context) :
+            base (aggregator, context) { View = view; }
 
         #endregion
 
@@ -97,122 +93,9 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public TView View { get; protected set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// イベント集約オブジェクトを取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IAggregator Aggregator { get; protected set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Context
-        ///
-        /// <summary>
-        /// オブジェクト初期化時のコンテキストを取得します。
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public SynchronizationContext Context { get; }
-
         #endregion
 
         #region Methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Async
-        ///
-        /// <summary>
-        /// 各種操作を非同期で実行します。
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// 非同期で実行する <c>Action</c> オブジェクト
-        /// </param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Task Async(Action action) => Task.Run(() => action());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Async
-        ///
-        /// <summary>
-        /// 各種操作を非同期で実行します。
-        /// </summary>
-        ///
-        /// <param name="func">
-        /// 非同期で実行する <c>Func(TResult)</c> オブジェクト
-        /// </param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Task<TResult> Async<TResult>(Func<TResult> func) => Task.Run(() => func());
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Sync
-        ///
-        /// <summary>
-        /// オブジェクト初期化時のスレッド上で各種操作を実行します。
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// 同期コンテキスト上で実行する <c>Action</c> オブジェクト
-        /// </param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public void Sync(Action action)
-        {
-            if (Context != null) Context.Post(_ => action(), null);
-            else action();
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// SyncWait
-        ///
-        /// <summary>
-        /// オブジェクト初期化時のスレッド上で各種操作を実行し、
-        /// 実行が完了するまで待機します。
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// 同期コンテキスト上で実行する <c>Action</c> オブジェクト
-        /// </param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public void SyncWait(Action action)
-        {
-            if (Context != null) Context.Send(_ => action(), null);
-            else action();
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// SyncWait
-        ///
-        /// <summary>
-        /// オブジェクト初期化時のスレッド上で各種操作を実行し、
-        /// 実行が完了するまで待機します。
-        /// </summary>
-        ///
-        /// <param name="func">
-        /// 同期コンテキスト上で実行する <c>Func(TResult)</c> オブジェクト
-        /// </param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public TResult SyncWait<TResult>(Func<TResult> func)
-        {
-            var result = default(TResult);
-            if (Context != null) Context.Send(_ => { result = func(); }, null);
-            else result = func();
-            return result;
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -271,7 +154,7 @@ namespace Cube.Forms
         /// <param name="ea">イベント集約オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, IAggregator ea) : base(view, ea)
+        protected PresenterBase(TView view, TModel model, Aggregator ea) : base(view, ea)
         {
             Model = model;
         }
@@ -290,11 +173,8 @@ namespace Cube.Forms
         /// <param name="context">同期コンテキスト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, IAggregator ea,
-            SynchronizationContext context) : base(view, ea, context)
-        {
-            Model = model;
-        }
+        protected PresenterBase(TView view, TModel model, Aggregator ea, SynchronizationContext context) :
+            base(view, ea, context) { Model = model; }
 
         #endregion
 
@@ -341,10 +221,8 @@ namespace Cube.Forms
         /// <param name="settings">Settings オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, TSettings settings) : base(view, model)
-        {
-            Settings = settings;
-        }
+        protected PresenterBase(TView view, TModel model, TSettings settings) :
+            base(view, model) { Settings = settings; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -360,10 +238,8 @@ namespace Cube.Forms
         /// <param name="ea">イベント集約オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresenterBase(TView view, TModel model, TSettings settings, IAggregator ea) : base(view, model, ea)
-        {
-            Settings = settings;
-        }
+        protected PresenterBase(TView view, TModel model, TSettings settings, Aggregator ea) :
+            base(view, model, ea) { Settings = settings; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -381,10 +257,8 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected PresenterBase(TView view, TModel model, TSettings settings,
-            IAggregator ea, SynchronizationContext context) : base(view, model, ea, context)
-        {
-            Settings = settings;
-        }
+            Aggregator ea, SynchronizationContext context) :
+            base(view, model, ea, context) { Settings = settings; }
 
         #endregion
 
