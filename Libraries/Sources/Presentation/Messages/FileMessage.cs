@@ -38,7 +38,7 @@ namespace Cube
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Result
+        /// Status
         ///
         /// <summary>
         /// Gets or sets a value indicating whether the user clicks the
@@ -46,7 +46,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Result { get; set; }
+        public bool Status { get; set; }
     }
 
     #endregion

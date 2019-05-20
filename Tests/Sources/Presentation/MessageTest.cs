@@ -52,7 +52,7 @@ namespace Cube.Tests
             Assert.That(src.Callback, Is.Null);
             Assert.That(src.Icon,     Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons,  Is.EqualTo(DialogButtons.Ok));
-            Assert.That(src.Result,   Is.EqualTo(DialogResult.Ok));
+            Assert.That(src.Status,   Is.EqualTo(DialogStatus.Ok));
 
             void callback(DialogMessage e) { Assert.That(e, Is.EqualTo(src)); }
             src.Callback = callback;
@@ -79,7 +79,7 @@ namespace Cube.Tests
             Assert.That(src.Filter,            Is.EqualTo("All Files (*.*)|*.*"));
             Assert.That(src.CheckPathExists,   Is.True);
             Assert.That(src.Multiselect,       Is.False);
-            Assert.That(src.Result,            Is.False);
+            Assert.That(src.Status,            Is.False);
 
             void callback(OpenFileMessage e) { Assert.That(e, Is.EqualTo(src)); }
             src.Callback = callback;
@@ -106,7 +106,7 @@ namespace Cube.Tests
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
             Assert.That(src.CheckPathExists,  Is.False);
             Assert.That(src.OverwritePrompt,  Is.True);
-            Assert.That(src.Result,           Is.False);
+            Assert.That(src.Status,           Is.False);
 
             void callback(SaveFileMessage e) { Assert.That(e, Is.EqualTo(src)); }
             src.Callback = callback;
@@ -130,7 +130,7 @@ namespace Cube.Tests
             Assert.That(src.Value,     Is.Empty);
             Assert.That(src.Callback,  Is.Null);
             Assert.That(src.NewButton, Is.True);
-            Assert.That(src.Result,    Is.False);
+            Assert.That(src.Status,    Is.False);
 
             void callback(OpenDirectoryMessage e) { Assert.That(e, Is.EqualTo(src)); }
             src.Callback = callback;
