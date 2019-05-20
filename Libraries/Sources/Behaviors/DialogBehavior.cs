@@ -44,9 +44,9 @@ namespace Cube.Xui.Behaviors
         {
             var icon    = Icons[e.Icon];
             var buttons = Buttons[e.Buttons];
-            var raw     = MessageBox.Show(e.Value, e.Title, buttons, icon);
+            var status  = MessageBox.Show(e.Value, e.Title, buttons, icon);
 
-            e.Result = Results.ContainsKey(raw) ? Results[raw] : DialogResult.Cancel;
+            e.Status = Results.ContainsKey(status) ? Results[status] : DialogStatus.None;
             e.Callback?.Invoke(e);
         }
 
@@ -95,13 +95,14 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<MessageBoxResult, DialogResult> Results { get; } =
-            new Dictionary<MessageBoxResult, DialogResult>
+        private static Dictionary<MessageBoxResult, DialogStatus> Results { get; } =
+            new Dictionary<MessageBoxResult, DialogStatus>
             {
-                { MessageBoxResult.OK,     DialogResult.Ok },
-                { MessageBoxResult.Cancel, DialogResult.Cancel },
-                { MessageBoxResult.Yes,    DialogResult.Yes },
-                { MessageBoxResult.No,     DialogResult.No },
+                { MessageBoxResult.None,   DialogStatus.None   },
+                { MessageBoxResult.OK,     DialogStatus.Ok     },
+                { MessageBoxResult.Cancel, DialogStatus.Cancel },
+                { MessageBoxResult.Yes,    DialogStatus.Yes    },
+                { MessageBoxResult.No,     DialogStatus.No     },
             };
     }
 }

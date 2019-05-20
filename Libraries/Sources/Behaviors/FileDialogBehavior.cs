@@ -54,8 +54,8 @@ namespace Cube.Xui.Behaviors
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
-            e.Result = dialog.ShowDialog() ?? false;
-            if (e.Result) e.Value = dialog.FileNames;
+            e.Status = dialog.ShowDialog() ?? false;
+            if (e.Status) e.Value = dialog.FileNames;
             e.Callback?.Invoke(e);
         }
     }
@@ -93,8 +93,8 @@ namespace Cube.Xui.Behaviors
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
-            e.Result = dialog.ShowDialog() ?? false;
-            if (e.Result) e.Value = dialog.FileName;
+            e.Status = dialog.ShowDialog() ?? false;
+            if (e.Status) e.Value = dialog.FileName;
             e.Callback?.Invoke(e);
         }
     }

@@ -47,8 +47,8 @@ namespace Cube.Xui.Behaviors
             if (e.Title.HasValue()) dialog.Description = e.Title;
             if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
 
-            e.Result = dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK;
-            if (e.Result) e.Value = dialog.SelectedPath;
+            e.Status = dialog.ShowDialog() == DialogResult.OK;
+            if (e.Status) e.Value = dialog.SelectedPath;
             e.Callback?.Invoke(e);
         }
     }
