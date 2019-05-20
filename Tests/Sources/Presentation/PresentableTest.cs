@@ -109,7 +109,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Post
+        /// Track
         ///
         /// <summary>
         /// Tests the Track method.
@@ -119,17 +119,20 @@ namespace Cube.Tests
         [Test]
         public void Track()
         {
-            var dest = default(ExceptionMessage);
+            var dest = default(DialogMessage);
             using (var src = new Presenter(new SynchronizationContext()))
-            using (src.Subscribe<ExceptionMessage>(e => dest = e))
+            using (src.Subscribe<DialogMessage>(e => dest = e))
             {
                 src.TestTrack(() => { /* OK */ }).Wait();
                 src.TestTrack(() => throw new ArgumentException(nameof(Track))).Wait();
             }
 
-            Assert.That(dest.Title, Is.EqualTo("Error"));
-            Assert.That(dest.Text,  Does.StartWith(nameof(Track)));
-            Assert.That(dest.Value, Is.TypeOf<ArgumentException>());
+            Assert.That(dest.Value,    Does.StartWith(nameof(Track)));
+            Assert.That(dest.Title,    Is.EqualTo("Error"));
+            Assert.That(dest.Callback, Is.Null);
+            Assert.That(dest.Icon,     Is.EqualTo(DialogIcon.Error));
+            Assert.That(dest.Buttons,  Is.EqualTo(DialogButtons.Ok));
+            Assert.That(dest.Result,   Is.EqualTo(DialogResult.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -149,12 +152,14 @@ namespace Cube.Tests
             using (var src = new Presenter(new SynchronizationContext()))
             {
                 5.Times(i => src.TestValue = nameof(PropertyChanged));
-                src.TestValue = string.Empty;
+                Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
                 Assert.That(n, Is.EqualTo(0));
 
+                src.TestValue = string.Empty;
                 src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
                 5.Times(i => src.TestValue = nameof(PropertyChanged));
                 Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
+                Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
                 Assert.That(n, Is.EqualTo(1));
             }
         }
