@@ -30,7 +30,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Message<TValue>
+    public class Message<TValue> : EventArgs
     {
         #region Properties
 
@@ -99,7 +99,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseMessage { }
+    public class CloseMessage : EventArgs { }
 
     #endregion
 
@@ -114,7 +114,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpdateSourcesMessage { }
+    public class UpdateSourcesMessage : EventArgs { }
 
     #endregion
 }
