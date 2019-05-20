@@ -149,12 +149,14 @@ namespace Cube.Tests
             using (var src = new Presenter(new SynchronizationContext()))
             {
                 5.Times(i => src.TestValue = nameof(PropertyChanged));
-                src.TestValue = string.Empty;
+                Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
                 Assert.That(n, Is.EqualTo(0));
 
+                src.TestValue = string.Empty;
                 src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
                 5.Times(i => src.TestValue = nameof(PropertyChanged));
                 Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
+                Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
                 Assert.That(n, Is.EqualTo(1));
             }
         }
