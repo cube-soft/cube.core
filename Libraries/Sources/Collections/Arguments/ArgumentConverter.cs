@@ -99,7 +99,21 @@ namespace Cube.Collections
         protected virtual IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
             src.StartsWith("-") ?
             src.Skip(1).Select(c => KeyValuePair.Create(true, c.ToString())) :
-            new[] { KeyValuePair.Create(false, src) };
+            AsEnumerable(KeyValuePair.Create(false, src));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AsEnumerable
+        ///
+        /// <summary>
+        /// Treats the specified value as enumerable.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected IEnumerable<KeyValuePair<bool, string>> AsEnumerable(KeyValuePair<bool, string> src)
+        {
+            yield return src;
+        }
     }
 
     #endregion
@@ -130,7 +144,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected override IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
             src.StartsWith("--") ?
-            new[] { KeyValuePair.Create(true, src.Substring(2)) } :
+            AsEnumerable(KeyValuePair.Create(true, src.Substring(2))) :
             base.Convert(src);
     }
 

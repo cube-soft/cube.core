@@ -15,8 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cube.Tests
@@ -49,16 +51,9 @@ namespace Cube.Tests
         {
             var dest  = 0;
             var once  = new OnceAction(() => dest++);
-            var tasks = new[]
-            {
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-            };
+            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke()));
 
-            Task.WaitAll(tasks);
+            Task.WaitAll(tasks.ToArray());
             Assert.That(once.Invoked, Is.True);
             Assert.That(dest, Is.EqualTo(1));
         }
@@ -77,16 +72,9 @@ namespace Cube.Tests
         {
             var dest  = 0;
             var once  = new OnceAction(() => dest++) { IgnoreTwice = false };
-            var tasks = new[]
-            {
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-                TaskEx.Run(() => once.Invoke()),
-            };
+            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke()));
 
-            Assert.That(() => Task.WaitAll(tasks),
+            Assert.That(() => Task.WaitAll(tasks.ToArray()),
                 Throws.TypeOf<AggregateException>().And.InnerException
                       .TypeOf<TwiceException>());
             Assert.That(dest, Is.EqualTo(1));
@@ -107,16 +95,9 @@ namespace Cube.Tests
             var src   = "once";
             var dest  = "";
             var once  = new OnceAction<string>(s => dest += s);
-            var tasks = new[]
-            {
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-            };
+            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke(src)));
 
-            Task.WaitAll(tasks);
+            Task.WaitAll(tasks.ToArray());
             Assert.That(once.Invoked, Is.True);
             Assert.That(dest, Is.EqualTo(src));
         }
@@ -136,16 +117,9 @@ namespace Cube.Tests
             var src   = "twice";
             var dest  = "";
             var once  = new OnceAction<string>(s => dest += s) { IgnoreTwice = false };
-            var tasks = new[]
-            {
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-                TaskEx.Run(() => once.Invoke(src)),
-            };
+            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke(src)));
 
-            Assert.That(() => Task.WaitAll(tasks),
+            Assert.That(() => Task.WaitAll(tasks.ToArray()),
                 Throws.TypeOf<AggregateException>().And.InnerException
                       .TypeOf<TwiceException>());
             Assert.That(dest, Is.EqualTo(src));

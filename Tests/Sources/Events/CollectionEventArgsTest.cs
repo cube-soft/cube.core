@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +47,8 @@ namespace Cube.Tests
         [Test]
         public void Create_Array()
         {
-            var args = CollectionEventArgs.Create(new[]
-            {
-                3, 1, 4, 1, 5, 9, 2, 6,
-            });
-
-            Assert.That(args.Value.Count(), Is.EqualTo(8));
+            var src = CollectionEventArgs.Create(10.Make(i => i));
+            Assert.That(src.Value.Count(), Is.EqualTo(10));
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,12 +64,8 @@ namespace Cube.Tests
         [Test]
         public void Create_List()
         {
-            var args = CollectionEventArgs.Create(new List<int>
-            {
-                3, 1, 4, 1, 5, 9,
-            }, true);
-
-            Assert.That(args.Value.Count(), Is.EqualTo(6));
+            var args = CollectionEventArgs.Create(5.Make(i => i), true);
+            Assert.That(args.Value.Count(), Is.EqualTo(5));
             Assert.That(args.Cancel, Is.True);
         }
 

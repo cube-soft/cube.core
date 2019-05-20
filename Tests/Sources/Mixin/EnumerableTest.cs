@@ -399,7 +399,7 @@ namespace Cube.Tests.Mixin
         /// Compact
         ///
         /// <summary>
-        /// Executes the test of the Compact extended method.
+        /// Tests the Compact extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -416,8 +416,7 @@ namespace Cube.Tests.Mixin
         /// Compact_ValueType
         ///
         /// <summary>
-        /// Executes the test of the Compact extended method with the
-        /// value type collection.
+        /// Tests the Compact extended method with the value type collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -431,11 +430,10 @@ namespace Cube.Tests.Mixin
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compact_ValueType
+        /// Compact_Empty
         ///
         /// <summary>
-        /// Executes the test of the Compact extended method with the
-        /// empty collection.
+        /// Tests of the Compact extended method with the empty collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -445,6 +443,28 @@ namespace Cube.Tests.Mixin
             var src = Enumerable.Empty<int>();
             Assert.That(src.Count(),           Is.EqualTo(0));
             Assert.That(src.Compact().Count(), Is.EqualTo(0));
+        }
+
+        #endregion
+
+        #region Concat
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Concat
+        ///
+        /// <summary>
+        /// Test the Concat extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Concat()
+        {
+            var src = 10.Make(i => i);
+            Assert.That(src.Concat(10, 20).Count(), Is.EqualTo(12));
+            Assert.That(src.Concat(30).Count(),     Is.EqualTo(11));
+            Assert.That(src.Concat().Count(),       Is.EqualTo(10));
         }
 
         #endregion
