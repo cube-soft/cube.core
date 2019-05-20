@@ -18,7 +18,6 @@
 using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System;
-using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -149,11 +148,12 @@ namespace Cube.Tests
             var cts = new CancellationTokenSource();
             using (var src = new Presenter(new SynchronizationContext()))
             {
-                src.Refresh(nameof(PropertyChanged));
+                5.Times(i => src.TestValue = nameof(PropertyChanged));
+                src.TestValue = string.Empty;
                 Assert.That(n, Is.EqualTo(0));
 
                 src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
-                src.Refresh(nameof(PropertyChanged));
+                5.Times(i => src.TestValue = nameof(PropertyChanged));
                 Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
                 Assert.That(n, Is.EqualTo(1));
             }
@@ -190,8 +190,13 @@ namespace Cube.Tests
             public void TestSend<T>() where T : new() => Send<T>();
             public void TestPost<T>() where T : new() => Post<T>();
             public Task TestTrack(Action e) => Track(e);
-            public void Refresh(string name) => OnPropertyChanged(new PropertyChangedEventArgs(name));
             protected override void Dispose(bool disposing) { }
+            public string TestValue
+            {
+                get => _test;
+                set => SetProperty(ref _test, value);
+            }
+            private string _test;
         }
 
         #endregion
