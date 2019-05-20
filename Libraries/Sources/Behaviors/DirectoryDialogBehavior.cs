@@ -15,49 +15,61 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.String;
 using System.Windows.Forms;
 
 namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenFileBehavior
+    /// DirectoryDialogBehavior
     ///
     /// <summary>
-    /// OpenFileDialog の表示に関する挙動を定義したクラスです。
+    /// Pvovides functionality to show a directory dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileBehavior
+    public class DirectoryDialogBehavior : SubscribeBehavior<OpenDirectoryMessage>
     {
-        #region Methods
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DirectoryDialogBehavior
+        ///
+        /// <summary>
+        /// Initializes a new instance of the DirectoryDialogBehavior class
+        /// with the specified presentable object.
+        /// </summary>
+        ///
+        /// <param name="src">Presentable object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DirectoryDialogBehavior(IPresentable src) : base(src) { }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// OpenFileDialog を表示します。
+        /// 処理を実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke(OpenFileEventArgs e)
+        protected override void Invoke(OpenDirectoryMessage e)
         {
-            var dialog = new OpenFileDialog
-            {
-                Title            = e.Title,
-                FileName         = e.FileName,
-                CheckPathExists  = e.CheckPathExists,
-                InitialDirectory = e.InitialDirectory,
-                Filter           = e.Filter,
-                FilterIndex      = e.FilterIndex,
-                Multiselect      = e.Multiselect,
-            };
+            var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
-            e.Result      = dialog.ShowDialog();
-            e.FileName    = dialog.FileName;
-            e.FileNames   = dialog.FileNames;
-            e.FilterIndex = dialog.FilterIndex;
+            if (e.Title.HasValue()) dialog.Description  = e.Title;
+            if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
+
+            e.Status = dialog.ShowDialog() == DialogResult.OK;
+            if (e.Status) e.Value = dialog.SelectedPath;
+            e.Callback?.Invoke(e);
         }
 
         #endregion

@@ -180,7 +180,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public event EventHandler<MessageEventArgs> MessageShowing;
+        public event EventHandler<DialogMessage> MessageShowing;
 
         /* --------------------------------------------------------------------- */
         ///
@@ -191,7 +191,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnMessageShowing(MessageEventArgs e) =>
+        protected virtual void OnMessageShowing(DialogMessage e) =>
             MessageShowing?.Invoke(this, e);
 
         #endregion

@@ -59,7 +59,7 @@ namespace Cube.Forms
             using (var gs = CreateGraphics())
             {
                 Dpi = gs.DpiX;
-                if (gs.DpiX != gs.DpiY) this.LogWarn($"DpiX:{gs.DpiX}\tDpiY:{gs.DpiY}");
+                if (gs.DpiX != gs.DpiY) this.LogWarn($"DpiX:{gs.DpiX}", $"DpiY:{gs.DpiY}");
             }
         }
 
@@ -69,28 +69,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Activator
+        /// BaseDpi
         ///
         /// <summary>
-        /// プロセス間通信を介した起動およびアクティブ化を制御するための
-        /// オブジェクトを取得または設定します。
+        /// 基準となる Dpi の値を取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Cube.Ipc.IMessenger<IEnumerable<string>> Activator
-        {
-            get => _activator;
-            set
-            {
-                if (_activator == value) return;
-
-                _remover?.Dispose();
-                _activator = value;
-                if (_activator != null) _remover = _activator.Subscribe(WhenActivated);
-            }
-        }
+        public static double BaseDpi { get; } = 96.0;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -119,14 +105,39 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BaseDpi
+        /// Activator
         ///
         /// <summary>
-        /// 基準となる Dpi の値を取得します。
+        /// プロセス間通信を介した起動およびアクティブ化を制御するための
+        /// オブジェクトを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static double BaseDpi { get; } = 96.0;
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Cube.Ipc.IMessenger<IEnumerable<string>> Activator
+        {
+            get => _activator;
+            set
+            {
+                if (_activator == value) return;
+
+                _remover?.Dispose();
+                _activator = value;
+                if (_activator != null) _remover = _activator.Subscribe(WhenActivated);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Behaviors
+        ///
+        /// <summary>
+        /// Gets the collection of registered behaviors.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IList<IDisposable> Behaviors { get; } = new List<IDisposable>();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -353,7 +364,12 @@ namespace Cube.Forms
             {
                 if (_disposed) return;
                 _disposed = true;
-                if (disposing) _activator?.Dispose();
+                if (disposing)
+                {
+                    _activator?.Dispose();
+                    foreach (var behavior in Behaviors) behavior.Dispose();
+                    Behaviors.Clear();
+                }
             }
             finally { base.Dispose(disposing); }
         }

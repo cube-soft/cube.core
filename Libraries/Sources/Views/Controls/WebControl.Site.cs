@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -73,12 +72,17 @@ namespace Cube.Forms
             public int ShowMessage(IntPtr hwnd, string text, string caption,
                 int type, string file, int context, out int result)
             {
-                var mb = GetButtons(type & 0x0f);
-                var mi = GetIcon(type & 0xf0);
-                var e  = new MessageEventArgs(text, caption, mb, mi);
-                Host.OnMessageShowing(e);
-                result = (int)e.Result;
-                return (e.Result != DialogResult.None) ? 1 : 0;
+                var args = new DialogMessage
+                {
+                    Value   = text,
+                    Title   = caption,
+                    Buttons = GetButtons(type & 0x0f),
+                    Icon    = GetIcon(type & 0xf0),
+                    Status  = DialogStatus.None,
+                };
+                Host.OnMessageShowing(args);
+                result = (int)args.Status;
+                return (args.Status != DialogStatus.None) ? 1 : 0;
             }
 
             /* ------------------------------------------------------------- */
@@ -110,16 +114,13 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            private MessageBoxButtons GetButtons(int src)
+            private DialogButtons GetButtons(int src)
             {
-                var buttons = Enum.GetValues(typeof(MessageBoxButtons));
-                foreach (MessageBoxButtons mb in buttons)
+                foreach (DialogButtons mb in Enum.GetValues(typeof(DialogButtons)))
                 {
                     if (src == (int)mb) return mb;
                 }
-
-                if (src == 0x06) return MessageBoxButtons.AbortRetryIgnore;
-                else return MessageBoxButtons.OK;
+                return DialogButtons.Ok;
             }
 
             /* ------------------------------------------------------------- */
@@ -131,14 +132,13 @@ namespace Cube.Forms
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
-            private MessageBoxIcon GetIcon(int src)
+            private DialogIcon GetIcon(int src)
             {
-                var icons = Enum.GetValues(typeof(MessageBoxIcon));
-                foreach (MessageBoxIcon mi in icons)
+                foreach (DialogIcon mi in Enum.GetValues(typeof(DialogIcon)))
                 {
                     if (src == (int)mi) return mi;
                 }
-                return MessageBoxIcon.Error;
+                return DialogIcon.Error;
             }
 
             #endregion

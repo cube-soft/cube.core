@@ -71,10 +71,10 @@ namespace Cube.Forms.Behaviors
         {
             _master  = master  ?? throw new ArgumentNullException();
             _confirm = confirm ?? throw new ArgumentNullException();
-            _show = showPassword;
+            _show    = showPassword;
 
-            _master.PasswordChar = (char)0;
-            _master.TextChanged += WhenPasswordChanged;
+            _master.PasswordChar  = (char)0;
+            _master.TextChanged  += WhenPasswordChanged;
             _confirm.TextChanged += WhenConfirmChanged;
 
             if (_show != null)
