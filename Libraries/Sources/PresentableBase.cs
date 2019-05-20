@@ -16,7 +16,9 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -149,6 +151,8 @@ namespace Cube
 
         #region Events
 
+        #region PropertyChanged
+
         /* ----------------------------------------------------------------- */
         ///
         /// PropertyChanged
@@ -165,7 +169,7 @@ namespace Cube
         /// OnPropertyChanged
         ///
         /// <summary>
-        /// Raises the PropertyChanged event with the provided arguments.
+        /// Raises the PropertyChanged event with the specified arguments.
         /// </summary>
         ///
         /// <param name="e">Arguments of the event being raised.</param>
@@ -175,6 +179,66 @@ namespace Cube
         {
             if (PropertyChanged != null) Dispatcher.Invoke(() => PropertyChanged(this, e));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaisePropertyChanged
+        ///
+        /// <summary>
+        /// Raises the PropertyChanged event with the specified name.
+        /// </summary>
+        ///
+        /// <param name="name">Property name.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void RaisePropertyChanged(string name) =>
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        ///
+        /// <summary>
+        /// Sets the specified value for the specified field.
+        /// </summary>
+        ///
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null) =>
+            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        ///
+        /// <summary>
+        /// Sets the specified value for the specified field.
+        /// </summary>
+        ///
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        /// <param name="func">Function object to compare.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(ref T field, T value,
+            IEqualityComparer<T> func, [CallerMemberName] string name = null)
+        {
+            if (func.Equals(field, value)) return false;
+            field = value;
+            RaisePropertyChanged(name);
+            return true;
+        }
+
+        #endregion
 
         #endregion
 
