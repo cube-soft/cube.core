@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Collections.Generic;
 using System.Windows;
 
 namespace Cube.Xui.Behaviors
@@ -35,14 +36,72 @@ namespace Cube.Xui.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Shows a message box with the specified message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected override void Invoke(DialogMessage e)
         {
-            e.Result = MessageBox.Show(e.Content, e.Title, e.Buttons, e.Image);
+            var icon    = Icons[e.Icon];
+            var buttons = Buttons[e.Buttons];
+            var raw     = MessageBox.Show(e.Value, e.Title, buttons, icon);
+
+            e.Result = Results.ContainsKey(raw) ? Results[raw] : DialogResult.Cancel;
             e.Callback?.Invoke(e);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Icons
+        ///
+        /// <summary>
+        /// Gets the map collection of DialogIcon and MessageBoxImage.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Dictionary<DialogIcon, MessageBoxImage> Icons { get; } =
+            new Dictionary<DialogIcon, MessageBoxImage>
+            {
+                { DialogIcon.None,        MessageBoxImage.None        },
+                { DialogIcon.Error,       MessageBoxImage.Error       },
+                { DialogIcon.Warning,     MessageBoxImage.Warning     },
+                { DialogIcon.Information, MessageBoxImage.Information },
+            };
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Buttons
+        ///
+        /// <summary>
+        /// Gets the map collection of DialogButtons and MessageBoxButton.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Dictionary<DialogButtons, MessageBoxButton> Buttons { get; } =
+            new Dictionary<DialogButtons, MessageBoxButton>
+            {
+                { DialogButtons.Ok,          MessageBoxButton.OK          },
+                { DialogButtons.OkCancel,    MessageBoxButton.OKCancel    },
+                { DialogButtons.YesNo,       MessageBoxButton.YesNo       },
+                { DialogButtons.YesNoCancel, MessageBoxButton.YesNoCancel },
+            };
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Results
+        ///
+        /// <summary>
+        /// Gets the map collection of MessageBoxResult and DialogResult.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static Dictionary<MessageBoxResult, DialogResult> Results { get; } =
+            new Dictionary<MessageBoxResult, DialogResult>
+            {
+                { MessageBoxResult.OK,     DialogResult.Ok },
+                { MessageBoxResult.Cancel, DialogResult.Cancel },
+                { MessageBoxResult.Yes,    DialogResult.Yes },
+                { MessageBoxResult.No,     DialogResult.No },
+            };
     }
 }

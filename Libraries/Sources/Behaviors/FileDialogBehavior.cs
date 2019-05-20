@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.String;
 using Microsoft.Win32;
+using System.Linq;
 
 namespace Cube.Xui.Behaviors
 {
@@ -49,18 +50,12 @@ namespace Cube.Xui.Behaviors
             };
 
             if (e.Title.HasValue()) dialog.Title = e.Title;
-            if (e.FileName.HasValue()) dialog.FileName = e.FileName;
+            if (e.Value.Any()) dialog.FileName = e.Value.First();
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
             e.Result = dialog.ShowDialog() ?? false;
-
-            if (e.Result)
-            {
-                e.FileName  = dialog.FileName;
-                e.FileNames = dialog.FileNames;
-            }
-
+            if (e.Result) e.Value = dialog.FileNames;
             e.Callback?.Invoke(e);
         }
     }
@@ -94,12 +89,12 @@ namespace Cube.Xui.Behaviors
             };
 
             if (e.Title.HasValue()) dialog.Title = e.Title;
-            if (e.FileName.HasValue()) dialog.FileName = e.FileName;
+            if (e.Value.HasValue()) dialog.FileName = e.Value;
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
             e.Result = dialog.ShowDialog() ?? false;
-            if (e.Result) e.FileName = dialog.FileName;
+            if (e.Result) e.Value = dialog.FileName;
             e.Callback?.Invoke(e);
         }
     }

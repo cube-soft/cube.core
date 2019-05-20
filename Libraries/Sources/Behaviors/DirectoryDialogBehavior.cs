@@ -45,10 +45,10 @@ namespace Cube.Xui.Behaviors
             var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
             if (e.Title.HasValue()) dialog.Description = e.Title;
-            if (e.FileName.HasValue()) dialog.SelectedPath = e.FileName;
+            if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
 
-            e.Result = dialog.ShowDialog() == DialogResult.OK;
-            if (e.Result) e.FileName = dialog.SelectedPath;
+            e.Result = dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK;
+            if (e.Result) e.Value = dialog.SelectedPath;
             e.Callback?.Invoke(e);
         }
     }
