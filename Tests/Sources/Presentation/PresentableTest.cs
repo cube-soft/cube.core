@@ -132,7 +132,7 @@ namespace Cube.Tests
             Assert.That(dest.Callback, Is.Null);
             Assert.That(dest.Icon,     Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons,  Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Result,   Is.EqualTo(DialogResult.Ok));
+            Assert.That(dest.Status,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */

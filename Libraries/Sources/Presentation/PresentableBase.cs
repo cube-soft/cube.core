@@ -413,7 +413,7 @@ namespace Cube
             Value   = $"{src.Message} ({src.GetType().Name})",
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
-            Result  = DialogResult.Ok,
+            Status  = DialogStatus.Ok,
         };
 
         /* ----------------------------------------------------------------- */

@@ -68,14 +68,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Result
+        /// Status
         ///
         /// <summary>
         /// Gets or sets the button that is clicked by a user.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogResult Result { get; set; } = DialogResult.Ok;
+        public DialogStatus Status { get; set; } = DialogStatus.Ok;
     }
 
     #endregion
@@ -134,14 +134,14 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// DialogResult
+    /// DialogStatus
     ///
     /// <summary>
     /// Specifies the button that is clicked by a user.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum DialogResult
+    public enum DialogStatus
     {
         /// <summary>The result value of the message box is OK.</summary>
         Ok = 1,
