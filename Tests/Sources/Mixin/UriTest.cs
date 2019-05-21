@@ -19,6 +19,7 @@ using Cube.Mixin.Uri;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Cube.Tests.Mixin
 {
@@ -157,10 +158,10 @@ namespace Cube.Tests.Mixin
         [Test]
         public void With_SoftwareVersion()
         {
-            var dest = $"{Create()}?ver=1.2beta";
-            var src  = Create().With(new SoftwareVersion
+            var asm  = Assembly.GetExecutingAssembly();
+            var dest = $"{Create()}?ver=1.16beta";
+            var src  = Create().With(new SoftwareVersion(asm)
             {
-                Number = new Version(1, 2, 0, 0),
                 Digit = 2,
                 Suffix = "beta"
             });
