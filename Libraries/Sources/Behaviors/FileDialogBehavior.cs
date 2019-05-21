@@ -69,6 +69,7 @@ namespace Cube.Forms.Behaviors
             {
                 CheckPathExists = e.CheckPathExists,
                 Multiselect     = e.Multiselect,
+                FilterIndex     = e.FilterIndex,
             };
 
             if (e.Title.HasValue()) dialog.Title = e.Title;
@@ -134,6 +135,7 @@ namespace Cube.Forms.Behaviors
             {
                 CheckPathExists = e.CheckPathExists,
                 OverwritePrompt = e.OverwritePrompt,
+                FilterIndex     = e.FilterIndex,
             };
 
             if (e.Title.HasValue()) dialog.Title = e.Title;

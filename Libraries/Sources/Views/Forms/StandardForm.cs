@@ -94,8 +94,6 @@ namespace Cube.Forms
             get => _dpi;
             set
             {
-                System.Diagnostics.Debug.Assert(value > 1.0);
-
                 if (_dpi == value) return;
                 var old = _dpi;
                 _dpi = value;
