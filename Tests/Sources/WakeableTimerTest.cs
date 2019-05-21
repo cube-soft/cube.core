@@ -39,20 +39,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms initial values of the WakeableTimer class.
+        /// Tests the constructor and confirms properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties() => Create(timer =>
+        public void Properties()
         {
-            Assert.That(timer.State, Is.EqualTo(TimerState.Stop));
-            Assert.That(timer.Interval, Is.EqualTo(TimeSpan.FromSeconds(1)));
-            Assert.That(timer.LastPublished.HasValue, Is.False);
-        });
+            using (var src = new WakeableTimer())
+            {
+                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+                Assert.That(src.Interval, Is.EqualTo(TimeSpan.FromSeconds(1)));
+                Assert.That(src.LastPublished.HasValue, Is.False);
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -79,41 +82,44 @@ namespace Cube.Tests
         /// Transition_State
         ///
         /// <summary>
-        /// Confirms the transition of the State property.
+        /// Confirms the transition of the State.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Transition_State() => Create(src =>
+        public void Transition_State()
         {
-            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-            src.Start();
-            Assert.That(src.State, Is.EqualTo(TimerState.Run));
-            src.Start(); // ignore
-            Assert.That(src.State, Is.EqualTo(TimerState.Run));
-            src.Suspend();
-            Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
-            src.Suspend();
-            Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
-            src.Start();
-            Assert.That(src.State, Is.EqualTo(TimerState.Run));
-            src.Stop();
-            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-            src.Stop(); // ignore
-            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-        });
+            using (var src = new WakeableTimer())
+            {
+                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+                src.Start();
+                Assert.That(src.State, Is.EqualTo(TimerState.Run));
+                src.Start(); // ignore
+                Assert.That(src.State, Is.EqualTo(TimerState.Run));
+                src.Suspend();
+                Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
+                src.Suspend();
+                Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
+                src.Start();
+                Assert.That(src.State, Is.EqualTo(TimerState.Run));
+                src.Stop();
+                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+                src.Stop(); // ignore
+                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Transition_PowerMode
         ///
         /// <summary>
-        /// Confirms the transition of Power.Mode and State properties.
+        /// Confirms the transition of Power.Mode and State.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Transition_PowerMode() => Create(src =>
+        public void Transition_PowerMode()
         {
             var pmc   = new PowerModeContext(Power.Mode);
             var count = 0;
@@ -121,146 +127,146 @@ namespace Cube.Tests
 
             Power.Configure(pmc);
 
-            src.PowerModeChanged += (s, e) => ++count;
-            src.Subscribe(() => ++dummy);
-            src.Start();
+            using (var src = new WakeableTimer())
+            {
+                src.PowerModeChanged += (s, e) => ++count;
+                src.Subscribe(() => ++dummy);
+                src.Start();
 
-            pmc.Mode = PowerModes.Suspend;
-            Assert.That(Power.Mode, Is.EqualTo(PowerModes.Suspend));
-            Assert.That(src.State,  Is.EqualTo(TimerState.Suspend));
+                pmc.Mode = PowerModes.Suspend;
+                Assert.That(Power.Mode, Is.EqualTo(PowerModes.Suspend));
+                Assert.That(src.State,  Is.EqualTo(TimerState.Suspend));
 
-            pmc.Mode = PowerModes.Resume;
-            Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
-            Assert.That(src.State,  Is.EqualTo(TimerState.Run));
+                pmc.Mode = PowerModes.Resume;
+                Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
+                Assert.That(src.State,  Is.EqualTo(TimerState.Run));
 
-            src.Stop();
-            Assert.That(src.State,  Is.EqualTo(TimerState.Stop));
-            Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
-        });
+                src.Stop();
+                Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
+                Assert.That(src.State,  Is.EqualTo(TimerState.Stop));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Start
         ///
         /// <summary>
-        /// Executes the test of the normal scenario.
+        /// Tests the normal scenario of the WakeableTimer class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start() => Create(src =>
+        public void Start()
         {
-            src.Interval = TimeSpan.FromMilliseconds(100);
-            src.Interval = TimeSpan.FromMilliseconds(100); // ignore
-            Assert.That(src.LastPublished.HasValue, Is.False);
-            Assert.That(Execute(src, 0, 1), "Timeout");
+            using (var src = new WakeableTimer())
+            {
+                src.Interval = TimeSpan.FromMilliseconds(100);
+                src.Interval = TimeSpan.FromMilliseconds(100); // ignore
+                Assert.That(src.LastPublished.HasValue, Is.False);
+                Assert.That(Execute(src, 0, 1), "Timeout");
 
-            var time = src.LastPublished;
-            Assert.That(time, Is.Not.EqualTo(DateTime.MinValue));
+                var time = src.LastPublished;
+                Assert.That(time, Is.Not.EqualTo(DateTime.MinValue));
 
-            src.Reset();
-            Assert.That(src.LastPublished, Is.EqualTo(time));
-            Assert.That(src.Interval.TotalMilliseconds, Is.EqualTo(100).Within(1.0));
-        });
+                src.Reset();
+                Assert.That(src.LastPublished, Is.EqualTo(time));
+                Assert.That(src.Interval.TotalMilliseconds, Is.EqualTo(100).Within(1.0));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Start_InitialDelay
         ///
         /// <summary>
-        /// Confirms the behavior when the initial delay is set.
+        /// Tests the Start method with the initial delay.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start_InitialDelay() => Create(src =>
+        public void Start_InitialDelay()
         {
-            src.Interval = TimeSpan.FromHours(1);
-            Assert.That(src.LastPublished.HasValue, Is.False);
-            Assert.That(Execute(src, 200, 1), "Timeout");
-            Assert.That(src.LastPublished, Is.Not.EqualTo(DateTime.MinValue));
-        });
+            using (var src = new WakeableTimer())
+            {
+                src.Interval = TimeSpan.FromHours(1);
+                Assert.That(src.LastPublished.HasValue, Is.False);
+                Assert.That(Execute(src, 200, 1), "Timeout");
+                Assert.That(src.LastPublished, Is.Not.EqualTo(DateTime.MinValue));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Start_Burstly
         ///
         /// <summary>
-        /// Confirms the behavior when the Interval is set to the very
+        /// Tests the Start method when the Interval is set to the very
         /// short time.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Start_Burstly() => Create(src =>
+        public void Start_Burstly()
         {
             var cts   = new CancellationTokenSource();
             var count = 0;
 
-            src.Interval = TimeSpan.FromMilliseconds(10);
-            src.SubscribeAsync(async () =>
+            using (var src = new WakeableTimer())
             {
-                ++count;
-                await Task.Delay(200).ConfigureAwait(false);
-                src.Stop();
-                cts.Cancel();
-            });
+                src.Interval = TimeSpan.FromMilliseconds(10);
+                src.SubscribeAsync(async () =>
+                {
+                    ++count;
+                    await Task.Delay(200).ConfigureAwait(false);
+                    src.Stop();
+                    cts.Cancel();
+                });
 
-            Assert.That(Execute(src, 0, cts), "Timeout");
-            Assert.That(count, Is.EqualTo(1));
-        });
+                Assert.That(Execute(src, 0, cts), "Timeout");
+                Assert.That(count, Is.EqualTo(1));
+            }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Resume
         ///
         /// <summary>
-        /// Executes the test of Suspend/Resume commands.
+        /// Tests the Suspend/Resume commands.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Resume() => Create(src =>
+        public void Resume()
         {
             var cts   = new CancellationTokenSource();
             var count = 0;
 
-            src.Interval = TimeSpan.FromSeconds(1);
-            src.Start(TimeSpan.FromMilliseconds(100));
-            src.Subscribe(() =>
+            using (var src = new WakeableTimer())
             {
-                ++count;
-                src.Stop();
-                cts.Cancel();
-            });
-            src.Start();
-            src.Suspend();
+                src.Interval = TimeSpan.FromSeconds(1);
+                src.Start(TimeSpan.FromMilliseconds(100));
+                src.Subscribe(() =>
+                {
+                    ++count;
+                    src.Stop();
+                    cts.Cancel();
+                });
+                src.Start();
+                src.Suspend();
 
-            Assert.That(count, Is.EqualTo(0));
-            Task.Delay(300).Wait();
-            Assert.That(count, Is.EqualTo(0));
-            Assert.That(Execute(src, 0, cts), "Timeout");
-            Assert.That(count, Is.EqualTo(1));
-        });
+                Assert.That(count, Is.EqualTo(0));
+                Task.Delay(300).Wait();
+                Assert.That(count, Is.EqualTo(0));
+                Assert.That(Execute(src, 0, cts), "Timeout");
+                Assert.That(count, Is.EqualTo(1));
+            }
+        }
 
         #endregion
 
         #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the WakeableTimer and executes
-        /// the specified action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Create(Action<WakeableTimer> action)
-        {
-            using (var src = new WakeableTimer()) action(src);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
