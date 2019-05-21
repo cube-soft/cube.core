@@ -77,6 +77,7 @@ namespace Cube.Tests
             Assert.That(src.Callback,          Is.Null);
             Assert.That(src.InitialDirectory,  Is.Empty);
             Assert.That(src.Filter,            Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(src.FilterIndex,       Is.EqualTo(0));
             Assert.That(src.CheckPathExists,   Is.True);
             Assert.That(src.Multiselect,       Is.False);
             Assert.That(src.Status,            Is.False);
@@ -104,6 +105,7 @@ namespace Cube.Tests
             Assert.That(src.Callback,         Is.Null);
             Assert.That(src.InitialDirectory, Is.Empty);
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(src.FilterIndex,      Is.EqualTo(0));
             Assert.That(src.CheckPathExists,  Is.False);
             Assert.That(src.OverwritePrompt,  Is.True);
             Assert.That(src.Status,           Is.False);

@@ -141,6 +141,17 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public string Filter { get; set; } = "All Files (*.*)|*.*";
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FilterIndex
+        ///
+        /// <summary>
+        /// Gets or sets a value to select the initial filter.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int FilterIndex { get; set; }
     }
 
     #endregion
