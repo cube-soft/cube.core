@@ -30,8 +30,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class Message<TValue>
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// Title
@@ -53,8 +51,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public TValue Value { get; set; }
-
-        #endregion
     }
 
     #endregion
@@ -72,8 +68,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class CancelMessage<TValue> : Message<TValue>
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// Cancel
@@ -84,8 +78,33 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public bool Cancel { get; set; }
+    }
 
-        #endregion
+    #endregion
+
+    #region ProgressMessage<TValue>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProgressMessage(TValue)
+    ///
+    /// <summary>
+    /// Represents the message with Ratio property.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class ProgressMessage<TValue> : Message<TValue>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Ratio
+        ///
+        /// <summary>
+        /// Gets the current progress ratio.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public double Ratio { get; set; }
     }
 
     #endregion

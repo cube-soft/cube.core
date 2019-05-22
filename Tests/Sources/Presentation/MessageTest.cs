@@ -121,6 +121,24 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Create_ProgressMessage
+        ///
+        /// <summary>
+        /// Tests properties of the ProgressMessage class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_ProgressMessage()
+        {
+            var src = new ProgressMessage<int>();
+            Assert.That(src.Title, Is.Empty);
+            Assert.That(src.Value, Is.EqualTo(0));
+            Assert.That(src.Ratio, Is.EqualTo(0.0));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Create_CloseMessage
         ///
         /// <summary>
