@@ -15,42 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Cube
 {
-    #region FileOrDirectoryMessage<TAction>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// FileOrDirectoryMessage(TAction)
-    ///
-    /// <summary>
-    /// Represents shared information to show either the OpenFileDialog
-    /// or SaveFileDialog or FolderBrowserDialog.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public abstract class FileOrDirectoryMessage<TValue, TAction> :
-        CallbackMessage<TValue, TAction> where TAction : Delegate
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Status
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether the user clicks the
-        /// OK button.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Status { get; set; }
-    }
-
-    #endregion
-
     #region OpenDirectoryMessage
 
     /* --------------------------------------------------------------------- */
@@ -62,7 +31,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenDirectoryMessage : FileOrDirectoryMessage<string, Action<OpenDirectoryMessage>>
+    public class OpenDirectoryMessage : CancelMessage<string>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -102,8 +71,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class OpenOrSaveFileMessage<TValue, TAction> :
-        FileOrDirectoryMessage<TValue, TAction> where TAction : Delegate
+    public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -167,7 +135,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>, Action<OpenFileMessage>>
+    public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -210,7 +178,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileMessage : OpenOrSaveFileMessage<string, Action<SaveFileMessage>>
+    public class SaveFileMessage : OpenOrSaveFileMessage<string>
     {
         /* ----------------------------------------------------------------- */
         ///

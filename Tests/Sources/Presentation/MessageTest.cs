@@ -47,16 +47,11 @@ namespace Cube.Tests
         public void Create_DialogMessage()
         {
             var src = new DialogMessage();
-            Assert.That(src.Title,    Is.Empty);
-            Assert.That(src.Value,    Is.Empty);
-            Assert.That(src.Callback, Is.Null);
-            Assert.That(src.Icon,     Is.EqualTo(DialogIcon.Error));
-            Assert.That(src.Buttons,  Is.EqualTo(DialogButtons.Ok));
-            Assert.That(src.Status,   Is.EqualTo(DialogStatus.Ok));
-
-            void callback(DialogMessage e) { Assert.That(e, Is.EqualTo(src)); }
-            src.Callback = callback;
-            src.Callback(src);
+            Assert.That(src.Title,   Is.Empty);
+            Assert.That(src.Value,   Is.Empty);
+            Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
+            Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(src.Status,  Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -72,19 +67,14 @@ namespace Cube.Tests
         public void Create_OpenFileMessage()
         {
             var src = new OpenFileMessage();
-            Assert.That(src.Title,             Is.Empty);
-            Assert.That(src.Value.Count(),     Is.EqualTo(0));
-            Assert.That(src.Callback,          Is.Null);
-            Assert.That(src.InitialDirectory,  Is.Empty);
-            Assert.That(src.Filter,            Is.EqualTo("All Files (*.*)|*.*"));
-            Assert.That(src.FilterIndex,       Is.EqualTo(0));
-            Assert.That(src.CheckPathExists,   Is.True);
-            Assert.That(src.Multiselect,       Is.False);
-            Assert.That(src.Status,            Is.False);
-
-            void callback(OpenFileMessage e) { Assert.That(e, Is.EqualTo(src)); }
-            src.Callback = callback;
-            src.Callback(src);
+            Assert.That(src.Title,            Is.Empty);
+            Assert.That(src.Value.Count(),    Is.EqualTo(0));
+            Assert.That(src.InitialDirectory, Is.Empty);
+            Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(src.FilterIndex,      Is.EqualTo(0));
+            Assert.That(src.CheckPathExists,  Is.True);
+            Assert.That(src.Multiselect,      Is.False);
+            Assert.That(src.Cancel,           Is.False);
         }
 
         /* ----------------------------------------------------------------- */
@@ -102,17 +92,12 @@ namespace Cube.Tests
             var src = new SaveFileMessage();
             Assert.That(src.Title,            Is.Empty);
             Assert.That(src.Value,            Is.Empty);
-            Assert.That(src.Callback,         Is.Null);
             Assert.That(src.InitialDirectory, Is.Empty);
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
             Assert.That(src.FilterIndex,      Is.EqualTo(0));
             Assert.That(src.CheckPathExists,  Is.False);
             Assert.That(src.OverwritePrompt,  Is.True);
-            Assert.That(src.Status,           Is.False);
-
-            void callback(SaveFileMessage e) { Assert.That(e, Is.EqualTo(src)); }
-            src.Callback = callback;
-            src.Callback(src);
+            Assert.That(src.Cancel,           Is.False);
         }
 
         /* ----------------------------------------------------------------- */
@@ -130,13 +115,8 @@ namespace Cube.Tests
             var src = new OpenDirectoryMessage();
             Assert.That(src.Title,     Is.Empty);
             Assert.That(src.Value,     Is.Empty);
-            Assert.That(src.Callback,  Is.Null);
             Assert.That(src.NewButton, Is.True);
-            Assert.That(src.Status,    Is.False);
-
-            void callback(OpenDirectoryMessage e) { Assert.That(e, Is.EqualTo(src)); }
-            src.Callback = callback;
-            src.Callback(src);
+            Assert.That(src.Cancel,    Is.False);
         }
 
         /* ----------------------------------------------------------------- */

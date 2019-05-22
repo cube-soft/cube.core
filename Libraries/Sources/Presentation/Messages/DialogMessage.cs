@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 
 namespace Cube
 {
@@ -30,7 +29,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogMessage : CallbackMessage<string, Action<DialogMessage>>
+    public class DialogMessage : Message<string>
     {
         /* ----------------------------------------------------------------- */
         ///

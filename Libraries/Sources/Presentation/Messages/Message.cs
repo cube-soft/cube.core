@@ -15,15 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube
 {
-    #region Message
+    #region Message<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// Message(TValue)
     ///
     /// <summary>
     /// Represents the common message.
@@ -61,60 +59,34 @@ namespace Cube
 
     #endregion
 
-    #region CallbackMessage<T>
+    #region CancelMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CallbackMessage
+    /// CancelMessage
     ///
     /// <summary>
-    /// Represents the message that has a callback function.
+    /// Represents the message with Cancel property.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CallbackMessage<TValue, TAction> : Message<TValue> where TAction : Delegate
+    public class CancelMessage<TValue> : Message<TValue>
     {
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Callback
+        /// Cancel
         ///
         /// <summary>
-        /// Gets or sets the callback function that is invoked by a view.
+        /// Gets or sets a value indicating whether to cancel the operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TAction Callback { get; set; }
+        public bool Cancel { get; set; }
+
+        #endregion
     }
-
-    #endregion
-
-    #region CloseMessage
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CloseMessage
-    ///
-    /// <summary>
-    /// Represents the message that is sent when closing a window.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class CloseMessage { }
-
-    #endregion
-
-    #region UpdateSourcesMessage
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// UpdateSourcesMessage
-    ///
-    /// <summary>
-    /// Represents the message that is sent when updating source values.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class UpdateSourcesMessage { }
 
     #endregion
 }
