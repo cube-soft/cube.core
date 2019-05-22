@@ -15,73 +15,102 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms
+namespace Cube.Forms.Behaviors
 {
-    #region IBindable
+    #region ShowBehavior
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IBindable
+    /// ShowBehavior
     ///
     /// <summary>
-    /// Represents an interface that a window can be bound a presentable
-    /// object.
+    /// Provides functionality to show a window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IBindable
+    public class ShowBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
+        where TView : WindowBase, new()
+        where TViewModel : IPresentable
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Bind
+        /// ShowBehavior
         ///
         /// <summary>
-        /// Binds the window with the specified object.
+        /// Initializes a new instance of the ShowBehavior class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Object to be bound.</param>
+        /// <param name="src">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        void Bind(IPresentable src);
+        public ShowBehavior(IPresentable src) : base(src) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Shows a new window with the specified viewmodel.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Invoke(TViewModel e)
+        {
+            var view = new TView();
+            view.Bind(e);
+            view.Show();
+        }
     }
 
     #endregion
 
-    #region IDpiAwarable
+    #region ShowDialogBehavior
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IDpiAwarable
+    /// ShowDialogBehavior
     ///
     /// <summary>
-    /// Represents an interface that a window or control can be aware of
-    /// DPI changing.
+    /// Provides functionality to show a window as a modal dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IDpiAwarable
+    public class ShowDialogBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
+        where TView : WindowBase, new()
+        where TViewModel : IPresentable
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Dpi
+        /// ShowDialogBehavior
         ///
         /// <summary>
-        /// Gets or sets the current DPI.
+        /// Initializes a new instance of the ShowDialogBehavior class
+        /// with the specified arguments.
         /// </summary>
         ///
+        /// <param name="src">Presentable object.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        double Dpi { get; set; }
+        public ShowDialogBehavior(IPresentable src) : base(src) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DpiChanged
+        /// Invoke
         ///
         /// <summary>
-        /// Occurs when the current DPI is changed.
+        /// Shows a new window with the specified viewmodel.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        event ValueChangedEventHandler<double> DpiChanged;
+        protected override void Invoke(TViewModel e)
+        {
+            using(var view = new TView())
+            {
+                view.Bind(e);
+                view.ShowDialog();
+            }
+        }
     }
 
     #endregion
