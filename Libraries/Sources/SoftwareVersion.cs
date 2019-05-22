@@ -227,6 +227,7 @@ namespace Cube
         public bool Equals(SoftwareVersion other) =>
             other != null &&
             Number == other.Number &&
+            Digit  == other.Digit &&
             Prefix == other.Prefix &&
             Suffix == other.Suffix;
 
