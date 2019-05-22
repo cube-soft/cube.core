@@ -72,6 +72,27 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Request
+        ///
+        /// <summary>
+        /// Tests the OnceQuery(T) class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Request_TwiceException()
+        {
+            var src = new OnceQuery<int>(e => e.Value++);
+            var msg = Query.NewMessage(10);
+            Assert.That(msg.Query, Is.EqualTo(10));
+            Assert.That(msg.Value, Is.EqualTo(0));
+            src.Request(msg);
+            Assert.That(msg.Value, Is.EqualTo(1));
+            Assert.That(() => src.Request(msg), Throws.TypeOf<TwiceException>());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Wrap
         ///
         /// <summary>
