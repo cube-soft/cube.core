@@ -91,7 +91,7 @@ namespace Cube
         /// <returns>IQuery(T, T) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IQuery<T, T> Wrap<T>(T value) => Wrap(value, false);
+        public static IQuery<T, T> Wrap<T>(T value) => Wrap<T, T>(value);
 
         /* ----------------------------------------------------------------- */
         ///

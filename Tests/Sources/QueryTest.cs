@@ -107,8 +107,8 @@ namespace Cube.Tests
         [Test]
         public void Wrap_TwiceException()
         {
-            var src = Query.Wrap<int, string>("dummy", true);
-            var msg = Query.NewMessage<int, string>(0);
+            var src = Query.Wrap("dummy", true);
+            var msg = Query.NewMessage("string");
             Assert.That(() => 5.Times(i => src.Request(msg)), Throws.TypeOf<TwiceException>());
         }
 
