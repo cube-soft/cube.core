@@ -89,8 +89,8 @@ namespace Cube.Tests
         /// Parse
         ///
         /// <summary>
-        /// Executes the test for creating a new instance of the
-        /// SoftwareVersion class with the specified string.
+        /// Tests to create a new instance of the SoftwareVersion class
+        /// with the specified string.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -115,6 +115,31 @@ namespace Cube.Tests
             Assert.That(dest.GetHashCode(), Is.EqualTo(cmp.GetHashCode()));
 
             return dest.ToString() == src;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compare
+        ///
+        /// <summary>
+        /// Tests the Equals method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Compare()
+        {
+            var src = new SoftwareVersion("1.0.0.0");
+            Assert.That(src.Equals(null), Is.False);
+            Assert.That(src.Equals(new object()), Is.False);
+            var c0  = new SoftwareVersion("1.0.0.0");
+            Assert.That(src.Equals((object)c0), Is.True, c0.ToString());
+            var c1 = new SoftwareVersion("1.0");
+            Assert.That(src.Equals((object)c1), Is.False, c1.ToString());
+            var c2 = new SoftwareVersion("v1.0.0.0");
+            Assert.That(src.Equals((object)c2), Is.False, c2.ToString());
+            var c3 = new SoftwareVersion("1.0.0.0-p21");
+            Assert.That(src.Equals((object)c3), Is.False, c3.ToString());
         }
 
         #endregion
