@@ -15,290 +15,154 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Threading;
-
 namespace Cube
 {
-    #region Query<T>
-
     /* --------------------------------------------------------------------- */
     ///
-    /// IQuery(T)
+    /// Query
     ///
     /// <summary>
-    /// Represents the query provider.
+    /// Provides functionality to create a new instance of the Query(T, U)
+    /// or related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IQuery<T>
+    public static class Query
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Request
-        ///
-        /// <summary>
-        /// Invokes the request with the specified arguments.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        void Request(QueryEventArgs<T> value);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Query(T)
-    ///
-    /// <summary>
-    /// Represents the IQuery(T) implementation.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class Query<T> : IQuery<T>
-    {
-        #region Constructors
+        #region NewMessage
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Query
+        /// NewMessage
         ///
         /// <summary>
-        /// Initializes a new instance of the Query class.
+        /// Creates a new instance of the QueryMessage(T, T) class with
+        /// the specified query.
         /// </summary>
         ///
+        /// <typeparam name="T">type of Query and Value.</typeparam>
+        ///
+        /// <param name="query">Query of the message.</param>
+        ///
+        /// <returns>QueryMessage(T, T) object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public Query() { }
+        public static QueryMessage<T, T> NewMessage<T>(T query) =>
+            NewMessage<T, T>(query);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Query
+        /// NewMessage
         ///
         /// <summary>
-        /// Initializes a new instance of the Query class with the
-        /// specified callback.
+        /// Creates a new instance of the QueryMessage(T, U) class with
+        /// the specified query.
         /// </summary>
         ///
-        /// <param name="callback">Callback function.</param>
+        /// <typeparam name="T">type of Query.</typeparam>
+        /// <typeparam name="U">type of Value.</typeparam>
+        ///
+        /// <param name="query">Query of the message.</param>
+        ///
+        /// <returns>QueryMessage(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public Query(Action<QueryEventArgs<T>> callback) : this()
-        {
-            Requested += (s, e) => callback(e);
-        }
+        public static QueryMessage<T, U> NewMessage<T, U>(T query) =>
+            new QueryMessage<T, U> { Query = query };
 
         #endregion
 
-        #region Events
+        #region Wrap
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Requested
+        /// Wrap
         ///
         /// <summary>
-        /// Occurs when the user request is received.
+        /// Wraps the specified value as an IQuery(T, T) interface.
         /// </summary>
         ///
+        /// <typeparam name="T">type of Query.</typeparam>
+        ///
+        /// <param name="value">
+        /// Value that is always used as the requested result.
+        /// </param>
+        ///
+        /// <returns>IQuery(T, T) object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public event QueryEventHandler<T> Requested;
+        public static IQuery<T, T> Wrap<T>(T value) => Wrap<T, T>(value);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnRequested
+        /// Wrap
         ///
         /// <summary>
-        /// Raises the Requested event.
+        /// Wraps the specified value as an IQuery(T, T) interface.
         /// </summary>
         ///
+        /// <typeparam name="T">type of Query.</typeparam>
+        ///
+        /// <param name="value">
+        /// Value that is always used as the requested result.
+        /// </param>
+        ///
+        /// <param name="once">
+        /// Value indicating whether to allow only once.
+        /// </param>
+        ///
+        /// <returns>IQuery(T, T) object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnRequested(QueryEventArgs<T> e)
-        {
-            if (Requested != null) _dispatcher.Invoke(() => Requested(this, e));
-            else e.Cancel = true;
-        }
-
-        #endregion
-
-        #region Methods
+        public static IQuery<T, T> Wrap<T>(T value, bool once) => Wrap<T, T>(value, once);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request
+        /// Wrap
         ///
         /// <summary>
-        /// Invokes the request with the specified arguments.
+        /// Wraps the specified value as an IQuery(T, U) interface.
         /// </summary>
         ///
+        /// <typeparam name="T">type of Query.</typeparam>
+        /// <typeparam name="U">type of Value.</typeparam>
+        ///
+        /// <param name="value">
+        /// Value that is always used as the requested result.
+        /// </param>
+        ///
+        /// <returns>IQuery(T, U) object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<T> value) => OnRequested(value);
+        public static IQuery<T, U> Wrap<T, U>(U value) => Wrap<T, U>(value, false);
 
-        #endregion
-
-        #region Fields
-        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
-        #endregion
-    }
-
-    #endregion
-
-    #region Query<T, U>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IQuery(T, U)
-    ///
-    /// <summary>
-    /// Represents the query provider.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// Query と Result の型が同じ場合 IQuery(T, U) の代わりに IQuery(T) を
-    /// 実装する事を検討して下さい。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IQuery<T, U>
-    {
         /* ----------------------------------------------------------------- */
         ///
-        /// Request
+        /// Wrap
         ///
         /// <summary>
-        /// Invokes the request with the specified arguments.
+        /// Wraps the specified value as an IQuery(T, U) interface.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        void Request(QueryEventArgs<T, U> value);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Query(T, U)
-    ///
-    /// <summary>
-    /// Represents the IQuery(T, U) implementation.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class Query<T, U> : IQuery<T, U>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
+        /// <typeparam name="T">type of Query.</typeparam>
+        /// <typeparam name="U">type of Value.</typeparam>
         ///
-        /// Query
+        /// <param name="value">
+        /// Value that is always used as the requested result.
+        /// </param>
         ///
-        /// <summary>
-        /// Initializes a new instance of the Query class.
-        /// </summary>
+        /// <param name="once">
+        /// Value indicating whether to allow only once.
+        /// </param>
+        ///
+        /// <returns>IQuery(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public Query() { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Query
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Query class with the
-        /// specified callback.
-        /// </summary>
-        ///
-        /// <param name="callback">Callback function.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Query(Action<QueryEventArgs<T, U>> callback) : this()
-        {
-            Requested += (s, e) => callback(e);
-        }
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Requested
-        ///
-        /// <summary>
-        /// Occurs when the user request is received.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event QueryEventHandler<T, U> Requested;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnRequested
-        ///
-        /// <summary>
-        /// Raises the Requested event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public virtual void OnRequested(QueryEventArgs<T, U> e)
-        {
-            if (Requested != null) _dispatcher.Invoke(() => Requested(this, e));
-            else e.Cancel = true;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Request
-        ///
-        /// <summary>
-        /// Invokes the request with the specified arguments.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// 問い合わせの結果が無効な場合、Cancel プロパティが true に
-        /// 設定されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Request(QueryEventArgs<T, U> value) => OnRequested(value);
-
-        #endregion
-
-        #region Fields
-        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
-        #endregion
-    }
-
-    #endregion
-
-    #region QueryDispatcher
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// QueryDispatcher
-    ///
-    /// <summary>
-    /// Provides functionality to create a dispatcher.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal static class QueryDispatcher
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the IDispatcher implemented class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDispatcher Create() =>
-            SynchronizationContext.Current != null ? new Dispatcher(true) : Dispatcher.Vanilla;
+        public static IQuery<T, U> Wrap<T, U>(U value, bool once) =>
+            once ?
+            new OnceQuery<T, U>(e => e.Value = value) as IQuery<T, U> :
+            new Query<T, U>(e => e.Value = value) as IQuery<T, U>;
 
         #endregion
     }
-
-    #endregion
 }

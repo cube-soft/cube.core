@@ -15,39 +15,37 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
+using System;
 
-namespace Cube.Tests
+namespace Cube
 {
+    #region CloseMessage
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ProgressEventArgsTest
+    /// CloseMessage
     ///
     /// <summary>
-    /// ProgressEventArgs のテスト用クラスです。
+    /// Represents the message that is sent when closing a window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class ProgressEventArgsTest
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_ProgressEventArgs
-        ///
-        /// <summary>
-        /// ProgressEventArgs.Create(double, T) のテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(10.0, "Progress")]
-        [TestCase(-25.67890, false)]
-        [TestCase(0.0, 3.1415926)]
-        public void Create_ProgressEventArgs<T>(double ratio, T value)
-        {
-            var args = ProgressEventArgs.Create(ratio, value);
-            Assert.That(args.Ratio, Is.EqualTo(ratio));
-            Assert.That(args.Value, Is.EqualTo(value));
-        }
-    }
+    public class CloseMessage : EventArgs { }
+
+    #endregion
+
+    #region UpdateSourcesMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// UpdateSourcesMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when updating source values.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class UpdateSourcesMessage : EventArgs { }
+
+    #endregion
 }

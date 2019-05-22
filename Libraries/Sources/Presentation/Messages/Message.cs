@@ -19,11 +19,11 @@ using System;
 
 namespace Cube
 {
-    #region Message
+    #region Message<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// Message(TValue)
     ///
     /// <summary>
     /// Represents the common message.
@@ -32,8 +32,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class Message<TValue> : EventArgs
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
         /// Title
@@ -55,66 +53,93 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public TValue Value { get; set; }
-
-        #endregion
     }
 
     #endregion
 
-    #region CallbackMessage<T>
+    #region CancelMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CallbackMessage
+    /// CancelMessage
     ///
     /// <summary>
-    /// Represents the message that has a callback function.
+    /// Represents the message with Cancel property.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CallbackMessage<TValue, TAction> : Message<TValue> where TAction : Delegate
+    public class CancelMessage<TValue> : Message<TValue>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Callback
+        /// Cancel
         ///
         /// <summary>
-        /// Gets or sets the callback function that is invoked by a view.
+        /// Gets or sets a value indicating whether to cancel the operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public TAction Callback { get; set; }
+        public bool Cancel { get; set; }
     }
 
     #endregion
 
-    #region CloseMessage
+    #region ProgressMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseMessage
+    /// ProgressMessage(TValue)
     ///
     /// <summary>
-    /// Represents the message that is sent when closing a window.
+    /// Represents the message with Ratio property.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseMessage : EventArgs { }
+    public class ProgressMessage<TValue> : Message<TValue>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Ratio
+        ///
+        /// <summary>
+        /// Gets the current progress ratio.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public double Ratio { get; set; }
+    }
 
     #endregion
 
-    #region UpdateSourcesMessage
+    #region QueryMessage<TQuery, TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// UpdateSourcesMessage
+    /// QueryMessage(TQuery, TValue)
     ///
     /// <summary>
-    /// Represents the message that is sent when updating source values.
+    /// Represents the message that has Query, Value (result), and Cancel
+    /// properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpdateSourcesMessage : EventArgs { }
+    public class QueryMessage<TQuery, TValue> : CancelMessage<TValue>
+    {
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// Gets or sets the query.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TQuery Query { get; set; }
+
+        #endregion
+    }
 
     #endregion
 }
