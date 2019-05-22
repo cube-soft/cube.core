@@ -56,7 +56,7 @@ namespace Cube.Forms.Demo
             }.ShowDialog();
 
             Caption = HeaderCaptionControl;
-            Text = $"{ProductName} {ProductVersion} ({ProductPlatform})";
+            Text = $"{ProductName} {ProductVersion}";
         }
 
         #endregion

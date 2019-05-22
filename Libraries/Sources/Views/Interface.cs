@@ -17,12 +17,45 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms
 {
+    #region IBindable
+
     /* --------------------------------------------------------------------- */
     ///
-    /// IDpiAwarableControl
+    /// IBindable
     ///
     /// <summary>
-    /// DPI の変更に反応できるコントロールのインターフェースです。
+    /// Represents an interface that a window can be bound a presentable
+    /// object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IBindable
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bind
+        ///
+        /// <summary>
+        /// Binds the window with the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Object to be bound.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Bind(IPresentable src);
+    }
+
+    #endregion
+
+    #region IDpiAwarable
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IDpiAwarable
+    ///
+    /// <summary>
+    /// Represents an interface that a window or control can be aware of
+    /// DPI changing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -33,7 +66,7 @@ namespace Cube.Forms
         /// Dpi
         ///
         /// <summary>
-        /// 現在の DPI を取得または設定します。
+        /// Gets or sets the current DPI.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -44,10 +77,12 @@ namespace Cube.Forms
         /// DpiChanged
         ///
         /// <summary>
-        /// DPI の変更時に発生するイベントです。
+        /// Occurs when the current DPI is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         event ValueChangedEventHandler<double> DpiChanged;
     }
+
+    #endregion
 }

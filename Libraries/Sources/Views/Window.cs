@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using WinForms = System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -37,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Window : System.Windows.Forms.Form, IForm
+    public class Window : WindowBase, IForm
     {
         #region Constructors
 
@@ -52,7 +53,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public Window()
         {
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            AutoScaleMode = WinForms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
             Font = FontFactory.Create(Font);
 
@@ -103,17 +104,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Behaviors
-        ///
-        /// <summary>
-        /// Gets the collection of registered behaviors.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IList<IDisposable> Behaviors { get; } = new List<IDisposable>();
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ShortcutKeys
         ///
         /// <summary>
@@ -128,21 +118,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDictionary<System.Windows.Forms.Keys, Action> ShortcutKeys { get; } =
-            new Dictionary<System.Windows.Forms.Keys, Action>();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ProductPlatform
-        ///
-        /// <summary>
-        /// 実行中のプロセスのプラットフォームを表す文字列を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string ProductPlatform => IntPtr.Size == 4 ? "x86" : "x64";
+        public IDictionary<WinForms.Keys, Action> ShortcutKeys { get; } = new Dictionary<WinForms.Keys, Action>();
 
         #endregion
 
@@ -178,33 +154,6 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Received
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Received
-        ///
-        /// <summary>
-        /// 他のプロセスからデータを受信した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event CollectionEventHandler<string> Received;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnReceived
-        ///
-        /// <summary>
-        /// Received イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnReceived(CollectionEventArgs<string> e) =>
-            Received?.Invoke(this, e);
-
-        #endregion
-
         #region DpiChanged
 
         /* ----------------------------------------------------------------- */
@@ -229,7 +178,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
         {
-            var need = AutoScaleMode == System.Windows.Forms.AutoScaleMode.Dpi;
+            var need = AutoScaleMode == WinForms.AutoScaleMode.Dpi;
             if (need) this.UpdateDpi(e.OldValue, e.NewValue);
             DpiChanged?.Invoke(this, e);
         }
@@ -281,8 +230,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void AdjustDesktopLocation()
         {
-            var screen = System.Windows.Forms.Screen.FromPoint(DesktopLocation) ??
-                         System.Windows.Forms.Screen.PrimaryScreen;
+            var screen = WinForms.Screen.FromPoint(DesktopLocation) ??
+                         WinForms.Screen.PrimaryScreen;
             var x      = DesktopLocation.X;
             var y      = DesktopLocation.Y;
 
@@ -309,41 +258,11 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool DoShortcutKeys(System.Windows.Forms.Keys keys)
+        protected bool DoShortcutKeys(WinForms.Keys keys)
         {
             if (!ShortcutKeys.ContainsKey(keys)) return false;
             ShortcutKeys[keys]();
             return true;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the StandardForm
-        /// and optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                if (_disposed) return;
-                _disposed = true;
-                if (disposing)
-                {
-                    foreach (var behavior in Behaviors) behavior.Dispose();
-                    Behaviors.Clear();
-                }
-            }
-            finally { base.Dispose(disposing); }
         }
 
         #endregion
@@ -376,8 +295,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg,
-            System.Windows.Forms.Keys keys)
+        protected override bool ProcessCmdKey(ref WinForms.Message msg, WinForms.Keys keys)
         {
             if (ShortcutKeys.ContainsKey(keys))
             {
@@ -396,7 +314,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref WinForms.Message m)
         {
             base.WndProc(ref m);
 
@@ -435,7 +353,6 @@ namespace Cube.Forms
 
         #region Fields
         private double _dpi = BaseDpi;
-        private bool _disposed = false;
         #endregion
     }
 }
