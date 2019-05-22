@@ -156,24 +156,5 @@ namespace Cube.Tests
         #endregion
 
         #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetAddress
-        ///
-        /// <summary>
-        /// レジストリに Address オブジェクトに対応する値を設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void SetAddress(RegistryKey src, string type, string value)
-        {
-            src.SetValue(nameof(Address.Type),  type );
-            src.SetValue(nameof(Address.Value), value);
-        }
-
-        #endregion
     }
 }

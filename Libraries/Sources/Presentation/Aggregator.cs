@@ -18,7 +18,7 @@
 using Cube.Collections;
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
+using System.Linq;
 
 namespace Cube
 {
@@ -27,7 +27,7 @@ namespace Cube
     /// Aggregator
     ///
     /// <summary>
-    /// Represents type based message aggregator.
+    /// Represents the type based message aggregator.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -50,11 +50,7 @@ namespace Cube
         {
             if (_subscription.TryGetValue(typeof(T), out var dest))
             {
-                foreach (var obj in dest)
-                {
-                    Debug.Assert(obj is Action<T>);
-                    ((Action<T>)obj)(message);
-                }
+                foreach (var e in dest.OfType<Action<T>>()) e(message);
             }
         }
 

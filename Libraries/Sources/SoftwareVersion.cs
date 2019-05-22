@@ -43,20 +43,6 @@ namespace Cube
         /// SoftwareVersion
         ///
         /// <summary>
-        /// Initializes a new instance of the class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SoftwareVersion()
-        {
-            Platform = IntPtr.Size == 4 ? "x86" : "x64";
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SoftwareVersion
-        ///
-        /// <summary>
         /// Initializes a new instance of the class with the specified
         /// assembly.
         /// </summary>
@@ -84,7 +70,26 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(string version) : this() { Parse(version); }
+        public SoftwareVersion(string version) : this(Assembly.GetExecutingAssembly())
+        {
+            if (!version.HasValue()) return;
+
+            var match = Regex.Match(
+                version,
+                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){1,3})(?<suffix>.*)",
+                RegexOptions.Singleline
+            );
+
+            Prefix = match.Groups["prefix"].Value;
+            Suffix = match.Groups["suffix"].Value;
+
+            var number = match.Groups["number"].Value;
+            if (TryParse(number, out var result))
+            {
+                Number = result;
+                Digit = number.Count(c => c == '.') + 1;
+            }
+        }
 
         #endregion
 
@@ -99,7 +104,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Version Number { get; set; } = new Version(1, 0, 0, 0);
+        public Version Number { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -286,48 +291,25 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Parse
+        /// TryParse
         ///
         /// <summary>
-        /// Parses the string that represents the version.
+        /// Tries to convert the specified string to a Version object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Parse(string str)
+        private bool TryParse(string src, out Version dest)
         {
-            if (!str.HasValue()) return;
-
-            var match = Regex.Match(
-                str,
-                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){1,3})(?<suffix>.*)",
-                RegexOptions.Singleline
-            );
-
-            Prefix = match.Groups["prefix"].Value;
-            Suffix = match.Groups["suffix"].Value;
-
-            var number = match.Groups["number"].Value;
-            var result = Convert(number);
-            if (result != null)
+            try
             {
-                Number = result;
-                Digit  = number.Count(c => c == '.') + 1;
+                dest = new Version(src);
+                return true;
             }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Convert
-        ///
-        /// <summary>
-        /// バージョンを表す文字列を Version オブジェクトに変換します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Version Convert(string src)
-        {
-            try { return new Version(src); }
-            catch { return null; }
+            catch
+            {
+                dest = null;
+                return false;
+            }
         }
 
         #endregion
