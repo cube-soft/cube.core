@@ -47,7 +47,6 @@ namespace Cube.Xui.Behaviors
             var status  = MessageBox.Show(e.Value, e.Title, buttons, icon);
 
             e.Status = Results.ContainsKey(status) ? Results[status] : DialogStatus.None;
-            e.Callback?.Invoke(e);
         }
 
         /* ----------------------------------------------------------------- */
