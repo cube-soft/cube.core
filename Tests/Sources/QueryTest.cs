@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading;
@@ -89,48 +88,6 @@ namespace Cube.Tests
             src.Request(msg);
             Assert.That(msg.Value, Is.EqualTo(1));
             Assert.That(() => src.Request(msg), Throws.TypeOf<TwiceException>());
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Wrap
-        ///
-        /// <summary>
-        /// Tests the Query.Wrap method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Wrap()
-        {
-            var src  = Query.Wrap("a");
-            var dest = string.Empty;
-
-            5.Times(i =>
-            {
-                var msg = Query.NewMessage("string");
-                src.Request(msg);
-                dest += msg.Value;
-            });
-
-            Assert.That(dest, Is.EqualTo("aaaaa"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Wrap_TwiceException
-        ///
-        /// <summary>
-        /// Tests the Query.Wrap method and confirms the TwiceException.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Wrap_TwiceException()
-        {
-            var src = Query.Wrap("dummy", true);
-            var msg = Query.NewMessage("string");
-            Assert.That(() => 5.Times(i => src.Request(msg)), Throws.TypeOf<TwiceException>());
         }
 
         /* ----------------------------------------------------------------- */
