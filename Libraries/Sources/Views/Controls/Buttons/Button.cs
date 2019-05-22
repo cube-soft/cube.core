@@ -131,7 +131,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e) =>
+        protected virtual void OnNcHitTest(QueryMessage<Point, Position> e) =>
             NcHitTest?.Invoke(this, e);
 
         #endregion

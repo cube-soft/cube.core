@@ -67,9 +67,9 @@ namespace Cube.Forms.Behaviors
             if (e.Title.HasValue()) dialog.Description  = e.Title;
             if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
 
-            e.Status = dialog.ShowDialog() == DialogResult.OK;
-            if (e.Status) e.Value = dialog.SelectedPath;
-            e.Callback?.Invoke(e);
+            var ok = dialog.ShowDialog() == DialogResult.OK;
+            e.Cancel = !ok;
+            if (ok) e.Value = dialog.SelectedPath;
         }
 
         #endregion

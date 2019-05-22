@@ -283,7 +283,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e)
+        protected virtual void OnNcHitTest(QueryMessage<Point, Position> e)
         {
             if (NcHitTest != null) NcHitTest(this, e);
             else e.Cancel = true;
@@ -432,9 +432,9 @@ namespace Cube.Forms
                     Dpi = (short)(m.WParam.ToInt32() & 0x0000ffff);
                     break;
                 case 0x0084: // WM_NCHITTEST
-                    var e = new QueryEventArgs<Point, Position>(CreatePoint(m.LParam));
+                    var e = Query.NewMessage<Point, Position>(CreatePoint(m.LParam));
                     OnNcHitTest(e);
-                    if (!e.Cancel) m.Result = (IntPtr)e.Result;
+                    if (!e.Cancel) m.Result = (IntPtr)e.Value;
                     break;
                 default:
                     break;

@@ -34,8 +34,6 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class OpenFileDialogBehavior : SubscribeBehavior<OpenFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// OpenFileDialogBehavior
@@ -49,10 +47,6 @@ namespace Cube.Forms.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public OpenFileDialogBehavior(IPresentable src) :base (src) { }
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -77,12 +71,10 @@ namespace Cube.Forms.Behaviors
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
-            e.Status = dialog.ShowDialog() == DialogResult.OK;
-            if (e.Status) e.Value = dialog.FileNames;
-            e.Callback?.Invoke(e);
+            var ok = dialog.ShowDialog() == DialogResult.OK;
+            e.Cancel = !ok;
+            if (ok) e.Value = dialog.FileNames;
         }
-
-        #endregion
     }
 
     #endregion
@@ -100,8 +92,6 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class SaveFileDialogBehavior : SubscribeBehavior<SaveFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// SaveFileDialogBehavior
@@ -115,10 +105,6 @@ namespace Cube.Forms.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public SaveFileDialogBehavior(IPresentable src) : base(src) { }
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -143,12 +129,10 @@ namespace Cube.Forms.Behaviors
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
 
-            e.Status = dialog.ShowDialog() == DialogResult.OK;
-            if (e.Status) e.Value = dialog.FileName;
-            e.Callback?.Invoke(e);
+            var ok = dialog.ShowDialog() == DialogResult.OK;
+            e.Cancel = !ok;
+            if (ok) e.Value = dialog.FileName;
         }
-
-        #endregion
     }
 
     #endregion

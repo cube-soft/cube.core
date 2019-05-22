@@ -114,7 +114,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryEventArgs<Point, Position> e) =>
+        protected virtual void OnNcHitTest(QueryMessage<Point, Position> e) =>
             NcHitTest?.Invoke(this, e);
 
         #endregion
@@ -140,9 +140,13 @@ namespace Cube.Forms
             {
                 var x = (int)m.LParam & 0xffff;
                 var y = (int)m.LParam >> 16 & 0xffff;
-                var e = new QueryEventArgs<Point, Position>(new Point(x, y), true);
+                var e = new QueryMessage<Point, Position>
+                {
+                    Query  = new Point(x, y),
+                    Cancel = true,
+                };
                 OnNcHitTest(e);
-                var result = e.Cancel ? Position.Transparent : e.Result;
+                var result = e.Cancel ? Position.Transparent : e.Value;
                 if (DesignMode && result == Position.Transparent) return;
                 m.Result = (IntPtr)result;
             }
