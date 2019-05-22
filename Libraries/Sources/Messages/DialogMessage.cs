@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+
 namespace Cube
 {
     #region DialogMessage
@@ -30,6 +32,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class DialogMessage : Message<string>
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// DialogMessage
@@ -40,6 +44,10 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public DialogMessage() { Value = string.Empty; }
+
+        #endregion
+
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
@@ -74,6 +82,33 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public DialogStatus Status { get; set; } = DialogStatus.Ok;
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the DialogMessage class with the
+        /// specified exception.
+        /// </summary>
+        ///
+        /// <param name="src">Exception object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static DialogMessage Create(Exception src) => new DialogMessage
+        {
+            Title   = "Error",
+            Value   = $"{src.Message} ({src.GetType().Name})",
+            Icon    = DialogIcon.Error,
+            Buttons = DialogButtons.Ok,
+            Status  = DialogStatus.Ok,
+        };
+
+        #endregion
     }
 
     #endregion
@@ -128,7 +163,7 @@ namespace Cube
 
     #endregion
 
-    #region DialogResult
+    #region DialogStatus
 
     /* --------------------------------------------------------------------- */
     ///
