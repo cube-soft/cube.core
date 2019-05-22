@@ -391,7 +391,7 @@ namespace Cube.Forms
 
         #region Fields
         private readonly ButtonPainter _painter;
-        private double _dpi = StandardForm.BaseDpi;
+        private double _dpi = Window.BaseDpi;
         #endregion
     }
 }

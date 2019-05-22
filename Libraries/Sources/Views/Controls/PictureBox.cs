@@ -155,7 +155,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private double _dpi = StandardForm.BaseDpi;
+        private double _dpi = Window.BaseDpi;
         #endregion
     }
 }

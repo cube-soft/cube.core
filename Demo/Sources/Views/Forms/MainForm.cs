@@ -30,7 +30,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainForm : BorderlessForm
+    public partial class MainForm : BorderlessWindow
     {
         #region Constructors
 
@@ -49,7 +49,7 @@ namespace Cube.Forms.Demo
 
             var asm = Assembly.GetExecutingAssembly();
             ContentsControl.Resize += WhenResize;
-            DemoButton1.Click += (s, e) => new VersionForm(asm)
+            DemoButton1.Click += (s, e) => new VersionWindow(asm)
             {
                 Icon = Icon,
                 Text = Text,

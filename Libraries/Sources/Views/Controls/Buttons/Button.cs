@@ -205,7 +205,7 @@ namespace Cube.Forms
         private Color _background = Color.Empty;
         private Color _foreground = Color.Empty;
         private Color _border = Color.Empty;
-        private double _dpi = StandardForm.BaseDpi;
+        private double _dpi = Window.BaseDpi;
         #endregion
     }
 }

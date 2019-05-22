@@ -26,7 +26,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BorderlessForm
+    /// BorderlessWindow
     ///
     /// <summary>
     /// 枠線やタイトルバーのないフォームを作成するためのクラスです。
@@ -38,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class BorderlessForm : StandardForm, IBorderlessForm
+    public class BorderlessWindow : Window, IBorderlessForm
     {
         #region Constructors
 
@@ -51,7 +51,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public BorderlessForm()
+        public BorderlessWindow()
         {
             SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
             SystemEvents.UserPreferenceChanged  += (s, e) => UpdateMaximumSize();

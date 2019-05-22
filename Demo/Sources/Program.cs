@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 
 namespace Cube.Forms.Demo
 {
@@ -41,21 +40,11 @@ namespace Cube.Forms.Demo
         ///
         /* ----------------------------------------------------------------- */
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
-            var app = System.Windows.Forms.Application.ProductName;
-            using (var m = new Cube.Ipc.Messenger<IEnumerable<string>>(app))
-            {
-                if (!m.IsServer) m.Publish(args);
-                else
-                {
-                    System.Windows.Forms.Application.EnableVisualStyles();
-                    System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-
-                    var view = new MainForm { Activator = m };
-                    System.Windows.Forms.Application.Run(view);
-                }
-            }
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            System.Windows.Forms.Application.Run(new MainForm());
         }
     }
 }

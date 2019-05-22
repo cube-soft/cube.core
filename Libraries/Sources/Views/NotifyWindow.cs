@@ -27,14 +27,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyForm
+    /// NotifyWindow
     ///
     /// <summary>
     /// 通知用フォームを表すクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NotifyForm : BorderlessForm, INotifyForm
+    public class NotifyWindow : BorderlessWindow, INotifyForm
     {
         #region Constructors
 
@@ -47,7 +47,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyForm()
+        public NotifyWindow()
         {
             InitializeLayout();
         }

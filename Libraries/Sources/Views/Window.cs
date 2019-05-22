@@ -26,7 +26,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StandardForm
+    /// Window
     ///
     /// <summary>
     /// Windows 標準のフォームを表すクラスです。
@@ -37,7 +37,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class StandardForm : System.Windows.Forms.Form, IForm
+    public class Window : System.Windows.Forms.Form, IForm
     {
         #region Constructors
 
@@ -50,7 +50,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public StandardForm()
+        public Window()
         {
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
@@ -98,31 +98,6 @@ namespace Cube.Forms
                 var old = _dpi;
                 _dpi = value;
                 OnDpiChanged(ValueEventArgs.Create(old, value));
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Activator
-        ///
-        /// <summary>
-        /// プロセス間通信を介した起動およびアクティブ化を制御するための
-        /// オブジェクトを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Cube.Ipc.IMessenger<IEnumerable<string>> Activator
-        {
-            get => _activator;
-            set
-            {
-                if (_activator == value) return;
-
-                _remover?.Dispose();
-                _activator = value;
-                if (_activator != null) _remover = _activator.Subscribe(WhenActivated);
             }
         }
 
@@ -364,7 +339,6 @@ namespace Cube.Forms
                 _disposed = true;
                 if (disposing)
                 {
-                    _activator?.Dispose();
                     foreach (var behavior in Behaviors) behavior.Dispose();
                     Behaviors.Clear();
                 }
@@ -443,33 +417,6 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenActivated
-        ///
-        /// <summary>
-        /// 他プロセスからメッセージを受信（アクティブ化）した時に実行
-        /// されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenActivated(IEnumerable<string> args)
-        {
-            if (InvokeRequired) Invoke(new Action(() => WhenActivated(args)));
-            else
-            {
-                if (!Visible) Show();
-                if (WindowState == System.Windows.Forms.FormWindowState.Minimized)
-                {
-                    WindowState = System.Windows.Forms.FormWindowState.Normal;
-                }
-
-                Activate();
-                BringToFront();
-                OnReceived(CollectionEventArgs.Create(args));
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// CreatePoint
         ///
         /// <summary>
@@ -488,8 +435,6 @@ namespace Cube.Forms
 
         #region Fields
         private double _dpi = BaseDpi;
-        private Cube.Ipc.IMessenger<IEnumerable<string>> _activator;
-        private IDisposable _remover;
         private bool _disposed = false;
         #endregion
     }

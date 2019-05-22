@@ -24,14 +24,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// VersionForm
+    /// VersionWindow
     ///
     /// <summary>
     /// バージョン情報を表示するためのフォームです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class VersionForm : StandardForm
+    public class VersionWindow : Window
     {
         #region Constructors
 
@@ -44,7 +44,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionForm() : this(Assembly.GetExecutingAssembly()) { }
+        public VersionWindow() : this(Assembly.GetExecutingAssembly()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -57,7 +57,7 @@ namespace Cube.Forms
         /// <param name="assembly">アセンブリ情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionForm(Assembly assembly)
+        public VersionWindow(Assembly assembly)
         {
             _control = new VersionControl(assembly);
             InitializeLayout();
