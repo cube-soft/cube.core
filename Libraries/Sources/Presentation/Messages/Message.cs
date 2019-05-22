@@ -89,4 +89,36 @@ namespace Cube
     }
 
     #endregion
+
+    #region QueryMessage<TQuery, TValue>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryMessage(TQuery, TValue)
+    ///
+    /// <summary>
+    /// Represents the message that has Query, Value (result), and Cancel
+    /// properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class QueryMessage<TQuery, TValue> : CancelMessage<TValue>
+    {
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// Gets or sets the query.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public TQuery Query { get; set; }
+
+        #endregion
+    }
+
+    #endregion
 }

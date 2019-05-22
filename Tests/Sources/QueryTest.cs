@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading;
@@ -26,7 +27,7 @@ namespace Cube.Tests
     /// QueryTest
     ///
     /// <summary>
-    /// プログラムオプション等の引数を解析するためのクラスです。
+    /// Tests the IQuery(T, U) implemented classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -35,14 +36,12 @@ namespace Cube.Tests
     {
         #region Tests
 
-        #region Query<T, U>
-
         /* ----------------------------------------------------------------- */
         ///
         /// Request
         ///
         /// <summary>
-        /// Query(T, U) オブジェクトのテストを実行します。
+        /// Tests the Query(T) class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -51,113 +50,82 @@ namespace Cube.Tests
         {
             SynchronizationContext.SetSynchronizationContext(ctx);
 
-            var index = 0;
-            var query = new Query<int, string>(e =>
+            var src = new Query<int>(e =>
             {
-                if (e.Result == "success" || index >= seq.Count) e.Cancel = true;
-                else e.Result = seq[index++];
-            });
-
-            var args = new QueryEventArgs<int, string>(id);
-            Assert.That(args.Query,  Is.EqualTo(id));
-            Assert.That(args.Result, Is.Null);
-            Assert.That(args.Cancel, Is.False);
-
-            while (!args.Cancel) query.Request(args);
-            return args.Result == "success";
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Request_None
-        ///
-        /// <summary>
-        /// Query(T, U) にコールバック関数が指定されなかった時の挙動を
-        /// 確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Request_None()
-        {
-            var query = new Query<int, string>();
-            var args  = new QueryEventArgs<int, string>(200);
-
-            Assert.That(args.Query,  Is.EqualTo(200));
-            Assert.That(args.Result, Is.Null);
-            Assert.That(args.Cancel, Is.False);
-
-            query.Request(args);
-
-            Assert.That(args.Cancel, Is.True);
-            Assert.That(args.Result, Is.Null);
-        }
-
-        #endregion
-
-        #region Query<T>
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Request_Count
-        ///
-        /// <summary>
-        /// Query(T) オブジェクトのテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public bool Request_Count(int id, IList<string> seq, SynchronizationContext ctx)
-        {
-            SynchronizationContext.SetSynchronizationContext(ctx);
-
-            var query = new Query<int>(e =>
-            {
-                if (e.Result >= seq.Count)
+                if (e.Value >= seq.Count)
                 {
                     e.Cancel = true;
-                    e.Result = -1;
+                    e.Value = -1;
                 }
-                else if (seq[e.Result] == "success") e.Cancel = true;
-                else e.Result++;
+                else if (seq[e.Value] == "success") e.Cancel = true;
+                else e.Value++;
             });
 
-            var args = QueryEventArgs.Create(id);
-            Assert.That(args.Query,  Is.EqualTo(id));
-            Assert.That(args.Result, Is.EqualTo(0));
-            Assert.That(args.Cancel, Is.False);
+            var msg = Query.NewMessage(id);
+            Assert.That(msg.Query,  Is.EqualTo(id));
+            Assert.That(msg.Value,  Is.EqualTo(0));
+            Assert.That(msg.Cancel, Is.False);
 
-            while (!args.Cancel) query.Request(args);
-            return args.Result != -1;
+            while (!msg.Cancel) src.Request(msg);
+            return msg.Value != -1;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Request_Count_None
+        /// Wrap
         ///
         /// <summary>
-        /// Query(T) にコールバック関数が指定されなかった時の挙動を
-        /// 確認します。
+        /// Tests the Query.Wrap method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Request_Count_None()
+        public void Wrap()
         {
-            var query = new Query<int>();
-            var args  = QueryEventArgs.Create(100);
+            var src  = Query.Wrap("a");
+            var dest = string.Empty;
 
-            Assert.That(args.Query,  Is.EqualTo(100));
-            Assert.That(args.Result, Is.EqualTo(0));
-            Assert.That(args.Cancel, Is.False);
+            5.Times(i =>
+            {
+                var msg = Query.NewMessage("string");
+                src.Request(msg);
+                dest += msg.Value;
+            });
 
-            query.Request(args);
-
-            Assert.That(args.Cancel, Is.True);
-            Assert.That(args.Result, Is.EqualTo(0));
+            Assert.That(dest, Is.EqualTo("aaaaa"));
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Wrap_TwiceException
+        ///
+        /// <summary>
+        /// Tests the Query.Wrap method and confirms the TwiceException.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Wrap_TwiceException()
+        {
+            var src = Query.Wrap<int, string>("dummy", true);
+            var msg = Query.NewMessage<int, string>(0);
+            Assert.That(() => 5.Times(i => src.Request(msg)), Throws.TypeOf<TwiceException>());
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_ArgumentNullException
+        ///
+        /// <summary>
+        /// Tests the Query(T) class with the null object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_ArgumentNullException()
+        {
+            Assert.That(() => new Query<int>(null), Throws.ArgumentNullException);
+        }
 
         #endregion
 
@@ -168,7 +136,7 @@ namespace Cube.Tests
         /// TestCases
         ///
         /// <summary>
-        /// テスト用データを取得します。
+        /// Gets test cases.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
