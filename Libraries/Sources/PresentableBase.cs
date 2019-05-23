@@ -270,26 +270,13 @@ namespace Cube
         /// Send
         ///
         /// <summary>
-        /// Invokes the specified action with the provided dispatcher.
-        /// </summary>
-        ///
-        /// <param name="action">Action to be invoked.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Send(Action action) => _dispatcher.Send(action);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
         /// Sends the specified message.
         /// </summary>
         ///
         /// <param name="message">Message to be sent.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(T message) => Send(() => Aggregator.Publish(message));
+        protected void Send<T>(T message) => _dispatcher.Send(() => Aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -313,26 +300,13 @@ namespace Cube
         /// Post
         ///
         /// <summary>
-        /// Invokes the specified action with the provided dispatcher.
-        /// </summary>
-        ///
-        /// <param name="action">Action to be invoked.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Post(Action action) => _dispatcher.Post(action);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Post
-        ///
-        /// <summary>
         /// Posts the specified message.
         /// </summary>
         ///
         /// <param name="message">Message to be posted.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>(T message) => Post(() => Aggregator.Publish(message));
+        protected void Post<T>(T message) => _dispatcher.Post(() => Aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -365,7 +339,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action) => Track(action, Convert);
+        protected Task Track(Action action) => Track(action, DialogMessage.Create);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -381,15 +355,46 @@ namespace Cube
         /// </param>
         ///
         /// <param name="converter">
-        /// Function to convert to the error message.
+        /// Function to convert from Exception to DialogMessage.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Func<Exception, DialogMessage> converter) => TaskEx.Run(() =>
-        {
-            try { action(); }
-            catch (Exception err) { Send(converter(err)); }
-        });
+        protected Task Track(Action action, Converter converter) =>
+            Track(action, converter, false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Invokes the specified action, and will send the error message
+        /// if any exceptions are thrown.
+        /// </summary>
+        ///
+        /// <param name="action">
+        /// Action to be invoked.
+        /// </param>
+        ///
+        /// <param name="converter">
+        /// Function to convert from Exception to DialogMessage.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous manner.
+        /// </param>
+        ///
+        /// <remarks>
+        /// Presenter や ViewModel において、直接的に View と関係のない何らかの
+        /// 処理を実行する時には原則として 非 UI スレッド上で実行する事が推奨され
+        /// ますが、同期問題などの理由でやむを得ず UI スレッド上で実行したい場合、
+        /// 第 3 引数を true に設定して下さい。また、第 2 引数には既定の変換規則
+        /// として DialogMessage.Create が利用できます。
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Task Track(Action action, Converter converter, bool synchronous) =>
+            synchronous ? TrackSync(action, converter) : TrackAsync(action, converter);
 
         #endregion
 
@@ -399,22 +404,48 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Convert
+        /// TrackAsync
         ///
         /// <summary>
-        /// Creates a new instance of the Exception class with the specified
-        /// exception.
+        /// Invokes the specified action as an asynchronous manner, and
+        /// will send the error message if any exceptions are thrown.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private DialogMessage Convert(Exception src) => new DialogMessage
+        private Task TrackAsync(Action action, Converter converter) =>
+            TaskEx.Run(() => TrackCore(action, converter));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TrackSync
+        ///
+        /// <summary>
+        /// Invokes the specified action as a synchronous manner, and
+        /// will send the error message if any exceptions are thrown.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Task TrackSync(Action action, Converter converter)
         {
-            Title   = "Error",
-            Value   = $"{src.Message} ({src.GetType().Name})",
-            Icon    = DialogIcon.Error,
-            Buttons = DialogButtons.Ok,
-            Status  = DialogStatus.Ok,
-        };
+            TrackCore(action, converter);
+            return TaskEx.FromResult(0);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TrackCore
+        ///
+        /// <summary>
+        /// Invokes the specified action, and will send the error message
+        /// if any exceptions are thrown.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void TrackCore(Action action, Converter converter)
+        {
+            try { action(); }
+            catch (Exception err) { Send(converter(err)); }
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -431,6 +462,18 @@ namespace Cube
             public void Send(Action action) => Context.Send(e => action(), null);
             public void Post(Action action) => Context.Post(e => action(), null);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Converter
+        ///
+        /// <summary>
+        /// Represents the delegate to convert from Exception to
+        /// DialogMessage.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public delegate DialogMessage Converter(Exception e);
 
         #endregion
 

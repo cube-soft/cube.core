@@ -68,7 +68,32 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static QueryMessage<T, U> NewMessage<T, U>(T query) =>
-            new QueryMessage<T, U> { Query = query };
+            NewMessage(query, default(U));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NewMessage
+        ///
+        /// <summary>
+        /// Creates a new instance of the QueryMessage(T, U) class with
+        /// the specified query and default value.
+        /// </summary>
+        ///
+        /// <typeparam name="T">type of Query.</typeparam>
+        /// <typeparam name="U">type of Value.</typeparam>
+        ///
+        /// <param name="query">Query of the message.</param>
+        /// <param name="value">Default value of the message.</param>
+        ///
+        /// <returns>QueryMessage(T, U) object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static QueryMessage<T, U> NewMessage<T, U>(T query, U value) =>
+            new QueryMessage<T, U>
+            {
+                Query = query,
+                Value = value,
+            };
 
         #endregion
     }

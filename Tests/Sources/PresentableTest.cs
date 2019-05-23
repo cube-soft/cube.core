@@ -74,14 +74,14 @@ namespace Cube.Tests
                 using (src.Subscribe<int>(action))
                 using (src.Subscribe<int>(action))
                 {
-                    5.Times(i => src.TestSend<int>());
+                    5.Times(i => src.SendMessage<int>());
                     Assert.That(n, Is.EqualTo(10));
 
-                    5.Times(i => src.TestSend<long>());
+                    5.Times(i => src.SendMessage<long>());
                     Assert.That(n, Is.EqualTo(10));
                 }
 
-                5.Times(i => src.TestSend<int>());
+                5.Times(i => src.SendMessage<int>());
                 Assert.That(n, Is.EqualTo(10));
             }
         }
@@ -102,36 +102,63 @@ namespace Cube.Tests
             using (var src = new Presenter(new SynchronizationContext()))
             using (src.Subscribe<int>(e => cts.Cancel()))
             {
-                src.TestPost<int>();
+                src.PostMessage<int>();
                 Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
             }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Track
+        /// TrackAsync
         ///
         /// <summary>
-        /// Tests the Track method.
+        /// Tests the async Track method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Track()
+        public void TrackAsync()
         {
             var dest = default(DialogMessage);
             using (var src = new Presenter(new SynchronizationContext()))
             using (src.Subscribe<DialogMessage>(e => dest = e))
             {
-                src.TestTrack(() => { /* OK */ }).Wait();
-                src.TestTrack(() => throw new ArgumentException(nameof(Track))).Wait();
+                src.TrackAsync(() => { /* OK */ }).Wait();
+                src.TrackAsync(() => throw new ArgumentException(nameof(TrackAsync))).Wait();
             }
 
-            Assert.That(dest.Value,    Does.StartWith(nameof(Track)));
-            Assert.That(dest.Title,    Is.EqualTo("Error"));
-            Assert.That(dest.Icon,     Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons,  Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Status,   Is.EqualTo(DialogStatus.Ok));
+            Assert.That(dest.Value,   Does.StartWith(nameof(TrackAsync)));
+            Assert.That(dest.Title,   Is.EqualTo("Error"));
+            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
+            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(dest.Status,  Is.EqualTo(DialogStatus.Ok));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TrackSync
+        ///
+        /// <summary>
+        /// Tests the sync Track method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void TrackSync()
+        {
+            var dest = default(DialogMessage);
+            using (var src = new Presenter(new SynchronizationContext()))
+            using (src.Subscribe<DialogMessage>(e => dest = e))
+            {
+                src.TrackSync(() => { /* OK */ });
+                src.TrackSync(() => throw new ArgumentException(nameof(TrackSync)));
+            }
+
+            Assert.That(dest.Value,   Does.StartWith(nameof(TrackSync)));
+            Assert.That(dest.Title,   Is.EqualTo("Error"));
+            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
+            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(dest.Status,  Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -191,9 +218,10 @@ namespace Cube.Tests
         {
             public Presenter() : base() { }
             public Presenter(SynchronizationContext ctx) : base(new Aggregator(), ctx) { }
-            public void TestSend<T>() where T : new() => Send<T>();
-            public void TestPost<T>() where T : new() => Post<T>();
-            public Task TestTrack(Action e) => Track(e);
+            public void SendMessage<T>() where T : new() => Send<T>();
+            public void PostMessage<T>() where T : new() => Post<T>();
+            public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
+            public Task TrackAsync(Action e) => Track(e);
             protected override void Dispose(bool disposing) { }
             public string TestValue
             {
