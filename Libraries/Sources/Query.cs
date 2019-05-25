@@ -15,86 +15,244 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Threading;
+
 namespace Cube
 {
+    #region IQuery<T, U>
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Query
+    /// IQuery(T, U)
     ///
     /// <summary>
-    /// Provides functionality to create a new instance of the Query(T, U)
-    /// or related classes.
+    /// Represents the query provider.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Query
+    public interface IQuery<T, U>
     {
-        #region NewMessage
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Request
+        ///
+        /// <summary>
+        /// Invokes the request with the specified message.
+        /// </summary>
+        ///
+        /// <param name="message">Message to request.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Request(QueryMessage<T, U> message);
+    }
+
+    #endregion
+
+    #region Query<T, U>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Query(T, U)
+    ///
+    /// <summary>
+    /// Represents the IQuery(T, U) implementation.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Query<T, U> : IQuery<T, U>
+    {
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// NewMessage
+        /// Query
         ///
         /// <summary>
-        /// Creates a new instance of the QueryMessage(T, T) class with
-        /// the specified query.
+        /// Initializes a new instance of the Query class with the
+        /// specified callback.
         /// </summary>
         ///
-        /// <typeparam name="T">type of Query and Value.</typeparam>
-        ///
-        /// <param name="query">Query of the message.</param>
-        ///
-        /// <returns>QueryMessage(T, T) object.</returns>
+        /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, T> NewMessage<T>(T query) =>
-            NewMessage<T, T>(query);
+        public Query(Action<QueryMessage<T, U>> callback)
+        {
+            _callback = callback ?? throw new ArgumentNullException(nameof(callback));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// NewMessage
+        /// Request
         ///
         /// <summary>
-        /// Creates a new instance of the QueryMessage(T, U) class with
-        /// the specified query.
+        /// Invokes the request with the specified message.
         /// </summary>
         ///
-        /// <typeparam name="T">type of Query.</typeparam>
-        /// <typeparam name="U">type of Value.</typeparam>
-        ///
-        /// <param name="query">Query of the message.</param>
-        ///
-        /// <returns>QueryMessage(T, U) object.</returns>
+        /// <param name="message">Message to request.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T query) =>
-            NewMessage(query, default(U));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewMessage
-        ///
-        /// <summary>
-        /// Creates a new instance of the QueryMessage(T, U) class with
-        /// the specified query and default value.
-        /// </summary>
-        ///
-        /// <typeparam name="T">type of Query.</typeparam>
-        /// <typeparam name="U">type of Value.</typeparam>
-        ///
-        /// <param name="query">Query of the message.</param>
-        /// <param name="value">Default value of the message.</param>
-        ///
-        /// <returns>QueryMessage(T, U) object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T query, U value) =>
-            new QueryMessage<T, U>
-            {
-                Query = query,
-                Value = value,
-            };
+        public void Request(QueryMessage<T, U> message) =>
+            _dispatcher.Invoke(() => _callback(message));
 
         #endregion
+
+        #region Fields
+        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
+        private readonly Action<QueryMessage<T, U>> _callback;
+        #endregion
     }
+
+    #endregion
+
+    #region Query<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Query(T)
+    ///
+    /// <summary>
+    /// Represents the IQuery(T, T) implementation.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Query<T> : Query<T, T>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified callback.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query(Action<QueryMessage<T, T>> callback) : base(callback) { }
+    }
+
+    #endregion
+
+    #region OnceQuery<T, U>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnceQuery(T, U)
+    ///
+    /// <summary>
+    /// Represents the IQuery(T, U) implementation that allows only once.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class OnceQuery<T, U> : IQuery<T, U>
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnceQuery
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified callback.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OnceQuery(Action<QueryMessage<T, U>> callback)
+        {
+            _callback = new OnceAction<QueryMessage<T, U>>(callback)
+            {
+                IgnoreTwice = false
+            };
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Request
+        ///
+        /// <summary>
+        /// Invokes the request with the specified message.
+        /// </summary>
+        ///
+        /// <param name="message">Message to request.</param>
+        ///
+        /// <exception cref="TwiceException">
+        /// Occurs when called twice.
+        /// </exception>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Request(QueryMessage<T, U> message) =>
+            _dispatcher.Invoke(() => _callback.Invoke(message));
+
+        #endregion
+
+        #region Fields
+        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
+        private readonly OnceAction<QueryMessage<T, U>> _callback;
+        #endregion
+    }
+
+    #endregion
+
+    #region OnceQuery<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnceQuery(T, T)
+    ///
+    /// <summary>
+    /// Represents the IQuery(T, T) implementation that allows only once.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class OnceQuery<T> : OnceQuery<T, T>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnceQuery
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified callback.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OnceQuery(Action<QueryMessage<T, T>> callback) : base(callback) { }
+    }
+
+    #endregion
+
+    #region QueryDispatcher
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// QueryDispatcher
+    ///
+    /// <summary>
+    /// Provides functionality to create a dispatcher.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal static class QueryDispatcher
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new instance of the IDispatcher implemented class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IDispatcher Create() =>
+            SynchronizationContext.Current != null ? new Dispatcher(true) : Dispatcher.Vanilla;
+    }
+
+    #endregion
 }
