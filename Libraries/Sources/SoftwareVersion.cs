@@ -34,7 +34,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SoftwareVersion : IEquatable<SoftwareVersion>
+    public class SoftwareVersion
     {
         #region Constructors
 
@@ -206,67 +206,6 @@ namespace Cube
 
             return ss.ToString();
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Equals
-        ///
-        /// <summary>
-        /// Indicates whether the current object is equal to another object
-        /// of the same type.
-        /// </summary>
-        ///
-        /// <param name="other">Object to compare with this object.</param>
-        ///
-        /// <returns>
-        /// true if the current object is equal to the other parameter;
-        /// otherwise, false.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Equals(SoftwareVersion other) =>
-            other != null &&
-            Number == other.Number &&
-            Digit  == other.Digit &&
-            Prefix == other.Prefix &&
-            Suffix == other.Suffix;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Equals
-        ///
-        /// <summary>
-        /// Indicates whether the current object is equal to another object.
-        /// </summary>
-        ///
-        /// <param name="other">Object to compare with this object.</param>
-        ///
-        /// <returns>
-        /// true if the current object is equal to the other parameter;
-        /// otherwise, false.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override bool Equals(object other) =>
-            other != null &&
-            GetType() == other.GetType() &&
-            Equals((SoftwareVersion)other);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Equals
-        ///
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        ///
-        /// <returns>
-        /// 32-bit signed integer hash code.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override int GetHashCode() =>
-            Number.GetHashCode() ^ Prefix.GetHashCode() ^ Suffix.GetHashCode();
 
         #endregion
 
