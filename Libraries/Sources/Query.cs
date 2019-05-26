@@ -20,7 +20,7 @@ using System.Threading;
 
 namespace Cube
 {
-    #region IQuery<T, U>
+    #region IQuery
 
     /* --------------------------------------------------------------------- */
     ///
@@ -47,9 +47,20 @@ namespace Cube
         void Request(QueryMessage<T, U> message);
     }
 
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IQuery(T)
+    ///
+    /// <summary>
+    /// Represents the query provider.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IQuery<T> : IQuery<T, T> { }
+
     #endregion
 
-    #region Query<T, U>
+    #region Query
 
     /* --------------------------------------------------------------------- */
     ///
@@ -103,10 +114,6 @@ namespace Cube
         #endregion
     }
 
-    #endregion
-
-    #region Query<T>
-
     /* --------------------------------------------------------------------- */
     ///
     /// Query(T)
@@ -116,7 +123,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Query<T> : Query<T, T>
+    public class Query<T> : Query<T, T>, IQuery<T>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -135,7 +142,7 @@ namespace Cube
 
     #endregion
 
-    #region OnceQuery<T, U>
+    #region OnceQuery
 
     /* --------------------------------------------------------------------- */
     ///
@@ -196,10 +203,6 @@ namespace Cube
         #endregion
     }
 
-    #endregion
-
-    #region OnceQuery<T>
-
     /* --------------------------------------------------------------------- */
     ///
     /// OnceQuery(T, T)
@@ -209,7 +212,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OnceQuery<T> : OnceQuery<T, T>
+    public class OnceQuery<T> : OnceQuery<T, T>, IQuery<T>
     {
         /* ----------------------------------------------------------------- */
         ///
