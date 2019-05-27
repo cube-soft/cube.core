@@ -15,9 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Windows.Input;
-
 namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
@@ -29,13 +26,13 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement<T> : Bindable<T>, IDisposable
+    public class BindableElement<T> : BindableElement
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableElement
+        /// BindableElement(T)
         ///
         /// <summary>
         /// Initializes a new instance of the <c>BindableElement</c>
@@ -43,85 +40,47 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="getvalue">Function to get value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, IDispatcher dispatcher) :
-            this(default(T), gettext, dispatcher) { }
+        public BindableElement(Getter<string> gettext, Getter<T> getvalue, IDispatcher dispatcher) :
+            this(gettext, new Accessor<T>(getvalue), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableElement
+        /// BindableElement(T)
         ///
         /// <summary>
         /// Initializes a new instance of the <c>BindableElement</c>
         /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="value">Initial value.</param>
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="getvalue">Function to get value.</param>
+        /// <param name="setvalue">Function to set value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(T value, Getter<string> gettext, IDispatcher dispatcher) :
-            this(new Accessor<T>(value), gettext, dispatcher) { }
+        public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, IDispatcher dispatcher) :
+            this(gettext, new Accessor<T>(getvalue, setvalue), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableElement
+        /// BindableElement(T)
         ///
         /// <summary>
         /// Initializes a new instance of the <c>BindableElement</c>
         /// class with the specified arguments.
         /// </summary>
         ///
-        /// <param name="getter">Function to get value.</param>
         /// <param name="gettext">Function to get text.</param>
-        /// <param name="dispatcher">Dispatcher object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<T> getter, Getter<string> gettext, IDispatcher dispatcher) :
-            this(new Accessor<T>(getter), gettext, dispatcher) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BindableElement
-        ///
-        /// <summary>
-        /// Initializes a new instance of the <c>BindableElement</c>
-        /// class with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="getter">Function to get value.</param>
-        /// <param name="setter">Function to set value.</param>
-        /// <param name="gettext">Function to get text.</param>
-        /// <param name="dispatcher">Dispatcher object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<T> getter, Setter<T> setter, Getter<string> gettext, IDispatcher dispatcher) :
-            this(new Accessor<T>(getter, setter), gettext, dispatcher) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BindableElement
-        ///
-        /// <summary>
-        /// Initializes a new instance of the <c>BindableElement</c>
-        /// class with the specified arguments.
-        /// </summary>
-        ///
         /// <param name="accessor">Function to get and set value.</param>
-        /// <param name="gettext">Function to get text.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Accessor<T> accessor, Getter<string> gettext, IDispatcher dispatcher) :
-            base(accessor, dispatcher)
-        {
-            _dispose = new OnceAction<bool>(Dispose);
-            _gettext = gettext;
-            _remover = Locale.Subscribe(e => Refresh(nameof(Text)));
-        }
+        public BindableElement(Getter<string> gettext, Accessor<T> accessor, IDispatcher dispatcher) :
+            base(gettext, dispatcher) { _accessor = accessor; }
 
         #endregion
 
@@ -129,87 +88,23 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Text
+        /// Value
         ///
         /// <summary>
-        /// Gets the text.
+        /// Gets or sets the value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Text => _gettext();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Command
-        ///
-        /// <summary>
-        /// Gets or sets the command object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ICommand Command
+        public T Value
         {
-            get => _command;
-            set => SetProperty(ref _command, value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~BindableElement
-        ///
-        /// <summary>
-        /// Finalizes the BindableElement.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~BindableElement() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases all resources used by the BindableElement.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by <c>BindableElement</c>
-        /// and optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing) _remover.Dispose();
+            get => _accessor.Get();
+            set { if (_accessor.Set(value)) Refresh(nameof(Value)); }
         }
 
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
-        private readonly Getter<string> _gettext;
-        private readonly IDisposable _remover;
-        private ICommand _command;
+        private readonly Accessor<T> _accessor;
         #endregion
     }
 }

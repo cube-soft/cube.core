@@ -37,17 +37,17 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms values of properties.
+        /// Tests the constructor and confirms values of properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("Hello, world!", 10)]
-        public void Properties(string text, int n)
+        public void Create(string text, int n)
         {
-            using (var src = new BindableElement<int>(n, () => text, Dispatcher.Vanilla))
+            using (var src = new BindableElement<int>(() => text, () => n, Dispatcher.Vanilla))
             {
                 Assert.That(src.Text,    Is.EqualTo(text));
                 Assert.That(src.Value,   Is.EqualTo(n));
@@ -66,9 +66,9 @@ namespace Cube.Xui.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Set_Throws()
+        public void Set_InvalidOperationException()
         {
-            using (var src = new BindableElement<string>(() => "Get", () => "Text", Dispatcher.Vanilla))
+            using (var src = new BindableElement<string>(() => "Text", () => "Get", Dispatcher.Vanilla))
             {
                 Assert.That(src.Text,    Is.EqualTo("Text"));
                 Assert.That(src.Value,   Is.EqualTo("Get"));
@@ -91,7 +91,7 @@ namespace Cube.Xui.Tests
         public void SetLanguage()
         {
             var count = 0;
-            using (var src = new BindableElement<int>(() => "Language", Dispatcher.Vanilla))
+            using (var src = new BindableElement<int>(() => "Language", () => count, Dispatcher.Vanilla))
             {
                 src.PropertyChanged += (s, e) =>
                 {
@@ -101,8 +101,9 @@ namespace Cube.Xui.Tests
 
                 Locale.Set(Language.French);
                 Locale.Set(Language.Russian);
+
+                Assert.That(src.Value, Is.InRange(1, 2));
             }
-            Assert.That(count, Is.InRange(1, 2));
         }
 
         #endregion
