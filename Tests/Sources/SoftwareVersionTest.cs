@@ -104,43 +104,7 @@ namespace Cube.Tests
         [TestCase("1",                     ExpectedResult = false)]
         [TestCase("InvalidVersionNumber",  ExpectedResult = false)]
         [TestCase(null,                    ExpectedResult = false)]
-        public bool Parse(string src)
-        {
-            var dest = new SoftwareVersion(src);
-            var cmp  = new SoftwareVersion(src);
-
-            Assert.That(dest,               Is.EqualTo(cmp));
-            Assert.That(dest,               Is.Not.EqualTo(src));
-            Assert.That(dest,               Is.Not.EqualTo(default(SoftwareVersion)));
-            Assert.That(dest.GetHashCode(), Is.EqualTo(cmp.GetHashCode()));
-
-            return dest.ToString() == src;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Compare
-        ///
-        /// <summary>
-        /// Tests the Equals method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Compare()
-        {
-            var src = new SoftwareVersion("1.0.0.0");
-            Assert.That(src.Equals(null), Is.False);
-            Assert.That(src.Equals(new object()), Is.False);
-            var c0  = new SoftwareVersion("1.0.0.0");
-            Assert.That(src.Equals((object)c0), Is.True, c0.ToString());
-            var c1 = new SoftwareVersion("1.0");
-            Assert.That(src.Equals((object)c1), Is.False, c1.ToString());
-            var c2 = new SoftwareVersion("v1.0.0.0");
-            Assert.That(src.Equals((object)c2), Is.False, c2.ToString());
-            var c3 = new SoftwareVersion("1.0.0.0-p21");
-            Assert.That(src.Equals((object)c3), Is.False, c3.ToString());
-        }
+        public bool Parse(string src) => new SoftwareVersion(src).ToString() == src;
 
         #endregion
     }
