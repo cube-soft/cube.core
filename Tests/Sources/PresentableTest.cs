@@ -190,6 +190,24 @@ namespace Cube.Tests
             }
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDispatcher
+        ///
+        /// <summary>
+        /// Tests the GetDispatcher method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetDispatcher()
+        {
+            using (var src = new Presenter(new SynchronizationContext()))
+            {
+                Assert.That(src.GetDispatcher(), Is.Not.Null);
+            }
+        }
+
         #endregion
 
         #region Others
@@ -222,6 +240,7 @@ namespace Cube.Tests
             public void PostMessage<T>() where T : new() => Post<T>();
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
             public Task TrackAsync(Action e) => Track(e);
+            public IDispatcher GetDispatcher() => GetDispatcher(false);
             protected override void Dispose(bool disposing) { }
             public string TestValue
             {

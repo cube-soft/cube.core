@@ -117,8 +117,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected PresentableBase(Aggregator aggregator, SynchronizationContext context)
         {
-            Aggregator  = aggregator;
-            _dispatcher = new DispatcherCore(context);
+            Aggregator = aggregator;
+            Context    = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         #endregion
@@ -138,14 +138,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispatcher
+        /// Context
         ///
         /// <summary>
-        /// Gets the dispatcher object.
+        /// Gets the synchronization context.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IDispatcher Dispatcher => _dispatcher;
+        protected SynchronizationContext Context { get; }
 
         #endregion
 
@@ -177,7 +177,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (PropertyChanged != null) Dispatcher.Invoke(() => PropertyChanged(this, e));
+            if (PropertyChanged != null) Context.Post(z => PropertyChanged(this, e), null);
         }
 
         /* ----------------------------------------------------------------- */
@@ -193,50 +193,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected void RaisePropertyChanged(string name) =>
             OnPropertyChanged(new PropertyChangedEventArgs(name));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="func">Function object to compare.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
-        {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            RaisePropertyChanged(name);
-            return true;
-        }
 
         #endregion
 
@@ -263,6 +219,23 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe<T>(Action<T> callback) => Aggregator.Subscribe(callback);
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetDispatcher
+        ///
+        /// <summary>
+        /// Gets a dispatcher object with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke as synchronous.
+        /// </param>
+        ///
+        /// <returns>Dispatcher object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected IDispatcher GetDispatcher(bool synchronous) => new Dispatcher(Context, synchronous);
+
         #region Send
 
         /* ----------------------------------------------------------------- */
@@ -276,7 +249,7 @@ namespace Cube
         /// <param name="message">Message to be sent.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(T message) => _dispatcher.Send(() => Aggregator.Publish(message));
+        protected void Send<T>(T message) => Context.Send(e => Aggregator.Publish(message), null);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -306,7 +279,7 @@ namespace Cube
         /// <param name="message">Message to be posted.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>(T message) => _dispatcher.Post(() => Aggregator.Publish(message));
+        protected void Post<T>(T message) => Context.Post(e => Aggregator.Publish(message), null);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -398,6 +371,54 @@ namespace Cube
 
         #endregion
 
+        #region SetProperty
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        ///
+        /// <summary>
+        /// Sets the specified value for the specified field.
+        /// </summary>
+        ///
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(ref T field, T value,
+            [CallerMemberName] string name = null) =>
+            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        ///
+        /// <summary>
+        /// Sets the specified value for the specified field.
+        /// </summary>
+        ///
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        /// <param name="func">Function object to compare.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(ref T field, T value,
+            IEqualityComparer<T> func, [CallerMemberName] string name = null)
+        {
+            if (func.Equals(field, value)) return false;
+            field = value;
+            RaisePropertyChanged(name);
+            return true;
+        }
+
+        #endregion
+
         #endregion
 
         #region Implementations
@@ -449,22 +470,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DispatcherCore
-        ///
-        /// <summary>
-        /// Represents the dispatcher that is used in the class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private class DispatcherCore : Dispatcher
-        {
-            public DispatcherCore(SynchronizationContext ctx) : base(ctx, false) { }
-            public void Send(Action action) => Context.Send(e => action(), null);
-            public void Post(Action action) => Context.Post(e => action(), null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Converter
         ///
         /// <summary>
@@ -475,10 +480,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public delegate DialogMessage Converter(Exception e);
 
-        #endregion
-
-        #region Fields
-        private readonly DispatcherCore _dispatcher;
         #endregion
     }
 
