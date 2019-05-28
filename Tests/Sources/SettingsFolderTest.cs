@@ -58,10 +58,10 @@ namespace Cube.FileSystem.Tests
             dest.Loaded += (s, e) => ++n;
             dest.TryLoad();
 
-            Assert.That(n,             Is.EqualTo(count));
-            Assert.That(dest.Value,    Is.Not.Null);
-            Assert.That(dest.Version,  Is.EqualTo(new SoftwareVersion("1.16.0.0")));
-            Assert.That(dest.Format,   Is.EqualTo(format));
+            Assert.That(n, Is.EqualTo(count));
+            Assert.That(dest.Format, Is.EqualTo(format));
+            Assert.That(dest.Value, Is.Not.Null);
+            Assert.That(dest.Version.ToString(), Is.EqualTo("1.16.0.0"));
             Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
 
             var asm = dest.Assembly;
