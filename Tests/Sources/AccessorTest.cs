@@ -111,7 +111,7 @@ namespace Cube.Tests
         public void Create_Delegate()
         {
             var n   = 100;
-            var src = new Accessor<int>(() => n, e => { n = e; return true; });
+            var src = new Accessor<int>(() => n, e => n = e);
 
             Assert.That(src.Get(), Is.EqualTo(100));
             src.Set(200);
