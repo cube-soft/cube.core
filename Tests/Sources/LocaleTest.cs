@@ -24,7 +24,7 @@ namespace Cube.Tests
     /// LocaleTest
     ///
     /// <summary>
-    /// Tests for the Locale class.
+    /// Tests the Locale class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -49,10 +49,19 @@ namespace Cube.Tests
             using (Locale.Subscribe(e => ++count))
             {
                 Locale.Set(Language.English);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.English));
+
                 Locale.Set(Language.Japanese);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
+
                 Locale.Set(Language.Japanese);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
+
                 Locale.Set(Language.German);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.German));
+
                 Locale.Set(Language.Auto);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Auto));
             }
             Assert.That(count, Is.EqualTo(4));
         }
@@ -72,14 +81,24 @@ namespace Cube.Tests
             var count = 0;
             using (Locale.Subscribe(e => ++count))
             {
-                Locale.Configure(e => false);
+                Locale.Configure(new Accessor<Language>(() => Language.Japanese, e => { }));
+
                 Locale.Set(Language.English);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
+
                 Locale.Set(Language.Japanese);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
+
                 Locale.Set(Language.Japanese);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
+
                 Locale.Set(Language.German);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
+
                 Locale.Set(Language.Auto);
+                Assert.That(Locale.Get(), Is.EqualTo(Language.Japanese));
             }
-            Assert.That(count, Is.EqualTo(0));
+            Assert.That(count, Is.EqualTo(3));
         }
 
         /* ----------------------------------------------------------------- */

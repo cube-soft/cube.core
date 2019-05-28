@@ -47,21 +47,24 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static Locale()
         {
-            var current = Language.Auto;
-            bool setter(Language e)
-            {
-                var result = (e != current);
-                if (result) current = e;
-                return result;
-            }
-
-            _default = setter;
-            _setter  = setter;
+            _default  = new Accessor<Language>(Language.Auto);
+            _accessor = _default;
         }
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Get
+        ///
+        /// <summary>
+        /// Sets the current language.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Language Get() => _accessor.Get();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,7 +79,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Set(Language value)
         {
-            if (!_setter(value)) return;
+            if (!_accessor.Set(value)) return;
             foreach (var callback in _subscription) callback(value);
         }
 
@@ -116,20 +119,20 @@ namespace Cube
         /// Configure
         ///
         /// <summary>
-        /// Updates the setter function of the language.
+        /// Updates the accessor of the language.
         /// </summary>
         ///
-        /// <param name="setter">Setter function.</param>
+        /// <param name="accessor">Accessor object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Configure(Setter<Language> setter) =>
-            Interlocked.Exchange(ref _setter, setter);
+        public static void Configure(Accessor<Language> accessor) =>
+            Interlocked.Exchange(ref _accessor, accessor);
 
         #endregion
 
         #region Fields
-        private static Setter<Language> _setter;
-        private static readonly Setter<Language> _default;
+        private static Accessor<Language> _accessor;
+        private static readonly Accessor<Language> _default;
         private static readonly Subscription<Action<Language>> _subscription = new Subscription<Action<Language>>();
         #endregion
     }

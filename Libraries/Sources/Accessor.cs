@@ -40,7 +40,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public delegate bool Setter<T>(T value);
+    public delegate void Setter<T>(T value);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -60,7 +60,7 @@ namespace Cube
         /// Accessor
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Accessor</c> class.
+        /// Initializes a new instance of the Accessor class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -71,23 +71,35 @@ namespace Cube
         /// Accessor
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Accessor</c> class with
-        /// the specified value.
+        /// Initializes a new instance of the Accessor class with the
+        /// specified value.
         /// </summary>
         ///
         /// <param name="value">Initial value.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Accessor(T value)
+        public Accessor(T value) : this(value, EqualityComparer<T>.Default) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Accessor
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Accessor class with the
+        /// specified delegations.
+        /// </summary>
+        ///
+        /// <param name="value">Initial value.</param>
+        /// <param name="comparer">Object to compare two values.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Accessor(T value, IEqualityComparer<T> comparer)
         {
+            _comparer = comparer;
+
             var field = value;
             _getter = () => field;
-            _setter = e =>
-            {
-                if (EqualityComparer<T>.Default.Equals(field, e)) return false;
-                field = e;
-                return true;
-            };
+            _setter = e  => field = e;
         }
 
         /* ----------------------------------------------------------------- */
@@ -95,16 +107,15 @@ namespace Cube
         /// Accessor
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Accessor</c> class with
-        /// the specified delegation.
+        /// Initializes a new instance of the Accessor class with the
+        /// specified delegation.
         /// </summary>
         ///
         /// <param name="getter">Function to get value.</param>
         ///
         /// <remarks>
-        /// 生成されたオブジェクトは読み込み専用となり、<c>Set</c>
-        /// メソッド実行時には <c>InvalidOperationException</c> が送出
-        /// されます。
+        /// 生成されたオブジェクトは読み込み専用となり、Set メソッド実行時には
+        /// InvalidOperationException が送出されます。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -116,18 +127,36 @@ namespace Cube
         /// Accessor
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Accessor</c> class with
-        /// the specified delegations.
+        /// Initializes a new instance of the Accessor class with the
+        /// specified delegations.
         /// </summary>
         ///
         /// <param name="getter">Function to get value.</param>
         /// <param name="setter">Function to set value.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Accessor(Getter<T> getter, Setter<T> setter)
+        public Accessor(Getter<T> getter, Setter<T> setter) :
+            this(getter, setter, EqualityComparer<T>.Default) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Accessor
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Accessor class with the
+        /// specified delegations.
+        /// </summary>
+        ///
+        /// <param name="getter">Function to get value.</param>
+        /// <param name="setter">Function to set value.</param>
+        /// <param name="comparer">Object to compare two values.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Accessor(Getter<T> getter, Setter<T> setter, IEqualityComparer<T> comparer)
         {
-            _getter = getter;
-            _setter = setter;
+            _comparer = comparer;
+            _getter   = getter;
+            _setter   = setter;
         }
 
         #endregion
@@ -160,13 +189,19 @@ namespace Cube
         /// <returns>Result of Setter(T).</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Set(T value) => _setter(value);
+        public bool Set(T value)
+        {
+            if (_comparer.Equals(Get(), value)) return false;
+            _setter(value);
+            return true;
+        }
 
         #endregion
 
         #region Fields
         private readonly Getter<T> _getter;
         private readonly Setter<T> _setter;
+        private readonly IEqualityComparer<T> _comparer;
         #endregion
     }
 }
