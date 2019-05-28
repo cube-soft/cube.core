@@ -49,8 +49,8 @@ namespace Cube.Xui
         public BindableElement(Getter<string> gettext, IDispatcher dispatcher) : base(dispatcher)
         {
             _dispose = new OnceAction<bool>(Dispose);
-            _gettext = gettext;
-            _locale  = Locale.Subscribe(e => Refresh(nameof(Text)));
+            _getter  = gettext;
+            _locale  = Locale.Subscribe(e => OnLanguageChanged(e));
         }
 
         #endregion
@@ -66,7 +66,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Text => _gettext();
+        public string Text => _getter();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,11 +133,22 @@ namespace Cube.Xui
             if (disposing) _locale.Dispose();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnLanguageChanged
+        ///
+        /// <summary>
+        /// Occurs when the current language is changed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnLanguageChanged(Language e) => Refresh(nameof(Text));
+
         #endregion
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
-        private readonly Getter<string> _gettext;
+        private readonly Getter<string> _getter;
         private readonly IDisposable _locale;
         private ICommand _command;
         #endregion
