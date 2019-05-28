@@ -46,7 +46,7 @@ namespace Cube.Xui.Tests
         public void Set()
         {
             var n   = 5;
-            var src = new Bindable<int>(() => n, e => { n = e; return true; }, Dispatcher.Vanilla);
+            var src = new Bindable<int>(() => n, e => n = e, Dispatcher.Vanilla);
 
             Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(5));
             src.Value = 10;
