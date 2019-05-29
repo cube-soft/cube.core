@@ -29,7 +29,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : ObservableBase, IDisposable
+    public class BindableElement : DisposableObservable
     {
         #region Constructors
 
@@ -48,7 +48,6 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public BindableElement(Getter<string> gettext, IDispatcher dispatcher) : base(dispatcher)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             _getter  = gettext;
             _locale  = Locale.Subscribe(e => OnLanguageChanged(e));
         }
@@ -89,32 +88,6 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~BindableElement
-        ///
-        /// <summary>
-        /// Finalizes the <c>BindableElement</c>.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~BindableElement() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases all resources used by the <c>BindableElement</c>.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dispose
         ///
         /// <summary>
@@ -128,7 +101,7 @@ namespace Cube.Xui
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing) _locale.Dispose();
         }
@@ -147,7 +120,6 @@ namespace Cube.Xui
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly Getter<string> _getter;
         private readonly IDisposable _locale;
         private ICommand _command;
