@@ -36,7 +36,7 @@ namespace Cube
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class DisposableObservable : DisposableBase
+    public abstract class DisposableObservable : DisposableBase, INotifyPropertyChanged
     {
         #region Constructors
 
