@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class RadioButton : System.Windows.Forms.RadioButton, IControl
+    public class RadioButton : System.Windows.Forms.RadioButton, IDpiAwarable
     {
         #region Constructors
 

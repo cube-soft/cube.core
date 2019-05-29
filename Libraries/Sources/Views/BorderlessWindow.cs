@@ -38,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class BorderlessWindow : Window, IBorderlessForm
+    public class BorderlessWindow : Window
     {
         #region Constructors
 

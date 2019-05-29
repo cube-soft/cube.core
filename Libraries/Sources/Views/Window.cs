@@ -38,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Window : WindowBase, IForm
+    public class Window : WindowBase, IDpiAwarable
     {
         #region Constructors
 

@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsControl : Panel, IControl
+    public class SettingsControl : Panel
     {
         #region Constructors
 

@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ToggleButton : System.Windows.Forms.CheckBox, IControl
+    public class ToggleButton : System.Windows.Forms.CheckBox, IDpiAwarable
     {
         #region Constructors
 

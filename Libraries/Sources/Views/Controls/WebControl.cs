@@ -33,7 +33,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class WebControl : System.Windows.Forms.WebBrowser, IWebControl
+    public partial class WebControl : System.Windows.Forms.WebBrowser, IDpiAwarable
     {
         #region Properties
 

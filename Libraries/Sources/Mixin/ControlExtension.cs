@@ -19,6 +19,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using WinForms = System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -50,10 +51,10 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         public static void UpdateDpi(this IDpiAwarable src, double before, double after)
         {
-            if (before > 1.0 && src is IControl control)
+            if (before > 1.0 && src is WinForms.Control control)
             {
                 var ratio = after / before;
-                if (!(control is IForm)) UpdateLocation(control, ratio);
+                if (!(control is WinForms.Form)) UpdateLocation(control, ratio);
                 UpdateLayout(control, ratio);
             }
         }
@@ -73,7 +74,7 @@ namespace Cube.Forms.Controls
         /// <returns>コントロール中の位置</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Position HitTest(this System.Windows.Forms.Control src, Point point, int grip)
+        public static Position HitTest(this WinForms.Control src, Point point, int grip)
         {
             var x = point.X;
             var y = point.Y;
@@ -115,7 +116,7 @@ namespace Cube.Forms.Controls
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool HasEventHandler(this System.Windows.Forms.Control src, string name)
+        public static bool HasEventHandler(this WinForms.Control src, string name)
         {
             var key = GetEventKey(src, name);
             var map = GetEventHandlers(src);
@@ -137,16 +138,16 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void UpdateLayout(IControl src, double ratio)
+        public static void UpdateLayout(WinForms.Control src, double ratio)
         {
             UpdateSize(src, ratio);
             UpdateFont(src, ratio);
 
-            if (src is System.Windows.Forms.Control native)
+            if (src is IDpiAwarable dac)
             {
-                foreach (var c in native.Controls)
+                foreach (var c in src.Controls)
                 {
-                    if (c is IDpiAwarable dac) dac.Dpi = src.Dpi;
+                    if (c is IDpiAwarable dest) dest.Dpi = dac.Dpi;
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void UpdateLocation(IControl src, double ratio) =>
+        private static void UpdateLocation(WinForms.Control src, double ratio) =>
             src.Location = new Point(
                 (int)(src.Location.X * ratio),
                 (int)(src.Location.Y * ratio)
@@ -175,21 +176,21 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void UpdateSize(IControl src, double ratio)
+        private static void UpdateSize(WinForms.Control src, double ratio)
         {
             src.Size = new Size(
                 (int)(src.Size.Width  * ratio),
                 (int)(src.Size.Height * ratio)
             );
 
-            src.Margin = new System.Windows.Forms.Padding(
+            src.Margin = new WinForms.Padding(
                 (int)(src.Margin.Left   * ratio),
                 (int)(src.Margin.Top    * ratio),
                 (int)(src.Margin.Right  * ratio),
                 (int)(src.Margin.Bottom * ratio)
             );
 
-            src.Padding = new System.Windows.Forms.Padding(
+            src.Padding = new WinForms.Padding(
                 (int)(src.Padding.Left   * ratio),
                 (int)(src.Padding.Top    * ratio),
                 (int)(src.Padding.Right  * ratio),
@@ -206,7 +207,7 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void UpdateFont(IControl src, double ratio)
+        private static void UpdateFont(WinForms.Control src, double ratio)
         {
             if (src.Font == null) return;
 

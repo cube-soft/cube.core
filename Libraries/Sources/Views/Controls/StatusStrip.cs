@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class StatusStrip : System.Windows.Forms.StatusStrip, IControl
+    public class StatusStrip : System.Windows.Forms.StatusStrip, IDpiAwarable
     {
         #region Properties
 
