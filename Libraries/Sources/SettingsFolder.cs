@@ -38,8 +38,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<T> : ObservableBase, IDisposable
-        where T : INotifyPropertyChanged, new()
+    public class SettingsFolder<T> : DisposableObservable where T : INotifyPropertyChanged, new()
     {
         #region Constructors
 
@@ -110,7 +109,6 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public SettingsFolder(Assembly assembly, Format format, string location, IO io)
         {
-            _dispose = new OnceAction<bool>(Dispose);
             _autosaver.AutoReset = false;
             _autosaver.Elapsed += (s, e) => Task.Run(() => Save()).Forget();
 
@@ -333,33 +331,9 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Save() => OnSaved(KeyValueEventArgs.Create(Format, Location));
 
-        #region IDisposable
+        #endregion
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~SettingsFolder
-        ///
-        /// <summary>
-        /// Finalizes the SettingsFolder.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~SettingsFolder() { _dispose.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases all resources used by the SettingsFolder.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -376,17 +350,11 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
             if (AutoSave) this.LogWarn(() => Save());
         }
-
-        #endregion
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -449,7 +417,6 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
         private readonly Timer _autosaver = new Timer();
         #endregion
     }
