@@ -44,7 +44,7 @@ namespace Cube.Xui.Behaviors
         protected override void Invoke(object notused)
         {
             var dc = AssociatedObject.DataContext as IDisposable;
-            AssociatedObject.DataContext = null;
+            AssociatedObject.DataContext = DependencyProperty.UnsetValue;
             dc?.Dispose();
         }
     }

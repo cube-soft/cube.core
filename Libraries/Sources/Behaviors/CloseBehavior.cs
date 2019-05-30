@@ -15,8 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Cube.Xui.Behaviors
 {
@@ -27,20 +29,19 @@ namespace Cube.Xui.Behaviors
     /// CloseBehavior
     ///
     /// <summary>
-    /// Window を閉じる Behavior です。
+    /// Represents the behavior of closing window when received a
+    /// CloseMessage.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public class CloseBehavior : SubscribeBehavior<CloseMessage>
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Invokes the operations.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -48,8 +49,6 @@ namespace Cube.Xui.Behaviors
         {
             if (AssociatedObject is Window w) w.Close();
         }
-
-        #endregion
     }
 
     #endregion
@@ -67,8 +66,6 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class ClosingBehavior : CommandBehavior<Window>
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -113,8 +110,71 @@ namespace Cube.Xui.Behaviors
         {
             if (Command?.CanExecute(e) ?? false) Command.Execute(e);
         }
+    }
 
-        #endregion
+    #endregion
+
+    #region ClosedBehavior
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ClosedBehavior
+    ///
+    /// <summary>
+    /// Represents the behavior of disposing the DataContext when the
+    /// Closed event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class ClosedBehavior : Behavior<Window>
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnAttached
+        ///
+        /// <summary>
+        /// Occurs when the instance is attached to the Window.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            AssociatedObject.Closed -= WhenClosed;
+            AssociatedObject.Closed += WhenClosed;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDetaching
+        ///
+        /// <summary>
+        /// Occurs when the instance is detaching from the Window.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnDetaching()
+        {
+            AssociatedObject.Closing -= WhenClosed;
+            base.OnDetaching();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenClosed
+        ///
+        /// <summary>
+        /// Occurs when the Closed event is fired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void WhenClosed(object s, EventArgs e)
+        {
+            if (AssociatedObject == null) return;
+            var dc = AssociatedObject.DataContext as IDisposable;
+            AssociatedObject.DataContext = DependencyProperty.UnsetValue;
+            dc?.Dispose();
+        }
     }
 
     #endregion
