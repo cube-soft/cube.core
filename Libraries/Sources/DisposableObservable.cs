@@ -49,7 +49,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DisposableObservable() : this(Cube.Dispatcher.Vanilla) { }
+        protected DisposableObservable() : this(Cube.Dispatcher.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -63,7 +63,7 @@ namespace Cube
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DisposableObservable(IDispatcher dispatcher) : base()
+        protected DisposableObservable(IDispatcher dispatcher) : base()
         {
             Dispatcher = dispatcher;
         }
