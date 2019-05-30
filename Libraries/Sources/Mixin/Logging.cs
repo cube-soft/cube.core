@@ -50,12 +50,12 @@ namespace Cube.Mixin.Logging
         public static IDisposable ObserveUiException(this Application src)
         {
             if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
-            AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
+            if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
 
             return Disposable.Create(() =>
             {
                 if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
-                AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
+                if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
             });
         }
 

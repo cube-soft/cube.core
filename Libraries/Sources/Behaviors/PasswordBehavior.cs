@@ -130,8 +130,10 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenViewPasswordChanged(object s, RoutedEventArgs e) =>
-            Password = AssociatedObject.Password;
+        private void WhenViewPasswordChanged(object s, RoutedEventArgs e)
+        {
+            if (AssociatedObject != null) Password = AssociatedObject.Password;
+        }
 
         #endregion
     }
