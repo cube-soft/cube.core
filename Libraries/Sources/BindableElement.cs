@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Cube.Xui
@@ -108,6 +109,18 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnPropertyChanged
+        ///
+        /// <summary>
+        /// Occurs when the PropertyChanged event is fired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
+            Invoke(() => base.OnPropertyChanged(e));
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// OnLanguageChanged
         ///
         /// <summary>
@@ -115,7 +128,26 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnLanguageChanged(Language e) => Refresh(nameof(Text));
+        protected virtual void OnLanguageChanged(Language e) =>
+            Invoke(() => Refresh(nameof(Text)));
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the specified action unless the object is not disposed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Invoke(Action action)
+        {
+            if (!Disposed) action();
+        }
 
         #endregion
 
