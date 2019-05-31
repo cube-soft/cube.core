@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Windows;
-using Microsoft.Xaml.Behaviors;
+using System.Windows.Interactivity;
 
 namespace Cube.Xui.Behaviors
 {
