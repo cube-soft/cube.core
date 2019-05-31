@@ -17,6 +17,11 @@ You can install using NuGet like this:
 
 Or select it from the NuGet packages UI on Visual Studio.
 
+## Dependencies
+
+Cube.Xui depends on the [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801).
+Note that we will migrate to the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) in the future, which is the [OSS project](https://github.com/Microsoft/XamlBehaviorsWpf) of the Expression Blend SDK.
+
 ## Thanks
 
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
