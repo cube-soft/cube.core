@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using GalaSoft.MvvmLight.Command;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Cube.Xui
@@ -27,13 +25,17 @@ namespace Cube.Xui
     /// BindableCommand(T)
     ///
     /// <summary>
-    /// 特定のプロパティを関連付けられるコマンドです。
-    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
-    /// イベント発生時に CanExecuteChanged イベントを発生させます。
+    /// Represents an ICommand implementation that can be associated with
+    /// INotifyPropertyChanged objects.
     /// </summary>
     ///
+    /// <remarks>
+    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
+    /// イベント発生時に CanExecuteChanged イベントを発生させます。
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
-    public class BindableCommand<T> : RelayCommand<T>, IDisposable
+    public class BindableCommand<T> : BindableCommandBase
     {
         #region Constructors
 
@@ -42,38 +44,76 @@ namespace Cube.Xui
         /// BindableCommand(T)
         ///
         /// <summary>
-        /// Initializes a new instance of the BindableCommand(T) class
-        /// with the specified action.
+        /// Initializes a new instance of the BindableCommand class with
+        /// the specified action.
         /// </summary>
         ///
         /// <param name="execute">Action to execute.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action<T> execute) : this(execute, e => true) { }
+        public BindableCommand(Action<T> execute, IDispatcher dispatcher) :
+            this(execute, e => true, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// BindableCommand(T)
         ///
         /// <summary>
-        /// Initializes a new instance of the BindableCommand(T) class
-        /// with the specified arguments.
+        /// Initializes a new instance of the BindableCommand class with
+        /// the specified action.
         /// </summary>
         ///
         /// <param name="execute">Action to execute.</param>
+        ///
         /// <param name="canExecute">
         /// Function to determine whether the command can be executed.
         /// </param>
         ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action<T> execute, Func<T, bool> canExecute) : base(execute, canExecute, true)
+        public BindableCommand(Action<T> execute, Func<T, bool> canExecute, IDispatcher dispatcher) : base(dispatcher)
         {
-            _dispose = new OnceAction<bool>(Dispose);
+            _execute    = execute    ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CanExecute
+        ///
+        /// <summary>
+        /// Determines whether the command can execute in its current state.
+        /// </summary>
+        ///
+        /// <param name="parameter">
+        /// Data used by the command. If the command does not require data
+        /// to be passed, this object can be set to null.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool CanExecute(T parameter) => _canExecute(parameter);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute
+        ///
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        ///
+        /// <param name="parameter">
+        /// Data used by the command. If the command does not require data
+        /// to be passed, this object can be set to null.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Execute(T parameter) => _execute(parameter);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,86 +126,41 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public BindableCommand<T> Observe(INotifyPropertyChanged src, params string[] names)
         {
-            var set = new HashSet<string>(names);
-            void changed(object s, PropertyChangedEventArgs e)
-            {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) RaiseCanExecuteChanged();
-            }
-
-            src.PropertyChanged += changed;
-            _observer.Add(Disposable.Create(() => src.PropertyChanged -= changed));
-
+            OnObserve(src, names);
             return this;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~BindableCommand
+        /// OnCanExecute
         ///
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// Determines whether the command can execute in its current state.
         /// </summary>
         ///
+        /// <param name="parameter">Not used parameter.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        ~BindableCommand() { _dispose.Invoke(false); }
+        protected override bool OnCanExecute(object parameter) => CanExecute((T)parameter);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispose
+        /// OnExecute
         ///
         /// <summary>
-        /// リソースを開放します。
+        /// Executes the command.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを開放します。
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// マネージオブジェクトを開放するかどうか
-        /// </param>
+        /// <param name="parameter">Not used parameter.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            foreach (var obj in _observer) obj.Dispose();
-            _observer.Clear();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenChanged
-        ///
-        /// <summary>
-        /// 関連付けられたオブジェクトのプロパティが変更差た時に実行
-        /// されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenChanged(object s, PropertyChangedEventArgs e) =>
-            RaiseCanExecuteChanged();
+        protected override void OnExecute(object parameter) => Execute((T)parameter);
 
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
-        private readonly IList<IDisposable> _observer = new List<IDisposable>();
+        private readonly Action<T> _execute;
+        private readonly Func<T, bool> _canExecute;
         #endregion
     }
 }

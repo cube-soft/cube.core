@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using GalaSoft.MvvmLight.Command;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Cube.Xui
@@ -27,13 +25,17 @@ namespace Cube.Xui
     /// BindableCommand
     ///
     /// <summary>
-    /// 特定のプロパティを関連付けられるコマンドです。
-    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
-    /// イベント発生時に CanExecuteChanged イベントを発生させます。
+    /// Represents an ICommand implementation that can be associated with
+    /// INotifyPropertyChanged objects.
     /// </summary>
     ///
+    /// <remarks>
+    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
+    /// イベント発生時に CanExecuteChanged イベントを発生させます。
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
-    public class BindableCommand : RelayCommand, IDisposable
+    public class BindableCommand : BindableCommandBase
     {
         #region Constructors
 
@@ -47,9 +49,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="execute">Action to execute.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action execute) : this(execute, () => true) { }
+        public BindableCommand(Action execute, IDispatcher dispatcher) :
+            this(execute, () => true, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -61,19 +65,45 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="execute">Action to execute.</param>
+        ///
         /// <param name="canExecute">
         /// Function to determine whether the command can be executed.
         /// </param>
         ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action execute, Func<bool> canExecute) : base(execute, canExecute, true)
+        public BindableCommand(Action execute, Func<bool> canExecute, IDispatcher dispatcher) : base(dispatcher)
         {
-            _dispose = new OnceAction<bool>(Dispose);
+            _execute    = execute    ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CanExecute
+        ///
+        /// <summary>
+        /// Determines whether the command can execute in its current state.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool CanExecute() => _canExecute();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute
+        ///
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Execute() => _execute();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,69 +116,41 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public BindableCommand Observe(INotifyPropertyChanged src, params string[] names)
         {
-            var set = new HashSet<string>(names);
-            void changed(object s, PropertyChangedEventArgs e)
-            {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) RaiseCanExecuteChanged();
-            }
-
-            src.PropertyChanged += changed;
-            _observer.Add(Disposable.Create(() => src.PropertyChanged -= changed));
-
+            OnObserve(src, names);
             return this;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ~BindableCommand
+        /// OnCanExecute
         ///
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// Determines whether the command can execute in its current state.
         /// </summary>
         ///
+        /// <param name="parameter">Not used parameter.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        ~BindableCommand() { _dispose.Invoke(false); }
+        protected override bool OnCanExecute(object parameter) => CanExecute();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispose
+        /// OnExecute
         ///
         /// <summary>
-        /// リソースを開放します。
+        /// Executes the command.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// リソースを開放します。
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// マネージオブジェクトを開放するかどうか
-        /// </param>
+        /// <param name="parameter">Not used parameter.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            foreach (var obj in _observer) obj.Dispose();
-            _observer.Clear();
-        }
+        protected override void OnExecute(object parameter) => Execute();
 
         #endregion
 
         #region Fields
-        private readonly OnceAction<bool> _dispose;
-        private readonly IList<IDisposable> _observer = new List<IDisposable>();
+        private readonly Action _execute;
+        private readonly Func<bool> _canExecute;
         #endregion
     }
 }
