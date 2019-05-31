@@ -48,7 +48,7 @@ namespace Cube.Xui.Tests
         public void Execute()
         {
             var count = 0;
-            var src   = new BindableCommand(() => ++count, Dispatcher.Vanilla);
+            var src   = new BindableCommand(() => ++count);
 
             Assert.That(src.CanExecute(), Is.True);
 

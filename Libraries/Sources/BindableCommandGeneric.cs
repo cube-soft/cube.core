@@ -49,11 +49,9 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="execute">Action to execute.</param>
-        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action<T> execute, IDispatcher dispatcher) :
-            this(execute, e => true, dispatcher) { }
+        public BindableCommand(Action<T> execute) : this(execute, e => true) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -65,15 +63,12 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="execute">Action to execute.</param>
-        ///
         /// <param name="canExecute">
         /// Function to determine whether the command can be executed.
         /// </param>
         ///
-        /// <param name="dispatcher">Dispatcher object.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action<T> execute, Func<T, bool> canExecute, IDispatcher dispatcher) : base(dispatcher)
+        public BindableCommand(Action<T> execute, Func<T, bool> canExecute)
         {
             _execute    = execute    ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));

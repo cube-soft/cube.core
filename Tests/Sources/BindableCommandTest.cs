@@ -50,8 +50,7 @@ namespace Cube.Xui.Tests
             var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
-                () => src.Value.Age > 0,
-                Dispatcher.Vanilla
+                () => src.Value.Age > 0
             ).Observe(src, nameof(src.Value));
 
             src.Value.Age = 20;
@@ -74,8 +73,7 @@ namespace Cube.Xui.Tests
             var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             using (var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
-                () => src.Value.Age > 0,
-                Dispatcher.Vanilla
+                () => src.Value.Age > 0
             ).Observe(src, nameof(src.Value)))
             {
                 Assert.That(dest.CanExecute(), Is.False);
@@ -109,8 +107,7 @@ namespace Cube.Xui.Tests
             var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
-                e => e > 0 && src.Value.Age > 0,
-                Dispatcher.Vanilla
+                e => e > 0 && src.Value.Age > 0
             ).Observe(src, nameof(src.Value));
 
             src.Value.Age = 20;
@@ -134,8 +131,7 @@ namespace Cube.Xui.Tests
             var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             using (var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
-                e => e > 0 && src.Value.Age > 0,
-                Dispatcher.Vanilla
+                e => e > 0 && src.Value.Age > 0
             ).Observe(src, nameof(src.Value)))
             {
                 Assert.That(dest.CanExecute(-1), Is.False);

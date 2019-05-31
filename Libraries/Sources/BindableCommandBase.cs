@@ -40,29 +40,11 @@ namespace Cube.Xui
         /// BindableCommandBase
         ///
         /// <summary>
-        /// Initializes a new instance of the BindableCommandBase class
-        /// with the specified dispatcher.
-        /// </summary>
-        ///
-        /// <param name="dispatcher">Dispatcher object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected BindableCommandBase(IDispatcher dispatcher) { Dispatcher = dispatcher; }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispatcher
-        ///
-        /// <summary>
-        /// Gets the dispatcher object.
+        /// Initializes a new instance of the BindableCommandBase.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IDispatcher Dispatcher { get; }
+        protected BindableCommandBase() { }
 
         #endregion
 
@@ -89,11 +71,8 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnCanExecuteChanged(EventArgs e)
-        {
-            if (CanExecuteChanged == null) return;
-            Dispatcher.Invoke(() => CanExecuteChanged(this, e));
-        }
+        protected virtual void OnCanExecuteChanged(EventArgs e) =>
+            CanExecuteChanged?.Invoke(this, e);
 
         #endregion
 

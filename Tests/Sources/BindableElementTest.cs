@@ -73,7 +73,7 @@ namespace Cube.Xui.Tests
                 Assert.That(src.Value, Is.EqualTo("Get"));
                 Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
                 Assert.That(src.Command, Is.Null);
-                src.Command = new BindableCommand(() => { }, Dispatcher.Vanilla);
+                src.Command = new BindableCommand(() => { });
                 Assert.That(src.Command, Is.Not.Null);
             }
         }
