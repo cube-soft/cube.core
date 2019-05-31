@@ -16,6 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 
+using System.ComponentModel;
+
 namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
@@ -31,7 +33,7 @@ namespace Cube.Xui
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Bindable<T> : ObservableBase
+    public class Bindable<T> : DisposableObservable
     {
         #region Constructors
 
@@ -148,6 +150,37 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public void Refresh() => Refresh(nameof(Value));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        ///
+        /// <summary>
+        /// Occurs when the PropertyChanged event is fired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (!Disposed) base.OnPropertyChanged(e);
+        }
 
         #endregion
 
