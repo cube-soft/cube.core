@@ -207,7 +207,7 @@ namespace Cube.Tests
         {
             var dest = format.Deserialize<Person>(GetSource(filename));
             Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
-            Assert.DoesNotThrow(() => dest.Refresh(nameof(dest.Name)));
+            dest.Refresh(nameof(dest.Identification), nameof(dest.Name));
             return dest.Name;
         }
 

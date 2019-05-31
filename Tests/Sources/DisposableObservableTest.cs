@@ -63,8 +63,9 @@ namespace Cube.Tests
                 Assert.That(src.Value, Is.Empty);
                 src.Value = ""; // ignore
                 Assert.That(src.Value, Is.Empty);
+                src.Refresh(nameof(src.Value), nameof(src.Value), nameof(src.Value));
             }
-            Assert.That(n, Is.EqualTo(4));
+            Assert.That(n, Is.EqualTo(7));
         }
 
         #endregion

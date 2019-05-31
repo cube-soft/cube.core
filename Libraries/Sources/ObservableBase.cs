@@ -127,14 +127,19 @@ namespace Cube
         /// Refresh
         ///
         /// <summary>
-        /// Notifies the update of the specified property by raising the
-        /// PropertyChanged event.
+        /// Notifies the update of the specified properties by raising
+        /// the PropertyChanged event.
         /// </summary>
         ///
         /// <param name="name">Property name.</param>
+        /// <param name="more">More property names.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh(string name) => OnPropertyChanged(new PropertyChangedEventArgs(name));
+        public void Refresh(string name, params string[] more)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(name));
+            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(name));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
