@@ -18,7 +18,7 @@
 using Cube.Mixin.Generics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Cube.Xui.Behaviors
 {

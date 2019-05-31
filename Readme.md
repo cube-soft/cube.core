@@ -17,6 +17,10 @@ You can install using NuGet like this:
 
 Or select it from the NuGet packages UI on Visual Studio.
 
+## Dependencies
+
+* [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/)
+
 ## Thanks
 
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
