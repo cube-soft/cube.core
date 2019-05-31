@@ -15,55 +15,26 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System;
 using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Cube.Xui.Behaviors
 {
-    #region CloseBehavior
-
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehavior
+    /// DisposeBehavior
     ///
     /// <summary>
-    /// Represents the behavior of closing window when received a
-    /// CloseMessage.
+    /// Provides functionality to dispose the DataContext when the
+    /// Closed event is fired.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseBehavior : SubscribeBehavior<CloseMessage>
+    public class DisposeBehavior : Behavior<Window>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the operations.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(CloseMessage e)
-        {
-            if (AssociatedObject is Window w) w.Close();
-        }
-    }
+        #region Implementations
 
-    #endregion
-
-    #region ClosingBehavior
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ClosingBehavior
-    ///
-    /// <summary>
-    /// Represents the behavior when the Closing event is fired.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ClosingBehavior : CommandBehavior<Window>
-    {
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -76,8 +47,8 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.Closing -= WhenClosing;
-            AssociatedObject.Closing += WhenClosing;
+            AssociatedObject.Closed -= WhenClosed;
+            AssociatedObject.Closed += WhenClosed;
         }
 
         /* ----------------------------------------------------------------- */
@@ -91,24 +62,27 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.Closing -= WhenClosing;
+            AssociatedObject.Closing -= WhenClosed;
             base.OnDetaching();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenClosing
+        /// WhenClosed
         ///
         /// <summary>
-        /// Occurs when the Closing event is fired.
+        /// Occurs when the Closed event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenClosing(object s, CancelEventArgs e)
+        private void WhenClosed(object s, EventArgs e)
         {
-            if (Command?.CanExecute(e) ?? false) Command.Execute(e);
+            if (AssociatedObject == null) return;
+            var dc = AssociatedObject.DataContext as IDisposable;
+            AssociatedObject.DataContext = DependencyProperty.UnsetValue;
+            dc?.Dispose();
         }
-    }
 
-    #endregion
+        #endregion
+    }
 }
