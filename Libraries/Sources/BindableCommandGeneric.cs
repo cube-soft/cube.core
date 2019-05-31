@@ -28,8 +28,8 @@ namespace Cube.Xui
     ///
     /// <summary>
     /// 特定のプロパティを関連付けられるコマンドです。
-    /// 関連付けられたオブジェクトの PropertyChanged イベント発生時に
-    /// CanExecuteChanged イベントを発生させます。
+    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
+    /// イベント発生時に CanExecuteChanged イベントを発生させます。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,52 +39,64 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableCommand
+        /// BindableCommand(T)
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BindableCommand(T) class
+        /// with the specified action.
         /// </summary>
         ///
-        /// <param name="execute">実行内容</param>
-        /// <param name="canExecute">実行可能かどうか</param>
-        /// <param name="objects">関連付けるオブジェクト一覧</param>
-        ///
-        /// <remarks>
-        /// execute および canExecute を private 変数に代入する記述を
-        /// 削除した場合、該当オブジェクトに対して予期しないタイミングで
-        /// GC によって開放される事があります。
-        /// </remarks>
+        /// <param name="execute">Action to execute.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action<T> execute, Func<T, bool> canExecute,
-            params INotifyPropertyChanged[] objects) : base(execute, canExecute)
-        {
-            _dispose    = new OnceAction<bool>(Dispose);
-            _execute    = execute;
-            _canExecute = canExecute;
+        public BindableCommand(Action<T> execute) : this(execute, e => true) { }
 
-            AssociatedObjects = objects;
-            foreach (var obj in objects) obj.PropertyChanged += WhenChanged;
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableCommand(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the BindableCommand(T) class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="execute">Action to execute.</param>
+        /// <param name="canExecute">
+        /// Function to determine whether the command can be executed.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableCommand(Action<T> execute, Func<T, bool> canExecute) : base(execute, canExecute, true)
+        {
+            _dispose = new OnceAction<bool>(Dispose);
         }
 
         #endregion
 
-        #region Properties
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// AssociatedObjects
+        /// Observe
         ///
         /// <summary>
-        /// 関連付けられたオブジェクトを取得します。
+        /// Observes the PropertyChanged event of the specified object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<INotifyPropertyChanged> AssociatedObjects { get; }
+        public BindableCommand<T> Observe(INotifyPropertyChanged src, params string[] names)
+        {
+            var set = new HashSet<string>(names);
+            void changed(object s, PropertyChangedEventArgs e)
+            {
+                if (set.Count <= 0 || set.Contains(e.PropertyName)) RaiseCanExecuteChanged();
+            }
 
-        #endregion
+            src.PropertyChanged += changed;
+            _observer.Add(Disposable.Create(() => src.PropertyChanged -= changed));
 
-        #region IDisposable
+            return this;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -127,13 +139,9 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                foreach (var obj in AssociatedObjects)
-                {
-                    obj.PropertyChanged -= WhenChanged;
-                }
-            }
+            if (!disposing) return;
+            foreach (var obj in _observer) obj.Dispose();
+            _observer.Clear();
         }
 
         #endregion
@@ -157,8 +165,7 @@ namespace Cube.Xui
 
         #region Fields
         private readonly OnceAction<bool> _dispose;
-        private readonly Action<T> _execute;
-        private readonly Func<T, bool> _canExecute;
+        private readonly IList<IDisposable> _observer = new List<IDisposable>();
         #endregion
     }
 }

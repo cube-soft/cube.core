@@ -51,9 +51,8 @@ namespace Cube.Xui.Tests
             var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
-                () => src.Value.Age > 0,
-                src
-            );
+                () => src.Value.Age > 0
+            ).Observe(src, nameof(src.Value));
 
             src.Value.Age = 20;
             dest.Execute();
@@ -75,9 +74,8 @@ namespace Cube.Xui.Tests
             var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             using (var dest = new BindableCommand(
                 () => src.Value.Name = "Done",
-                () => src.Value.Age > 0,
-                src
-            ))
+                () => src.Value.Age > 0
+            ).Observe(src, nameof(src.Value)))
             {
                 Assert.That(dest.CanExecute(), Is.False);
                 src.Value.Age = 10;
@@ -110,9 +108,8 @@ namespace Cube.Xui.Tests
             var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
-                e => e > 0 && src.Value.Age > 0,
-                src
-            );
+                e => e > 0 && src.Value.Age > 0
+            ).Observe(src, nameof(src.Value));
 
             src.Value.Age = 20;
             dest.Execute(1);
@@ -135,21 +132,20 @@ namespace Cube.Xui.Tests
             var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
             using (var dest = new BindableCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
-                e => e > 0 && src.Value.Age > 0,
-                src
-            ))
+                e => e > 0 && src.Value.Age > 0
+            ).Observe(src, nameof(src.Value)))
             {
                 Assert.That(dest.CanExecute(-1), Is.False);
-                Assert.That(dest.CanExecute(1),  Is.False);
+                Assert.That(dest.CanExecute(1), Is.False);
                 src.Value.Age = 10;
                 Assert.That(dest.CanExecute(-2), Is.False);
-                Assert.That(dest.CanExecute(2),  Is.True);
+                Assert.That(dest.CanExecute(2), Is.True);
                 src.Value.Age = -1;
                 Assert.That(dest.CanExecute(-3), Is.False);
-                Assert.That(dest.CanExecute(3),  Is.False);
+                Assert.That(dest.CanExecute(3), Is.False);
                 src.Value.Age = 20;
                 Assert.That(dest.CanExecute(-4), Is.False);
-                Assert.That(dest.CanExecute(4),  Is.True);
+                Assert.That(dest.CanExecute(4), Is.True);
                 dest.Execute(4);
                 Assert.That(src.Value.Name, Is.EqualTo("Done:4"));
             }
