@@ -17,11 +17,10 @@ You can install using NuGet like this:
 
 Or select it from the NuGet packages UI on Visual Studio.
 
-## Dependencies
+## Thanks
 
-* [Cube.Core](https://github.com/cube-soft/Cube.Core)
-* [Cube.FileSystem](https://github.com/cube-soft/Cube.FileSystem)
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
+* [Prism](https://github.com/PrismLibrary/Prism)
 
 ## Contributing
 
