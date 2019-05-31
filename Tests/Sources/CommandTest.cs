@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Commands;
-using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
 using System.Windows.Input;
 
@@ -49,7 +48,7 @@ namespace Cube.Xui.Tests
         public void Execute()
         {
             var count = 0;
-            var src   = new RelayCommand(() => ++count);
+            var src   = new BindableCommand(() => ++count, Dispatcher.Vanilla);
 
             Assert.That(src.CanExecute(), Is.True);
 
