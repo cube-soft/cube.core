@@ -139,6 +139,27 @@ namespace Cube.Forms
 
         #endregion
 
+        #region  Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { }
+
+        #endregion
+
         #region Fields
         private Color _backColor = Color.Empty;
         private Color _borderColor = Color.Empty;
@@ -254,6 +275,27 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyle MouseDownStyle { get; } = new ButtonStyle();
+
+        #endregion
+
+        #region Methods
+        
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { }
 
         #endregion
     }
