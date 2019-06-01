@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Commands;
+using Cube.Xui.Commands;
 using NUnit.Framework;
 using System.Windows.Input;
 
@@ -35,20 +36,141 @@ namespace Cube.Xui.Tests
     {
         #region Tests
 
+        #region BindableCommand
+
         /* ----------------------------------------------------------------- */
         ///
         /// Execute
         ///
         /// <summary>
-        /// Tests the CanExecute and Execute methods.
+        /// Tests the Execute method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Execute()
         {
+            var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
+            var dest = new DelegateCommand(
+                () => src.Value.Name = "Done",
+                () => src.Value.Age > 0
+            ).Observe(src, nameof(src.Value));
+
+            src.Value.Age = 20;
+            dest.Execute();
+            Assert.That(src.Value.Name, Is.EqualTo("Done"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseCanExecuteChanged
+        ///
+        /// <summary>
+        /// Tests the CanExecuteChanged event.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void RaiseCanExecuteChanged()
+        {
+            var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
+            using (var dest = new DelegateCommand(
+                () => src.Value.Name = "Done",
+                () => src.Value.Age > 0
+            ).Observe(src, nameof(src.Value)))
+            {
+                Assert.That(dest.CanExecute(), Is.False);
+                src.Value.Age = 10;
+                Assert.That(dest.CanExecute(), Is.True);
+                src.Value.Age = -1;
+                Assert.That(dest.CanExecute(), Is.False);
+                src.Value.Age = 20;
+                Assert.That(dest.CanExecute(), Is.True);
+                dest.Execute();
+                Assert.That(src.Value.Name, Is.EqualTo("Done"));
+            }
+        }
+
+        #endregion
+
+        #region BindableCommand<T>
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute_Generic
+        ///
+        /// <summary>
+        /// Tests the Execute method of the BindableCommand(T) class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Execute_Generic()
+        {
+            var src  = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
+            var dest = new DelegateCommand<int>(
+                e => src.Value.Name = $"Done:{e}",
+                e => e > 0 && src.Value.Age > 0
+            ).Observe(src, nameof(src.Value));
+
+            src.Value.Age = 20;
+            dest.Execute(1);
+            Assert.That(src.Value.Name, Is.EqualTo("Done:1"));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RaiseCanExecuteChanged_Generic
+        ///
+        /// <summary>
+        /// Tests the CanExecuteChanged event of the BindableCommand(T)
+        /// class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void RaiseCanExecuteChanged_Generic()
+        {
+            var src = new Bindable<Person>(new Person(), Dispatcher.Vanilla);
+            using (var dest = new DelegateCommand<int>(
+                e => src.Value.Name = $"Done:{e}",
+                e => e > 0 && src.Value.Age > 0
+            ).Observe(src, nameof(src.Value)))
+            {
+                Assert.That(dest.CanExecute(-1), Is.False);
+                Assert.That(dest.CanExecute(1), Is.False);
+                src.Value.Age = 10;
+                Assert.That(dest.CanExecute(-2), Is.False);
+                Assert.That(dest.CanExecute(2), Is.True);
+                src.Value.Age = -1;
+                Assert.That(dest.CanExecute(-3), Is.False);
+                Assert.That(dest.CanExecute(3), Is.False);
+                src.Value.Age = 20;
+                Assert.That(dest.CanExecute(-4), Is.False);
+                Assert.That(dest.CanExecute(4), Is.True);
+                dest.Execute(4);
+                Assert.That(src.Value.Name, Is.EqualTo("Done:4"));
+            }
+        }
+
+        #endregion
+
+        #region Extension
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Execute_Extended
+        ///
+        /// <summary>
+        /// Tests the CanExecute and Execute extended methods.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Execute_Extension()
+        {
             var count = 0;
-            var src   = new BindableCommand(() => ++count);
+            var src = new DelegateCommand(() => ++count) as ICommand;
 
             Assert.That(src.CanExecute(), Is.True);
 
@@ -61,20 +183,23 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Execute_Null
+        /// Execute_Extension_Null
         ///
         /// <summary>
-        /// Tests the CanExecute and Execute methods with the null object.
+        /// Tests the CanExecute and Execute extended methods with a
+        /// null object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Execute_Null()
+        public void Execute_Extension_Null()
         {
             var src = default(ICommand);
             Assert.That(src.CanExecute(), Is.False);
             Assert.DoesNotThrow(() => src.Execute());
         }
+
+        #endregion
 
         #endregion
     }

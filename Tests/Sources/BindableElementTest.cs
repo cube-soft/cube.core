@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Xui.Commands;
 using NUnit.Framework;
 using System;
 
@@ -73,7 +74,7 @@ namespace Cube.Xui.Tests
                 Assert.That(src.Value, Is.EqualTo("Get"));
                 Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
                 Assert.That(src.Command, Is.Null);
-                src.Command = new BindableCommand(() => { });
+                src.Command = new DelegateCommand(() => { });
                 Assert.That(src.Command, Is.Not.Null);
             }
         }

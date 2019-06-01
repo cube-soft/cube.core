@@ -20,31 +20,31 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace Cube.Xui
+namespace Cube.Xui.Commands
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableCommandBase
+    /// DelegateCommandBase
     ///
     /// <summary>
     /// Provides an implementation of the ICommand.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class BindableCommandBase : DisposableBase, ICommand
+    public abstract class DelegateCommandBase : DisposableBase, ICommand
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableCommandBase
+        /// DelegateCommandBase
         ///
         /// <summary>
         /// Initializes a new instance of the BindableCommandBase.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected BindableCommandBase() { }
+        protected DelegateCommandBase() { }
 
         #endregion
 

@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Commands;
 using Cube.Xui.Behaviors;
+using Cube.Xui.Commands;
 using NUnit.Framework;
 using System.Windows.Controls;
 
@@ -52,7 +53,7 @@ namespace Cube.Xui.Tests.Behaviors
             Assert.That(src.Command,          Is.Null);
             Assert.That(src.CommandParameter, Is.EqualTo(0));
 
-            src.Command = new BindableCommand(() => { });
+            src.Command = new DelegateCommand(() => { });
             src.CommandParameter = 10;
             Assert.That(src.Command,              Is.Not.Null);
             Assert.That(src.Command.CanExecute(), Is.True);

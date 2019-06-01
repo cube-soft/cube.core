@@ -18,11 +18,11 @@
 using System;
 using System.ComponentModel;
 
-namespace Cube.Xui
+namespace Cube.Xui.Commands
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableCommand
+    /// DelegateCommand
     ///
     /// <summary>
     /// Represents an ICommand implementation that can be associated with
@@ -35,13 +35,13 @@ namespace Cube.Xui
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableCommand : BindableCommandBase
+    public class DelegateCommand : DelegateCommandBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableCommand
+        /// DelegateCommand
         ///
         /// <summary>
         /// Initializes a new instance of the BindableCommand class with
@@ -51,11 +51,11 @@ namespace Cube.Xui
         /// <param name="execute">Action to execute.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action execute) : this(execute, () => true) { }
+        public DelegateCommand(Action execute) : this(execute, () => true) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableCommand
+        /// DelegateCommand
         ///
         /// <summary>
         /// Initializes a new instance of the BindableCommand class with
@@ -68,7 +68,7 @@ namespace Cube.Xui
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand(Action execute, Func<bool> canExecute)
+        public DelegateCommand(Action execute, Func<bool> canExecute)
         {
             _execute    = execute    ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
@@ -109,7 +109,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableCommand Observe(INotifyPropertyChanged src, params string[] names)
+        public DelegateCommand Observe(INotifyPropertyChanged src, params string[] names)
         {
             OnObserve(src, names);
             return this;
