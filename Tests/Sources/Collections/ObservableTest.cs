@@ -26,7 +26,7 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ObservableTest
+    /// ObservableCollectionTest
     ///
     /// <summary>
     /// Represents the test for the ObservableBase(T) collection.
@@ -34,7 +34,7 @@ namespace Cube.Tests
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ObservableTest
+    class ObservableCollectionTest
     {
         #region
 

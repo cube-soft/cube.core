@@ -15,11 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Cube
 {
@@ -28,22 +26,21 @@ namespace Cube
     /// ObservableBase
     ///
     /// <summary>
-    /// Provides an implementation of the INotifyPropertyChanged interface.
+    /// Represents the base class that has features of DisposableBase and
+    /// ObservableBase classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [DataContract]
-    [Serializable]
-    public abstract class ObservableBase : INotifyPropertyChanged
+    public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     {
-        #region Constructor
+        #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
         /// ObservableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the ObservableBase class.
+        /// Initializes a new instance of the DisposableObservable class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -54,14 +51,14 @@ namespace Cube
         /// ObservableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the ObservableBase class with
-        /// the specified dispatcher.
+        /// Initializes a new instance of the DisposableObservable class
+        /// with the specified dispatcher.
         /// </summary>
         ///
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase(IDispatcher dispatcher)
+        protected ObservableBase(IDispatcher dispatcher) : base()
         {
             Dispatcher = dispatcher;
         }
@@ -79,12 +76,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [IgnoreDataMember]
-        public IDispatcher Dispatcher
-        {
-            get => _dispatcher;
-            set => _dispatcher = value;
-        }
+        public IDispatcher Dispatcher { get; set; }
 
         #endregion
 
@@ -185,29 +177,6 @@ namespace Cube
             return true;
         }
 
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDeserializing
-        ///
-        /// <summary>
-        /// Occurs before deserializing.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OnDeserializing]
-        private void OnDeserializing(StreamingContext context)
-        {
-            Dispatcher = Cube.Dispatcher.Vanilla;
-        }
-
-        #endregion
-
-        #region Fields
-        [NonSerialized] private IDispatcher _dispatcher;
         #endregion
     }
 }

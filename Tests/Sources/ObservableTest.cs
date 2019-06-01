@@ -21,15 +21,15 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposableObservableTest
+    /// ObservableTest
     ///
     /// <summary>
-    /// Test the DisposableObservable class.
+    /// Test the ObservableBase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DisposableObservableTest
+    class ObservableTest
     {
         #region Tests
 
@@ -81,7 +81,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private class Mock : DisposableObservable
+        private class Mock : ObservableBase
         {
             public Mock() : base() { }
             protected override void Dispose(bool disposing) { }

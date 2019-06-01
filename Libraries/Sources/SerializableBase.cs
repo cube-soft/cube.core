@@ -15,55 +15,54 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposableObservable
+    /// SerializableBase
     ///
     /// <summary>
-    /// Represents the base class that has features of DisposableBase and
-    /// ObservableBase classes.
+    /// Provides an implementation of the INotifyPropertyChanged interface
+    /// with Serializable and DataContract attributes.
     /// </summary>
     ///
-    /// <remarks>
-    /// ObservableBase は Serializable および DataContract の属性が設定されて
-    /// いますが、このクラスには設定されていません。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    public abstract class DisposableObservable : DisposableBase, INotifyPropertyChanged
+    [Serializable]
+    [DataContract]
+    public abstract class SerializableBase : INotifyPropertyChanged
     {
-        #region Constructors
+        #region Constructor
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisposableObservable
+        /// SerializableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the DisposableObservable class.
+        /// Initializes a new instance of the ObservableBase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected DisposableObservable() : this(Cube.Dispatcher.Vanilla) { }
+        protected SerializableBase() : this(Cube.Dispatcher.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisposableObservable
+        /// SerializableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the DisposableObservable class
-        /// with the specified dispatcher.
+        /// Initializes a new instance of the ObservableBase class with
+        /// the specified dispatcher.
         /// </summary>
         ///
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected DisposableObservable(IDispatcher dispatcher) : base()
+        protected SerializableBase(IDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
         }
@@ -81,7 +80,12 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IDispatcher Dispatcher { get; set; }
+        [IgnoreDataMember]
+        public IDispatcher Dispatcher
+        {
+            get => _dispatcher;
+            set => _dispatcher = value;
+        }
 
         #endregion
 
@@ -182,6 +186,29 @@ namespace Cube
             return true;
         }
 
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnDeserializing
+        ///
+        /// <summary>
+        /// Occurs before deserializing.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [OnDeserializing]
+        private void OnDeserializing(StreamingContext context)
+        {
+            Dispatcher = Cube.Dispatcher.Vanilla;
+        }
+
+        #endregion
+
+        #region Fields
+        [NonSerialized] private IDispatcher _dispatcher;
         #endregion
     }
 }

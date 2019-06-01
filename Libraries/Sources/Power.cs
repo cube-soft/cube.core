@@ -152,7 +152,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PowerModeContext : ObservableBase
+    public class PowerModeContext : SerializableBase
     {
         #region Constructors
 
