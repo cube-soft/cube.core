@@ -52,9 +52,9 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public static DependencyProperty Create<TOwner, TProperty>(
-            string name, Action<TOwner, TProperty> callback)
-            where TOwner : DependencyObject =>
-            Create(name, default, callback);
+            string name,
+            Action<TOwner, TProperty> callback
+        ) where TOwner : DependencyObject => Create(name, default, callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,17 +76,17 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public static DependencyProperty Create<TOwner, TProperty>(
-            string name, TProperty value, Action<TOwner, TProperty> callback)
-            where TOwner : DependencyObject =>
-            DependencyProperty.RegisterAttached(
-                name,
-                typeof(TProperty),
-                typeof(TOwner),
-                new PropertyMetadata(value, (s, e) =>
-                {
-                    if (s is TOwner owner && e.NewValue is TProperty v) callback(owner, v);
-                })
-            );
+            string name,
+            TProperty value,
+            Action<TOwner, TProperty> callback
+        ) where TOwner : DependencyObject => DependencyProperty.RegisterAttached(
+            name,
+            typeof(TProperty),
+            typeof(TOwner),
+            new PropertyMetadata(value, (s, e) => {
+                if (s is TOwner owner && e.NewValue is TProperty v) callback(owner, v);
+            })
+        );
 
         #endregion
     }

@@ -15,8 +15,50 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Input;
+
 namespace Cube.Xui
 {
+    #region IElement
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IElement
+    ///
+    /// <summary>
+    /// Provides interface of a ViewModel element.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IElement
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Text
+        ///
+        /// <summary>
+        /// Gets a text to be displayed in the View.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        string Text { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Command
+        ///
+        /// <summary>
+        /// Gets or sets a command to be executed by the View.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        ICommand Command { get; }
+    }
+
+    #endregion
+
+    #region IListItem
+
     /* --------------------------------------------------------------------- */
     ///
     /// IListItem
@@ -40,4 +82,6 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         bool IsSelected { get; set; }
     }
+
+    #endregion
 }
