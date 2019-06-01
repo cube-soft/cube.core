@@ -31,7 +31,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : DisposableObservable, IElement, IObservePropertyChanged
+    public class BindableElement : ObservableBase, IElement, IObservePropertyChanged
     {
         #region Constructors
 

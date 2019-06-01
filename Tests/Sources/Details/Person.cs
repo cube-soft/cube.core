@@ -26,7 +26,7 @@ namespace Cube.Xui.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    class Person : ObservableBase
+    class Person : SerializableBase
     {
         #region Properties
 

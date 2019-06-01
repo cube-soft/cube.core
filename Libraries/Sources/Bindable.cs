@@ -33,7 +33,7 @@ namespace Cube.Xui
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Bindable<T> : DisposableObservable
+    public class Bindable<T> : ObservableBase
     {
         #region Constructors
 
