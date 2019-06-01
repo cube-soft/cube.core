@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Cube.Xui
@@ -30,7 +31,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IElement
+    public interface IElement : INotifyPropertyChanged
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -96,7 +97,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IListItem
+    public interface IListItem : INotifyPropertyChanged
     {
         /* ----------------------------------------------------------------- */
         ///
