@@ -26,7 +26,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement<T> : BindableElement
+    public class BindableElement<T> : BindableElement, IElement<T>
     {
         #region Constructors
 

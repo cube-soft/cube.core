@@ -57,6 +57,33 @@ namespace Cube.Xui
 
     #endregion
 
+    #region IElement<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IElement(T)
+    ///
+    /// <summary>
+    /// Provides interface of a ViewModel element with a value.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IElement<T> : IElement
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets a value to be bound to the View.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        T Value { get; set; }
+    }
+
+    #endregion
+
     #region IListItem
 
     /* --------------------------------------------------------------------- */
