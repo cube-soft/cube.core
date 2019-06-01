@@ -38,7 +38,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<T> : DisposableObservable where T : INotifyPropertyChanged, new()
+    public class SettingsFolder<T> : ObservableBase where T : INotifyPropertyChanged, new()
     {
         #region Constructors
 

@@ -84,7 +84,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : ObservableBase
+    internal class Person : SerializableBase
     {
         #region Constructors
 
