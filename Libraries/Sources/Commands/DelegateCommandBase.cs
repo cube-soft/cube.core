@@ -89,10 +89,10 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnCanExecute
+        /// Execute
         ///
         /// <summary>
-        /// Determines whether the command can execute in its current state.
+        /// Defines the method to be called when the command is invoked.
         /// </summary>
         ///
         /// <param name="parameter">
@@ -101,7 +101,24 @@ namespace Cube.Xui
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected abstract bool OnCanExecute(object parameter);
+        public void Execute(object parameter) => OnExecute(parameter);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CanExecute
+        ///
+        /// <summary>
+        /// Defines the method that determines whether the command can
+        /// execute in its current state.
+        /// </summary>
+        ///
+        /// <param name="parameter">
+        /// Data used by the command. If the command does not require data
+        /// to be passed, this object can be set to null.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool CanExecute(object parameter) => OnCanExecute(parameter);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -121,6 +138,22 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
+        /// OnCanExecute
+        ///
+        /// <summary>
+        /// Determines whether the command can execute in its current state.
+        /// </summary>
+        ///
+        /// <param name="parameter">
+        /// Data used by the command. If the command does not require data
+        /// to be passed, this object can be set to null.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected abstract bool OnCanExecute(object parameter);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// React
         ///
         /// <summary>
@@ -129,43 +162,6 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         protected override void React() => Refresh();
-
-        #region ICommand
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CanExecute
-        ///
-        /// <summary>
-        /// Defines the method that determines whether the command can
-        /// execute in its current state.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        bool ICommand.CanExecute(object parameter) => OnCanExecute(parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
-        ///
-        /// <summary>
-        /// Defines the method to be called when the command is invoked.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        void ICommand.Execute(object parameter) => OnExecute(parameter);
-
-        #endregion
 
         #endregion
     }

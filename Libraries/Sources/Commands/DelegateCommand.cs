@@ -79,28 +79,6 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CanExecute
-        ///
-        /// <summary>
-        /// Determines whether the command can execute in its current state.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool CanExecute() => _canExecute();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
-        ///
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Execute() => _execute();
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// OnCanExecute
         ///
         /// <summary>
@@ -110,7 +88,7 @@ namespace Cube.Xui
         /// <param name="parameter">Not used parameter.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool OnCanExecute(object parameter) => CanExecute();
+        protected override bool OnCanExecute(object parameter) => _canExecute();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -123,7 +101,7 @@ namespace Cube.Xui
         /// <param name="parameter">Not used parameter.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnExecute(object parameter) => Execute();
+        protected override void OnExecute(object parameter) => _execute();
 
         #endregion
 
