@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 
 namespace Cube.Xui
 {
@@ -99,21 +98,6 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public void Execute() => _execute();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Observe
-        ///
-        /// <summary>
-        /// Observes the PropertyChanged event of the specified object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DelegateCommand Observe(INotifyPropertyChanged src, params string[] names)
-        {
-            OnObserve(src, names);
-            return this;
-        }
 
         /* ----------------------------------------------------------------- */
         ///

@@ -69,7 +69,7 @@ namespace Cube.Xui.Tests
         {
             using (var src = new BindableElement<string>(() => "Text", () => "Get", Dispatcher.Vanilla))
             {
-                Assert.That(src.Text,  Is.EqualTo("Text"));
+                Assert.That(src.Text, Is.EqualTo("Text"));
                 Assert.That(src.Value, Is.EqualTo("Get"));
                 Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
                 Assert.That(src.Command, Is.Null);
@@ -93,17 +93,12 @@ namespace Cube.Xui.Tests
             var count = 0;
             using (var src = new BindableElement<int>(() => "Language", () => count, Dispatcher.Vanilla))
             {
-                src.PropertyChanged += (s, e) =>
-                {
-                    Assert.That(e.PropertyName, Is.EqualTo(nameof(src.Text)));
-                    ++count;
-                };
-
+                src.PropertyChanged += (s, e) => ++count;
                 Locale.Set(Language.French);
                 Locale.Set(Language.Russian);
-
-                Assert.That(src.Value, Is.InRange(1, 2));
+                Locale.Set(Language.Russian);
             }
+            Assert.That(count, Is.EqualTo(4));
         }
 
         #endregion

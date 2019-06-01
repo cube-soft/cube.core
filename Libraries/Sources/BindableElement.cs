@@ -31,7 +31,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : DisposableObservable, IElement, IObserver
+    public class BindableElement : DisposableObservable, IElement, IObservePropertyChanged
     {
         #region Constructors
 
@@ -51,7 +51,7 @@ namespace Cube.Xui
         public BindableElement(Getter<string> gettext, IDispatcher dispatcher) : base(dispatcher)
         {
             _getter = gettext;
-            _observer.Add(Locale.Subscribe(e => OnStateChanged()));
+            _observer.Add(Locale.Subscribe(e => React()));
         }
 
         #endregion
@@ -105,12 +105,23 @@ namespace Cube.Xui
             var set = new HashSet<string>(names);
             void handler(object s, PropertyChangedEventArgs e)
             {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) OnStateChanged();
+                if (set.Count <= 0 || set.Contains(e.PropertyName)) React();
             }
 
             src.PropertyChanged += handler;
             _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// React
+        ///
+        /// <summary>
+        /// Invokes when any states are changed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void React() => Refresh(nameof(Text));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -129,11 +140,9 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                foreach (var obj in _observer) obj.Dispose();
-                _observer.Clear();
-            }
+            if (!disposing) return;
+            foreach (var obj in _observer) obj.Dispose();
+            _observer.Clear();
         }
 
         /* ----------------------------------------------------------------- */
@@ -149,17 +158,6 @@ namespace Cube.Xui
         {
             if (!Disposed) base.OnPropertyChanged(e);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnStateChanged
-        ///
-        /// <summary>
-        /// Occurs when any states are changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnStateChanged() => Refresh(nameof(Text));
 
         #endregion
 

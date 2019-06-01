@@ -112,35 +112,4 @@ namespace Cube.Xui
     }
 
     #endregion
-
-    #region IObserver
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IObserver
-    ///
-    /// <summary>
-    /// Provides interface to observe a INotifyPropertyChanged implemented
-    /// object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IObserver
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Observe
-        ///
-        /// <summary>
-        /// Observes the PropertyChanged event of the specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Observed object.</param>
-        /// <param name="names">Target property names.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        void Observe(INotifyPropertyChanged src, params string[] names);
-    }
-
-    #endregion
 }

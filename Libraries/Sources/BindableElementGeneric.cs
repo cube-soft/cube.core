@@ -107,16 +107,16 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnStateChanged
+        /// React
         ///
         /// <summary>
         /// Occurs when any states are changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnStateChanged()
+        protected override void React()
         {
-            base.OnStateChanged();
+            base.React();
             Refresh(nameof(Value));
         }
 

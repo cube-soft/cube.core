@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Commands;
+using Cube.Mixin.Observer;
 using NUnit.Framework;
 using System.Windows.Input;
 
@@ -53,7 +54,7 @@ namespace Cube.Xui.Tests
             var dest = new DelegateCommand(
                 () => src.Value.Name = "Done",
                 () => src.Value.Age > 0
-            ).Observe(src, nameof(src.Value));
+            ).Associate(src, nameof(src.Value));
 
             src.Value.Age = 20;
             dest.Execute();
@@ -76,7 +77,7 @@ namespace Cube.Xui.Tests
             using (var dest = new DelegateCommand(
                 () => src.Value.Name = "Done",
                 () => src.Value.Age > 0
-            ).Observe(src, nameof(src.Value)))
+            ).Associate(src, nameof(src.Value)))
             {
                 Assert.That(dest.CanExecute(), Is.False);
                 src.Value.Age = 10;
@@ -110,7 +111,7 @@ namespace Cube.Xui.Tests
             var dest = new DelegateCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
                 e => e > 0 && src.Value.Age > 0
-            ).Observe(src, nameof(src.Value));
+            ).Associate(src, nameof(src.Value));
 
             src.Value.Age = 20;
             dest.Execute(1);
@@ -134,7 +135,7 @@ namespace Cube.Xui.Tests
             using (var dest = new DelegateCommand<int>(
                 e => src.Value.Name = $"Done:{e}",
                 e => e > 0 && src.Value.Age > 0
-            ).Observe(src, nameof(src.Value)))
+            ).Associate(src, nameof(src.Value)))
             {
                 Assert.That(dest.CanExecute(-1), Is.False);
                 Assert.That(dest.CanExecute(1), Is.False);

@@ -16,8 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Cube.Xui
@@ -31,7 +29,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class DelegateCommandBase : DisposableBase, ICommand
+    public abstract class DelegateCommandBase : ObserverBase, ICommand
     {
         #region Constructors
 
@@ -123,49 +121,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnObserve
+        /// React
         ///
         /// <summary>
-        /// Observes the PropertyChanged event of the specified object.
+        /// Invokes when any states are changed.
         /// </summary>
         ///
-        /// <param name="src">Observed object.</param>
-        /// <param name="names">Target property names.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        protected void OnObserve(INotifyPropertyChanged src, params string[] names)
-        {
-            var set = new HashSet<string>(names);
-            void handler(object s, PropertyChangedEventArgs e)
-            {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) Refresh();
-            }
-
-            src.PropertyChanged += handler;
-            _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            foreach (var obj in _observer) obj.Dispose();
-            _observer.Clear();
-        }
+        protected override void React() => Refresh();
 
         #region ICommand
 
@@ -204,10 +167,6 @@ namespace Cube.Xui
 
         #endregion
 
-        #endregion
-
-        #region Fields
-        private readonly IList<IDisposable> _observer = new List<IDisposable>();
         #endregion
     }
 }
