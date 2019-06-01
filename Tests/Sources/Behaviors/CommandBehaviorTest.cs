@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Commands;
 using Cube.Xui.Behaviors;
-using Cube.Xui.Commands;
 using NUnit.Framework;
 using System.Windows.Controls;
 

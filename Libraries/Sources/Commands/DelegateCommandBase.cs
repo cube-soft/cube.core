@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace Cube.Xui.Commands
+namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
