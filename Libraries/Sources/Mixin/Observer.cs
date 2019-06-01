@@ -24,7 +24,7 @@ namespace Cube.Mixin.Observer
     /// Extension
     ///
     /// <summary>
-    /// Provides extended methods of IObservePropertyChnaged and its
+    /// Provides extended methods of IObservePropertyChanged and its
     /// implemented classes.
     /// </summary>
     ///
@@ -45,7 +45,7 @@ namespace Cube.Mixin.Observer
         ///
         /* ----------------------------------------------------------------- */
         public static T Associate<T>(this T src, INotifyPropertyChanged target, params string[] names)
-            where T : IObservePropertyChnaged
+            where T : IObservePropertyChanged
         {
             src.Observe(target, names);
             return src;

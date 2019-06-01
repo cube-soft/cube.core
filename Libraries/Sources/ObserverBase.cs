@@ -21,11 +21,11 @@ using System.ComponentModel;
 
 namespace Cube
 {
-    #region IObservePropertyChnaged
+    #region IObservePropertyChanged
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IObservePropertyChnaged
+    /// IObservePropertyChanged
     ///
     /// <summary>
     /// Provides interface to observe the PropertyChanged event of
@@ -33,7 +33,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IObservePropertyChnaged
+    public interface IObservePropertyChanged
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -63,7 +63,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class ObserverBase : DisposableBase, IObservePropertyChnaged
+    public abstract class ObserverBase : DisposableBase, IObservePropertyChanged
     {
         #region Constructors
 
