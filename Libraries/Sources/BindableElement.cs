@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -30,7 +31,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : DisposableObservable, IElement
+    public class BindableElement : DisposableObservable, IElement, IObserver
     {
         #region Constructors
 
@@ -49,8 +50,8 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public BindableElement(Getter<string> gettext, IDispatcher dispatcher) : base(dispatcher)
         {
-            _getter  = gettext;
-            _locale  = Locale.Subscribe(e => OnLanguageChanged(e));
+            _getter = gettext;
+            _observer.Add(Locale.Subscribe(e => OnStateChanged()));
         }
 
         #endregion
@@ -89,6 +90,30 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Observe
+        ///
+        /// <summary>
+        /// Observes the PropertyChanged event of the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Observed object.</param>
+        /// <param name="names">Target property names.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Observe(INotifyPropertyChanged src, params string[] names)
+        {
+            var set = new HashSet<string>(names);
+            void handler(object s, PropertyChangedEventArgs e)
+            {
+                if (set.Count <= 0 || set.Contains(e.PropertyName)) OnStateChanged();
+            }
+
+            src.PropertyChanged += handler;
+            _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Dispose
         ///
         /// <summary>
@@ -104,7 +129,11 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) _locale.Dispose();
+            if (disposing)
+            {
+                foreach (var obj in _observer) obj.Dispose();
+                _observer.Clear();
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -116,44 +145,27 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e) =>
-            Invoke(() => base.OnPropertyChanged(e));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnLanguageChanged
-        ///
-        /// <summary>
-        /// Occurs when the current language is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnLanguageChanged(Language e) =>
-            Invoke(() => Refresh(nameof(Text)));
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the specified action unless the object is not disposed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Invoke(Action action)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (!Disposed) action();
+            if (!Disposed) base.OnPropertyChanged(e);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnStateChanged
+        ///
+        /// <summary>
+        /// Occurs when any states are changed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnStateChanged() => Refresh(nameof(Text));
 
         #endregion
 
         #region Fields
         private readonly Getter<string> _getter;
-        private readonly IDisposable _locale;
+        private readonly IList<IDisposable> _observer = new List<IDisposable>();
         private ICommand _command;
         #endregion
     }

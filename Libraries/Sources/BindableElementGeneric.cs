@@ -103,6 +103,25 @@ namespace Cube.Xui
 
         #endregion
 
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnStateChanged
+        ///
+        /// <summary>
+        /// Occurs when any states are changed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnStateChanged()
+        {
+            base.OnStateChanged();
+            Refresh(nameof(Value));
+        }
+
+        #endregion
+
         #region Fields
         private readonly Accessor<T> _accessor;
         #endregion
