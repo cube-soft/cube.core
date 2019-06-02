@@ -91,7 +91,10 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="src">Observed object.</param>
-        /// <param name="names">Target property names.</param>
+        /// <param name="names">
+        /// Target property names. If no name is set, the class responds
+        /// to all PropertyChanged events.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public void Observe(INotifyPropertyChanged src, params string[] names)
@@ -135,11 +138,9 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                foreach (var obj in _observer) obj.Dispose();
-                _observer.Clear();
-            }
+            if (!disposing) return;
+            foreach (var obj in _observer) obj.Dispose();
+            _observer.Clear();
         }
 
         #endregion
