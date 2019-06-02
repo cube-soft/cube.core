@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.ComponentModel;
 
-namespace Cube.Mixin.Observer
+namespace Cube.Mixin.Observing
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -46,8 +46,10 @@ namespace Cube.Mixin.Observer
         /// <returns>Source observer.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Associate<T>(this T src, INotifyPropertyChanged target, params string[] names)
-            where T : IObservePropertyChanged
+        public static T Associate<T>(this T src,
+            INotifyPropertyChanged target,
+            params string[] names
+        ) where T : IObservePropertyChanged
         {
             src.Observe(target, names);
             return src;
