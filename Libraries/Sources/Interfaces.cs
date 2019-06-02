@@ -53,7 +53,7 @@ namespace Cube.Xui
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ICommand Command { get; }
+        ICommand Command { get; set; }
     }
 
     #endregion
