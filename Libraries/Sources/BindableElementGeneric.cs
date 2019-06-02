@@ -91,7 +91,7 @@ namespace Cube.Xui
         /// Value
         ///
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets a value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

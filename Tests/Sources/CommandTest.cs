@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Commands;
-using Cube.Mixin.Observer;
+using Cube.Mixin.Observing;
 using NUnit.Framework;
 using System.Windows.Input;
 

@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-
 using System.ComponentModel;
 
 namespace Cube.Xui
@@ -133,7 +132,7 @@ namespace Cube.Xui
         public T Value
         {
             get => _accessor.Get();
-            set { if (_accessor.Set(value)) Refresh(nameof(Value)); }
+            set { if (_accessor.Set(value)) Refresh(); }
         }
 
         #endregion

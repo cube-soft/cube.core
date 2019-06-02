@@ -63,7 +63,7 @@ namespace Cube.Xui
         /// Text
         ///
         /// <summary>
-        /// Gets the text.
+        /// Gets a text to be displayed in the View.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -74,7 +74,7 @@ namespace Cube.Xui
         /// Command
         ///
         /// <summary>
-        /// Gets or sets the command object.
+        /// Gets or sets a command to be executed by the View.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -96,7 +96,7 @@ namespace Cube.Xui
         /// Observes the PropertyChanged event of the specified object.
         /// </summary>
         ///
-        /// <param name="src">Observed object.</param>
+        /// <param name="src">Object to be observed.</param>
         /// <param name="names">Target property names.</param>
         ///
         /* ----------------------------------------------------------------- */
