@@ -29,7 +29,7 @@ namespace Cube
     ///
     /// <summary>
     /// Provides an implementation of the INotifyPropertyChanged interface
-    /// with Serializable and DataContract attributes.
+    /// with the Serializable and DataContract attributes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

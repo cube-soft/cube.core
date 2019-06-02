@@ -228,11 +228,6 @@ namespace Cube
     /// Specifies the power mode.
     /// </summary>
     ///
-    /// <remarks>
-    /// .NET Standard の場合とソースコードを共有するために
-    /// Microsoft.Win32.PowerModes と同様のものを定義します。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
     public enum PowerModes
     {

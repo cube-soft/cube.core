@@ -70,7 +70,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /// <param name="callback">
-        /// Callback to be executed when published.
+        /// Action to be executed when published.
         /// </param>
         ///
         /// <returns>

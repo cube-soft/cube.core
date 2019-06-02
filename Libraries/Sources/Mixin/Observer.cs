@@ -39,9 +39,11 @@ namespace Cube.Mixin.Observer
         /// Associates the specified observer and the specified object.
         /// </summary>
         ///
-        /// <param name="src">Observer object.</param>
+        /// <param name="src">Source observer.</param>
         /// <param name="target">Object to be observed.</param>
-        /// <param name="names">Property names.</param>
+        /// <param name="names">Target property names.</param>
+        ///
+        /// <returns>Source observer.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static T Associate<T>(this T src, INotifyPropertyChanged target, params string[] names)
