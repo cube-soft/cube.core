@@ -68,6 +68,10 @@ namespace Cube.Forms
             /// メッセージを表示します。
             /// </summary>
             ///
+            /// <returns>
+            /// 0 (S_OK) for handled; otherwise pass through.
+            /// </returns>
+            ///
             /* ------------------------------------------------------------- */
             public int ShowMessage(IntPtr hwnd, string text, string caption,
                 int type, string file, int context, out int result)
@@ -82,7 +86,7 @@ namespace Cube.Forms
                 };
                 Host.OnMessageShowing(args);
                 result = (int)args.Status;
-                return (args.Status != DialogStatus.None) ? 1 : 0;
+                return (args.Status != DialogStatus.None) ? 0 : 1;
             }
 
             /* ------------------------------------------------------------- */
@@ -92,10 +96,6 @@ namespace Cube.Forms
             /// <summary>
             /// ヘルプを表示します。
             /// </summary>
-            ///
-            /// <remarks>
-            /// 現在は常にキャンセルされます。
-            /// </remarks>
             ///
             /* ------------------------------------------------------------- */
             public int ShowHelp(IntPtr hwnd, string file, int command, int data,
