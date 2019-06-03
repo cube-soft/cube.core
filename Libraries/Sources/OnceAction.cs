@@ -129,7 +129,7 @@ namespace Cube
         /// value.
         /// </summary>
         ///
-        /// <param name="value">Value that is invoked once.</param>
+        /// <param name="value">Value to be invoked once.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected Once(T value)

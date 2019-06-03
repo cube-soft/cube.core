@@ -25,7 +25,7 @@ namespace Cube
     /// Getter
     ///
     /// <summary>
-    /// Represents the delegation for getting value of type T.
+    /// Represents the delegation to get a value of type T.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -36,7 +36,7 @@ namespace Cube
     /// Setter
     ///
     /// <summary>
-    /// Represents the delegation for setting value of type T.
+    /// Represents the delegation to set a value of type T.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -47,7 +47,7 @@ namespace Cube
     /// Accessor
     ///
     /// <summary>
-    /// Provides functionality to get and set value of type T.
+    /// Provides functionality to get and set a value of type T.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -111,7 +111,7 @@ namespace Cube
         /// specified delegation.
         /// </summary>
         ///
-        /// <param name="getter">Function to get value.</param>
+        /// <param name="getter">Function to get a value.</param>
         ///
         /// <remarks>
         /// 生成されたオブジェクトは読み込み専用となり、Set メソッド実行時には
@@ -131,8 +131,8 @@ namespace Cube
         /// specified delegations.
         /// </summary>
         ///
-        /// <param name="getter">Function to get value.</param>
-        /// <param name="setter">Function to set value.</param>
+        /// <param name="getter">Function to get a value.</param>
+        /// <param name="setter">Function to set a value.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Accessor(Getter<T> getter, Setter<T> setter) :
@@ -147,8 +147,8 @@ namespace Cube
         /// specified delegations.
         /// </summary>
         ///
-        /// <param name="getter">Function to get value.</param>
-        /// <param name="setter">Function to set value.</param>
+        /// <param name="getter">Function to get a value.</param>
+        /// <param name="setter">Function to set a value.</param>
         /// <param name="comparer">Object to compare two values.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -168,10 +168,10 @@ namespace Cube
         /// Get
         ///
         /// <summary>
-        /// Get the value.
+        /// Get a value.
         /// </summary>
         ///
-        /// <returns>Result of Getter(T).</returns>
+        /// <returns>Result of the provided Getter(T) delegation.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public T Get() => _getter();
@@ -181,12 +181,15 @@ namespace Cube
         /// Get
         ///
         /// <summary>
-        /// Set the value.
+        /// Set a new value.
         /// </summary>
         ///
         /// <param name="value">Value to be set.</param>
         ///
-        /// <returns>Result of Setter(T).</returns>
+        /// <returns>
+        /// Value indicating whether to be executed the provided Setter(T)
+        /// delegation.
+        /// </returns>
         ///
         /* ----------------------------------------------------------------- */
         public bool Set(T value)

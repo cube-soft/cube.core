@@ -205,10 +205,10 @@ namespace Cube
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceQuery(T, T)
+    /// OnceQuery(T)
     ///
     /// <summary>
-    /// Represents the IQuery(T, T) implementation that allows only once.
+    /// Represents the IQuery(T) implementation that allows only once.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

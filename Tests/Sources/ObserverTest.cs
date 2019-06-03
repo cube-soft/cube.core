@@ -15,57 +15,68 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Observing;
 using NUnit.Framework;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposableObservableTest
+    /// ObserverTest
     ///
     /// <summary>
-    /// Test the DisposableObservable class.
+    /// Test the IObservePropertyChanged implemented class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DisposableObservableTest
+    class ObserverTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set
+        /// Observe
         ///
         /// <summary>
-        /// Tests the setter and getter methods.
+        /// Tests Observe and related methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Set()
+        public void Observe()
         {
-            var n = 0;
-            using (var src = new Mock())
-            {
-                Assert.That(src.Value, Is.Null);
-                src.Value = "";
-                Assert.That(src.Value, Is.Empty);
-                src.PropertyChanged += (s, e) => ++n;
+            var n   = new Accessor<int>();
+            var src = new Person();
 
-                src.Value = "Hello";
-                Assert.That(src.Value, Is.EqualTo("Hello"));
-                src.Value = "";
-                Assert.That(src.Value, Is.Empty);
-                src.Value = null;
-                Assert.That(src.Value, Is.Null);
-                src.Value = "";
-                Assert.That(src.Value, Is.Empty);
-                src.Value = ""; // ignore
-                Assert.That(src.Value, Is.Empty);
-                src.Refresh(nameof(src.Value), nameof(src.Value), nameof(src.Value));
+            using (new Mock(n)
+                .Associate(src) // All
+                .Associate(src, nameof(src.Name))
+            ) {
+                Assert.That(src.Age,  Is.EqualTo(0));
+                src.Age = 10;
+                Assert.That(n.Get(),  Is.EqualTo(1));
+                Assert.That(src.Age,  Is.EqualTo(10));
+                src.Age = 10;
+                Assert.That(n.Get(),  Is.EqualTo(1));
+                Assert.That(src.Age,  Is.EqualTo(10));
+
+                Assert.That(src.Name, Is.Empty);
+                src.Name = "Test";
+                Assert.That(n.Get(),  Is.EqualTo(3));
+                Assert.That(src.Name, Is.EqualTo("Test"));
+                src.Name = "Test";
+                Assert.That(n.Get(),  Is.EqualTo(3));
+                Assert.That(src.Name, Is.EqualTo("Test"));
             }
-            Assert.That(n, Is.EqualTo(7));
+
+            src.Age = 20;
+            Assert.That(n.Get(),  Is.EqualTo(3));
+            Assert.That(src.Age,  Is.EqualTo(20));
+
+            src.Name = "";
+            Assert.That(n.Get(),  Is.EqualTo(3));
+            Assert.That(src.Name, Is.Empty);
         }
 
         #endregion
@@ -77,20 +88,15 @@ namespace Cube.Tests
         /// Mock
         ///
         /// <summary>
-        /// Provides functionality to test the DisposableObservable class.
+        /// Represents an ObserverBase inherited class for testing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private class Mock : DisposableObservable
+        private class Mock : ObserverBase
         {
-            public Mock() : base() { }
-            protected override void Dispose(bool disposing) { }
-            public string Value
-            {
-                get => _value;
-                set => SetProperty(ref _value, value);
-            }
-            private string _value;
+            public Mock(Accessor<int> count) { _count = count; }
+            protected override void React() => _count.Set(_count.Get() + 1);
+            private readonly Accessor<int> _count;
         }
 
         #endregion
