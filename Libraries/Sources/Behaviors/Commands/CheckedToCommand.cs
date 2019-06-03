@@ -21,21 +21,19 @@ using System.Windows.Controls.Primitives;
 
 namespace Cube.Xui.Behaviors
 {
-    #region CheckedBehavior
+    #region CheckedToCommand
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CheckedBehavior
+    /// CheckedToCommand
     ///
     /// <summary>
     /// Represents the behavior when the item is checked.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CheckedBehavior : CommandBehavior<ToggleButton>
+    public class CheckedToCommand : CommandBehavior<ToggleButton>
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -80,27 +78,23 @@ namespace Cube.Xui.Behaviors
         {
             if (Command.CanExecute()) Command.Execute();
         }
-
-        #endregion
     }
 
     #endregion
 
-    #region CheckedBehavior<T>
+    #region CheckedToCommand<T>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CheckedBehavior
+    /// CheckedToCommand(T)
     ///
     /// <summary>
     /// Represents the behavior when the item is checked.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CheckedBehavior<T> : CommandBehavior<ToggleButton, T>
+    public class CheckedToCommand<T> : CommandBehavior<ToggleButton, T>
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -145,27 +139,23 @@ namespace Cube.Xui.Behaviors
         {
             if (Command?.CanExecute(CommandParameter) ?? false) Command.Execute(CommandParameter);
         }
-
-        #endregion
     }
 
     #endregion
 
-    #region UncheckedBehavior
+    #region UncheckedToCommand
 
     /* --------------------------------------------------------------------- */
     ///
-    /// UncheckedBehavior
+    /// UncheckedToCommand
     ///
     /// <summary>
     /// Represents the behavior when the item is unchecked.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UncheckedBehavior : CommandBehavior<ToggleButton>
+    public class UncheckedToCommand : CommandBehavior<ToggleButton>
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -210,27 +200,23 @@ namespace Cube.Xui.Behaviors
         {
             if (Command?.CanExecute() ?? false) Command.Execute();
         }
-
-        #endregion
     }
 
     #endregion
 
-    #region UncheckedBehavior<T>
+    #region UncheckedToCommand<T>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// UncheckedBehavior
+    /// UncheckedToCommand
     ///
     /// <summary>
     /// Represents the behavior when the item is unchecked.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UncheckedBehavior<T> : CommandBehavior<ToggleButton, T>
+    public class UncheckedToCommand<T> : CommandBehavior<ToggleButton, T>
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -275,8 +261,6 @@ namespace Cube.Xui.Behaviors
         {
             if (Command?.CanExecute(CommandParameter) ?? false) Command.Execute(CommandParameter);
         }
-
-        #endregion
     }
 
     #endregion

@@ -22,17 +22,15 @@ namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDropBehavior
+    /// FileDropToCommand
     ///
     /// <summary>
     /// Represents the behavior of Drag&amp;Drop files.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FileDropBehavior<T> : CommandBehavior<T> where T : UIElement
+    public class FileDropToCommand<T> : CommandBehavior<T> where T : UIElement
     {
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -45,8 +43,8 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.PreviewDragOver += WhenDragOver;
-            AssociatedObject.PreviewDrop += WhenDrop;
+            AssociatedObject.PreviewDragOver += OnDragOver;
+            AssociatedObject.PreviewDrop += OnDrop;
         }
 
         /* ----------------------------------------------------------------- */
@@ -61,21 +59,21 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.PreviewDragOver -= WhenDragOver;
-            AssociatedObject.PreviewDrop -= WhenDrop;
+            AssociatedObject.PreviewDragOver -= OnDragOver;
+            AssociatedObject.PreviewDrop -= OnDrop;
             base.OnDetaching();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenDrop
+        /// OnDrop
         ///
         /// <summary>
         /// Occurs when the PreviewDrop event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenDrop(object s, DragEventArgs e)
+        private void OnDrop(object s, DragEventArgs e)
         {
             var dest = GetData(e.Data);
             e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
@@ -84,14 +82,14 @@ namespace Cube.Xui.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenDragOver
+        /// OnDragOver
         ///
         /// <summary>
         /// Occurs when the PreviewDragOver event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenDragOver(object s, DragEventArgs e)
+        private void OnDragOver(object s, DragEventArgs e)
         {
             var dest = GetData(e.Data);
             e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
@@ -111,7 +109,5 @@ namespace Cube.Xui.Behaviors
             src.GetDataPresent(DataFormats.FileDrop) ?
             src.GetData(DataFormats.FileDrop).TryCast<string[]>() :
             null;
-
-        #endregion
     }
 }

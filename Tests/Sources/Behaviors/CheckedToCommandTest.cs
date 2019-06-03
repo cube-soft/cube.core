@@ -15,100 +15,110 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
-using System.Windows;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
+using System.Threading;
+using System.Windows.Controls;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests.Behaviors
 {
-    #region CloseBehavior
-
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehavior
+    /// CheckedToCommandTest
     ///
     /// <summary>
-    /// Represents the behavior of closing window when received a
-    /// CloseMessage.
+    /// Tests the CheckedToCommand class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseBehavior : SubscribeBehavior<CloseMessage>
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class CheckedToCommandTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Properties_Checked
         ///
         /// <summary>
-        /// Invokes the operations.
+        /// Confirms default values of properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(CloseMessage e)
+        [Test]
+        public void Properties_Checked()
         {
-            if (AssociatedObject is Window w) w.Close();
+            var view = new CheckBox();
+            var src  = new CheckedToCommand();
+
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Properties_Unchecked
+        ///
+        /// <summary>
+        /// Confirms default values of properties.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Properties_Unchecked()
+        {
+            var view = new CheckBox();
+            var src  = new UncheckedToCommand();
+
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Properties_NonNullable
+        ///
+        /// <summary>
+        /// Confirms default values of properties.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Properties_NonNullable()
+        {
+            var view = new RadioButton();
+            var src  = new CheckedToCommand<int>();
+
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            Assert.That(src.CommandParameter, Is.EqualTo(0));
+            src.Detach();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Properties_Nullable
+        ///
+        /// <summary>
+        /// Confirms default values of properties.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Properties_Nullable()
+        {
+            var view = new RadioButton();
+            var src  = new UncheckedToCommand<string>();
+
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            Assert.That(src.CommandParameter, Is.Null);
+            src.Detach();
+        }
+
+        #endregion
     }
-
-    #endregion
-
-    #region ClosingBehavior
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ClosingBehavior
-    ///
-    /// <summary>
-    /// Represents the behavior when the Closing event is fired.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ClosingBehavior : CommandBehavior<Window>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Occurs when the instance is attached to the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.Closing -= WhenClosing;
-            AssociatedObject.Closing += WhenClosing;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Occurs when the instance is detaching from the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.Closing -= WhenClosing;
-            base.OnDetaching();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenClosing
-        ///
-        /// <summary>
-        /// Occurs when the Closing event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenClosing(object s, CancelEventArgs e)
-        {
-            if (Command?.CanExecute(e) ?? false) Command.Execute(e);
-        }
-    }
-
-    #endregion
 }

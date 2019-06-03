@@ -15,23 +15,21 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Interactivity;
 
 namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposeBehavior
+    /// ClosingToCommand
     ///
     /// <summary>
-    /// Provides functionality to dispose the DataContext when the
-    /// Closed event is fired.
+    /// Represents the behavior when the Closing event is fired.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DisposeBehavior : Behavior<Window>
+    public class ClosingToCommand : CommandBehavior<Window>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -45,8 +43,8 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.Closed -= OnClosed;
-            AssociatedObject.Closed += OnClosed;
+            AssociatedObject.Closing -= WhenClosing;
+            AssociatedObject.Closing += WhenClosing;
         }
 
         /* ----------------------------------------------------------------- */
@@ -60,25 +58,22 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.Closing -= OnClosed;
+            AssociatedObject.Closing -= WhenClosing;
             base.OnDetaching();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnClosed
+        /// WhenClosing
         ///
         /// <summary>
-        /// Occurs when the Closed event is fired.
+        /// Occurs when the Closing event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnClosed(object s, EventArgs e)
+        private void WhenClosing(object s, CancelEventArgs e)
         {
-            if (AssociatedObject == null) return;
-            var dc = AssociatedObject.DataContext as IDisposable;
-            AssociatedObject.DataContext = DependencyProperty.UnsetValue;
-            dc?.Dispose();
+            if (Command?.CanExecute(e) ?? false) Command.Execute(e);
         }
     }
 }

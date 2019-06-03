@@ -15,41 +15,48 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
-using System.Windows.Forms;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
+using System.Threading;
+using System.Windows;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DirectoryDialogBehavior
+    /// FileDropBehaviorTest
     ///
     /// <summary>
-    /// FolderBrowserDialog を表示する Behavior です。
+    /// Tests for the FileDropBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DirectoryDialogBehavior : SubscribeBehavior<OpenDirectoryMessage>
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class FileDropBehaviorTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Properties
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Confirms default values of properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(OpenDirectoryMessage e)
+        [Test]
+        public void Properties()
         {
-            var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+            var view = new Window();
+            var src  = new FileDropToCommand<Window>();
 
-            if (e.Title.HasValue()) dialog.Description = e.Title;
-            if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
-
-            var ok = dialog.ShowDialog() == DialogResult.OK;
-            e.Cancel = !ok;
-            if (ok) e.Value = dialog.SelectedPath;
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
         }
+
+        #endregion
     }
 }

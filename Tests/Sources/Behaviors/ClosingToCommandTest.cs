@@ -15,31 +15,48 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Diagnostics;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
+using System.Threading;
+using System.Windows;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriBehavior
+    /// ClosingToCommandTest
     ///
     /// <summary>
-    /// Uri を既定ブラウザで開く Behavior です。
+    /// Tests the ClosingToCommand class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UriBehavior : SubscribeBehavior<Uri>
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class ClosingToCommandTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Create
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(Uri e) => Process.Start(e.ToString());
+        [Test]
+        public void Create()
+        {
+            var view = new Window();
+            var src  = new ClosingToCommand();
+
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
+        }
+
+        #endregion
     }
 }

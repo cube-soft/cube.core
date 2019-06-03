@@ -15,48 +15,33 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Behaviors;
-using NUnit.Framework;
-using System.Threading;
 using System.Windows;
 
-namespace Cube.Xui.Tests.Behaviors
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDropBehaviorTest
+    /// CloseBehavior
     ///
     /// <summary>
-    /// Tests for the FileDropBehavior class.
+    /// Represents the behavior to close the window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class FileDropBehaviorTest
+    public class CloseBehavior : MessageBehavior<CloseMessage>
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Invoke
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Invokes the operations.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties()
+        protected override void Invoke(CloseMessage e)
         {
-            var view = new Window();
-            var src  = new FileDropBehavior<Window>();
-
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            src.Detach();
+            if (AssociatedObject is Window w) w.Close();
         }
-
-        #endregion
     }
 }

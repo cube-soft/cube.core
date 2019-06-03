@@ -25,18 +25,18 @@ namespace Cube.Xui.Behaviors
     /// DialogBehavior
     ///
     /// <summary>
-    /// メッセージボックスを表示する Behavior です。
+    /// Represents the behavior to show a dialog using a DialogMessage.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogBehavior : SubscribeBehavior<DialogMessage>
+    public class DialogBehavior : MessageBehavior<DialogMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// Shows a message box with the specified message.
+        /// Invokes the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

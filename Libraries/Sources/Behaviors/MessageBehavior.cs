@@ -24,15 +24,17 @@ namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SubscribeBehavior(T)
+    /// MessageBehavior(TMessage)
     ///
     /// <summary>
-    /// Represents the behavior that communicates with a presentable
-    /// object.
+    /// Represents the behavior of communicating with a presentable object
+    /// via a message.
     /// </summary>
     ///
+    /// <typeparam name="TMessage">Message type.</typeparam>
+    ///
     /* --------------------------------------------------------------------- */
-    public abstract class SubscribeBehavior<T> : Behavior<FrameworkElement>
+    public abstract class MessageBehavior<TMessage> : Behavior<FrameworkElement>
     {
         #region Methods
 
@@ -44,10 +46,10 @@ namespace Cube.Xui.Behaviors
         /// Invokes the user action.
         /// </summary>
         ///
-        /// <param name="e">Parameter object.</param>
+        /// <param name="e">Message object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected abstract void Invoke(T e);
+        protected abstract void Invoke(TMessage e);
 
         #endregion
 
@@ -66,8 +68,8 @@ namespace Cube.Xui.Behaviors
         {
             base.OnAttached();
             Subscribe();
-            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
-            AssociatedObject.DataContextChanged += WhenDataContextChanged;
+            AssociatedObject.DataContextChanged -= OnDataContextChanged;
+            AssociatedObject.DataContextChanged += OnDataContextChanged;
         }
 
         /* ----------------------------------------------------------------- */
@@ -82,7 +84,7 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
+            AssociatedObject.DataContextChanged -= OnDataContextChanged;
             _subscriber?.Dispose();
             base.OnDetaching();
         }
@@ -102,12 +104,12 @@ namespace Cube.Xui.Behaviors
             _subscriber = AssociatedObject
                 ?.DataContext
                 ?.TryCast<IPresentable>()
-                ?.Subscribe<T>(e => Invoke(e));
+                ?.Subscribe<TMessage>(e => Invoke(e));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenDataContextChanged
+        /// OnDataContextChanged
         ///
         /// <summary>
         /// Occurs when the DataContext property of the AssociatedObject
@@ -115,7 +117,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Subscribe();
+        private void OnDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Subscribe();
 
         #endregion
 

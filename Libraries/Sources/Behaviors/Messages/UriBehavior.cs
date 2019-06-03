@@ -15,33 +15,31 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows;
+using System;
+using System.Diagnostics;
 
 namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UpdateSourceBehavior
+    /// UriBehavior
     ///
     /// <summary>
-    /// Messenger 経由で UpdateSources を実行する Behavior です。
+    /// Represents the behavior when an Uri message is received.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpdateSourceBehavior : SubscribeBehavior<UpdateSourcesMessage>
+    public class UriBehavior : MessageBehavior<Uri>
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Invokes the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(UpdateSourcesMessage e)
-        {
-            if (AssociatedObject is Window w) w.BindingGroup.UpdateSources();
-        }
+        protected override void Invoke(Uri e) => Process.Start(e.ToString());
     }
 }

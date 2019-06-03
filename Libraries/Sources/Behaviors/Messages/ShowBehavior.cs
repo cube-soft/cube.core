@@ -19,16 +19,19 @@ using System.Windows;
 
 namespace Cube.Xui.Behaviors
 {
+    #region ShowBehavior<TView, TViewModel>
+
     /* --------------------------------------------------------------------- */
     ///
     /// ShowBehavior(TView, TViewModel)
     ///
     /// <summary>
-    /// 新規ウィンドウを表示する Behavior です。
+    /// Represents the behavior to show a TView window using a TViewModel
+    /// message.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
+    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Window, new()
     {
         /* ----------------------------------------------------------------- */
@@ -36,7 +39,7 @@ namespace Cube.Xui.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Invokes the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -48,16 +51,21 @@ namespace Cube.Xui.Behaviors
         }
     }
 
+    #endregion
+
+    #region ShowDialogBehavior<TView, TViewModel>
+
     /* --------------------------------------------------------------------- */
     ///
     /// ShowDialogBehavior(TView, TViewMode)
     ///
     /// <summary>
-    /// 新規ウィンドウをモーダル表示する Behavior です。
+    /// Represents the behavior to show a TView window as modal using a
+    /// TViewModel message.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Window, new()
     {
         /* ----------------------------------------------------------------- */
@@ -65,7 +73,7 @@ namespace Cube.Xui.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Invokes the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -76,4 +84,6 @@ namespace Cube.Xui.Behaviors
             dest.ShowDialog();
         }
     }
+
+    #endregion
 }
