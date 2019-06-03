@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.ComponentModel;
 
 namespace Cube.Mixin.Observing
@@ -31,6 +32,8 @@ namespace Cube.Mixin.Observing
     /* --------------------------------------------------------------------- */
     public static class Extension
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Associate
@@ -54,5 +57,33 @@ namespace Cube.Mixin.Observing
             src.Observe(target, names);
             return src;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Associates the specified callback to the PropertyChanged event.
+        /// </summary>
+        ///
+        /// <param name="src">Source observable.</param>
+        /// <param name="callback">
+        /// Action to invoked when the PropertyChanged event is fired.
+        /// </param>
+        ///
+        /// <returns>
+        /// Object to remove the callback from the PropertyChanged event
+        /// handler.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IDisposable Subscribe(this INotifyPropertyChanged src, Action<string> callback)
+        {
+            void handler(object s, PropertyChangedEventArgs e) => callback(e.PropertyName);
+            src.PropertyChanged += handler;
+            return Disposable.Create(() => src.PropertyChanged -= handler);
+        }
+
+        #endregion
     }
 }

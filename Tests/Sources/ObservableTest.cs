@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using Cube.Mixin.Observing;
 
 namespace Cube.Tests
 {
@@ -51,7 +52,7 @@ namespace Cube.Tests
                 Assert.That(src.Value, Is.Null);
                 src.Value = "";
                 Assert.That(src.Value, Is.Empty);
-                src.PropertyChanged += (s, e) => ++n;
+                var dc = src.Subscribe(e => ++n);
 
                 src.Value = "Hello";
                 Assert.That(src.Value, Is.EqualTo("Hello"));
@@ -64,6 +65,12 @@ namespace Cube.Tests
                 src.Value = ""; // ignore
                 Assert.That(src.Value, Is.Empty);
                 src.Refresh(nameof(src.Value), nameof(src.Value), nameof(src.Value));
+
+                dc.Dispose();
+                src.Value = null;
+                Assert.That(src.Value, Is.Null);
+                src.Value = "";
+                Assert.That(src.Value, Is.Empty);
             }
             Assert.That(n, Is.EqualTo(7));
         }
