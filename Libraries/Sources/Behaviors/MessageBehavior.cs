@@ -15,55 +15,59 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows.Forms;
+using System;
 
 namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehavior
+    /// MessageBehavior(TMessage)
     ///
     /// <summary>
-    /// Provides functionality to close the window.
+    /// Represents the behavior that communicates with a presentable
+    /// object via a message.
     /// </summary>
     ///
+    /// <typeparam name="TMessage">Message type.</typeparam>
+    ///
     /* --------------------------------------------------------------------- */
-    public class CloseBehavior : SubscribeBehavior<CloseMessage>
+    public abstract class MessageBehavior<TMessage> : DisposableBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CloseBehavior
+        /// MessageBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the CloseBehavior class
-        /// with the specified arguments.
+        /// Initializes a new instance of the MessageBehavior class
+        /// with the specified presentable object.
         /// </summary>
         ///
         /// <param name="src">Presentable object.</param>
-        /// <param name="view">View object to be closed.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public CloseBehavior(IPresentable src, Form view) : base(src)
+        protected MessageBehavior(IPresentable src)
         {
-            _view = view;
+            _subscriber = src.Subscribe<TMessage>(Invoke);
         }
 
         #endregion
 
-        #region Implementations
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// Closes the provided window.
+        /// Invokes the user action.
         /// </summary>
         ///
+        /// <param name="e">Message object.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(CloseMessage e) => _view?.Close();
+        protected abstract void Invoke(TMessage e);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,14 +86,13 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) _view = null;
-            base.Dispose(disposing);
+            if (disposing) _subscriber.Dispose();
         }
 
         #endregion
 
         #region Fields
-        private Form _view;
+        private readonly IDisposable _subscriber;
         #endregion
     }
 }

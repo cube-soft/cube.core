@@ -15,37 +15,40 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
 using System.Windows.Forms;
 
 namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DirectoryDialogBehavior
+    /// CloseBehavior
     ///
     /// <summary>
-    /// Pvovides functionality to show a directory dialog.
+    /// Provides functionality to close the window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DirectoryDialogBehavior : SubscribeBehavior<OpenDirectoryMessage>
+    public class CloseBehavior : MessageBehavior<CloseMessage>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DirectoryDialogBehavior
+        /// CloseBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the DirectoryDialogBehavior class
-        /// with the specified presentable object.
+        /// Initializes a new instance of the CloseBehavior class
+        /// with the specified arguments.
         /// </summary>
         ///
         /// <param name="src">Presentable object.</param>
+        /// <param name="view">View object to be closed.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DirectoryDialogBehavior(IPresentable src) : base(src) { }
+        public CloseBehavior(IPresentable src, Form view) : base(src)
+        {
+            _view = view;
+        }
 
         #endregion
 
@@ -56,22 +59,37 @@ namespace Cube.Forms.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// 処理を実行します。
+        /// Closes the provided window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(OpenDirectoryMessage e)
+        protected override void Invoke(CloseMessage e) => _view?.Close();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
         {
-            var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
-
-            if (e.Title.HasValue()) dialog.Description  = e.Title;
-            if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
-
-            var ok = dialog.ShowDialog() == DialogResult.OK;
-            e.Cancel = !ok;
-            if (ok) e.Value = dialog.SelectedPath;
+            if (disposing) _view = null;
+            base.Dispose(disposing);
         }
 
+        #endregion
+
+        #region Fields
+        private Form _view;
         #endregion
     }
 }

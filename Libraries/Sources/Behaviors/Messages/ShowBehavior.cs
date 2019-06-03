@@ -28,7 +28,7 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
+    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : WindowBase, new()
         where TViewModel : IPresentable
     {
@@ -76,7 +76,7 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> : SubscribeBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : WindowBase, new()
         where TViewModel : IPresentable
     {

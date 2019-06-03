@@ -21,32 +21,32 @@ using System.Windows.Forms;
 
 namespace Cube.Forms.Behaviors
 {
-    #region OpenFileDialogBehavior
+    #region OpenFileBehavior
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenFileDialogBehavior
+    /// OpenFileBehavior
     ///
     /// <summary>
     /// Pvovides functionality to show a open-file dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileDialogBehavior : SubscribeBehavior<OpenFileMessage>
+    public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// OpenFileDialogBehavior
+        /// OpenFileBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the OpenFileDialogBehavior class
+        /// Initializes a new instance of the OpenFileBehavior class
         /// with the specified presentable object.
         /// </summary>
         ///
         /// <param name="src">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileDialogBehavior(IPresentable src) :base (src) { }
+        public OpenFileBehavior(IPresentable src) :base (src) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -79,32 +79,32 @@ namespace Cube.Forms.Behaviors
 
     #endregion
 
-    #region SaveFileDialogBehavior
+    #region SaveFileBehavior
 
     /* --------------------------------------------------------------------- */
     ///
-    /// SaveFileDialogBehavior
+    /// SaveFileBehavior
     ///
     /// <summary>
     /// Pvovides functionality to show a save-file dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileDialogBehavior : SubscribeBehavior<SaveFileMessage>
+    public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// SaveFileDialogBehavior
+        /// SaveFileBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the SaveFileDialogBehavior class
+        /// Initializes a new instance of the SaveFileBehavior class
         /// with the specified presentable object.
         /// </summary>
         ///
         /// <param name="src">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileDialogBehavior(IPresentable src) : base(src) { }
+        public SaveFileBehavior(IPresentable src) : base(src) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,6 +133,65 @@ namespace Cube.Forms.Behaviors
             e.Cancel = !ok;
             if (ok) e.Value = dialog.FileName;
         }
+    }
+
+    #endregion
+
+    #region OpenDirectoryBehavior
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryBehavior
+    ///
+    /// <summary>
+    /// Pvovides functionality to show a directory dialog.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OpenDirectoryBehavior
+        ///
+        /// <summary>
+        /// Initializes a new instance of the OpenDirectoryBehavior class
+        /// with the specified presentable object.
+        /// </summary>
+        ///
+        /// <param name="src">Presentable object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OpenDirectoryBehavior(IPresentable src) : base(src) { }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// 処理を実行します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Invoke(OpenDirectoryMessage e)
+        {
+            var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+
+            if (e.Title.HasValue()) dialog.Description = e.Title;
+            if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
+
+            var ok = dialog.ShowDialog() == DialogResult.OK;
+            e.Cancel = !ok;
+            if (ok) e.Value = dialog.SelectedPath;
+        }
+
+        #endregion
     }
 
     #endregion

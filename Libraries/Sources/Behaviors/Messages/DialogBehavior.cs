@@ -29,7 +29,7 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogBehavior : SubscribeBehavior<DialogMessage>
+    public class DialogBehavior : MessageBehavior<DialogMessage>
     {
         #region Constructors
 
