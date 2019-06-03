@@ -22,6 +22,8 @@ using System.Windows.Markup;
 
 namespace Cube.Xui.Converters
 {
+    #region SimplexConverter
+
     /* --------------------------------------------------------------------- */
     ///
     /// SimplexConverter
@@ -48,7 +50,7 @@ namespace Cube.Xui.Converters
         ///
         /* ----------------------------------------------------------------- */
         protected SimplexConverter(Func<object, object> func) :
-            this((x, _, __, ___) => func(x)) { }
+            this((x, __, ___, ____) => func(x)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -62,7 +64,7 @@ namespace Cube.Xui.Converters
         ///
         /* ----------------------------------------------------------------- */
         protected SimplexConverter(Func<object, object, object> func) :
-            this((x, _, y, __) => func(x, y)) { }
+            this((x, __, y, ___) => func(x, y)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -105,8 +107,8 @@ namespace Cube.Xui.Converters
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public object ConvertBack(object value, Type target, object parameter, CultureInfo culture)
-            => throw new NotSupportedException();
+        public object ConvertBack(object value, Type target, object parameter, CultureInfo culture) =>
+            throw new NotSupportedException();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -125,6 +127,10 @@ namespace Cube.Xui.Converters
         private readonly Func<object, Type, object, CultureInfo, object> _func;
         #endregion
     }
+
+    #endregion
+
+    #region ValueToString
 
     /* --------------------------------------------------------------------- */
     ///
@@ -149,4 +155,6 @@ namespace Cube.Xui.Converters
         /* ----------------------------------------------------------------- */
         public ValueToString() : base (e => e?.ToString() ?? string.Empty) { }
     }
+
+    #endregion
 }

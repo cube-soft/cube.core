@@ -15,76 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem;
-using System.IO;
-using System.Windows.Media.Imaging;
+using Cube.Mixin.Drawing;
 
 namespace Cube.Xui.Converters
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ImageExtension
-    ///
-    /// <summary>
-    /// Provides functionality to convert Image objects.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static class ImageExtension
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBitmapImage
-        ///
-        /// <summary>
-        /// Converts to the BitmapImage object.
-        /// </summary>
-        ///
-        /// <param name="src">Image object.</param>
-        ///
-        /// <returns>BitmapImage object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this System.Drawing.Image src) =>
-            src.ToBitmapImage(false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBitmapImage
-        ///
-        /// <summary>
-        /// Converts to the BitmapImage object.
-        /// </summary>
-        ///
-        /// <param name="src">Image object.</param>
-        /// <param name="dispose">Whether disposing the source.</param>
-        ///
-        /// <returns>BitmapImage object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this System.Drawing.Image src, bool dispose)
-        {
-            if (src == null) return default;
-
-            using (var ss = new StreamProxy(new MemoryStream()))
-            {
-                src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
-                var dest = new BitmapImage();
-                dest.BeginInit();
-                dest.CacheOption = BitmapCacheOption.OnLoad;
-                dest.StreamSource = ss;
-                dest.EndInit();
-                if (dest.CanFreeze) dest.Freeze();
-                if (dispose) src.Dispose();
-                return dest;
-            }
-        }
-
-        #endregion
-    }
-
     /* --------------------------------------------------------------------- */
     ///
     /// ImageConverter
@@ -97,8 +31,6 @@ namespace Cube.Xui.Converters
     /* --------------------------------------------------------------------- */
     public class ImageConverter : SimplexConverter
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// ImageValueConverter
@@ -111,11 +43,9 @@ namespace Cube.Xui.Converters
         public ImageConverter() : base(e =>
         {
             var src = e is System.Drawing.Image image ? image :
-                      e is System.Drawing.Icon icon   ? icon.ToBitmap() :
+                      e is System.Drawing.Icon  icon  ? icon.ToBitmap() :
                       null;
             return src.ToBitmapImage();
         }) { }
-
-        #endregion
     }
 }

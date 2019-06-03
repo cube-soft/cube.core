@@ -21,6 +21,8 @@ using System.Windows;
 
 namespace Cube.Xui.Converters
 {
+    #region Inverse
+
     /* --------------------------------------------------------------------- */
     ///
     /// Inverse
@@ -32,8 +34,6 @@ namespace Cube.Xui.Converters
     /* --------------------------------------------------------------------- */
     public class Inverse : DuplexConverter
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// Inverse
@@ -44,9 +44,11 @@ namespace Cube.Xui.Converters
         ///
         /* ----------------------------------------------------------------- */
         public Inverse() : base(e => !(bool)e, e => !(bool)e) { }
-
-        #endregion
     }
+
+    #endregion
+
+    #region BooleanToValue<T>
 
     /* --------------------------------------------------------------------- */
     ///
@@ -59,8 +61,6 @@ namespace Cube.Xui.Converters
     /* --------------------------------------------------------------------- */
     public class BooleanToValue<T> : SimplexConverter
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// BooleanToValue
@@ -75,7 +75,7 @@ namespace Cube.Xui.Converters
         ///
         /* ----------------------------------------------------------------- */
         public BooleanToValue(T positive, T negative) :
-            this(positive, negative, (e, _, __, ___) => (bool)e) { }
+            this(positive, negative, (e, __, ___, ____) => (bool)e) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,13 +88,13 @@ namespace Cube.Xui.Converters
         ///
         /// <param name="positive">Value for ture.</param>
         /// <param name="negative">Value for false.</param>
-        /// <param name="func">
+        /// <param name="predicate">
         /// Function object that determines whether the source is true.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToValue(T positive, T negative, Func<object, bool> func) :
-            this(positive, negative, (e, _, __, ___) => func(e)) { }
+        public BooleanToValue(T positive, T negative, Func<object, bool> predicate) :
+            this(positive, negative, (e, __, ___, ____) => predicate(e)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -114,7 +114,7 @@ namespace Cube.Xui.Converters
         /* ----------------------------------------------------------------- */
         public BooleanToValue(T positive, T negative,
             Func<object, object, bool> func) :
-            this(positive, negative, (e, _, p, __) => func(e, p)) { }
+            this(positive, negative, (e, __, p, ___) => func(e, p)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -127,17 +127,19 @@ namespace Cube.Xui.Converters
         ///
         /// <param name="positive">Value for ture.</param>
         /// <param name="negative">Value for false.</param>
-        /// <param name="func">
+        /// <param name="predicate">
         /// Function object that determines whether the source is true.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public BooleanToValue(T positive, T negative,
-            Func<object, Type, object, CultureInfo, bool> func) :
-            base ((e, t, p, c) => func(e, t, p, c) ? positive : negative) { }
-
-        #endregion
+            Func<object, Type, object, CultureInfo, bool> predicate) :
+            base ((e, t, p, c) => predicate(e, t, p, c) ? positive : negative) { }
     }
+
+    #endregion
+
+    #region BooleanToInteger
 
     /* --------------------------------------------------------------------- */
     ///
@@ -150,8 +152,6 @@ namespace Cube.Xui.Converters
     /* --------------------------------------------------------------------- */
     public class BooleanToInteger : BooleanToValue<int>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// BooleanToInteger
@@ -189,14 +189,16 @@ namespace Cube.Xui.Converters
         ///
         /// <param name="positive">true に対応する整数値</param>
         /// <param name="negative">false に対応する整数値</param>
-        /// <param name="func">真偽判定用オブジェクト</param>
+        /// <param name="predicate">真偽判定用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToInteger(int negative, int positive, Func<object, bool> func) :
-            base(positive, negative, func) { }
-
-        #endregion
+        public BooleanToInteger(int negative, int positive, Func<object, bool> predicate) :
+            base(positive, negative, predicate) { }
     }
+
+    #endregion
+
+    #region BooleanToVisibility
 
     /* --------------------------------------------------------------------- */
     ///
@@ -209,8 +211,6 @@ namespace Cube.Xui.Converters
     /* --------------------------------------------------------------------- */
     public class BooleanToVisibility : BooleanToValue<Visibility>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// BooleanToVisibility
@@ -231,11 +231,11 @@ namespace Cube.Xui.Converters
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="func">真偽判定用オブジェクト</param>
+        /// <param name="predicate">真偽判定用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToVisibility(Func<object, bool> func) :
-            this(Visibility.Visible, Visibility.Collapsed, func) { }
+        public BooleanToVisibility(Func<object, bool> predicate) :
+            this(Visibility.Visible, Visibility.Collapsed, predicate) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -247,12 +247,13 @@ namespace Cube.Xui.Converters
         ///
         /// <param name="positive">true に対応する値</param>
         /// <param name="negative">false に対応する値</param>
-        /// <param name="func">真偽判定用オブジェクト</param>
+        /// <param name="predicate">真偽判定用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToVisibility(Visibility positive, Visibility negative, Func<object, bool> func) :
-            base(positive, negative, func) { }
+        public BooleanToVisibility(Visibility positive, Visibility negative, Func<object, bool> predicate) :
+            base(positive, negative, predicate) { }
 
-        #endregion
     }
+
+    #endregion
 }

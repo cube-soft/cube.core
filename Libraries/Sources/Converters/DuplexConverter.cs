@@ -43,12 +43,12 @@ namespace Cube.Xui.Converters
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="forward">変換関数</param>
+        /// <param name="convert">変換関数</param>
         /// <param name="back">逆変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected DuplexConverter(Func<object, object> forward, Func<object, object> back) :
-            this((x, _, __, ___) => forward(x), (x, _, __, ___) => back(x)) { }
+        protected DuplexConverter(Func<object, object> convert, Func<object, object> back) :
+            this((x, __, ___, ____) => convert(x), (x, _, __, ___) => back(x)) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,16 +58,16 @@ namespace Cube.Xui.Converters
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="forward">変換関数</param>
+        /// <param name="convert">変換関数</param>
         /// <param name="back">逆変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
         protected DuplexConverter(
-            Func<object, object, object> forward,
+            Func<object, object, object> convert,
             Func<object, object, object> back) :
             this(
-                (x, _, y, __) => forward(x, y),
-                (x, _, y, __) => back(x, y)
+                (x, __, y, ___) => convert(x, y),
+                (x, __, y, ___) => back(x, y)
             ) { }
 
         /* ----------------------------------------------------------------- */
@@ -78,15 +78,15 @@ namespace Cube.Xui.Converters
         /// オブジェクトを初期化します。
         /// </summary>
         ///
-        /// <param name="forward">変換関数</param>
+        /// <param name="convert">変換関数</param>
         /// <param name="back">逆変換関数</param>
         ///
         /* ----------------------------------------------------------------- */
         protected DuplexConverter(
-            Func<object, Type, object, CultureInfo, object> forward,
+            Func<object, Type, object, CultureInfo, object> convert,
             Func<object, Type, object, CultureInfo, object> back)
         {
-            _forward = forward;
+            _convert = convert;
             _back    = back;
         }
 
@@ -104,14 +104,14 @@ namespace Cube.Xui.Converters
         ///
         /* ----------------------------------------------------------------- */
         public object Convert(object value, Type target, object parameter, CultureInfo culture) =>
-            _forward(value, target, parameter, culture);
+            _convert(value, target, parameter, culture);
 
         /* ----------------------------------------------------------------- */
         ///
         /// ConvertBack
         ///
         /// <summary>
-        /// このメソッドはサポートされません。
+        /// 逆変換を実行します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -132,7 +132,7 @@ namespace Cube.Xui.Converters
         #endregion
 
         #region Fields
-        private readonly Func<object, Type, object, CultureInfo, object> _forward;
+        private readonly Func<object, Type, object, CultureInfo, object> _convert;
         private readonly Func<object, Type, object, CultureInfo, object> _back;
         #endregion
     }
