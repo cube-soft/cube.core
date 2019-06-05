@@ -15,103 +15,98 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
 
 namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Bindable(T)
+    /// BindableValue(T)
     ///
     /// <summary>
-    /// Provides functionality to make the value as bindable.
+    /// Provides functionality to make a value as bindable.
     /// </summary>
     ///
-    /// <remarks>
-    /// Value プロパティを通じて実際の値にアクセスします。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    public class Bindable<T> : ObservableBase
+    public class BindableValue<T> : BindableBase, IValue<T>
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bindable
+        /// BindableValue
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class.
+        /// Initializes a new instance of the BindableValue class.
         /// </summary>
         ///
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(IDispatcher dispatcher) : this(default(T), dispatcher) { }
+        public BindableValue(IDispatcher dispatcher) : this(default(T), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bindable
+        /// BindableValue
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class
-        /// with the specified arguments.
+        /// Initializes a new instance of the BindableValue class with the
+        /// specified arguments.
         /// </summary>
         ///
         /// <param name="value">Initial value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(T value, IDispatcher dispatcher) :
+        public BindableValue(T value, IDispatcher dispatcher) :
             this(new Accessor<T>(value), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bindable
+        /// BindableValue
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class
-        /// with the specified arguments.
+        /// Initializes a new instance of the BindableValue class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="getter">Function to get the value.</param>
+        /// <param name="getter">Function to get value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Getter<T> getter, IDispatcher dispatcher) :
+        public BindableValue(Getter<T> getter, IDispatcher dispatcher) :
             this(new Accessor<T>(getter), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bindable
+        /// BindableValue
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class
-        /// with the specified arguments.
+        /// Initializes a new instance of the BindableValue class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="getter">Function to get the value.</param>
-        /// <param name="setter">Function to set the value.</param>
+        /// <param name="getter">Function to get value.</param>
+        /// <param name="setter">Function to set value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Getter<T> getter, Setter<T> setter, IDispatcher dispatcher) :
+        public BindableValue(Getter<T> getter, Setter<T> setter, IDispatcher dispatcher) :
             this(new Accessor<T>(getter, setter), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Bindable
+        /// BindableValue
         ///
         /// <summary>
-        /// Initializes a new instance of the <c>Bindable</c> class
-        /// with the specified arguments.
+        /// Initializes a new instance of the BindableValue class with the
+        /// specified arguments.
         /// </summary>
         ///
         /// <param name="accessor">Function to get and set value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Accessor<T> accessor, IDispatcher dispatcher) : base(dispatcher)
+        public BindableValue(Accessor<T> accessor, IDispatcher dispatcher) : base(dispatcher)
         {
             _accessor = accessor;
         }
@@ -125,7 +120,7 @@ namespace Cube.Xui
         /// Value
         ///
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets a value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -152,34 +147,15 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispose
+        /// React
         ///
         /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when the PropertyChanged event is fired.
+        /// Invokes when the PropertyChanged event of an observed object
+        /// is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (!Disposed) base.OnPropertyChanged(e);
-        }
+        protected override void React() => Refresh();
 
         #endregion
 

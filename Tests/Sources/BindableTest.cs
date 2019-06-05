@@ -46,7 +46,7 @@ namespace Cube.Xui.Tests
         public void Set()
         {
             var n   = 5;
-            var src = new Bindable<int>(() => n, e => n = e, Dispatcher.Vanilla);
+            var src = new BindableValue<int>(() => n, e => n = e, Dispatcher.Vanilla);
 
             Assert.That(src.Value, Is.EqualTo(n).And.EqualTo(5));
             src.Value = 10;
@@ -66,7 +66,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Set_InvalidOperationException()
         {
-            var src = new Bindable<int>(() => 8, Dispatcher.Vanilla);
+            var src = new BindableValue<int>(() => 8, Dispatcher.Vanilla);
 
             Assert.That(src.Value, Is.EqualTo(8));
             Assert.That(() => src.Value = 7, Throws.InvalidOperationException);
@@ -84,7 +84,7 @@ namespace Cube.Xui.Tests
         [Test]
         public void Refresh()
         {
-            var src = new Bindable<Person>(Dispatcher.Vanilla);
+            var src = new BindableValue<Person>(Dispatcher.Vanilla);
 
             var count = 0;
             src.PropertyChanged += (s, e) => ++count;

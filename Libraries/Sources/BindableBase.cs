@@ -16,71 +16,37 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Windows.Input;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableElement
+    /// BindableBase
     ///
     /// <summary>
-    /// Represents a bindable element that has text and command.
+    /// Represents the base behavior of Bindable classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : BindableBase, IElement
+    public abstract class BindableBase : ObservableBase, IObservePropertyChanged
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableElement
+        /// BindableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the BindableElement
-        /// class with the specified arguments.
+        /// Initializes a new instance of the BindableBase class with the
+        /// specified dispatcher.
         /// </summary>
         ///
-        /// <param name="gettext">Function to get text.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, IDispatcher dispatcher) : base(dispatcher)
-        {
-            _gettext = gettext;
-            _locale  = Locale.Subscribe(e => React());
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Text
-        ///
-        /// <summary>
-        /// Gets a text to be displayed in the View.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Text => _gettext();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Command
-        ///
-        /// <summary>
-        /// Gets or sets a command to be executed by the View.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ICommand Command
-        {
-            get => _command;
-            set => SetProperty(ref _command, value);
-        }
+        protected BindableBase(IDispatcher dispatcher) : base(dispatcher) { }
 
         #endregion
 
@@ -88,14 +54,39 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Observe
+        ///
+        /// <summary>
+        /// Observes the PropertyChanged event of the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Object to be observed.</param>
+        /// <param name="names">Target property names.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Observe(INotifyPropertyChanged src, params string[] names)
+        {
+            var set = new HashSet<string>(names);
+            void handler(object s, PropertyChangedEventArgs e)
+            {
+                if (set.Count <= 0 || set.Contains(e.PropertyName)) React();
+            }
+
+            src.PropertyChanged += handler;
+            _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// React
         ///
         /// <summary>
-        /// Invokes when any states are changed.
+        /// Invokes when the PropertyChanged event of an observed object
+        /// is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void React() => Refresh(nameof(Text));
+        protected abstract void React();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -114,16 +105,29 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            try { _locale.Dispose(); }
-            finally { base.Dispose(disposing); }
+            if (!disposing) return;
+            foreach (var obj in _observer) obj.Dispose();
+            _observer.Clear();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPropertyChanged
+        ///
+        /// <summary>
+        /// Occurs when the PropertyChanged event is fired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (!Disposed) base.OnPropertyChanged(e);
         }
 
         #endregion
 
         #region Fields
-        private readonly Getter<string> _gettext;
-        private readonly IDisposable _locale;
-        private ICommand _command;
+        private readonly List<IDisposable> _observer = new List<IDisposable>();
         #endregion
     }
 }

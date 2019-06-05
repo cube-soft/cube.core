@@ -20,6 +20,33 @@ using System.Windows.Input;
 
 namespace Cube.Xui
 {
+    #region IValue<T>
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IValue(T)
+    ///
+    /// <summary>
+    /// Provides interface of a ViewModel element that has a value.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IValue<T> : INotifyPropertyChanged
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets a value to be bound to the View.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        T Value { get; set; }
+    }
+
+    #endregion
+
     #region IElement
 
     /* --------------------------------------------------------------------- */
@@ -27,7 +54,7 @@ namespace Cube.Xui
     /// IElement
     ///
     /// <summary>
-    /// Provides interface of a ViewModel element.
+    /// Provides interface of a ViewModel element that has text and command.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -62,26 +89,15 @@ namespace Cube.Xui
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IElement(T)
+    /// IElement
     ///
     /// <summary>
-    /// Provides interface of a ViewModel element with a value.
+    /// Provides interface of a ViewModel element that has text, command,
+    /// and value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IElement<T> : IElement
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets a value to be bound to the View.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        T Value { get; set; }
-    }
+    public interface IElement<T> : IElement, IValue<T> { }
 
     #endregion
 
