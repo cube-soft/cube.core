@@ -52,7 +52,7 @@ namespace Cube.Collections
     /// ArgumentExtension
     ///
     /// <summary>
-    /// Provides extended methods of the Argument enum.
+    /// Provides extended methods of the Argument enumeration.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -63,17 +63,17 @@ namespace Cube.Collections
         /// Map
         ///
         /// <summary>
-        /// Gets the map of Argument values and converters.
+        /// Gets the map of Argument values and preprocessors.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IDictionary<Argument, IArgumentConverter> Map { get; } =
-            new Dictionary<Argument, IArgumentConverter>
+        private static IDictionary<Argument, IArgumentPreprocessor> Map { get; } =
+            new Dictionary<Argument, IArgumentPreprocessor>
             {
-                { Argument.Posix,   new PosixArgumentConverter()   },
-                { Argument.Gnu,     new GnuArgumentConverter()     },
-                { Argument.Dos,     new DosArgumentConverter()     },
-                { Argument.Windows, new WindowsArgumentConverter() },
+                { Argument.Posix,   new PosixArgumentPreprocessor()   },
+                { Argument.Gnu,     new GnuArgumentPreprocessor()     },
+                { Argument.Dos,     new DosArgumentPreprocessor()     },
+                { Argument.Windows, new WindowsArgumentPreprocessor() },
             };
 
         /* ----------------------------------------------------------------- */
@@ -81,11 +81,11 @@ namespace Cube.Collections
         /// Get
         ///
         /// <summary>
-        /// Gets the converter from the specified kind.
+        /// Gets the preprocessor from the specified kind.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IArgumentConverter Get(this Argument src) =>
+        public static IArgumentPreprocessor Get(this Argument src) =>
             Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
     }
 

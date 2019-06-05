@@ -24,21 +24,22 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IArgumentConverter
+    /// IArgumentPreprocessor
     ///
     /// <summary>
-    /// Represents interface to normalize the provided arguments.
+    /// Represents interface to process the provided arguments before
+    /// parsing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal interface IArgumentConverter
+    internal interface IArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// Invokes the normalization.
+        /// Invokes the processing.
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
@@ -55,28 +56,27 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// PosixArgumentConverter
+    /// PosixArgumentPreprocessor
     ///
     /// <summary>
-    /// Provides functionality to normalize the POSIX based arguments.
+    /// Provides functionality to process the POSIX based arguments.
     /// </summary>
     ///
     /// <remarks>
-    /// '-foption_argument' の形式はサポートせず、'-f', '-o', '-p' ... と
-    /// 解釈する事とします。
+    /// Treats a '-foption_argument' option as '-f', '-o', '-p', and more.
     /// </remarks>
     ///
     /// <seealso href="http://pubs.opengroup.org/onlinepubs/009696899/basedefs/xbd_chap12.html" />
     ///
     /* --------------------------------------------------------------------- */
-    internal class PosixArgumentConverter : IArgumentConverter
+    internal class PosixArgumentPreprocessor : IArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// Invokes the normalization.
+        /// Invokes the processing.
         /// </summary>
         ///
         /// <param name="src">Source arguments.</param>
@@ -122,16 +122,16 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// GnuArgumentConverter
+    /// GnuArgumentPreprocessor
     ///
     /// <summary>
-    /// Provides functionality to normalize the GNU based arguments.
+    /// Provides functionality to process the GNU based arguments.
     /// </summary>
     ///
     /// <seealso href="https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html" />
     ///
     /* --------------------------------------------------------------------- */
-    internal class GnuArgumentConverter : PosixArgumentConverter
+    internal class GnuArgumentPreprocessor : PosixArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -154,18 +154,18 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// DosArgumentConverter
+    /// DosArgumentPreprocessor
     ///
     /// <summary>
-    /// Provides functionality to normalize the DOS based arguments.
+    /// Provides functionality to process the DOS based arguments.
     /// </summary>
     ///
     /// <remarks>
-    /// '/Foo' と言う形のみをオプションとして許容します。
+    /// Allows only '/Foo' format.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    internal class DosArgumentConverter : IArgumentConverter
+    internal class DosArgumentPreprocessor : IArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -204,20 +204,20 @@ namespace Cube.Collections
 
     /* --------------------------------------------------------------------- */
     ///
-    /// WindowsArgumentConverter
+    /// WindowsArgumentPreprocessor
     ///
     /// <summary>
-    /// Provides functionality to normalize the Windows based arguments.
+    /// Provides functionality to process the Windows based arguments.
     /// </summary>
     ///
     /// <remarks>
-    /// '/Foo', '-Foo', '--Foo' の 3 種類を許容し、全て同じ単一のオプションと
-    /// 見なします。すなわち、POSIX のように -a -b -c を -abc と省略する事は
-    /// できません。
+    /// Allows '/Foo', '-Foo', '--Foo' formats and all of them are treated
+    /// as 'Foo' option, it means that the class does not allow the short
+    /// named options like POSIX.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    internal class WindowsArgumentConverter : DosArgumentConverter
+    internal class WindowsArgumentPreprocessor : DosArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
