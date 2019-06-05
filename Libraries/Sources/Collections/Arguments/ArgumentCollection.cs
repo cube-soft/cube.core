@@ -89,30 +89,42 @@ namespace Cube.Collections
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, Argument kind, bool ignoreCase)
+        public ArgumentCollection(IEnumerable<string> src, Argument kind, bool ignoreCase) :
+            this(src, kind.Get(), ignoreCase) { }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// ArgumentCollection
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ArgumentCollection class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Source arguments.</param>
+        ///
+        /// <param name="preprocessor">
+        /// Object to be invoked before parsing.
+        /// </param>
+        ///
+        /// <param name="ignoreCase">
+        /// Value indicating whether to ignore the case of optional keys.
+        /// </param>
+        ///
+        /* --------------------------------------------------------------------- */
+        internal ArgumentCollection(IEnumerable<string> src, IArgumentPreprocessor preprocessor, bool ignoreCase)
         {
-            Kind       = kind;
-            IgnoreCase = ignoreCase;
-            _options   = ignoreCase ?
-                         new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
-                         new Dictionary<string, string>();
+            Preprocessor = preprocessor;
+            IgnoreCase   = ignoreCase;
+            _options     = ignoreCase ?
+                           new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
+                           new Dictionary<string, string>();
             Invoke(src);
         }
 
         #endregion
 
         #region Properties
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Kind
-        ///
-        /// <summary>
-        /// Gets the prefix kind of optional parameters.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Argument Kind { get; }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -158,6 +170,17 @@ namespace Cube.Collections
         ///
         /* --------------------------------------------------------------------- */
         public IReadOnlyDictionary<string, string> Options => _options;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Preprocessor
+        ///
+        /// <summary>
+        /// Gets a preprocessor that is invoked before parsing.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        internal IArgumentPreprocessor Preprocessor { get; }
 
         #endregion
 
@@ -218,7 +241,7 @@ namespace Cube.Collections
         private void Invoke(IEnumerable<string> src)
         {
             var key = string.Empty;
-            var cvt = Kind.Get().Invoke(src.Where(e => e.HasValue()));
+            var cvt = Preprocessor.Invoke(src.Where(e => e.HasValue()));
 
             foreach (var arg in cvt)
             {

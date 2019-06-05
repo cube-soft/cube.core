@@ -112,7 +112,6 @@ namespace Cube.Tests
             {
                 var msg = $"No.{id}";
 
-                Assert.That(src.Kind,          Is.EqualTo(kind),       msg);
                 Assert.That(src.IgnoreCase,    Is.EqualTo(ignoreCase), msg);
                 Assert.That(src.Count,         Is.EqualTo(operands),   msg);
                 Assert.That(src.Options.Count, Is.EqualTo(options),    msg);
