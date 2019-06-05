@@ -23,31 +23,31 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingsControl
+    /// SettingControl
     ///
     /// <summary>
     /// 設定フォームを補助するためのコントロールです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsControl : Panel
+    public class SettingControl : Panel
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsControl
+        /// SettingControl
         ///
         /// <summary>
         /// オブジェクトを初期化します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsControl() { }
+        public SettingControl() { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsControl
+        /// SettingControl
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -57,14 +57,14 @@ namespace Cube.Forms
         /// <param name="cancel">キャンセルボタン</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsControl(
+        public SettingControl(
             System.Windows.Forms.Control ok,
             System.Windows.Forms.Control cancel
         ) : this(ok, cancel, null) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsControl
+        /// SettingControl
         ///
         /// <summary>
         /// オブジェクトを初期化します。
@@ -75,7 +75,7 @@ namespace Cube.Forms
         /// <param name="apply">適用ボタン</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsControl(
+        public SettingControl(
             System.Windows.Forms.Control ok,
             System.Windows.Forms.Control cancel,
             System.Windows.Forms.Control apply)
