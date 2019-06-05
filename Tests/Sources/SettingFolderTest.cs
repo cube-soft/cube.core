@@ -25,15 +25,15 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingsFolderTest
+    /// SettingFolderTest
     ///
     /// <summary>
-    /// Tests for the SettingsFolder class.
+    /// Tests the SettingFolder class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class SettingsFolderTest : RegistryFixture
+    class SettingFolderTest : RegistryFixture
     {
         #region Tests
 
@@ -53,7 +53,7 @@ namespace Cube.FileSystem.Tests
         public void Create(Format format, int count)
         {
             var n    = 0;
-            var dest = new SettingsFolder<Person>(Assembly, format);
+            var dest = new SettingFolder<Person>(Assembly, format);
 
             dest.Loaded += (s, e) => ++n;
             dest.TryLoad();
@@ -84,7 +84,7 @@ namespace Cube.FileSystem.Tests
             var fmt  = Format.Registry;
             var name = GetKeyName(Default);
 
-            using (var src = new SettingsFolder<Person>(Assembly, fmt, name))
+            using (var src = new SettingFolder<Person>(Assembly, fmt, name))
             {
                 src.AutoSave = false;
                 src.Load();
@@ -123,7 +123,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(Format.Json)]
         [TestCase(Format.Xml )]
         public void Load_Throws(Format format) => Assert.That(
-            () => new SettingsFolder<Person>(Assembly, format).Load(),
+            () => new SettingFolder<Person>(Assembly, format).Load(),
             Throws.InstanceOf<System.IO.IOException>()
         );
 
@@ -141,7 +141,7 @@ namespace Cube.FileSystem.Tests
         {
             var count = 0;
             var name  = GetKeyName(Default);
-            var src   = new SettingsFolder<Person>(Assembly, Format.Registry, name);
+            var src   = new SettingFolder<Person>(Assembly, Format.Registry, name);
 
             src.Loaded += (s, e) => ++count;
             src.AutoSave = false;
@@ -171,7 +171,7 @@ namespace Cube.FileSystem.Tests
             var change = 0;
             var delay  = TimeSpan.FromMilliseconds(100);
 
-            using (var src = new SettingsFolder<Person>(Assembly, Format.Registry, name))
+            using (var src = new SettingFolder<Person>(Assembly, Format.Registry, name))
             {
                 src.Saved           += (s, e) => ++save;
                 src.PropertyChanged += (s, e) => ++change;

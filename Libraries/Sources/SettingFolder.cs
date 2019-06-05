@@ -31,20 +31,20 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingsFolder(T)
+    /// SettingFolder(T)
     ///
     /// <summary>
     /// Provides functionality to load and save user settings.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SettingsFolder<T> : ObservableBase where T : INotifyPropertyChanged, new()
+    public class SettingFolder<T> : ObservableBase where T : INotifyPropertyChanged, new()
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder(T)
+        /// SettingFolder(T)
         ///
         /// <summary>
         /// Initializes a new instance of the SettingsFolder class with
@@ -55,12 +55,12 @@ namespace Cube.FileSystem
         /// <param name="format">Serialization format.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly, Format format) :
+        public SettingFolder(Assembly assembly, Format format) :
             this(assembly, format, new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder(T)
+        /// SettingFolder(T)
         ///
         /// <summary>
         /// Initializes a new instance of the SettingsFolder class with
@@ -72,12 +72,12 @@ namespace Cube.FileSystem
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly, Format format, IO io) :
+        public SettingFolder(Assembly assembly, Format format, IO io) :
             this(assembly, format, GetLocation(assembly, format, io), io) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder(T)
+        /// SettingFolder(T)
         ///
         /// <summary>
         /// Initializes a new instance of the SettingsFolder class with
@@ -89,12 +89,12 @@ namespace Cube.FileSystem
         /// <param name="location">Saved data location.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly, Format format, string location) :
+        public SettingFolder(Assembly assembly, Format format, string location) :
             this(assembly, format, location, new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SettingsFolder(T)
+        /// SettingFolder(T)
         ///
         /// <summary>
         /// Initializes a new instance of the SettingsFolder class with
@@ -107,7 +107,7 @@ namespace Cube.FileSystem
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingsFolder(Assembly assembly, Format format, string location, IO io)
+        public SettingFolder(Assembly assembly, Format format, string location, IO io)
         {
             _autosaver.AutoReset = false;
             _autosaver.Elapsed += (s, e) => Task.Run(() => Save()).Forget();
@@ -131,7 +131,7 @@ namespace Cube.FileSystem
         /// Value
         ///
         /// <summary>
-        /// Gets the value that represents user settings.
+        /// Gets a value that represents user settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -153,7 +153,7 @@ namespace Cube.FileSystem
         /// Version
         ///
         /// <summary>
-        /// Gets the software versioin.
+        /// Gets the software version.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
