@@ -15,21 +15,22 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Observing;
 using NUnit.Framework;
 
 namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableTest
+    /// BindableValueTest
     ///
     /// <summary>
-    /// Represents tests of the Bindable class.
+    /// Tests the BindableValue class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class BindableTest
+    class BindableValueTest
     {
         #region Tests
 
@@ -38,7 +39,7 @@ namespace Cube.Xui.Tests
         /// Set
         ///
         /// <summary>
-        /// Executes the test to set value.
+        /// Tests the setter method of the Value property.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -98,6 +99,37 @@ namespace Cube.Xui.Tests
 
             src.Value = value;
             Assert.That(count, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Observe
+        ///
+        /// <summary>
+        /// Tests the Observe method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Observe()
+        {
+            var count = 0;
+            var obj   = new Person();
+
+            using (var src = new BindableValue<int>(Dispatcher.Vanilla))
+            {
+                src.PropertyChanged += (s, e) => ++count;
+                src.Associate(obj)
+                   .Associate(obj, nameof(Person.Name));
+
+                obj.Name = "Mike"; // 2 times
+                obj.Name = "Jack"; // 2 times
+                obj.Name = "Jack"; // ignore
+                obj.Age  = 10;     // 1 time
+                obj.Age  = 10;     // ignore
+            }
+
+            Assert.That(count, Is.EqualTo(5));
         }
 
         #endregion

@@ -56,6 +56,37 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Set
+        ///
+        /// <summary>
+        /// Tests the setter method of the Value property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Set()
+        {
+            var value = 0;
+            var count = 0;
+            using (var src = new BindableElement<int>(
+                () => "Set",
+                () => value,
+                e  => value = e,
+                Dispatcher.Vanilla)
+            ) {
+                src.PropertyChanged += (s, e) => ++count;
+                src.Value = 10;
+                src.Value = 10;
+                src.Value++;
+                src.Value *= 2;
+            }
+
+            Assert.That(value, Is.EqualTo(22));
+            Assert.That(count, Is.EqualTo(3));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Set_Throws
         ///
         /// <summary>
