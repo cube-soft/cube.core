@@ -24,7 +24,7 @@
 
     mc:Ignorable="d"
     Title="MockWindow"
-    Height="10" Width="10" Left="0" Top="0">
+    Height="100" Width="200" Left="0" Top="0">
     <Grid>
         <TextBlock>TEST</TextBlock>
     </Grid>

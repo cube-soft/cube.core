@@ -64,6 +64,7 @@ namespace Cube.Xui.Tests.Behaviors
                 })
             });
 
+            view.Hack();
             view.ShowDialog();
             src.Detach();
             Assert.That(count, Is.EqualTo(1));
@@ -74,29 +75,35 @@ namespace Cube.Xui.Tests.Behaviors
         /// Close
         ///
         /// <summary>
-        /// Tests the ClosingToCommand and ClosedToCommand classes.
+        /// Tests the ClosingToCommand, ClosedToCommand, and DisposeBehavior
+        /// classes.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Close()
         {
-            var closing = 0;
-            var closed  = 0;
+            var closing  = 0;
+            var closed   = 0;
+            var disposed = 0;
 
             var view = new MockWindow();
-            var src  = new List<CommandBehavior<Window>>
+            var src  = new List<Behavior>
             {
+                Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) }),
                 Attach(view, new ClosedToCommand  { Command = new DelegateCommand(() => ++closed) }),
-                Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) })
+                Attach(view, new DisposeBehavior())
             };
 
+            view.DataContext = Disposable.Create(() => ++disposed);
+            view.Hack();
             view.Show();
             2.Times(i => view.Close());
             foreach (var obj in src) obj.Detach();
 
-            Assert.That(closing, Is.EqualTo(2));
-            Assert.That(closed,  Is.EqualTo(1));
+            Assert.That(closing,  Is.EqualTo(2));
+            Assert.That(closed,   Is.EqualTo(1));
+            Assert.That(disposed, Is.EqualTo(1));
         }
 
         #endregion
@@ -112,7 +119,7 @@ namespace Cube.Xui.Tests.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private T Attach<T>(Window view, T src) where T : Behavior<Window>
+        private T Attach<T>(Window view, T src) where T : Behavior
         {
             src.Attach(view);
             return src;
