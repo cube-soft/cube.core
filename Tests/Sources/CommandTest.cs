@@ -40,116 +40,94 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Create_ArgumentNullException
+        ///
+        /// <summary>
+        /// Tests constructors with null objects.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_ArgumentNullException()
+        {
+            Assert.That(() => new DelegateCommand(null), Throws.ArgumentNullException);
+            Assert.That(() => new DelegateCommand(() => { }, null), Throws.ArgumentNullException);
+            Assert.That(() => new DelegateCommand<int>(null), Throws.ArgumentNullException);
+            Assert.That(() => new DelegateCommand<int>(e => { }, null), Throws.ArgumentNullException);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Execute
         ///
         /// <summary>
-        /// Tests the Execute method.
+        /// Tests methods of the DelegateCommand class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Execute()
         {
-            var src  = new BindableValue<Person>(new Person(), Dispatcher.Vanilla);
-            var dest = new DelegateCommand(
-                () => src.Value.Name = "Done",
-                () => src.Value.Age > 0
-            ).Associate(src, nameof(src.Value));
-
-            src.Value.Age = 20;
-            dest.Execute();
-            Assert.That(src.Value.Name, Is.EqualTo("Done"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseCanExecuteChanged
-        ///
-        /// <summary>
-        /// Tests the CanExecuteChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void RaiseCanExecuteChanged()
-        {
-            var src = new BindableValue<Person>(new Person(), Dispatcher.Vanilla);
+            var src = new Person();
             using (var dest = new DelegateCommand(
-                () => src.Value.Name = "Done",
-                () => src.Value.Age > 0
-            ).Associate(src, nameof(src.Value)))
-            {
+                () => src.Name = "Done",
+                () => src.Age > 0
+            )) {
+                var count = 0;
+                dest.Refresh();
+                dest.CanExecuteChanged += (s, e) => ++count;
+                dest.Associate(src);
                 Assert.That(dest.CanExecute(), Is.False);
-                src.Value.Age = 10;
+                Assert.That(count,             Is.EqualTo(0));
+                src.Age = 10;
                 Assert.That(dest.CanExecute(), Is.True);
-                src.Value.Age = -1;
+                Assert.That(count,             Is.EqualTo(1));
+                src.Age = -20;
                 Assert.That(dest.CanExecute(), Is.False);
-                src.Value.Age = 20;
-                Assert.That(dest.CanExecute(), Is.True);
+                Assert.That(count,             Is.EqualTo(2));
+                dest.Refresh();
                 dest.Execute();
-                Assert.That(src.Value.Name, Is.EqualTo("Done"));
+                Assert.That(src.Name,          Is.EqualTo("Done"));
+                Assert.That(count,             Is.EqualTo(4));
             }
         }
-
-        #endregion
-
-        #region BindableCommand<T>
 
         /* ----------------------------------------------------------------- */
         ///
         /// Execute_Generic
         ///
         /// <summary>
-        /// Tests the Execute method of the BindableCommand(T) class.
+        /// Tests methods of the DelegateCommand(T) class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Execute_Generic()
         {
-            var src  = new BindableValue<Person>(new Person(), Dispatcher.Vanilla);
-            var dest = new DelegateCommand<int>(
-                e => src.Value.Name = $"Done:{e}",
-                e => e > 0 && src.Value.Age > 0
-            ).Associate(src, nameof(src.Value));
-
-            src.Value.Age = 20;
-            dest.Execute(1);
-            Assert.That(src.Value.Name, Is.EqualTo("Done:1"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaiseCanExecuteChanged_Generic
-        ///
-        /// <summary>
-        /// Tests the CanExecuteChanged event of the BindableCommand(T)
-        /// class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void RaiseCanExecuteChanged_Generic()
-        {
-            var src = new BindableValue<Person>(new Person(), Dispatcher.Vanilla);
+            var src = new Person();
             using (var dest = new DelegateCommand<int>(
-                e => src.Value.Name = $"Done:{e}",
-                e => e > 0 && src.Value.Age > 0
-            ).Associate(src, nameof(src.Value)))
-            {
-                Assert.That(dest.CanExecute(-1), Is.False);
-                Assert.That(dest.CanExecute(1), Is.False);
-                src.Value.Age = 10;
-                Assert.That(dest.CanExecute(-2), Is.False);
-                Assert.That(dest.CanExecute(2), Is.True);
-                src.Value.Age = -1;
-                Assert.That(dest.CanExecute(-3), Is.False);
-                Assert.That(dest.CanExecute(3), Is.False);
-                src.Value.Age = 20;
-                Assert.That(dest.CanExecute(-4), Is.False);
-                Assert.That(dest.CanExecute(4), Is.True);
-                dest.Execute(4);
-                Assert.That(src.Value.Name, Is.EqualTo("Done:4"));
+                e => src.Name = $"Done:{e}",
+                e => e > 0 && src.Age > 0
+            )) {
+                var count = 0;
+                dest.Refresh();
+                dest.CanExecuteChanged += (s, e) => ++count;
+                dest.Associate(src);
+                Assert.That(dest.CanExecute(-10), Is.False);
+                Assert.That(dest.CanExecute(10),  Is.False);
+                Assert.That(count,                Is.EqualTo(0));
+                src.Age = 10;
+                Assert.That(dest.CanExecute(-20), Is.False);
+                Assert.That(dest.CanExecute(20),  Is.True);
+                Assert.That(count,                Is.EqualTo(1));
+                src.Age = -20;
+                Assert.That(dest.CanExecute(-30), Is.False);
+                Assert.That(dest.CanExecute(30),  Is.False);
+                Assert.That(count,                Is.EqualTo(2));
+                dest.Refresh();
+                dest.Execute(40);
+                Assert.That(src.Name,             Is.EqualTo("Done:40"));
+                Assert.That(count,                Is.EqualTo(4));
             }
         }
 
