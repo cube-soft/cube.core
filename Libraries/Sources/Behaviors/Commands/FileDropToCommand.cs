@@ -43,8 +43,8 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.PreviewDragOver += OnDragOver;
-            AssociatedObject.PreviewDrop += OnDrop;
+            AssociatedObject.PreviewDragOver += WhenDragOver;
+            AssociatedObject.PreviewDrop += WhenDrop;
         }
 
         /* ----------------------------------------------------------------- */
@@ -59,21 +59,21 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.PreviewDragOver -= OnDragOver;
-            AssociatedObject.PreviewDrop -= OnDrop;
+            AssociatedObject.PreviewDragOver -= WhenDragOver;
+            AssociatedObject.PreviewDrop -= WhenDrop;
             base.OnDetaching();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDrop
+        /// WhenDrop
         ///
         /// <summary>
         /// Occurs when the PreviewDrop event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnDrop(object s, DragEventArgs e)
+        private void WhenDrop(object s, DragEventArgs e)
         {
             var dest = GetData(e.Data);
             e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
@@ -82,14 +82,14 @@ namespace Cube.Xui.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDragOver
+        /// WhenDragOver
         ///
         /// <summary>
         /// Occurs when the PreviewDragOver event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnDragOver(object s, DragEventArgs e)
+        private void WhenDragOver(object s, DragEventArgs e)
         {
             var dest = GetData(e.Data);
             e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);

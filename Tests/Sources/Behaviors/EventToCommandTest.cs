@@ -18,39 +18,39 @@
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
-using System.Windows.Controls;
+using System.Windows;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CheckedToCommandTest
+    /// EventToCommandTest
     ///
     /// <summary>
-    /// Tests the CheckedToCommand class.
+    /// Tests event to command behaviors.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class CheckedToCommandTest
+    class EventToCommandTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_Checked
+        /// ShownToCommand
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Tests the ShownToCommand class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_Checked()
+        public void ShownToCommand()
         {
-            var view = new CheckBox();
-            var src  = new CheckedToCommand();
+            var view = new Window();
+            var src  = new ShownToCommand();
 
             src.Attach(view);
             Assert.That(src.Command, Is.Null);
@@ -59,18 +59,18 @@ namespace Cube.Xui.Tests.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_Unchecked
+        /// ClosedToCommand
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Tests the ClosedToCommand class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_Unchecked()
+        public void ClosedToCommand()
         {
-            var view = new CheckBox();
-            var src  = new UncheckedToCommand();
+            var view = new Window();
+            var src  = new ClosedToCommand();
 
             src.Attach(view);
             Assert.That(src.Command, Is.Null);
@@ -79,43 +79,21 @@ namespace Cube.Xui.Tests.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_NonNullable
+        /// ClosingToCommand
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Tests the ClosingToCommand class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_NonNullable()
+        public void ClosingToCommand()
         {
-            var view = new RadioButton();
-            var src  = new CheckedToCommand<int>();
+            var view = new Window();
+            var src  = new ClosingToCommand();
 
             src.Attach(view);
             Assert.That(src.Command, Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
-            src.Detach();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Properties_Nullable
-        ///
-        /// <summary>
-        /// Confirms default values of properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties_Nullable()
-        {
-            var view = new RadioButton();
-            var src  = new UncheckedToCommand<string>();
-
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            Assert.That(src.CommandParameter, Is.Null);
             src.Detach();
         }
 
