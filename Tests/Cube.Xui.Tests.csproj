@@ -33,6 +33,8 @@
     </ItemGroup>
     <ItemGroup>
         <Resource Include="Assets\**\*" />
+        <Page Include="Views\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
+        <Compile Update="Views\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
         <None Include="App.config" />
     </ItemGroup>
 </Project>

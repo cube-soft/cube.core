@@ -15,10 +15,14 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Iteration;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Cube.Xui.Tests.Behaviors
 {
@@ -39,7 +43,7 @@ namespace Cube.Xui.Tests.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ShownToCommand
+        /// Show
         ///
         /// <summary>
         /// Tests the ShownToCommand class.
@@ -47,54 +51,71 @@ namespace Cube.Xui.Tests.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ShownToCommand()
+        public void Show()
         {
-            var view = new Window();
-            var src  = new ShownToCommand();
+            var count = 0;
+            var view  = new MockWindow();
+            var src   = Attach(view, new ShownToCommand
+            {
+                Command = new DelegateCommand(() =>
+                {
+                    ++count;
+                    view.Close();
+                })
+            });
 
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
+            view.ShowDialog();
             src.Detach();
+            Assert.That(count, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ClosedToCommand
+        /// Close
         ///
         /// <summary>
-        /// Tests the ClosedToCommand class.
+        /// Tests the ClosingToCommand and ClosedToCommand classes.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ClosedToCommand()
+        public void Close()
         {
-            var view = new Window();
-            var src  = new ClosedToCommand();
+            var closing = 0;
+            var closed  = 0;
 
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            src.Detach();
+            var view = new MockWindow();
+            var src  = new List<CommandBehavior<Window>>
+            {
+                Attach(view, new ClosedToCommand  { Command = new DelegateCommand(() => ++closed) }),
+                Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) })
+            };
+
+            view.Show();
+            2.Times(i => view.Close());
+            foreach (var obj in src) obj.Detach();
+
+            Assert.That(closing, Is.EqualTo(2));
+            Assert.That(closed,  Is.EqualTo(1));
         }
 
+        #endregion
+
+        #region Others
+
         /* ----------------------------------------------------------------- */
         ///
-        /// ClosingToCommand
+        /// Attach
         ///
         /// <summary>
-        /// Tests the ClosingToCommand class.
+        /// Attaches the specified view and behavior object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void ClosingToCommand()
+        private T Attach<T>(Window view, T src) where T : Behavior<Window>
         {
-            var view = new Window();
-            var src  = new ClosingToCommand();
-
             src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            src.Detach();
+            return src;
         }
 
         #endregion
