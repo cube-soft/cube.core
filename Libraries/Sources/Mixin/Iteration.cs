@@ -80,7 +80,7 @@ namespace Cube.Mixin.Iteration
         /// <param name="action">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool Try(this int n, Action<int> action) => n.Try(action, new List<Exception>());
+        public static bool Try(this int n, Action<int> action) => n.Try(action, default);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,15 +93,17 @@ namespace Cube.Mixin.Iteration
         ///
         /// <param name="n">Number of trials.</param>
         /// <param name="action">User action.</param>
-        /// <param name="errors">Collection to store exceptions.</param>
+        /// <param name="error">
+        /// Action to be invoked when an exception occurs.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool Try(this int n, Action<int> action, ICollection<Exception> errors)
+        public static bool Try(this int n, Action<int> action, Action<int, Exception> error)
         {
             for (var i = 0; i < n; ++i)
             {
                 try { action(i); return true; }
-                catch (Exception err) { errors.Add(err); }
+                catch (Exception err) { error?.Invoke(i, err); }
             }
             return false;
         }
