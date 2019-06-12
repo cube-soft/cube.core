@@ -18,7 +18,6 @@
 using Cube.Mixin.Iteration;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Cube.Tests.Mixin
@@ -102,9 +101,9 @@ namespace Cube.Tests.Mixin
         [Test]
         public void Try_False()
         {
-            var errors = new List<Exception>();
-            Assert.That(10.Try(i =>ThrowIfOdd(1), errors), Is.False);
-            Assert.That(errors.Count, Is.EqualTo(10));
+            var errors = 0;
+            Assert.That(10.Try(i =>ThrowIfOdd(1), (s, e) => ++errors), Is.False);
+            Assert.That(errors, Is.EqualTo(10));
         }
 
         #endregion
