@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Iteration;
+using Cube.Mixin.Syntax;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Collections.Generic;
