@@ -90,14 +90,14 @@ namespace Cube.Mixin.Collections
         /// Join
         ///
         /// <summary>
-        /// Concats the specified sequence with the specified separator.
+        /// Combines the specified sequence with the specified separator.
         /// </summary>
         ///
         /// <param name="src">Source sequence.</param>
         /// <param name="separator">Concat separator.</param>
         /// <param name="formatter">Function to convert to string.</param>
         ///
-        /// <returns>Concat string.</returns>
+        /// <returns>Combined string.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string Join<T>(this IEnumerable<T> src, string separator, Func<T, string> formatter) =>
@@ -108,14 +108,14 @@ namespace Cube.Mixin.Collections
         /// Join
         ///
         /// <summary>
-        /// Concats the specified string sequence with the specified
+        /// Combines the specified string sequence with the specified
         /// separator.
         /// </summary>
         ///
         /// <param name="src">Source sequence.</param>
         /// <param name="separator">Concat separator.</param>
         ///
-        /// <returns>Concat string.</returns>
+        /// <returns>Combined string.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string Join(this IEnumerable<string> src, string separator) =>
@@ -125,32 +125,7 @@ namespace Cube.Mixin.Collections
 
         #endregion
 
-        #region FirstIndex
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FirstIndex(T)
-        ///
-        /// <summary>
-        /// Returns the first index of a sequence that satisfies a
-        /// specified condition.
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="predicate">
-        /// Function to test each element for a condition.
-        /// </param>
-        ///
-        /// <returns>
-        /// First index in the sequence that passes the test in the
-        /// predicate function.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static int FirstIndex<T>(this IEnumerable<T> src, Func<T, bool> predicate) =>
-            src.Select((Value, Index) => new { Value, Index })
-               .First(e => predicate(e.Value))
-               .Index;
+        #region IndexOf
 
         /* ----------------------------------------------------------------- */
         ///
@@ -177,57 +152,6 @@ namespace Cube.Mixin.Collections
             src?.Select((Value, Index) => new { Value, Index })
                 .FirstOrDefault(e => predicate(e.Value))
                ?.Index ?? -1;
-
-        #endregion
-
-        #region LastIndex
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastIndex(T)
-        ///
-        /// <summary>
-        /// Returns the last index of the specified sequence.
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        ///
-        /// <returns>
-        /// Last index in the sequence.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static int LastIndex<T>(this IEnumerable<T> src)
-        {
-            if (src is ICollection<T> s0 && s0.Count > 0) return s0.Count - 1;
-            if (src is IReadOnlyCollection<T> s1 && s1.Count > 0) return s1.Count - 1;
-            return src.LastIndex(e => true);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastIndex(T)
-        ///
-        /// <summary>
-        /// Returns the last index of a sequence that satisfies a
-        /// specified condition.
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="predicate">
-        /// Function to test each element for a condition.
-        /// </param>
-        ///
-        /// <returns>
-        /// Last index in the sequence that passes the test in the
-        /// predicate function.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static int LastIndex<T>(this IEnumerable<T> src, Func<T, bool> predicate) =>
-            src.Select((Value, Index) => new { Value, Index })
-               .Last(e => predicate(e.Value))
-               .Index;
 
         /* ----------------------------------------------------------------- */
         ///
