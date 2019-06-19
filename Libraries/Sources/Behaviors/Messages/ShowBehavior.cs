@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Forms;
+
 namespace Cube.Forms.Behaviors
 {
     #region ShowBehavior
@@ -29,7 +31,7 @@ namespace Cube.Forms.Behaviors
     ///
     /* --------------------------------------------------------------------- */
     public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : WindowBase, new()
+        where TView : Form, new()
         where TViewModel : IPresentable
     {
         /* ----------------------------------------------------------------- */
@@ -51,14 +53,14 @@ namespace Cube.Forms.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// Shows a new window with the specified viewmodel.
+        /// Shows a new window with the specified ViewModel.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected override void Invoke(TViewModel e)
         {
             var view = new TView();
-            view.Bind(e);
+            if (view is IBinder binder) binder.Bind(e);
             view.Show();
         }
     }
@@ -77,7 +79,7 @@ namespace Cube.Forms.Behaviors
     ///
     /* --------------------------------------------------------------------- */
     public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : WindowBase, new()
+        where TView : Form, new()
         where TViewModel : IPresentable
     {
         /* ----------------------------------------------------------------- */
@@ -99,7 +101,7 @@ namespace Cube.Forms.Behaviors
         /// Invoke
         ///
         /// <summary>
-        /// Shows a new window with the specified viewmodel.
+        /// Shows a new window with the specified ViewModel.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -107,8 +109,8 @@ namespace Cube.Forms.Behaviors
         {
             using(var view = new TView())
             {
-                view.Bind(e);
-                view.ShowDialog();
+                if (view is IBinder binder) binder.Bind(e);
+                _ = view.ShowDialog();
             }
         }
     }

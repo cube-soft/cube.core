@@ -17,6 +17,37 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms
 {
+    #region IBindable
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IBinder
+    ///
+    /// <summary>
+    /// Represents the interface that a window can be bindable with a
+    /// presentable object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IBinder
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bind
+        ///
+        /// <summary>
+        /// Binds the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Object to bind.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        void Bind(IPresentable src);
+    }
+
+
+    #endregion
+
     #region IDpiAwarable
 
     /* --------------------------------------------------------------------- */
@@ -24,7 +55,7 @@ namespace Cube.Forms
     /// IDpiAwarable
     ///
     /// <summary>
-    /// Represents an interface that a window or control can be aware of
+    /// Represents the interface that a window or control can be aware of
     /// DPI changing.
     /// </summary>
     ///

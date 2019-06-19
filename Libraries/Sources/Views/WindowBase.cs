@@ -29,12 +29,8 @@ namespace Cube.Forms
     /// Represents the base class of WinForms based window.
     /// </summary>
     ///
-    /// <remarks>
-    /// ViewModel や各種 Behaviors のための処理を実装します。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
-    public abstract class WindowBase : WinForms.Form
+    public abstract class WindowBase : WinForms.Form, IBinder
     {
         #region Properties
 
@@ -43,11 +39,11 @@ namespace Cube.Forms
         /// Presenter
         ///
         /// <summary>
-        /// Gets or sets the presenter.
+        /// Gets or the presenter object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IPresentable Presenter { get; set; }
+        protected IPresentable Presenter { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -69,13 +65,32 @@ namespace Cube.Forms
         /// Bind
         ///
         /// <summary>
-        /// Binds the window with the specified object.
+        /// Binds the window to the specified object. If the Presenter is
+        /// already set, the specified object is ignored.
         /// </summary>
         ///
-        /// <param name="src">Object to be bound.</param>
+        /// <param name="src">Object to bind.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void Bind(IPresentable src) => Presenter = src;
+        public void Bind(IPresentable src)
+        {
+            if (Presenter != null) return;
+            Presenter = src;
+            OnBind(src);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnBind
+        ///
+        /// <summary>
+        /// Binds the window to the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Object to bind.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnBind(IPresentable src) { }
 
         #endregion
 
