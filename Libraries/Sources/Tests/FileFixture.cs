@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.FileSystem;
 using Cube.Mixin.Assembly;
+using Cube.Mixin.Syntax;
 using System.Reflection;
 
 namespace Cube.Tests
@@ -53,7 +54,7 @@ namespace Cube.Tests
         /// Initializes a new instance of the FileFixture class with the
         /// specified I/O handler.
         /// </summary>
-        /// 
+        ///
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -125,10 +126,6 @@ namespace Cube.Tests
         /// Gets the class name.
         /// </summary>
         ///
-        /// <remarks>
-        /// テスト結果を格納するディレクトリの生成時に使用します。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         protected string Name { get; }
 
@@ -189,12 +186,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private void Delete(string directory)
         {
-            foreach (string f in IO.GetFiles(directory)) IO.Delete(f);
-            foreach (string d in IO.GetDirectories(directory))
-            {
-                Delete(d);
-                IO.Delete(d);
-            }
+            IO.GetFiles(directory).Each(f => IO.Delete(f));
+            IO.GetDirectories(directory).Each(d => { Delete(d); IO.Delete(d); });
         }
 
         #endregion

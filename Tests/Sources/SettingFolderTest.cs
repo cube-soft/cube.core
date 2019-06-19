@@ -56,8 +56,8 @@ namespace Cube.FileSystem.Tests
             var dest = new SettingFolder<Person>(Assembly, format);
 
             dest.Loaded += (s, e) => ++n;
-            dest.TryLoad();
 
+            Assert.That(dest.TryLoad(), Is.EqualTo(count > 0));
             Assert.That(n, Is.EqualTo(count));
             Assert.That(dest.Format, Is.EqualTo(format));
             Assert.That(dest.Value, Is.Not.Null);
