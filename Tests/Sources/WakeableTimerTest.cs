@@ -129,8 +129,8 @@ namespace Cube.Tests
 
             using (var src = new WakeableTimer())
             {
+                _ = src.Subscribe(() => ++dummy);
                 src.PowerModeChanged += (s, e) => ++count;
-                src.Subscribe(() => ++dummy);
                 src.Start();
 
                 pmc.Mode = PowerModes.Suspend;
@@ -215,7 +215,7 @@ namespace Cube.Tests
             using (var src = new WakeableTimer())
             {
                 src.Interval = TimeSpan.FromMilliseconds(10);
-                src.SubscribeAsync(async () =>
+                _ = src.SubscribeAsync(async () =>
                 {
                     ++count;
                     await TaskEx.Delay(200).ConfigureAwait(false);
@@ -247,7 +247,7 @@ namespace Cube.Tests
             {
                 src.Interval = TimeSpan.FromSeconds(1);
                 src.Start(TimeSpan.FromMilliseconds(100));
-                src.Subscribe(() =>
+                _ = src.Subscribe(() =>
                 {
                     ++count;
                     src.Stop();
@@ -289,7 +289,7 @@ namespace Cube.Tests
         /// Execute
         ///
         /// <summary>
-        /// Waits for the timer to execue the specified number of callbacks.
+        /// Waits for the timer to execute the specified number of callbacks.
         /// </summary>
         ///
         /// <param name="src">Timer object.</param>
@@ -315,7 +315,7 @@ namespace Cube.Tests
         /// Execute
         ///
         /// <summary>
-        /// Waits for the timer to execue the specified number of callbacks.
+        /// Waits for the timer to execute the specified number of callbacks.
         /// </summary>
         ///
         /// <param name="src">Timer object.</param>
@@ -332,7 +332,7 @@ namespace Cube.Tests
             var n   = 0;
             var cts = new CancellationTokenSource();
 
-            src.Subscribe(() =>
+            _ = src.Subscribe(() =>
             {
                 if (++n >= count)
                 {

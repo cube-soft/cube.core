@@ -55,7 +55,7 @@ namespace Cube.Mixin.Collections
         /// OrderByDescending
         ///
         /// <summary>
-        /// Sorts the elements of a sequence in decending order.
+        /// Sorts the elements of a sequence in descending order.
         /// </summary>
         ///
         /// <param name="src">Source sequence.</param>

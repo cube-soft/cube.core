@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Collections;
 using Cube.Mixin.Iteration;
+using Cube.Mixin.Syntax;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace Cube.Tests.Mixin
         {
             var sum = 0;
             var src = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            foreach (var i in src.GetOrEmpty()) sum += i;
+            src.GetOrEmpty().Each(i => sum += i);
             Assert.That(sum, Is.EqualTo(55));
         }
 
@@ -71,7 +72,7 @@ namespace Cube.Tests.Mixin
         {
             var sum = 0;
             var src = default(List<int>);
-            foreach (var i in src.GetOrEmpty()) sum += i;
+            src.GetOrEmpty().Each(i => sum += i);
             Assert.That(sum, Is.EqualTo(0));
         }
 

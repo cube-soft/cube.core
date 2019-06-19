@@ -17,17 +17,22 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Cube.Mixin.Iteration
+namespace Cube.Mixin.Syntax
 {
     /* --------------------------------------------------------------------- */
     ///
     /// Extension
     ///
     /// <summary>
-    /// Provides extended methods about iteration.
+    /// Provides extended methods to describe basic syntax (if, for, and
+    /// more) as an expression.
     /// </summary>
+    ///
+    /// <remarks>
+    /// We assume that these extended methods are mainly used for the
+    /// expression body definition.
+    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public static class Extension
@@ -36,19 +41,22 @@ namespace Cube.Mixin.Iteration
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Make
+        /// Then
         ///
         /// <summary>
-        /// Makes the specified number of sequence with the specified
-        /// function.
+        /// Executes the specified action if the specified value is true.
         /// </summary>
         ///
-        /// <param name="n">Number of sequence.</param>
-        /// <param name="func">Function to create an element.</param>
+        /// <param name="value">true of false.</param>
+        /// <param name="action">
+        /// Action to be invoked if the value is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<T> Make<T>(this int n, Func<int, T> func) =>
-            Enumerable.Range(0, n).Select(i => func(i));
+        public static void Then(this bool value, Action action)
+        {
+            if (value) action();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -65,6 +73,24 @@ namespace Cube.Mixin.Iteration
         public static void Times(this int n, Action<int> action)
         {
             for (var i = 0; i < n; ++i) action(i);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Each
+        ///
+        /// <summary>
+        /// Executes the specified action on each item of the specified
+        /// sequence.
+        /// </summary>
+        ///
+        /// <param name="src">Source sequence.</param>
+        /// <param name="action">User action.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Each<T>(this IEnumerable<T> src, Action<T> action)
+        {
+            foreach (var item in src) action(item);
         }
 
         /* ----------------------------------------------------------------- */
