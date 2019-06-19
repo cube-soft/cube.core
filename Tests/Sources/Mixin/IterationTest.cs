@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Iteration;
+using Cube.Mixin.Syntax;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -102,7 +103,7 @@ namespace Cube.Tests.Mixin
         public void Try_False()
         {
             var errors = 0;
-            Assert.That(10.Try(i =>ThrowIfOdd(1), (s, e) => ++errors), Is.False);
+            Assert.That(10.Try(i => ThrowIfOdd(1), (s, e) => ++errors), Is.False);
             Assert.That(errors, Is.EqualTo(10));
         }
 
@@ -119,10 +120,18 @@ namespace Cube.Tests.Mixin
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void ThrowIfOdd(int n)
-        {
-            if (n % 2 != 0) throw new ArgumentException("Odd number");
-        }
+        private void ThrowIfOdd(int n) => IsOdd(n).Then(() => throw new ArgumentException("Odd number"));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IsOdd
+        ///
+        /// <summary>
+        /// Determines whether the specified value is odd number.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool IsOdd(int n) => n % 2 != 0;
 
         #endregion
     }

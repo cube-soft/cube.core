@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Assembly;
+using Cube.Mixin.Syntax;
 using System.IO;
 using System.Reflection;
 
@@ -50,7 +51,7 @@ namespace Cube.Tests
             Examples = Path.Combine(Root, nameof(Examples));
             Results  = Path.Combine(Root, nameof(Results), Name);
 
-            if (!Directory.Exists(Results)) Directory.CreateDirectory(Results);
+            if (!Directory.Exists(Results)) _ = Directory.CreateDirectory(Results);
             Delete(Results);
         }
 
@@ -163,17 +164,15 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private void Delete(string directory)
         {
-            foreach (string file in Directory.GetFiles(directory))
-            {
-                File.SetAttributes(file, FileAttributes.Normal);
-                File.Delete(file);
-            }
+            Directory.GetFiles(directory).Each(f => {
+                File.SetAttributes(f, FileAttributes.Normal);
+                File.Delete(f);
+            });
 
-            foreach (string sub in Directory.GetDirectories(directory))
-            {
-                Delete(sub);
-                Directory.Delete(sub);
-            }
+            Directory.GetDirectories(directory).Each(d => {
+                Delete(d);
+                Directory.Delete(d);
+            });
         }
 
         #endregion

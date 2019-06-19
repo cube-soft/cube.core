@@ -70,13 +70,14 @@ namespace Cube.Mixin.Collections
         /// Concat
         ///
         /// <summary>
-        /// Concats the specified items to the specified source sequence.
+        /// Combines the specified items to the end of the specified source
+        /// sequence.
         /// </summary>
         ///
         /// <param name="src">Source sequence.</param>
-        /// <param name="items">Items to be added.</param>
+        /// <param name="items">Items to be combined.</param>
         ///
-        /// <returns>Merged sequence.</returns>
+        /// <returns>Combined sequence.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> src, params T[] items) =>
