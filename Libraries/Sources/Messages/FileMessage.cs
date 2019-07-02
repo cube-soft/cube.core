@@ -38,7 +38,7 @@ namespace Cube
         /// OpenDirectoryMessage
         ///
         /// <summary>
-        /// Initializes a new isntance of the OpenDirectoryMessage class.
+        /// Initializes a new instance of the OpenDirectoryMessage class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

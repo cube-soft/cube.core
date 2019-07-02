@@ -32,14 +32,14 @@ namespace Cube
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Title
+        /// Text
         ///
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets a text for the message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,33 +78,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public bool Cancel { get; set; }
-    }
-
-    #endregion
-
-    #region ProgressMessage<TValue>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ProgressMessage(TValue)
-    ///
-    /// <summary>
-    /// Represents the message with Ratio property.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ProgressMessage<TValue> : Message<TValue>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Ratio
-        ///
-        /// <summary>
-        /// Gets the current progress ratio.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public double Ratio { get; set; }
     }
 
     #endregion

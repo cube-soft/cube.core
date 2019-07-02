@@ -30,7 +30,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogMessage : Message<string>
+    public class DialogMessage : Message<DialogStatus>
     {
         #region Constructors
 
@@ -43,11 +43,22 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage() { Value = string.Empty; }
+        public DialogMessage() { Value = DialogStatus.Ok; }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Title
+        ///
+        /// <summary>
+        /// Gets or sets the title displayed in the dialog.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Title { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,17 +83,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public DialogButtons Buttons { get; set; } = DialogButtons.Ok;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Status
-        ///
-        /// <summary>
-        /// Gets or sets the button that is clicked by a user.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DialogStatus Status { get; set; } = DialogStatus.Ok;
-
         #endregion
 
         #region Methods
@@ -101,11 +101,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static DialogMessage Create(Exception src) => new DialogMessage
         {
+            Text    = $"{src.Message} ({src.GetType().Name})",
             Title   = "Error",
-            Value   = $"{src.Message} ({src.GetType().Name})",
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
-            Status  = DialogStatus.Ok,
+            Value   = DialogStatus.Ok,
         };
 
         #endregion

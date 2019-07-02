@@ -127,11 +127,11 @@ namespace Cube.Tests
                 src.TrackAsync(() => throw new ArgumentException(nameof(TrackAsync))).Wait();
             }
 
-            Assert.That(dest.Value,   Does.StartWith(nameof(TrackAsync)));
+            Assert.That(dest.Text,    Does.StartWith(nameof(TrackAsync)));
             Assert.That(dest.Title,   Is.EqualTo("Error"));
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Status,  Is.EqualTo(DialogStatus.Ok));
+            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -154,11 +154,11 @@ namespace Cube.Tests
                 src.TrackSync(() => throw new ArgumentException(nameof(TrackSync)));
             }
 
-            Assert.That(dest.Value,   Does.StartWith(nameof(TrackSync)));
+            Assert.That(dest.Text,    Does.StartWith(nameof(TrackSync)));
             Assert.That(dest.Title,   Is.EqualTo("Error"));
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Status,  Is.EqualTo(DialogStatus.Ok));
+            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */

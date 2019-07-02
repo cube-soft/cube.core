@@ -47,11 +47,11 @@ namespace Cube.Tests
         public void Create_DialogMessage()
         {
             var src = new DialogMessage();
+            Assert.That(src.Text,    Is.Empty);
             Assert.That(src.Title,   Is.Empty);
-            Assert.That(src.Value,   Is.Empty);
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(src.Status,  Is.EqualTo(DialogStatus.Ok));
+            Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,7 +67,7 @@ namespace Cube.Tests
         public void Create_OpenFileMessage()
         {
             var src = new OpenFileMessage();
-            Assert.That(src.Title,            Is.Empty);
+            Assert.That(src.Text,            Is.Empty);
             Assert.That(src.Value.Count(),    Is.EqualTo(0));
             Assert.That(src.InitialDirectory, Is.Empty);
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
@@ -90,7 +90,7 @@ namespace Cube.Tests
         public void Create_SaveFileMessage()
         {
             var src = new SaveFileMessage();
-            Assert.That(src.Title,            Is.Empty);
+            Assert.That(src.Text,            Is.Empty);
             Assert.That(src.Value,            Is.Empty);
             Assert.That(src.InitialDirectory, Is.Empty);
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
@@ -113,28 +113,10 @@ namespace Cube.Tests
         public void Create_OpenDirectoryMessage()
         {
             var src = new OpenDirectoryMessage();
-            Assert.That(src.Title,     Is.Empty);
+            Assert.That(src.Text,     Is.Empty);
             Assert.That(src.Value,     Is.Empty);
             Assert.That(src.NewButton, Is.True);
             Assert.That(src.Cancel,    Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_ProgressMessage
-        ///
-        /// <summary>
-        /// Tests properties of the ProgressMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_ProgressMessage()
-        {
-            var src = new ProgressMessage<int>();
-            Assert.That(src.Title, Is.Empty);
-            Assert.That(src.Value, Is.EqualTo(0));
-            Assert.That(src.Ratio, Is.EqualTo(0.0));
         }
 
         /* ----------------------------------------------------------------- */
@@ -151,23 +133,6 @@ namespace Cube.Tests
         {
             // The class has no properties.
             var src = new CloseMessage();
-            Assert.That(src, Is.Not.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_UpdateSourcesMessage
-        ///
-        /// <summary>
-        /// Tests properties of the UpdateSourcesMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_UpdateSourcesMessage()
-        {
-            // The class has no properties.
-            var src = new UpdateSourcesMessage();
             Assert.That(src, Is.Not.Null);
         }
 

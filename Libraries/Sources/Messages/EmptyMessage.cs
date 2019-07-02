@@ -17,8 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube
 {
-    #region CloseMessage
-
     /* --------------------------------------------------------------------- */
     ///
     /// CloseMessage
@@ -29,21 +27,4 @@ namespace Cube
     ///
     /* --------------------------------------------------------------------- */
     public class CloseMessage { }
-
-    #endregion
-
-    #region UpdateSourcesMessage
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// UpdateSourcesMessage
-    ///
-    /// <summary>
-    /// Represents the message that is sent when updating source values.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class UpdateSourcesMessage { }
-
-    #endregion
 }
