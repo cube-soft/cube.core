@@ -159,7 +159,7 @@ namespace Cube.Tests.Mixin
         public void With_SoftwareVersion()
         {
             var asm  = Assembly.GetExecutingAssembly();
-            var dest = $"{Create()}?ver=1.16beta";
+            var dest = $"{Create()}?ver=1.17beta";
             var src  = Create().With(new SoftwareVersion(asm)
             {
                 Digit = 2,

@@ -94,8 +94,8 @@ namespace Cube.Tests.Mixin
                     Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 16, 0, 0),
-                    FileVersion   = new Version(1, 16, 0, 0),
+                    Version       = new Version(1, 17, 0, 0),
+                    FileVersion   = new Version(1, 17, 0, 0),
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(Extension)), new Expected
@@ -111,8 +111,8 @@ namespace Cube.Tests.Mixin
                     Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 16, 0, 0),
-                    FileVersion   = new Version(1, 16, 0, 0),
+                    Version       = new Version(1, 17, 0, 0),
+                    FileVersion   = new Version(1, 17, 0, 0),
                 });
             }
         }
