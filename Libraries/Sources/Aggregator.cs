@@ -43,12 +43,12 @@ namespace Cube
         /// Publishes the specified message.
         /// </summary>
         ///
-        /// <param name="message">Message to be publishd.</param>
+        /// <param name="message">Message to be published.</param>
         ///
         /* --------------------------------------------------------------------- */
         public void Publish<T>(T message)
         {
-            if (_subscription.TryGetValue(typeof(T), out var dest))
+            if (_subscription.TryGetValue(message.GetType(), out var dest))
             {
                 foreach (var e in dest.OfType<Action<T>>()) e(message);
             }
