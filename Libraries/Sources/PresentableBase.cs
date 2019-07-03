@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Cube
 {
@@ -189,10 +188,14 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="name">Property name.</param>
+        /// <param name="more">More property names.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged(string name) =>
+        protected void RaisePropertyChanged(string name, params string[] more)
+        {
             OnPropertyChanged(new PropertyChangedEventArgs(name));
+            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(name));
+        }
 
         #endregion
 
@@ -296,81 +299,6 @@ namespace Cube
 
         #endregion
 
-        #region Track
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked as asynchronous.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Task Track(Action action) => Track(action, DialogMessage.Create);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked as asynchronous.
-        /// </param>
-        ///
-        /// <param name="converter">
-        /// Function to convert from Exception to DialogMessage.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Converter converter) =>
-            Track(action, converter, false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action, and will send the error message
-        /// if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked.
-        /// </param>
-        ///
-        /// <param name="converter">
-        /// Function to convert from Exception to DialogMessage.
-        /// </param>
-        ///
-        /// <param name="synchronous">
-        /// Value indicating whether to invoke the specified action as a
-        /// synchronous manner.
-        /// </param>
-        ///
-        /// <remarks>
-        /// Presenter や ViewModel において、直接的に View と関係のない何らかの
-        /// 処理を実行する時には原則として 非 UI スレッド上で実行する事が推奨され
-        /// ますが、同期問題などの理由でやむを得ず UI スレッド上で実行したい場合、
-        /// 第 3 引数を true に設定して下さい。また、第 2 引数には既定の変換規則
-        /// として DialogMessage.Create が利用できます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Converter converter, bool synchronous) =>
-            synchronous ? TrackSync(action, converter) : TrackAsync(action, converter);
-
-        #endregion
-
         #region SetProperty
 
         /* ----------------------------------------------------------------- */
@@ -418,67 +346,6 @@ namespace Cube
         }
 
         #endregion
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackAsync
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Task TrackAsync(Action action, Converter converter) =>
-            Task.Run(() => TrackCore(action, converter));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackSync
-        ///
-        /// <summary>
-        /// Invokes the specified action as a synchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Task TrackSync(Action action, Converter converter)
-        {
-            TrackCore(action, converter);
-            return Task.FromResult(0);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackCore
-        ///
-        /// <summary>
-        /// Invokes the specified action, and will send the error message
-        /// if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void TrackCore(Action action, Converter converter)
-        {
-            try { action(); }
-            catch (Exception err) { Send(converter(err)); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Converter
-        ///
-        /// <summary>
-        /// Represents the delegate to convert from Exception to
-        /// DialogMessage.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public delegate DialogMessage Converter(Exception e);
 
         #endregion
     }

@@ -84,7 +84,7 @@ namespace Cube.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : SerializableBase
+    internal class Person : SerializableBase, IDisposable
     {
         #region Constructors
 
@@ -276,6 +276,17 @@ namespace Cube.Tests
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Disposes the managed resources.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Dispose() { }
 
         /* ----------------------------------------------------------------- */
         ///

@@ -232,10 +232,10 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private class Presenter : PresentableBase
+        private class Presenter : Presentable<Person>
         {
-            public Presenter() : base() { }
-            public Presenter(SynchronizationContext ctx) : base(new Aggregator(), ctx) { }
+            public Presenter() : base(new Person()) { }
+            public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { }
             public void SendMessage<T>() where T : new() => Send<T>();
             public void PostMessage<T>() where T : new() => Post<T>();
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
