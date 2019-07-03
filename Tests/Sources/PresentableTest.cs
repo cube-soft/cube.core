@@ -39,7 +39,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ArgumentNullException
+        /// Create_Throws
         ///
         /// <summary>
         /// Tests to create a new instance of the PresentableBase inherited
@@ -48,7 +48,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_ArgumentNullException()
+        public void Create_Throws()
         {
             Assert.That(SynchronizationContext.Current, Is.Null);
             Assert.That(() => new Presenter(), Throws.ArgumentNullException);
@@ -56,7 +56,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Subscribe
         ///
         /// <summary>
         /// Tests the Subscribe and Send methods.
@@ -64,7 +64,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send()
+        public void Subscribe()
         {
             var n = 0;
             void action(int i) => ++n;
@@ -105,6 +105,54 @@ namespace Cube.Tests
                 src.PostMessage<int>();
                 Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
             }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Tests the Send method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(DialogStatus.Ok,     ExpectedResult = 5)]
+        [TestCase(DialogStatus.Yes,    ExpectedResult = 5)]
+        [TestCase(DialogStatus.Cancel, ExpectedResult = 0)]
+        public int Send(DialogStatus value)
+        {
+            var n = 0;
+            using (var src = new Presenter(new SynchronizationContext()))
+            using (src.Subscribe<DialogMessage>(e => e.Value = value))
+            {
+                5.Times(i => src.SendMessage(new DialogMessage(),
+                    e => n++,
+                    e => e.Any(DialogStatus.Ok, DialogStatus.Yes)
+                ).Wait());
+            }
+            return n;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Tests the Send method with CancelMessage objects.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(true, ExpectedResult = 0)]
+        [TestCase(false, ExpectedResult = 5)]
+        public int Send_CancelMessage(bool cancel)
+        {
+            var n = 0;
+            using (var src = new Presenter(new SynchronizationContext()))
+            using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
+            {
+                5.Times(i => src.SendMessage(new OpenFileMessage(), e => n++).Wait());
+            }
+            return n;
         }
 
         /* ----------------------------------------------------------------- */
@@ -236,12 +284,13 @@ namespace Cube.Tests
         {
             public Presenter() : base(new Person()) { }
             public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { }
-            public void SendMessage<T>() where T : new() => Send<T>();
             public void PostMessage<T>() where T : new() => Post<T>();
+            public void SendMessage<T>() where T : new() => Send<T>();
+            public Task SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
+            public Task SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
             public Task TrackAsync(Action e) => Track(e);
             public IDispatcher GetDispatcher() => GetDispatcher(false);
-            protected override void Dispose(bool disposing) { }
             public string TestValue
             {
                 get => _test;
