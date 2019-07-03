@@ -1,9 +1,10 @@
-version: 1.16.0.{build}
+version: 1.17.0.{build}
 image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
     PROJECT_NAME:   'Cube.FileSystem'
+    PROJECT_MAIN:   'Cube.FileSystem'
     PROJECT_BIN:    'bin\%PLATFORM%\%CONFIGURATION%\net45'
     PROJECT_LIB:    '..\packages'
     TEST_TOOL:      '$(PROJECT_LIB)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
@@ -21,9 +22,9 @@ nuget:
     disable_publish_on_pr: true
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - nuget restore "%PROJECT_NAME%.sln"
+    - nuget restore "%PROJECT_MAIN%.sln"
 build:
-    project: '%PROJECT_NAME%.sln'
+    project: '%PROJECT_MAIN%.sln'
     parallel: true
     publish_nuget: true
     verbosity: minimal
@@ -40,6 +41,8 @@ test_script:
       -output:"%TEST_COVERAGE%"
       -filter:"%TEST_FILTERS%"
 after_test:
+    - pip install codecov
+    - codecov -f "%TEST_COVERAGE%"
     - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOG%\"
     - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOG%\"
 artifacts:
