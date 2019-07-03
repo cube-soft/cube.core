@@ -157,6 +157,24 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Send_Throws
+        ///
+        /// <summary>
+        /// Tests the Send method with a null object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_Throws()
+        {
+            using (var src = new Presenter(new SynchronizationContext()))
+            {
+                Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// TrackAsync
         ///
         /// <summary>
@@ -286,6 +304,7 @@ namespace Cube.Tests
             public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { }
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
+            public void SendMessage<T>(T m) => Send(m);
             public Task SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
             public Task SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);

@@ -51,6 +51,7 @@ namespace Cube
         /* --------------------------------------------------------------------- */
         public void Publish(object message)
         {
+            if (message == null) throw new ArgumentNullException(nameof(message));
             if (_subscription.TryGetValue(message.GetType(), out var dest))
             {
                 foreach (var e in dest) e(message);
