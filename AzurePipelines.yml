@@ -54,12 +54,18 @@ steps:
 
     - task: CopyFiles@2
       inputs:
-        contents: |
-            '**\*.log'
-            '**\*.xml'
+        contents: '**\*.log'
         targetFolder: '$(TEST_LOG)'
         overWrite: true
+        flattenFolders: true
       displayName: 'Copy test results'
+
+    - task: CopyFiles@2
+      inputs:
+        contents: '$(TEST_COVERAGE)'
+        targetFolder: '$(TEST_LOG)'
+        overWrite: true
+      displayName: 'Copy converage results'
 
     - task: PublishTestResults@2
       inputs:
