@@ -36,6 +36,24 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Match
+        ///
+        /// <summary>
+        /// Tests the Any extended method of the DialogStatus class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Match()
+        {
+            Assert.That(DialogStatus.Ok.Any(DialogStatus.Ok, DialogStatus.Cancel), Is.True);
+            Assert.That(DialogStatus.Ok.Any(DialogStatus.No, DialogStatus.Cancel), Is.False);
+            Assert.That(DialogStatus.Ok.Any(), Is.False);
+            Assert.That(DialogStatus.Empty.Any(DialogStatus.Empty), Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Create_DialogMessage
         ///
         /// <summary>

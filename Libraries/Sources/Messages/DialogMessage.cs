@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Linq;
 
 namespace Cube
 {
@@ -177,7 +178,7 @@ namespace Cube
     public enum DialogStatus
     {
         /// <summary>The message box returns no result.</summary>
-        None = 0,
+        Empty = 0,
         /// <summary>The result value of the message box is OK.</summary>
         Ok = 1,
         /// <summary>The result value of the message box is Cancel.</summary>
@@ -186,6 +187,43 @@ namespace Cube
         Yes = 6,
         /// <summary>The result value of the message box is No.</summary>
         No = 7,
+    }
+
+    #endregion
+
+    #region DialogStatusExtension
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DialogStatusExtension
+    ///
+    /// <summary>
+    /// Specifies the button that is clicked by a user.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class DialogStatusExtension
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Any
+        ///
+        /// <summary>
+        /// Determines whether to match any of the specified values.
+        /// </summary>
+        ///
+        /// <param name="src">Source value.</param>
+        /// <param name="values">Values to be checked.</param>
+        ///
+        /// <returns>true for match; otherwise false.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool Any(this DialogStatus src, params DialogStatus[] values) =>
+            values.Any(e => e == src);
+
+        #endregion
     }
 
     #endregion
