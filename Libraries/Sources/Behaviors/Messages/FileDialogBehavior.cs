@@ -66,7 +66,7 @@ namespace Cube.Forms.Behaviors
                 FilterIndex     = e.FilterIndex,
             };
 
-            if (e.Title.HasValue()) dialog.Title = e.Title;
+            if (e.Text.HasValue()) dialog.Title = e.Text;
             if (e.Value.Any()) dialog.FileName = e.Value.First();
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
@@ -124,7 +124,7 @@ namespace Cube.Forms.Behaviors
                 FilterIndex     = e.FilterIndex,
             };
 
-            if (e.Title.HasValue()) dialog.Title = e.Title;
+            if (e.Text.HasValue()) dialog.Title = e.Text;
             if (e.Value.HasValue()) dialog.FileName = e.Value;
             if (e.Filter.HasValue()) dialog.Filter = e.Filter;
             if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
@@ -183,7 +183,7 @@ namespace Cube.Forms.Behaviors
         {
             var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
-            if (e.Title.HasValue()) dialog.Description = e.Title;
+            if (e.Text.HasValue()) dialog.Description = e.Text;
             if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
 
             var ok = dialog.ShowDialog() == DialogResult.OK;

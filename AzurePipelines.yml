@@ -4,35 +4,35 @@ pool:
     vmImage: 'Windows-2019'
 variables:
     PROJECT_NAME:   'Cube.Forms'
+    PROJECT_MAIN:   'Cube.Forms'
     PROJECT_ARCH:   'Any CPU'
     PROJECT_CONFIG: 'Release'
-
 steps:
-- task: NuGetToolInstaller@0
-  inputs:
-    versionSpec: '>= 4.9'
-  displayName: 'Use NuGet 4.9 or later'
+    - task: NuGetToolInstaller@0
+      inputs:
+        versionSpec: '>= 4.9'
+      displayName: 'Use NuGet'
 
-- script: |
-    nuget restore "$(PROJECT_NAME).sln"
-  displayName: 'Restore NuGet packages'
+    - script: |
+        nuget restore "$(PROJECT_MAIN).sln"
+      displayName: 'Restore NuGet packages'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(PROJECT_NAME).sln'
-    platform: '$(PROJECT_ARCH)'
-    configuration: '$(PROJECT_CONFIG)'
-  displayName: 'Build solution'
+    - task: VSBuild@1
+      inputs:
+        solution: '$(PROJECT_MAIN).sln'
+        platform: '$(PROJECT_ARCH)'
+        configuration: '$(PROJECT_CONFIG)'
+      displayName: 'Build solution'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'Libraries\$(PROJECT_NAME).csproj'
-    configuration: '$(PROJECT_CONFIG)'
-  displayName: 'Create NuGet package'
+    - task: NuGetCommand@2
+      inputs:
+        command: 'pack'
+        packagesToPack: 'Libraries\$(PROJECT_NAME).csproj'
+        configuration: '$(PROJECT_CONFIG)'
+      displayName: 'Pack NuGet packages'
 
-- task: PublishPipelineArtifact@0
-  inputs:
-    artifactName: '$(PROJECT_NAME)'
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Publish pipline artifacts'
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: '$(PROJECT_NAME)'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+      displayName: 'Publish pipline artifacts'

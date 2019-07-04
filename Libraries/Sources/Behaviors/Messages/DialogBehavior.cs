@@ -62,11 +62,11 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Invoke(DialogMessage e)
         {
-            var icon = Icons[e.Icon];
+            var icon    = Icons[e.Icon];
             var buttons = Buttons[e.Buttons];
-            var status = MessageBox.Show(e.Value, e.Title, buttons, icon);
+            var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
 
-            e.Status = Results.ContainsKey(status) ? Results[status] : DialogStatus.None;
+            e.Value = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
         }
 
         /* ----------------------------------------------------------------- */
@@ -117,7 +117,7 @@ namespace Cube.Forms.Behaviors
         private static Dictionary<DialogResult, DialogStatus> Results { get; } =
             new Dictionary<DialogResult, DialogStatus>
             {
-                { DialogResult.None,   DialogStatus.None   },
+                { DialogResult.None,   DialogStatus.Empty  },
                 { DialogResult.OK,     DialogStatus.Ok     },
                 { DialogResult.Cancel, DialogStatus.Cancel },
                 { DialogResult.Yes,    DialogStatus.Yes    },

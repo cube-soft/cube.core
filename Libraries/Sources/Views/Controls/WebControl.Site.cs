@@ -78,15 +78,15 @@ namespace Cube.Forms
             {
                 var args = new DialogMessage
                 {
-                    Value   = text,
+                    Text    = text,
                     Title   = caption,
                     Buttons = GetButtons(type & 0x0f),
                     Icon    = GetIcon(type & 0xf0),
-                    Status  = DialogStatus.None,
+                    Value   = DialogStatus.Empty,
                 };
                 Host.OnMessageShowing(args);
-                result = (int)args.Status;
-                return (args.Status != DialogStatus.None) ? 0 : 1;
+                result = (int)args.Value;
+                return (args.Value != DialogStatus.Empty) ? 0 : 1;
             }
 
             /* ------------------------------------------------------------- */

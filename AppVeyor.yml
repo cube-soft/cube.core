@@ -1,9 +1,10 @@
-version: 1.16.0.{build}
+version: 1.17.0.{build}
 image: Visual Studio 2019 Preview
 platform: Any CPU
 configuration: Release
 environment:
     PROJECT_NAME: 'Cube.Forms'
+    PROJECT_MAIN: 'Cube.Forms'
 branches:
     only:
         - master
@@ -13,9 +14,9 @@ nuget:
     disable_publish_on_pr: true
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - nuget restore "%PROJECT_NAME%.sln"
+    - nuget restore "%PROJECT_MAIN%.sln"
 build:
-    project: '%PROJECT_NAME%.sln'
+    project: '%PROJECT_MAIN%.sln'
     parallel: true
     publish_nuget: true
     verbosity: minimal
