@@ -44,9 +44,9 @@ namespace Cube.Xui.Behaviors
         {
             var icon    = Icons[e.Icon];
             var buttons = Buttons[e.Buttons];
-            var status  = MessageBox.Show(e.Value, e.Title, buttons, icon);
+            var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
 
-            e.Status = Results.ContainsKey(status) ? Results[status] : DialogStatus.None;
+            e.Value = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
         }
 
         /* ----------------------------------------------------------------- */
@@ -97,7 +97,7 @@ namespace Cube.Xui.Behaviors
         private static Dictionary<MessageBoxResult, DialogStatus> Results { get; } =
             new Dictionary<MessageBoxResult, DialogStatus>
             {
-                { MessageBoxResult.None,   DialogStatus.None   },
+                { MessageBoxResult.None,   DialogStatus.Empty  },
                 { MessageBoxResult.OK,     DialogStatus.Ok     },
                 { MessageBoxResult.Cancel, DialogStatus.Cancel },
                 { MessageBoxResult.Yes,    DialogStatus.Yes    },
