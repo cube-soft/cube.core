@@ -32,7 +32,7 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal interface IArgumentPreprocessor
+    public interface IArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -47,7 +47,7 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src);
+        IEnumerable<ArgumentToken> Invoke(IEnumerable<string> src);
     }
 
     #endregion
@@ -69,7 +69,7 @@ namespace Cube.Collections
     /// <seealso href="http://pubs.opengroup.org/onlinepubs/009696899/basedefs/xbd_chap12.html" />
     ///
     /* --------------------------------------------------------------------- */
-    internal class PosixArgumentPreprocessor : IArgumentPreprocessor
+    public class PosixArgumentPreprocessor : IArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -84,7 +84,7 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
+        public IEnumerable<ArgumentToken> Invoke(IEnumerable<string> src) =>
             src.SelectMany(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
@@ -96,10 +96,10 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
+        protected virtual IEnumerable<ArgumentToken> Convert(string src) =>
             src.StartsWith("-") ?
-            src.Skip(1).Select(c => KeyValuePair.Create(true, c.ToString())) :
-            AsEnumerable(KeyValuePair.Create(false, src));
+            src.Skip(1).Select(c => new ArgumentToken(c.ToString(), "-")) :
+            AsEnumerable(new ArgumentToken(src));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,7 +110,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IEnumerable<KeyValuePair<bool, string>> AsEnumerable(KeyValuePair<bool, string> src)
+        protected IEnumerable<ArgumentToken> AsEnumerable(ArgumentToken src)
         {
             yield return src;
         }
@@ -131,7 +131,7 @@ namespace Cube.Collections
     /// <seealso href="https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html" />
     ///
     /* --------------------------------------------------------------------- */
-    internal class GnuArgumentPreprocessor : PosixArgumentPreprocessor
+    public class GnuArgumentPreprocessor : PosixArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -142,9 +142,9 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override IEnumerable<KeyValuePair<bool, string>> Convert(string src) =>
+        protected override IEnumerable<ArgumentToken> Convert(string src) =>
             src.StartsWith("--") ?
-            AsEnumerable(KeyValuePair.Create(true, src.Substring(2))) :
+            AsEnumerable(new ArgumentToken(src.Substring(2), "--")) :
             base.Convert(src);
     }
 
@@ -165,7 +165,7 @@ namespace Cube.Collections
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    internal class DosArgumentPreprocessor : IArgumentPreprocessor
+    public class DosArgumentPreprocessor : IArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -180,7 +180,7 @@ namespace Cube.Collections
         /// <returns>Normalized arguments.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<KeyValuePair<bool, string>> Invoke(IEnumerable<string> src) =>
+        public IEnumerable<ArgumentToken> Invoke(IEnumerable<string> src) =>
             src.Select(e => Convert(e));
 
         /* ----------------------------------------------------------------- */
@@ -192,10 +192,10 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual KeyValuePair<bool, string> Convert(string src) =>
+        protected virtual ArgumentToken Convert(string src) =>
             src.StartsWith("/") ?
-            KeyValuePair.Create(true, src.Substring(1)) :
-            KeyValuePair.Create(false, src);
+            new ArgumentToken(src.Substring(1), "/") :
+            new ArgumentToken(src);
     }
 
     #endregion
@@ -217,7 +217,7 @@ namespace Cube.Collections
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    internal class WindowsArgumentPreprocessor : DosArgumentPreprocessor
+    public class WindowsArgumentPreprocessor : DosArgumentPreprocessor
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -228,9 +228,9 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override KeyValuePair<bool, string> Convert(string src) =>
-            src.StartsWith("--") ? KeyValuePair.Create(true, src.Substring(2)) :
-            src.StartsWith("-")  ? KeyValuePair.Create(true, src.Substring(1)) :
+        protected override ArgumentToken Convert(string src) =>
+            src.StartsWith("--") ? new ArgumentToken(src.Substring(2), "--") :
+            src.StartsWith("-")  ? new ArgumentToken(src.Substring(1), "-" ) :
             base.Convert(src);
     }
 
