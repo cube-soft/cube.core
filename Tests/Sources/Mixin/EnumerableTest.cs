@@ -93,7 +93,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndexOf()
         {
             var src = 50.Make(i => i * 2);
-            Assert.That(src.FirstIndexOf(i => i < 20), Is.EqualTo(0));
+            Assert.That(src.FirstIndex(i => i < 20), Is.EqualTo(0));
         }
 
         /* ----------------------------------------------------------------- */
@@ -109,7 +109,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndexOf_Empty()
         {
             var src = Enumerable.Empty<int>();
-            Assert.That(src.FirstIndexOf(i => i < 20), Is.EqualTo(-1));
+            Assert.That(src.FirstIndex(i => i < 20), Is.EqualTo(-1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -125,7 +125,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndexOf_Default()
         {
             var src = default(List<int>);
-            Assert.That(src.FirstIndexOf(i => i < 20), Is.EqualTo(-1));
+            Assert.That(src.FirstIndex(i => i < 20), Is.EqualTo(-1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -141,7 +141,7 @@ namespace Cube.Tests.Mixin
         public void FirstIndexOf_NeverMatch()
         {
             var src = Enumerable.Range(1, 10);
-            Assert.That(src.FirstIndexOf(i => i > 100), Is.EqualTo(-1));
+            Assert.That(src.FirstIndex(i => i > 100), Is.EqualTo(-1));
         }
 
         #endregion
@@ -160,7 +160,7 @@ namespace Cube.Tests.Mixin
         [TestCase(10, ExpectedResult =  9)]
         [TestCase( 1, ExpectedResult =  0)]
         [TestCase( 0, ExpectedResult = -1)]
-        public int LastIndexOf(int count) => Enumerable.Range(0, count).LastIndexOf();
+        public int LastIndexOf(int count) => Enumerable.Range(0, count).LastIndex();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -175,7 +175,7 @@ namespace Cube.Tests.Mixin
         public void LastIndexOf()
         {
             var src = 50.Make(i => i * 2);
-            Assert.That(src.LastIndexOf(i => i < 20), Is.EqualTo(9));
+            Assert.That(src.LastIndex(i => i < 20), Is.EqualTo(9));
         }
 
         /* ----------------------------------------------------------------- */
@@ -191,7 +191,7 @@ namespace Cube.Tests.Mixin
         public void LastIndexOf_Default()
         {
             var src = default(List<int>);
-            Assert.That(src.LastIndexOf(), Is.EqualTo(-1));
+            Assert.That(src.LastIndex(), Is.EqualTo(-1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -207,7 +207,7 @@ namespace Cube.Tests.Mixin
         public void LastIndexOf_NeverMatch()
         {
             var src = Enumerable.Range(1, 10);
-            Assert.That(src.LastIndexOf(i => i > 100), Is.EqualTo(-1));
+            Assert.That(src.LastIndex(i => i > 100), Is.EqualTo(-1));
         }
 
         /* ----------------------------------------------------------------- */
