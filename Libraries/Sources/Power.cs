@@ -192,7 +192,7 @@ namespace Cube
             set
             {
                 if (IgnoreStatusChanged && value == PowerModes.StatusChange) return;
-                SetProperty(ref _mode, value);
+                _ = SetProperty(ref _mode, value);
             }
         }
 

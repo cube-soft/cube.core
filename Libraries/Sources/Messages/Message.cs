@@ -113,4 +113,19 @@ namespace Cube
     }
 
     #endregion
+
+    #region CloseMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CloseMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when closing a window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class CloseMessage { }
+
+    #endregion
 }
