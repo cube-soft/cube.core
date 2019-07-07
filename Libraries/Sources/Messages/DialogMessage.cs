@@ -15,8 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Cube
 {
@@ -103,7 +105,7 @@ namespace Cube
         public static DialogMessage Create(Exception src) => new DialogMessage
         {
             Text    = $"{src.Message} ({src.GetType().Name})",
-            Title   = "Error",
+            Title   = (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetTitle(),
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
             Value   = DialogStatus.Ok,

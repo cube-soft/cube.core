@@ -194,7 +194,7 @@ namespace Cube.Tests
             }
 
             Assert.That(dest.Text,    Does.StartWith(nameof(TrackAsync)));
-            Assert.That(dest.Title,   Is.EqualTo("Error"));
+            Assert.That(dest.Title,   Is.EqualTo("Cube.Core"));
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
@@ -221,7 +221,7 @@ namespace Cube.Tests
             }
 
             Assert.That(dest.Text,    Does.StartWith(nameof(TrackSync)));
-            Assert.That(dest.Title,   Is.EqualTo("Error"));
+            Assert.That(dest.Title,   Is.EqualTo("Cube.Core"));
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));

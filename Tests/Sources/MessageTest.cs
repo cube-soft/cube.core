@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace Cube.Tests
@@ -67,6 +68,26 @@ namespace Cube.Tests
             var src = new DialogMessage();
             Assert.That(src.Text,    Is.Empty);
             Assert.That(src.Title,   Is.Empty);
+            Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
+            Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_ErrorMessage
+        ///
+        /// <summary>
+        /// Tests the Create method of the DialogMessage class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_ErrorMessage()
+        {
+            var src = DialogMessage.Create(new ArgumentException("TEST"));
+            Assert.That(src.Text,    Is.EqualTo("TEST (ArgumentException)"));
+            Assert.That(src.Title,   Is.EqualTo("Cube.Core"));
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
