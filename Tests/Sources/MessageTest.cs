@@ -67,7 +67,7 @@ namespace Cube.Tests
         {
             var src = new DialogMessage();
             Assert.That(src.Text,    Is.Empty);
-            Assert.That(src.Title,   Is.Empty);
+            Assert.That(src.Title,   Is.EqualTo("Cube.Core"));
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));

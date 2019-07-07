@@ -46,7 +46,11 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage() { Value = DialogStatus.Ok; }
+        public DialogMessage()
+        {
+            Title = (Assembly.GetEntryAssembly() ?? GetType().Assembly).GetTitle();
+            Value = DialogStatus.Ok;
+        }
 
         #endregion
 
@@ -105,7 +109,6 @@ namespace Cube
         public static DialogMessage Create(Exception src) => new DialogMessage
         {
             Text    = $"{src.Message} ({src.GetType().Name})",
-            Title   = (Assembly.GetEntryAssembly() ?? typeof(DialogMessage).Assembly).GetTitle(),
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
             Value   = DialogStatus.Ok,
