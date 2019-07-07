@@ -70,7 +70,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(string version) : this(Assembly.GetExecutingAssembly())
+        public SoftwareVersion(string version) : this(typeof(SoftwareVersion).Assembly)
         {
             if (!version.HasValue()) return;
 

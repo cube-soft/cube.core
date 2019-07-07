@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Assembly;
 using NUnit.Framework;
-using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -51,7 +50,7 @@ namespace Cube.Tests
         [TestCase(5, ExpectedResult = 4)]
         public int Digit(int src)
         {
-            var asm = Assembly.GetExecutingAssembly();
+            var asm = typeof(SoftwareVersionTest).Assembly;
             return new SoftwareVersion(asm) { Digit = src }.Digit;
         }
 
@@ -67,7 +66,7 @@ namespace Cube.Tests
         [Test]
         public void GetString()
         {
-            var src   = Assembly.GetExecutingAssembly();
+            var src   = typeof(SoftwareVersionTest).Assembly;
             var major = src.GetVersion().Major;
             var minor = src.GetVersion().Minor;
             var pf    = src.GetPlatform();

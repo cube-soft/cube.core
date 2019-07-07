@@ -18,7 +18,6 @@
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Syntax;
 using System.IO;
-using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -46,7 +45,7 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         protected FileFixture()
         {
-            Root     = Assembly.GetExecutingAssembly().GetDirectoryName();
+            Root     = typeof(FileFixture).Assembly.GetDirectoryName();
             Name     = GetType().FullName;
             Examples = Path.Combine(Root, nameof(Examples));
             Results  = Path.Combine(Root, nameof(Results), Name);

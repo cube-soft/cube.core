@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -45,8 +44,8 @@ namespace Cube.Tests
         public void OneTimeSetup()
         {
             Logger.Configure();
-            Logger.ObserveTaskException();
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
+            _ = Logger.ObserveTaskException();
+            Logger.Info(typeof(GlobalSetup), typeof(GlobalSetup).Assembly);
         }
     }
 }

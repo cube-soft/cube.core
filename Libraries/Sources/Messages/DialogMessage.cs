@@ -105,7 +105,7 @@ namespace Cube
         public static DialogMessage Create(Exception src) => new DialogMessage
         {
             Text    = $"{src.Message} ({src.GetType().Name})",
-            Title   = (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetTitle(),
+            Title   = (Assembly.GetEntryAssembly() ?? typeof(DialogMessage).Assembly).GetTitle(),
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
             Value   = DialogStatus.Ok,
