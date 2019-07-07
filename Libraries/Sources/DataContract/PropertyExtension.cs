@@ -27,7 +27,7 @@ namespace Cube.DataContract.Mixin
     /// PropertyExtension
     ///
     /// <summary>
-    /// プロパティの変換に関わる拡張用クラスです。
+    /// Provides extended methods of the Type and PropertyInfo classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,13 +40,13 @@ namespace Cube.DataContract.Mixin
         /// Parse
         ///
         /// <summary>
-        /// オブジェクトを指定した型に変換します。
+        /// Converts the specified value according to the specified type.
         /// </summary>
         ///
-        /// <param name="src">変換後の型</param>
-        /// <param name="value">変換元オブジェクト</param>
+        /// <param name="src">Type of the converted object.</param>
+        /// <param name="value">Object to be converted.</param>
         ///
-        /// <returns>変換後オブジェクト</returns>
+        /// <returns>Converted object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static object Parse(this Type src, object value) =>
@@ -60,28 +60,27 @@ namespace Cube.DataContract.Mixin
         /// IsObject
         ///
         /// <summary>
-        /// 一般的なクラスを表す型かどうかを判別します。
+        /// Determines whether the specified type is generic object type.
         /// </summary>
         ///
-        /// <param name="src">対象となる Type オブジェクト</param>
+        /// <param name="src">Target type.</param>
         ///
-        /// <returns>一般的なクラスかどうか</returns>
+        /// <returns>true for generic object type.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool IsObject(this Type src) =>
-            Type.GetTypeCode(src) == TypeCode.Object;
+        public static bool IsObject(this Type src) => Type.GetTypeCode(src) == TypeCode.Object;
 
         /* ----------------------------------------------------------------- */
         ///
         /// IsGenericList
         ///
         /// <summary>
-        /// List(T) またはそのインターフェースかどうかを判別します。
+        /// Determines whether the specified type is List(T) or IList(T).
         /// </summary>
         ///
-        /// <param name="src">対象となる Type オブジェクト</param>
+        /// <param name="src">Target type.</param>
         ///
-        /// <returns>List(T) またはそのインターフェースかどうか</returns>
+        /// <returns>true for generic list.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static bool IsGenericList(this Type src)
@@ -100,16 +99,16 @@ namespace Cube.DataContract.Mixin
         /// GetPropertyType
         ///
         /// <summary>
-        /// オブジェクトの型を取得します。
+        /// Gets the type of specified object.
         /// </summary>
         ///
-        /// <param name="src">オブジェクト情報</param>
+        /// <param name="src">Property information.</param>
         ///
-        /// <returns>Type オブジェクト</returns>
+        /// <returns>Type object.</returns>
         ///
         /// <remarks>
-        /// 指定されたオブジェクトの型が Nullable(T) の場合、T を表す
-        /// Type オブジェクトを返します。
+        /// Returns the type of T if the specified object represents the
+        /// Nullable(T) type.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -126,12 +125,12 @@ namespace Cube.DataContract.Mixin
         /// GetDataMemberName
         ///
         /// <summary>
-        /// DataMember 属性の名前を取得します。
+        /// Gets the name of property that has the DataMember attribute.
         /// </summary>
         ///
-        /// <param name="info">オブジェクト情報</param>
+        /// <param name="info">Property information.</param>
         ///
-        /// <returns>DataMember 属性の名前</returns>
+        /// <returns>Name of property.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string GetDataMemberName(this PropertyInfo info)

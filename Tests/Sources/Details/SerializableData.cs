@@ -24,7 +24,7 @@ namespace Cube.Tests
     /// SerializableData
     ///
     /// <summary>
-    /// Serializabl 属性を持つクラスのサンプルです。
+    /// Represents the example class that has the Serializabl attribute.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube.Tests
         /// Identification
         ///
         /// <summary>
-        /// ID を取得または設定します。
+        /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -49,7 +49,7 @@ namespace Cube.Tests
         /// Name
         ///
         /// <summary>
-        /// 名前を取得または設定します。
+        /// Gets or sets the name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -60,7 +60,7 @@ namespace Cube.Tests
         /// Sex
         ///
         /// <summary>
-        /// 性別を取得または設定します。
+        /// Gets or sets the sex.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -71,7 +71,7 @@ namespace Cube.Tests
         /// Creation
         ///
         /// <summary>
-        /// 作成日時を取得または設定します。
+        /// Gets or sets the creation time.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -82,7 +82,7 @@ namespace Cube.Tests
         /// Reserved
         ///
         /// <summary>
-        /// フラグを取得または設定します。
+        /// Gets or sets the reserved value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

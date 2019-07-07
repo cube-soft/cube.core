@@ -27,7 +27,7 @@ namespace Cube.Collections.Differences
     /// OnpAlgorithm
     ///
     /// <summary>
-    /// 差分検出アルゴリズムを実装したクラスです。
+    /// Provides functionality to detect the diff.
     /// </summary>
     ///
     /// <remarks>
@@ -46,7 +46,7 @@ namespace Cube.Collections.Differences
         /// OnpAlgorithm
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the OnpAlgorithm class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -57,10 +57,11 @@ namespace Cube.Collections.Differences
         /// OnpAlgorithm
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the OnpAlgorithm class with the
+        /// specified comparer.
         /// </summary>
         ///
-        /// <param name="comparer">比較用オブジェクト</param>
+        /// <param name="comparer">Object to compare.</param>
         ///
         /* ----------------------------------------------------------------- */
         public OnpAlgorithm(IEqualityComparer<T> comparer)
@@ -74,17 +75,17 @@ namespace Cube.Collections.Differences
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compar
+        /// Compare
         ///
         /// <summary>
-        /// 2 つのシーケンスを比較し、差分を検出します。
+        /// Compares the specified sequence and detects the diff of them.
         /// </summary>
         ///
-        /// <param name="older">変更前シーケンス</param>
-        /// <param name="newer">変更後シーケンス</param>
-        /// <param name="mask">結果のフィルタリング用 Mask</param>
+        /// <param name="older">Older sequence.</param>
+        /// <param name="newer">Newer sequence.</param>
+        /// <param name="mask">Mask of the results.</param>
         ///
-        /// <returns>差分</returns>
+        /// <returns>Diff results.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IEnumerable<Result<T>> Compare(IEnumerable<T> older,
@@ -93,17 +94,17 @@ namespace Cube.Collections.Differences
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Compar
+        /// Compare
         ///
         /// <summary>
-        /// 2 つのシーケンスを比較し、差分を検出します。
+        /// Compares the specified sequence and detects the diff of them.
         /// </summary>
         ///
-        /// <param name="older">変更前シーケンス</param>
-        /// <param name="newer">変更後シーケンス</param>
-        /// <param name="mask">結果のフィルタリング用 Mask</param>
+        /// <param name="older">Older sequence.</param>
+        /// <param name="newer">Newer sequence.</param>
+        /// <param name="mask">Mask of the results.</param>
         ///
-        /// <returns>差分</returns>
+        /// <returns>Diff results.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IEnumerable<Result<T>> Compare(T[] older, T[] newer, Condition mask)
@@ -129,7 +130,7 @@ namespace Cube.Collections.Differences
         /// CompareEmpty
         ///
         /// <summary>
-        /// 差分を検出します。
+        /// Compares the sequence.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -145,13 +146,8 @@ namespace Cube.Collections.Differences
         /// Compare
         ///
         /// <summary>
-        /// 差分を検出します。
+        /// Compares the sequence.
         /// </summary>
-        ///
-        /// <remarks>
-        /// このメソッド実行時には対象となるデータが設定されている
-        /// 必要があります。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private IEnumerable<Result<T>> Compare(Condition mask)
@@ -179,7 +175,7 @@ namespace Cube.Collections.Differences
         /// SearchSnake
         ///
         /// <summary>
-        /// 差分検出処理を実行します。
+        /// Detects the snake.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

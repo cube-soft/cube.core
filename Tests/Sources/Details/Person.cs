@@ -26,11 +26,11 @@ namespace Cube.Tests
     /// Sex
     ///
     /// <summary>
-    /// 性別を表す列挙体です。
+    /// Specifies the sex.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    internal enum Sex : int
+    internal enum Sex
     {
         Male    =  0,
         Female  =  1,
@@ -42,7 +42,7 @@ namespace Cube.Tests
     /// Address
     ///
     /// <summary>
-    /// アドレスを保持するためのクラスです。
+    /// Represents the address.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -54,7 +54,7 @@ namespace Cube.Tests
         /// Type
         ///
         /// <summary>
-        /// アドレスの種類を取得または設定します。
+        /// Gets or sets the type of the provided address.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,7 +66,7 @@ namespace Cube.Tests
         /// Value
         ///
         /// <summary>
-        /// アドレスの内容を取得または設定します。
+        /// Gets or sets the content of the provided address.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -79,7 +79,7 @@ namespace Cube.Tests
     /// Person
     ///
     /// <summary>
-    /// 個人情報を保持するためのクラスです。
+    /// Represents the example class that is serializable.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -93,7 +93,7 @@ namespace Cube.Tests
         /// Person
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Persion class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -108,7 +108,7 @@ namespace Cube.Tests
         /// Identification
         ///
         /// <summary>
-        /// ID を取得または設定します。
+        /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -124,7 +124,7 @@ namespace Cube.Tests
         /// Name
         ///
         /// <summary>
-        /// 名前を取得または設定します。
+        /// Gets or sets the name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -140,7 +140,7 @@ namespace Cube.Tests
         /// Sex
         ///
         /// <summary>
-        /// 性別を取得または設定します。
+        /// Gets or sets the sex.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -156,7 +156,7 @@ namespace Cube.Tests
         /// Age
         ///
         /// <summary>
-        /// 年齢を取得または設定します。
+        /// Gets or sets the age.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -172,7 +172,7 @@ namespace Cube.Tests
         /// Creation
         ///
         /// <summary>
-        /// 作成日時を取得または設定します。
+        /// Gets or sets the creation time.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -188,7 +188,7 @@ namespace Cube.Tests
         /// Contact
         ///
         /// <summary>
-        /// 連絡先を取得または設定します。
+        /// Gets or sets the address to contact.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -204,7 +204,7 @@ namespace Cube.Tests
         /// Others
         ///
         /// <summary>
-        /// その他のアドレスを取得または設定します。
+        /// Gets or sets the other addresses.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -220,7 +220,7 @@ namespace Cube.Tests
         /// Messages
         ///
         /// <summary>
-        /// メッセージ一覧を取得または設定します。
+        /// Gets or sets the message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -236,7 +236,7 @@ namespace Cube.Tests
         /// Reserved
         ///
         /// <summary>
-        /// フラグを取得または設定します。
+        /// Gets or sets the reserved value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -252,7 +252,7 @@ namespace Cube.Tests
         /// Secret
         ///
         /// <summary>
-        /// 秘密のメモ用データを取得または設定します。
+        /// Gets or sets the secret value that is not serialized.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -267,7 +267,7 @@ namespace Cube.Tests
         /// Guid
         ///
         /// <summary>
-        /// Guid オブジェクトを取得します。
+        /// Gets the Guid of the object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -293,8 +293,7 @@ namespace Cube.Tests
         /// CreateDummy
         ///
         /// <summary>
-        /// テスト用のダミーデータが設定された Person オブジェクトを
-        /// 生成します。
+        /// Creates a dummy object to test.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -330,7 +329,7 @@ namespace Cube.Tests
         /// OnDeserializing
         ///
         /// <summary>
-        /// デシリアライズ直前に実行されます。
+        /// Occurs before deserializing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -342,7 +341,7 @@ namespace Cube.Tests
         /// Reset
         ///
         /// <summary>
-        /// 値をリセットします。
+        /// Resets values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

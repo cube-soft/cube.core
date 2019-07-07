@@ -48,8 +48,9 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public DialogMessage()
         {
-            Title = (Assembly.GetEntryAssembly() ?? GetType().Assembly).GetTitle();
             Value = DialogStatus.Ok;
+            Text  = string.Empty;
+            Title = (Assembly.GetEntryAssembly() ?? GetType().Assembly).GetTitle();
         }
 
         #endregion
@@ -65,7 +66,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///

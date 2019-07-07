@@ -25,7 +25,7 @@ namespace Cube.Collections.Differences
     /// Condition
     ///
     /// <summary>
-    /// 差分の状態を表す列挙型です。
+    /// Specifies the diff condition.
     /// </summary>
     ///
     /// <remarks>
@@ -37,18 +37,18 @@ namespace Cube.Collections.Differences
     [Flags]
     public enum Condition
     {
-        /// <summary>差分無し</summary>
+        /// <summary>No diff.</summary>
         None = 0x01,
-        /// <summary>追加（新しいシーケンスにのみ存在する）</summary>
+        /// <summary>Older results are empty.</summary>
         Inserted = 0x02,
-        /// <summary>削除（古いシーケンスにのみ存在する）</summary>
+        /// <summary>Newer results are empty.</summary>
         Deleted = 0x04,
-        /// <summary>変更</summary>
+        /// <summary>Changed content.</summary>
         Changed = 0x08,
 
-        /// <summary>何らかの変更があった事を示す Mask</summary>
+        /// <summary>Mask that indicates that there has been some change.</summary>
         DiffOnly = Inserted | Deleted | Changed,
-        /// <summary>全てを示す Mask</summary>
+        /// <summary>Mask of all defined elements.</summary>
         Any = None | DiffOnly,
     }
 
@@ -57,7 +57,7 @@ namespace Cube.Collections.Differences
     /// Result
     ///
     /// <summary>
-    /// 比較結果を保持するためのクラスです。
+    /// Represents a part of the diff results.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -70,12 +70,13 @@ namespace Cube.Collections.Differences
         /// Result
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Result class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="condition">差分の状態</param>
-        /// <param name="older">変更前シーケンスの対象部分</param>
-        /// <param name="newer">変更後シーケンスの対象部分</param>
+        /// <param name="condition">Diff condition.</param>
+        /// <param name="older">Target part of the older sequence.</param>
+        /// <param name="newer">Target part of the newer sequence.</param>
         ///
         /* ----------------------------------------------------------------- */
         public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
@@ -94,7 +95,7 @@ namespace Cube.Collections.Differences
         /// Condition
         ///
         /// <summary>
-        /// 差分の状態を示す値を取得します。
+        /// Gets the diff condition.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -105,7 +106,7 @@ namespace Cube.Collections.Differences
         /// Older
         ///
         /// <summary>
-        /// 変更前シーケンスの対象部分を取得します。
+        /// Gets the target part of the older sequence.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -116,7 +117,7 @@ namespace Cube.Collections.Differences
         /// Newer
         ///
         /// <summary>
-        /// 変更後シーケンスの対象部分を取得します。
+        /// Gets the target part of the newer sequence.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

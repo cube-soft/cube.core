@@ -25,7 +25,7 @@ namespace Cube.Collections.Differences
     /// CommonSequence
     ///
     /// <summary>
-    /// シーケンスを保持するためのクラスです。
+    /// Represents the sequence of diff results.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,8 +38,14 @@ namespace Cube.Collections.Differences
         /// CommonSequence
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the CommonSequence class with
+        /// the specified arguments.
         /// </summary>
+        ///
+        /// <param name="older">Start position of the older content.</param>
+        /// <param name="newer">Start position of the newer content.</param>
+        /// <param name="count">Number of elements.</param>
+        /// <param name="next">Next sequence.</param>
         ///
         /* ----------------------------------------------------------------- */
         public CommonSequence(int older, int newer, int count, CommonSequence<T> next)
@@ -59,7 +65,7 @@ namespace Cube.Collections.Differences
         /// OlderStart
         ///
         /// <summary>
-        /// 変更前コンテンツの開始インデックスを取得します。
+        /// Get the start position of the older content.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -70,7 +76,7 @@ namespace Cube.Collections.Differences
         /// NewerStart
         ///
         /// <summary>
-        /// 変更後コンテンツの開始インデックスを取得します。
+        /// Get the start position of the newer content.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -81,7 +87,7 @@ namespace Cube.Collections.Differences
         /// Count
         ///
         /// <summary>
-        /// 対象範囲を取得します。
+        /// Gets the number of elements in the content.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -92,7 +98,7 @@ namespace Cube.Collections.Differences
         /// Next
         ///
         /// <summary>
-        /// 次のシーケンスを取得または設定します。
+        /// Gets the next sequence.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -107,14 +113,14 @@ namespace Cube.Collections.Differences
         /// Reverse
         ///
         /// <summary>
-        /// リンクリストを反転させます。
+        /// Reverses the provided linked list.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public CommonSequence<T> Reverse()
         {
-            CommonSequence<T> top     = null;
-            CommonSequence<T> current = this;
+            var top     = default(CommonSequence<T>);
+            var current = this;
 
             while (current != null)
             {
@@ -131,7 +137,7 @@ namespace Cube.Collections.Differences
         /// ToResult
         ///
         /// <summary>
-        /// Result オブジェクトに変換します。
+        /// Converts to the collection of Result(T) objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -186,7 +192,7 @@ namespace Cube.Collections.Differences
         /// Create
         ///
         /// <summary>
-        /// Result(T) オブジェクトを生成します。
+        /// Creates a new instance of the Result(T) class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -203,7 +209,7 @@ namespace Cube.Collections.Differences
         /// Slice
         ///
         /// <summary>
-        /// 配列の一部を表すオブジェクトを生成します。
+        /// Gets the part of the specified collection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

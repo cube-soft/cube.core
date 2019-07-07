@@ -24,7 +24,7 @@ namespace Cube.Tests
     /// GlobalSetup
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Provides functionality to run at the beginning of the NUnit.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -36,7 +36,7 @@ namespace Cube.Tests
         /// OneTimeSetup
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Invokes the setup only once.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

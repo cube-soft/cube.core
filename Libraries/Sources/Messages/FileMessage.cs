@@ -59,11 +59,11 @@ namespace Cube
 
     #endregion
 
-    #region OpenOrSaveFileMessage<TAction>
+    #region OpenOrSaveFileMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenOrSaveFileMessage(TAction)
+    /// OpenOrSaveFileMessage(TValue)
     ///
     /// <summary>
     /// Represents shared information to show either the OpenFileDialog
