@@ -31,7 +31,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class Presentable<TModel> : PresentableBase where TModel : IDisposable
+    public abstract class Presentable<TModel> : PresentableBase
     {
         #region Constructors
 
@@ -118,7 +118,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) Facade?.Dispose();
+            if (disposing && Facade is IDisposable obj) obj.Dispose();
         }
 
         #region Send
@@ -236,14 +236,6 @@ namespace Cube
         /// Value indicating whether to invoke the specified action as a
         /// synchronous method.
         /// </param>
-        ///
-        /// <remarks>
-        /// Presenter や ViewModel において、直接的に View と関係のない何らかの
-        /// 処理を実行する時には原則として 非 UI スレッド上で実行する事が推奨され
-        /// ますが、同期問題などの理由でやむを得ず UI スレッド上で実行したい場合、
-        /// 第 3 引数を true に設定して下さい。また、第 2 引数には既定の変換規則
-        /// として DialogMessage.Create が利用できます。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected Task Track(Action action, Converter converter, bool synchronous) =>

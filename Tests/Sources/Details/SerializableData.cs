@@ -24,7 +24,7 @@ namespace Cube.Tests
     /// SerializableData
     ///
     /// <summary>
-    /// Represents the example class that has the Serializabl attribute.
+    /// Represents the example class that has the Serializable attribute.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
