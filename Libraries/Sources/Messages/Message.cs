@@ -128,4 +128,20 @@ namespace Cube
     public class CloseMessage { }
 
     #endregion
+
+    #region ApplyMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ApplyMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when setting the current
+    /// values to the associated model objects.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class ApplyMessage { }
+
+    #endregion
 }

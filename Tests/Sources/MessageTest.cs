@@ -159,19 +159,18 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_CloseMessage
+        /// Create_EmptyMessages
         ///
         /// <summary>
-        /// Tests properties of the CloseMessage class.
+        /// Tests to create messages that have no properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_CloseMessage()
+        public void Create_EmptyMessages()
         {
-            // The class has no properties.
-            var src = new CloseMessage();
-            Assert.That(src, Is.Not.Null);
+            Assert.That(new CloseMessage(), Is.Not.Null);
+            Assert.That(new ApplyMessage(), Is.Not.Null);
         }
 
         #endregion
