@@ -49,7 +49,6 @@ namespace Cube.Tests
         {
             Assert.That(DialogStatus.Ok.Any(DialogStatus.Ok, DialogStatus.Cancel), Is.True);
             Assert.That(DialogStatus.Ok.Any(DialogStatus.No, DialogStatus.Cancel), Is.False);
-            Assert.That(DialogStatus.Ok.Any(), Is.False);
             Assert.That(DialogStatus.Empty.Any(DialogStatus.Empty), Is.True);
         }
 

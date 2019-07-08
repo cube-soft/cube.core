@@ -221,13 +221,14 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="src">Source value.</param>
-        /// <param name="values">Values to be checked.</param>
+        /// <param name="value">Value to be checked.</param>
+        /// <param name="more">Values to be checked.</param>
         ///
         /// <returns>true for match; otherwise false.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool Any(this DialogStatus src, params DialogStatus[] values) =>
-            values.Any(e => e == src);
+        public static bool Any(this DialogStatus src, DialogStatus value, params DialogStatus[] more) =>
+            src == value || more.Any(e => e == src);
 
         #endregion
     }
