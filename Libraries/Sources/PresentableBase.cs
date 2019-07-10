@@ -116,35 +116,10 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected PresentableBase(Aggregator aggregator, SynchronizationContext context)
         {
-            Aggregator = aggregator;
-            Context    = context ?? throw new ArgumentNullException(nameof(context));
+            _aggregator = aggregator;
+            _send       = new Dispatcher(context, true);
+            _post       = new Dispatcher(context, false);
         }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// Gets the message aggregator.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Aggregator Aggregator { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Context
-        ///
-        /// <summary>
-        /// Gets the synchronization context.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected SynchronizationContext Context { get; }
 
         #endregion
 
@@ -176,7 +151,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (PropertyChanged != null) Context.Post(z => PropertyChanged(this, e), null);
+            if (PropertyChanged != null) _post.Invoke(() => PropertyChanged(this, e));
         }
 
         /* ----------------------------------------------------------------- */
@@ -220,7 +195,7 @@ namespace Cube
         /// <returns>Object to clear the subscription.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe<T>(Action<T> callback) => Aggregator.Subscribe(callback);
+        public IDisposable Subscribe<T>(Action<T> callback) => _aggregator.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -237,7 +212,7 @@ namespace Cube
         /// <returns>Dispatcher object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected IDispatcher GetDispatcher(bool synchronous) => new Dispatcher(Context, synchronous);
+        protected IDispatcher GetDispatcher(bool synchronous) => synchronous ? _send : _post;
 
         #region Send
 
@@ -252,7 +227,7 @@ namespace Cube
         /// <param name="message">Message to be sent.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(T message) => Context.Send(e => Aggregator.Publish(message), null);
+        protected void Send<T>(T message) => _send.Invoke(() => _aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -282,7 +257,7 @@ namespace Cube
         /// <param name="message">Message to be posted.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>(T message) => Context.Post(e => Aggregator.Publish(message), null);
+        protected void Post<T>(T message) => _post.Invoke(() => _aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -347,6 +322,12 @@ namespace Cube
 
         #endregion
 
+        #endregion
+
+        #region Fields
+        private readonly Aggregator _aggregator;
+        private readonly IDispatcher _send;
+        private readonly IDispatcher _post;
         #endregion
     }
 
