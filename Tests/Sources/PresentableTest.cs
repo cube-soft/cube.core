@@ -116,8 +116,8 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(DialogStatus.Ok,     ExpectedResult = 5)]
-        [TestCase(DialogStatus.Yes,    ExpectedResult = 5)]
+        [TestCase(DialogStatus.Ok,     ExpectedResult = 2)]
+        [TestCase(DialogStatus.Yes,    ExpectedResult = 2)]
         [TestCase(DialogStatus.Cancel, ExpectedResult = 0)]
         public int Send(DialogStatus value)
         {
@@ -125,10 +125,12 @@ namespace Cube.Tests
             using (var src = new Presenter(new SynchronizationContext()))
             using (src.Subscribe<DialogMessage>(e => e.Value = value))
             {
-                5.Times(i => src.SendMessage(new DialogMessage(),
+                2.Times(i => src.SendMessage(new DialogMessage(),
                     e => n++,
                     e => e.Any(DialogStatus.Ok, DialogStatus.Yes)
-                ).Wait());
+                ));
+
+                Task.Delay(200).Wait();
             }
             return n;
         }
@@ -142,15 +144,16 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(true, ExpectedResult = 0)]
-        [TestCase(false, ExpectedResult = 5)]
+        [TestCase(true,  ExpectedResult = 0)]
+        [TestCase(false, ExpectedResult = 2)]
         public int Send_CancelMessage(bool cancel)
         {
             var n = 0;
             using (var src = new Presenter(new SynchronizationContext()))
             using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
             {
-                5.Times(i => src.SendMessage(new OpenFileMessage(), e => n++).Wait());
+                2.Times(i => src.SendMessage(new OpenFileMessage(), e => n++));
+                Task.Delay(200).Wait();
             }
             return n;
         }
@@ -175,52 +178,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TrackAsync
+        /// Track
         ///
         /// <summary>
-        /// Tests the async Track method.
+        /// Tests the Track method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TrackAsync()
+        public void Track()
         {
             var dest = default(DialogMessage);
             using (var src = new Presenter(new SynchronizationContext()))
             using (src.Subscribe<DialogMessage>(e => dest = e))
             {
-                src.TrackAsync(() => { /* OK */ }).Wait();
-                src.TrackAsync(() => throw new ArgumentException(nameof(TrackAsync))).Wait();
+                src.TrackAsync(() => { /* OK */ });
+                src.TrackSync(() => throw new ArgumentException(nameof(Track)));
             }
 
-            Assert.That(dest.Text,    Does.StartWith(nameof(TrackAsync)));
-            Assert.That(dest.Title,   Is.EqualTo("Cube.Core"));
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackSync
-        ///
-        /// <summary>
-        /// Tests the sync Track method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void TrackSync()
-        {
-            var dest = default(DialogMessage);
-            using (var src = new Presenter(new SynchronizationContext()))
-            using (src.Subscribe<DialogMessage>(e => dest = e))
-            {
-                src.TrackSync(() => { /* OK */ });
-                src.TrackSync(() => throw new ArgumentException(nameof(TrackSync)));
-            }
-
-            Assert.That(dest.Text,    Does.StartWith(nameof(TrackSync)));
+            Assert.That(dest.Text,    Does.StartWith(nameof(Track)));
             Assert.That(dest.Title,   Is.EqualTo("Cube.Core"));
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
@@ -305,10 +281,10 @@ namespace Cube.Tests
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
-            public Task SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
-            public Task SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
+            public void SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
+            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
-            public Task TrackAsync(Action e) => Track(e);
+            public void TrackAsync(Action e) => Track(e);
             public IDispatcher GetDispatcher() => GetDispatcher(false);
             public string TestValue
             {

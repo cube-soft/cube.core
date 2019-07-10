@@ -142,11 +142,10 @@ namespace Cube
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected async Task Send<T>(Message<T> message, Action<T> next, Func<T, bool> predicate)
+        protected void Send<T>(Message<T> message, Action<T> next, Func<T, bool> predicate)
         {
             Send(message);
-            if (!predicate(message.Value)) return;
-            await Track(() => next(message.Value));
+            if (predicate(message.Value)) Track(() => next(message.Value));
         }
 
         /* ----------------------------------------------------------------- */
@@ -165,11 +164,10 @@ namespace Cube
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected async Task Send<T>(CancelMessage<T> message, Action<T> next)
+        protected void Send<T>(CancelMessage<T> message, Action<T> next)
         {
             Send(message);
-            if (message.Cancel) return;
-            await Track(() => next(message.Value));
+            if (!message.Cancel) Track(() => next(message.Value));
         }
 
         #endregion
@@ -192,7 +190,7 @@ namespace Cube
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action) => Track(action, DialogMessage.Create);
+        protected void Track(Action action) => Track(action, DialogMessage.Create);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -212,7 +210,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Converter converter) =>
+        protected void Track(Action action, Converter converter) =>
             Track(action, converter, false);
 
         /* ----------------------------------------------------------------- */
@@ -238,43 +236,17 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Converter converter, bool synchronous) =>
-            synchronous ? TrackSync(action, converter) : TrackAsync(action, converter);
+        protected void Track(Action action, Converter converter, bool synchronous)
+        {
+            if (synchronous) TrackCore(action, converter);
+            else _ = Task.Run(() => TrackCore(action, converter));
+        }
 
         #endregion
 
         #endregion
 
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackAsync
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Task TrackAsync(Action action, Converter converter) =>
-            Task.Run(() => TrackCore(action, converter));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackSync
-        ///
-        /// <summary>
-        /// Invokes the specified action as a synchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Task TrackSync(Action action, Converter converter)
-        {
-            TrackCore(action, converter);
-            return Task.FromResult(0);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
