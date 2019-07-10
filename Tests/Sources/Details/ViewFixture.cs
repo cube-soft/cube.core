@@ -16,33 +16,59 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MockHelper
+    /// ViewFixture
     ///
     /// <summary>
     /// Provides functionality to test with a mock window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class MockHelper
+    abstract class ViewFixture
     {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Attach
+        ///
+        /// <summary>
+        /// Attaches the specified view and behavior object.
+        /// </summary>
+        ///
+        /// <param name="src">Window to be attached.</param>
+        /// <param name="behavior">Source behavior.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected T Attach<T>(Window src, T behavior) where T : Behavior
+        {
+            behavior.Attach(src);
+            return behavior;
+        }
+
         /* ----------------------------------------------------------------- */
         ///
         /// Hack
         ///
         /// <summary>
-        /// Sets properties for testing.
+        /// Sets properties of the Window class for testing.
         /// </summary>
         ///
+        /// <param name="src">Window to be hacked.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public static void Hack(this Window src)
+        protected T Hack<T>(T src) where T : Window
         {
             src.Top = SystemParameters.PrimaryScreenHeight + 10;
             src.ShowInTaskbar = false;
+            return src;
         }
+
+        #endregion
     }
 }

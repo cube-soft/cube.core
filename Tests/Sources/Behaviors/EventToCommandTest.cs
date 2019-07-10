@@ -21,7 +21,6 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows;
 using System.Windows.Interactivity;
 
 namespace Cube.Xui.Tests.Behaviors
@@ -37,7 +36,7 @@ namespace Cube.Xui.Tests.Behaviors
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class EventToCommandTest
+    class EventToCommandTest : ViewFixture
     {
         #region Tests
 
@@ -54,7 +53,7 @@ namespace Cube.Xui.Tests.Behaviors
         public void Show()
         {
             var count = 0;
-            var view  = new MockWindow();
+            var view  = Hack(new MockWindow());
             var src   = Attach(view, new ShownToCommand
             {
                 Command = new DelegateCommand(() =>
@@ -64,8 +63,7 @@ namespace Cube.Xui.Tests.Behaviors
                 })
             });
 
-            view.Hack();
-            view.ShowDialog();
+            Assert.That(view.ShowDialog().Value, Is.False);
             src.Detach();
             Assert.That(count, Is.EqualTo(1));
         }
@@ -87,7 +85,7 @@ namespace Cube.Xui.Tests.Behaviors
             var closed   = 0;
             var disposed = 0;
 
-            var view = new MockWindow();
+            var view = Hack(new MockWindow());
             var src  = new List<Behavior>
             {
                 Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) }),
@@ -96,7 +94,6 @@ namespace Cube.Xui.Tests.Behaviors
             };
 
             view.DataContext = Disposable.Create(() => ++disposed);
-            view.Hack();
             view.Show();
             2.Times(i => view.Close());
             foreach (var obj in src) obj.Detach();
@@ -104,25 +101,6 @@ namespace Cube.Xui.Tests.Behaviors
             Assert.That(closing,  Is.EqualTo(2));
             Assert.That(closed,   Is.EqualTo(1));
             Assert.That(disposed, Is.EqualTo(1));
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Attach
-        ///
-        /// <summary>
-        /// Attaches the specified view and behavior object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private T Attach<T>(Window view, T src) where T : Behavior
-        {
-            src.Attach(view);
-            return src;
         }
 
         #endregion

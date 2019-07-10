@@ -20,7 +20,7 @@ using NUnit.Framework;
 using System.Threading;
 using System.Windows;
 
-namespace Cube.Xui.Tests
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -33,7 +33,7 @@ namespace Cube.Xui.Tests
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class DisposeBehaviorTest
+    class DisposeBehaviorTest : ViewFixture
     {
         #region Tests
 
@@ -49,10 +49,40 @@ namespace Cube.Xui.Tests
         [Test]
         public void Create()
         {
-            var view = new Window();
-            var src  = new DisposeBehavior();
+            var n    = 0;
+            var view = Hack(new Window());
+            var src  = Attach(view, new DisposeBehavior());
 
-            src.Attach(view);
+            view.DataContext = Disposable.Create(() => ++n);
+            view.Show();
+            view.Close();
+
+            Assert.That(n, Is.EqualTo(1));
+            Assert.That(view.DataContext, Is.Not.Null);
+
+            src.Detach();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Null
+        ///
+        /// <summary>
+        /// Tests to create, attach, and detach method in the case when
+        /// DataContext is null.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Null()
+        {
+            var view = Hack(new Window());
+            var src  = Attach(view, new DisposeBehavior());
+
+            Assert.That(view.DataContext, Is.Null);
+
+            view.Show();
+            view.Close();
             src.Detach();
         }
 
