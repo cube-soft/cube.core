@@ -75,10 +75,7 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         private void OnClosed(object s, EventArgs e)
         {
-            if (AssociatedObject == null) return;
-            var dc = AssociatedObject.DataContext as IDisposable;
-            AssociatedObject.DataContext = DependencyProperty.UnsetValue;
-            dc?.Dispose();
+            if (AssociatedObject?.DataContext is IDisposable dc) dc.Dispose();
         }
     }
 }
