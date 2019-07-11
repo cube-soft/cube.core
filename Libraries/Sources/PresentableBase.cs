@@ -118,6 +118,8 @@ namespace Cube
         {
             Aggregator = aggregator;
             Context    = context ?? throw new ArgumentNullException(nameof(context));
+            _send      = new Dispatcher(context, true);
+            _post      = new Dispatcher(context, false);
         }
 
         #endregion
@@ -176,7 +178,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (PropertyChanged != null) Context.Post(z => PropertyChanged(this, e), null);
+            if (PropertyChanged != null) _post.Invoke(() => PropertyChanged(this, e));
         }
 
         /* ----------------------------------------------------------------- */
@@ -237,7 +239,7 @@ namespace Cube
         /// <returns>Dispatcher object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected IDispatcher GetDispatcher(bool synchronous) => new Dispatcher(Context, synchronous);
+        protected IDispatcher GetDispatcher(bool synchronous) => synchronous ? _send : _post;
 
         #region Send
 
@@ -252,7 +254,7 @@ namespace Cube
         /// <param name="message">Message to be sent.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(T message) => Context.Send(e => Aggregator.Publish(message), null);
+        protected void Send<T>(T message) => _send.Invoke(() => Aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -282,7 +284,7 @@ namespace Cube
         /// <param name="message">Message to be posted.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>(T message) => Context.Post(e => Aggregator.Publish(message), null);
+        protected void Post<T>(T message) => _post.Invoke(() => Aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -347,6 +349,11 @@ namespace Cube
 
         #endregion
 
+        #endregion
+
+        #region Fields
+        private readonly IDispatcher _send;
+        private readonly IDispatcher _post;
         #endregion
     }
 
