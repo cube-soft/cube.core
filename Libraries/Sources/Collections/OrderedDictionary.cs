@@ -91,10 +91,6 @@ namespace Cube.Collections
         /// collection is read-only.
         /// </summary>
         ///
-        /// <remarks>
-        /// このプロパティは常に false を返します。
-        /// </remarks>
-        ///
         /* --------------------------------------------------------------------- */
         public bool IsReadOnly => false;
 

@@ -27,10 +27,6 @@ namespace Cube
     /// Represents the exception of executing twice.
     /// </summary>
     ///
-    /// <remarks>
-    /// OnceAction および OnceQuery で利用されます。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
     [Serializable]
     public class TwiceException : InvalidOperationException

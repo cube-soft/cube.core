@@ -117,8 +117,8 @@ namespace Cube
         protected PresentableBase(Aggregator aggregator, SynchronizationContext context)
         {
             _aggregator = aggregator;
-            _send       = new Dispatcher(context, true);
-            _post       = new Dispatcher(context, false);
+            _send = new Dispatcher(context, true);
+            _post = new Dispatcher(context, false);
         }
 
         #endregion

@@ -131,7 +131,7 @@ namespace Cube
         /// Subscriptions
         ///
         /// <summary>
-        /// Ges the collection of subscriptions.
+        /// Gets the collection of subscriptions.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -266,7 +266,7 @@ namespace Cube
         ///
         /// <param name="callback">Asynchronous user action.</param>
         ///
-        /// <returns>Objsect to remove from the subscription.</returns>
+        /// <returns>Object to remove from the subscription.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe(AsyncAction callback) => Subscription.Subscribe(callback);
@@ -350,7 +350,7 @@ namespace Cube
         /// </summary>
         ///
         /// <remarks>
-        /// 原則としてユーザの設定したインターバルで実行開始します。
+        /// 原則としてユーザの設定したインターバルで実行を開始します。
         /// ただし、Subscribe で登録されているハンドラの総処理時間がユーザの
         /// 設定したインターバルを超える場合、最低でもその 1/10 秒ほど間隔を
         /// あけて次回の処理を実行します。

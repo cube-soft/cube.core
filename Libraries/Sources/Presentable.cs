@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Tasks;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -239,7 +240,7 @@ namespace Cube
         protected void Track(Action action, Converter converter, bool synchronous)
         {
             if (synchronous) TrackCore(action, converter);
-            else _ = Task.Run(() => TrackCore(action, converter));
+            else Task.Run(() => TrackCore(action, converter)).Forget();
         }
 
         #endregion

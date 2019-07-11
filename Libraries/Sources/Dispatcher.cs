@@ -136,7 +136,8 @@ namespace Cube
         /// </summary>
         ///
         /// <remarks>
-        /// true の場合は Send、false の場合は Post メソッドを使用します。
+        /// Uses the Send method if the property is set to true;
+        /// otherwise uses the Post method.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */

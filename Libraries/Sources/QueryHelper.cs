@@ -88,12 +88,11 @@ namespace Cube
         /// <returns>QueryMessage(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T query, U value) =>
-            new QueryMessage<T, U>
-            {
-                Query = query,
-                Value = value,
-            };
+        public static QueryMessage<T, U> NewMessage<T, U>(T query, U value) => new QueryMessage<T, U>
+        {
+            Query = query,
+            Value = value,
+        };
 
         #endregion
     }

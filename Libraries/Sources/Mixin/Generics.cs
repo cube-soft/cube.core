@@ -82,11 +82,6 @@ namespace Cube.Mixin.Generics
         ///
         /// <returns>Created object.</returns>
         ///
-        /// <remarks>
-        /// Serializable 属性を持つクラスの場合、BinaryFormatter を
-        /// 利用して値をコピーします。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         public static T Copy<T>(this T src) where T : new()
         {

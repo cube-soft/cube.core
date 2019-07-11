@@ -22,7 +22,7 @@ namespace Cube
     /// Utm
     ///
     /// <summary>
-    /// Reprsents the properties that are used in the Google Analytics
+    /// Represents the properties that are used in the Google Analytics
     /// service.
     /// </summary>
     ///

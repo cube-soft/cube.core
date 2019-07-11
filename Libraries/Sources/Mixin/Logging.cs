@@ -43,7 +43,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -58,7 +58,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -73,7 +73,7 @@ namespace Cube.Mixin.Logging
         /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="message">Method name of message.</param>
         ///
@@ -92,7 +92,7 @@ namespace Cube.Mixin.Logging
         /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="action">Action to monitor.</param>
         /// <param name="message">Method name or message.</param>
         ///
@@ -113,7 +113,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,7 +128,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -143,7 +143,7 @@ namespace Cube.Mixin.Logging
         /// Outputs system information as INFO level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -162,7 +162,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -177,7 +177,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -192,7 +192,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         ///
         /// <returns>Function result.</returns>
@@ -209,7 +209,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="error">
         /// Value that returns when an exception occurs.
@@ -229,7 +229,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -248,7 +248,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -263,7 +263,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -278,7 +278,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         ///
         /// <returns>Function result.</returns>
@@ -295,7 +295,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="error">
         /// Value that returns when an exception occurs.
@@ -315,7 +315,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -334,7 +334,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -349,7 +349,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -364,7 +364,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         ///
         /// <returns>Function result.</returns>
@@ -381,7 +381,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="error">
         /// Value that returns when an exception occurs.
@@ -401,7 +401,7 @@ namespace Cube.Mixin.Logging
         /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Targe object.</param>
+        /// <param name="src">Target object.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
