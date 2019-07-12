@@ -80,7 +80,7 @@ namespace Cube.Forms
         /// <param name="dest">上書き先の情報</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OverwriteEventArgs(Information src, Information dest)
+        public OverwriteEventArgs(Entity src, Entity dest)
         {
             Source      = src;
             Destination = dest;
@@ -99,7 +99,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Information Source { get; }
+        public Entity Source { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -110,7 +110,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Information Destination { get; }
+        public Entity Destination { get; }
 
         /* ----------------------------------------------------------------- */
         ///

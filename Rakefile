@@ -57,12 +57,20 @@ task :pack do
 end
 
 # --------------------------------------------------------------------------- #
+# restore
+# --------------------------------------------------------------------------- #
+desc "Resote NuGet packages in the current branch."
+task :restore do
+    sh("nuget restore #{MAIN}.sln")
+end
+
+# --------------------------------------------------------------------------- #
 # build
 # --------------------------------------------------------------------------- #
 desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
-    sh("nuget restore #{PROJECT}.sln")
+    Rake::Task[:restore].execute
     sh(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
