@@ -50,7 +50,7 @@ namespace Cube.FileSystem
         /// <returns>IInformation オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public Information Get(string path) => GetCore(path);
+        public Entity Get(string path) => GetCore(path);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -66,8 +66,8 @@ namespace Cube.FileSystem
         /// <returns>IInformation オブジェクト</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual Information GetCore(string path) =>
-            new Information(path, GetController());
+        protected virtual Entity GetCore(string path) =>
+            new Entity(path, GetController());
 
         #endregion
 
@@ -898,7 +898,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void CreateDirectory(string path, Information src)
+        private void CreateDirectory(string path, Entity src)
         {
             CreateDirectory(path);
             SetCreationTime(path, src.CreationTime);
@@ -916,7 +916,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void CreateParentDirectory(Information info)
+        private void CreateParentDirectory(Entity info)
         {
             var dir = info.DirectoryName;
             if (!Exists(dir)) CreateDirectory(dir);
@@ -931,7 +931,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool CopyDirectory(Information src, Information dest, bool overwrite)
+        private bool CopyDirectory(Entity src, Entity dest, bool overwrite)
         {
             if (!dest.Exists) CreateDirectory(dest.FullName, src);
 
@@ -963,7 +963,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool CopyFile(Information src, Information dest, bool overwrite) =>
+        private bool CopyFile(Entity src, Entity dest, bool overwrite) =>
             Action(nameof(Copy), () =>
             {
                 CreateParentDirectory(dest);
@@ -979,7 +979,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveDirectory(Information src, Information dest, bool overwrite)
+        private bool MoveDirectory(Entity src, Entity dest, bool overwrite)
         {
             if (!dest.Exists) CreateDirectory(dest.FullName, src);
 
@@ -1013,7 +1013,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveFile(Information src, Information dest, bool overwrite)
+        private bool MoveFile(Entity src, Entity dest, bool overwrite)
         {
             if (!overwrite || !dest.Exists) return MoveFile(src, dest);
             else
@@ -1037,7 +1037,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveFile(Information src, Information dest) =>
+        private bool MoveFile(Entity src, Entity dest) =>
             Action(nameof(Move), () =>
             {
                 CreateParentDirectory(dest);

@@ -25,7 +25,7 @@ namespace Cube.FileSystem
     /// AfsController
     ///
     /// <summary>
-    /// AlphaFS を利用した Information オブジェクトの情報更新用クラスです。
+    /// AlphaFS を利用した Controllable オブジェクトの情報更新用クラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

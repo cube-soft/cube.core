@@ -22,7 +22,7 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Information
+    /// Entity
     ///
     /// <summary>
     /// Represents the file or directory information.
@@ -30,23 +30,23 @@ namespace Cube.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class Information
+    public class Entity
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Information
+        /// Entity
         ///
         /// <summary>
-        /// Creates a new instance of the Information class with the
-        /// specified path.
+        /// Creates a new instance of the Entity class with the
+        /// specified path of file or directory.
         /// </summary>
         ///
-        /// <param name="src">Path of the source file.</param>
+        /// <param name="src">Path of file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src) : this(src, new Controller()) { }
+        public Entity(string src) : this(src, new Controller()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -60,7 +60,7 @@ namespace Cube.FileSystem
         /// <param name="src">Copied information.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(Information src) : this(src.Source, src.Controller) { }
+        public Entity(Entity src) : this(src.Source, src.Controller) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,11 +76,11 @@ namespace Cube.FileSystem
         /// <param name="options">Optional parameters.</param>
         ///
         /// <remarks>
-        /// options は Controller の継承クラス等の拡張用に定義しています。
+        /// options for the Controller inherited classes.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public Information(string src, Controller controller, params object[] options)
+        public Entity(string src, Controller controller, params object[] options)
         {
             Controller   = controller;
             Controllable = controller.Create(src, options);
@@ -89,28 +89,6 @@ namespace Cube.FileSystem
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Controllable
-        ///
-        /// <summary>
-        /// Gets the inner object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Controllable Controllable { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Controller
-        ///
-        /// <summary>
-        /// Gets the controller object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Controller Controller { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -139,7 +117,7 @@ namespace Cube.FileSystem
         /// IsDirectory
         ///
         /// <summary>
-        /// ディレクトリかどうかを示す値を取得します。
+        /// Gets a value indicating whether the provided path is a directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -205,7 +183,7 @@ namespace Cube.FileSystem
         /// Length
         ///
         /// <summary>
-        /// Gets the filesize.
+        /// Gets the file-size.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -254,6 +232,32 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public DateTime LastAccessTime => Controllable.LastAccessTime;
+
+        #region Core
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Controllable
+        ///
+        /// <summary>
+        /// Gets the inner object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Controllable Controllable { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Controller
+        ///
+        /// <summary>
+        /// Gets the controller object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Controller Controller { get; }
+
+        #endregion
 
         #endregion
 

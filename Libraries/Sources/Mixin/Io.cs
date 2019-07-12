@@ -126,7 +126,7 @@ namespace Cube.Mixin.IO
         /// <returns>Typename of the file.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this Source io, Information info) =>
+        public static string GetTypeName(this Source io, Entity info) =>
             GetTypeName(io, info?.FullName);
 
         /* ----------------------------------------------------------------- */

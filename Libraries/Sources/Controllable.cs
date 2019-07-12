@@ -149,7 +149,7 @@ namespace Cube.FileSystem
         /// Length
         ///
         /// <summary>
-        /// Gets or sets the filesize.
+        /// Gets or sets the file-size.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

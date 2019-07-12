@@ -16,8 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.IO;
-using Cube.Tests;
 using Cube.Mixin.String;
+using Cube.Tests;
 using NUnit.Framework;
 using System.Reflection;
 
@@ -111,7 +111,7 @@ namespace Cube.FileSystem.Tests
         /// GetTypeName
         ///
         /// <summary>
-        /// Executes the test for getting the name of filetype.
+        /// Executes the test for getting the name of file-type.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -134,7 +134,7 @@ namespace Cube.FileSystem.Tests
         {
             Assert.That(IO.GetTypeName(string.Empty), Is.Empty);
             Assert.That(IO.GetTypeName(default(string)), Is.Empty);
-            Assert.That(IO.GetTypeName(default(Information)), Is.Empty);
+            Assert.That(IO.GetTypeName(default(Entity)), Is.Empty);
         }
 
         /* ----------------------------------------------------------------- */
