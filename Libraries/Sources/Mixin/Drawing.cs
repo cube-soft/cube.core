@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem;
 using System.IO;
 using System.Windows.Media.Imaging;
 
@@ -68,12 +67,13 @@ namespace Cube.Mixin.Drawing
         {
             if (src == null) return default;
 
-            using (var ss = new StreamProxy(new MemoryStream()))
+            using (var ss = new WeakStream(new MemoryStream()))
             {
                 src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
                 var dest = new BitmapImage();
                 dest.BeginInit();
                 dest.CacheOption = BitmapCacheOption.OnLoad;
+                dest.CreateOptions = BitmapCreateOptions.None;
                 dest.StreamSource = ss;
                 dest.EndInit();
                 if (dest.CanFreeze) dest.Freeze();
