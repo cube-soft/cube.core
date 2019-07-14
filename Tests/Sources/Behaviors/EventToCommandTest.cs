@@ -83,9 +83,9 @@ namespace Cube.Xui.Tests.Behaviors
         {
             var closing  = 0;
             var closed   = 0;
-            var disposed = 0;
 
             var view = Hack(new MockWindow());
+            var vm   = (MockViewModel)view.DataContext;
             var src  = new List<Behavior>
             {
                 Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) }),
@@ -93,14 +93,13 @@ namespace Cube.Xui.Tests.Behaviors
                 Attach(view, new DisposeBehavior())
             };
 
-            view.DataContext = Disposable.Create(() => ++disposed);
             view.Show();
             2.Times(i => view.Close());
             foreach (var obj in src) obj.Detach();
 
-            Assert.That(closing,  Is.EqualTo(2));
-            Assert.That(closed,   Is.EqualTo(1));
-            Assert.That(disposed, Is.EqualTo(1));
+            Assert.That(closing,     Is.EqualTo(2));
+            Assert.That(closed,      Is.EqualTo(1));
+            Assert.That(vm.Disposed, Is.True);
         }
 
         #endregion

@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Tests;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
-using System.Windows;
 
 namespace Cube.Xui.Tests.Behaviors
 {
@@ -33,69 +33,33 @@ namespace Cube.Xui.Tests.Behaviors
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class CloseBehaviorTest
+    class CloseBehaviorTest : ViewFixture
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Invoke
         ///
         /// <summary>
-        /// Executes the test to create, attach, and detach method.
+        /// Tests the create, attach, send, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create()
+        public void Invoke()
         {
-            using (var vm = new MockViewModel())
-            {
-                var view = new Window { DataContext = vm };
-                var src  = new CloseBehavior();
+            var cts  = new CancellationTokenSource();
+            var view = Hack(new MockWindow());
+            var vm   = (MockViewModel)view.DataContext;
+            var src  = Attach(view, new CloseBehavior());
 
-                src.Attach(view);
-                src.Detach();
-            }
-        }
+            view.Show();
+            view.Closed += (s, e) => cts.Cancel();
+            vm.Test(new CloseMessage());
+            Assert.That(Wait.For(cts.Token), "Timeout");
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_WithoutVM
-        ///
-        /// <summary>
-        /// Executes the test to create, attach, and detach method without
-        /// any ViewModel objects.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_WithoutVM()
-        {
-            var view = new Window();
-            var src  = new CloseBehavior();
-
-            src.Attach(view);
             src.Detach();
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MockViewModel
-        ///
-        /// <summary>
-        /// Represents the mock viewmodel.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private class MockViewModel : PresentableBase
-        {
-            public MockViewModel() : base(new Aggregator(), new SynchronizationContext()) { }
-            protected override void Dispose(bool disposing) { }
         }
 
         #endregion
