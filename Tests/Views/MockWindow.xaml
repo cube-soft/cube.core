@@ -51,6 +51,6 @@
       Main
     *********************************************************************** -->
     <Grid>
-        <TextBox x:Name="Name" Text="{Binding Value.Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+        <TextBox x:Name="TestName" Text="{Binding Value.Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
     </Grid>
 </Window>

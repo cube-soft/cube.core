@@ -54,12 +54,10 @@ namespace Cube.Xui.Tests.Behaviors
             var vm   = (MockViewModel)view.DataContext;
             var src  = Attach(view, new ApplyBehavior());
 
-            ((TextBox)view.FindName("Name")).Text = "OK";
+            ((TextBox)view.FindName("TestName")).Text = "OK";
             Assert.That(vm.Value.Name, Is.Null);
             vm.Test(new ApplyMessage());
             Assert.That(Wait.For(() => vm.Value.Name.Equals("OK")), "Timeout");
-
-            src.Detach();
         }
 
         #endregion

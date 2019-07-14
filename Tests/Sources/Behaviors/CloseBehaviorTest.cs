@@ -58,8 +58,6 @@ namespace Cube.Xui.Tests.Behaviors
             view.Closed += (s, e) => cts.Cancel();
             vm.Test(new CloseMessage());
             Assert.That(Wait.For(cts.Token), "Timeout");
-
-            src.Detach();
         }
 
         #endregion
