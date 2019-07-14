@@ -47,14 +47,14 @@ namespace Cube.Xui.Tests.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create() => Assert.DoesNotThrow(() =>
+        public void Create()
         {
             var view = new ListView();
             var src  = new SelectionBehavior();
 
             src.Attach(view);
             src.Detach();
-        });
+        }
 
         #endregion
     }

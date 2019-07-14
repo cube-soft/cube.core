@@ -42,7 +42,7 @@ namespace Cube.Xui.Tests.Behaviors
         /// Create
         ///
         /// <summary>
-        /// Tests to create, attach, and detach method.
+        /// Tests the create, attach, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -68,7 +68,7 @@ namespace Cube.Xui.Tests.Behaviors
         /// Create_Null
         ///
         /// <summary>
-        /// Tests to create, attach, and detach method in the case when
+        /// Tests the create, attach, and detach methods in the case when
         /// DataContext is null.
         /// </summary>
         ///
