@@ -15,10 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Tests;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
-using System.Windows;
+using System.Windows.Controls;
 
 namespace Cube.Xui.Tests.Behaviors
 {
@@ -33,26 +34,31 @@ namespace Cube.Xui.Tests.Behaviors
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class ApplyBehaviorTest
+    class ApplyBehaviorTest : ViewFixture
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Invoke
         ///
         /// <summary>
-        /// Tests to create, attach, and detach method.
+        /// Tests the create, attach, send, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create()
+        public void Invoke()
         {
-            var view = new Window();
-            var src  = new ApplyBehavior();
+            var view = Hack(new MockWindow());
+            var vm   = (MockViewModel)view.DataContext;
+            var src  = Attach(view, new ApplyBehavior());
 
-            src.Attach(view);
+            ((TextBox)view.FindName("Name")).Text = "OK";
+            Assert.That(vm.Value.Name, Is.Null);
+            vm.Test(new ApplyMessage());
+            Assert.That(Wait.For(() => vm.Value.Name.Equals("OK")), "Timeout");
+
             src.Detach();
         }
 

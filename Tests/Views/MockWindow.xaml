@@ -36,6 +36,10 @@
         <my:MockViewModel />
     </Window.DataContext>
 
+    <Window.BindingGroup>
+        <BindingGroup Name="Explicit" NotifyOnValidationError="False"/>
+    </Window.BindingGroup>
+
     <!-- **********************************************************************
       Interaction
     *********************************************************************** -->
@@ -47,6 +51,6 @@
       Main
     *********************************************************************** -->
     <Grid>
-        <TextBox Text="{Binding Value.Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+        <TextBox x:Name="Name" Text="{Binding Value.Name, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
     </Grid>
 </Window>

@@ -41,7 +41,7 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Invoke(ApplyMessage e)
         {
-            if (AssociatedObject is Window w) w.BindingGroup.UpdateSources();
+            if (AssociatedObject is Window w) _ = w.BindingGroup.UpdateSources();
         }
     }
 }
