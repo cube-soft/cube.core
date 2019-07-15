@@ -19,8 +19,6 @@ using System.Windows;
 
 namespace Cube.Xui.Behaviors
 {
-    #region ShowBehavior<TView, TViewModel>
-
     /* --------------------------------------------------------------------- */
     ///
     /// ShowBehavior(TView, TViewModel)
@@ -34,6 +32,41 @@ namespace Cube.Xui.Behaviors
     public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Window, new()
     {
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Modal
+        ///
+        /// <summary>
+        /// Gets or sets a value indicating whether to show a dialog as
+        /// modal.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Modal
+        {
+            get => (bool)GetValue(ModalProperty);
+            set => SetValue(ModalProperty, value);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ModalProperty
+        ///
+        /// <summary>
+        /// Gets the DependencyProperty object for the Modal property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static readonly DependencyProperty ModalProperty =
+            DependencyFactory.Create<ShowBehavior<TView, TViewModel>, bool>(
+                nameof(Modal), (s, e) => s.Modal = e);
+
+        #endregion
+
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -47,43 +80,10 @@ namespace Cube.Xui.Behaviors
         {
             var dest = new TView { DataContext = e };
             if (AssociatedObject is Window wnd) dest.Owner = wnd;
-            dest.Show();
+            if (Modal) _ = dest.ShowDialog();
+            else dest.Show();
         }
+
+        #endregion
     }
-
-    #endregion
-
-    #region ShowDialogBehavior<TView, TViewModel>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ShowDialogBehavior(TView, TViewMode)
-    ///
-    /// <summary>
-    /// Represents the behavior to show a TView window as modal using a
-    /// TViewModel message.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Window, new()
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e)
-        {
-            var dest = new TView { DataContext = e };
-            if (AssociatedObject is Window wnd) dest.Owner = wnd;
-            dest.ShowDialog();
-        }
-    }
-
-    #endregion
 }
