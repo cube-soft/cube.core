@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Tests;
-using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
 
@@ -52,7 +51,6 @@ namespace Cube.Xui.Tests.Behaviors
             var cts  = new CancellationTokenSource();
             var view = Hack(new MockWindow());
             var vm   = (MockViewModel)view.DataContext;
-            var src  = Attach(view, new CloseBehavior());
 
             view.Show();
             view.Closed += (s, e) => cts.Cancel();
