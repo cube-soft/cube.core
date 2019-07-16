@@ -27,7 +27,7 @@ namespace Cube.Xui.Tests
     /// GlobalSetup
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Provides functionality to run at the beginning of the NUnit.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,7 +39,7 @@ namespace Cube.Xui.Tests
         /// OneTimeSetup
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Invokes the setup only once.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -47,9 +47,10 @@ namespace Cube.Xui.Tests
         public void OneTimeSetup()
         {
             Logger.Configure();
+            BindingLogger.Configure();
+            _ = Logger.ObserveTaskException();
+            _ = Application.Current.ObserveUiException();
             Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
-            Logger.ObserveTaskException();
-            Application.Current.ObserveUiException();
         }
     }
 }
