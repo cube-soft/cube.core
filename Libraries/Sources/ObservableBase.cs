@@ -130,7 +130,7 @@ namespace Cube
         public void Refresh(string name, params string[] more)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(name));
-            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(name));
+            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(s));
         }
 
         /* ----------------------------------------------------------------- */
