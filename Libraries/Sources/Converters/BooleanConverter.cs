@@ -21,6 +21,118 @@ using System.Windows;
 
 namespace Cube.Xui.Converters
 {
+    #region Positive
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Positive
+    ///
+    /// <summary>
+    /// Provides functionality to determine whether the provided number is
+    /// positive.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Positive : SimplexConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Positive
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Positive class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Positive() : base(e => System.Convert.ToInt32(e) > 0) { }
+    }
+
+    #endregion
+
+    #region PositiveOrZero
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PositiveOrZero
+    ///
+    /// <summary>
+    /// Provides functionality to determine whether the provided number is
+    /// positive or zero.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class PositiveOrZero : SimplexConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PositiveOrZero
+        ///
+        /// <summary>
+        /// Initializes a new instance of the PositiveOrZero class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PositiveOrZero() : base(e => System.Convert.ToInt32(e) >= 0) { }
+    }
+
+    #endregion
+
+    #region Negative
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Negative
+    ///
+    /// <summary>
+    /// Provides functionality to determine whether the provided number is
+    /// negative.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class Negative : SimplexConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Negative
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Negative class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Negative() : base(e => System.Convert.ToInt32(e) < 0) { }
+    }
+
+    #endregion
+
+    #region NegativeOrZero
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NegativeOrZero
+    ///
+    /// <summary>
+    /// Provides functionality to determine whether the provided number is
+    /// negative or zero.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class NegativeOrZero : SimplexConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NegativeOrZero
+        ///
+        /// <summary>
+        /// Initializes a new instance of the NegativeOrZero class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NegativeOrZero() : base(e => System.Convert.ToInt32(e) <= 0) { }
+    }
+
+    #endregion
+
     #region Inverse
 
     /* --------------------------------------------------------------------- */
@@ -70,7 +182,7 @@ namespace Cube.Xui.Converters
         /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">Value for ture.</param>
+        /// <param name="positive">Value for true.</param>
         /// <param name="negative">Value for false.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -86,7 +198,7 @@ namespace Cube.Xui.Converters
         /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">Value for ture.</param>
+        /// <param name="positive">Value for true.</param>
         /// <param name="negative">Value for false.</param>
         /// <param name="predicate">
         /// Function object that determines whether the source is true.
@@ -105,7 +217,7 @@ namespace Cube.Xui.Converters
         /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">Value for ture.</param>
+        /// <param name="positive">Value for true.</param>
         /// <param name="negative">Value for false.</param>
         /// <param name="func">
         /// Function object that determines whether the source is true.
@@ -125,7 +237,7 @@ namespace Cube.Xui.Converters
         /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">Value for ture.</param>
+        /// <param name="positive">Value for true.</param>
         /// <param name="negative">Value for false.</param>
         /// <param name="predicate">
         /// Function object that determines whether the source is true.
@@ -172,8 +284,8 @@ namespace Cube.Xui.Converters
         /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する整数値</param>
-        /// <param name="negative">false に対応する整数値</param>
+        /// <param name="positive">Value for true.</param>
+        /// <param name="negative">Value for false.</param>
         ///
         /* ----------------------------------------------------------------- */
         public BooleanToInteger(int positive, int negative) :
@@ -184,12 +296,15 @@ namespace Cube.Xui.Converters
         /// BooleanToInteger
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToInteger class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する整数値</param>
-        /// <param name="negative">false に対応する整数値</param>
-        /// <param name="predicate">真偽判定用オブジェクト</param>
+        /// <param name="positive">Value for true.</param>
+        /// <param name="negative">Value for false.</param>
+        /// <param name="predicate">
+        /// Function object that determines whether the source is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public BooleanToInteger(int negative, int positive, Func<object, bool> predicate) :
@@ -205,7 +320,8 @@ namespace Cube.Xui.Converters
     /// BooleanToVisibility
     ///
     /// <summary>
-    /// 真偽値を Visibility に変換させるためのクラスです。
+    /// Provides functionality to convert a boolean to the Visibility
+    /// value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -216,22 +332,24 @@ namespace Cube.Xui.Converters
         /// BooleanToVisibility
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToVisibility class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public BooleanToVisibility() :
-            base(Visibility.Visible, Visibility.Collapsed) { }
+        public BooleanToVisibility() : base(Visibility.Visible, Visibility.Collapsed) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// BooleanToVisibility
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToVisibility class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="predicate">真偽判定用オブジェクト</param>
+        /// <param name="predicate">
+        /// Function object that determines whether the source is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public BooleanToVisibility(Func<object, bool> predicate) :
@@ -242,12 +360,15 @@ namespace Cube.Xui.Converters
         /// BooleanToVisibility
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BooleanToVisibility class
+        /// with the specified parameters.
         /// </summary>
         ///
-        /// <param name="positive">true に対応する値</param>
-        /// <param name="negative">false に対応する値</param>
-        /// <param name="predicate">真偽判定用オブジェクト</param>
+        /// <param name="positive">Value for true.</param>
+        /// <param name="negative">Value for false.</param>
+        /// <param name="predicate">
+        /// Function object that determines whether the source is true.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
         public BooleanToVisibility(Visibility positive, Visibility negative, Func<object, bool> predicate) :

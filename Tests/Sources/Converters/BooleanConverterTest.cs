@@ -27,14 +27,96 @@ namespace Cube.Xui.Tests.Converters
     /// BooleanConverterTest
     ///
     /// <summary>
-    /// bool 値に関する Converter のテスト用クラスです。
+    /// Tests the Converter classes related to boolean type.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     class BooleanConverterTest : ConvertHelper
     {
-        #region Tests
+        #region Positive
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Positive
+        ///
+        /// <summary>
+        /// Tests the Positive converter class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1,     ExpectedResult = true)]
+        [TestCase(0,     ExpectedResult = false)]
+        [TestCase(-1,    ExpectedResult = false)]
+        [TestCase(100L,  ExpectedResult = true)]
+        [TestCase(-100L, ExpectedResult = false)]
+        [TestCase('a',   ExpectedResult = true)]
+        public bool Positive<T>(T src) => Convert<bool>(new Positive(), src);
+
+        #endregion
+
+        #region PositiveOrZero
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PositiveOrZero
+        ///
+        /// <summary>
+        /// Tests the PositiveOrZero converter class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1,     ExpectedResult = true)]
+        [TestCase(0,     ExpectedResult = true)]
+        [TestCase(-1,    ExpectedResult = false)]
+        [TestCase(100L,  ExpectedResult = true)]
+        [TestCase(-100L, ExpectedResult = false)]
+        [TestCase('a',   ExpectedResult = true)]
+        public bool PositiveOrZero<T>(T src) => Convert<bool>(new PositiveOrZero(), src);
+
+        #endregion
+
+        #region Negative
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Negative
+        ///
+        /// <summary>
+        /// Tests the Negative converter class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1,     ExpectedResult = false)]
+        [TestCase(0,     ExpectedResult = false)]
+        [TestCase(-1,    ExpectedResult = true)]
+        [TestCase(100L,  ExpectedResult = false)]
+        [TestCase(-100L, ExpectedResult = true)]
+        [TestCase('a',   ExpectedResult = false)]
+        public bool Negative<T>(T src) => Convert<bool>(new Negative(), src);
+
+        #endregion
+
+        #region NegativeOrZero
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NegativeOrZero
+        ///
+        /// <summary>
+        /// Tests the NegativeOrZero converter class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(1,     ExpectedResult = false)]
+        [TestCase(0,     ExpectedResult = true)]
+        [TestCase(-1,    ExpectedResult = true)]
+        [TestCase(100L,  ExpectedResult = false)]
+        [TestCase(-100L, ExpectedResult = true)]
+        [TestCase('a',   ExpectedResult = false)]
+        public bool NegativeOrZero<T>(T src) => Convert<bool>(new NegativeOrZero(), src);
+
+        #endregion
 
         #region Inverse
 
@@ -43,7 +125,7 @@ namespace Cube.Xui.Tests.Converters
         /// Inverse
         ///
         /// <summary>
-        /// 真偽値を反転させるテストを実行します。
+        /// Tests the Inverse converter class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -56,7 +138,7 @@ namespace Cube.Xui.Tests.Converters
         /// Inverse_Back
         ///
         /// <summary>
-        /// 真偽値を反転させるテストを実行します。
+        /// Tests the ConvertBack method of the Inverse class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -69,7 +151,7 @@ namespace Cube.Xui.Tests.Converters
         /// Inverse_ProvideValue
         ///
         /// <summary>
-        /// ProvideValue のテストを実行します。
+        /// Tests the ProvideValue method of the Inverse class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -89,7 +171,7 @@ namespace Cube.Xui.Tests.Converters
         /// BooleanToValue
         ///
         /// <summary>
-        /// BooleanToValue(T).Convert のテストを実行します。
+        /// Tests the BooleanToValue(T) converter class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -109,7 +191,7 @@ namespace Cube.Xui.Tests.Converters
         /// BooleanToInteger
         ///
         /// <summary>
-        /// 真偽値を整数値に変換するテストを実行します。
+        /// Tests the BooleanToInteger converter class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -123,7 +205,7 @@ namespace Cube.Xui.Tests.Converters
         /// BooleanToInteger_Back
         ///
         /// <summary>
-        /// BooleanToInteger.ConvertBack 実行時の挙動を確認します。
+        /// Tests the ConvertBack method of the BooleanToInteger class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -138,7 +220,7 @@ namespace Cube.Xui.Tests.Converters
         /// BooleanToInteger_ProvideValue
         ///
         /// <summary>
-        /// ProvideValue のテストを実行します。
+        /// Tests the ProvideValue method of the BooleanToInteger class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -158,7 +240,7 @@ namespace Cube.Xui.Tests.Converters
         /// BooleanToVisibility
         ///
         /// <summary>
-        /// 真偽値を Visibility に変換するテストを実行します。
+        /// Tests the BooleanToVisibility converter class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -172,7 +254,7 @@ namespace Cube.Xui.Tests.Converters
         /// BooleanToVisibility_Func
         ///
         /// <summary>
-        /// 関数オブジェクトを引数に初期化するテストを実行します。
+        /// Tests the BooleanToVisibility converter class with a function.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -181,8 +263,6 @@ namespace Cube.Xui.Tests.Converters
             Convert<Visibility>(new BooleanToVisibility(e => (int)e > 0), 1),
             Is.EqualTo(Visibility.Visible)
         );
-
-        #endregion
 
         #endregion
     }
