@@ -96,19 +96,40 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ArgumentNullException
+        /// Create_Null
         ///
         /// <summary>
-        /// Tests the creating methods with the null object.
+        /// Tests the creating methods with the null disposer.
+        /// The DisposableOnceAction class allows the null disposer.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_ArgumentNullException()
+        public void Create_Null()
+        {
+            var n = 0;
+            using (var src = new DisposableOnceAction(() => ++n, null))
+            {
+                src.Invoke();
+                src.Invoke();
+            }
+            Assert.That(n, Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Throws
+        ///
+        /// <summary>
+        /// Tests the creating methods with the null actions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Throws()
         {
             Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
             Assert.That(() => new DisposableOnceAction(null, e => { }), Throws.ArgumentNullException);
-            Assert.That(() => new DisposableOnceAction(() => { }, null), Throws.ArgumentNullException);
         }
 
         #endregion

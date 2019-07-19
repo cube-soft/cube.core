@@ -197,7 +197,7 @@ namespace Cube.Tests
             }
 
             Assert.That(dest.Text,    Does.StartWith(nameof(Track)));
-            Assert.That(dest.Title,   Is.EqualTo("Cube.Core"));
+            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));

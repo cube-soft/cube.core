@@ -66,7 +66,7 @@ namespace Cube.Tests
         {
             var src = new DialogMessage();
             Assert.That(src.Text,    Is.Empty);
-            Assert.That(src.Title,   Is.EqualTo("Cube.Core"));
+            Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
@@ -86,7 +86,7 @@ namespace Cube.Tests
         {
             var src = DialogMessage.Create(new ArgumentException("TEST"));
             Assert.That(src.Text,    Is.EqualTo("TEST (ArgumentException)"));
-            Assert.That(src.Title,   Is.EqualTo("Cube.Core"));
+            Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
             Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
