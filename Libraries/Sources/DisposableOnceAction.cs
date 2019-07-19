@@ -47,7 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public DisposableOnceAction(Action action, Action<bool> dispose)
         {
-            _dispose = dispose ?? throw new ArgumentNullException(nameof(dispose));
+            _dispose = dispose;
             _action  = new OnceAction(action);
         }
 
@@ -118,7 +118,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) => _dispose(disposing);
+        protected override void Dispose(bool disposing) => _dispose?.Invoke(disposing);
 
         #endregion
 

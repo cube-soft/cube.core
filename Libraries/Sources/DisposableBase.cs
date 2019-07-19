@@ -74,7 +74,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        ~DisposableBase() { _dispose.Invoke(false); }
+        ~DisposableBase() { _dispose?.Invoke(false); }
 
         /* ----------------------------------------------------------------- */
         ///
