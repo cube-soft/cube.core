@@ -173,10 +173,26 @@ namespace Cube.Tests
             using (Logger.ObserveTaskException())
             {
                 // Assert.DoesNotThrow
-                Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
+                _ = Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
                 Task.Delay(100).Wait();
             }
         }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TearDown
+        ///
+        /// <summary>
+        /// Invokes when each test terminates.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TearDown]
+        public void TearDown() => Logger.Separator = "\t";
 
         #endregion
     }

@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract.Mixin;
-using Cube.Mixin.Logging;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 using System;
@@ -51,11 +50,7 @@ namespace Cube.DataContract
         /// <returns>Deserialized object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public T Invoke<T>(RegistryKey src)
-        {
-            this.LogDebug(src?.Name ?? "null");
-            return (T)Get(typeof(T), src);
-        }
+        public T Invoke<T>(RegistryKey src) => (T)Get(typeof(T), src);
 
         #endregion
 

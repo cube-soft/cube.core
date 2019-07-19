@@ -210,7 +210,7 @@ namespace Cube
         public static void Info(Type type, Assembly assembly)
         {
             Info(type, $"{assembly.GetProduct()} {new SoftwareVersion(assembly).ToString(true)}");
-            Info(type, $"{Environment.OSVersion} ({Environment.Version})");
+            Info(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
         }
 
