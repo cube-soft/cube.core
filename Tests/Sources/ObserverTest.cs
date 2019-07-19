@@ -52,6 +52,7 @@ namespace Cube.Tests
             using (new Mock(n)
                 .Associate(src) // All
                 .Associate(src, nameof(src.Name))
+                .Associate(default) // Ignore
             ) {
                 Assert.That(src.Age,  Is.EqualTo(0));
                 src.Age = 10;
