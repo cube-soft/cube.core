@@ -59,7 +59,13 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Configure() => log4net.Config.XmlConfigurator.Configure();
+        public static void Configure()
+        {
+            var asm  = Assembly.GetCallingAssembly();
+            var core = log4net.LogManager.GetRepository(asm);
+            var xml  = new System.IO.FileInfo($"{asm.Location}.config");
+            _ = log4net.Config.XmlConfigurator.Configure(core, xml);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -204,8 +210,7 @@ namespace Cube
         public static void Info(Type type, Assembly assembly)
         {
             Info(type, $"{assembly.GetProduct()} {new SoftwareVersion(assembly).ToString(true)}");
-            Info(type, $"{Environment.OSVersion}");
-            Info(type, $".NET Framework {Environment.Version}");
+            Info(type, $"{Environment.OSVersion} ({Environment.Version})");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
         }
 
