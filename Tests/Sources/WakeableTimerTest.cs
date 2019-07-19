@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Tasks;
+using Microsoft.Win32;
 using NUnit.Framework;
 using System;
 using System.Threading;

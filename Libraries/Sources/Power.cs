@@ -219,23 +219,4 @@ namespace Cube
         private bool _ignore = true;
         #endregion
     }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// PowerModes
-    ///
-    /// <summary>
-    /// Specifies the power mode.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum PowerModes
-    {
-        /// <summary>Resume</summary>
-        Resume = Microsoft.Win32.PowerModes.Resume,
-        /// <summary>Status is changed</summary>
-        StatusChange = Microsoft.Win32.PowerModes.StatusChange,
-        /// <summary>Suspend</summary>
-        Suspend = Microsoft.Win32.PowerModes.Suspend,
-    }
 }
