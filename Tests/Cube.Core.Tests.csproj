@@ -9,7 +9,7 @@
         <RootNamespace>Cube.Tests</RootNamespace>
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
-        <TargetFramework>net45</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
@@ -22,13 +22,15 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Libraries\Cube.Core.csproj" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
         <PackageReference Include="NUnit" Version="3.11.0" />
         <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
         <PackageReference Include="OpenCover" Version="4.7.922" />
-        <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
         <None Include="Examples\**\*" CopyToOutputDirectory="Always" />
+        <Compile Remove="Sources\Ipc*" />
     </ItemGroup>
 </Project>
