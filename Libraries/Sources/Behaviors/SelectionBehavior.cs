@@ -79,8 +79,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         private void WhenSelectionChanged(object s, SelectionChangedEventArgs e)
         {
-            foreach (var ri in e.RemovedItems.OfType<IListItem>()) ri.IsSelected = false;
-            foreach (var ai in e.AddedItems.OfType<IListItem>()) ai.IsSelected = true;
+            foreach (var ri in e.RemovedItems.OfType<IListItem>()) ri.Selected = false;
+            foreach (var ai in e.AddedItems.OfType<IListItem>()) ai.Selected = true;
         }
 
         #endregion

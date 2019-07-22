@@ -117,14 +117,14 @@ namespace Cube.Xui
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// IsSelected
+        /// Selected
         ///
         /// <summary>
-        /// Gets or sets a value indicating wheter the item is selected.
+        /// Gets or sets a value indicating whether the item is selected.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        bool IsSelected { get; set; }
+        bool Selected { get; set; }
     }
 
     #endregion
