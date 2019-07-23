@@ -115,8 +115,8 @@ namespace Cube.Tests
         [DataMember(Name = "ID")]
         public int Identification
         {
-            get => _identification;
-            set => SetProperty(ref _identification, value);
+            get => GetProperty<int>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -131,8 +131,8 @@ namespace Cube.Tests
         [DataMember]
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -147,8 +147,8 @@ namespace Cube.Tests
         [DataMember]
         public Sex Sex
         {
-            get => _sex;
-            set => SetProperty(ref _sex, value);
+            get => GetProperty<Sex>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -179,8 +179,8 @@ namespace Cube.Tests
         [DataMember]
         public DateTime? Creation
         {
-            get => _creation;
-            set => SetProperty(ref _creation, value);
+            get => GetProperty<DateTime?>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -195,8 +195,8 @@ namespace Cube.Tests
         [DataMember]
         public Address Contact
         {
-            get => _contact;
-            set => SetProperty(ref _contact, value);
+            get => GetProperty<Address>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -227,8 +227,8 @@ namespace Cube.Tests
         [DataMember]
         public string[] Messages
         {
-            get => _messages;
-            set => SetProperty(ref _messages, value);
+            get => GetProperty<string[]>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -267,7 +267,7 @@ namespace Cube.Tests
         /// Guid
         ///
         /// <summary>
-        /// Gets the Guid of the object.
+        /// Gets the GUID of the object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -336,29 +336,24 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private void Reset()
         {
-            _identification = -1;
-            _name           = string.Empty;
-            _sex            = Sex.Unknown;
-            _age            = new Accessor<int>(0);
-            _creation       = DateTime.MinValue;
-            _contact        = new Address { Type = "Phone", Value = string.Empty };
-            _others         = new List<Address>();
-            _messages       = new string[0];
-            _reserved       = false;
-            _secret         = "secret message";
+            Identification = -1;
+            Name           = string.Empty;
+            Creation       = DateTime.MinValue;
+            Contact        = new Address { Type = "Phone", Value = string.Empty };
+            Sex            = Sex.Unknown;
+            Messages       = new string[0];
+
+            _age      = new Accessor<int>(0);
+            _others   = new List<Address>();
+            _reserved = false;
+            _secret   = "secret message";
         }
 
         #endregion
 
         #region Fields
-        private int _identification;
-        private string _name;
-        private Sex _sex;
         private Accessor<int> _age;
-        private DateTime? _creation;
-        private Address _contact;
         private IList<Address> _others;
-        private string[] _messages;
         private bool _reserved;
         private string _secret;
         #endregion

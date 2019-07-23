@@ -16,9 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Cube
@@ -71,7 +69,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresentableBase : DisposableBase, IPresentable
+    public abstract class PresentableBase : ObservableBase, IPresentable
     {
         #region Constructors
 
@@ -120,6 +118,7 @@ namespace Cube
             Context    = context ?? throw new ArgumentNullException(nameof(context));
             _send      = new Dispatcher(context, true);
             _post      = new Dispatcher(context, false);
+            Dispatcher = _post;
         }
 
         #endregion
@@ -147,59 +146,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected SynchronizationContext Context { get; }
-
-        #endregion
-
-        #region Events
-
-        #region PropertyChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when a property is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="e">Arguments of the event being raised.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (PropertyChanged != null) _post.Invoke(() => PropertyChanged(this, e));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaisePropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event with the specified name.
-        /// </summary>
-        ///
-        /// <param name="name">Property name.</param>
-        /// <param name="more">More property names.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged(string name, params string[] more)
-        {
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
-            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(name));
-        }
-
-        #endregion
 
         #endregion
 
@@ -298,54 +244,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected void Post<T>() where T : new() => Post(new T());
-
-        #endregion
-
-        #region SetProperty
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="func">Function object to compare.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
-        {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            RaisePropertyChanged(name);
-            return true;
-        }
 
         #endregion
 

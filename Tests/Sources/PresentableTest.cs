@@ -270,7 +270,7 @@ namespace Cube.Tests
         /// Presenter
         ///
         /// <summary>
-        /// Inherits the PresentableBase class simply.
+        /// Represents the presenter for testing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -288,10 +288,9 @@ namespace Cube.Tests
             public IDispatcher GetDispatcher() => GetDispatcher(false);
             public string TestValue
             {
-                get => _test;
-                set => SetProperty(ref _test, value);
+                get => GetProperty<string>();
+                set => SetProperty(value);
             }
-            private string _test;
         }
 
         #endregion
