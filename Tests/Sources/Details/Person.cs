@@ -22,7 +22,7 @@ namespace Cube.Xui.Tests
     /// Person
     ///
     /// <summary>
-    /// テスト用のクラスです。
+    /// Represents the dummy data for testing.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -35,14 +35,14 @@ namespace Cube.Xui.Tests
         /// Name
         ///
         /// <summary>
-        /// 名前を取得または設定します。
+        /// Gets or sets the name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -50,21 +50,16 @@ namespace Cube.Xui.Tests
         /// Age
         ///
         /// <summary>
-        /// 年齢を取得または設定します。
+        /// Gets or sets the age.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public int Age
         {
-            get => _age;
-            set => SetProperty(ref _age, value);
+            get => GetProperty<int>();
+            set => SetProperty(value);
         }
 
-        #endregion
-
-        #region Fields
-        private string _name;
-        private int _age;
         #endregion
     }
 }

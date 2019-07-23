@@ -78,8 +78,8 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public ICommand Command
         {
-            get => _command;
-            set => SetProperty(ref _command, value);
+            get => GetProperty<ICommand>();
+            set => SetProperty(value);
         }
 
         #endregion
@@ -123,7 +123,6 @@ namespace Cube.Xui
         #region Fields
         private readonly Getter<string> _gettext;
         private readonly IDisposable _locale;
-        private ICommand _command;
         #endregion
     }
 }
