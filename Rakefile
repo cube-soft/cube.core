@@ -38,9 +38,9 @@ PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{PROJECT}.*.nupkg")
-CLEAN.include("#{LIB}/cube.*")
 CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
+CLEAN.include("#{PROJECT}.*.nupkg")
+CLOBBER.include("#{LIB}/cube.*")
 
 # --------------------------------------------------------------------------- #
 # default
