@@ -76,8 +76,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public string Command
         {
-            get => _command;
-            set => SetProperty(ref _command, value);
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -92,8 +92,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool Enabled
         {
-            get => _enabled;
-            set => SetProperty(ref _enabled, value);
+            get => GetProperty<bool>();
+            set => SetProperty(value);
         }
 
         #endregion
@@ -173,11 +173,6 @@ namespace Cube.FileSystem
             @"Software\Microsoft\Windows\CurrentVersion\Run", writable
         );
 
-        #endregion
-
-        #region Fields
-        private string _command = string.Empty;
-        private bool _enabled = false;
         #endregion
     }
 }

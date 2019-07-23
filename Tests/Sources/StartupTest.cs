@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tests;
 using Cube.Mixin.String;
+using Cube.Tests;
 using NUnit.Framework;
 using System.Reflection;
 
@@ -27,7 +27,7 @@ namespace Cube.FileSystem.Tests
     /// StartupTest
     ///
     /// <summary>
-    /// Startup のテスト用クラスです。
+    /// Tests the Startup class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,10 +38,28 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Create
+        ///
+        /// <summary>
+        /// Confirms the default values of properties.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create()
+        {
+            var src = new Startup("Test");
+            Assert.That(src.Name,    Is.EqualTo("Test"));
+            Assert.That(src.Command, Is.Null);
+            Assert.That(src.Enabled, Is.False);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Load
         ///
         /// <summary>
-        /// Executes the test for loading the startup settings.
+        /// Tests the Load method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -60,7 +78,7 @@ namespace Cube.FileSystem.Tests
         /// Save
         ///
         /// <summary>
-        /// Executes the test for saving the startup settings.
+        /// Tests the Save method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
