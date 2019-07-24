@@ -167,7 +167,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Serialize_ArgumentException
+        /// Serialize_Throws
         ///
         /// <summary>
         /// Tests the Serialize method with Registry format and stream.
@@ -175,7 +175,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Serialize_ArgumentException()
+        public void Serialize_Throws()
         {
             var dest = Get("Person.reg");
             using (var e = File.Create(dest))
@@ -206,7 +206,7 @@ namespace Cube.Tests
         public string Deserialize_File(Format format, string filename)
         {
             var dest = format.Deserialize<Person>(GetSource(filename));
-            Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
+            Assert.That(dest.Invoker, Is.EqualTo(Invoker.Vanilla));
             dest.Refresh(nameof(dest.Identification), nameof(dest.Name));
             return dest.Name;
         }
@@ -227,7 +227,7 @@ namespace Cube.Tests
             var dest     = default(RegistryKey).Deserialize<Person>();
             var expected = new Person();
 
-            Assert.That(dest.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
+            Assert.That(dest.Invoker,        Is.EqualTo(Invoker.Vanilla));
             Assert.That(dest.Identification, Is.EqualTo(expected.Identification));
             Assert.That(dest.Name,           Is.EqualTo(expected.Name));
             Assert.That(dest.Age,            Is.EqualTo(expected.Age));
@@ -242,7 +242,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Deserialize_ArgumentException
+        /// Deserialize_Throws
         ///
         /// <summary>
         /// Tests the Deserialize method with the Registry format and
@@ -251,7 +251,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Deserialize_ArgumentException()
+        public void Deserialize_Throws()
         {
             var src = GetSource("Settings.xml");
             using (var e = File.OpenRead(src))
@@ -260,9 +260,9 @@ namespace Cube.Tests
                 Assert.That(() => dest.Deserialize<Person>(e), Throws.ArgumentException);
             }
         }
+
+        #endregion
+
+        #endregion
     }
-
-    #endregion
-
-    #endregion
 }

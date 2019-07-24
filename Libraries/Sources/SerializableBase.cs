@@ -50,7 +50,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected SerializableBase() : this(Cube.Dispatcher.Vanilla) { }
+        protected SerializableBase() : this(Invoker.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,13 +58,13 @@ namespace Cube
         ///
         /// <summary>
         /// Initializes a new instance of the ObservableBase class with
-        /// the specified dispatcher.
+        /// the specified invoker.
         /// </summary>
         ///
-        /// <param name="dispatcher">Dispatcher object.</param>
+        /// <param name="invoker">Invoker object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected SerializableBase(IDispatcher dispatcher) { Reset(dispatcher); }
+        protected SerializableBase(Invoker invoker) { Reset(invoker); }
 
         #endregion
 
@@ -72,18 +72,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispatcher
+        /// Invoker
         ///
         /// <summary>
-        /// Gets or sets the dispatcher object.
+        /// Gets or sets the invoker object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [IgnoreDataMember]
-        public IDispatcher Dispatcher
+        public Invoker Invoker
         {
-            get => _dispatcher;
-            set => _dispatcher = value;
+            get => _invoker;
+            set => _invoker = value;
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace Cube
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (PropertyChanged == null) return;
-            Dispatcher.Invoke(() => PropertyChanged(this, e));
+            Invoker.Invoke(() => PropertyChanged(this, e));
         }
 
         #endregion
@@ -265,7 +265,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [OnDeserializing]
-        private void OnDeserializing(StreamingContext context) => Reset(Cube.Dispatcher.Vanilla);
+        private void OnDeserializing(StreamingContext context) => Reset(Invoker.Vanilla);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -276,16 +276,16 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Reset(IDispatcher dispatcher)
+        private void Reset(Invoker invoker)
         {
-            _dispatcher = dispatcher;
-            _fields     = new Hashtable();
+            _invoker = invoker;
+            _fields  = new Hashtable();
         }
 
         #endregion
 
         #region Fields
-        [NonSerialized] private IDispatcher _dispatcher;
+        [NonSerialized] private Invoker _invoker;
         private Hashtable _fields;
         #endregion
     }

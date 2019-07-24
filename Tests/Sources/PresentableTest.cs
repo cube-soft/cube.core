@@ -234,19 +234,19 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDispatcher
+        /// GetInvoker
         ///
         /// <summary>
-        /// Tests the GetDispatcher method.
+        /// Tests the GetInvoker method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetDispatcher()
+        public void GetInvoker()
         {
             using (var src = new Presenter(new SynchronizationContext()))
             {
-                Assert.That(src.GetDispatcher(), Is.Not.Null);
+                Assert.That(src.GetInvoker(), Is.Not.Null);
             }
         }
 
@@ -285,7 +285,7 @@ namespace Cube.Tests
             public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
             public void TrackAsync(Action e) => Track(e);
-            public IDispatcher GetDispatcher() => GetDispatcher(false);
+            public Invoker GetInvoker() => GetInvoker(false);
             public string TestValue
             {
                 get => GetProperty<string>();

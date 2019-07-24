@@ -116,9 +116,9 @@ namespace Cube
         {
             Aggregator = aggregator;
             Context    = context ?? throw new ArgumentNullException(nameof(context));
-            _send      = new Dispatcher(context, true);
-            _post      = new Dispatcher(context, false);
-            Dispatcher = _post;
+            _send      = new ContextInvoker(context, true);
+            _post      = new ContextInvoker(context, false);
+            Invoker    = _post;
         }
 
         #endregion
@@ -172,20 +172,20 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDispatcher
+        /// GetInvoker
         ///
         /// <summary>
-        /// Gets a dispatcher object with the specified arguments.
+        /// Gets a invoker object with the specified arguments.
         /// </summary>
         ///
         /// <param name="synchronous">
         /// Value indicating whether to invoke as synchronous.
         /// </param>
         ///
-        /// <returns>Dispatcher object.</returns>
+        /// <returns>Invoker object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected IDispatcher GetDispatcher(bool synchronous) => synchronous ? _send : _post;
+        protected Invoker GetInvoker(bool synchronous) => synchronous ? _send : _post;
 
         #region Send
 
@@ -250,8 +250,8 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly IDispatcher _send;
-        private readonly IDispatcher _post;
+        private readonly Invoker _send;
+        private readonly Invoker _post;
         #endregion
     }
 

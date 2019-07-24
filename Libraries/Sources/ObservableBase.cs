@@ -46,23 +46,23 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() : this(Cube.Dispatcher.Vanilla) { }
+        protected ObservableBase() : this(Invoker.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// ObservableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the DisposableObservable class
-        /// with the specified dispatcher.
+        /// Initializes a new instance of the ObservableBasee class
+        /// with the specified invoker.
         /// </summary>
         ///
-        /// <param name="dispatcher">Dispatcher object.</param>
+        /// <param name="invoker">Invoker object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase(IDispatcher dispatcher) : base()
+        protected ObservableBase(Invoker invoker) : base()
         {
-            Dispatcher = dispatcher;
+            Invoker = invoker;
         }
 
         #endregion
@@ -71,14 +71,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispatcher
+        /// Invoker
         ///
         /// <summary>
-        /// Gets or sets the dispatcher object.
+        /// Gets or sets the invoker object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IDispatcher Dispatcher { get; protected set; }
+        protected Invoker Invoker { get; set; }
 
         #endregion
 
@@ -109,7 +109,7 @@ namespace Cube
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (PropertyChanged == null) return;
-            Dispatcher.Invoke(() => PropertyChanged(this, e));
+            Invoker.Invoke(() => PropertyChanged(this, e));
         }
 
         #endregion
