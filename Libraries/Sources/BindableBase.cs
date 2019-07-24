@@ -40,13 +40,13 @@ namespace Cube.Xui
         ///
         /// <summary>
         /// Initializes a new instance of the BindableBase class with the
-        /// specified dispatcher.
+        /// specified invoker.
         /// </summary>
         ///
-        /// <param name="dispatcher">Dispatcher object.</param>
+        /// <param name="invoker">Invoker object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected BindableBase(IDispatcher dispatcher) : base(dispatcher) { }
+        protected BindableBase(Invoker invoker) : base(invoker) { }
 
         #endregion
 
