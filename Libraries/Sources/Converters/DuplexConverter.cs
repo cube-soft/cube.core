@@ -48,27 +48,7 @@ namespace Cube.Xui.Converters
         ///
         /* ----------------------------------------------------------------- */
         protected DuplexConverter(Func<object, object> convert, Func<object, object> back) :
-            this((x, __, ___, ____) => convert(x), (x, _, __, ___) => back(x)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DuplexConverter
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /// <param name="convert">変換関数</param>
-        /// <param name="back">逆変換関数</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DuplexConverter(
-            Func<object, object, object> convert,
-            Func<object, object, object> back) :
-            this(
-                (x, __, y, ___) => convert(x, y),
-                (x, __, y, ___) => back(x, y)
-            ) { }
+            this((e, t, p, c) => convert(e), (e, t, p, c) => back(e)) { }
 
         /* ----------------------------------------------------------------- */
         ///

@@ -49,23 +49,7 @@ namespace Cube.Xui.Converters
         /// <param name="func">Function to convert.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected SimplexConverter(Func<object, object> func) :
-            this((x, __, ___, ____) => func(x)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SimplexConverter
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SimplexConverter with the
-        /// specified function.
-        /// </summary>
-        ///
-        /// <param name="func">Function to convert.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected SimplexConverter(Func<object, object, object> func) :
-            this((x, __, y, ___) => func(x, y)) { }
+        protected SimplexConverter(Func<object, object> func) : this((e, t, p, c) => func(e)) { }
 
         /* ----------------------------------------------------------------- */
         ///
