@@ -15,62 +15,59 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.DataContract;
-using Cube.Xui.Converters;
-using NUnit.Framework;
-
-namespace Cube.Xui.Tests.Converters
+namespace Cube.Xui.Converters
 {
+    #region UpperCase
+
     /* --------------------------------------------------------------------- */
     ///
-    /// StringConverterTest
+    /// UpperCase
     ///
     /// <summary>
-    /// Tests the string related converter classes.
+    /// Provides functionality to convert to upper case.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class StringConverterTest : ConvertHelper
+    public class UpperCase : SimplexConverter
     {
-        #region UpperCase
-
         /* ----------------------------------------------------------------- */
         ///
         /// UpperCase
         ///
         /// <summary>
-        /// Tests the UpperCase class.
+        /// Initializes a new instance of the UpperCase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Hello", ExpectedResult = "HELLO")]
-        [TestCase("Ｂｙｅ", ExpectedResult = "ＢＹＥ")]
-        [TestCase("Hello 日本", ExpectedResult = "HELLO 日本")]
-        [TestCase(Format.Json, ExpectedResult = "JSON")]
-        [TestCase(null, ExpectedResult = "")]
-        public string UpperCase(object src) => Convert<string>(new UpperCase(), src);
+        public UpperCase() : base((e, t, p, c) => e?.ToString()?.ToUpper(c) ?? string.Empty) { }
+    }
 
-        #endregion
+    #endregion
 
-        #region LowerCase
+    #region LowerCase
 
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LowerCase
+    ///
+    /// <summary>
+    /// Provides functionality to convert to lower case.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class LowerCase : SimplexConverter
+    {
         /* ----------------------------------------------------------------- */
         ///
         /// LowerCase
         ///
         /// <summary>
-        /// Tests the LowerCase class.
+        /// Initializes a new instance of the LowerCase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Hello", ExpectedResult = "hello")]
-        [TestCase("Ｂｙｅ", ExpectedResult = "ｂｙｅ")]
-        [TestCase("Hello 日本", ExpectedResult = "hello 日本")]
-        [TestCase(Format.Json, ExpectedResult = "json")]
-        [TestCase(null, ExpectedResult = "")]
-        public string LowerCase(object src) => Convert<string>(new LowerCase(), src);
-
-        #endregion
+        public LowerCase() : base((e, t, p, c) => e?.ToString()?.ToLower(c) ?? string.Empty) { }
     }
+
+    #endregion
 }

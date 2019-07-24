@@ -22,15 +22,14 @@ using System.Windows.Markup;
 
 namespace Cube.Xui.Converters
 {
-    #region SimplexConverter
-
     /* --------------------------------------------------------------------- */
     ///
     /// SimplexConverter
     ///
     /// <summary>
-    /// 単方向の変換のみをサポートしている Converter クラスです。
-    /// ConvertBack は常に NotSupportedException が送出されます。
+    /// Provides functionality to convert from the provided arguments.
+    /// The class throws the NotSupportedException if the ConvertBack
+    /// method is invoked.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -43,10 +42,11 @@ namespace Cube.Xui.Converters
         /// SimplexConverter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SimplexConverter class with
+        /// the specified function.
         /// </summary>
         ///
-        /// <param name="func">変換関数</param>
+        /// <param name="func">Function to convert.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected SimplexConverter(Func<object, object> func) :
@@ -57,10 +57,11 @@ namespace Cube.Xui.Converters
         /// SimplexConverter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SimplexConverter with the
+        /// specified function.
         /// </summary>
         ///
-        /// <param name="func">変換関数</param>
+        /// <param name="func">Function to convert.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected SimplexConverter(Func<object, object, object> func) :
@@ -71,10 +72,11 @@ namespace Cube.Xui.Converters
         /// SimplexConverter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SimplexConverter with the
+        /// specified function.
         /// </summary>
         ///
-        /// <param name="func">変換関数</param>
+        /// <param name="func">Function to convert.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected SimplexConverter(Func<object, Type, object, CultureInfo, object> func)
@@ -91,7 +93,7 @@ namespace Cube.Xui.Converters
         /// Convert
         ///
         /// <summary>
-        /// 変換処理を実行します。
+        /// Invokes the conversion.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -103,7 +105,7 @@ namespace Cube.Xui.Converters
         /// ConvertBack
         ///
         /// <summary>
-        /// このメソッドはサポートされません。
+        /// The class does not support the method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -115,7 +117,7 @@ namespace Cube.Xui.Converters
         /// ProvideValue
         ///
         /// <summary>
-        /// 自身のオブジェクトを返します。
+        /// Returns the self object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -127,34 +129,4 @@ namespace Cube.Xui.Converters
         private readonly Func<object, Type, object, CultureInfo, object> _func;
         #endregion
     }
-
-    #endregion
-
-    #region ValueToString
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ValueToString
-    ///
-    /// <summary>
-    /// 指定されたオブジェクトを文字列に変換するためのクラスです。
-    /// 変換には object.ToString() メソッドを利用します。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ValueToString : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueToString
-        ///
-        /// <summary>
-        /// オブジェクトを初期化します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ValueToString() : base (e => e?.ToString() ?? string.Empty) { }
-    }
-
-    #endregion
 }
