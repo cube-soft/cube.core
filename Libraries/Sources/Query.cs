@@ -104,12 +104,12 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Request(QueryMessage<T, U> message) =>
-            _dispatcher.Invoke(() => _callback(message));
+            _invoker.Invoke(() => _callback(message));
 
         #endregion
 
         #region Fields
-        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
+        private readonly Invoker _invoker = QueryInvoker.Create();
         private readonly Action<QueryMessage<T, U>> _callback;
         #endregion
     }
@@ -193,12 +193,12 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Request(QueryMessage<T, U> message) =>
-            _dispatcher.Invoke(() => _callback.Invoke(message));
+            _invoker.Invoke(() => _callback.Invoke(message));
 
         #endregion
 
         #region Fields
-        private readonly IDispatcher _dispatcher = QueryDispatcher.Create();
+        private readonly Invoker _invoker = QueryInvoker.Create();
         private readonly OnceAction<QueryMessage<T, U>> _callback;
         #endregion
     }
@@ -231,30 +231,30 @@ namespace Cube
 
     #endregion
 
-    #region QueryDispatcher
+    #region QueryInvoker
 
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryDispatcher
+    /// QueryInvoker
     ///
     /// <summary>
-    /// Provides functionality to create a dispatcher.
+    /// Provides functionality to create a invoker.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class QueryDispatcher
+    internal static class QueryInvoker
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Create
         ///
         /// <summary>
-        /// Creates a new instance of the IDispatcher implemented class.
+        /// Creates a new instance of the Invoker class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IDispatcher Create() =>
-            SynchronizationContext.Current != null ? new Dispatcher(true) : Dispatcher.Vanilla;
+        public static Invoker Create() =>
+            SynchronizationContext.Current != null ? new ContextInvoker(true) : Invoker.Vanilla;
     }
 
     #endregion

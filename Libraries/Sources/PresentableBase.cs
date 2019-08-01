@@ -16,9 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Cube
@@ -71,7 +69,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresentableBase : DisposableBase, IPresentable
+    public abstract class PresentableBase : ObservableBase, IPresentable
     {
         #region Constructors
 
@@ -118,8 +116,9 @@ namespace Cube
         {
             Aggregator = aggregator;
             Context    = context ?? throw new ArgumentNullException(nameof(context));
-            _send      = new Dispatcher(context, true);
-            _post      = new Dispatcher(context, false);
+            _send      = new ContextInvoker(context, true);
+            _post      = new ContextInvoker(context, false);
+            Invoker    = _post;
         }
 
         #endregion
@@ -150,59 +149,6 @@ namespace Cube
 
         #endregion
 
-        #region Events
-
-        #region PropertyChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when a property is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="e">Arguments of the event being raised.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (PropertyChanged != null) _post.Invoke(() => PropertyChanged(this, e));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaisePropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event with the specified name.
-        /// </summary>
-        ///
-        /// <param name="name">Property name.</param>
-        /// <param name="more">More property names.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged(string name, params string[] more)
-        {
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
-            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(name));
-        }
-
-        #endregion
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -226,20 +172,20 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDispatcher
+        /// GetInvoker
         ///
         /// <summary>
-        /// Gets a dispatcher object with the specified arguments.
+        /// Gets a invoker object with the specified arguments.
         /// </summary>
         ///
         /// <param name="synchronous">
         /// Value indicating whether to invoke as synchronous.
         /// </param>
         ///
-        /// <returns>Dispatcher object.</returns>
+        /// <returns>Invoker object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected IDispatcher GetDispatcher(bool synchronous) => synchronous ? _send : _post;
+        protected Invoker GetInvoker(bool synchronous) => synchronous ? _send : _post;
 
         #region Send
 
@@ -301,59 +247,11 @@ namespace Cube
 
         #endregion
 
-        #region SetProperty
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="func">Function object to compare.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
-        {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            RaisePropertyChanged(name);
-            return true;
-        }
-
-        #endregion
-
         #endregion
 
         #region Fields
-        private readonly IDispatcher _send;
-        private readonly IDispatcher _post;
+        private readonly Invoker _send;
+        private readonly Invoker _post;
         #endregion
     }
 

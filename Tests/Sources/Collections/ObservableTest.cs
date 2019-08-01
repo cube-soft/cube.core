@@ -51,7 +51,6 @@ namespace Cube.Tests
         public void Invoke()
         {
             var src = new TestCollection<int>();
-            Assert.That(src.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
 
             for (var i = 0; i < 3; ++i) src.Add(i);
             var count = 0;
@@ -64,20 +63,19 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke_Dispatcher
+        /// Invoke_SynchronizationContext
         ///
         /// <summary>
         /// Confirms that CollectinChanged events are fired with the
-        /// provided dispatcher.
+        /// provided invoker.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Invoke_Dispatcher()
+        public void Invoke_SynchronizationContext()
         {
             var src = new TestCollection<int>();
-            Assert.That(src.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
-            src.Dispatcher = new Dispatcher(new SynchronizationContext(), true);
+            src.Set(new ContextInvoker(new SynchronizationContext(), true));
 
             for (var i = 0; i < 10; ++i) src.Add(i);
             var count = 0;
@@ -125,10 +123,21 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Set
+        ///
+        /// <summary>
+        /// Sets the specified invoker.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Set(Invoker invoker) => Invoker = invoker;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Add
         ///
         /// <summary>
-        /// Add the specified value.
+        /// Adds the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

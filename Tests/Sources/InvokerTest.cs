@@ -23,21 +23,21 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DispatcherTest
+    /// InvokerTest
     ///
     /// <summary>
-    /// Tests the Dispatcher class.
+    /// Tests the Invoker class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class DispatcherTest
+    class InvokerTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ArgumentNullException
+        /// Create_Throws
         ///
         /// <summary>
         /// Confirms the behavior when creating a new instance.
@@ -46,10 +46,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_ArgumentNullException()
+        public void Create_Throws()
         {
             Assert.That(SynchronizationContext.Current, Is.Null);
-            Assert.That(() => new Dispatcher(true), Throws.ArgumentNullException);
+            Assert.That(() => new ContextInvoker(true), Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -65,7 +65,7 @@ namespace Cube.Tests
         public void Post()
         {
             var dest = 0;
-            var src  = new Dispatcher(new SynchronizationContext(), false);
+            var src  = new ContextInvoker(new SynchronizationContext(), false);
             src.Invoke(() => dest++);
             Task.Delay(100).Wait();
             Assert.That(dest, Is.EqualTo(1));
