@@ -6,20 +6,23 @@ Cube.Core
 [![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Core/_apis/build/status/cube-soft.Cube.Core?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Core/_build)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
 
-Cube.Core is a common library for other CubeSoft libraries and applications.
-The library is available for .NET Framework 3.5, 4.5, or later.
+Cube.Core is a shared library to realize the MVVM pattern in WPF or WinForms.
+The library is available for .NET Framework 3.5, 4.5, .NET Standard 2.0, or later.
 
 ## Installation
 
-You can install using NuGet like this:
+You can install using the NuGet packages reference.
+Add the following description to your project file.
 
-    PM> Install-Package Cube.Core
+    <PackageReference Include="Cube.Core" Version="1.17.0" />
 
 Or select it from the NuGet packages UI on Visual Studio.
 
 ## Dependencies
 
 * [log4net](https://logging.apache.org/log4net/)
+* [Microsoft.Win32.Registry](https://www.nuget.org/packages/Microsoft.Win32.Registry/) ... .NET Standard 2.0
+* [Microsoft.Win32.SystemEvents](https://www.nuget.org/packages/Microsoft.Win32.SystemEvents/) ... .NET Standard 2.0
 
 ## Contributing
 
