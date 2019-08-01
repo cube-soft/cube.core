@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>1.16.0</version>
+        <version>1.17.0</version>
         <id>Cube.Core</id>
         <title>Cube.Core</title>
         <authors>clown,cube-soft</authors>
         <owners>clown,cube-soft</owners>
-        <description>Common library for CubeSoft libraries and applications.</description>
+        <description>Shared library to realize the MVVM pattern in WPF or WinForms, which is available for .NET Framework 3.5, 4.5, .NET Standard 2.0, or later.</description>
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <tags>Cube</tags>
         <license type="expression">Apache-2.0</license>
@@ -23,10 +23,16 @@
                 <dependency id="AsyncBridge" version="0.3.1" />
                 <dependency id="TaskParallelLibrary" version="1.0.2856.0" />
             </group>
+            <group targetFramework="netstandard2.0">
+                <dependency id="log4net" version="2.0.8" />
+                <dependency id="Microsoft.Win32.Registry" version="4.5.0" />
+                <dependency id="Microsoft.Win32.SystemEvents" version="4.5.0" />
+            </group>
         </dependencies>
     </metadata>
     <files>
         <file src="bin\Any CPU\Release\net45\Cube.Core.*" target="lib\net45" />
         <file src="bin\Any CPU\Release\net35\Cube.Core.*" target="lib\net35" />
+        <file src="bin\Any CPU\Release\netstandard2.0\Cube.Core.*" target="lib\netstandard2.0" />
     </files>
 </package>
