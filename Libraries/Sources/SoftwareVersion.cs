@@ -18,6 +18,7 @@
 using Cube.Mixin.Assembly;
 using Cube.Mixin.String;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -70,7 +71,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(string version) : this(Assembly.GetExecutingAssembly())
+        public SoftwareVersion(string version) : this(typeof(SoftwareVersion).Assembly)
         {
             if (!version.HasValue()) return;
 
@@ -115,7 +116,7 @@ namespace Cube
         /// </summary>
         ///
         /// <remarks>
-        /// 指定可能な値は 2, 3, 4 の 3 種類です。
+        /// 2, 3, or 4 is available.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -172,7 +173,7 @@ namespace Cube
         ///
         /// <summary>
         /// Returns the string that represents the version without the
-        /// platform idintification.
+        /// platform identification.
         /// </summary>
         ///
         /// <returns>String for the version.</returns>
@@ -199,10 +200,10 @@ namespace Cube
         {
             var ss = new StringBuilder();
 
-            if (Prefix.HasValue()) ss.Append(Prefix);
+            if (Prefix.HasValue()) Append(ss, Prefix);
             AppendNumber(ss);
-            if (Suffix.HasValue()) ss.Append(Suffix);
-            if (platform) ss.Append($" ({Platform})");
+            if (Suffix.HasValue()) Append(ss, Suffix);
+            if (platform) Append(ss, $" ({Platform})");
 
             return ss.ToString();
         }
@@ -222,11 +223,26 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private void AppendNumber(StringBuilder dest)
         {
-            dest.Append($"{Number.Major}.{Number.Minor}");
+            Append(dest, $"{Number.Major}.{Number.Minor}");
             if (Digit <= 2) return;
-            dest.Append($".{Number.Build}");
+            Append(dest, $".{Number.Build}");
             if (Digit <= 3) return;
-            dest.Append($".{Number.Revision}");
+            Append(dest, $".{Number.Revision}");
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Append
+        ///
+        /// <summary>
+        /// Appends the specified value.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Append(StringBuilder src, string value)
+        {
+            var check = src.Append(value);
+            Debug.Assert(check == src);
         }
 
         /* ----------------------------------------------------------------- */

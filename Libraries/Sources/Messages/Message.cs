@@ -34,14 +34,14 @@ namespace Cube
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Title
+        /// Text
         ///
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets a text for the message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Title { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -84,33 +84,6 @@ namespace Cube
 
     #endregion
 
-    #region ProgressMessage<TValue>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ProgressMessage(TValue)
-    ///
-    /// <summary>
-    /// Represents the message with Ratio property.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ProgressMessage<TValue> : Message<TValue>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Ratio
-        ///
-        /// <summary>
-        /// Gets the current progress ratio.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public double Ratio { get; set; }
-    }
-
-    #endregion
-
     #region QueryMessage<TQuery, TValue>
 
     /* --------------------------------------------------------------------- */
@@ -140,6 +113,37 @@ namespace Cube
 
         #endregion
     }
+
+    #endregion
+
+    #region CloseMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CloseMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when closing a window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class CloseMessage { }
+
+    #endregion
+
+    #region ApplyMessage
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ApplyMessage
+    ///
+    /// <summary>
+    /// Represents the message that is sent when setting the current
+    /// values to the associated model objects.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class ApplyMessage { }
 
     #endregion
 }

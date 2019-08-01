@@ -16,36 +16,49 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading.Tasks;
 
 namespace Cube
 {
-    #region CloseMessage
-
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseMessage
+    /// AsyncAction
     ///
     /// <summary>
-    /// Represents the message that is sent when closing a window.
+    /// Represents the method to invoke as an asynchronous method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseMessage : EventArgs { }
-
-    #endregion
-
-    #region UpdateSourcesMessage
+    public delegate Task AsyncAction();
 
     /* --------------------------------------------------------------------- */
     ///
-    /// UpdateSourcesMessage
+    /// Synchronous
     ///
     /// <summary>
-    /// Represents the message that is sent when updating source values.
+    /// Provides functionality to assist the synchronous methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpdateSourcesMessage : EventArgs { }
-
-    #endregion
+    public static class Synchronous
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// AsTask
+        ///
+        /// <summary>
+        /// Impersonates the specified action to asynchronous action.
+        /// </summary>
+        ///
+        /// <param name="src">Synchronous action.</param>
+        ///
+        /// <returns>Impersonated action.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static AsyncAction AsTask(Action src) => () =>
+        {
+            src();
+            return TaskEx.FromResult(0);
+        };
+    }
 }

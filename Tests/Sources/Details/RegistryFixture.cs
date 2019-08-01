@@ -28,7 +28,7 @@ namespace Cube.Tests
     /// RegistryFixture
     ///
     /// <summary>
-    /// テストでレジストリを使用するためのクラスです。
+    /// Provides functionality to assist the test with the registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,7 +41,7 @@ namespace Cube.Tests
         /// Shared
         ///
         /// <summary>
-        /// 共通するサブキー名を取得します。
+        /// Gets the subkey name that is shared in the tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,7 +52,7 @@ namespace Cube.Tests
         /// Default
         ///
         /// <summary>
-        /// デフォルトのサブキー名を取得します。
+        /// Gets the default subkey name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -67,7 +67,7 @@ namespace Cube.Tests
         /// GetKeyName
         ///
         /// <summary>
-        /// サブキー名を取得します。
+        /// Gets the registry key name with the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +78,7 @@ namespace Cube.Tests
         /// CreateSubKey
         ///
         /// <summary>
-        /// レジストリ・サブキーを作成します。
+        /// Creates a new subkey of the registry with the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -90,21 +90,19 @@ namespace Cube.Tests
         /// OpenSubKey
         ///
         /// <summary>
-        /// レジストリ・サブキーを読み取り専用で開きます。
+        /// Opens the specified subkey as read-only.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey OpenSubKey(string subkey) =>
             Formatter.DefaultKey.OpenSubKey(GetKeyName(subkey), false);
 
-        #region Setup
-
         /* ----------------------------------------------------------------- */
         ///
         /// Setup
         ///
         /// <summary>
-        /// 各テスト前に実行します。
+        /// Invokes the setup operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -146,14 +144,12 @@ namespace Cube.Tests
         /// Teardown
         ///
         /// <summary>
-        /// 各テスト後に実行します。
+        /// Invokes the tear-down operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TearDown]
         protected virtual void Teardown() => Formatter.DefaultKey.DeleteSubKeyTree(Shared, false);
-
-        #endregion
 
         #endregion
     }

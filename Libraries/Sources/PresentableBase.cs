@@ -16,11 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Cube
 {
@@ -72,7 +69,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresentableBase : DisposableBase, IPresentable
+    public abstract class PresentableBase : ObservableBase, IPresentable
     {
         #region Constructors
 
@@ -119,6 +116,9 @@ namespace Cube
         {
             Aggregator = aggregator;
             Context    = context ?? throw new ArgumentNullException(nameof(context));
+            _send      = new ContextInvoker(context, true);
+            _post      = new ContextInvoker(context, false);
+            Invoker    = _post;
         }
 
         #endregion
@@ -149,55 +149,6 @@ namespace Cube
 
         #endregion
 
-        #region Events
-
-        #region PropertyChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when a property is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="e">Arguments of the event being raised.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (PropertyChanged != null) Context.Post(z => PropertyChanged(this, e), null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RaisePropertyChanged
-        ///
-        /// <summary>
-        /// Raises the PropertyChanged event with the specified name.
-        /// </summary>
-        ///
-        /// <param name="name">Property name.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void RaisePropertyChanged(string name) =>
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
-
-        #endregion
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -221,20 +172,20 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDispatcher
+        /// GetInvoker
         ///
         /// <summary>
-        /// Gets a dispatcher object with the specified arguments.
+        /// Gets a invoker object with the specified arguments.
         /// </summary>
         ///
         /// <param name="synchronous">
         /// Value indicating whether to invoke as synchronous.
         /// </param>
         ///
-        /// <returns>Dispatcher object.</returns>
+        /// <returns>Invoker object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected IDispatcher GetDispatcher(bool synchronous) => new Dispatcher(Context, synchronous);
+        protected Invoker GetInvoker(bool synchronous) => synchronous ? _send : _post;
 
         #region Send
 
@@ -249,7 +200,7 @@ namespace Cube
         /// <param name="message">Message to be sent.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(T message) => Context.Send(e => Aggregator.Publish(message), null);
+        protected void Send<T>(T message) => _send.Invoke(() => Aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -279,7 +230,7 @@ namespace Cube
         /// <param name="message">Message to be posted.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>(T message) => Context.Post(e => Aggregator.Publish(message), null);
+        protected void Post<T>(T message) => _post.Invoke(() => Aggregator.Publish(message));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -296,190 +247,11 @@ namespace Cube
 
         #endregion
 
-        #region Track
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked as asynchronous.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Task Track(Action action) => Track(action, DialogMessage.Create);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked as asynchronous.
-        /// </param>
-        ///
-        /// <param name="converter">
-        /// Function to convert from Exception to DialogMessage.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Converter converter) =>
-            Track(action, converter, false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action, and will send the error message
-        /// if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked.
-        /// </param>
-        ///
-        /// <param name="converter">
-        /// Function to convert from Exception to DialogMessage.
-        /// </param>
-        ///
-        /// <param name="synchronous">
-        /// Value indicating whether to invoke the specified action as a
-        /// synchronous manner.
-        /// </param>
-        ///
-        /// <remarks>
-        /// Presenter や ViewModel において、直接的に View と関係のない何らかの
-        /// 処理を実行する時には原則として 非 UI スレッド上で実行する事が推奨され
-        /// ますが、同期問題などの理由でやむを得ず UI スレッド上で実行したい場合、
-        /// 第 3 引数を true に設定して下さい。また、第 2 引数には既定の変換規則
-        /// として DialogMessage.Create が利用できます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Task Track(Action action, Converter converter, bool synchronous) =>
-            synchronous ? TrackSync(action, converter) : TrackAsync(action, converter);
-
         #endregion
 
-        #region SetProperty
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProperty
-        ///
-        /// <summary>
-        /// Sets the specified value for the specified field.
-        /// </summary>
-        ///
-        /// <param name="field">Reference to the target field.</param>
-        /// <param name="value">Value being set.</param>
-        /// <param name="func">Function object to compare.</param>
-        /// <param name="name">Name of the property.</param>
-        ///
-        /// <returns>True for done; false for cancel.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
-        {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            RaisePropertyChanged(name);
-            return true;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackAsync
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Task TrackAsync(Action action, Converter converter) =>
-            TaskEx.Run(() => TrackCore(action, converter));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackSync
-        ///
-        /// <summary>
-        /// Invokes the specified action as a synchronous manner, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Task TrackSync(Action action, Converter converter)
-        {
-            TrackCore(action, converter);
-            return TaskEx.FromResult(0);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackCore
-        ///
-        /// <summary>
-        /// Invokes the specified action, and will send the error message
-        /// if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void TrackCore(Action action, Converter converter)
-        {
-            try { action(); }
-            catch (Exception err) { Send(converter(err)); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Converter
-        ///
-        /// <summary>
-        /// Represents the delegate to convert from Exception to
-        /// DialogMessage.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public delegate DialogMessage Converter(Exception e);
-
+        #region Fields
+        private readonly Invoker _send;
+        private readonly Invoker _post;
         #endregion
     }
 

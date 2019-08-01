@@ -125,11 +125,11 @@ namespace Cube.Mixin.Collections
 
         #endregion
 
-        #region IndexOf
+        #region Index
 
         /* ----------------------------------------------------------------- */
         ///
-        /// FirstIndexOf(T)
+        /// FirstIndex(T)
         ///
         /// <summary>
         /// Returns the first index of a sequence that satisfies a
@@ -148,14 +148,14 @@ namespace Cube.Mixin.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static int FirstIndexOf<T>(this IEnumerable<T> src, Func<T, bool> predicate) =>
+        public static int FirstIndex<T>(this IEnumerable<T> src, Func<T, bool> predicate) =>
             src?.Select((Value, Index) => new { Value, Index })
                 .FirstOrDefault(e => predicate(e.Value))
                ?.Index ?? -1;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LastIndexOf(T)
+        /// LastIndex(T)
         ///
         /// <summary>
         /// Returns the last index of the specified sequence.
@@ -169,16 +169,16 @@ namespace Cube.Mixin.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static int LastIndexOf<T>(this IEnumerable<T> src)
+        public static int LastIndex<T>(this IEnumerable<T> src)
         {
             if (src is ICollection<T> s0) return s0.Count - 1;
             if (src is IReadOnlyCollection<T> s1) return s1.Count - 1;
-            return src.LastIndexOf(e => true);
+            return src.LastIndex(e => true);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LastIndexOf(T)
+        /// LastIndex(T)
         ///
         /// <summary>
         /// Returns the last index of a sequence that satisfies a
@@ -197,7 +197,7 @@ namespace Cube.Mixin.Collections
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static int LastIndexOf<T>(this IEnumerable<T> src, Func<T, bool> predicate) =>
+        public static int LastIndex<T>(this IEnumerable<T> src, Func<T, bool> predicate) =>
             src?.Select((Value, Index) => new { Value, Index })
                 .LastOrDefault(e => predicate(e.Value))
                ?.Index ?? -1;
@@ -217,7 +217,7 @@ namespace Cube.Mixin.Collections
         ///
         /* ----------------------------------------------------------------- */
         public static int Clamp<T>(this IEnumerable<T> src, int index) =>
-            Math.Max(Math.Min(index, src.LastIndexOf()), 0);
+            Math.Max(Math.Min(index, src.LastIndex()), 0);
 
         #endregion
 

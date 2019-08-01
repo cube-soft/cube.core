@@ -20,19 +20,41 @@ using System.Threading;
 
 namespace Cube
 {
-    #region IDispatcher
+    #region Invoker
 
     /* --------------------------------------------------------------------- */
     ///
-    /// IDispatcher
+    /// Invoker
     ///
     /// <summary>
-    /// Represents interface to invoke the action in the framework manner.
+    /// Provides functionality to invoke the provided action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IDispatcher
+    public abstract class Invoker
     {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoker
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Invoker class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Invoker() { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Vanilla
+        ///
+        /// <summary>
+        /// Gets the invoker that invokes the provided action directly.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Invoker Vanilla { get; } = new VanillaInvoker();
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -44,33 +66,32 @@ namespace Cube
         /// <param name="action">Invoked action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        void Invoke(Action action);
+        public abstract void Invoke(Action action);
     }
 
     #endregion
 
-    #region Dispatcher
+    #region ContextInvoker
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Dispatcher
+    /// ContextInvoker
     ///
     /// <summary>
-    /// Provides functionality to invoke the provided action.
+    /// Provides functionality to invoke the provided action with a
+    /// SynchronizationContext object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Dispatcher : IDispatcher
+    public class ContextInvoker : Invoker
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispatcher
+        /// ContextInvoker
         ///
         /// <summary>
-        /// Initializes a new instance of the Dispatcher class with the
-        /// specified arguments.
+        /// Initializes a new instance of the ContextInvoker class with
+        /// the specified arguments.
         /// </summary>
         ///
         /// <param name="synchronous">
@@ -83,15 +104,15 @@ namespace Cube
         /// </exception>
         ///
         /* ----------------------------------------------------------------- */
-        public Dispatcher(bool synchronous) : this(SynchronizationContext.Current, synchronous) { }
+        public ContextInvoker(bool synchronous) : this(SynchronizationContext.Current, synchronous) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispatcher
+        /// ContextInvoker
         ///
         /// <summary>
-        /// Initializes a new instance of the Dispatcher class with the
-        /// specified arguments.
+        /// Initializes a new instance of the ContextInvoker class with
+        /// the specified arguments.
         /// </summary>
         ///
         /// <param name="context">Synchronization context.</param>
@@ -105,26 +126,11 @@ namespace Cube
         /// </exception>
         ///
         /* ----------------------------------------------------------------- */
-        public Dispatcher(SynchronizationContext context, bool synchronous)
+        public ContextInvoker(SynchronizationContext context, bool synchronous)
         {
             Synchronous = synchronous;
             Context     = context ?? throw new ArgumentNullException(nameof(context));
         }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Vanilla
-        ///
-        /// <summary>
-        /// Gets the dispatcher that invokes the provided action directly.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDispatcher Vanilla { get; } = new VanillaDispatcher();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -136,7 +142,8 @@ namespace Cube
         /// </summary>
         ///
         /// <remarks>
-        /// true の場合は Send、false の場合は Post メソッドを使用します。
+        /// Uses the Send method if the property is set to true;
+        /// otherwise uses the Post method.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -153,10 +160,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected SynchronizationContext Context { get; }
 
-        #endregion
-
-        #region Methods
-
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -168,31 +171,40 @@ namespace Cube
         /// <param name="action">Invoked action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Invoke(Action action)
+        public override void Invoke(Action action)
         {
             if (Synchronous) Context.Send(e => action(), null);
             else Context.Post(e => action(), null);
         }
+    }
 
-        #endregion
+    #endregion
 
-        #region Implementations
+    #region VanillaInvoker
 
+    /* --------------------------------------------------------------------- */
+    ///
+    /// VanillaInvoker
+    ///
+    /// <summary>
+    /// Provides functionality to invoke the provided action directly.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    internal sealed class VanillaInvoker : Invoker
+    {
         /* ----------------------------------------------------------------- */
         ///
-        /// VanillaDispatcher
+        /// Invoke
         ///
         /// <summary>
-        /// Provides functionality to invoke the provided action directly.
+        /// Invokes the specified action.
         /// </summary>
         ///
+        /// <param name="action">Invoked action.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        private class VanillaDispatcher : IDispatcher
-        {
-            public void Invoke(Action action) => action();
-        }
-
-        #endregion
+        public override void Invoke(Action action) => action();
     }
 
     #endregion

@@ -38,7 +38,7 @@ namespace Cube
         /// OpenDirectoryMessage
         ///
         /// <summary>
-        /// Initializes a new isntance of the OpenDirectoryMessage class.
+        /// Initializes a new instance of the OpenDirectoryMessage class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -59,11 +59,11 @@ namespace Cube
 
     #endregion
 
-    #region OpenOrSaveFileMessage<TAction>
+    #region OpenOrSaveFileMessage<TValue>
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenOrSaveFileMessage(TAction)
+    /// OpenOrSaveFileMessage(TValue)
     ///
     /// <summary>
     /// Represents shared information to show either the OpenFileDialog

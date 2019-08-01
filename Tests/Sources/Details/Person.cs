@@ -26,11 +26,11 @@ namespace Cube.Tests
     /// Sex
     ///
     /// <summary>
-    /// 性別を表す列挙体です。
+    /// Specifies the sex.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    internal enum Sex : int
+    internal enum Sex
     {
         Male    =  0,
         Female  =  1,
@@ -42,7 +42,7 @@ namespace Cube.Tests
     /// Address
     ///
     /// <summary>
-    /// アドレスを保持するためのクラスです。
+    /// Represents the address.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -54,7 +54,7 @@ namespace Cube.Tests
         /// Type
         ///
         /// <summary>
-        /// アドレスの種類を取得または設定します。
+        /// Gets or sets the type of the provided address.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,7 +66,7 @@ namespace Cube.Tests
         /// Value
         ///
         /// <summary>
-        /// アドレスの内容を取得または設定します。
+        /// Gets or sets the content of the provided address.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -79,7 +79,7 @@ namespace Cube.Tests
     /// Person
     ///
     /// <summary>
-    /// 個人情報を保持するためのクラスです。
+    /// Represents the example class that is serializable.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -93,7 +93,7 @@ namespace Cube.Tests
         /// Person
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Persion class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -108,15 +108,15 @@ namespace Cube.Tests
         /// Identification
         ///
         /// <summary>
-        /// ID を取得または設定します。
+        /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember(Name = "ID")]
         public int Identification
         {
-            get => _identification;
-            set => SetProperty(ref _identification, value);
+            get => GetProperty<int>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -124,15 +124,15 @@ namespace Cube.Tests
         /// Name
         ///
         /// <summary>
-        /// 名前を取得または設定します。
+        /// Gets or sets the name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => GetProperty<string>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -140,15 +140,15 @@ namespace Cube.Tests
         /// Sex
         ///
         /// <summary>
-        /// 性別を取得または設定します。
+        /// Gets or sets the sex.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
         public Sex Sex
         {
-            get => _sex;
-            set => SetProperty(ref _sex, value);
+            get => GetProperty<Sex>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -156,7 +156,7 @@ namespace Cube.Tests
         /// Age
         ///
         /// <summary>
-        /// 年齢を取得または設定します。
+        /// Gets or sets the age.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -172,15 +172,15 @@ namespace Cube.Tests
         /// Creation
         ///
         /// <summary>
-        /// 作成日時を取得または設定します。
+        /// Gets or sets the creation time.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
         public DateTime? Creation
         {
-            get => _creation;
-            set => SetProperty(ref _creation, value);
+            get => GetProperty<DateTime?>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -188,15 +188,15 @@ namespace Cube.Tests
         /// Contact
         ///
         /// <summary>
-        /// 連絡先を取得または設定します。
+        /// Gets or sets the address to contact.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
         public Address Contact
         {
-            get => _contact;
-            set => SetProperty(ref _contact, value);
+            get => GetProperty<Address>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -204,7 +204,7 @@ namespace Cube.Tests
         /// Others
         ///
         /// <summary>
-        /// その他のアドレスを取得または設定します。
+        /// Gets or sets the other addresses.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -220,15 +220,15 @@ namespace Cube.Tests
         /// Messages
         ///
         /// <summary>
-        /// メッセージ一覧を取得または設定します。
+        /// Gets or sets the message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [DataMember]
         public string[] Messages
         {
-            get => _messages;
-            set => SetProperty(ref _messages, value);
+            get => GetProperty<string[]>();
+            set => SetProperty(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -236,7 +236,7 @@ namespace Cube.Tests
         /// Reserved
         ///
         /// <summary>
-        /// フラグを取得または設定します。
+        /// Gets or sets the reserved value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -252,7 +252,7 @@ namespace Cube.Tests
         /// Secret
         ///
         /// <summary>
-        /// 秘密のメモ用データを取得または設定します。
+        /// Gets or sets the secret value that is not serialized.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -267,7 +267,7 @@ namespace Cube.Tests
         /// Guid
         ///
         /// <summary>
-        /// Guid オブジェクトを取得します。
+        /// Gets the GUID of the object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -282,8 +282,7 @@ namespace Cube.Tests
         /// CreateDummy
         ///
         /// <summary>
-        /// テスト用のダミーデータが設定された Person オブジェクトを
-        /// 生成します。
+        /// Creates a dummy object to test.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -319,7 +318,7 @@ namespace Cube.Tests
         /// OnDeserializing
         ///
         /// <summary>
-        /// デシリアライズ直前に実行されます。
+        /// Occurs before deserializing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -331,35 +330,30 @@ namespace Cube.Tests
         /// Reset
         ///
         /// <summary>
-        /// 値をリセットします。
+        /// Resets values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private void Reset()
         {
-            _identification = -1;
-            _name           = string.Empty;
-            _sex            = Sex.Unknown;
-            _age            = new Accessor<int>(0);
-            _creation       = DateTime.MinValue;
-            _contact        = new Address { Type = "Phone", Value = string.Empty };
-            _others         = new List<Address>();
-            _messages       = new string[0];
-            _reserved       = false;
-            _secret         = "secret message";
+            Identification = -1;
+            Name           = string.Empty;
+            Creation       = DateTime.MinValue;
+            Contact        = new Address { Type = "Phone", Value = string.Empty };
+            Sex            = Sex.Unknown;
+            Messages       = new string[0];
+
+            _age      = new Accessor<int>(0);
+            _others   = new List<Address>();
+            _reserved = false;
+            _secret   = "secret message";
         }
 
         #endregion
 
         #region Fields
-        private int _identification;
-        private string _name;
-        private Sex _sex;
         private Accessor<int> _age;
-        private DateTime? _creation;
-        private Address _contact;
         private IList<Address> _others;
-        private string[] _messages;
         private bool _reserved;
         private string _secret;
         #endregion

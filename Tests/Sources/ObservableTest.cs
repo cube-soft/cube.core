@@ -15,8 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
 using Cube.Mixin.Observing;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Cube.Tests
 {
@@ -54,17 +55,21 @@ namespace Cube.Tests
                 Assert.That(src.Value, Is.Empty);
                 var dc = src.Subscribe(e => ++n);
 
-                src.Value = "Hello";
+                src.Value = "Hello";    // 1
                 Assert.That(src.Value, Is.EqualTo("Hello"));
-                src.Value = "";
+                src.Value = "";         // 2
                 Assert.That(src.Value, Is.Empty);
-                src.Value = null;
+                src.Value = null;       // 3
                 Assert.That(src.Value, Is.Null);
-                src.Value = "";
+                src.Value = "";         // 4
                 Assert.That(src.Value, Is.Empty);
-                src.Value = ""; // ignore
+                src.Value = "";         // 4 (ignore)
                 Assert.That(src.Value, Is.Empty);
-                src.Refresh(nameof(src.Value), nameof(src.Value), nameof(src.Value));
+
+                src.Age = 0;            // 4 (ignore)
+                Assert.That(src.Age,   Is.EqualTo(0));
+                src.Age = 20;           // 5
+                Assert.That(src.Age,   Is.EqualTo(20));
 
                 dc.Dispose();
                 src.Value = null;
@@ -72,7 +77,36 @@ namespace Cube.Tests
                 src.Value = "";
                 Assert.That(src.Value, Is.Empty);
             }
-            Assert.That(n, Is.EqualTo(7));
+            Assert.That(n, Is.EqualTo(5));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Refresh
+        ///
+        /// <summary>
+        /// Tests the Refresh method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Refresh()
+        {
+            var dest = new Dictionary<string, int>
+            {
+                { nameof(Mock.Value), 0 },
+                { nameof(Mock.Age),   0 },
+            };
+
+            using (var src = new Mock())
+            {
+                var dc = src.Subscribe(e => dest[e]++);
+                src.Refresh(nameof(Mock.Value), nameof(Mock.Age), nameof(Mock.Value));
+                dc.Dispose();
+            }
+
+            Assert.That(dest[nameof(Mock.Value)], Is.EqualTo(2));
+            Assert.That(dest[nameof(Mock.Age)],   Is.EqualTo(1));
         }
 
         #endregion
@@ -97,7 +131,13 @@ namespace Cube.Tests
                 get => _value;
                 set => SetProperty(ref _value, value);
             }
+            public int Age
+            {
+                get => _age;
+                set => SetProperty(ref _age, value);
+            }
             private string _value;
+            private int _age;
         }
 
         #endregion

@@ -28,7 +28,7 @@ namespace Cube.DataContract
     /// RegistrySserializer
     ///
     /// <summary>
-    /// レジストリに Serialize するためのクラスです。
+    /// Provides functionality to serialize to the registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,11 +41,11 @@ namespace Cube.DataContract
         /// Invoke
         ///
         /// <summary>
-        /// レジストリ・サブキー下に内容を保存します。
+        /// Invokes the serialization to the specified registry key.
         /// </summary>
         ///
-        /// <param name="dest">レジストリ・サブキー</param>
-        /// <param name="src">保存するオブジェクト</param>
+        /// <param name="dest">Root registry key.</param>
+        /// <param name="src">Object to be serialized.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Invoke<T>(RegistryKey dest, T src) => Set(typeof(T), dest, src);
@@ -59,7 +59,7 @@ namespace Cube.DataContract
         /// Set
         ///
         /// <summary>
-        /// レジストリ・サブキー下に内容を保存します。
+        /// Sets the specified object to the specified registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -88,7 +88,7 @@ namespace Cube.DataContract
         /// Set
         ///
         /// <summary>
-        /// レジストリ・サブキー下に内容を保存します。
+        /// Sets the specified object to the specified registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -113,12 +113,8 @@ namespace Cube.DataContract
         /// SetArray
         ///
         /// <summary>
-        /// レジストリ・サブキー下に配列の内容を保存します。
+        /// Sets the specified array object to the specified registry key.
         /// </summary>
-        ///
-        /// <remarks>
-        /// 1 次元配列のみに対応しています。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private void SetArray(Type type, RegistryKey dest, Array src)
@@ -140,7 +136,7 @@ namespace Cube.DataContract
         /// SetList
         ///
         /// <summary>
-        /// レジストリ・サブキー下にリストの内容を保存します。
+        /// Sets the specified list object to the specified registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -163,7 +159,7 @@ namespace Cube.DataContract
         /// SetListElement
         ///
         /// <summary>
-        /// レジストリ・サブキー下にリスト要素の内容を保存します。
+        /// Sets the specified list object to the specified registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -178,7 +174,8 @@ namespace Cube.DataContract
         /// Create
         ///
         /// <summary>
-        /// レジストリ・サブキーを生成して処理を実行します。
+        /// Creates a new registry key with the specified registry key
+        /// and name, and invokes the specified action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -195,7 +192,7 @@ namespace Cube.DataContract
         /// Digit
         ///
         /// <summary>
-        /// 整数値の桁数を取得します。
+        /// Gets the digit number of the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

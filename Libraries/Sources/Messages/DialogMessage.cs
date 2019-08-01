@@ -15,7 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Assembly;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Cube
 {
@@ -30,7 +33,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogMessage : Message<string>
+    public class DialogMessage : Message<DialogStatus>
     {
         #region Constructors
 
@@ -43,11 +46,27 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogMessage() { Value = string.Empty; }
+        public DialogMessage()
+        {
+            Value = DialogStatus.Ok;
+            Text  = string.Empty;
+            Title = (Assembly.GetEntryAssembly() ?? GetType().Assembly).GetTitle();
+        }
 
         #endregion
 
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Title
+        ///
+        /// <summary>
+        /// Gets or sets the title displayed in the dialog.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Title { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,17 +91,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public DialogButtons Buttons { get; set; } = DialogButtons.Ok;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Status
-        ///
-        /// <summary>
-        /// Gets or sets the button that is clicked by a user.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DialogStatus Status { get; set; } = DialogStatus.Ok;
-
         #endregion
 
         #region Methods
@@ -101,11 +109,10 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static DialogMessage Create(Exception src) => new DialogMessage
         {
-            Title   = "Error",
-            Value   = $"{src.Message} ({src.GetType().Name})",
+            Text    = $"{src.Message} ({src.GetType().Name})",
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
-            Status  = DialogStatus.Ok,
+            Value   = DialogStatus.Ok,
         };
 
         #endregion
@@ -177,7 +184,7 @@ namespace Cube
     public enum DialogStatus
     {
         /// <summary>The message box returns no result.</summary>
-        None = 0,
+        Empty = 0,
         /// <summary>The result value of the message box is OK.</summary>
         Ok = 1,
         /// <summary>The result value of the message box is Cancel.</summary>
@@ -186,6 +193,44 @@ namespace Cube
         Yes = 6,
         /// <summary>The result value of the message box is No.</summary>
         No = 7,
+    }
+
+    #endregion
+
+    #region DialogStatusExtension
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DialogStatusExtension
+    ///
+    /// <summary>
+    /// Specifies the button that is clicked by a user.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static class DialogStatusExtension
+    {
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Any
+        ///
+        /// <summary>
+        /// Determines whether to match any of the specified values.
+        /// </summary>
+        ///
+        /// <param name="src">Source value.</param>
+        /// <param name="value">Value to be checked.</param>
+        /// <param name="more">Values to be checked.</param>
+        ///
+        /// <returns>true for match; otherwise false.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool Any(this DialogStatus src, DialogStatus value, params DialogStatus[] more) =>
+            src == value || more.Any(e => e == src);
+
+        #endregion
     }
 
     #endregion

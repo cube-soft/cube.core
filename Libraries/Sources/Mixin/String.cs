@@ -43,7 +43,7 @@ namespace Cube.Mixin.String
         ///
         /// <param name="src">Source string.</param>
         ///
-        /// <returns>true for containing one or more charecter.</returns>
+        /// <returns>true for containing one or more character.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);

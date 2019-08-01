@@ -15,7 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Generics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -48,7 +50,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected SerializableBase() : this(Cube.Dispatcher.Vanilla) { }
+        protected SerializableBase() : this(Invoker.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -56,16 +58,13 @@ namespace Cube
         ///
         /// <summary>
         /// Initializes a new instance of the ObservableBase class with
-        /// the specified dispatcher.
+        /// the specified invoker.
         /// </summary>
         ///
-        /// <param name="dispatcher">Dispatcher object.</param>
+        /// <param name="invoker">Invoker object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected SerializableBase(IDispatcher dispatcher)
-        {
-            Dispatcher = dispatcher;
-        }
+        protected SerializableBase(Invoker invoker) { Reset(invoker); }
 
         #endregion
 
@@ -73,18 +72,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Dispatcher
+        /// Invoker
         ///
         /// <summary>
-        /// Gets or sets the dispatcher object.
+        /// Gets or sets the invoker object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [IgnoreDataMember]
-        public IDispatcher Dispatcher
+        public Invoker Invoker
         {
-            get => _dispatcher;
-            set => _dispatcher = value;
+            get => _invoker;
+            set => _invoker = value;
         }
 
         #endregion
@@ -116,7 +115,7 @@ namespace Cube
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (PropertyChanged == null) return;
-            Dispatcher.Invoke(() => PropertyChanged(this, e));
+            Invoker.Invoke(() => PropertyChanged(this, e));
         }
 
         #endregion
@@ -139,7 +138,26 @@ namespace Cube
         public void Refresh(string name, params string[] more)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(name));
-            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(name));
+            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(s));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetProperty
+        ///
+        /// <summary>
+        /// Sets the value of the specified property name.
+        /// </summary>
+        ///
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>Value of the property.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected T GetProperty<T>([CallerMemberName] string name = null)
+        {
+            if (!_fields.ContainsKey(name)) _fields.Add(name, default(T));
+            return (T)_fields[name];
         }
 
         /* ----------------------------------------------------------------- */
@@ -147,7 +165,55 @@ namespace Cube
         /// SetProperty
         ///
         /// <summary>
-        /// Sets the specified value for the specified field.
+        /// Sets the specified value to the inner field of the specified
+        /// name if they are not equal.
+        /// </summary>
+        ///
+        /// <param name="value">Value being set.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(T value, [CallerMemberName] string name = null) =>
+            SetProperty(value, EqualityComparer<T>.Default, name);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        ///
+        /// <summary>
+        /// Sets the specified value to the inner field of the specified
+        /// name if they are not equal.
+        /// </summary>
+        ///
+        /// <param name="value">Value being set.</param>
+        /// <param name="compare">Function to compare.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected bool SetProperty<T>(T value, IEqualityComparer<T> compare,
+            [CallerMemberName] string name = null)
+        {
+            var src = GetProperty<T>(name);
+            var set = compare.Set(ref src, value);
+            if (set)
+            {
+                _fields[name] = src;
+                Refresh(name);
+            }
+            return set;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetProperty
+        ///
+        /// <summary>
+        /// Sets the specified value to the specified field if they are
+        /// not equal.
         /// </summary>
         ///
         /// <param name="field">Reference to the target field.</param>
@@ -157,8 +223,7 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            [CallerMemberName] string name = null) =>
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string name = null) =>
             SetProperty(ref field, value, EqualityComparer<T>.Default, name);
 
         /* ----------------------------------------------------------------- */
@@ -166,24 +231,24 @@ namespace Cube
         /// SetProperty
         ///
         /// <summary>
-        /// Sets the specified value for the specified field.
+        /// Set the specified value in the specified field if they are not
+        /// equal.
         /// </summary>
         ///
         /// <param name="field">Reference to the target field.</param>
         /// <param name="value">Value being set.</param>
-        /// <param name="func">Function object to compare.</param>
+        /// <param name="compare">Function to compare.</param>
         /// <param name="name">Name of the property.</param>
         ///
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value,
-            IEqualityComparer<T> func, [CallerMemberName] string name = null)
+        protected bool SetProperty<T>(ref T field, T value, IEqualityComparer<T> compare,
+            [CallerMemberName] string name = null)
         {
-            if (func.Equals(field, value)) return false;
-            field = value;
-            Refresh(name);
-            return true;
+            var set = compare.Set(ref field, value);
+            if (set) Refresh(name);
+            return set;
         }
 
         #endregion
@@ -200,15 +265,28 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [OnDeserializing]
-        private void OnDeserializing(StreamingContext context)
+        private void OnDeserializing(StreamingContext context) => Reset(Invoker.Vanilla);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Reset
+        ///
+        /// <summary>
+        /// Resets properties and fields.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Reset(Invoker invoker)
         {
-            Dispatcher = Cube.Dispatcher.Vanilla;
+            _invoker = invoker;
+            _fields  = new Hashtable();
         }
 
         #endregion
 
         #region Fields
-        [NonSerialized] private IDispatcher _dispatcher;
+        [NonSerialized] private Invoker _invoker;
+        private Hashtable _fields;
         #endregion
     }
 }

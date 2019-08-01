@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -42,6 +43,7 @@ namespace Cube.Mixin.Generics
         /// </summary>
         ///
         /// <typeparam name="T">Type to be cast.</typeparam>
+        ///
         /// <param name="src">Source object.</param>
         ///
         /// <returns>Casted object.</returns>
@@ -58,6 +60,7 @@ namespace Cube.Mixin.Generics
         /// </summary>
         ///
         /// <typeparam name="T">Type to be cast.</typeparam>
+        ///
         /// <param name="src">Source object.</param>
         /// <param name="error">
         /// Returned object when the cast is failed.
@@ -78,14 +81,10 @@ namespace Cube.Mixin.Generics
         /// </summary>
         ///
         /// <typeparam name="T">Type of object to be created.</typeparam>
+        ///
         /// <param name="src">Object to be copied.</param>
         ///
         /// <returns>Created object.</returns>
-        ///
-        /// <remarks>
-        /// Serializable 属性を持つクラスの場合、BinaryFormatter を
-        /// 利用して値をコピーします。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static T Copy<T>(this T src) where T : new()
@@ -95,6 +94,33 @@ namespace Cube.Mixin.Generics
             var dest = new T();
             Assign(dest, src);
             return dest;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Set
+        ///
+        /// <summary>
+        /// Sets the specified value to the specified field if they are
+        /// not equal.
+        /// </summary>
+        ///
+        /// <typeparam name="T">
+        /// Type of object to compare and set.
+        /// </typeparam>
+        ///
+        /// <param name="src">Function to compare.</param>
+        /// <param name="field">Reference to the target field.</param>
+        /// <param name="value">Value being set.</param>
+        ///
+        /// <returns>True for done; false for cancel.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool Set<T>(this IEqualityComparer<T> src, ref T field, T value)
+        {
+            if (src.Equals(field, value)) return false;
+            field = value;
+            return true;
         }
 
         #endregion

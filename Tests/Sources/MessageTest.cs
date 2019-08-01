@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace Cube.Tests
@@ -36,6 +37,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Match
+        ///
+        /// <summary>
+        /// Tests the Any extended method of the DialogStatus class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Match()
+        {
+            Assert.That(DialogStatus.Ok.Any(DialogStatus.Ok, DialogStatus.Cancel), Is.True);
+            Assert.That(DialogStatus.Ok.Any(DialogStatus.No, DialogStatus.Cancel), Is.False);
+            Assert.That(DialogStatus.Empty.Any(DialogStatus.Empty), Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Create_DialogMessage
         ///
         /// <summary>
@@ -47,11 +65,31 @@ namespace Cube.Tests
         public void Create_DialogMessage()
         {
             var src = new DialogMessage();
-            Assert.That(src.Title,   Is.Empty);
-            Assert.That(src.Value,   Is.Empty);
+            Assert.That(src.Text,    Is.Empty);
+            Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(src.Status,  Is.EqualTo(DialogStatus.Ok));
+            Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_ErrorMessage
+        ///
+        /// <summary>
+        /// Tests the Create method of the DialogMessage class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_ErrorMessage()
+        {
+            var src = DialogMessage.Create(new ArgumentException("TEST"));
+            Assert.That(src.Text,    Is.EqualTo("TEST (ArgumentException)"));
+            Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
+            Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
+            Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,7 +105,7 @@ namespace Cube.Tests
         public void Create_OpenFileMessage()
         {
             var src = new OpenFileMessage();
-            Assert.That(src.Title,            Is.Empty);
+            Assert.That(src.Text,            Is.Empty);
             Assert.That(src.Value.Count(),    Is.EqualTo(0));
             Assert.That(src.InitialDirectory, Is.Empty);
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
@@ -90,7 +128,7 @@ namespace Cube.Tests
         public void Create_SaveFileMessage()
         {
             var src = new SaveFileMessage();
-            Assert.That(src.Title,            Is.Empty);
+            Assert.That(src.Text,            Is.Empty);
             Assert.That(src.Value,            Is.Empty);
             Assert.That(src.InitialDirectory, Is.Empty);
             Assert.That(src.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
@@ -113,7 +151,7 @@ namespace Cube.Tests
         public void Create_OpenDirectoryMessage()
         {
             var src = new OpenDirectoryMessage();
-            Assert.That(src.Title,     Is.Empty);
+            Assert.That(src.Text,     Is.Empty);
             Assert.That(src.Value,     Is.Empty);
             Assert.That(src.NewButton, Is.True);
             Assert.That(src.Cancel,    Is.False);
@@ -121,54 +159,18 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ProgressMessage
+        /// Create_EmptyMessages
         ///
         /// <summary>
-        /// Tests properties of the ProgressMessage class.
+        /// Tests to create messages that have no properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_ProgressMessage()
+        public void Create_EmptyMessages()
         {
-            var src = new ProgressMessage<int>();
-            Assert.That(src.Title, Is.Empty);
-            Assert.That(src.Value, Is.EqualTo(0));
-            Assert.That(src.Ratio, Is.EqualTo(0.0));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_CloseMessage
-        ///
-        /// <summary>
-        /// Tests properties of the CloseMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_CloseMessage()
-        {
-            // The class has no properties.
-            var src = new CloseMessage();
-            Assert.That(src, Is.Not.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_UpdateSourcesMessage
-        ///
-        /// <summary>
-        /// Tests properties of the UpdateSourcesMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_UpdateSourcesMessage()
-        {
-            // The class has no properties.
-            var src = new UpdateSourcesMessage();
-            Assert.That(src, Is.Not.Null);
+            Assert.That(new CloseMessage(), Is.Not.Null);
+            Assert.That(new ApplyMessage(), Is.Not.Null);
         }
 
         #endregion

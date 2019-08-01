@@ -114,8 +114,7 @@ namespace Cube
         /// <param name="getter">Function to get a value.</param>
         ///
         /// <remarks>
-        /// 生成されたオブジェクトは読み込み専用となり、Set メソッド実行時には
-        /// InvalidOperationException が送出されます。
+        /// Throws InvalidOperationException when the Set method is invoked.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */

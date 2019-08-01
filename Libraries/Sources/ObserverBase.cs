@@ -99,6 +99,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Observe(INotifyPropertyChanged src, params string[] names)
         {
+            if (src == null) return;
+
             var set = new HashSet<string>(names);
             void handler(object s, PropertyChangedEventArgs e)
             {

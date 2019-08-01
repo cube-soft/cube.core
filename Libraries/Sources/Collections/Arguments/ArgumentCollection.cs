@@ -245,7 +245,7 @@ namespace Cube.Collections
 
             foreach (var arg in cvt)
             {
-                if (arg.Key)
+                if (arg.Prefix.HasValue())
                 {
                     if (key.HasValue()) _options.AddOrSet(key, string.Empty);
                     key = arg.Value;

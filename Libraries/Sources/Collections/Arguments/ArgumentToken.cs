@@ -15,82 +15,73 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube
+namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Utm
+    /// ArgumentToken
     ///
     /// <summary>
-    /// Represents the properties that are used in the Google Analytics
-    /// service.
+    /// Represents an item of arguments. The class is mainly used in the
+    /// IArgumentPreprocessor implemented classes.
     /// </summary>
     ///
-    /// <seealso href="https://support.google.com/analytics/answer/1033863" />
-    ///
     /* --------------------------------------------------------------------- */
-    public class Utm
+    public class ArgumentToken
     {
-        #region Properties
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ArgumentToken
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ArgumentToken class with the
+        /// specified value.
+        /// </summary>
+        ///
+        /// <param name="value">Value of the argument.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ArgumentToken(string value) : this(value, string.Empty) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Source
+        /// ArgumentToken
         ///
         /// <summary>
-        /// Gets or sets a value to identify the advertiser, site,
-        /// publication, etc. that is sending traffic to your property.
+        /// Initializes a new instance of the ArgumentToken class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="value">Value of the argument.</param>
+        /// <param name="prefix">Prefix of the argument.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ArgumentToken(string value, string prefix)
+        {
+            Value  = value;
+            Prefix = prefix;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets the value of the token.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source { get; set; }
+        public string Value { get; }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Medium
+        /// Prefix
         ///
         /// <summary>
-        /// Gets or sets a value of the advertising or marketing medium.
+        /// Gets the prefix value of the token.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Medium { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Campaign
-        ///
-        /// <summary>
-        /// Gets or sets a value of the individual campaign name, slogan,
-        /// promo code, etc. for a product.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Campaign { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Term
-        ///
-        /// <summary>
-        /// Gets or sets a value to identify paid search keywords.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Term { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Content
-        ///
-        /// <summary>
-        /// Gets or sets a value that is used to differentiate similar
-        /// content, or links within the same ad.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Content { get; set; }
-
-        #endregion
+        public string Prefix { get; }
     }
 }

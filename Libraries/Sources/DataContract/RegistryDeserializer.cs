@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.DataContract.Mixin;
-using Cube.Mixin.Logging;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 using System;
@@ -30,7 +29,7 @@ namespace Cube.DataContract
     /// RegistryDeserializer
     ///
     /// <summary>
-    /// レジストリから Deserialize するためのクラスです。
+    /// Provides functionality to deserialize from the registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -43,19 +42,15 @@ namespace Cube.DataContract
         /// Invoke
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する値を読み込みます。
+        /// Invokes the deserialization from the specified registry key.
         /// </summary>
         ///
-        /// <param name="src">レジストリ・サブキー</param>
+        /// <param name="src">Root registry key.</param>
         ///
-        /// <returns>生成オブジェクト</returns>
+        /// <returns>Deserialized object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public T Invoke<T>(RegistryKey src)
-        {
-            this.LogDebug(src?.Name ?? "null");
-            return (T)Get(typeof(T), src);
-        }
+        public T Invoke<T>(RegistryKey src) => (T)Get(typeof(T), src);
 
         #endregion
 
@@ -66,7 +61,8 @@ namespace Cube.DataContract
         /// Get
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する内容を取得します。
+        /// Gets the object corresponding to the specified type and
+        /// registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -90,8 +86,8 @@ namespace Cube.DataContract
         /// Get
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下の名前に対応する内容を取得
-        /// します。
+        /// Gets the object corresponding to the specified type, registry
+        /// key, and name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -108,13 +104,9 @@ namespace Cube.DataContract
         /// GetArray
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する内容を配列として
-        /// 取得します。
+        /// Gets the array object corresponding to the specified type and
+        /// registry key.
         /// </summary>
-        ///
-        /// <remarks>
-        /// 1 次元配列のみに対応しています。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private Array GetArray(Type type, RegistryKey src)
@@ -133,8 +125,8 @@ namespace Cube.DataContract
         /// GetList
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する内容を配列として
-        /// 取得します。
+        /// Gets the list object corresponding to the specified type and
+        /// registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -149,8 +141,8 @@ namespace Cube.DataContract
         /// GetListCore
         ///
         /// <summary>
-        /// 指定されたレジストリ・サブキー下に存在する内容を配列として
-        /// 取得します。
+        /// Gets the list object corresponding to the specified type and
+        /// registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -173,7 +165,8 @@ namespace Cube.DataContract
         /// GetListElement
         ///
         /// <summary>
-        /// リストの要素を取得します。
+        /// Gets the list object corresponding to the specified type and
+        /// registry key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -185,7 +178,8 @@ namespace Cube.DataContract
         /// OpenGet
         ///
         /// <summary>
-        /// レジストリ・サブキーを開き、内容を取得します。
+        /// Opens the registry from the specified registry key and name,
+        /// and invokes the specified action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

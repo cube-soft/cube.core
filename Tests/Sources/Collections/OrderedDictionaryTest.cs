@@ -155,7 +155,7 @@ namespace Cube.Tests
         [TestCase("",      "Torvalds", ExpectedResult = false)]
         [TestCase(null,   null,        ExpectedResult = false)]
         public bool Remove(string key, string value) =>
-            Create().Remove(KeyValuePair.Create(key, value));
+            Create().Remove(Cube.Collections.KeyValuePair.Create(key, value));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -244,18 +244,18 @@ namespace Cube.Tests
             Assert.That(() => values.Add("a"), Throws.TypeOf<NotSupportedException>());
 
             src.Add("Bjarne", "Stroustrup");
-            src.Add(KeyValuePair.Create("Anders", "Hejlsberg"));
-            Assert.That(src.Count,      Is.EqualTo(7));
-            Assert.That(keys.Count,     Is.EqualTo(5));
-            Assert.That(values.Count,   Is.EqualTo(5));
+            src.Add(Cube.Collections.KeyValuePair.Create("Anders", "Hejlsberg"));
+            Assert.That(src.Count,    Is.EqualTo(7));
+            Assert.That(keys.Count,   Is.EqualTo(5));
+            Assert.That(values.Count, Is.EqualTo(5));
 
-            src.Remove("Richard");
-            src.Remove("Dennis");
-            src.Remove("Kenneth");
-            src.Remove("Dummy");
-            Assert.That(src.Count,      Is.EqualTo(4));
-            Assert.That(keys.Count,     Is.EqualTo(5));
-            Assert.That(values.Count,   Is.EqualTo(5));
+            Assert.That(src.Remove("Richard"), Is.True);
+            Assert.That(src.Remove("Dennis"),  Is.True);
+            Assert.That(src.Remove("Kenneth"), Is.True);
+            Assert.That(src.Remove("Dummy"),   Is.False);
+            Assert.That(src.Count,    Is.EqualTo(4));
+            Assert.That(keys.Count,   Is.EqualTo(5));
+            Assert.That(values.Count, Is.EqualTo(5));
 
             src.Clear();
             Assert.That(src.Count,      Is.EqualTo(0));

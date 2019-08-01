@@ -59,7 +59,13 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Configure() => log4net.Config.XmlConfigurator.Configure();
+        public static void Configure()
+        {
+            var asm  = Assembly.GetCallingAssembly();
+            var core = log4net.LogManager.GetRepository(asm);
+            var xml  = new System.IO.FileInfo($"{asm.Location}.config");
+            _ = log4net.Config.XmlConfigurator.Configure(core, xml);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -90,7 +96,7 @@ namespace Cube
         /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -105,7 +111,7 @@ namespace Cube
         /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -120,7 +126,7 @@ namespace Cube
         /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="message">Method name or message.</param>
         ///
@@ -143,7 +149,7 @@ namespace Cube
         /// Monitors the running time and outputs it as DEBUG level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="message">Message string.</param>
         /// <param name="action">Action to monitor.</param>
         ///
@@ -167,7 +173,7 @@ namespace Cube
         /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -182,7 +188,7 @@ namespace Cube
         /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -197,15 +203,14 @@ namespace Cube
         /// Outputs system information as INFO level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Assembly assembly)
         {
             Info(type, $"{assembly.GetProduct()} {new SoftwareVersion(assembly).ToString(true)}");
-            Info(type, $"{Environment.OSVersion}");
-            Info(type, $".NET Framework {Environment.Version}");
+            Info(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
         }
 
@@ -221,7 +226,7 @@ namespace Cube
         /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -236,7 +241,7 @@ namespace Cube
         /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -251,7 +256,7 @@ namespace Cube
         /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="alternative">
         /// Value that returns when an exception occurs.
@@ -271,7 +276,7 @@ namespace Cube
         /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -290,7 +295,7 @@ namespace Cube
         /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -305,7 +310,7 @@ namespace Cube
         /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -320,7 +325,7 @@ namespace Cube
         /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="alternative">
         /// Value that returns when an exception occurs.
@@ -340,7 +345,7 @@ namespace Cube
         /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -359,7 +364,7 @@ namespace Cube
         /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -374,7 +379,7 @@ namespace Cube
         /// Outputs log as FATAL level.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
@@ -389,7 +394,7 @@ namespace Cube
         /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="func">Function to monitor.</param>
         /// <param name="alternative">
         /// Value that returns when an exception occurs.
@@ -409,7 +414,7 @@ namespace Cube
         /// Outputs log as FATAL level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="type">Targe type information.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */

@@ -39,7 +39,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_ArgumentNullException
+        /// Create_Throws
         ///
         /// <summary>
         /// Tests to create a new instance of the PresentableBase inherited
@@ -48,7 +48,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_ArgumentNullException()
+        public void Create_Throws()
         {
             Assert.That(SynchronizationContext.Current, Is.Null);
             Assert.That(() => new Presenter(), Throws.ArgumentNullException);
@@ -56,7 +56,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Subscribe
         ///
         /// <summary>
         /// Tests the Subscribe and Send methods.
@@ -64,7 +64,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Send()
+        public void Subscribe()
         {
             var n = 0;
             void action(int i) => ++n;
@@ -109,56 +109,98 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TrackAsync
+        /// Send
         ///
         /// <summary>
-        /// Tests the async Track method.
+        /// Tests the Send method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void TrackAsync()
+        [TestCase(DialogStatus.Ok,     ExpectedResult = 2)]
+        [TestCase(DialogStatus.Yes,    ExpectedResult = 2)]
+        [TestCase(DialogStatus.Cancel, ExpectedResult = 0)]
+        public int Send(DialogStatus value)
         {
-            var dest = default(DialogMessage);
+            var n = 0;
             using (var src = new Presenter(new SynchronizationContext()))
-            using (src.Subscribe<DialogMessage>(e => dest = e))
+            using (src.Subscribe<DialogMessage>(e => e.Value = value))
             {
-                src.TrackAsync(() => { /* OK */ }).Wait();
-                src.TrackAsync(() => throw new ArgumentException(nameof(TrackAsync))).Wait();
-            }
+                2.Times(i => src.SendMessage(new DialogMessage(),
+                    e => n++,
+                    e => e.Any(DialogStatus.Ok, DialogStatus.Yes)
+                ));
 
-            Assert.That(dest.Value,   Does.StartWith(nameof(TrackAsync)));
-            Assert.That(dest.Title,   Is.EqualTo("Error"));
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Status,  Is.EqualTo(DialogStatus.Ok));
+                TaskEx.Delay(200).Wait();
+            }
+            return n;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TrackSync
+        /// Send
         ///
         /// <summary>
-        /// Tests the sync Track method.
+        /// Tests the Send method with CancelMessage objects.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(true,  ExpectedResult = 0)]
+        [TestCase(false, ExpectedResult = 2)]
+        public int Send_CancelMessage(bool cancel)
+        {
+            var n = 0;
+            using (var src = new Presenter(new SynchronizationContext()))
+            using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
+            {
+                2.Times(i => src.SendMessage(new OpenFileMessage(), e => n++));
+                TaskEx.Delay(200).Wait();
+            }
+            return n;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_Throws
+        ///
+        /// <summary>
+        /// Tests the Send method with a null object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void TrackSync()
+        public void Send_Throws()
+        {
+            using (var src = new Presenter(new SynchronizationContext()))
+            {
+                Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Tests the Track method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Track()
         {
             var dest = default(DialogMessage);
             using (var src = new Presenter(new SynchronizationContext()))
             using (src.Subscribe<DialogMessage>(e => dest = e))
             {
-                src.TrackSync(() => { /* OK */ });
-                src.TrackSync(() => throw new ArgumentException(nameof(TrackSync)));
+                src.TrackAsync(() => { /* OK */ });
+                src.TrackSync(() => throw new ArgumentException(nameof(Track)));
             }
 
-            Assert.That(dest.Value,   Does.StartWith(nameof(TrackSync)));
-            Assert.That(dest.Title,   Is.EqualTo("Error"));
+            Assert.That(dest.Text,    Does.StartWith(nameof(Track)));
+            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
             Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
             Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Status,  Is.EqualTo(DialogStatus.Ok));
+            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -192,19 +234,19 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDispatcher
+        /// GetInvoker
         ///
         /// <summary>
-        /// Tests the GetDispatcher method.
+        /// Tests the GetInvoker method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetDispatcher()
+        public void GetInvoker()
         {
             using (var src = new Presenter(new SynchronizationContext()))
             {
-                Assert.That(src.GetDispatcher(), Is.Not.Null);
+                Assert.That(src.GetInvoker(), Is.Not.Null);
             }
         }
 
@@ -228,26 +270,27 @@ namespace Cube.Tests
         /// Presenter
         ///
         /// <summary>
-        /// Inherits the PresentableBase class simply.
+        /// Represents the presenter for testing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private class Presenter : PresentableBase
+        private class Presenter : Presentable<Person>
         {
-            public Presenter() : base() { }
-            public Presenter(SynchronizationContext ctx) : base(new Aggregator(), ctx) { }
-            public void SendMessage<T>() where T : new() => Send<T>();
+            public Presenter() : base(new Person()) { }
+            public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { }
             public void PostMessage<T>() where T : new() => Post<T>();
+            public void SendMessage<T>() where T : new() => Send<T>();
+            public void SendMessage<T>(T m) => Send(m);
+            public void SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
+            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
-            public Task TrackAsync(Action e) => Track(e);
-            public IDispatcher GetDispatcher() => GetDispatcher(false);
-            protected override void Dispose(bool disposing) { }
+            public void TrackAsync(Action e) => Track(e);
+            public Invoker GetInvoker() => GetInvoker(false);
             public string TestValue
             {
-                get => _test;
-                set => SetProperty(ref _test, value);
+                get => GetProperty<string>();
+                set => SetProperty(value);
             }
-            private string _test;
         }
 
         #endregion

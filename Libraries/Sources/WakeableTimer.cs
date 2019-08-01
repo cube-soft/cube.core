@@ -17,8 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Collections;
 using Cube.Mixin.Logging;
+using Microsoft.Win32;
 using System;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Cube
@@ -62,61 +62,15 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public WakeableTimer(TimeSpan interval)
         {
-            _power    = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
-            _interval = interval;
-            _core.AutoReset = false;
-            _core.Elapsed += WhenPublished;
+            _span  = interval;
+            _power = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
+            _inner = new Timer { AutoReset = false };
+            _inner.Elapsed += DoConstant;
         }
 
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Interval
-        ///
-        /// <summary>
-        /// Gets or sets the execution interval.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TimeSpan Interval
-        {
-            get => _interval;
-            set
-            {
-                if (_interval == value) return;
-                _interval = value;
-                Reset();
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastPublished
-        ///
-        /// <summary>
-        /// Gets the time of latest Publishing.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DateTime? LastPublished { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Next
-        ///
-        /// <summary>
-        /// Gets or sets the time to be published.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// 主にスリープモード復帰時に利用します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DateTime? Next { get; set; } = DateTime.Now;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -131,14 +85,58 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Subscriptions
+        /// Interval
         ///
         /// <summary>
-        /// Ges the collection of subscriptions.
+        /// Gets or sets the execution interval.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Subscription<Func<Task>> Subscription { get; } = new Subscription<Func<Task>>();
+        public TimeSpan Interval
+        {
+            get => _span;
+            set
+            {
+                if (_span == value) return;
+                _span = value;
+                Reset();
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Last
+        ///
+        /// <summary>
+        /// Gets the last time to invoke the actions registered with the
+        /// Subscribe method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DateTime? Last { get; private set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Next
+        ///
+        /// <summary>
+        /// Gets or sets the time when the registered actions are invoked
+        /// next time.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected DateTime Next { get; set; } = DateTime.Now;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscriptions
+        ///
+        /// <summary>
+        /// Gets the collection of subscriptions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Subscription<AsyncAction> Subscription { get; } = new Subscription<AsyncAction>();
 
         #endregion
 
@@ -166,13 +164,32 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected virtual void OnPowerModeChanged(EventArgs e)
         {
-            UpdateState(Power.Mode);
+            switch (Power.Mode)
+            {
+                case PowerModes.Resume:
+                    Resume(TimeSpan.FromMilliseconds(100));
+                    break;
+                case PowerModes.Suspend:
+                    Suspend();
+                    break;
+            }
             PowerModeChanged?.Invoke(this, e);
         }
 
         #endregion
 
         #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Reset
+        ///
+        /// <summary>
+        /// Resets some condition.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Reset() => OnReset();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -202,11 +219,8 @@ namespace Cube
             if (State == TimerState.Suspend) Resume(delay);
             else
             {
-                var time = Math.Max(delay.TotalMilliseconds, 1);
                 State = TimerState.Run;
-                Next  = DateTime.Now + TimeSpan.FromMilliseconds(time);
-                _core.Interval = time;
-                _core.Start();
+                Restart(Math.Max(delay.TotalMilliseconds, 1));
             }
         }
 
@@ -222,7 +236,7 @@ namespace Cube
         public void Stop()
         {
             if (State == TimerState.Stop) return;
-            if (_core.Enabled) _core.Stop();
+            if (_inner.Enabled) _inner.Stop();
             State = TimerState.Stop;
         }
 
@@ -238,9 +252,9 @@ namespace Cube
         public void Suspend()
         {
             if (State != TimerState.Run) return;
-            _core.Stop();
+            _inner.Stop();
             State = TimerState.Suspend;
-            this.LogDebug(nameof(Suspend), $"Interval:{Interval}");
+            this.LogDebug(nameof(Suspend), $"{nameof(Interval)}:{Interval}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -248,48 +262,15 @@ namespace Cube
         /// Subscribe
         ///
         /// <summary>
-        /// Sets the specified action to the timer.
-        /// </summary>
-        ///
-        /// <param name="callback">User action.</param>
-        ///
-        /// <returns>Disposable object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(Action callback) => Subscription.Subscribe(() =>
-        {
-            callback();
-            return TaskEx.FromResult(0);
-        });
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SubscribeAsync
-        ///
-        /// <summary>
-        /// Sets the specified action that runs as an asynchronous
-        /// operation to the timer.
+        /// Sets the specified asynchronous action to the timer.
         /// </summary>
         ///
         /// <param name="callback">Asynchronous user action.</param>
         ///
-        /// <returns>Disposable object.</returns>
+        /// <returns>Object to remove from the subscription.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable SubscribeAsync(Func<Task> callback) => Subscription.Subscribe(callback);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reset
-        ///
-        /// <summary>
-        /// Resets some condition.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public virtual void Reset() => OnReset();
-
-        #region IDisposable
+        public IDisposable Subscribe(AsyncAction callback) => Subscription.Subscribe(callback);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -308,17 +289,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                State = TimerState.Stop;
-                _core.Dispose();
-                _power.Dispose();
-            }
+            if (!disposing) return;
+            State = TimerState.Stop;
+            _power?.Dispose();
+            _inner?.Dispose();
         }
-
-        #endregion
-
-        #region Protected
 
         /* ----------------------------------------------------------------- */
         ///
@@ -332,7 +307,7 @@ namespace Cube
         protected virtual void OnReset()
         {
             Next = DateTime.Now + Interval;
-            _core.Interval = Interval.TotalMilliseconds;
+            _inner.Interval = Interval.TotalMilliseconds;
         }
 
         /* ----------------------------------------------------------------- */
@@ -343,25 +318,25 @@ namespace Cube
         /// Resumes the timer.
         /// </summary>
         ///
+        /// <param name="min">Minimum delay.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        protected void Resume(TimeSpan delay)
+        protected void Resume(TimeSpan min)
         {
             if (State != TimerState.Suspend) return;
 
-            var now   = DateTime.Now;
-            var delta = Next - now;
-            var time  = delta > delay ? delta : delay;
+            var delta = Next - DateTime.Now;
+            var value = delta > min ? delta : min;
 
             State = TimerState.Run;
-            Next  = now + time;
+            Next  = DateTime.Now + value;
 
-            this.LogDebug(nameof(Resume), $"Last:{LastPublished}", $"Next:{Next}", $"Interval:{Interval}");
+            this.LogDebug(nameof(Resume), $"{nameof(Interval)}:{Interval}",
+                $"{nameof(Last)}:{Last}", $"{nameof(Next)}:{Next}");
 
-            _core.Interval = Math.Max(time.Value.TotalMilliseconds, 1);
-            _core.Start();
+            _inner.Interval = Math.Max(value.TotalMilliseconds, 1);
+            _inner.Start();
         }
-
-        #endregion
 
         #endregion
 
@@ -369,87 +344,70 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UpdateState
+        /// Restart
         ///
         /// <summary>
-        /// Updates the timer state corresponding to the specified power
-        /// mode.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateState(PowerModes mode)
-        {
-            switch (mode)
-            {
-                case PowerModes.Resume:
-                    Resume(TimeSpan.FromMilliseconds(100));
-                    break;
-                case PowerModes.Suspend:
-                    Suspend();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateNext
-        ///
-        /// <summary>
-        /// Updates the Next property.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void UpdateNext(DateTime src)
-        {
-            var user = Interval.TotalMilliseconds;
-            var diff = (DateTime.Now - src).TotalMilliseconds;
-            var time = Math.Max(Math.Max(user - diff, user / 10.0), 1.0); // see remarks
-
-            Next = DateTime.Now + TimeSpan.FromMilliseconds(time);
-
-            if (State == TimerState.Run)
-            {
-                _core.Interval = time;
-                _core.Start();
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenPublished
-        ///
-        /// <summary>
-        /// Occurs at regular intervals.
+        /// Restarts the timer.
         /// </summary>
         ///
         /// <remarks>
-        /// 原則としてユーザの設定したインターバルで Publish を発行します。
-        /// ただし、Publish の処理時間がユーザの設定したインターバルを
-        /// 超える場合、最低でもその 1/10 秒ほどの間隔をあけて次の
-        /// Publish を発行します。
+        /// 原則としてユーザの設定したインターバルで実行を開始します。
+        /// ただし、Subscribe で登録されているハンドラの総処理時間がユーザの
+        /// 設定したインターバルを超える場合、最低でもその 1/10 秒ほど間隔を
+        /// あけて次回の処理を実行します。
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        private async void WhenPublished(object s, ElapsedEventArgs e)
+        private void Restart(DateTime time)
+        {
+            var delta = (DateTime.Now - time).TotalMilliseconds;
+            var msec  = Interval.TotalMilliseconds;
+            Restart(Math.Max(Math.Max(msec - delta, msec / 10.0), 1.0));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Restart
+        ///
+        /// <summary>
+        /// Restarts the timer.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Restart(double msec)
+        {
+            Next = DateTime.Now + TimeSpan.FromMilliseconds(msec);
+            if (State != TimerState.Run) return;
+            _inner.Interval = msec;
+            _inner.Start();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DoConstant
+        ///
+        /// <summary>
+        /// Occurs at the provided intervals.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async void DoConstant(object s, ElapsedEventArgs e)
         {
             if (State != TimerState.Run) return;
-            LastPublished = e.SignalTime;
-
             try
             {
-                foreach (var callback in Subscription) await callback().ConfigureAwait(false);
+                Last = e.SignalTime;
+                foreach (var cb in Subscription) await cb().ConfigureAwait(false);
             }
-            finally { UpdateNext(e.SignalTime); }
+            finally { Restart(e.SignalTime); }
         }
 
         #endregion
 
         #region Fields
         private readonly IDisposable _power;
-        private readonly Timer _core = new Timer();
-        private TimeSpan _interval;
+        private readonly Timer _inner;
+        private TimeSpan _span;
         #endregion
     }
 

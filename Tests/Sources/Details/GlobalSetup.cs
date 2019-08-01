@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System.Reflection;
 
 namespace Cube.Tests
 {
@@ -25,7 +24,7 @@ namespace Cube.Tests
     /// GlobalSetup
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Provides functionality to run at the beginning of the NUnit.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,7 +36,7 @@ namespace Cube.Tests
         /// OneTimeSetup
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Invokes the setup only once.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -45,8 +44,8 @@ namespace Cube.Tests
         public void OneTimeSetup()
         {
             Logger.Configure();
-            Logger.ObserveTaskException();
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
+            _ = Logger.ObserveTaskException();
+            Logger.Info(typeof(GlobalSetup), typeof(GlobalSetup).Assembly);
         }
     }
 }

@@ -18,7 +18,6 @@
 using Cube.Collections;
 using System;
 using System.Collections.Concurrent;
-using System.Linq;
 
 namespace Cube
 {
@@ -43,14 +42,19 @@ namespace Cube
         /// Publishes the specified message.
         /// </summary>
         ///
-        /// <param name="message">Message to be publishd.</param>
+        /// <param name="message">Message to be published.</param>
+        ///
+        /// <remarks>
+        /// Type of the specified object is used for selecting the subscriber.
+        /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
-        public void Publish<T>(T message)
+        public void Publish(object message)
         {
-            if (_subscription.TryGetValue(typeof(T), out var dest))
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            if (_subscription.TryGetValue(message.GetType(), out var dest))
             {
-                foreach (var e in dest.OfType<Action<T>>()) e(message);
+                foreach (var e in dest) e(message);
             }
         }
 
@@ -71,14 +75,15 @@ namespace Cube
         /// <returns>Object to clear the subscription.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IDisposable Subscribe<T>(Action<T> callback) =>
-            _subscription.GetOrAdd(typeof(T), e => new Subscription<Delegate>()).Subscribe(callback);
+        public IDisposable Subscribe<T>(Action<T> callback) => _subscription
+            .GetOrAdd(typeof(T), e => new Subscription<Action<object>>())
+            .Subscribe(e => callback((T)e));
 
         #endregion
 
         #region Fields
-        private readonly ConcurrentDictionary<Type, Subscription<Delegate>> _subscription =
-            new ConcurrentDictionary<Type, Subscription<Delegate>>();
+        private readonly ConcurrentDictionary<Type, Subscription<Action<object>>> _subscription =
+            new ConcurrentDictionary<Type, Subscription<Action<object>>>();
         #endregion
     }
 }

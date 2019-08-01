@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Tasks;
+using Microsoft.Win32;
 using NUnit.Framework;
 using System;
 using System.Threading;
@@ -53,7 +54,7 @@ namespace Cube.Tests
             {
                 Assert.That(src.State, Is.EqualTo(TimerState.Stop));
                 Assert.That(src.Interval, Is.EqualTo(TimeSpan.FromSeconds(1)));
-                Assert.That(src.LastPublished.HasValue, Is.False);
+                Assert.That(src.Last.HasValue, Is.False);
             }
         }
 
@@ -128,22 +129,22 @@ namespace Cube.Tests
             Power.Configure(pmc);
 
             using (var src = new WakeableTimer())
+            using (src.Subscribe(Synchronous.AsTask(() => ++dummy)))
             {
-                _ = src.Subscribe(() => ++dummy);
                 src.PowerModeChanged += (s, e) => ++count;
                 src.Start();
 
                 pmc.Mode = PowerModes.Suspend;
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Suspend));
-                Assert.That(src.State,  Is.EqualTo(TimerState.Suspend));
+                Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
 
                 pmc.Mode = PowerModes.Resume;
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
-                Assert.That(src.State,  Is.EqualTo(TimerState.Run));
+                Assert.That(src.State, Is.EqualTo(TimerState.Run));
 
                 src.Stop();
                 Assert.That(Power.Mode, Is.EqualTo(PowerModes.Resume));
-                Assert.That(src.State,  Is.EqualTo(TimerState.Stop));
+                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
             }
         }
 
@@ -163,14 +164,14 @@ namespace Cube.Tests
             {
                 src.Interval = TimeSpan.FromMilliseconds(100);
                 src.Interval = TimeSpan.FromMilliseconds(100); // ignore
-                Assert.That(src.LastPublished.HasValue, Is.False);
+                Assert.That(src.Last.HasValue, Is.False);
                 Assert.That(Execute(src, 0, 1), "Timeout");
 
-                var time = src.LastPublished;
+                var time = src.Last;
                 Assert.That(time, Is.Not.EqualTo(DateTime.MinValue));
 
                 src.Reset();
-                Assert.That(src.LastPublished, Is.EqualTo(time));
+                Assert.That(src.Last, Is.EqualTo(time));
                 Assert.That(src.Interval.TotalMilliseconds, Is.EqualTo(100).Within(1.0));
             }
         }
@@ -190,9 +191,9 @@ namespace Cube.Tests
             using (var src = new WakeableTimer())
             {
                 src.Interval = TimeSpan.FromHours(1);
-                Assert.That(src.LastPublished.HasValue, Is.False);
+                Assert.That(src.Last.HasValue, Is.False);
                 Assert.That(Execute(src, 200, 1), "Timeout");
-                Assert.That(src.LastPublished, Is.Not.EqualTo(DateTime.MinValue));
+                Assert.That(src.Last, Is.Not.EqualTo(DateTime.MinValue));
             }
         }
 
@@ -215,7 +216,7 @@ namespace Cube.Tests
             using (var src = new WakeableTimer())
             {
                 src.Interval = TimeSpan.FromMilliseconds(10);
-                _ = src.SubscribeAsync(async () =>
+                _ = src.Subscribe(async () =>
                 {
                     ++count;
                     await TaskEx.Delay(200).ConfigureAwait(false);
@@ -247,12 +248,12 @@ namespace Cube.Tests
             {
                 src.Interval = TimeSpan.FromSeconds(1);
                 src.Start(TimeSpan.FromMilliseconds(100));
-                _ = src.Subscribe(() =>
+                _ = src.Subscribe(Synchronous.AsTask(() =>
                 {
                     ++count;
                     src.Stop();
                     cts.Cancel();
-                });
+                }));
                 src.Start();
                 src.Suspend();
 
@@ -332,16 +333,14 @@ namespace Cube.Tests
             var n   = 0;
             var cts = new CancellationTokenSource();
 
-            _ = src.Subscribe(() =>
+            using (src.Subscribe(Synchronous.AsTask(() =>
             {
                 if (++n >= count)
                 {
                     src.Stop();
                     cts.Cancel();
                 }
-            });
-
-            return Execute(src, msec, cts);
+            }))) return Execute(src, msec, cts);
         }
 
         #endregion

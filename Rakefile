@@ -40,9 +40,9 @@ TEST  = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include("#{PROJECT}.*.nupkg")
-CLEAN.include("#{LIB}/cube.*")
 CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
+CLEAN.include("#{PROJECT}.*.nupkg")
+CLOBBER.include("#{LIB}/cube.*")
 
 # --------------------------------------------------------------------------- #
 # default
@@ -59,12 +59,20 @@ task :pack do
 end
 
 # --------------------------------------------------------------------------- #
+# restore
+# --------------------------------------------------------------------------- #
+desc "Resote NuGet packages in the current branch."
+task :restore do
+    sh("nuget restore #{MAIN}.sln")
+end
+
+# --------------------------------------------------------------------------- #
 # build
 # --------------------------------------------------------------------------- #
 desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
-    sh("nuget restore #{MAIN}.sln")
+    Rake::Task[:restore].execute
     sh(%(#{BUILD} -p:Platform="#{e.platform}" #{MAIN}.sln))
 end
 

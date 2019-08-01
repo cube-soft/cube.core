@@ -245,7 +245,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         public bool Remove(TKey src)
         {
-            _creating.TryRemove(src, out _);
+            _ = _creating.TryRemove(src, out _);
             var dest = _created.TryRemove(src, out var obj);
             if (dest) _disposer?.Invoke(src, obj);
             return dest;
@@ -340,7 +340,7 @@ namespace Cube.Collections
                 else _disposer?.Invoke(src, dest);
             }
             catch (Exception err) { OnFailed(KeyValueEventArgs.Create(src, err)); }
-            finally { _creating.TryRemove(src, out _); }
+            finally { _= _creating.TryRemove(src, out _); }
         }
 
         #endregion

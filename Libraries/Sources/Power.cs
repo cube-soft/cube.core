@@ -192,7 +192,7 @@ namespace Cube
             set
             {
                 if (IgnoreStatusChanged && value == PowerModes.StatusChange) return;
-                SetProperty(ref _mode, value);
+                _ = SetProperty(ref _mode, value);
             }
         }
 
@@ -218,24 +218,5 @@ namespace Cube
         private PowerModes _mode;
         private bool _ignore = true;
         #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// PowerModes
-    ///
-    /// <summary>
-    /// Specifies the power mode.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum PowerModes
-    {
-        /// <summary>Resume</summary>
-        Resume = Microsoft.Win32.PowerModes.Resume,
-        /// <summary>Status is changed</summary>
-        StatusChange = Microsoft.Win32.PowerModes.StatusChange,
-        /// <summary>Suspend</summary>
-        Suspend = Microsoft.Win32.PowerModes.Suspend,
     }
 }

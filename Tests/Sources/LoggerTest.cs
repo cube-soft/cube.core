@@ -19,7 +19,6 @@ using Cube.Mixin.Logging;
 using NUnit.Framework;
 using System;
 using System.ComponentModel;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Cube.Tests
@@ -77,7 +76,7 @@ namespace Cube.Tests
             this.LogInfo();
             this.LogInfo("Info");
             this.LogInfo("Info", "multiple", "messages");
-            this.LogInfo(Assembly.GetExecutingAssembly());
+            this.LogInfo(typeof(LoggerTest).Assembly);
 
             try { throw new ArgumentException("Info (throw)"); }
             catch (ArgumentException err) { this.LogInfo(err); }
@@ -174,10 +173,26 @@ namespace Cube.Tests
             using (Logger.ObserveTaskException())
             {
                 // Assert.DoesNotThrow
-                TaskEx.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
+                _ = TaskEx.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
                 TaskEx.Delay(100).Wait();
             }
         }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TearDown
+        ///
+        /// <summary>
+        /// Invokes when each test terminates.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TearDown]
+        public void TearDown() => Logger.Separator = "\t";
 
         #endregion
     }

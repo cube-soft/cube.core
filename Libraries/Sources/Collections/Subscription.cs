@@ -81,8 +81,8 @@ namespace Cube.Collections
         public IDisposable Subscribe(T callback)
         {
             var key = Guid.NewGuid();
-            Subscribers.TryAdd(key, callback);
-            return Disposable.Create(() => Subscribers.TryRemove(key, out _));
+            _ = Subscribers.TryAdd(key, callback);
+            return Disposable.Create(() => _ = Subscribers.TryRemove(key, out _));
         }
 
         /* --------------------------------------------------------------------- */

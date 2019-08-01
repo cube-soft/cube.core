@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Microsoft.Win32;
 using NUnit.Framework;
 using System;
 
