@@ -11,10 +11,12 @@ The library is available for .NET Framework 3.5, 4.5, .NET Standard 2.0, or late
 
 ## Installation
 
-You can install using the NuGet packages reference.
-Add the following description to your project file.
+You can install the library through the NuGet package.
+Add a dependency in your project file using the following syntax:
 
-    <PackageReference Include="Cube.Core" Version="1.17.0" />
+    <ItemGroup>
+        <PackageReference Include="Cube.Core" Version="1.17.0" />
+    </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
 
