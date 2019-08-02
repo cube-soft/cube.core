@@ -6,13 +6,18 @@ Cube.Xui
 [![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Xui/_apis/build/status/cube-soft.Cube.Xui?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Xui/_build)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Xui/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Xui)
 
-Cube.Xui is a WPF based GUI library, which is available for .NET Framework 3.5, 4.5 or later.
+Cube.Xui is a library to realize the MVVM pattern in WPF applications.
+The library is available for .NET Framework 3.5, 4.5 or later.
+Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://github.com/cube-soft/Cube.Core), and the WinForms part is in the [Cube.Forms](https://github.com/cube-soft/Cube.Forms).
 
 ## Installation
 
-You can install using NuGet like this:
+You can install the library through the NuGet package.
+Add a dependency in your project file using the following syntax:
 
-    PM> Install-Package Cube.Xui
+    <ItemGroup>
+        <PackageReference Include="Cube.Xui" Version="1.17.0" />
+    </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
 
@@ -21,7 +26,9 @@ Or select it from the NuGet packages UI on Visual Studio.
 Cube.Xui depends on the [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801).
 Note that we will migrate to the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) in the future, which is the [OSS project](https://github.com/Microsoft/XamlBehaviorsWpf) of the Expression Blend SDK.
 
-## Thanks
+## References
+
+Cube.Xui referred to the code of the following projects to implement some functions.
 
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
 * [Prism](https://github.com/PrismLibrary/Prism)
