@@ -3,9 +3,9 @@
         <Version>1.17.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
-        <Description>WinForms based GUI library.</Description>
+        <Description>WinForms based GUI and MVVM library available for .NET Framework 3.5, 4.5, or later.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
-        <PackageTags>Cube;WinForms</PackageTags>
+        <PackageTags>Cube;WinForms;MVVM</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
         <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>

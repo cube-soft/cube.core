@@ -5,13 +5,19 @@ Cube.Forms
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/k5a3hpx8q788dpq2?svg=true)](https://ci.appveyor.com/project/clown/cube-forms)
 [![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Forms/_apis/build/status/cube-soft.Cube.Forms?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Forms/_build)
 
-Cube.Forms is a WinForms based GUI library, which is available for .NET Framework 3.5, 4.5, or later.
+Cube.Forms is a WinForms based GUI library available for .NET Framework 3.5, 4.5, or later.
+The library also provides functionality to realize the MVVM pattern in WinForms applications.
+Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://github.com/cube-soft/Cube.Core), and the WPF part is in the [Cube.Xui](https://github.com/cube-soft/Cube.Xui).
+
 
 ## Installation
 
-You can install using NuGet like this:
+You can install the library through the NuGet package.
+Add a dependency in your project file using the following syntax:
 
-    PM> Install-Package Cube.Forms
+    <ItemGroup>
+        <PackageReference Include="Cube.Forms" Version="1.17.0" />
+    </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
 
