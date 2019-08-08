@@ -93,7 +93,7 @@ namespace Cube.Xui
         /// Dispose
         ///
         /// <summary>
-        /// Releases the unmanaged resources used by <c>BindableElement</c>
+        /// Releases the unmanaged resources used by the object
         /// and optionally releases the managed resources.
         /// </summary>
         ///

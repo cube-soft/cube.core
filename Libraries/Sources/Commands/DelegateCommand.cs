@@ -88,7 +88,7 @@ namespace Cube.Xui
         /// <param name="parameter">Not used parameter.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool OnCanExecute(object parameter) => _canExecute();
+        protected override bool OnCanExecute(object parameter) => _canExecute?.Invoke() ?? false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,13 +101,38 @@ namespace Cube.Xui
         /// <param name="parameter">Not used parameter.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnExecute(object parameter) => _execute();
+        protected override void OnExecute(object parameter) => _execute?.Invoke();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                _execute    = null;
+                _canExecute = null;
+            }
+            finally { base.Dispose(disposing); }
+        }
 
         #endregion
 
         #region Fields
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
+        private Action _execute;
+        private Func<bool> _canExecute;
         #endregion
     }
 }
