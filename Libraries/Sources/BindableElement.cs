@@ -114,7 +114,12 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            try { _locale.Dispose(); }
+            try
+            {
+                if (!disposing) return;
+                if (Command is IDisposable dc) dc.Dispose();
+                _locale.Dispose();
+            }
             finally { base.Dispose(disposing); }
         }
 
