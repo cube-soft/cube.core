@@ -283,7 +283,7 @@ namespace Cube.Tests
             public void SendMessage<T>(T m) => Send(m);
             public void SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
             public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
-            public void TrackSync(Action e) => Track(e, DialogMessage.Create, true);
+            public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
             public Invoker GetInvoker() => GetInvoker(false);
             public string TestValue
