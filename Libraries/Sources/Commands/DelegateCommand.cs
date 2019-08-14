@@ -28,11 +28,6 @@ namespace Cube.Xui
     /// INotifyPropertyChanged objects.
     /// </summary>
     ///
-    /// <remarks>
-    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
-    /// イベント発生時に CanExecuteChanged イベントを発生させます。
-    /// </remarks>
-    ///
     /* --------------------------------------------------------------------- */
     public class DelegateCommand : DelegateCommandBase
     {

@@ -28,6 +28,11 @@ namespace Cube.Xui
     /// Provides an implementation of the ICommand.
     /// </summary>
     ///
+    /// <remarks>
+    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
+    /// イベント発生時に CanExecuteChanged イベントを発生させます。
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
     public abstract class DelegateCommandBase : ObserverBase, ICommand
     {
@@ -154,14 +159,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// React
+        /// Receive
         ///
         /// <summary>
         /// Invokes when any states are changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void React() => Refresh();
+        protected override void Receive(Type type, string name) => Refresh();
 
         #endregion
     }
