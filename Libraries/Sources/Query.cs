@@ -87,8 +87,25 @@ namespace Cube
         /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Query(Action<QueryMessage<T, U>> callback)
+        public Query(Action<QueryMessage<T, U>> callback) :
+            this(callback, QueryInvoker.Create()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        /// <param name="invoker">Invoker object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query(Action<QueryMessage<T, U>> callback, Invoker invoker)
         {
+            _invoker  = invoker;
             _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }
 
@@ -109,7 +126,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly Invoker _invoker = QueryInvoker.Create();
+        private readonly Invoker _invoker;
         private readonly Action<QueryMessage<T, U>> _callback;
         #endregion
     }
@@ -138,6 +155,22 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public Query(Action<QueryMessage<T, T>> callback) : base(callback) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Query
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        /// <param name="invoker">Invoker object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Query(Action<QueryMessage<T, T>> callback, Invoker invoker) :
+            base(callback, invoker) { }
     }
 
     #endregion
@@ -169,8 +202,25 @@ namespace Cube
         /// <param name="callback">Callback function.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(Action<QueryMessage<T, U>> callback)
+        public OnceQuery(Action<QueryMessage<T, U>> callback) :
+            this(callback, QueryInvoker.Create()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnceQuery
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        /// <param name="invoker">Invoker object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OnceQuery(Action<QueryMessage<T, U>> callback, Invoker invoker)
         {
+            _invoker  = invoker;
             _callback = new OnceAction<QueryMessage<T, U>>(callback)
             {
                 IgnoreTwice = false
@@ -198,7 +248,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly Invoker _invoker = QueryInvoker.Create();
+        private readonly Invoker _invoker;
         private readonly OnceAction<QueryMessage<T, U>> _callback;
         #endregion
     }
@@ -227,6 +277,22 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public OnceQuery(Action<QueryMessage<T, T>> callback) : base(callback) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnceQuery
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Query class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="callback">Callback function.</param>
+        /// <param name="invoker">Invoker object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OnceQuery(Action<QueryMessage<T, T>> callback, Invoker invoker) :
+            base(callback, invoker) { }
     }
 
     #endregion
