@@ -119,7 +119,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing && Facade is IDisposable obj) obj.Dispose();
+            try { if (disposing && Facade is IDisposable obj) obj.Dispose(); }
+            finally { base.Dispose(disposing); }
         }
 
         /* ----------------------------------------------------------------- */

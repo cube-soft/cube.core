@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Observing;
 using Cube.Mixin.Syntax;
 using NUnit.Framework;
 using System;
@@ -276,8 +277,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private class Presenter : Presentable<Person>
         {
-            public Presenter() : base(new Person()) { }
-            public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { }
+            public Presenter() : base(new Person()) { Observe(); }
+            public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { Observe(); }
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
@@ -286,6 +287,7 @@ namespace Cube.Tests
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
             public Invoker GetInvoker() => GetInvoker(false);
+            private void Observe() { Add(Facade.Subscribe(e => { })); }
             public string TestValue
             {
                 get => GetProperty<string>();
