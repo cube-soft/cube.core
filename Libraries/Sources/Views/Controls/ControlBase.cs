@@ -164,7 +164,7 @@ namespace Cube.Forms
                 var y = (int)m.LParam >> 16 & 0xffff;
                 var e = new QueryMessage<Point, Position>
                 {
-                    Query  = new Point(x, y),
+                    Source = new Point(x, y),
                     Cancel = true,
                 };
                 OnNcHitTest(e);

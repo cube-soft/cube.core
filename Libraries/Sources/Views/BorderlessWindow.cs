@@ -397,9 +397,9 @@ namespace Cube.Forms
             base.OnNcHitTest(e);
             if (!e.Cancel) return;
 
-            var result = this.HitTest(PointToClient(e.Query), Sizable ? SizeGrip : 0);
+            var result = this.HitTest(PointToClient(e.Source), Sizable ? SizeGrip : 0);
             var others = result == Position.NoWhere || result == Position.Client;
-            if (others && IsCaption(e.Query)) result = Position.Caption;
+            if (others && IsCaption(e.Source)) result = Position.Caption;
 
             e.Value  = result;
             e.Cancel = e.Value == Position.Caption ? false :
