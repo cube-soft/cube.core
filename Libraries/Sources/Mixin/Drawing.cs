@@ -67,7 +67,7 @@ namespace Cube.Mixin.Drawing
         {
             if (src == null) return default;
 
-            using (var ss = new WeakStream(new MemoryStream()))
+            using (var ss = new StreamProxy(new MemoryStream()))
             {
                 src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
                 var dest = new BitmapImage();
