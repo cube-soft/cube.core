@@ -40,7 +40,7 @@ namespace Cube.Tests
         /// Create
         ///
         /// <summary>
-        /// Tests to confirm properties for the StreamProxy class.
+        /// Tests the constructor and confirms properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -60,11 +60,27 @@ namespace Cube.Tests
             Assert.That(dest.Position, Is.EqualTo(src.Position).And.EqualTo(3));
 
             dest.Dispose();
+            dest.Dispose(); // ignore
             Assert.That(dest.CanRead,  Is.False);
             Assert.That(dest.CanSeek,  Is.False);
             Assert.That(dest.CanWrite, Is.False);
             Assert.That(dest.Length,   Is.EqualTo(0));
             Assert.That(dest.Position, Is.EqualTo(0));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Throws
+        ///
+        /// <summary>
+        /// Tests the constructor with null arguments.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Throws()
+        {
+            Assert.That(() => { using (new StreamProxy(null)) { } }, Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
