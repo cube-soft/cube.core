@@ -125,19 +125,23 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetMessage
+        /// OnMessage
         ///
         /// <summary>
-        /// Creates a new instance of the DialogMessage class with the
-        /// specified exception.
+        /// Converts the specified exception to a new instance of the
+        /// DialogMessage class.
         /// </summary>
         ///
         /// <param name="src">Source exception.</param>
         ///
         /// <returns>DialogMessage object.</returns>
         ///
+        /// <remarks>
+        /// The Method is called from the Track methods.
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        protected virtual DialogMessage GetMessage(Exception src) => DialogMessage.Create(src);
+        protected virtual DialogMessage OnMessage(Exception src) => DialogMessage.Create(src);
 
         #region Track
 
@@ -254,7 +258,7 @@ namespace Cube
         private void TrackCore(Action action)
         {
             try { action(); }
-            catch (Exception err) { Send(GetMessage(err)); }
+            catch (Exception err) { Send(OnMessage(err)); }
         }
 
         #endregion
