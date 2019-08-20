@@ -6,7 +6,7 @@ Cube.Core
 [![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Core/_apis/build/status/cube-soft.Cube.Core?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Core/_build)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
 
-Cube.Core is a shared library to realize the MVVM pattern in WPF or WinForms.
+Cube.Core is a shared library to support the MVVM pattern in WPF or WinForms applications.
 The library is available for .NET Framework 3.5, 4.5, .NET Standard 2.0, or later.
 
 ## Installation
