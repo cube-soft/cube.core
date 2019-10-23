@@ -40,15 +40,15 @@ namespace Cube
         /// the specified query.
         /// </summary>
         ///
-        /// <typeparam name="T">type of Query and Value.</typeparam>
+        /// <typeparam name="T">type of source and result.</typeparam>
         ///
-        /// <param name="query">Query of the message.</param>
+        /// <param name="src">Source information.</param>
         ///
         /// <returns>QueryMessage(T, T) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, T> NewMessage<T>(T query) =>
-            NewMessage<T, T>(query);
+        public static QueryMessage<T, T> NewMessage<T>(T src) =>
+            NewMessage<T, T>(src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -59,16 +59,16 @@ namespace Cube
         /// the specified query.
         /// </summary>
         ///
-        /// <typeparam name="T">type of Query.</typeparam>
-        /// <typeparam name="U">type of Value.</typeparam>
+        /// <typeparam name="T">type of query source.</typeparam>
+        /// <typeparam name="U">type of result value.</typeparam>
         ///
-        /// <param name="query">Query of the message.</param>
+        /// <param name="src">Source information.</param>
         ///
         /// <returns>QueryMessage(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T query) =>
-            NewMessage(query, default(U));
+        public static QueryMessage<T, U> NewMessage<T, U>(T src) =>
+            NewMessage(src, default(U));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -79,19 +79,19 @@ namespace Cube
         /// the specified query and default value.
         /// </summary>
         ///
-        /// <typeparam name="T">type of Query.</typeparam>
-        /// <typeparam name="U">type of Value.</typeparam>
+        /// <typeparam name="T">type of query source.</typeparam>
+        /// <typeparam name="U">type of result value.</typeparam>
         ///
-        /// <param name="query">Query of the message.</param>
+        /// <param name="src">Source information.</param>
         /// <param name="value">Default value of the message.</param>
         ///
         /// <returns>QueryMessage(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T query, U value) => new QueryMessage<T, U>
+        public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new QueryMessage<T, U>
         {
-            Query = query,
-            Value = value,
+            Source = src,
+            Value  = value,
         };
 
         #endregion

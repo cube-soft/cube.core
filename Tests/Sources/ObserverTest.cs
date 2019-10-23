@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using Cube.Mixin.Observing;
 using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
@@ -96,7 +97,7 @@ namespace Cube.Tests
         private class Mock : ObserverBase
         {
             public Mock(Accessor<int> count) { _count = count; }
-            protected override void React() => _count.Set(_count.Get() + 1);
+            protected override void Receive(Type s, string e) => _count.Set(_count.Get() + 1);
             private readonly Accessor<int> _count;
         }
 

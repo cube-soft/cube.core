@@ -102,9 +102,8 @@ namespace Cube
             if (src == null) return;
 
             var set = new HashSet<string>(names);
-            void handler(object s, PropertyChangedEventArgs e)
-            {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) React();
+            void handler(object s, PropertyChangedEventArgs e) {
+                if (set.Count <= 0 || set.Contains(e.PropertyName)) Receive(src.GetType(), e.PropertyName);
             }
 
             src.PropertyChanged += handler;
@@ -113,15 +112,23 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// React
+        /// Receive
         ///
         /// <summary>
         /// Invokes when the PropertyChanged event of an observed object
         /// is fired.
         /// </summary>
         ///
+        /// <param name="type">
+        /// Type of object that raises the PropetyChanged event.
+        /// </param>
+        ///
+        /// <param name="name">
+        /// Property name associated with the PropetyChanged event.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        protected abstract void React();
+        protected abstract void Receive(Type type, string name);
 
         /* ----------------------------------------------------------------- */
         ///

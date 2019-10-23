@@ -66,22 +66,20 @@ namespace Cube.Collections
         /// Subscribe
         ///
         /// <summary>
-        /// Add the specified callback to the subscription.
+        /// Add the specified subscriber to the subscription.
         /// </summary>
         ///
-        /// <param name="callback">
-        /// Action to be executed when published.
-        /// </param>
+        /// <param name="subscriber">Subscriber object.</param>
         ///
         /// <returns>
-        /// Object to remove the registered callback.
+        /// Object to remove the specified subscriber.
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(T callback)
+        public IDisposable Subscribe(T subscriber)
         {
             var key = Guid.NewGuid();
-            _ = Subscribers.TryAdd(key, callback);
+            _ = Subscribers.TryAdd(key, subscriber);
             return Disposable.Create(() => _ = Subscribers.TryRemove(key, out _));
         }
 
