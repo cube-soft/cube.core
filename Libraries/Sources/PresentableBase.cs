@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 
@@ -172,6 +173,20 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Add
+        ///
+        /// <summary>
+        /// Adds the specified resource, which is automatically released
+        /// when disposing.
+        /// </summary>
+        ///
+        /// <param name="src">Disposable resource.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Add(IDisposable src) => _resources.Add(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetInvoker
         ///
         /// <summary>
@@ -186,6 +201,28 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected Invoker GetInvoker(bool synchronous) => synchronous ? _send : _post;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            foreach (var obj in _resources) obj.Dispose();
+            _resources.Clear();
+        }
 
         #region Send
 
@@ -252,6 +289,7 @@ namespace Cube
         #region Fields
         private readonly Invoker _send;
         private readonly Invoker _post;
+        private readonly IList<IDisposable> _resources = new List<IDisposable>();
         #endregion
     }
 

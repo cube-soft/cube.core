@@ -119,8 +119,76 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing && Facade is IDisposable obj) obj.Dispose();
+            try { if (disposing && Facade is IDisposable obj) obj.Dispose(); }
+            finally { base.Dispose(disposing); }
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMessage
+        ///
+        /// <summary>
+        /// Converts the specified exception to a new instance of the
+        /// DialogMessage class.
+        /// </summary>
+        ///
+        /// <param name="src">Source exception.</param>
+        ///
+        /// <returns>DialogMessage object.</returns>
+        ///
+        /// <remarks>
+        /// The Method is called from the Track methods.
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual DialogMessage OnMessage(Exception src) => DialogMessage.Create(src);
+
+        #region Track
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Invokes the specified action as an asynchronous method, and
+        /// will send the error message if any exceptions are thrown.
+        /// </summary>
+        ///
+        /// <param name="action">
+        /// Action to be invoked as an asynchronous method.
+        /// </param>
+        ///
+        /// <returns>Task object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Track(Action action) => Track(action, false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Invokes the specified action, and will send the error message
+        /// if any exceptions are thrown.
+        /// </summary>
+        ///
+        /// <param name="action">
+        /// Action to be invoked.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Track(Action action, bool synchronous)
+        {
+            if (synchronous) TrackCore(action);
+            else TaskEx.Run(() => TrackCore(action)).Forget();
+        }
+
+        #endregion
 
         #region Send
 
@@ -173,78 +241,6 @@ namespace Cube
 
         #endregion
 
-        #region Track
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous method, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked as an asynchronous method.
-        /// </param>
-        ///
-        /// <returns>Task object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Track(Action action) => Track(action, DialogMessage.Create);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action as an asynchronous method, and
-        /// will send the error message if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked as asynchronous.
-        /// </param>
-        ///
-        /// <param name="converter">
-        /// Function to convert from Exception to DialogMessage.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Track(Action action, Converter converter) =>
-            Track(action, converter, false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Invokes the specified action, and will send the error message
-        /// if any exceptions are thrown.
-        /// </summary>
-        ///
-        /// <param name="action">
-        /// Action to be invoked.
-        /// </param>
-        ///
-        /// <param name="converter">
-        /// Function to convert from Exception to DialogMessage.
-        /// </param>
-        ///
-        /// <param name="synchronous">
-        /// Value indicating whether to invoke the specified action as a
-        /// synchronous method.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Track(Action action, Converter converter, bool synchronous)
-        {
-            if (synchronous) TrackCore(action, converter);
-            else TaskEx.Run(() => TrackCore(action, converter)).Forget();
-        }
-
-        #endregion
-
         #endregion
 
         #region Implementations
@@ -259,23 +255,11 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void TrackCore(Action action, Converter converter)
+        private void TrackCore(Action action)
         {
             try { action(); }
-            catch (Exception err) { Send(converter(err)); }
+            catch (Exception err) { Send(OnMessage(err)); }
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Converter
-        ///
-        /// <summary>
-        /// Represents the delegate to convert from Exception to
-        /// DialogMessage.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public delegate DialogMessage Converter(Exception e);
 
         #endregion
     }

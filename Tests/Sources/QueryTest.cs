@@ -61,7 +61,7 @@ namespace Cube.Tests
             });
 
             var msg = Query.NewMessage(id);
-            Assert.That(msg.Query,  Is.EqualTo(id));
+            Assert.That(msg.Source, Is.EqualTo(id));
             Assert.That(msg.Value,  Is.EqualTo(0));
             Assert.That(msg.Cancel, Is.False);
 
@@ -83,10 +83,10 @@ namespace Cube.Tests
         {
             var src = new OnceQuery<int>(e => e.Value++);
             var msg = Query.NewMessage(10);
-            Assert.That(msg.Query, Is.EqualTo(10));
-            Assert.That(msg.Value, Is.EqualTo(0));
+            Assert.That(msg.Source, Is.EqualTo(10));
+            Assert.That(msg.Value,  Is.EqualTo(0));
             src.Request(msg);
-            Assert.That(msg.Value, Is.EqualTo(1));
+            Assert.That(msg.Value,  Is.EqualTo(1));
             Assert.That(() => src.Request(msg), Throws.TypeOf<TwiceException>());
         }
 
