@@ -173,17 +173,17 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Add
+        /// Take
         ///
         /// <summary>
-        /// Adds the specified resource, which is automatically released
-        /// when disposing.
+        /// Move the ownership of the specified IDisposable resource,
+        /// which will be released automatically when disposing.
         /// </summary>
         ///
         /// <param name="src">Disposable resource.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Add(IDisposable src) => _resources.Add(src);
+        protected void Take(IDisposable src) => _resources.Add(src);
 
         /* ----------------------------------------------------------------- */
         ///
