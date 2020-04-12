@@ -4,7 +4,6 @@ platform: Any CPU
 configuration: Release
 environment:
     PROJECT_NAME:   'Cube.Core'
-    PROJECT_MAIN:   'Cube.Core'
     PROJECT_BIN:    'bin\%PLATFORM%\%CONFIGURATION%\net45'
     PROJECT_LIB:    '..\packages'
     TEST_TOOL:      '$(PROJECT_LIB)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
@@ -22,9 +21,9 @@ nuget:
     disable_publish_on_pr: true
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - dotnet restore "%PROJECT_MAIN%.sln"
+    - dotnet restore "%PROJECT_NAME%.sln"
 build:
-    project: '%PROJECT_MAIN%.sln'
+    project: '%PROJECT_NAME%.sln'
     parallel: true
     publish_nuget: true
     verbosity: minimal
