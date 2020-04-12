@@ -1,5 +1,5 @@
 version: 1.19.0.{build}
-image: Visual Studio 2019 Preview
+image: Visual Studio 2019
 platform: Any CPU
 configuration: Release
 environment:
@@ -8,9 +8,9 @@ environment:
     PROJECT_BIN:    'bin\%PLATFORM%\%CONFIGURATION%\net45'
     PROJECT_LIB:    '..\packages'
     TEST_TOOL:      '$(PROJECT_LIB)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:  'nunit3-console.exe'
+    TEST_CORETOOL:  'dotnet.exe'
+    TEST_ARGS:      'test --logger:Appveyor'
     TEST_FILTERS:   '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
-    TEST_RESULT:    'TestResult.xml'
     TEST_COVERAGE:  'CoverResults.xml'
     TEST_LOG:       'TestResults'
 branches:
@@ -22,7 +22,7 @@ nuget:
     disable_publish_on_pr: true
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
-    - nuget restore "%PROJECT_MAIN%.sln"
+    - dotnet restore "%PROJECT_MAIN%.sln"
 build:
     project: '%PROJECT_MAIN%.sln'
     parallel: true
@@ -32,10 +32,9 @@ test_script:
     - >
       "%TEST_TOOL%"
       -log:Error
-      -register:user
+      -register:appveyor
       -target:"%TEST_CORETOOL%"
-      -targetargs:"%PROJECT_NAME%.Tests.dll"
-      -targetdir:"Tests\%PROJECT_BIN%"
+      -targetargs:"%TEST_ARGS%"
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
