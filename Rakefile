@@ -28,14 +28,15 @@ CONFIG      = "Release"
 BRANCHES    = ["master", "net35"]
 PLATFORMS   = ["Any CPU"]
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
-TESTCASES   = {"#{PROJECT}.Tests" => "Tests"}
+TESTS       = ["Tests/#{PROJECT}.Tests.csproj"]
 
 # --------------------------------------------------------------------------- #
 # commands
 # --------------------------------------------------------------------------- #
-BUILD = "msbuild -v:m -t:build -p:Configuration=#{CONFIG}"
-PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
-TEST  = "../packages/NUnit.ConsoleRunner/3.10.0/tools/nunit3-console.exe"
+RESTORE = "dotnet restore"
+BUILD   = "dotnet build -c #{CONFIG}"
+TEST    = "dotnet test -c #{CONFIG}"
+PACK    = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -55,7 +56,7 @@ task :default => [:clean, :build_all, :test_all, :pack]
 # --------------------------------------------------------------------------- #
 desc "Create NuGet packages in the net35 branch."
 task :pack do
-    checkout("net35") { PACKAGES.each { |e| sh("#{PACK} #{e}") }}
+    checkout("net35") { PACKAGES.each { |e| cmd("#{PACK} #{e}") }}
 end
 
 # --------------------------------------------------------------------------- #
@@ -63,7 +64,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Resote NuGet packages in the current branch."
 task :restore do
-    sh("nuget restore #{MAIN}.sln")
+    cmd("#{RESTORE} #{MAIN}.sln")
 end
 
 # --------------------------------------------------------------------------- #
@@ -73,7 +74,7 @@ desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
     Rake::Task[:restore].execute
-    sh(%(#{BUILD} -p:Platform="#{e.platform}" #{MAIN}.sln))
+    cmd(%(#{BUILD} -p:Platform="#{e.platform}" #{MAIN}.sln))
 end
 
 # --------------------------------------------------------------------------- #
@@ -100,10 +101,7 @@ task :build_test => [:build, :test]
 # --------------------------------------------------------------------------- #
 desc "Test projects in the current branch."
 task :test do
-    fw  = %x(git symbolic-ref --short HEAD).chomp
-    fw  = 'net45' if (fw != 'net35')
-    bin = ['bin', PLATFORMS[0], CONFIG, fw].join('/')
-    TESTCASES.each { |p, d| sh(%(#{TEST} "#{d}/#{bin}/#{p}.dll" --work="#{d}/#{bin}")) }
+    TESTS.each { |e| cmd(%(#{TEST} "#{e}")) }
 end
 
 # --------------------------------------------------------------------------- #
@@ -122,4 +120,11 @@ def checkout(branch, &callback)
     callback.call()
 ensure
     sh("git checkout master")
+end
+
+# --------------------------------------------------------------------------- #
+# checkout
+# --------------------------------------------------------------------------- #
+def cmd(args)
+    sh("cmd.exe /c #{args}")
 end
