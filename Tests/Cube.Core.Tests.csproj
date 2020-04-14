@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>1.18.0</Version>
+        <Version>1.19.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft, Inc.</Company>
         <Product>Cube.Tests</Product>
@@ -22,8 +22,10 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Libraries\Cube.Core.csproj" />
-        <PackageReference Include="NUnit" Version="3.11.0" />
-        <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+        <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />
         <PackageReference Include="OpenCover" Version="4.7.922" />
         <Reference Include="WindowsBase" />
     </ItemGroup>

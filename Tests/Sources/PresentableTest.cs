@@ -287,7 +287,7 @@ namespace Cube.Tests
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
             public Invoker GetInvoker() => GetInvoker(false);
-            private void Observe() { Take(Facade.Subscribe(e => { })); }
+            private void Observe() { Use(Facade.Subscribe(e => { })); }
             public string TestValue
             {
                 get => GetProperty<string>();
