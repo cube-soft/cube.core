@@ -22,9 +22,6 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT     = "Cube.Core"
-MAIN        = "#{PROJECT}"
-LIB         = "../packages"
-CONFIG      = "Release"
 BRANCHES    = ["master", "net35"]
 PLATFORMS   = ["Any CPU"]
 PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
@@ -34,16 +31,16 @@ TESTS       = ["Tests/#{PROJECT}.Tests.csproj"]
 # commands
 # --------------------------------------------------------------------------- #
 RESTORE = "dotnet restore"
-BUILD   = "dotnet build -c #{CONFIG}"
-TEST    = "dotnet test -c #{CONFIG}"
-PACK    = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
+BUILD   = "dotnet build -c Release"
+TEST    = "dotnet test -c Release"
+PACK    = %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU")
 
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
 CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
-CLEAN.include("#{PROJECT}.*.nupkg")
-CLOBBER.include("#{LIB}/cube.*")
+CLEAN.include("*.nupkg")
+CLOBBER.include("../packages/cube.*")
 
 # --------------------------------------------------------------------------- #
 # default
@@ -64,7 +61,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Resote NuGet packages in the current branch."
 task :restore do
-    cmd("#{RESTORE} #{MAIN}.sln")
+    cmd("#{RESTORE} #{PROJECT}.sln")
 end
 
 # --------------------------------------------------------------------------- #
@@ -74,7 +71,7 @@ desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
     Rake::Task[:restore].execute
-    cmd(%(#{BUILD} -p:Platform="#{e.platform}" #{MAIN}.sln))
+    cmd(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
 # --------------------------------------------------------------------------- #

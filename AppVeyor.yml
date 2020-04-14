@@ -1,25 +1,22 @@
 version: 1.19.0.{build}
+environment:
+    PROJECT_NAME:  'Cube.Core'
+    PROJECT_BIN:   'bin\%PLATFORM%\%CONFIGURATION%\net45'
+    TEST_TOOL:     '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_FILTERS:  '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
+    TEST_COVERAGE: 'CoverResults.xml'
+    TEST_RESULTS:  'TestResults'
+clone_folder: 'C:\Cube\%PROJECT_NAME%'
 image: Visual Studio 2019
 platform: Any CPU
 configuration: Release
-environment:
-    PROJECT_NAME:   'Cube.Core'
-    PROJECT_BIN:    'bin\%PLATFORM%\%CONFIGURATION%\net45'
-    PROJECT_LIB:    '..\packages'
-    TEST_TOOL:      '$(PROJECT_LIB)\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_CORETOOL:  'dotnet.exe'
-    TEST_ARGS:      'test --logger:Appveyor'
-    TEST_FILTERS:   '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
-    TEST_COVERAGE:  'CoverResults.xml'
-    TEST_LOG:       'TestResults'
+skip_tags: true
 branches:
     only:
         - master
-skip_tags: true
 nuget:
     project_feed: true
     disable_publish_on_pr: true
-clone_folder: 'C:\Cube\%PROJECT_NAME%'
 before_build:
     - dotnet restore "%PROJECT_NAME%.sln"
 build:
@@ -32,8 +29,8 @@ test_script:
       "%TEST_TOOL%"
       -log:Error
       -register:appveyor
-      -target:"%TEST_CORETOOL%"
-      -targetargs:"%TEST_ARGS%"
+      -target:dotnet.exe
+      -targetargs:"test --logger:Appveyor"
       -returntargetcode
       -hideskipped:All
       -output:"%TEST_COVERAGE%"
@@ -41,7 +38,7 @@ test_script:
 after_test:
     - pip install codecov
     - codecov -f "%TEST_COVERAGE%"
-    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_LOG%\"
-    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_LOG%\"
+    - xcopy /q /Y /I "Tests\%PROJECT_BIN%\*.log" "%TEST_RESULTS%\"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
 artifacts:
-    - path: '%TEST_LOG%'
+    - path: '%TEST_RESULTS%'
