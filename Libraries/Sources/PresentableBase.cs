@@ -173,17 +173,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Take
+        /// Use
         ///
         /// <summary>
-        /// Move the ownership of the specified IDisposable resource,
-        /// which will be released automatically when disposing.
+        /// Marks the specified IDisposable object as a resource of the
+        /// class. The specified object will be released automatically
+        /// when disposing.
         /// </summary>
         ///
         /// <param name="src">Disposable resource.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Take(IDisposable src) => _resources.Add(src);
+        protected void Use(IDisposable src) => _sources.Add(src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -220,8 +221,8 @@ namespace Cube
         protected override void Dispose(bool disposing)
         {
             if (!disposing) return;
-            foreach (var obj in _resources) obj.Dispose();
-            _resources.Clear();
+            foreach (var obj in _sources) obj.Dispose();
+            _sources.Clear();
         }
 
         #region Send
@@ -289,7 +290,7 @@ namespace Cube
         #region Fields
         private readonly Invoker _send;
         private readonly Invoker _post;
-        private readonly IList<IDisposable> _resources = new List<IDisposable>();
+        private readonly IList<IDisposable> _sources = new List<IDisposable>();
         #endregion
     }
 
