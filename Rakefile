@@ -21,19 +21,11 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-PROJECT     = "Cube.Core"
-BRANCHES    = ["master", "net35"]
-PLATFORMS   = ["Any CPU"]
-PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
-TESTS       = ["Tests/#{PROJECT}.Tests.csproj"]
-
-# --------------------------------------------------------------------------- #
-# commands
-# --------------------------------------------------------------------------- #
-RESTORE = "dotnet restore"
-BUILD   = "dotnet build -c Release"
-TEST    = "dotnet test -c Release"
-PACK    = %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU")
+PROJECT   = "Cube.Core"
+BRANCHES  = ["master", "netstandard2.0", "net35"]
+PLATFORMS = ["Any CPU"]
+PACKAGES  = ["Libraries/#{PROJECT}.nuspec"]
+TESTS     = ["Tests/#{PROJECT}.Tests.csproj"]
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -53,7 +45,8 @@ task :default => [:clean, :build_all, :test_all, :pack]
 # --------------------------------------------------------------------------- #
 desc "Create NuGet packages in the net35 branch."
 task :pack do
-    checkout("net35") { PACKAGES.each { |e| cmd("#{PACK} #{e}") }}
+    pack = %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU")
+    checkout("net35") { PACKAGES.each { |e| cmd("#{pack} #{e}") }}
 end
 
 # --------------------------------------------------------------------------- #
@@ -61,7 +54,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Resote NuGet packages in the current branch."
 task :restore do
-    cmd("#{RESTORE} #{PROJECT}.sln")
+    cmd("dotnet restore #{PROJECT}.sln")
 end
 
 # --------------------------------------------------------------------------- #
@@ -71,7 +64,12 @@ desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
     Rake::Task[:restore].execute
-    cmd(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
+
+    branch = `git rev-parse --abbrev-ref HEAD`.chomp
+    build  = branch == 'net35' ?
+             "msbuild -p:Configuration=Release" :
+             "dotnet build -c Release"
+    cmd(%(#{build} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
 # --------------------------------------------------------------------------- #
@@ -98,7 +96,7 @@ task :build_test => [:build, :test]
 # --------------------------------------------------------------------------- #
 desc "Test projects in the current branch."
 task :test do
-    TESTS.each { |e| cmd(%(#{TEST} "#{e}")) }
+    TESTS.each { |e| cmd(%(dotnet test -c Release "#{e}")) }
 end
 
 # --------------------------------------------------------------------------- #
