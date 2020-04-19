@@ -3,7 +3,6 @@ Cube.FileSystem
 
 [![NuGet](https://img.shields.io/nuget/v/Cube.FileSystem.svg)](https://www.nuget.org/packages/Cube.FileSystem/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/6exuqpkn7ct3a790?svg=true)](https://ci.appveyor.com/project/clown/cube-filesystem)
-[![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.FileSystem/_apis/build/status/cube-soft.Cube.FileSystem?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.FileSystem/_build)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.FileSystem/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.FileSystem)
 
 Cube.FileSystem is an I/O library available for .NET Framework 3.5, 4.5, or later.
