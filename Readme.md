@@ -3,7 +3,6 @@ Cube.Xui
 
 [![NuGet](https://img.shields.io/nuget/v/Cube.Xui.svg)](https://www.nuget.org/packages/Cube.Xui/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/brama8ylsuk8xjer?svg=true)](https://ci.appveyor.com/project/clown/cube-xui)
-[![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Xui/_apis/build/status/cube-soft.Cube.Xui?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Xui/_build)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Xui/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Xui)
 
 Cube.Xui is a library to realize the MVVM pattern in WPF applications.

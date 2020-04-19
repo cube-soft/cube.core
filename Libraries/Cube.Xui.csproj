@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>1.18.0</Version>
+        <Version>1.19.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>WPF based MVVM library available for .NET Framework 3.5, 4.5, or later.</Description>
@@ -8,11 +8,9 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/cube-soft/$(AssemblyName)/blob/master/Icon.png?raw=true</PackageIconUrl>
+        <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
         <LangVersion>latest</LangVersion>
-        <UseWindowsForms>true</UseWindowsForms>
-        <UseWPF>true</UseWPF>
         <Optimize>true</Optimize>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -25,7 +23,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cube.FileSystem" Version="1.18.0" />
+        <PackageReference Include="Cube.FileSystem" Version="1.19.0" />
         <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
         <Reference Include="System.Windows.Forms" />
         <Reference Include="System.Xaml" />
@@ -33,5 +31,8 @@
         <Reference Include="PresentationFramework" />
         <Reference Include="WindowsBase" />
         <Reference Include="WindowsFormsIntegration" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\Icon.png" Pack="true" PackagePath="images" />
     </ItemGroup>
 </Project>
