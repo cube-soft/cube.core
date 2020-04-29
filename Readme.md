@@ -3,7 +3,6 @@ Cube.Forms
 
 [![NuGet](https://img.shields.io/nuget/v/Cube.Forms.svg)](https://www.nuget.org/packages/Cube.Forms/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/k5a3hpx8q788dpq2?svg=true)](https://ci.appveyor.com/project/clown/cube-forms)
-[![Azure Pipelines](https://dev.azure.com/cube-soft-jp/Cube.Forms/_apis/build/status/cube-soft.Cube.Forms?branchName=master)](https://dev.azure.com/cube-soft-jp/Cube.Forms/_build)
 
 Cube.Forms is a WinForms based GUI library available for .NET Framework 3.5, 4.5, or later.
 The library also provides the functionality to realize the MVVM pattern in WinForms applications.

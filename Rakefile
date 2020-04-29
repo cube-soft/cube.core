@@ -21,39 +21,23 @@ require 'rake/clean'
 # --------------------------------------------------------------------------- #
 # configuration
 # --------------------------------------------------------------------------- #
-PROJECT     = "Cube.Forms"
-MAIN        = "#{PROJECT}"
-LIB         = "../packages"
-CONFIG      = "Release"
-BRANCHES    = ["master", "net35"]
-PLATFORMS   = ["Any CPU"]
-PACKAGES    = ["Libraries/#{PROJECT}.nuspec"]
-
-# --------------------------------------------------------------------------- #
-# commands
-# --------------------------------------------------------------------------- #
-BUILD = "msbuild -v:m -t:build -p:Configuration=#{CONFIG}"
-PACK  = %(nuget pack -Properties "Configuration=#{CONFIG};Platform=AnyCPU")
+PROJECT   = "Cube.Forms"
+BRANCHES  = ["master", "net35"]
+PLATFORMS = ["Any CPU"]
+PACKAGES  = ["Libraries/#{PROJECT}"]
 
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
-CLEAN.include("#{PROJECT}.*.nupkg")
-CLOBBER.include("#{LIB}/cube.*")
+CLEAN.include(["*.nupkg", "**/bin", "**/obj"])
+CLOBBER.include("../packages/cube.*")
 
 # --------------------------------------------------------------------------- #
 # default
 # --------------------------------------------------------------------------- #
-desc "Clean, build, and create NuGet packages."
-task :default => [:clean, :build_all, :pack]
-
-# --------------------------------------------------------------------------- #
-# pack
-# --------------------------------------------------------------------------- #
-desc "Create NuGet packages in the net35 branch."
-task :pack do
-    checkout("net35") { PACKAGES.each { |e| sh("#{PACK} #{e}") }}
+desc "Clean, build, test, and create NuGet packages."
+task :default => [:clean, :build_all] do
+    checkout("net35") { Rake::Task[:pack].execute }
 end
 
 # --------------------------------------------------------------------------- #
@@ -61,7 +45,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Resote NuGet packages in the current branch."
 task :restore do
-    sh("nuget restore #{MAIN}.sln")
+    cmd("nuget restore #{PROJECT}.sln")
 end
 
 # --------------------------------------------------------------------------- #
@@ -70,8 +54,14 @@ end
 desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
+
+    branch = %x(git rev-parse --abbrev-ref HEAD).chomp
+    build  = branch.start_with?("netstandard") || branch.start_with?("netcore") ?
+             "dotnet build -c Release" :
+             "msbuild -v:m -p:Configuration=Release"
+
     Rake::Task[:restore].execute
-    sh(%(#{BUILD} -p:Platform="#{e.platform}" #{PROJECT}.sln))
+    cmd(%(#{build} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
 # --------------------------------------------------------------------------- #
@@ -79,12 +69,27 @@ end
 # --------------------------------------------------------------------------- #
 desc "Build projects in pre-defined branches and platforms."
 task :build_all do
-    BRANCHES.product(PLATFORMS).each { |set|
-        checkout(set[0]) do
+    BRANCHES.product(PLATFORMS).each do |bp|
+        checkout(bp[0]) do
             Rake::Task[:build].reenable
-            Rake::Task[:build].invoke(set[1])
+            Rake::Task[:build].invoke(bp[1])
         end
-    }
+    end
+end
+
+# --------------------------------------------------------------------------- #
+# pack
+# --------------------------------------------------------------------------- #
+desc "Create NuGet packages."
+task :pack do
+    PACKAGES.each do |e|
+        spec = File.exists?("#{e}.nuspec")
+        pack = spec ?
+               %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU") :
+               "dotnet pack -c Release --no-restore --no-build -o ."
+        ext  = spec ? "nuspec" : "csproj"
+        cmd("#{pack} #{e}.#{ext}")
+    end
 end
 
 # --------------------------------------------------------------------------- #
@@ -95,4 +100,11 @@ def checkout(branch, &callback)
     callback.call()
 ensure
     sh("git checkout master")
+end
+
+# --------------------------------------------------------------------------- #
+# cmd
+# --------------------------------------------------------------------------- #
+def cmd(args)
+    sh("cmd.exe /c #{args}")
 end
