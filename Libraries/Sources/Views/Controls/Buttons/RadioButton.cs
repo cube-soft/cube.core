@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class RadioButton : System.Windows.Forms.RadioButton, IDpiAwarable
+    public class RadioButton : System.Windows.Forms.RadioButton
     {
         #region Constructors
 
@@ -52,29 +52,6 @@ namespace Cube.Forms
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dpi
-        ///
-        /// <summary>
-        /// 現在の Dpi の値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double Dpi
-        {
-            get => _dpi;
-            set
-            {
-                if (_dpi == value) return;
-                var old = _dpi;
-                _dpi = value;
-                OnDpiChanged(ValueEventArgs.Create(old, value));
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -372,36 +349,6 @@ namespace Cube.Forms
 
         #region Events
 
-        #region DpiChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DpiChanged
-        ///
-        /// <summary>
-        /// DPI の値が変化した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event ValueChangedEventHandler<double> DpiChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDpiChanged
-        ///
-        /// <summary>
-        /// DpiChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
-        {
-            this.UpdateDpi(e.OldValue, e.NewValue);
-            DpiChanged?.Invoke(this, e);
-        }
-
-        #endregion
-
         #region NcHitTest
 
         /* ----------------------------------------------------------------- */
@@ -433,7 +380,6 @@ namespace Cube.Forms
 
         #region Fields
         private readonly ButtonPainter _painter = null;
-        private double _dpi = Window.BaseDpi;
         #endregion
     }
 }

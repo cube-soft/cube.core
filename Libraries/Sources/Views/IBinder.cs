@@ -17,8 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms
 {
-    #region IBindable
-
     /* --------------------------------------------------------------------- */
     ///
     /// IBinder
@@ -44,46 +42,4 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         void Bind(IPresentable src);
     }
-
-
-    #endregion
-
-    #region IDpiAwarable
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IDpiAwarable
-    ///
-    /// <summary>
-    /// Represents the interface that a window or control can be aware of
-    /// DPI changing.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IDpiAwarable
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dpi
-        ///
-        /// <summary>
-        /// Gets or sets the current DPI.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        double Dpi { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DpiChanged
-        ///
-        /// <summary>
-        /// Occurs when the current DPI is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        event ValueChangedEventHandler<double> DpiChanged;
-    }
-
-    #endregion
 }

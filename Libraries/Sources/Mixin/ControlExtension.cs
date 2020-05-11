@@ -38,29 +38,6 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UpdateDpi
-        ///
-        /// <summary>
-        /// DPI の変更に応じてレイアウトを更新します。
-        /// </summary>
-        ///
-        /// <param name="src">更新対象となるコントロール</param>
-        /// <param name="before">変更前の DPI</param>
-        /// <param name="after">変更後の DPI</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateDpi(this IDpiAwarable src, double before, double after)
-        {
-            if (before > 1.0 && src is WinForms.Control control)
-            {
-                var ratio = after / before;
-                if (!(control is WinForms.Form)) UpdateLocation(control, ratio);
-                UpdateLayout(control, ratio);
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// HitTest
         ///
         /// <summary>
@@ -127,102 +104,6 @@ namespace Cube.Forms.Controls
 
         #region Implementations
 
-        #region UpdateLayout
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateLayout
-        ///
-        /// <summary>
-        /// DPI の変更に応じてレイアウトを更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void UpdateLayout(WinForms.Control src, double ratio)
-        {
-            UpdateSize(src, ratio);
-            UpdateFont(src, ratio);
-
-            if (src is IDpiAwarable dac)
-            {
-                foreach (var c in src.Controls)
-                {
-                    if (c is IDpiAwarable dest) dest.Dpi = dac.Dpi;
-                }
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateLocation
-        ///
-        /// <summary>
-        /// コントロールの位置を更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void UpdateLocation(WinForms.Control src, double ratio) =>
-            src.Location = new Point(
-                (int)(src.Location.X * ratio),
-                (int)(src.Location.Y * ratio)
-            );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateLayout
-        ///
-        /// <summary>
-        /// コントロールの大きさや余白などを更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void UpdateSize(WinForms.Control src, double ratio)
-        {
-            src.Size = new Size(
-                (int)(src.Size.Width  * ratio),
-                (int)(src.Size.Height * ratio)
-            );
-
-            src.Margin = new WinForms.Padding(
-                (int)(src.Margin.Left   * ratio),
-                (int)(src.Margin.Top    * ratio),
-                (int)(src.Margin.Right  * ratio),
-                (int)(src.Margin.Bottom * ratio)
-            );
-
-            src.Padding = new WinForms.Padding(
-                (int)(src.Padding.Left   * ratio),
-                (int)(src.Padding.Top    * ratio),
-                (int)(src.Padding.Right  * ratio),
-                (int)(src.Padding.Bottom * ratio)
-            );
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpdateFont
-        ///
-        /// <summary>
-        /// フォントサイズを更新します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void UpdateFont(WinForms.Control src, double ratio)
-        {
-            if (src.Font == null) return;
-
-            var name  = src.Font.FontFamily.Name;
-            var size  = (float)(src.Font.Size * ratio);
-            var unit  = src.Font.Unit;
-            var style = src.Font.Style;
-
-            src.Font = new Font(name, size, style, unit);
-        }
-
-        #endregion
-
-        #region GetEvent
-
         /* ----------------------------------------------------------------- */
         ///
         /// GetEventHandlers
@@ -279,8 +160,6 @@ namespace Cube.Forms.Controls
             BindingFlags.Instance   |
             BindingFlags.IgnoreCase |
             BindingFlags.Static     ;
-
-        #endregion
 
         #endregion
     }

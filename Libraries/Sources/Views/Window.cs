@@ -38,7 +38,7 @@ namespace Cube.Forms
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Window : WindowBase, IDpiAwarable
+    public class Window : WindowBase
     {
         #region Constructors
 
@@ -56,51 +56,11 @@ namespace Cube.Forms
             AutoScaleMode = WinForms.AutoScaleMode.Dpi;
             DoubleBuffered = true;
             Font = FontFactory.Create(Font);
-
-            using (var gs = CreateGraphics())
-            {
-                Dpi = gs.DpiX;
-                if (gs.DpiX != gs.DpiY) this.LogWarn($"DpiX:{gs.DpiX}", $"DpiY:{gs.DpiY}");
-            }
         }
 
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BaseDpi
-        ///
-        /// <summary>
-        /// 基準となる Dpi の値を取得します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static double BaseDpi { get; } = 96.0;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dpi
-        ///
-        /// <summary>
-        /// 現在の Dpi の値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double Dpi
-        {
-            get => _dpi;
-            set
-            {
-                if (_dpi == value) return;
-                var old = _dpi;
-                _dpi = value;
-                OnDpiChanged(ValueEventArgs.Create(old, value));
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -150,37 +110,6 @@ namespace Cube.Forms
         {
             if (Visible && !DesignMode) AdjustDesktopLocation();
             VisibleChanging?.Invoke(this, e);
-        }
-
-        #endregion
-
-        #region DpiChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DpiChanged
-        ///
-        /// <summary>
-        /// DPI の値が変化した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event ValueChangedEventHandler<double> DpiChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDpiChanged
-        ///
-        /// <summary>
-        /// DpiChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
-        {
-            var need = AutoScaleMode == WinForms.AutoScaleMode.Dpi;
-            if (need) this.UpdateDpi(e.OldValue, e.NewValue);
-            DpiChanged?.Invoke(this, e);
         }
 
         #endregion
@@ -320,9 +249,6 @@ namespace Cube.Forms
 
             switch (m.Msg)
             {
-                case 0x02e0: // WM_DPICHANGED
-                    Dpi = (short)(m.WParam.ToInt32() & 0x0000ffff);
-                    break;
                 case 0x0084: // WM_NCHITTEST
                     var e = Query.NewMessage<Point, Position>(CreatePoint(m.LParam));
                     OnNcHitTest(e);
@@ -349,10 +275,6 @@ namespace Cube.Forms
             return new Point(x, y);
         }
 
-        #endregion
-
-        #region Fields
-        private double _dpi = BaseDpi;
         #endregion
     }
 }

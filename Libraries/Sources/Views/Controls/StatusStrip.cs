@@ -31,66 +31,9 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class StatusStrip : System.Windows.Forms.StatusStrip, IDpiAwarable
+    public class StatusStrip : System.Windows.Forms.StatusStrip
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dpi
-        ///
-        /// <summary>
-        /// 現在の Dpi の値を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public double Dpi
-        {
-            get => _dpi;
-            set
-            {
-                if (_dpi == value) return;
-                var old = _dpi;
-                _dpi = value;
-                OnDpiChanged(ValueEventArgs.Create(old, value));
-            }
-        }
-
-        #endregion
-
         #region Events
-
-        #region DpiChanged
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DpiChanged
-        ///
-        /// <summary>
-        /// DPI の値が変化した時に発生するイベントです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event ValueChangedEventHandler<double> DpiChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDpiChanged
-        ///
-        /// <summary>
-        /// DpiChanged イベントを発生させます。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnDpiChanged(ValueChangedEventArgs<double> e)
-        {
-            this.UpdateDpi(e.OldValue, e.NewValue);
-            DpiChanged?.Invoke(this, e);
-        }
-
-        #endregion
 
         #region NcHitTest
 
@@ -232,10 +175,6 @@ namespace Cube.Forms
                    form.WindowState == System.Windows.Forms.FormWindowState.Normal;
         }
 
-        #endregion
-
-        #region Fields
-        private double _dpi = Window.BaseDpi;
         #endregion
     }
 }
