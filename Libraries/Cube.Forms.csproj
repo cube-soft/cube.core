@@ -23,7 +23,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cube.Images" Version="2.0.0" />
+        <PackageReference Include="Cube.Core" Version="2.0.0" />
         <Reference Include="System.Design" />
         <Reference Include="System.Drawing.Design" />
         <Reference Include="System.Windows.Forms" />

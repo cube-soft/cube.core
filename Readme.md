@@ -23,8 +23,6 @@ Or select it from the NuGet packages UI on Visual Studio.
 ## Dependencies
 
 * [Cube.Core](https://github.com/cube-soft/Cube.Core)
-* [Cube.FileSystem](https://github.com/cube-soft/Cube.FileSystem)
-* [Cube.Images](https://github.com/cube-soft/Cube.Images)
 
 ## Contributing
 

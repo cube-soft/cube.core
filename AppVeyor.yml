@@ -14,8 +14,6 @@ nuget:
     disable_publish_on_pr: true
 before_build:
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
-    - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
-    - nuget sources add -name Cube.Images -source https://ci.appveyor.com/nuget/cube.images
     - nuget restore "%PROJECT_NAME%.sln"
 build:
     project: '%PROJECT_NAME%.sln'
