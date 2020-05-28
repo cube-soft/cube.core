@@ -84,7 +84,7 @@ namespace Cube.Tests.Mixin
                 yield return new TestCaseData(typeof(AssemblyTest).Assembly, new Expected
                 {
                     Name          = "Cube.Core.Tests",
-                    FileName      = "Cube.Core.Tests.dll",
+                    FileName      = "Cube.Core.Tests.exe",
                     DirectoryName = @"Tests\bin",
                     Title         = "Cube.Core UnitTest",
                     Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
