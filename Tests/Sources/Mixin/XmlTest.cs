@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Xml;
-using NUnit.Framework;
 using System.Linq;
 using System.Xml.Linq;
+using Cube.Mixin.Xml;
+using NUnit.Framework;
 
 namespace Cube.Tests.Mixin
 {

@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Tasks;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using Cube.Mixin.Tasks;
+using NUnit.Framework;
 
 namespace Cube.Tests.Mixin
 {

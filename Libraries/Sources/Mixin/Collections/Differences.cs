@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections;
-using Cube.Collections.Differences;
 using System;
 using System.Collections.Generic;
+using Cube.Collections;
+using Cube.Collections.Differences;
 
 namespace Cube.Mixin.Collections
 {

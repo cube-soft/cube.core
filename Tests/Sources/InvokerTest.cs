@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
 using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {

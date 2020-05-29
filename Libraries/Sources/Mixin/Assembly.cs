@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Cube.Mixin.String;
 using Source = System.Reflection.Assembly;
 
 namespace Cube.Mixin.Assembly
