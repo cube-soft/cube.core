@@ -46,7 +46,7 @@ namespace Cube.FileSystem.Shell32
     /// Shell32.NativeMethods
     ///
     /// <summary>
-    /// shell32.dll に定義された関数を宣言するためのクラスです。
+    /// Provides native methods defined in the shell32.dll.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

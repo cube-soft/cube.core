@@ -15,36 +15,31 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Reflection;
-using NUnit.Framework;
+using System;
 
 namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// Program
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Represetns the main program.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
+    static class Program
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// OneTimeSetup
+        /// Main
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Represents the main method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
-        }
+        [STAThread]
+        static void Main(string[] args) { }
     }
 }

@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Generics;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cube.Mixin.Generics;
+using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
 {
@@ -28,7 +28,7 @@ namespace Cube.FileSystem.Tests
     /// ExtensionFilterTest
     ///
     /// <summary>
-    /// Provides a test fixture for the DisplayFilter class.
+    /// Provides a test fixture for the ExtensionFilterTest class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

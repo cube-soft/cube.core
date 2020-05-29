@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Reflection;
 using Cube.DataContract;
 using Cube.Tests;
 using Microsoft.Win32;
 using NUnit.Framework;
-using System.Reflection;
 
 namespace Cube.FileSystem.Tests
 {
@@ -122,33 +122,31 @@ namespace Cube.FileSystem.Tests
         [SetUp]
         protected virtual void Setup()
         {
-            using (var k = CreateSubKey(Default))
+            using var k = CreateSubKey(Default);
+            k.SetValue("ID", 1357);
+            k.SetValue(nameof(Person.Name), "山田太郎");
+            k.SetValue(nameof(Person.Sex), 0);
+            k.SetValue(nameof(Person.Age), 52);
+            k.SetValue(nameof(Person.Creation), "2015/03/16 02:32:26");
+            k.SetValue(nameof(Person.Reserved), 1);
+
+            using (var sk = k.CreateSubKey(nameof(Person.Contact)))
             {
-                k.SetValue("ID", 1357);
-                k.SetValue(nameof(Person.Name), "山田太郎");
-                k.SetValue(nameof(Person.Sex), 0);
-                k.SetValue(nameof(Person.Age), 52);
-                k.SetValue(nameof(Person.Creation), "2015/03/16 02:32:26");
-                k.SetValue(nameof(Person.Reserved), 1);
+                sk.SetValue(nameof(Address.Type), "Phone");
+                sk.SetValue(nameof(Address.Value), "090-1234-5678");
+            }
 
-                using (var sk = k.CreateSubKey(nameof(Person.Contact)))
-                {
-                    sk.SetValue(nameof(Address.Type), "Phone");
-                    sk.SetValue(nameof(Address.Value), "090-1234-5678");
-                }
+            using (var sk = k.CreateSubKey(nameof(Person.Others)))
+            {
+                using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
+                using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
+            }
 
-                using (var sk = k.CreateSubKey(nameof(Person.Others)))
-                {
-                    using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
-                    using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
-                }
-
-                using (var sk = k.CreateSubKey(nameof(Person.Messages)))
-                {
-                    using (var ssk = sk.CreateSubKey("0")) ssk.SetValue("", "1st message");
-                    using (var ssk = sk.CreateSubKey("1")) ssk.SetValue("", "2nd message");
-                    using (var ssk = sk.CreateSubKey("2")) ssk.SetValue("", "3rd message");
-                }
+            using (var sk = k.CreateSubKey(nameof(Person.Messages)))
+            {
+                using (var ssk = sk.CreateSubKey("0")) ssk.SetValue("", "1st message");
+                using (var ssk = sk.CreateSubKey("1")) ssk.SetValue("", "2nd message");
+                using (var ssk = sk.CreateSubKey("2")) ssk.SetValue("", "3rd message");
             }
         }
 

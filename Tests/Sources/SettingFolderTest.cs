@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Threading.Tasks;
 using Cube.DataContract;
 using Cube.Mixin.Assembly;
 using NUnit.Framework;
-using System;
-using System.Threading.Tasks;
 
 namespace Cube.FileSystem.Tests
 {

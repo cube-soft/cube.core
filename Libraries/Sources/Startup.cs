@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using Cube.Mixin.String;
 using Microsoft.Win32;
-using System;
 
 namespace Cube.FileSystem
 {
@@ -111,11 +111,9 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Load()
         {
-            using (var sk = OpenSubkey(false))
-            {
-                Command = sk.GetValue(Name, string.Empty) as string;
-                Enabled = Command.HasValue();
-            }
+            using var sk = OpenSubkey(false);
+            Command = sk.GetValue(Name, string.Empty) as string;
+            Enabled = Command.HasValue();
         }
 
         /* ----------------------------------------------------------------- */
@@ -129,14 +127,12 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Save()
         {
-            using (var sk = OpenSubkey(true))
+            using var sk = OpenSubkey(true);
+            if (Enabled)
             {
-                if (Enabled)
-                {
-                    if (Command.HasValue()) sk.SetValue(Name, Command);
-                }
-                else sk.DeleteValue(Name, false);
+                if (Command.HasValue()) sk.SetValue(Name, Command);
             }
+            else sk.DeleteValue(Name, false);
         }
 
         /* ----------------------------------------------------------------- */

@@ -15,13 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem;
-using Cube.Mixin.Logging;
-using Cube.Mixin.String;
 using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Cube.FileSystem;
+using Cube.Mixin.Logging;
+using Cube.Mixin.String;
 using Source = Cube.FileSystem.IO;
 
 namespace Cube.Mixin.IO
@@ -57,7 +57,8 @@ namespace Cube.Mixin.IO
         /* ----------------------------------------------------------------- */
         public static T Load<T>(this Source io, string src, Func<Stream, T> callback)
         {
-            using (var ss = io.OpenRead(src)) return callback(ss);
+            using var ss = io.OpenRead(src);
+            return callback(ss);
         }
 
         /* ----------------------------------------------------------------- */
@@ -99,15 +100,12 @@ namespace Cube.Mixin.IO
         /* ----------------------------------------------------------------- */
         public static void Save(this Source io, string dest, Action<Stream> callback)
         {
-            using (var ss = new MemoryStream())
-            {
-                callback(ss);
-                using (var ds = io.Create(dest))
-                {
-                    ss.Position = 0;
-                    ss.CopyTo(ds);
-                }
-            }
+            using var ss = new MemoryStream();
+            callback(ss);
+
+            using var ds = io.Create(dest);
+            ss.Position = 0;
+            ss.CopyTo(ds);
         }
 
         #region GetTypeName
@@ -145,6 +143,7 @@ namespace Cube.Mixin.IO
         /* ----------------------------------------------------------------- */
         public static string GetTypeName(this Source io, string path)
         {
+            System.Diagnostics.Debug.Assert(io != null);
             if (!path.HasValue()) return string.Empty;
 
             var dest   = new Cube.FileSystem.Shell32.SHFILEINFO();

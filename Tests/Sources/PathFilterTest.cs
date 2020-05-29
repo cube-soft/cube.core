@@ -24,7 +24,7 @@ namespace Cube.FileSystem.Tests
     /// PathFilterTest
     ///
     /// <summary>
-    /// PathFilter のテスト用クラスです。
+    /// Provides a test fixture for the PathFilter class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube.FileSystem.Tests
         /// Escape
         ///
         /// <summary>
-        /// エスケープ処理のテストを実行します。
+        /// Tests the escaping process.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -165,7 +165,7 @@ namespace Cube.FileSystem.Tests
         /// Match
         ///
         /// <summary>
-        /// Match メソッドのテストを実行します。
+        /// Testss the Match method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -179,7 +179,7 @@ namespace Cube.FileSystem.Tests
         /// MatchAny
         ///
         /// <summary>
-        /// MatchAny メソッドのテストを実行します。
+        /// Testss the MatchAny method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

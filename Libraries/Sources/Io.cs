@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logging;
 using System;
 using System.IO;
+using Cube.Mixin.Logging;
 
 namespace Cube.FileSystem
 {
@@ -26,7 +26,7 @@ namespace Cube.FileSystem
     /// IO
     ///
     /// <summary>
-    /// ファイル操作を実行するクラスの基底となるクラスです。
+    /// Provides functionality to do something to a file or directory.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

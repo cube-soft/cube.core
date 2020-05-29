@@ -26,7 +26,7 @@ namespace Cube.FileSystem
     /// FailedEventArgs
     ///
     /// <summary>
-    /// Failed イベントの情報を保持するためのクラスです。
+    /// Represents the arguments of the Failed event.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,12 +39,13 @@ namespace Cube.FileSystem
         /// FailedEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the FailedEventArgs with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="name">操作に失敗したメソッド名</param>
-        /// <param name="paths">失敗時に指定したパス一覧</param>
-        /// <param name="error">送出された例外オブジェクト</param>
+        /// <param name="name">Name of failed method.</param>
+        /// <param name="paths">Path collection.</param>
+        /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public FailedEventArgs(string name, IEnumerable<string> paths, Exception error) :
@@ -55,13 +56,14 @@ namespace Cube.FileSystem
         /// FailedEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the FailedEventArgs with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="name">操作に失敗したメソッド名</param>
-        /// <param name="paths">失敗時に指定したパス一覧</param>
-        /// <param name="error">送出された例外オブジェクト</param>
-        /// <param name="cancel">キャンセルするかどうかを示す値</param>
+        /// <param name="name">Name of failed method.</param>
+        /// <param name="paths">Path collection.</param>
+        /// <param name="error">Exception object.</param>
+        /// <param name="cancel">Cancel or not.</param>
         ///
         /* ----------------------------------------------------------------- */
         public FailedEventArgs(string name, IEnumerable<string> paths,
@@ -81,7 +83,7 @@ namespace Cube.FileSystem
         /// Name
         ///
         /// <summary>
-        /// 操作に失敗したメソッド名を取得します。
+        /// Gets the name of failed method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -92,7 +94,7 @@ namespace Cube.FileSystem
         /// Paths
         ///
         /// <summary>
-        /// 失敗時に指定されたパス一覧を取得します。
+        /// Gets the path collection specified for the failed method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -103,7 +105,7 @@ namespace Cube.FileSystem
         /// Exception
         ///
         /// <summary>
-        /// 送出された例外オブジェクトを取得します。
+        /// Gets the Exception object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -117,7 +119,7 @@ namespace Cube.FileSystem
     /// FailedEventHandler
     ///
     /// <summary>
-    /// イベントを処理するメソッドを表します。
+    /// Represents the Failed event handler.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

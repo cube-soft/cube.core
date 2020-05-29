@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tests;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cube.Tests;
+using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
 {
@@ -28,7 +28,7 @@ namespace Cube.FileSystem.Tests
     /// IoTest
     ///
     /// <summary>
-    /// Cube.FileSystem.Operator のテスト用クラスです。
+    /// Provides a test fixture for the IO class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,12 +37,12 @@ namespace Cube.FileSystem.Tests
     {
         #region Tests
 
-         /* ----------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
         /// Get
         ///
         /// <summary>
-        /// Get で取得できるオブジェクトのプロパティを確認します。
+        /// Tests the Get method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +78,7 @@ namespace Cube.FileSystem.Tests
         /// Get_Throws
         ///
         /// <summary>
-        /// ファイル情報の取得に失敗するテストを実行します。
+        /// Confirms the exception when the Get method is failed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -93,7 +93,7 @@ namespace Cube.FileSystem.Tests
         /// GetFiles
         ///
         /// <summary>
-        /// ファイル一覧を取得するテストを実行します。
+        /// Tests the GetFiles method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -115,7 +115,7 @@ namespace Cube.FileSystem.Tests
         /// GetDirectories
         ///
         /// <summary>
-        /// ディレクトリ一覧を取得するテストを実行します。
+        /// Tests the GetDirectories method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -137,7 +137,7 @@ namespace Cube.FileSystem.Tests
         /// Create
         ///
         /// <summary>
-        /// 書き込み用ストリームを生成するテストを実行します。
+        /// Tests the Create method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -154,7 +154,7 @@ namespace Cube.FileSystem.Tests
         /// OpenWrite
         ///
         /// <summary>
-        /// 書き込み用ストリームを生成するテストを実行します。
+        /// Tests the OpenWrite method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -184,7 +184,7 @@ namespace Cube.FileSystem.Tests
         /// Delete
         ///
         /// <summary>
-        /// ファイルを削除するテストを実行します。
+        /// Tests the Delete method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -205,7 +205,7 @@ namespace Cube.FileSystem.Tests
         /// TryDelete
         ///
         /// <summary>
-        /// ファイルを削除するテストを実行します。
+        /// Tests the TryDelete method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -226,7 +226,7 @@ namespace Cube.FileSystem.Tests
         /// DeleteRecursive
         ///
         /// <summary>
-        /// ディレクトリを再帰的に削除するテストを実行します。
+        /// Tests the Delete method recursively.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -248,7 +248,7 @@ namespace Cube.FileSystem.Tests
         /// Delete_NotFound
         ///
         /// <summary>
-        /// 存在しないファイルの削除を試みた時の挙動を確認します。
+        /// Confirms the behavior when deleting a non-existent file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -264,7 +264,7 @@ namespace Cube.FileSystem.Tests
         /// TryDelete_NotFound
         ///
         /// <summary>
-        /// 存在しないファイルの削除を試みた時の挙動を確認します。
+        /// Confirms the behavior when deleting a non-existent file.
         /// </summary>
         ///
         /// <remarks>
@@ -285,7 +285,8 @@ namespace Cube.FileSystem.Tests
         /// TryDelete_AccessDenied
         ///
         /// <summary>
-        /// 使用されているファイルを削除しようとした時の挙動を確認します。
+        /// Confirms the behavior when deleting a file used by another
+        /// process.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -301,7 +302,7 @@ namespace Cube.FileSystem.Tests
         /// Move
         ///
         /// <summary>
-        /// 移動のテストを実行します。
+        /// Tests the Move method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -341,7 +342,7 @@ namespace Cube.FileSystem.Tests
         /// Move_Failed
         ///
         /// <summary>
-        /// 移動操作に失敗するテストを実行します。
+        /// Confirms the Failed event when moving files.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -372,7 +373,7 @@ namespace Cube.FileSystem.Tests
         /// Move_Throws
         ///
         /// <summary>
-        /// 移動操作に失敗するテストを実行します。
+        /// Confirms the exception when moving files.
         /// </summary>
         ///
         /// <remarks>
@@ -394,7 +395,7 @@ namespace Cube.FileSystem.Tests
         /// Open_Failed
         ///
         /// <summary>
-        /// ファイルを開く操作に失敗するテストを実行します。
+        /// Confirms the Failed event when opening a file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -425,7 +426,7 @@ namespace Cube.FileSystem.Tests
         /// Open_Throws
         ///
         /// <summary>
-        /// ファイルを開く操作に失敗するテストを実行します。
+        /// Confirms the exception when opening a file.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -441,7 +442,7 @@ namespace Cube.FileSystem.Tests
         /// Exists_NullOrEmpty
         ///
         /// <summary>
-        /// Executes the test of Exists method with null or empty values.
+        /// Tests the Exists method with null or empty values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -462,7 +463,7 @@ namespace Cube.FileSystem.Tests
         /// TestCases
         ///
         /// <summary>
-        /// 各種 Operator のテスト用データを取得します。
+        /// Gets test cases.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

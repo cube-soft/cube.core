@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Alphaleonis.Win32.Filesystem;
 using System;
+using Alphaleonis.Win32.Filesystem;
 
 namespace Cube.FileSystem
 {

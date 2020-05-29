@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tests;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.Reflection;
+using Cube.Tests;
+using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
 {
