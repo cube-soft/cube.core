@@ -46,7 +46,7 @@ namespace Cube.FileSystem
         /// <returns>Controller object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected override Controller GetControllerCore() => _shared ??= new AfsController()
+        protected override EntityController GetControllerCore() => _shared ??= new AfsController()
 ;
 
         /* ----------------------------------------------------------------- */
@@ -307,7 +307,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private static Controller _shared;
+        private static EntityController _shared;
         #endregion
     }
 }

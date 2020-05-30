@@ -25,13 +25,13 @@ namespace Cube.FileSystem
     /// AfsController
     ///
     /// <summary>
-    /// Provides functionality to refresh properties of a Controllable
-    /// object by using the AlphaFS library.
+    /// Provides functionality to refresh properties of a EntityControllable
+    /// object by using the AlphaFS module.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class AfsController : Controller
+    public class AfsController : EntityController
     {
         #region Methods
 
@@ -46,7 +46,7 @@ namespace Cube.FileSystem
         /// <param name="src">Object to be refreshed.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public override void Refresh(Controllable src)
+        public override void Refresh(EntityControllable src)
         {
             var obj = CreateCore(src.Source);
 

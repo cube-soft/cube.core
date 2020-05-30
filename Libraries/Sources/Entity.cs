@@ -46,7 +46,7 @@ namespace Cube.FileSystem
         /// <param name="src">Path of file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Entity(string src) : this(src, new Controller()) { }
+        public Entity(string src) : this(src, new EntityController()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -80,7 +80,7 @@ namespace Cube.FileSystem
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public Entity(string src, Controller controller, params object[] options)
+        public Entity(string src, EntityController controller, params object[] options)
         {
             Controller   = controller;
             Controllable = controller.Create(src, options);
@@ -244,7 +244,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Controllable Controllable { get; }
+        protected EntityControllable Controllable { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -255,7 +255,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Controller Controller { get; }
+        protected EntityController Controller { get; }
 
         #endregion
 

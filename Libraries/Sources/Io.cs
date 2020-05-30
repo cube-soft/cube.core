@@ -77,13 +77,13 @@ namespace Cube.FileSystem
         /// GetController
         ///
         /// <summary>
-        /// Gets the Controller object.
+        /// Gets the EntityController object.
         /// </summary>
         ///
-        /// <returns>Controller object.</returns>
+        /// <returns>EntityController object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public Controller GetController() => GetControllerCore();
+        public EntityController GetController() => GetControllerCore();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -96,7 +96,7 @@ namespace Cube.FileSystem
         /// <returns>Controller object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual Controller GetControllerCore() => _shared ??= new Controller();
+        protected virtual EntityController GetControllerCore() => _shared ??= new EntityController();
 
         #endregion
 
@@ -1113,7 +1113,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private static Controller _shared;
+        private static EntityController _shared;
         #endregion
     }
 }
