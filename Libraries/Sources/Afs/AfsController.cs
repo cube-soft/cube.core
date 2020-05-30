@@ -25,7 +25,8 @@ namespace Cube.FileSystem
     /// AfsController
     ///
     /// <summary>
-    /// AlphaFS を利用した Controllable オブジェクトの情報更新用クラスです。
+    /// Provides functionality to refresh properties of a Controllable
+    /// object by using the AlphaFS library.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,10 +40,10 @@ namespace Cube.FileSystem
         /// Refresh
         ///
         /// <summary>
-        /// Information オブジェクトの情報を更新します。
+        /// Refreshes the specified object.
         /// </summary>
         ///
-        /// <param name="src">更新対象オブジェクト</param>
+        /// <param name="src">Object to be refreshed.</param>
         ///
         /* ----------------------------------------------------------------- */
         public override void Refresh(Controllable src)
@@ -73,21 +74,21 @@ namespace Cube.FileSystem
         /// CreateCore
         ///
         /// <summary>
-        /// FileSystemInfo オブジェクトを生成します。
+        /// Creates a new instance of the FileSystemInfo inherited class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private FileSystemInfo CreateCore(string path) =>
             Directory.Exists(path) ?
             new DirectoryInfo(path) as FileSystemInfo :
-            new FileInfo(path) as FileSystemInfo;
+            new FileInfo(path);
 
         /* ----------------------------------------------------------------- */
         ///
         /// TryCast
         ///
         /// <summary>
-        /// FileInfo オブジェクトへのキャストを試行します。
+        /// Tries to cast to the FileInfo object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

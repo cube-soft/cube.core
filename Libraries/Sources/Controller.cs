@@ -25,11 +25,11 @@ namespace Cube.FileSystem
     /// Controller
     ///
     /// <summary>
-    /// Provides to create or refresh properties of an Information object.
+    /// Provides to create or refresh properties of an Entity object.
     /// </summary>
     ///
     /// <remarks>
-    /// Information オブジェクトのプロパティは読み取り専用であるため、
+    /// Entity オブジェクトのプロパティは読み取り専用であるため、
     /// 外部から更新する事はできません。そのため、更新の際には
     /// Controller クラス経由で更新処理を実行する必要があります。
     /// </remarks>

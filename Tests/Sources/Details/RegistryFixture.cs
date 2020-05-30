@@ -28,7 +28,7 @@ namespace Cube.FileSystem.Tests
     /// RegistryFixture
     ///
     /// <summary>
-    /// テストでレジストリを使用するためのクラスです。
+    /// Provides functionality to support for registry-related testing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,7 +41,7 @@ namespace Cube.FileSystem.Tests
         /// Assembly
         ///
         /// <summary>
-        /// アセンブリ情報を取得します。
+        /// Gets the Assembly object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -52,7 +52,7 @@ namespace Cube.FileSystem.Tests
         /// Shared
         ///
         /// <summary>
-        /// 共通するサブキー名を取得します。
+        /// Gets the shared registry subkey name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -63,7 +63,7 @@ namespace Cube.FileSystem.Tests
         /// Default
         ///
         /// <summary>
-        /// デフォルトのサブキー名を取得します。
+        /// Gets the default name of the registry subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +78,7 @@ namespace Cube.FileSystem.Tests
         /// GetKeyName
         ///
         /// <summary>
-        /// サブキー名を取得します。
+        /// Gets the registry subkey name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -89,7 +89,7 @@ namespace Cube.FileSystem.Tests
         /// CreateSubKey
         ///
         /// <summary>
-        /// レジストリ・サブキーを作成します。
+        /// Creates a registry subkey with the specified name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -101,7 +101,7 @@ namespace Cube.FileSystem.Tests
         /// OpenSubKey
         ///
         /// <summary>
-        /// レジストリ・サブキーを読み取り専用で開きます。
+        /// Opens the registry subkey of the specified name in readonly mode.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -115,7 +115,7 @@ namespace Cube.FileSystem.Tests
         /// Setup
         ///
         /// <summary>
-        /// 各テスト前に実行します。
+        /// Invokes the setup for each test.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -155,7 +155,7 @@ namespace Cube.FileSystem.Tests
         /// Teardown
         ///
         /// <summary>
-        /// 各テスト後に実行します。
+        /// Invokes the teardown for each test.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -173,7 +173,8 @@ namespace Cube.FileSystem.Tests
         /// SetAddress
         ///
         /// <summary>
-        /// レジストリに Address オブジェクトに対応する値を設定します。
+        /// Set the specified address information to the specified registry
+        /// subkey.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

@@ -26,7 +26,7 @@ namespace Cube.FileSystem.Tests
     /// Sex
     ///
     /// <summary>
-    /// 性別を表す列挙体です。
+    /// Specifies the sex.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -42,7 +42,7 @@ namespace Cube.FileSystem.Tests
     /// Address
     ///
     /// <summary>
-    /// アドレスを保持するためのクラスです。
+    /// Represents the address.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -54,7 +54,7 @@ namespace Cube.FileSystem.Tests
         /// Type
         ///
         /// <summary>
-        /// アドレスの種類を取得または設定します。
+        /// Gets or sets the type of the provided address.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,7 +66,7 @@ namespace Cube.FileSystem.Tests
         /// Value
         ///
         /// <summary>
-        /// アドレスの内容を取得または設定します。
+        /// Gets or sets the content of the provided address.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -79,7 +79,7 @@ namespace Cube.FileSystem.Tests
     /// Person
     ///
     /// <summary>
-    /// 個人情報を保持するためのクラスです。
+    /// Represents the example class that is serializable.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
@@ -93,14 +93,11 @@ namespace Cube.FileSystem.Tests
         /// Person
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Persion class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Person()
-        {
-            Reset();
-        }
+        public Person() { Reset(); }
 
         #endregion
 
@@ -111,7 +108,7 @@ namespace Cube.FileSystem.Tests
         /// Identification
         ///
         /// <summary>
-        /// ID を取得または設定します。
+        /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -127,7 +124,7 @@ namespace Cube.FileSystem.Tests
         /// Name
         ///
         /// <summary>
-        /// 名前を取得または設定します。
+        /// Gets or sets the name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -143,7 +140,7 @@ namespace Cube.FileSystem.Tests
         /// Sex
         ///
         /// <summary>
-        /// 性別を取得または設定します。
+        /// Gets or sets the sex.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -159,7 +156,7 @@ namespace Cube.FileSystem.Tests
         /// Age
         ///
         /// <summary>
-        /// 年齢を取得または設定します。
+        /// Gets or sets the age.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -175,7 +172,7 @@ namespace Cube.FileSystem.Tests
         /// Creation
         ///
         /// <summary>
-        /// 作成日時を取得または設定します。
+        /// Gets or sets the creation time.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -191,7 +188,7 @@ namespace Cube.FileSystem.Tests
         /// Contact
         ///
         /// <summary>
-        /// 連絡先を取得または設定します。
+        /// Gets or sets the address to contact.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -207,7 +204,7 @@ namespace Cube.FileSystem.Tests
         /// Others
         ///
         /// <summary>
-        /// その他のアドレスを取得または設定します。
+        /// Gets or sets the other addresses.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -223,7 +220,7 @@ namespace Cube.FileSystem.Tests
         /// Messages
         ///
         /// <summary>
-        /// メッセージ一覧を取得または設定します。
+        /// Gets or sets the message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -239,7 +236,7 @@ namespace Cube.FileSystem.Tests
         /// Reserved
         ///
         /// <summary>
-        /// フラグを取得または設定します。
+        /// Gets or sets the reserved value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -255,7 +252,7 @@ namespace Cube.FileSystem.Tests
         /// Secret
         ///
         /// <summary>
-        /// 秘密のメモ用データを取得または設定します。
+        /// Gets or sets the secret value that is not serialized.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -270,7 +267,7 @@ namespace Cube.FileSystem.Tests
         /// Guid
         ///
         /// <summary>
-        /// Guid オブジェクトを取得します。
+        /// Gets the GUID of the object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -285,7 +282,7 @@ namespace Cube.FileSystem.Tests
         /// Reset
         ///
         /// <summary>
-        /// 値をリセットします。
+        /// Resets values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

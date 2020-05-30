@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using Alphaleonis.Win32.Filesystem;
 
 namespace Cube.FileSystem
@@ -25,7 +26,8 @@ namespace Cube.FileSystem
     /// AfsIO
     ///
     /// <summary>
-    /// AlphaFS を利用した IO クラスです。
+    /// Provides functionality to do something to a file or directory by
+    /// using the AlphaFS module.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,20 +40,14 @@ namespace Cube.FileSystem
         /// GetControllerCore
         ///
         /// <summary>
-        /// Information の各種プロパティを更新するためのオブジェクトを
-        /// 取得します。
+        /// Gets the Controller object.
         /// </summary>
         ///
-        /// <remarks>
-        /// Refreshable クラスにはオブジェクト毎に保持する状態が存在
-        /// しないため、複数のオブジェクトで Refreshable オブジェクトを
-        /// 共有する事とします。
-        /// </remarks>
+        /// <returns>Controller object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected override Controller GetControllerCore() => _shared ?? (
-            _shared = new AfsController()
-        );
+        protected override Controller GetControllerCore() => _shared ??= new AfsController()
+;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -64,7 +60,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override string[] GetFilesCore(string path, string pattern, System.IO.SearchOption option) =>
+        protected override IEnumerable<string> GetFilesCore(string path, string pattern, System.IO.SearchOption option) =>
             Directory.Exists(path) ? Directory.GetFiles(path, pattern, option) : null;
 
         /* ----------------------------------------------------------------- */
@@ -78,7 +74,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override string[] GetDirectoriesCore(string path, string pattern, System.IO.SearchOption option) =>
+        protected override IEnumerable<string> GetDirectoriesCore(string path, string pattern, System.IO.SearchOption option) =>
             Directory.Exists(path) ? Directory.GetDirectories(path, pattern, option) : null;
 
         /* ----------------------------------------------------------------- */
@@ -86,11 +82,11 @@ namespace Cube.FileSystem
         /// SetAttributesCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリに属性を設定します。
+        /// Sets the specified attributes to the specified file or directory.
         /// </summary>
         ///
-        /// <param name="path">対象となるパス</param>
-        /// <param name="attr">属性</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="attr">Attributes to set.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void SetAttributesCore(string path, System.IO.FileAttributes attr)
@@ -104,11 +100,12 @@ namespace Cube.FileSystem
         /// SetCreationTimeCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリに作成日時を設定します。
+        /// Sets the specified creation time to the specified file or
+        /// directory.
         /// </summary>
         ///
-        /// <param name="path">対象となるパス</param>
-        /// <param name="time">作成日時</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="time">Creation time.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void SetCreationTimeCore(string path, DateTime time)
@@ -122,11 +119,12 @@ namespace Cube.FileSystem
         /// SetLastWriteTimeCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリに最終更新日時を設定します。
+        /// Sets the specified last updated time to the specified file or
+        /// directory.
         /// </summary>
         ///
-        /// <param name="path">対象となるパス</param>
-        /// <param name="time">最終更新日時</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="time">Last updated time.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void SetLastWriteTimeCore(string path, DateTime time)
@@ -140,11 +138,12 @@ namespace Cube.FileSystem
         /// SetLastAccessTimeCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリに最終アクセス日時を設定します。
+        /// Sets the specified last accessed time to the specified file or
+        /// directory.
         /// </summary>
         ///
-        /// <param name="path">対象となるパス</param>
-        /// <param name="time">最終アクセス日時</param>
+        /// <param name="path">Target path.</param>
+        /// <param name="time">Last accessed time.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void SetLastAccessTimeCore(string path, DateTime time)
@@ -158,10 +157,12 @@ namespace Cube.FileSystem
         /// CombineCore
         ///
         /// <summary>
-        /// パスを結合します。
+        /// Combiles the specified paths.
         /// </summary>
         ///
-        /// <param name="paths">パス一覧</param>
+        /// <param name="paths">Collection of paths.</param>
+        ///
+        /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected override string CombineCore(params string[] paths) =>
@@ -172,10 +173,12 @@ namespace Cube.FileSystem
         /// ExistsCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリが存在するかどうかを判別します。
+        /// Determines whether the specified file or directory exists.
         /// </summary>
         ///
-        /// <param name="path">対象となるパス</param>
+        /// <param name="path">Target path.</param>
+        ///
+        /// <returns>true for exists.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected override bool ExistsCore(string path) =>
@@ -186,10 +189,10 @@ namespace Cube.FileSystem
         /// DeleteCore
         ///
         /// <summary>
-        /// ファイルまたはディレクトリを削除します。
+        /// Deletes the specified file or directory.
         /// </summary>
         ///
-        /// <param name="path">削除対象となるパス</param>
+        /// <param name="path">Path to delete.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void DeleteCore(string path)
@@ -213,12 +216,12 @@ namespace Cube.FileSystem
         /// CreateCore
         ///
         /// <summary>
-        /// ファイルを新規作成します。
+        /// Creates or opens the specified file and gets the stream.
         /// </summary>
         ///
-        /// <param name="path">ファイルのパス</param>
+        /// <param name="path">Path to create or open file.</param>
         ///
-        /// <returns>書き込み用ストリーム</returns>
+        /// <returns>FileStream object to write.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected override System.IO.FileStream CreateCore(string path) =>
@@ -229,12 +232,12 @@ namespace Cube.FileSystem
         /// OpenReadCore
         ///
         /// <summary>
-        /// ファイルを読み込み専用で開きます。
+        /// Opens the specified file as read-only.
         /// </summary>
         ///
-        /// <param name="path">ファイルのパス</param>
+        /// <param name="path">File path.</param>
         ///
-        /// <returns>読み込み用ストリーム</returns>
+        /// <returns>Read-only stream.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected override System.IO.FileStream OpenReadCore(string path) =>
@@ -245,12 +248,12 @@ namespace Cube.FileSystem
         /// OpenWriteCore
         ///
         /// <summary>
-        /// ファイルを新規作成、または上書き用で開きます。
+        /// Creates or opens the specified file and gets the stream.
         /// </summary>
         ///
-        /// <param name="path">ファイルのパス</param>
+        /// <param name="path">Path to create or open file.</param>
         ///
-        /// <returns>書き込み用ストリーム</returns>
+        /// <returns>FileStream object to write.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected override System.IO.FileStream OpenWriteCore(string path) =>
@@ -261,10 +264,10 @@ namespace Cube.FileSystem
         /// CreateDirectoryCore
         ///
         /// <summary>
-        /// ディレクトリを作成します。
+        /// Creates a directory.
         /// </summary>
         ///
-        /// <param name="path">ディレクトリのパス</param>
+        /// <param name="path">Path to create.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void CreateDirectoryCore(string path) =>
@@ -275,11 +278,11 @@ namespace Cube.FileSystem
         /// MoveCore
         ///
         /// <summary>
-        /// ファイルを移動します。
+        /// Moves the specified file.
         /// </summary>
         ///
-        /// <param name="src">移動前のパス</param>
-        /// <param name="dest">移動後のパス</param>
+        /// <param name="src">Source path.</param>
+        /// <param name="dest">Destination path.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void MoveCore(string src, string dest) =>
@@ -290,12 +293,12 @@ namespace Cube.FileSystem
         /// CopyCore
         ///
         /// <summary>
-        /// ファイルをコピーします。
+        /// Copies the specified file.
         /// </summary>
         ///
-        /// <param name="src">コピー元のパス</param>
-        /// <param name="dest">コピー先のパス</param>
-        /// <param name="overwrite">上書きするかどうかを示す値</param>
+        /// <param name="src">Source path.</param>
+        /// <param name="dest">Destination path.</param>
+        /// <param name="overwrite">Overwrite or not.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void CopyCore(string src, string dest, bool overwrite) =>

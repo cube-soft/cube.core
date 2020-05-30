@@ -65,14 +65,14 @@ namespace Cube.FileSystem.Tests
                 AllowInactivation     = false,
                 AllowUnc              = false,
                 EscapeChar            = replaced,
-            }.Result;
+            }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Escape_DriveLetter
         ///
         /// <summary>
-        /// ドライブ文字の許可設定に応じた結果を確認します。
+        /// Confirms the results according to the drive letter settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -81,14 +81,14 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"C:\windows\dir\deny.txt",     false, ExpectedResult = @"C_\windows\dir\deny.txt")]
         [TestCase(@"C:\C:\windows\dir\deny.txt",  false, ExpectedResult = @"C_\C_\windows\dir\deny.txt")]
         public string Escape_DriveLetter(string src, bool drive) =>
-            new PathFilter(src) { AllowDriveLetter = drive }.Result;
+            new PathFilter(src) { AllowDriveLetter = drive }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Escape_CurrentDirectory
         ///
         /// <summary>
-        /// "." の許可設定に応じた結果を確認します。
+        /// Confirms the results according to the "." letter settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -99,14 +99,14 @@ namespace Cube.FileSystem.Tests
             {
                 AllowInactivation     = false,
                 AllowCurrentDirectory = allow,
-            }.Result;
+            }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Escape_ParentDirectory
         ///
         /// <summary>
-        /// ".." の許可設定に応じた結果を確認します。
+        /// Confirms the results according to the ".." letter settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -117,14 +117,14 @@ namespace Cube.FileSystem.Tests
             {
                 AllowInactivation    = false,
                 AllowParentDirectory = allow,
-            }.Result;
+            }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Escape_Inactivation
         ///
         /// <summary>
-        /// サービス機能の不活性化の許可設定に応じた結果を確認します。
+        /// Confirms the results according to the inactivation settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -139,14 +139,14 @@ namespace Cube.FileSystem.Tests
                 AllowCurrentDirectory = true,
                 AllowParentDirectory  = true,
                 AllowUnc              = true,
-            }.Result;
+            }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
         /// Escape_Unc
         ///
         /// <summary>
-        /// UNC パスの許可設定に応じた結果を確認します。
+        /// Confirms the results according to the UNC path settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -158,7 +158,7 @@ namespace Cube.FileSystem.Tests
             {
                 AllowInactivation = inactivation,
                 AllowUnc          = unc
-            }.Result;
+            }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -199,7 +199,7 @@ namespace Cube.FileSystem.Tests
         /// Match_IgnoreCase
         ///
         /// <summary>
-        /// 大文字・小文字の区別の有無の違いによる結果を確認します。
+        /// Confirms the results according to the case sensitive settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

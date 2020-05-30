@@ -28,7 +28,7 @@ namespace Cube.FileSystem
     /// PathFilter
     ///
     /// <summary>
-    /// パスのフィルタ用クラスです。
+    /// Provides functionality to escape the path string.
     /// </summary>
     ///
     /// <remarks>
@@ -45,10 +45,10 @@ namespace Cube.FileSystem
         /// PathFilter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance with the specified string.
         /// </summary>
         ///
-        /// <param name="src">対象とするパス文字列</param>
+        /// <param name="src">Source string.</param>
         ///
         /* ----------------------------------------------------------------- */
         public PathFilter(string src) { Source = src; }
@@ -62,7 +62,7 @@ namespace Cube.FileSystem
         /// Source
         ///
         /// <summary>
-        /// オリジナルのパスを取得します。
+        /// Gets the original path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -70,21 +70,21 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Result
+        /// Value
         ///
         /// <summary>
-        /// エスケープ処理適用後のパスを取得します。
+        /// Gets the escaped path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Result => Inner.Value;
+        public string Value => Inner.Value;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EscapedResult
+        /// Inner
         ///
         /// <summary>
-        /// エスケープ処理適用結果を示すオブジェクトを取得します。
+        /// Gets the inner object to escape.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -95,7 +95,7 @@ namespace Cube.FileSystem
         /// EscapeChar
         ///
         /// <summary>
-        /// 使用不可能な文字を置き換える文字を取得または設定します。
+        /// Gets the character used to replace invalid characters.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -110,7 +110,8 @@ namespace Cube.FileSystem
         /// AllowDriveLetter
         ///
         /// <summary>
-        /// ドライブ文字を許容するかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the drive letter is
+        /// allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -130,8 +131,9 @@ namespace Cube.FileSystem
         /// AllowCurrentDirectory
         ///
         /// <summary>
-        /// カレントディレクトリを表す "." (single-dot) を許可するか
-        /// どうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the letter
+        /// "." (single-dot), which indicates the current directory, is
+        /// allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -153,8 +155,9 @@ namespace Cube.FileSystem
         /// AllowParentDirectory
         ///
         /// <summary>
-        /// 一階層上のディレクトリを表す ".." (double-dot) を許可するか
-        /// どうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the letter
+        /// ".." (double-dot), which indicates the parent directory, is
+        /// allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -176,8 +179,8 @@ namespace Cube.FileSystem
         /// AllowInactivation
         ///
         /// <summary>
-        /// サービス機能の不活性化を表す接頭辞 "\\?\" を許可するかどうかを
-        /// 示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the letter "\\?\",
+        /// which indicates the service inactivation, is allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -199,11 +202,9 @@ namespace Cube.FileSystem
         /// AllowUnc
         ///
         /// <summary>
-        /// UNC パスを表す接頭辞 "\\" を許可するかどうかを示す値を取得
-        /// または設定します。
+        /// Gets or sets a value indicating whether the letter "\\",
+        /// which indicates the UNC path, is allowed.
         /// </summary>
-        ///
-        /// <see cref="AllowInactivation"/>
         ///
         /* ----------------------------------------------------------------- */
         public bool AllowUnc
@@ -247,7 +248,7 @@ namespace Cube.FileSystem
         /// CurrentDirectorySymbol
         ///
         /// <summary>
-        /// カレントディレクトリを表す文字列を取得します。
+        /// Gets the value that indicates the current directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -258,7 +259,7 @@ namespace Cube.FileSystem
         /// ParentDirectorySymbol
         ///
         /// <summary>
-        /// 親ディレクトリを表す文字列を取得します。
+        /// Gets the value that indicates the parent directory.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -269,7 +270,7 @@ namespace Cube.FileSystem
         /// UncSymbol
         ///
         /// <summary>
-        /// UNC パスを表す接頭辞を取得します。
+        /// Gets the value that indicates the UNC path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -280,7 +281,7 @@ namespace Cube.FileSystem
         /// InactivationSymbol
         ///
         /// <summary>
-        /// サービス機能の不活性化を表す接頭辞を取得します。
+        /// Gets the value that indicates the service inactivation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -291,7 +292,8 @@ namespace Cube.FileSystem
         /// InvalidChars
         ///
         /// <summary>
-        /// パスに使用不可能な記号一覧を取得します。
+        /// Gets the collection of characters that cannot be used as part
+        /// of a path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -302,7 +304,7 @@ namespace Cube.FileSystem
         /// ReservedNames
         ///
         /// <summary>
-        /// Windows で予約済みの名前一覧を取得します。
+        /// Gets the collection of names that is reserved by Windows.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -322,15 +324,13 @@ namespace Cube.FileSystem
         /// Match
         ///
         /// <summary>
-        /// 指定されたファイル名またはディレクトリ名がパス中のどこかに
-        /// 存在するかどうかを判別します。
+        /// Gets a value indicating whether the specified name is part of
+        /// the provided path.
         /// </summary>
         ///
-        /// <param name="name">
-        /// 判別するファイル名またはディレクトリ名
-        /// </param>
+        /// <param name="name">File or directory name.</param>
         ///
-        /// <returns>存在するかどうかを示す値</returns>
+        /// <returns>true if contained.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public bool Match(string name) => Match(name, true);
@@ -340,19 +340,14 @@ namespace Cube.FileSystem
         /// Match
         ///
         /// <summary>
-        /// 指定されたファイル名またはディレクトリ名がパス中のどこかに
-        /// 存在するかどうかを判別します。
+        /// Gets a value indicating whether the specified name is part of
+        /// the provided path.
         /// </summary>
         ///
-        /// <param name="name">
-        /// 判別するファイル名またはディレクトリ名
-        /// </param>
+        /// <param name="name">File or directory name.</param>
+        /// <param name="ignoreCase">Case sensitive or not.</param>
         ///
-        /// <param name="ignoreCase">
-        /// 大文字・小文字を区別するかどうかを示す値
-        /// </param>
-        ///
-        /// <returns>存在するかどうかを示す値</returns>
+        /// <returns>true if contained.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public bool Match(string name, bool ignoreCase) =>
@@ -363,15 +358,13 @@ namespace Cube.FileSystem
         /// MatchAny
         ///
         /// <summary>
-        /// 指定されたファイル名またはディレクトリ名のいずれか 1 つでも
-        /// パス中のどこかに存在するかどうかを判別します。
+        /// Gets a value indicating whether the whether any one of the
+        /// specified file or directory names is part of the provided path.
         /// </summary>
         ///
-        /// <param name="names">
-        /// 判別するファイル名またはディレクトリ名一覧
-        /// </param>
+        /// <param name="names">Collection of file or directory names.</param>
         ///
-        /// <returns>存在するかどうかを示す値</returns>
+        /// <returns>true if contained.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public bool MatchAny(IEnumerable<string> names) => MatchAny(names, true);
@@ -381,19 +374,14 @@ namespace Cube.FileSystem
         /// MatchAny
         ///
         /// <summary>
-        /// 指定されたファイル名またはディレクトリ名のいずれか 1 つでも
-        /// パス中のどこかに存在するかどうかを判別します。
+        /// Gets a value indicating whether the whether any one of the
+        /// specified file or directory names is part of the provided path.
         /// </summary>
         ///
-        /// <param name="names">
-        /// 判別するファイル名またはディレクトリ名一覧
-        /// </param>
+        /// <param name="names">Collection of file or directory names.</param>
+        /// <param name="ignoreCase">Case sensitive or not.</param>
         ///
-        /// <param name="ignoreCase">
-        /// 大文字・小文字を区別するかどうかを示す値
-        /// </param>
-        ///
-        /// <returns>存在するかどうかを示す値</returns>
+        /// <returns>true if contained.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public bool MatchAny(IEnumerable<string> names, bool ignoreCase)
@@ -414,7 +402,7 @@ namespace Cube.FileSystem
         /// Set
         ///
         /// <summary>
-        /// プロパティに値を設定します。
+        /// Set the specified value to the specified field.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -431,7 +419,7 @@ namespace Cube.FileSystem
         /// EscapeOnce
         ///
         /// <summary>
-        /// エスケープ処理を実行します。
+        /// Invokes the escape operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -462,7 +450,7 @@ namespace Cube.FileSystem
         /// Escape
         ///
         /// <summary>
-        /// エスケープ処理を実行します。
+        /// Invokes the escape operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -484,7 +472,7 @@ namespace Cube.FileSystem
         /// Combine
         ///
         /// <summary>
-        /// パスを結合します。
+        /// Combines the specified paths.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -502,7 +490,7 @@ namespace Cube.FileSystem
         /// IsRemove
         ///
         /// <summary>
-        /// 除去する文字列かどうかを判別します。
+        /// Determines whether the specified name will be removed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -520,7 +508,7 @@ namespace Cube.FileSystem
         /// IsReserved
         ///
         /// <summary>
-        /// 予約された文字列かどうかを判別します。
+        /// Determines whether the specified name is reserved.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -537,8 +525,8 @@ namespace Cube.FileSystem
         /// GetAllowCurrentDirectory
         ///
         /// <summary>
-        /// カレントディレクトリを表す "." (single-dot) を許可するか
-        /// どうかを示す値を取得します。
+        /// Gets a value indicating whether the character "." (single-dot)
+        /// is allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -553,8 +541,8 @@ namespace Cube.FileSystem
         /// GetAllowParentDirectory
         ///
         /// <summary>
-        /// 一階層上のディレクトリを表す ".." (double-dot) を許可するか
-        /// どうかを示す値を取得または設定します。
+        /// Gets a value indicating whether the character ".." (double-dot)
+        /// is allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -569,8 +557,7 @@ namespace Cube.FileSystem
         /// GetAllowUnc
         ///
         /// <summary>
-        /// UNC パスを表す接頭辞 "\\" を許可するかどうかを示す値を取得
-        /// または設定します。
+        /// Gets a value indicating whether the UNC path  is allowed.
         /// </summary>
         ///
         /// <remarks>
@@ -585,7 +572,7 @@ namespace Cube.FileSystem
         /// PathKind
         ///
         /// <summary>
-        /// パスの種類を示す列挙型です。
+        /// Specifies the path kind.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -608,7 +595,7 @@ namespace Cube.FileSystem
         /// EscapedObject
         ///
         /// <summary>
-        /// エスケープ処理適用後の状態を保持するためのクラスです。
+        /// Represents the escaped object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -616,17 +603,16 @@ namespace Cube.FileSystem
         {
             /* ------------------------------------------------------------- */
             ///
-            /// EscapedResult
+            /// EscapedObject
             ///
             /// <summary>
-            /// オブジェクトを初期化します。
+            /// Initializes a new instance of the EscapedObject with the
+            /// specified arguments.
             /// </summary>
             ///
-            /// <param name="k">パスの種類</param>
-            /// <param name="v">エスケープ処理の適用されたパス</param>
-            /// <param name="s">最終結果</param>
-            ///
-            /// <see cref="Value"/>
+            /// <param name="k">Path kind.</param>
+            /// <param name="v">Collection of escaped names.</param>
+            /// <param name="s">Escaped path.</param>
             ///
             /* ------------------------------------------------------------- */
             public EscapedObject(PathKind k, string[] v, string s)
@@ -641,7 +627,7 @@ namespace Cube.FileSystem
             /// Kind
             ///
             /// <summary>
-            /// パスの種類を取得します。
+            /// Gets the path kind.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -652,7 +638,7 @@ namespace Cube.FileSystem
             /// Parts
             ///
             /// <summary>
-            /// パスを分割後、エスケープ処理を適用した結果を取得します。
+            /// Gets the collection of escaped file or directory names.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -663,7 +649,7 @@ namespace Cube.FileSystem
             /// Value
             ///
             /// <summary>
-            /// 最終結果を取得します。
+            /// Gets the escaped path.
             /// </summary>
             ///
             /// <remarks>
