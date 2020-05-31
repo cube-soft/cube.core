@@ -102,7 +102,7 @@ namespace Cube.Tests
             using (src.Subscribe<int>(e => cts.Cancel()))
             {
                 src.PostMessage<int>();
-                Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
+                Assert.That(() => Wait(cts), Throws.InstanceOf<Exception>());
             }
         }
 
@@ -222,7 +222,7 @@ namespace Cube.Tests
             src.TestValue = string.Empty;
             src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
             5.Times(i => src.TestValue = nameof(PropertyChanged));
-            Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
+            Assert.That(() => Wait(cts), Throws.InstanceOf<Exception>());
             Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
             Assert.That(n, Is.EqualTo(1));
         }
