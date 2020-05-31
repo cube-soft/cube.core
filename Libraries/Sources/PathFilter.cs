@@ -226,7 +226,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static char SeparatorChar => SeparatorChars[0];
+        public static char SeparatorChar => SeparatorChars.First();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -237,7 +237,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static char[] SeparatorChars { get; } = new[]
+        public static IEnumerable<char> SeparatorChars { get; } = new[]
         {
             System.IO.Path.DirectorySeparatorChar,
             System.IO.Path.AltDirectorySeparatorChar,
@@ -297,7 +297,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static char[] InvalidChars { get; } = System.IO.Path.GetInvalidFileNameChars();
+        public static IEnumerable<char> InvalidChars { get; } = System.IO.Path.GetInvalidFileNameChars();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -308,7 +308,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string[] ReservedNames { get; } = new[]
+        public static IEnumerable<string> ReservedNames { get; } = new[]
         {
             "CON",  "PRN",  "AUX",  "NUL",
             "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
@@ -434,7 +434,7 @@ namespace Cube.FileSystem
 
                 var v = !Source.HasValue() ?
                         new string[0] :
-                        Source.Split(SeparatorChars)
+                        Source.Split(SeparatorChars.ToArray())
                               .SkipWhile(s => !s.HasValue())
                               .Where((s, i) => !IsRemove(s, i))
                               .Select((s, i) => Escape(s, i))
