@@ -26,7 +26,6 @@
     <ItemGroup>
         <PackageReference Include="Cube.Backwards" Version="1.6.0" />
         <PackageReference Include="NLog" Version="4.7.2" />
-        <Reference Include="System.ServiceModel" />
         <Reference Include="System.ServiceModel.Web" />
         <Reference Include="WindowsBase" />
     </ItemGroup>

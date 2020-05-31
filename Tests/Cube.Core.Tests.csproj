@@ -9,8 +9,10 @@
         <RootNamespace>Cube.Tests</RootNamespace>
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
-        <OutputType>WinExe</OutputType>
+        <StartupObject>Cube.Tests.Program</StartupObject>
+        <OutputType>Exe</OutputType>
         <TargetFramework>net35</TargetFramework>
+        <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
