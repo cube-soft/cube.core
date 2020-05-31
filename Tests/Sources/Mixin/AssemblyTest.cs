@@ -104,7 +104,7 @@ namespace Cube.Tests.Mixin
                     FileName      = "Cube.Core.dll",
                     DirectoryName = @"Tests\bin",
                     Title         = "Cube.Core",
-                    Description   = "Common library for CubeSoft libraries and applications.",
+                    Description   = "Support the MVVM pattern in WPF or WinForms applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
