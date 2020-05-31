@@ -3,7 +3,7 @@
         <Version>2.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
-        <Description>I/O library for CubeSoft libraries and applications.</Description>
+        <Description>I/O library including path normalization.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageTags>Cube;IO</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
