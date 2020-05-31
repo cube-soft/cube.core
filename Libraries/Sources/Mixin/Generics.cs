@@ -161,13 +161,11 @@ namespace Cube.Mixin.Generics
         /* ----------------------------------------------------------------- */
         private static T CopyWithBinaryFormatter<T>(T src)
         {
-            using (var ms = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, src);
-                ms.Position = 0;
-                return (T)formatter.Deserialize(ms);
-            }
+            using var ms = new MemoryStream();
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(ms, src);
+            ms.Position = 0;
+            return (T)formatter.Deserialize(ms);
         }
 
         #endregion

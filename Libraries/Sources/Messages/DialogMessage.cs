@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Assembly;
 using System;
 using System.Linq;
 using System.Reflection;
+using Cube.Mixin.Assembly;
 
 namespace Cube
 {

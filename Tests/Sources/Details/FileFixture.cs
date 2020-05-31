@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.IO;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Syntax;
-using System.IO;
 
 namespace Cube.Tests
 {

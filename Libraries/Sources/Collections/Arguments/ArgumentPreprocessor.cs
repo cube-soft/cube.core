@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Cube.Collections
 {
-    #region IArgumentConverter
+    #region IArgumentPreprocessor
 
     /* --------------------------------------------------------------------- */
     ///
@@ -52,7 +52,7 @@ namespace Cube.Collections
 
     #endregion
 
-    #region PosixArgumentConverter
+    #region PosixArgumentPreprocessor
 
     /* --------------------------------------------------------------------- */
     ///
@@ -118,7 +118,7 @@ namespace Cube.Collections
 
     #endregion
 
-    #region GnuArgumentConverter
+    #region GnuArgumentPreprocessor
 
     /* --------------------------------------------------------------------- */
     ///
@@ -150,7 +150,7 @@ namespace Cube.Collections
 
     #endregion
 
-    #region DosArgumentConverter
+    #region DosArgumentPreprocessor
 
     /* --------------------------------------------------------------------- */
     ///
@@ -200,7 +200,7 @@ namespace Cube.Collections
 
     #endregion
 
-    #region WindowsArgumentConverter
+    #region WindowsArgumentPreprocessor
 
     /* --------------------------------------------------------------------- */
     ///

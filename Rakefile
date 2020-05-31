@@ -24,29 +24,21 @@ require 'rake/clean'
 PROJECT   = "Cube.Core"
 BRANCHES  = ["master", "netstandard2.0", "net35"]
 PLATFORMS = ["Any CPU"]
-PACKAGES  = ["Libraries/#{PROJECT}.nuspec"]
-TESTS     = ["Tests/#{PROJECT}.Tests.csproj"]
+PACKAGES  = ["Libraries/#{PROJECT}"]
 
 # --------------------------------------------------------------------------- #
 # clean
 # --------------------------------------------------------------------------- #
-CLEAN.include(["bin", "obj"].map{ |e| "**/#{e}" })
-CLEAN.include("*.nupkg")
+CLEAN.include(["*.nupkg", "**/bin", "**/obj"])
 CLOBBER.include("../packages/cube.*")
 
 # --------------------------------------------------------------------------- #
 # default
 # --------------------------------------------------------------------------- #
 desc "Clean, build, test, and create NuGet packages."
-task :default => [:clean, :build_all, :test_all, :pack]
-
-# --------------------------------------------------------------------------- #
-# pack
-# --------------------------------------------------------------------------- #
-desc "Create NuGet packages in the net35 branch."
-task :pack do
-    pack = %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU")
-    checkout("net35") { PACKAGES.each { |e| cmd("#{pack} #{e}") }}
+task :default => [:clean] do
+    Rake::Task[:build_all].invoke(true)
+    checkout("net35") { Rake::Task[:pack].execute }
 end
 
 # --------------------------------------------------------------------------- #
@@ -54,7 +46,7 @@ end
 # --------------------------------------------------------------------------- #
 desc "Resote NuGet packages in the current branch."
 task :restore do
-    cmd("dotnet restore #{PROJECT}.sln")
+    cmd("nuget restore #{PROJECT}.sln")
 end
 
 # --------------------------------------------------------------------------- #
@@ -63,12 +55,13 @@ end
 desc "Build projects in the current branch."
 task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
-    Rake::Task[:restore].execute
 
-    branch = `git rev-parse --abbrev-ref HEAD`.chomp
-    build  = branch == 'net35' ?
-             "msbuild -p:Configuration=Release" :
-             "dotnet build -c Release"
+    branch = %x(git rev-parse --abbrev-ref HEAD).chomp
+    build  = branch.start_with?("netstandard") || branch.start_with?("netcore") ?
+             "dotnet build -c Release" :
+             "msbuild -v:m -p:Configuration=Release"
+
+    Rake::Task[:restore].execute
     cmd(%(#{build} -p:Platform="#{e.platform}" #{PROJECT}.sln))
 end
 
@@ -76,35 +69,39 @@ end
 # build_all
 # --------------------------------------------------------------------------- #
 desc "Build projects in pre-defined branches and platforms."
-task :build_all do
-    BRANCHES.product(PLATFORMS).each { |set|
-        checkout(set[0]) do
+task :build_all, [:test] do |_, e|
+    e.with_defaults(:test => false)
+    
+    BRANCHES.product(PLATFORMS).each do |bp|
+        checkout(bp[0]) do
             Rake::Task[:build].reenable
-            Rake::Task[:build].invoke(set[1])
+            Rake::Task[:build].invoke(bp[1])
+            Rake::Task[:test].execute if (e.test)
         end
-    }
+    end
 end
-
-# --------------------------------------------------------------------------- #
-# build_test
-# --------------------------------------------------------------------------- #
-desc "Build and test projects in the current branch."
-task :build_test => [:build, :test]
 
 # --------------------------------------------------------------------------- #
 # test
 # --------------------------------------------------------------------------- #
 desc "Test projects in the current branch."
 task :test do
-    TESTS.each { |e| cmd(%(dotnet test -c Release "#{e}")) }
+    cmd("dotnet test -c Release --no-restore --no-build #{PROJECT}.sln")
 end
 
 # --------------------------------------------------------------------------- #
-# test_all
+# pack
 # --------------------------------------------------------------------------- #
-desc "Test projects in pre-defined branches."
-task :test_all do
-    BRANCHES.each { |e| checkout(e) { Rake::Task[:test].execute }}
+desc "Create NuGet packages."
+task :pack do
+    PACKAGES.each do |e|
+        spec = File.exists?("#{e}.nuspec")
+        pack = spec ?
+               %(nuget pack -Properties "Configuration=Release;Platform=AnyCPU") :
+               "dotnet pack -c Release --no-restore --no-build -o ."
+        ext  = spec ? "nuspec" : "csproj"
+        cmd("#{pack} #{e}.#{ext}")
+    end
 end
 
 # --------------------------------------------------------------------------- #

@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Generics;
-using NUnit.Framework;
 using System;
 using System.ComponentModel;
+using Cube.Mixin.Generics;
+using NUnit.Framework;
 
 namespace Cube.Tests.Mixin
 {

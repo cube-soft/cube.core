@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Cube.Mixin.String;
 
 namespace Cube.Mixin.Xml
 {

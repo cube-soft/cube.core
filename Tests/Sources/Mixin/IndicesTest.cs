@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Linq;
 using Cube.Mixin.Collections;
 using NUnit.Framework;
-using System.Linq;
 
 namespace Cube.Tests.Mixin
 {

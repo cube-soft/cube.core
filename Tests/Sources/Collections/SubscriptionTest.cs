@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using Cube.Collections;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -48,19 +48,17 @@ namespace Cube.Tests
         [Test]
         public void Subscribe()
         {
-            using (var src = new Subscription<Action>())
+            var n = 0;
+            using var src = new Subscription<Action>();
+
+            Parallel.For(0, 10, i =>
             {
-                var n = 0;
+                var dispose = src.Subscribe(() => ++n);
+                dispose.Dispose();
+            });
 
-                Parallel.For(0, 10, i =>
-                {
-                    var dispose = src.Subscribe(() => ++n);
-                    dispose.Dispose();
-                });
-
-                Assert.That(src.Disposed, Is.False);
-                Assert.That(src.Count,    Is.EqualTo(0));
-            }
+            Assert.That(src.Disposed, Is.False);
+            Assert.That(src.Count, Is.EqualTo(0));
         }
 
         #endregion

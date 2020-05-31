@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using Cube.Collections;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -48,25 +48,23 @@ namespace Cube.Tests
         [Test]
         public void GetOrCreate()
         {
-            using (var src = new CacheCollection<int, int>(i => Sigma(i)))
-            {
-                var n = 0;
-                var key = 10;
+            var n   = 0;
+            var key = 10;
 
-                src.Created += (s, e) => ++n;
-                Parallel.For(0, 10, e => src.GetOrCreate(key));
+            using var src = new CacheCollection<int, int>(i => Sigma(i));
+            src.Created += (s, e) => ++n;
+            Parallel.For(0, 10, e => src.GetOrCreate(key));
 
-                Assert.That(Wait(() => n > 0), "Timeout");
-                Assert.That(src.Count, Is.EqualTo(1), nameof(src.Count));
-                Assert.That(src.TryGetValue(key, out _), Is.True, nameof(src.TryGetValue));
-                Assert.That(src.TryGetValue(999, out _), Is.False, nameof(src.TryGetValue));
-                Assert.That(src.Contains(key), Is.True, nameof(src.Contains));
-                Assert.That(src.GetOrCreate(key), Is.EqualTo(55), nameof(src.GetOrCreate));
+            Assert.That(Wait(() => n > 0), "Timeout");
+            Assert.That(src.Count, Is.EqualTo(1), nameof(src.Count));
+            Assert.That(src.TryGetValue(key, out _), Is.True, nameof(src.TryGetValue));
+            Assert.That(src.TryGetValue(999, out _), Is.False, nameof(src.TryGetValue));
+            Assert.That(src.Contains(key), Is.True, nameof(src.Contains));
+            Assert.That(src.GetOrCreate(key), Is.EqualTo(55), nameof(src.GetOrCreate));
 
-                src.Remove(key);
-                src.Clear();
-                Assert.That(src.Count, Is.EqualTo(0));
-            }
+            src.Remove(key);
+            src.Clear();
+            Assert.That(src.Count, Is.EqualTo(0));
         }
 
         /* --------------------------------------------------------------------- */
@@ -81,15 +79,13 @@ namespace Cube.Tests
         [Test]
         public void GetOrCreate_Failed()
         {
-            using (var src = new CacheCollection<int, int>(e => throw new ArgumentException($"{e}")))
-            {
-                var n = 0;
-                src.Failed += (s, e) => ++n;
-                Parallel.For(0, 10, i => src.GetOrCreate(i));
+            var n = 0;
+            using var src = new CacheCollection<int, int>(e => throw new ArgumentException($"{e}"));
+            src.Failed += (s, e) => ++n;
+            Parallel.For(0, 10, i => src.GetOrCreate(i));
 
-                Assert.That(Wait(() => n == 10), "Timeout");
-                Assert.That(src.Count, Is.EqualTo(0));
-            }
+            Assert.That(Wait(() => n == 10), "Timeout");
+            Assert.That(src.Count, Is.EqualTo(0));
         }
 
         /* --------------------------------------------------------------------- */
@@ -106,24 +102,23 @@ namespace Cube.Tests
         public int RemoveAndClear(bool disposer)
         {
             var cnt = 0;
-            using(var src = disposer ?
+            using var src = disposer ?
                             new CacheCollection<int, int>(n => Sigma(n), (k, v) => ++cnt) :
-                            new CacheCollection<int, int>(n => Sigma(n)))
-            {
-                Parallel.For(0, 10, i => src.GetOrCreate(i));
-                Assert.That(Wait(() => src.Count == 10), "Timeout");
+                            new CacheCollection<int, int>(n => Sigma(n));
 
-                foreach (var kv in src) Assert.That(kv.Value, Is.EqualTo(Sigma(kv.Key)));
+            Parallel.For(0, 10, i => src.GetOrCreate(i));
+            Assert.That(Wait(() => src.Count == 10), "Timeout");
 
-                Assert.That(src.Remove(0), Is.True);
-                Assert.That(src.Remove(20), Is.False);
-                Assert.That(src.Count, Is.EqualTo(9));
+            foreach (var kv in src) Assert.That(kv.Value, Is.EqualTo(Sigma(kv.Key)));
 
-                src.Clear();
-                Assert.That(src.Count, Is.EqualTo(0));
+            Assert.That(src.Remove(0), Is.True);
+            Assert.That(src.Remove(20), Is.False);
+            Assert.That(src.Count, Is.EqualTo(9));
 
-                return cnt;
-            }
+            src.Clear();
+            Assert.That(src.Count, Is.EqualTo(0));
+
+            return cnt;
         }
 
         #endregion

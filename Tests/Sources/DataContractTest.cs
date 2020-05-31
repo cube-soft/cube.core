@@ -15,14 +15,14 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.IO;
+using System.Linq;
 using Cube.DataContract;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Registry;
 using Microsoft.Win32;
 using NUnit.Framework;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace Cube.Tests
 {
@@ -77,28 +77,26 @@ namespace Cube.Tests
             Format.Registry.Serialize(name, Person.CreateDummy());
             Format.Registry.Serialize(name, default(Person)); // ignore
 
-            using (var k = OpenSubKey(nameof(Serialize_Registry)))
-            {
-                var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
+            using var sk = OpenSubKey(nameof(Serialize_Registry));
+            var time = new DateTime(2014, 12, 31, 23, 25, 30).ToUniversalTime();
 
-                Assert.That(k.GetValue("Name"),     Is.EqualTo("山田花子"));
-                Assert.That(k.GetValue("Age"),      Is.EqualTo(15));
-                Assert.That(k.GetValue("Sex"),      Is.EqualTo(1));
-                Assert.That(k.GetValue("Reserved"), Is.EqualTo(1));
-                Assert.That(k.GetValue("Creation"), Is.EqualTo(time.ToString("o")));
-                Assert.That(k.GetValue("ID"),       Is.EqualTo(123));
-                Assert.That(k.GetValue("Secret"),   Is.Null);
+            Assert.That(sk.GetValue("Name"), Is.EqualTo("山田花子"));
+            Assert.That(sk.GetValue("Age"), Is.EqualTo(15));
+            Assert.That(sk.GetValue("Sex"), Is.EqualTo(1));
+            Assert.That(sk.GetValue("Reserved"), Is.EqualTo(1));
+            Assert.That(sk.GetValue("Creation"), Is.EqualTo(time.ToString("o")));
+            Assert.That(sk.GetValue("ID"), Is.EqualTo(123));
+            Assert.That(sk.GetValue("Secret"), Is.Null);
 
-                Assert.That(k.GetValue<string>(@"Contact", "Type"),   Is.EqualTo("Phone"));
-                Assert.That(k.GetValue<string>(@"Contact", "Value"),  Is.EqualTo("080-9876-5432"));
-                Assert.That(k.GetValue<string>(@"Others\0", "Type"),  Is.EqualTo("PC"));
-                Assert.That(k.GetValue<string>(@"Others\0", "Value"), Is.EqualTo("pc@example.com"));
-                Assert.That(k.GetValue<string>(@"Others\1", "Type"),  Is.EqualTo("Mobile"));
-                Assert.That(k.GetValue<string>(@"Others\1", "Value"), Is.EqualTo("mobile@example.com"));
-                Assert.That(k.GetValue<string>(@"Messages\0", ""),    Is.EqualTo("1st message"));
-                Assert.That(k.GetValue<string>(@"Messages\1", ""),    Is.EqualTo("2nd message"));
-                Assert.That(k.GetValue<string>(@"Messages\2", ""),    Is.EqualTo("3rd message"));
-            }
+            Assert.That(sk.GetValue<string>(@"Contact", "Type"), Is.EqualTo("Phone"));
+            Assert.That(sk.GetValue<string>(@"Contact", "Value"), Is.EqualTo("080-9876-5432"));
+            Assert.That(sk.GetValue<string>(@"Others\0", "Type"), Is.EqualTo("PC"));
+            Assert.That(sk.GetValue<string>(@"Others\0", "Value"), Is.EqualTo("pc@example.com"));
+            Assert.That(sk.GetValue<string>(@"Others\1", "Type"), Is.EqualTo("Mobile"));
+            Assert.That(sk.GetValue<string>(@"Others\1", "Value"), Is.EqualTo("mobile@example.com"));
+            Assert.That(sk.GetValue<string>(@"Messages\0", ""), Is.EqualTo("1st message"));
+            Assert.That(sk.GetValue<string>(@"Messages\1", ""), Is.EqualTo("2nd message"));
+            Assert.That(sk.GetValue<string>(@"Messages\2", ""), Is.EqualTo("3rd message"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -178,12 +176,10 @@ namespace Cube.Tests
         public void Serialize_Throws()
         {
             var dest = Get("Person.reg");
-            using (var e = File.Create(dest))
-            {
-                var src  = Format.Registry;
-                var data = Person.CreateDummy();
-                Assert.That(() => src.Serialize(e, data), Throws.ArgumentException);
-            }
+            using var file = File.Create(dest);
+            var src = Format.Registry;
+            var data = Person.CreateDummy();
+            Assert.That(() => src.Serialize(file, data), Throws.ArgumentException);
         }
 
         #endregion

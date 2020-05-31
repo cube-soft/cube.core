@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logging;
 using System;
 using System.Threading.Tasks;
+using Cube.Mixin.Logging;
 
 namespace Cube.Mixin.Tasks
 {

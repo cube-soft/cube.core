@@ -15,45 +15,31 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.IO;
-using NUnit.Framework;
+using System;
 
 namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHelperTest
+    /// Program
     ///
     /// <summary>
-    /// FileHelper のテスト用クラスです。
+    /// Represetns the main program.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class FileHelperTest : FileFixture
+    static class Program
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Examples_Exists
+        /// Main
         ///
         /// <summary>
-        /// Examples フォルダが存在するかどうかのテストを実行します。
+        /// Represents the main method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Examples_Exists() => Assert.That(Directory.Exists(Examples));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Results_Exists
-        ///
-        /// <summary>
-        /// Results フォルダが存在するかどうかのテストを実行します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Results_Exists() => Assert.That(Directory.Exists(Results));
+        [STAThread]
+        static void Main(string[] args) { }
     }
 }
