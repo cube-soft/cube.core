@@ -10,8 +10,8 @@
         <AssemblyTitle>Cube.Core UnitTest</AssemblyTitle>
         <AssemblyName>Cube.Core.Tests</AssemblyName>
         <OutputType>WinExe</OutputType>
-        <LangVersion>latest</LangVersion>
         <TargetFramework>net45</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
