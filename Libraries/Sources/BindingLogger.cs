@@ -50,14 +50,14 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Configure
+        /// Setup
         ///
         /// <summary>
         /// Configures the log settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Configure() => _once.Invoke(_core);
+        public static void Setup() => _once.Invoke(_core);
 
         /* ----------------------------------------------------------------- */
         ///

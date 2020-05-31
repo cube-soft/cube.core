@@ -3,7 +3,7 @@
         <Version>2.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
-        <Description>WPF based MVVM library available for .NET Framework 3.5, 4.5, or later.</Description>
+        <Description>WPF based MVVM library.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
