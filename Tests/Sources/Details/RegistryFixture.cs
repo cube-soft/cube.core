@@ -108,33 +108,31 @@ namespace Cube.Tests
         [SetUp]
         protected virtual void Setup()
         {
-            using (var k = CreateSubKey(Default))
+            using var k = CreateSubKey(Default);
+            k.SetValue("ID", 1357);
+            k.SetValue(nameof(Person.Name), "山田太郎");
+            k.SetValue(nameof(Person.Sex), 0);
+            k.SetValue(nameof(Person.Age), 52);
+            k.SetValue(nameof(Person.Creation), "2015/03/16 02:32:26");
+            k.SetValue(nameof(Person.Reserved), 1);
+
+            using (var sk = k.CreateSubKey(nameof(Person.Contact)))
             {
-                k.SetValue("ID", 1357);
-                k.SetValue(nameof(Person.Name), "山田太郎");
-                k.SetValue(nameof(Person.Sex), 0);
-                k.SetValue(nameof(Person.Age), 52);
-                k.SetValue(nameof(Person.Creation), "2015/03/16 02:32:26");
-                k.SetValue(nameof(Person.Reserved), 1);
+                sk.SetValue(nameof(Address.Type), "Phone");
+                sk.SetValue(nameof(Address.Value), "090-1234-5678");
+            }
 
-                using (var sk = k.CreateSubKey(nameof(Person.Contact)))
-                {
-                    sk.SetValue(nameof(Address.Type), "Phone");
-                    sk.SetValue(nameof(Address.Value), "090-1234-5678");
-                }
+            using (var sk = k.CreateSubKey(nameof(Person.Others)))
+            {
+                sk.SetValue("0", "PC", "pc@example.com");
+                sk.SetValue("1", "Mobile", "mobile@example.com");
+            }
 
-                using (var sk = k.CreateSubKey(nameof(Person.Others)))
-                {
-                    sk.SetValue("0", "PC", "pc@example.com");
-                    sk.SetValue("1", "Mobile", "mobile@example.com");
-                }
-
-                using (var sk = k.CreateSubKey(nameof(Person.Messages)))
-                {
-                    sk.SetValue("0", "", "1st message");
-                    sk.SetValue("1", "", "2nd message");
-                    sk.SetValue("2", "", "3rd message");
-                }
+            using (var sk = k.CreateSubKey(nameof(Person.Messages)))
+            {
+                sk.SetValue("0", "", "1st message");
+                sk.SetValue("1", "", "2nd message");
+                sk.SetValue("2", "", "3rd message");
             }
         }
 

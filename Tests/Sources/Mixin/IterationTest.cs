@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Linq;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Syntax;
 using NUnit.Framework;
-using System;
-using System.Linq;
 
 namespace Cube.Tests.Mixin
 {

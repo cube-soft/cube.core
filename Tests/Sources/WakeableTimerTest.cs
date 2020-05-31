@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Tasks;
-using Microsoft.Win32;
-using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Cube.Mixin.Tasks;
+using Microsoft.Win32;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -50,12 +50,10 @@ namespace Cube.Tests
         [Test]
         public void Properties()
         {
-            using (var src = new WakeableTimer())
-            {
-                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-                Assert.That(src.Interval, Is.EqualTo(TimeSpan.FromSeconds(1)));
-                Assert.That(src.Last.HasValue, Is.False);
-            }
+            using var src = new WakeableTimer();
+            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+            Assert.That(src.Interval, Is.EqualTo(TimeSpan.FromSeconds(1)));
+            Assert.That(src.Last.HasValue, Is.False);
         }
 
         /* ----------------------------------------------------------------- */
@@ -90,24 +88,22 @@ namespace Cube.Tests
         [Test]
         public void Transition_State()
         {
-            using (var src = new WakeableTimer())
-            {
-                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-                src.Start();
-                Assert.That(src.State, Is.EqualTo(TimerState.Run));
-                src.Start(); // ignore
-                Assert.That(src.State, Is.EqualTo(TimerState.Run));
-                src.Suspend();
-                Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
-                src.Suspend();
-                Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
-                src.Start();
-                Assert.That(src.State, Is.EqualTo(TimerState.Run));
-                src.Stop();
-                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-                src.Stop(); // ignore
-                Assert.That(src.State, Is.EqualTo(TimerState.Stop));
-            }
+            using var src = new WakeableTimer();
+            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+            src.Start();
+            Assert.That(src.State, Is.EqualTo(TimerState.Run));
+            src.Start(); // ignore
+            Assert.That(src.State, Is.EqualTo(TimerState.Run));
+            src.Suspend();
+            Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
+            src.Suspend();
+            Assert.That(src.State, Is.EqualTo(TimerState.Suspend));
+            src.Start();
+            Assert.That(src.State, Is.EqualTo(TimerState.Run));
+            src.Stop();
+            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
+            src.Stop(); // ignore
+            Assert.That(src.State, Is.EqualTo(TimerState.Stop));
         }
 
         /* ----------------------------------------------------------------- */
@@ -160,20 +156,17 @@ namespace Cube.Tests
         [Test]
         public void Start()
         {
-            using (var src = new WakeableTimer())
-            {
-                src.Interval = TimeSpan.FromMilliseconds(100);
-                src.Interval = TimeSpan.FromMilliseconds(100); // ignore
-                Assert.That(src.Last.HasValue, Is.False);
-                Assert.That(Execute(src, 0, 1), "Timeout");
+            using var src = new WakeableTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            src.Interval = TimeSpan.FromMilliseconds(100); // ignore
+            Assert.That(src.Last.HasValue, Is.False);
+            Assert.That(Execute(src, 0, 1), "Timeout");
 
-                var time = src.Last;
-                Assert.That(time, Is.Not.EqualTo(DateTime.MinValue));
+            var time = src.Last;
+            Assert.That(time, Is.Not.EqualTo(DateTime.MinValue));
 
-                src.Reset();
-                Assert.That(src.Last, Is.EqualTo(time));
-                Assert.That(src.Interval.TotalMilliseconds, Is.EqualTo(100).Within(1.0));
-            }
+            src.Reset();
+            Assert.That(src.Last, Is.EqualTo(time));
+            Assert.That(src.Interval.TotalMilliseconds, Is.EqualTo(100).Within(1.0));
         }
 
         /* ----------------------------------------------------------------- */
@@ -188,13 +181,10 @@ namespace Cube.Tests
         [Test]
         public void Start_InitialDelay()
         {
-            using (var src = new WakeableTimer())
-            {
-                src.Interval = TimeSpan.FromHours(1);
-                Assert.That(src.Last.HasValue, Is.False);
-                Assert.That(Execute(src, 200, 1), "Timeout");
-                Assert.That(src.Last, Is.Not.EqualTo(DateTime.MinValue));
-            }
+            using var src = new WakeableTimer { Interval = TimeSpan.FromHours(1) };
+            Assert.That(src.Last.HasValue, Is.False);
+            Assert.That(Execute(src, 200, 1), "Timeout");
+            Assert.That(src.Last, Is.Not.EqualTo(DateTime.MinValue));
         }
 
         /* ----------------------------------------------------------------- */
@@ -213,20 +203,17 @@ namespace Cube.Tests
             var cts   = new CancellationTokenSource();
             var count = 0;
 
-            using (var src = new WakeableTimer())
+            using var src = new WakeableTimer { Interval = TimeSpan.FromMilliseconds(10) };
+            using var ds  = src.Subscribe(async () =>
             {
-                src.Interval = TimeSpan.FromMilliseconds(10);
-                _ = src.Subscribe(async () =>
-                {
-                    ++count;
-                    await Task.Delay(200).ConfigureAwait(false);
-                    src.Stop();
-                    cts.Cancel();
-                });
+                ++count;
+                await Task.Delay(200).ConfigureAwait(false);
+                src.Stop();
+                cts.Cancel();
+            });
 
-                Assert.That(Execute(src, 0, cts), "Timeout");
-                Assert.That(count, Is.EqualTo(1));
-            }
+            Assert.That(Execute(src, 0, cts), "Timeout");
+            Assert.That(count, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -244,25 +231,22 @@ namespace Cube.Tests
             var cts   = new CancellationTokenSource();
             var count = 0;
 
-            using (var src = new WakeableTimer())
+            using var src = new WakeableTimer { Interval = TimeSpan.FromSeconds(1) };
+            src.Start(TimeSpan.FromMilliseconds(100));
+            using var ds = src.Subscribe(Synchronous.AsTask(() =>
             {
-                src.Interval = TimeSpan.FromSeconds(1);
-                src.Start(TimeSpan.FromMilliseconds(100));
-                _ = src.Subscribe(Synchronous.AsTask(() =>
-                {
-                    ++count;
-                    src.Stop();
-                    cts.Cancel();
-                }));
-                src.Start();
-                src.Suspend();
+                ++count;
+                src.Stop();
+                cts.Cancel();
+            }));
+            src.Start();
+            src.Suspend();
 
-                Assert.That(count, Is.EqualTo(0));
-                Task.Delay(300).Wait();
-                Assert.That(count, Is.EqualTo(0));
-                Assert.That(Execute(src, 0, cts), "Timeout");
-                Assert.That(count, Is.EqualTo(1));
-            }
+            Assert.That(count, Is.EqualTo(0));
+            Task.Delay(300).Wait();
+            Assert.That(count, Is.EqualTo(0));
+            Assert.That(Execute(src, 0, cts), "Timeout");
+            Assert.That(count, Is.EqualTo(1));
         }
 
         #endregion

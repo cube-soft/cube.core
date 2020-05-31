@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Collections.Generic;
 using Cube.Collections;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace Cube.Tests
 {

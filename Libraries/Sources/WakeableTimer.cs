@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Timers;
 using Cube.Collections;
 using Cube.Mixin.Logging;
 using Microsoft.Win32;
-using System;
-using System.Timers;
 
 namespace Cube
 {

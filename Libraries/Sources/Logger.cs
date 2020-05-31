@@ -15,14 +15,14 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Assembly;
-using Cube.Mixin.Collections;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.Collections;
 
 namespace Cube
 {
@@ -49,23 +49,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static string Separator { get; set; } = "\t";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Configure
-        ///
-        /// <summary>
-        /// Initializes settings of logging.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Configure()
-        {
-            var asm  = Assembly.GetCallingAssembly();
-            var core = log4net.LogManager.GetRepository(asm);
-            var xml  = new System.IO.FileInfo($"{asm.Location}.config");
-            _ = log4net.Config.XmlConfigurator.Configure(core, xml);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -436,7 +419,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static log4net.ILog GetCore(Type type) => log4net.LogManager.GetLogger(type);
+        private static NLog.Logger GetCore(Type type) => NLog.LogManager.GetLogger(type.FullName);
 
         /* ----------------------------------------------------------------- */
         ///

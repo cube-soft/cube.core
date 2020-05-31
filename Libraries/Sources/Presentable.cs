@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Tasks;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Cube.Mixin.Tasks;
 
 namespace Cube
 {

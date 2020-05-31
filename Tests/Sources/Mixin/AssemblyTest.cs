@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Assembly;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Cube.Mixin.Assembly;
+using NUnit.Framework;
 
 namespace Cube.Tests.Mixin
 {
@@ -94,8 +94,8 @@ namespace Cube.Tests.Mixin
                     Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 19, 0, 0),
-                    FileVersion   = new Version(1, 19, 0, 0),
+                    Version       = new Version(2, 0, 0, 0),
+                    FileVersion   = new Version(2, 0, 0, 0),
                 });
 
                 yield return new TestCaseData(typeof(Extension).Assembly, new Expected
@@ -104,15 +104,15 @@ namespace Cube.Tests.Mixin
                     FileName      = "Cube.Core.dll",
                     DirectoryName = @"Tests\bin",
                     Title         = "Cube.Core",
-                    Description   = "Common library for CubeSoft libraries and applications.",
+                    Description   = "Support the MVVM pattern in WPF or WinForms applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 19, 0, 0),
-                    FileVersion   = new Version(1, 19, 0, 0),
+                    Version       = new Version(2, 0, 0, 0),
+                    FileVersion   = new Version(2, 0, 0, 0),
                 });
             }
         }

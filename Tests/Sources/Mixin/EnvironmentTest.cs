@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using Cube.Mixin.Environment;
 using NUnit.Framework;
-using System;
 
 namespace Cube.Tests.Mixin
 {

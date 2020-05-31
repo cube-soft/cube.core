@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Observing;
-using Cube.Mixin.Syntax;
-using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Cube.Mixin.Observing;
+using Cube.Mixin.Syntax;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -70,21 +70,19 @@ namespace Cube.Tests
             var n = 0;
             void action(int i) => ++n;
 
-            using (var src = new Presenter(new SynchronizationContext()))
+            using var src = new Presenter(new SynchronizationContext());
+            using (src.Subscribe<int>(action))
+            using (src.Subscribe<int>(action))
             {
-                using (src.Subscribe<int>(action))
-                using (src.Subscribe<int>(action))
-                {
-                    5.Times(i => src.SendMessage<int>());
-                    Assert.That(n, Is.EqualTo(10));
-
-                    5.Times(i => src.SendMessage<long>());
-                    Assert.That(n, Is.EqualTo(10));
-                }
-
                 5.Times(i => src.SendMessage<int>());
                 Assert.That(n, Is.EqualTo(10));
+
+                5.Times(i => src.SendMessage<long>());
+                Assert.That(n, Is.EqualTo(10));
             }
+
+            5.Times(i => src.SendMessage<int>());
+            Assert.That(n, Is.EqualTo(10));
         }
 
         /* ----------------------------------------------------------------- */
@@ -171,10 +169,8 @@ namespace Cube.Tests
         [Test]
         public void Send_Throws()
         {
-            using (var src = new Presenter(new SynchronizationContext()))
-            {
-                Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
-            }
+            using var src = new Presenter(new SynchronizationContext());
+            Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -218,19 +214,17 @@ namespace Cube.Tests
         {
             var n   = 0;
             var cts = new CancellationTokenSource();
-            using (var src = new Presenter(new SynchronizationContext()))
-            {
-                5.Times(i => src.TestValue = nameof(PropertyChanged));
-                Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
-                Assert.That(n, Is.EqualTo(0));
+            using var src = new Presenter(new SynchronizationContext());
+            5.Times(i => src.TestValue = nameof(PropertyChanged));
+            Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
+            Assert.That(n, Is.EqualTo(0));
 
-                src.TestValue = string.Empty;
-                src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
-                5.Times(i => src.TestValue = nameof(PropertyChanged));
-                Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
-                Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
-                Assert.That(n, Is.EqualTo(1));
-            }
+            src.TestValue = string.Empty;
+            src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
+            5.Times(i => src.TestValue = nameof(PropertyChanged));
+            Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
+            Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
+            Assert.That(n, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -245,10 +239,8 @@ namespace Cube.Tests
         [Test]
         public void GetInvoker()
         {
-            using (var src = new Presenter(new SynchronizationContext()))
-            {
-                Assert.That(src.GetInvoker(), Is.Not.Null);
-            }
+            using var src = new Presenter(new SynchronizationContext());
+            Assert.That(src.GetInvoker(), Is.Not.Null);
         }
 
         #endregion

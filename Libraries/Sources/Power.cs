@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections;
-using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Threading;
+using Cube.Collections;
+using Microsoft.Win32;
 
 namespace Cube
 {

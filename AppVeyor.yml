@@ -1,9 +1,10 @@
-version: 1.19.0.{build}
+version: 2.0.0.{build}
 environment:
     PROJECT_NAME:  'Cube.Core'
     PROJECT_BIN:   'bin\%PLATFORM%\%CONFIGURATION%\net45'
     TEST_TOOL:     '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
-    TEST_FILTERS:  '+[Cube*]* -[*]*NativeMethods -[*]*Properties.*'
+    TEST_ARGS:     'test --no-restore --no-build --logger:Appveyor'
+    TEST_FILTERS:  '+[Cube*]* -[*]*NativeMethods -[*]*Properties.* -[*]*.Program'
     TEST_COVERAGE: 'CoverResults.xml'
     TEST_RESULTS:  'TestResults'
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
@@ -18,7 +19,7 @@ nuget:
     project_feed: true
     disable_publish_on_pr: true
 before_build:
-    - dotnet restore "%PROJECT_NAME%.sln"
+    - nuget restore "%PROJECT_NAME%.sln"
 build:
     project: '%PROJECT_NAME%.sln'
     parallel: true
@@ -30,9 +31,10 @@ test_script:
       -log:Error
       -register:appveyor
       -target:dotnet.exe
-      -targetargs:"test --logger:Appveyor"
+      -targetargs:"%TEST_ARGS% %PROJECT_NAME%.sln"
       -returntargetcode
       -hideskipped:All
+      -mergeoutput
       -output:"%TEST_COVERAGE%"
       -filter:"%TEST_FILTERS%"
 after_test:

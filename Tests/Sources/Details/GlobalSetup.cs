@@ -43,7 +43,6 @@ namespace Cube.Tests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            Logger.Configure();
             _ = Logger.ObserveTaskException();
             Logger.Info(typeof(GlobalSetup), typeof(GlobalSetup).Assembly);
         }

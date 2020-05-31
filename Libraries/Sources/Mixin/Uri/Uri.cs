@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Collections;
-using Cube.Mixin.String;
-using Cube.Mixin.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cube.Mixin.Collections;
+using Cube.Mixin.String;
+using Cube.Mixin.Time;
 using Source = System.Uri;
 
 namespace Cube.Mixin.Uri

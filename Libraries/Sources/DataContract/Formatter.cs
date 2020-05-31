@@ -15,13 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+using Microsoft.Win32;
 
 namespace Cube.DataContract
 {
@@ -103,7 +103,8 @@ namespace Cube.DataContract
         {
             if (format == Format.Registry)
             {
-                using (var k = DefaultKey.CreateSubKey(dest)) Serialize(k, src);
+                using var sk = DefaultKey.CreateSubKey(dest);
+                Serialize(sk, src);
             }
             else Serialize(dest, e => Serialize(format, e, src));
         }
@@ -161,15 +162,12 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         private static void Serialize(string dest, Action<Stream> callback)
         {
-            using (var ms = new MemoryStream())
-            {
-                callback(ms);
-                using (var ds = File.Create(dest))
-                {
-                    ms.Position = 0;
-                    ms.CopyTo(ds);
-                }
-            }
+            using var ms = new MemoryStream();
+            callback(ms);
+
+            using var ds = File.Create(dest);
+            ms.Position = 0;
+            ms.CopyTo(ds);
         }
 
         /* ----------------------------------------------------------------- */
@@ -184,10 +182,8 @@ namespace Cube.DataContract
         private static void SerializeXml<T>(Stream dest, T src)
         {
             var settings = new XmlWriterSettings { Indent = true };
-            using (var obj = XmlWriter.Create(dest, settings))
-            {
-                new DataContractSerializer(typeof(T)).WriteObject(obj, src);
-            }
+            using var obj = XmlWriter.Create(dest, settings);
+            new DataContractSerializer(typeof(T)).WriteObject(obj, src);
         }
 
         /* ----------------------------------------------------------------- */
@@ -201,10 +197,8 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         private static void SerializeJson<T>(Stream dest, T src)
         {
-            using (var obj = JsonReaderWriterFactory.CreateJsonWriter(dest, Encoding.UTF8, false, true))
-            {
-                new DataContractJsonSerializer(typeof(T)).WriteObject(obj, src);
-            }
+            using var obj = JsonReaderWriterFactory.CreateJsonWriter(dest, Encoding.UTF8, false, true);
+            new DataContractJsonSerializer(typeof(T)).WriteObject(obj, src);
         }
 
         #endregion
@@ -229,7 +223,8 @@ namespace Cube.DataContract
         {
             if (format == Format.Registry)
             {
-                using (var k = DefaultKey.OpenSubKey(src, false)) return Deserialize<T>(k);
+                using var sk = DefaultKey.OpenSubKey(src, false);
+                return Deserialize<T>(sk);
             }
             else return Deserialize(src, e => Deserialize<T>(format, e));
         }
@@ -248,15 +243,12 @@ namespace Cube.DataContract
         /// <returns>Deserialized object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Deserialize<T>(this Format format, Stream src)
+        public static T Deserialize<T>(this Format format, Stream src) => format switch
         {
-            switch (format)
-            {
-                case Format.Xml:  return DeserializeXml<T>(src);
-                case Format.Json: return DeserializeJson<T>(src);
-                default: throw new ArgumentException($"{format}:cannot deserialize from stream");
-            }
-        }
+            Format.Xml  => DeserializeXml<T>(src),
+            Format.Json => DeserializeJson<T>(src),
+            _           => throw new ArgumentException($"{format}:cannot deserialize from stream"),
+        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -285,7 +277,8 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         private static T Deserialize<T>(string src, Func<Stream, T> callback)
         {
-            using (var ss = File.OpenRead(src)) return callback(ss);
+            using var ss = File.OpenRead(src);
+            return callback(ss);
         }
 
         /* ----------------------------------------------------------------- */

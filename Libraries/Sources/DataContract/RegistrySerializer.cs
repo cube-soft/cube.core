@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Collections;
 using Cube.DataContract.Mixin;
 using Cube.Mixin.String;
 using Microsoft.Win32;
-using System;
-using System.Collections;
 
 namespace Cube.DataContract
 {
