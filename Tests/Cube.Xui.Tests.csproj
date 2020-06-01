@@ -4,7 +4,10 @@
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
-        <OutputType>WinExe</OutputType>
+        <StartupObject>Cube.FileSystem.Tests.Program</StartupObject>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net45</TargetFramework>
+        <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
         <LangVersion>latest</LangVersion>
         <TargetFramework>net45</TargetFramework>
         <IsPackable>false</IsPackable>
