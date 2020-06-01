@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>WPF based MVVM library.</Description>
@@ -23,7 +23,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cube.FileSystem" Version="2.0.0" />
+        <PackageReference Include="Cube.FileSystem" Version="2.0.1" />
         <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
         <Reference Include="System.Windows.Forms" />
         <Reference Include="System.Xaml" />

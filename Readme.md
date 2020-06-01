@@ -6,7 +6,7 @@ Cube.Xui
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Xui/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Xui)
 
 Cube.Xui is a library to support the MVVM pattern in WPF applications.
-The library is available for .NET Framework 3.5, 4.5 or later.
+The library is available for .NET Framework 3.5, 4.5, .NET Core 3.0, or later.
 Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://github.com/cube-soft/Cube.Core), and the WinForms part is in the [Cube.Forms](https://github.com/cube-soft/Cube.Forms).
 
 ## Installation
@@ -15,7 +15,7 @@ You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
     <ItemGroup>
-        <PackageReference Include="Cube.Xui" Version="2.0.0" />
+        <PackageReference Include="Cube.Xui" Version="2.0.1" />
     </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
