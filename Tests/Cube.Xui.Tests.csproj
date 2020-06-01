@@ -7,11 +7,10 @@
         <StartupObject>Cube.Xui.Tests.Program</StartupObject>
         <OutputType>Exe</OutputType>
         <TargetFramework>net45</TargetFramework>
-        <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
-        <LangVersion>latest</LangVersion>
-        <TargetFramework>net45</TargetFramework>
         <UseWpf>true</UseWpf>
         <UseWindowsForms>true</UseWindowsForms>
+        <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
+        <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
