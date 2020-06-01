@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Xui"
-BRANCHES  = ["master", "net35"]
+BRANCHES  = ["master", "netcoreapp3.0", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/#{PROJECT}"]
 
