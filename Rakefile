@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Forms"
-BRANCHES  = ["master", "net35"]
+BRANCHES  = ["master", "netcoreapp3.0", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/#{PROJECT}"]
 
@@ -96,10 +96,10 @@ end
 # checkout
 # --------------------------------------------------------------------------- #
 def checkout(branch, &callback)
-    sh("git checkout #{branch}")
+    cmd("git checkout #{branch}")
     callback.call()
 ensure
-    sh("git checkout master")
+    cmd("git checkout master")
 end
 
 # --------------------------------------------------------------------------- #

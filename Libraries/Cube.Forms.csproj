@@ -1,15 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
-        <Description>WinForms based GUI and MVVM library available for .NET Framework 3.5, 4.5, or later.</Description>
+        <Description>Provide GUI components and support the MVVM pattern in WinForms applications.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageTags>Cube;WinForms;MVVM</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
         <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
+        <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
@@ -23,11 +24,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cube.Core" Version="2.0.0" />
-        <Reference Include="System.Design" />
-        <Reference Include="System.Drawing.Design" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="WindowsBase" />
+        <PackageReference Include="Cube.Core" Version="2.0.1" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\Icon.png" Pack="true" PackagePath="images" />

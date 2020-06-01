@@ -5,7 +5,7 @@ Cube.Forms
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/k5a3hpx8q788dpq2?svg=true)](https://ci.appveyor.com/project/clown/cube-forms)
 
 Cube.Forms is a WinForms based GUI library available for .NET Framework 3.5, 4.5, or later.
-The library also provides the functionality to realize the MVVM pattern in WinForms applications.
+The library also provides the functionality to support the MVVM pattern in WinForms applications.
 Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://github.com/cube-soft/Cube.Core), and the WPF part is in the [Cube.Xui](https://github.com/cube-soft/Cube.Xui).
 
 
@@ -15,7 +15,7 @@ You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
     <ItemGroup>
-        <PackageReference Include="Cube.Forms" Version="1.18.0" />
+        <PackageReference Include="Cube.Forms" Version="2.0.1" />
     </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
@@ -30,7 +30,7 @@ Or select it from the NuGet packages UI on Visual Studio.
 2. Create a feature branch from the master or stable branch (e.g. git checkout -b my-new-feature origin/master). Note that the master branch may refer to some pre-release NuGet packages. Try the [rake clobber](https://github.com/cube-soft/Cube.Forms/blob/master/Rakefile) command when build errors occur.
 3. Commit your changes.
 4. Rebase your local changes against the master or stable branch.
-5. Run test suite with the [NUnit](https://nunit.org/) console or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
+5. Run the dotnet test command or the Visual Studio (NUnit 3 test adapter) and confirm that it passes.
 6. Create a new Pull Request.
 
 ## License
