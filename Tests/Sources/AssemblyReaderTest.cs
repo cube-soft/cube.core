@@ -83,7 +83,7 @@ namespace Cube.Tests
                 yield return new TestCaseData(Assembly.GetExecutingAssembly(), new Result
                 {
                     Assembly      = Assembly.GetExecutingAssembly(),
-                    Location      = "Cube.Core.Tests.dll",
+                    Location      = "Cube.Core.Tests.exe",
                     Directory     = @"Tests\bin",
                     Title         = "Cube.Core UnitTest",
                     Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
@@ -93,8 +93,8 @@ namespace Cube.Tests
                     Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 15, 0, 0),
-                    FileVersion   = new Version(1, 15, 0, 0),
+                    Version       = new Version(1, 15, 10, 0),
+                    FileVersion   = new Version(1, 15, 10, 0),
                 });
 
                 yield return new TestCaseData(Assembly.GetAssembly(typeof(AssemblyReader)), new Result
@@ -103,15 +103,15 @@ namespace Cube.Tests
                     Location      = "Cube.Core.dll",
                     Directory     = @"Tests\bin",
                     Title         = "Cube.Core",
-                    Description   = "Common library for CubeSoft libraries and applications.",
+                    Description   = "Support the MVVM pattern in WPF or WinForms applications.",
                     Company       = "CubeSoft",
                     Product       = "Cube.Core",
                     Copyright     = "Copyright © 2010 CubeSoft, Inc.",
                     Configuration = Configuration,
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
-                    Version       = new Version(1, 15, 0, 0),
-                    FileVersion   = new Version(1, 15, 0, 0),
+                    Version       = new Version(1, 15, 10, 0),
+                    FileVersion   = new Version(1, 15, 10, 0),
                 });
 
                 yield return new TestCaseData(null, new Result

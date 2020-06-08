@@ -50,17 +50,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Configure
-        ///
-        /// <summary>
-        /// Initializes settings of logging.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Configure() => log4net.Config.XmlConfigurator.Configure();
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ObserveTaskException
         ///
         /// <summary>
@@ -432,7 +421,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static log4net.ILog GetCore(Type type) => log4net.LogManager.GetLogger(type);
+        private static NLog.Logger GetCore(Type type) => NLog.LogManager.GetLogger(type.FullName);
 
         /* ----------------------------------------------------------------- */
         ///
