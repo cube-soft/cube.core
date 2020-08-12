@@ -15,42 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Controls;
-using Cube.Mixin.Logging;
-using Cube.Mixin.Tasks;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading.Tasks;
+using Cube.Forms.Controls;
+using Cube.Mixin.Logging;
+using Cube.Mixin.Tasks;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyWindow
+    /// NoticeWindow
     ///
     /// <summary>
-    /// 通知用フォームを表すクラスです。
+    /// Represents the notice window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NotifyWindow : BorderlessWindow
+    public class NoticeWindow : BorderlessWindow
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// NotifyForm
+        /// NoticeWindow
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the NoticeWindow class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyWindow()
-        {
-            InitializeLayout();
-        }
+        public NoticeWindow() { InitializeLayout(); }
 
         #endregion
 
@@ -61,13 +58,13 @@ namespace Cube.Forms
         /// Value
         ///
         /// <summary>
-        /// 通知内容を取得または設定します。
+        /// Gets or sets the notice.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public NotifyItem Value
+        public Notice Value
         {
             get => _value;
             private set
@@ -85,8 +82,7 @@ namespace Cube.Forms
         /// AutoEllipsis
         ///
         /// <summary>
-        /// 枠に入りきらない本文を自動的に省略するかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets a value indicating whether to omit the overflow contents.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -99,23 +95,24 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// IsBusy
+        /// Busy
         ///
         /// <summary>
-        /// 実行中かどうかを取得します。
+        /// Gets or sets a value whether the window is busy.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsBusy { get; private set; } = false;
+        public bool Busy { get; private set; } = false;
 
         /* --------------------------------------------------------------------- */
         ///
         /// ShowWithoutActivation
         ///
         /// <summary>
-        /// フォーカスを奪わずに表示させます。
+        /// Gets a value indicating whether the window will be activated when
+        /// it is shown.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -128,7 +125,7 @@ namespace Cube.Forms
         /// Text
         ///
         /// <summary>
-        /// 表示テキストを取得または設定します。
+        /// Don't use this property, use Title.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -146,7 +143,7 @@ namespace Cube.Forms
         /// TopMost
         ///
         /// <summary>
-        /// 最前面に表示するかどうかを示す値を取得または設定します。
+        /// Don't use this property.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -172,22 +169,22 @@ namespace Cube.Forms
         /// Selected
         ///
         /// <summary>
-        /// ユーザの選択時に発生します。
+        /// Occurs when a component is selected by user.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event ValueEventHandler<NotifyComponents> Selected;
+        public event ValueEventHandler<NoticeComponents> Selected;
 
         /* ----------------------------------------------------------------- */
         ///
         /// OnSelected
         ///
         /// <summary>
-        /// Selected イベントを発生させます。
+        /// Raises the Selected event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnSelected(ValueEventArgs<NotifyComponents> e)
+        protected virtual void OnSelected(ValueEventArgs<NoticeComponents> e)
         {
             Selected?.Invoke(this, e);
             Hide();
@@ -202,7 +199,7 @@ namespace Cube.Forms
         /// Completed
         ///
         /// <summary>
-        /// 通知完了時に発生するイベントです。
+        /// Occurs when the notice is completed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -213,13 +210,13 @@ namespace Cube.Forms
         /// OnCompleted
         ///
         /// <summary>
-        /// Completed イベントを発生させます。
+        /// Raises the Completed event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnCompleted(EventArgs e)
         {
-            IsBusy = false;
+            Busy = false;
             Completed?.Invoke(this, e);
         }
 
@@ -234,27 +231,27 @@ namespace Cube.Forms
         /// Show
         ///
         /// <summary>
-        /// フォームを表示します。
+        /// Shows the window.
         /// </summary>
         ///
-        /// <param name="item">表示内容</param>
+        /// <param name="item">Notice to show.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Show(NotifyItem item) => Show(item, null);
+        public void Show(Notice item) => Show(item, null);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Show
         ///
         /// <summary>
-        /// フォームを表示します。
+        /// Shows the window.
         /// </summary>
         ///
-        /// <param name="item">表示内容</param>
-        /// <param name="style">表示スタイル</param>
+        /// <param name="item">Notice to show.</param>
+        /// <param name="style">Displayed style.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Show(NotifyItem item, NotifyStyle style)
+        public void Show(Notice item, NoticeStyle style)
         {
             Value = item;
             SetStyle(style);
@@ -270,12 +267,8 @@ namespace Cube.Forms
         /// Show
         ///
         /// <summary>
-        /// 画面を表示します。
+        /// Uses this method only in the class.
         /// </summary>
-        ///
-        /// <remarks>
-        /// 外部から実行できないように private で再定義します。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private new void Show() => base.Show();
@@ -285,12 +278,8 @@ namespace Cube.Forms
         /// ShowDialog
         ///
         /// <summary>
-        /// 画面を表示します。
+        /// Don't use this method.
         /// </summary>
-        ///
-        /// <remarks>
-        /// 外部から実行できないように private で再定義します。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private new System.Windows.Forms.DialogResult ShowDialog() => base.ShowDialog();
@@ -300,7 +289,7 @@ namespace Cube.Forms
         /// ShowAsync
         ///
         /// <summary>
-        /// 指定時間フォームを表示します。
+        /// Shows the window with the specified time.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -312,7 +301,7 @@ namespace Cube.Forms
 
             try
             {
-                IsBusy = true;
+                Busy = true;
 
                 var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
                 SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
@@ -340,11 +329,11 @@ namespace Cube.Forms
         /// SetStyle
         ///
         /// <summary>
-        /// 表示スタイルを適用します。
+        /// Applies the specified style to the window.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void SetStyle(NotifyStyle style)
+        private void SetStyle(NoticeStyle style)
         {
             if (style == null) return;
             if (style.ImageColor != Color.Empty) _image.Styles.NormalStyle.BackColor = style.ImageColor;
@@ -368,7 +357,7 @@ namespace Cube.Forms
         /// InitializeLayout
         ///
         /// <summary>
-        /// レイアウトを初期化します。
+        /// Initializes the layout of the window.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -382,7 +371,7 @@ namespace Cube.Forms
             _image.Styles.NormalStyle.BorderSize = 0;
             _image.Styles.NormalStyle.BackColor = Color.FromArgb(230, 230, 230);
             _image.Styles.NormalStyle.Image = Properties.Resources.LogoLarge;
-            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Image));
+            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Image));
 
             _title.Content = string.Empty;
             _title.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -393,7 +382,7 @@ namespace Cube.Forms
             _title.Styles.NormalStyle.BackColor = SystemColors.Window;
             _title.Styles.NormalStyle.BorderSize = 0;
             _title.Styles.NormalStyle.ContentColor = Color.DimGray;
-            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Title));
+            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Title));
 
             _text.AutoEllipsis = true;
             _text.Content = string.Empty;
@@ -404,7 +393,7 @@ namespace Cube.Forms
             _text.TextAlign = ContentAlignment.TopLeft;
             _text.Styles.NormalStyle.BackColor = SystemColors.Window;
             _text.Styles.NormalStyle.BorderSize = 0;
-            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Description));
+            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Description));
 
             _close.Content = string.Empty;
             _close.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -416,7 +405,7 @@ namespace Cube.Forms
             _close.Styles.MouseOverStyle.BorderColor = Color.FromArgb(230, 230, 230);
             _close.Styles.MouseOverStyle.BorderSize = 1;
             _close.Styles.MouseDownStyle.BackColor = Color.FromArgb(236, 236, 236);
-            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NotifyComponents.Others));
+            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Others));
 
             _panel.SuspendLayout();
             _panel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -437,7 +426,7 @@ namespace Cube.Forms
             BackColor     = SystemColors.Window;
             Size          = new Size(350, 80);
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            IsBusy        = false;
+            Busy          = false;
             Location      = new Point(0, 0);
             MaximizeBox   = false;
             MinimizeBox   = false;
@@ -453,7 +442,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private NotifyItem _value;
+        private Notice _value;
         private readonly TableLayoutPanel _panel = new TableLayoutPanel();
         private readonly FlatButton _image = new FlatButton();
         private readonly FlatButton _title = new FlatButton();

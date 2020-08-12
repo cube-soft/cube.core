@@ -15,131 +15,24 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Collections;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using Cube.Collections;
 
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyPriority
+    /// NoticeQueue
     ///
     /// <summary>
-    /// 通知項目の優先度を示す値を定義した列挙体です。
+    /// Represents the collection of notice items.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum NotifyPriority
-    {
-        /// <summary>最高</summary>
-        Highest = 40,
-        /// <summary>高い</summary>
-        High = 30,
-        /// <summary>通常</summary>
-        Normal = 20,
-        /// <summary>低い</summary>
-        Low = 10,
-        /// <summary>最低</summary>
-        Lowest = 0,
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NotifyItem
-    ///
-    /// <summary>
-    /// 通知内容を保持するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class NotifyItem
-    {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Priority
-        ///
-        /// <summary>
-        /// 通知内容の優先度を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public NotifyPriority Priority { get; set; } = NotifyPriority.Normal;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Title
-        ///
-        /// <summary>
-        /// 通知内容のタイトルを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Title { get; set; }
-
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Description
-        ///
-        /// <summary>
-        /// 通知内容の本文を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Description { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisplayTime
-        ///
-        /// <summary>
-        /// 通知内容の表示時間を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TimeSpan DisplayTime { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InitialDelay
-        ///
-        /// <summary>
-        /// 通知内容の表示を遅延させる時間を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TimeSpan InitialDelay { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// ユーザデータを取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Value { get; set; }
-
-        #endregion
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NotifyQueue
-    ///
-    /// <summary>
-    /// NotifyItem をキュー管理するためのクラスです。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class NotifyQueue : IEnumerable<NotifyItem>, INotifyCollectionChanged
+    public class NoticeQueue : IEnumerable<Notice>, INotifyCollectionChanged
     {
         #region Properties
 
@@ -148,7 +41,7 @@ namespace Cube.Forms
         /// Count
         ///
         /// <summary>
-        /// 要素数を取得します。
+        /// Gets the number of notice items.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -163,7 +56,7 @@ namespace Cube.Forms
         /// CollectionChanged
         ///
         /// <summary>
-        /// コレクションの内容が変化した時に発生するイベントです。
+        /// Occurs when the collection changes.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -174,7 +67,7 @@ namespace Cube.Forms
         /// OnCollectionChanged
         ///
         /// <summary>
-        /// CollectionChanged イベントを発生させます。
+        /// Raises the CollectionChanged event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -190,18 +83,18 @@ namespace Cube.Forms
         /// Enqueue
         ///
         /// <summary>
-        /// オブジェクトを末尾に追加します。
+        /// Adds the specified notice to the end of the queue.
         /// </summary>
         ///
-        /// <param name="item">追加するオブジェクト</param>
+        /// <param name="item">Notice item.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Enqueue(NotifyItem item)
+        public void Enqueue(Notice item)
         {
             lock (_lock)
             {
                 var key = item.Priority;
-                if (!_inner.ContainsKey(key)) _inner.Add(key, new Queue<NotifyItem>());
+                if (!_inner.ContainsKey(key)) _inner.Add(key, new Queue<Notice>());
                 _inner[key].Enqueue(item);
             }
 
@@ -214,13 +107,13 @@ namespace Cube.Forms
         /// Dequeue
         ///
         /// <summary>
-        /// 先頭のオブジェクトを取得します。
+        /// Gets the first notice item and remove it from the queue.
         /// </summary>
         ///
-        /// <returns>先頭のオブジェクト</returns>
+        /// <returns>null if empty, others notice item.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyItem Dequeue()
+        public Notice Dequeue()
         {
             if (_inner.Count <= 0) return null;
 
@@ -235,13 +128,13 @@ namespace Cube.Forms
         /// Peek
         ///
         /// <summary>
-        /// 先頭のオブジェクトを削除せずに取得します。
+        /// Gets the first notice item without removing.
         /// </summary>
         ///
-        /// <returns>先頭のオブジェクト</returns>
+        /// <returns>null if empty, others notice item.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public NotifyItem Peek() =>
+        public Notice Peek() =>
             _inner.Count > 0 ? _inner.First().Value.Peek() : null;
 
         /* --------------------------------------------------------------------- */
@@ -249,7 +142,7 @@ namespace Cube.Forms
         /// Clear
         ///
         /// <summary>
-        /// コレクションの要素をすべて削除します。
+        /// Removes all items in the queue.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -265,13 +158,13 @@ namespace Cube.Forms
         /// Clear
         ///
         /// <summary>
-        /// 指定された優先度に設定されている通知をすべて削除します。
+        /// Removes all items with the specified priority in the queue.
         /// </summary>
         ///
-        /// <param name="priority">優先度</param>
+        /// <param name="priority">Priority.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Clear(NotifyPriority priority)
+        public void Clear(NoticePriority priority)
         {
             var result = false;
             lock (_lock) result = _inner.Remove(priority);
@@ -288,13 +181,15 @@ namespace Cube.Forms
         /// GetEnumerator
         ///
         /// <summary>
-        /// 反復子を取得します。
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
         ///
-        /// <returns>反復子</returns>
+        /// <returns>
+        /// Enumerator that can be used to iterate through the collection.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerator<NotifyItem> GetEnumerator()
+        public IEnumerator<Notice> GetEnumerator()
         {
             foreach (var queue in _inner.Values)
             foreach (var value in queue)
@@ -308,10 +203,13 @@ namespace Cube.Forms
         /// GetEnumerator
         ///
         /// <summary>
-        /// 反復子を取得します。
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
         ///
-        /// <returns>反復子</returns>
+        /// <returns>
+        /// IEnumerator object that can be used to iterate through the
+        /// collection.
+        /// </returns>
         ///
         /* --------------------------------------------------------------------- */
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -325,11 +223,11 @@ namespace Cube.Forms
         /// DequeueCore
         ///
         /// <summary>
-        /// 先頭のオブジェクトを取得します。
+        /// Gets the first notice item and remove it from the queue.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private NotifyItem DequeueCore()
+        private Notice DequeueCore()
         {
             lock (_lock)
             {
@@ -344,9 +242,9 @@ namespace Cube.Forms
 
         #region Fields
         private readonly object _lock = new object();
-        private readonly SortedDictionary<NotifyPriority, Queue<NotifyItem>> _inner =
-            new SortedDictionary<NotifyPriority, Queue<NotifyItem>>(
-              new LambdaComparer<NotifyPriority>((x, y) => y.CompareTo(x))
+        private readonly SortedDictionary<NoticePriority, Queue<Notice>> _inner =
+            new SortedDictionary<NoticePriority, Queue<Notice>>(
+              new LambdaComparer<NoticePriority>((x, y) => y.CompareTo(x))
             );
         #endregion
     }

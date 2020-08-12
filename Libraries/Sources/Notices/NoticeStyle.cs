@@ -22,36 +22,15 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NotifyComponents
+    /// NoticeStyle
     ///
     /// <summary>
-    /// 通知用フォームのコンポーネントを識別するための列挙型です。
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum NotifyComponents
-    {
-        /// <summary>イメージ</summary>
-        Image = 1,
-        /// <summary>タイトル</summary>
-        Title = 2,
-        /// <summary>本文</summary>
-        Description = 3,
-        /// <summary>その他</summary>
-        Others = 0
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NotifyStyle
-    ///
-    /// <summary>
-    /// 通知用フォームのスタイルを定義するためのクラスです。
+    /// Repesents the styles of the notice window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(OnlyExpandableConverter))]
-    public class NotifyStyle
+    public class NoticeStyle
     {
         #region Properties
 
@@ -60,7 +39,7 @@ namespace Cube.Forms
         /// BackColor
         ///
         /// <summary>
-        /// 背景色を取得または設定します。
+        /// Gets or sets the background color.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -72,7 +51,7 @@ namespace Cube.Forms
         /// Image
         ///
         /// <summary>
-        /// イメージ部分に表示するオブジェクトを取得または設定します。
+        /// Gets or sets the image.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -84,7 +63,7 @@ namespace Cube.Forms
         /// ImageColor
         ///
         /// <summary>
-        /// イメージ部分の背景色を取得または設定します。
+        /// Gets or sets the background color of the image component.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -96,7 +75,7 @@ namespace Cube.Forms
         /// Title
         ///
         /// <summary>
-        /// タイトルのフォントを取得または設定します。
+        /// Gets or sets the font of the notice title.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -108,7 +87,7 @@ namespace Cube.Forms
         /// TitleColor
         ///
         /// <summary>
-        /// タイトルのフォント色を取得または設定します。
+        /// Gets or sets the color of the notice title.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -120,7 +99,7 @@ namespace Cube.Forms
         /// Description
         ///
         /// <summary>
-        /// 本文のフォントを取得または設定します。
+        /// Gets or sets the font of the notice description.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -132,7 +111,7 @@ namespace Cube.Forms
         /// DescriptionColor
         ///
         /// <summary>
-        /// 本文のフォント色を取得または設定します。
+        /// Gets or sets the color of the notice description.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
