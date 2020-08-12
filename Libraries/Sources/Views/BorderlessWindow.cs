@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Controls;
-using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Cube.Forms.Controls;
+using Microsoft.Win32;
 
 namespace Cube.Forms
 {

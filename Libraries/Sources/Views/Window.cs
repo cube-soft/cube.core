@@ -15,8 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Controls;
-using Cube.Mixin.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,12 +28,8 @@ namespace Cube.Forms
     /// Window
     ///
     /// <summary>
-    /// Windows 標準のフォームを表すクラスです。
+    /// Represents a standard Windows form.
     /// </summary>
-    ///
-    /// <remarks>
-    /// System.Windows.Forms.Form をベースに実装されています。
-    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public class Window : WindowBase
@@ -44,10 +38,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// StandardForm
+        /// Window
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the Window class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -67,7 +61,7 @@ namespace Cube.Forms
         /// ShortcutKeys
         ///
         /// <summary>
-        /// ショートカットキーの一覧を取得します。
+        /// Gets the collection of shortcut keys.
         /// </summary>
         ///
         /// <remarks>
@@ -91,7 +85,7 @@ namespace Cube.Forms
         /// VisibleChanging
         ///
         /// <summary>
-        /// Visible プロパティの値が変更される直前に発生するイベントです。
+        /// Occurs before the value of the Visible property changes.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -102,7 +96,7 @@ namespace Cube.Forms
         /// OnVisibleChanging
         ///
         /// <summary>
-        /// VisibleChanging イベントを発生させます。
+        /// Raises the VisibleChanging event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -121,7 +115,7 @@ namespace Cube.Forms
         /// NcHitTest
         ///
         /// <summary>
-        /// マウスのヒットテスト時に発生するイベントです。
+        /// Occurs when the hit test of the non-client area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -132,7 +126,7 @@ namespace Cube.Forms
         /// OnNcHitTest
         ///
         /// <summary>
-        /// NcHitTest イベントを発生させます。
+        /// Raises the NcHitTest event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -153,7 +147,8 @@ namespace Cube.Forms
         /// AdjustDesktopLocation
         ///
         /// <summary>
-        /// スクリーンからはみ出さないように表示位置を調整します。
+        /// Adjusts the location of the window not to protrude from the
+        /// screen.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -183,8 +178,12 @@ namespace Cube.Forms
         /// DoShortcutKeys
         ///
         /// <summary>
-        /// ショートカットキーを実行します。
+        /// Invokes the specified shortcut keys.
         /// </summary>
+        ///
+        /// <param name="keys">Shortcut keys.</param>
+        ///
+        /// <returns>true for executed.</returns>
         ///
         /* ----------------------------------------------------------------- */
         protected bool DoShortcutKeys(WinForms.Keys keys)
@@ -203,7 +202,7 @@ namespace Cube.Forms
         /// SetVisibleCore
         ///
         /// <summary>
-        /// コントロールを指定した表示状態に設定します。
+        /// Sets the control to the specified state.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -220,7 +219,7 @@ namespace Cube.Forms
         /// ProcessCmdKey
         ///
         /// <summary>
-        /// ショートカットキーを処理します。
+        /// Processes the specified shortcut keys.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -239,7 +238,7 @@ namespace Cube.Forms
         /// WndProc
         ///
         /// <summary>
-        /// ウィンドウメッセージを処理します。
+        /// Processes the specified window message.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -264,7 +263,8 @@ namespace Cube.Forms
         /// CreatePoint
         ///
         /// <summary>
-        /// lParam から Point オブジェクトを生成します。
+        /// Creates a new instance of the Point class with the specified
+        /// arguments.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
