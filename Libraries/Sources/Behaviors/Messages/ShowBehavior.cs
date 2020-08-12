@@ -60,7 +60,7 @@ namespace Cube.Forms.Behaviors
         protected override void Invoke(TViewModel e)
         {
             var view = new TView();
-            if (view is IBinder binder) binder.Bind(e);
+            if (view is IBindable binder) binder.Bind(e);
             view.Show();
         }
     }
@@ -109,7 +109,7 @@ namespace Cube.Forms.Behaviors
         {
             using(var view = new TView())
             {
-                if (view is IBinder binder) binder.Bind(e);
+                if (view is IBindable binder) binder.Bind(e);
                 _ = view.ShowDialog();
             }
         }

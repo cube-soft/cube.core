@@ -19,15 +19,15 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IBinder
+    /// IBindable
     ///
     /// <summary>
-    /// Represents the interface that a window can be bindable with a
+    /// Represents the interface that a view can be bindable with a
     /// presentable object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IBinder
+    public interface IBindable
     {
         /* ----------------------------------------------------------------- */
         ///

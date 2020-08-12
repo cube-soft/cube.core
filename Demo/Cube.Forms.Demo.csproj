@@ -33,4 +33,9 @@
         <None Include="Assets\**\*" />
         <None Include="App.config" />
     </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Sources\Views\Forms\MainWindow.resx">
+        <DependentUpon>MainWindow.cs</DependentUpon>
+      </EmbeddedResource>
+    </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace Cube.Forms.Demo
 {
-    partial class MainForm
+    partial class MainWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.LayoutPanel = new Cube.Forms.TableLayoutPanel();
             this.HeaderCaptionControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.ContentsControl = new Cube.Forms.FlowLayoutPanel();

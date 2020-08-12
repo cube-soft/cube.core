@@ -279,7 +279,7 @@ namespace Cube.Forms
         #endregion
 
         #region Methods
-        
+
         /* ----------------------------------------------------------------- */
         ///
         /// Dispose

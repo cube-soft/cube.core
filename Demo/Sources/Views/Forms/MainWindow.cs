@@ -23,27 +23,27 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainForm
+    /// MainWindow
     ///
     /// <summary>
-    /// メイン画面を表すクラスです。
+    /// Represents the main window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainForm : BorderlessWindow
+    public partial class MainWindow : BorderlessWindow
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// MainForm
+        /// MainWindow
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the MainWindow class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public MainForm()
+        public MainWindow()
         {
             InitializeComponent();
 
@@ -72,10 +72,9 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private void WhenResize(object sender, EventArgs e)
+        private void WhenResize(object s, EventArgs e)
         {
-            var control = sender as Control;
-            if (control == null) return;
+            if (!(s is Control control)) return;
 
             var width = control.ClientSize.Width;
             var left  = control.Padding.Left;
