@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logging;
 using System;
 using System.Windows.Forms;
+using Cube.Mixin.Logging;
 
 namespace Cube.Forms
 {
@@ -185,7 +185,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing) { }
-        
+
         #endregion
 
         #region Fields

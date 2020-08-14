@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Controls;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 
 namespace Cube.Forms

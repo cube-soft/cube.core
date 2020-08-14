@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.String;
 using System.Linq;
 using System.Windows.Forms;
+using Cube.Mixin.String;
 
 namespace Cube.Forms.Behaviors
 {

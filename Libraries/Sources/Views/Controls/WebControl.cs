@@ -15,12 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Controls;
+using System;
+using System.Text;
 using Cube.Mixin.Logging;
 using Cube.Mixin.String;
-using System;
-using System.ComponentModel;
-using System.Text;
 
 namespace Cube.Forms
 {
