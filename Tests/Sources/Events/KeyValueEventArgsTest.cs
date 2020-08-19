@@ -24,7 +24,7 @@ namespace Cube.Tests
     /// KeyValueEventArgsTest
     ///
     /// <summary>
-    /// KeyValueEventArgs のテスト用クラスです。
+    /// Tests the KeyValueEventArgs class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -36,7 +36,7 @@ namespace Cube.Tests
         /// Create_KeyValueEventArgs
         ///
         /// <summary>
-        /// KeyValueEventArgs.Create(T, U) のテストを実行します。
+        /// Tests the KeyValueEventArgs.Create(T, U) method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -55,7 +55,7 @@ namespace Cube.Tests
         /// Create_KeyValueCancelEventArgs
         ///
         /// <summary>
-        /// KeyValueEventArgs.Create(T, U, bool) のテストを実行します。
+        /// Tests the KeyValueEventArgs.Create(T, U, bool) method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -74,12 +74,14 @@ namespace Cube.Tests
         /// KeyValueCancelEventArgs_Cancel
         ///
         /// <summary>
-        /// Cancel プロパティの初期値を確認します。
+        /// Confirms the default value of the Cancel property.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(ExpectedResult = false)]
-        public bool KeyValueCancelEventArgs_Cancel() =>
-            new KeyValueCancelEventArgs<int, int>(1, 2).Cancel;
+        [Test]
+        public void KeyValueCancelEventArgs_Cancel()
+        {
+            Assert.That(new KeyValueCancelEventArgs<int, int>(1, 2).Cancel, Is.False);
+        }
     }
 }

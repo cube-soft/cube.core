@@ -27,7 +27,7 @@ namespace Cube.Tests.Mixin
     /// UriTest
     ///
     /// <summary>
-    /// Uri クラスの拡張メソッドをテストするためのクラスです。
+    /// Tests extended methods of the Uri class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,7 +41,7 @@ namespace Cube.Tests.Mixin
         /// ToUri
         ///
         /// <summary>
-        /// 文字列から Uri オブジェクトに変換するテストを実行します。
+        /// Tests the ToUri extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -58,7 +58,7 @@ namespace Cube.Tests.Mixin
         /// With_Value
         ///
         /// <summary>
-        /// 様々な型を指定した時のテストを実行します。
+        /// Tests the With extended method with various values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -77,7 +77,7 @@ namespace Cube.Tests.Mixin
         /// With_DateTime
         ///
         /// <summary>
-        /// 時刻を付与するテストを実行します。
+        /// Tests the With extended method with DateTime objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -117,7 +117,7 @@ namespace Cube.Tests.Mixin
         /// With_MultiQuery
         ///
         /// <summary>
-        /// 複数個のクエリーを結合するテストを実行します。
+        /// Tests the With extended method multiple times.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -134,7 +134,7 @@ namespace Cube.Tests.Mixin
         /// With_Null
         ///
         /// <summary>
-        /// 引数に null が設定された時の挙動を確認します。
+        /// Tests the With extended method with a null object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -150,7 +150,7 @@ namespace Cube.Tests.Mixin
         /// With_SoftwareVersion
         ///
         /// <summary>
-        /// SoftwareVersion オブジェクトを結合するテストを実行します。
+        /// Tests the With extended method with a SoftwareVersion object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -158,7 +158,7 @@ namespace Cube.Tests.Mixin
         public void With_SoftwareVersion()
         {
             var asm  = typeof(UriTest).Assembly;
-            var dest = $"{Create()}?ver=2.0beta";
+            var dest = $"{Create()}?ver=2.1beta";
             var src  = Create().With(new SoftwareVersion(asm)
             {
                 Digit = 2,
@@ -173,7 +173,7 @@ namespace Cube.Tests.Mixin
         /// With_Utm
         ///
         /// <summary>
-        /// UTM クエリーを結合するテストを実行します。
+        /// Tests the With extended method with a Utm object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -198,7 +198,7 @@ namespace Cube.Tests.Mixin
         /// With_Utm_Null
         ///
         /// <summary>
-        /// 無効な UTM クエリーを設定した時の挙動を確認します。
+        /// Tests the With extended method with a null Utm object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -215,7 +215,7 @@ namespace Cube.Tests.Mixin
         /// WithoutQuery
         ///
         /// <summary>
-        /// クエリーを除去するテストを実行します。
+        /// Tests the WithoutQuery extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -238,7 +238,7 @@ namespace Cube.Tests.Mixin
         /// Create
         ///
         /// <summary>
-        /// ベースとなる Uri オブジェクトを生成します。
+        /// Creates a new instance of the Uri class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

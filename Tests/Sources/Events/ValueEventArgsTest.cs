@@ -24,7 +24,7 @@ namespace Cube.Tests
     /// ValueEventArgsTest
     ///
     /// <summary>
-    /// ValueEventArgs のテスト用クラスです。
+    /// Tests the ValueEventArgs class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube.Tests
         /// Create_ValueEventArgs
         ///
         /// <summary>
-        /// ValueEventArgs.Create(T) のテストを実行します。
+        /// Tests the ValueEventArgs.Create(T) method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -56,7 +56,7 @@ namespace Cube.Tests
         /// Create_ValueCancelEventArgs
         ///
         /// <summary>
-        /// ValueEventArgs.Create(T, bool) のテストを実行します。
+        /// Tests the ValueEventArgs.Create(T, bool) method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -97,15 +97,14 @@ namespace Cube.Tests
         /// ValueCancelEventArgs_Cancel
         ///
         /// <summary>
-        /// Cancel プロパティの初期値を確認します。
+        /// Confirms the default value of the Cancel property.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void ValueCancelEventArgs_Cancel()
         {
-            var src = new ValueCancelEventArgs<int>(1);
-            Assert.That(src.Cancel, Is.False);
+            Assert.That(new ValueCancelEventArgs<int>(1).Cancel, Is.False);
         }
 
         #endregion
