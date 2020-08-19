@@ -28,7 +28,7 @@ namespace Cube.Tests
     /// OnceActionTest
     ///
     /// <summary>
-    /// OnceAction のテスト用クラスです。
+    /// Tests the OnceAction class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -42,7 +42,7 @@ namespace Cube.Tests
         /// Invoke
         ///
         /// <summary>
-        /// OnceAction のテストを実行します。
+        /// Tests the Invoke method multiple times.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -63,7 +63,8 @@ namespace Cube.Tests
         /// Invoke_Twice
         ///
         /// <summary>
-        /// 複数回実行した時の挙動を確認します。
+        /// Tests the Invoke method multiple times with the value of
+        /// IgnoreTwice property is set to false.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -82,10 +83,10 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Invoke_Generics
         ///
         /// <summary>
-        /// OnceAction(T) のテストを実行します。
+        /// Tests the Invoke method multiple times.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -104,10 +105,11 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke_Twice
+        /// Invoke_Generics_Twice
         ///
         /// <summary>
-        /// 複数回実行した時の挙動を確認します。
+        /// Tests the Invoke method multiple times with the value of
+        /// IgnoreTwice property is set to false.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
