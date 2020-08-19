@@ -22,22 +22,22 @@ namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileHelperTest
+    /// FileFixtureTest
     ///
     /// <summary>
-    /// FileHelper のテスト用クラスです。
+    /// Tests the FileFixture class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class FileHelperTest : FileFixture
+    class FileFixtureTest : FileFixture
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Examples_Exists
         ///
         /// <summary>
-        /// Examples フォルダが存在するかどうかのテストを実行します。
+        /// Confirms that the path specified in the Examples property exists.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -49,7 +49,7 @@ namespace Cube.Tests
         /// Results_Exists
         ///
         /// <summary>
-        /// Results フォルダが存在するかどうかのテストを実行します。
+        /// Confirms that the path specified in the Results property exists.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

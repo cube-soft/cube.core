@@ -30,7 +30,7 @@ namespace Cube.Tests
     /// OrderedDictionaryTest
     ///
     /// <summary>
-    /// OrderedDictionary のテスト用クラスです。
+    /// Tests the OrderedDictionary class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,7 +44,7 @@ namespace Cube.Tests
         /// Access_WithKey
         ///
         /// <summary>
-        /// キーで値にアクセスするテストを実行します。
+        /// Tests the [] operator.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -65,7 +65,7 @@ namespace Cube.Tests
         /// Access_WithKey_Throws
         ///
         /// <summary>
-        /// 無効なキーでアクセスしようとした時の挙動を確認します。
+        /// Tests the [] operator with an invalid key.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -85,7 +85,7 @@ namespace Cube.Tests
         /// Access_WithIndex
         ///
         /// <summary>
-        /// インデックスで値にアクセスするテストを実行します。
+        /// Tests the [] operator with an index.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -110,7 +110,7 @@ namespace Cube.Tests
         /// Access_WithIndex_Throws
         ///
         /// <summary>
-        /// 範囲外の要素にアクセスしようとした時の挙動を確認します。
+        /// Tests the [] operator with an index that is out of range.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,7 +128,7 @@ namespace Cube.Tests
         /// Add_Throws
         ///
         /// <summary>
-        /// 無効な値を追加しようとした時の挙動を確認します。
+        /// Tests the Add method with an invalid value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -145,8 +145,8 @@ namespace Cube.Tests
         /// Remove
         ///
         /// <summary>
-        /// KeyValuePair(string, string) を指定して Remove を実行した時の
-        /// 挙動を確認します。
+        /// Tests the Remove method with a KeyValuePair(string, string)
+        /// object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -155,14 +155,14 @@ namespace Cube.Tests
         [TestCase("",      "Torvalds", ExpectedResult = false)]
         [TestCase(null,   null,        ExpectedResult = false)]
         public bool Remove(string key, string value) =>
-            Create().Remove(Cube.Collections.KeyValuePair.Create(key, value));
+            Create().Remove(KeyValuePair.Create(key, value));
 
         /* ----------------------------------------------------------------- */
         ///
         /// CopyFrom
         ///
         /// <summary>
-        /// コピーコンストラクタの挙動を確認します。
+        /// Tests the copy constructor.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -185,7 +185,7 @@ namespace Cube.Tests
         /// CopyTo
         ///
         /// <summary>
-        /// 要素をコピーするテストを実行します。
+        /// Tests the CopyTo method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -208,7 +208,7 @@ namespace Cube.Tests
         /// CopyTo_Throws
         ///
         /// <summary>
-        /// CopyTo に無効な引数が指定された時の挙動を確認します。
+        /// Tests the CopyTo method with invalid values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -229,7 +229,7 @@ namespace Cube.Tests
         /// KeysAndValues
         ///
         /// <summary>
-        /// Keys および Values の挙動を確認します。
+        /// Tests the Keys and Values properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -270,7 +270,7 @@ namespace Cube.Tests
         /// TryGetValue
         ///
         /// <summary>
-        /// TryGetValue の挙動を確認します。
+        /// Tests the TryGetValue method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -297,7 +297,7 @@ namespace Cube.Tests
         /// GetEnumerator
         ///
         /// <summary>
-        /// IEnumerable.GetEnumerator の挙動を確認します。
+        /// Tests the IEnumerable.GetEnumerator method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -321,19 +321,19 @@ namespace Cube.Tests
         /// Create
         ///
         /// <summary>
-        /// OrderedDictionary(string, string) オブジェクトを取得します。
+        /// Creates a new instance of the OrderedDictionary(string, string)
+        /// class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private OrderedDictionary<string, string> Create() =>
-            new OrderedDictionary<string, string>
-            {
-                { "Dennis",  "Ritchie"   },
-                { "Brian",   "Kernighan" },
-                { "Kenneth", "Thompson"  },
-                { "Linus",   "Torvalds"  },
-                { "Richard", "Stallman"  },
-            };
+        private OrderedDictionary<string, string> Create() => new OrderedDictionary<string, string>
+        {
+            { "Dennis",  "Ritchie"   },
+            { "Brian",   "Kernighan" },
+            { "Kenneth", "Thompson"  },
+            { "Linus",   "Torvalds"  },
+            { "Richard", "Stallman"  },
+        };
 
         #endregion
     }
