@@ -25,7 +25,7 @@ namespace Cube.Xui.Tests
     /// ConvertHelper
     ///
     /// <summary>
-    /// 各種 Converter クラスをテストする際の補助クラスです。
+    /// Provides support functions to test converters.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,13 +38,13 @@ namespace Cube.Xui.Tests
         /// Convert
         ///
         /// <summary>
-        /// IValueConverter.Convert を実行します。
+        /// Invokes the IValueConverter.Convert method.
         /// </summary>
         ///
-        /// <param name="src">Convert を実行するオブジェクト</param>
-        /// <param name="value">変換元オブジェクト</param>
+        /// <param name="src">Object to invoke the Convert method.</param>
+        /// <param name="value">Source value.</param>
         ///
-        /// <returns>変換結果</returns>
+        /// <returns>Result value.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public T Convert<T>(IValueConverter src, object value) =>
@@ -55,13 +55,13 @@ namespace Cube.Xui.Tests
         /// Execute
         ///
         /// <summary>
-        /// IValueConverter.ConvertBack を実行します。
+        /// Invokes the IValueConverter.ConvertBack method.
         /// </summary>
         ///
-        /// <param name="src">ConvertBack を実行するオブジェクト</param>
-        /// <param name="value">変換元オブジェクト</param>
+        /// <param name="src">Object to invoke the ConvertBack method.</param>
+        /// <param name="value">Source value.</param>
         ///
-        /// <returns>変換結果</returns>
+        /// <returns>Result value.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public T ConvertBack<T>(IValueConverter src, object value) =>

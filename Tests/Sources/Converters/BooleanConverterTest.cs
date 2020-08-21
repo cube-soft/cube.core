@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Converters;
-using NUnit.Framework;
 using System;
 using System.Windows;
+using Cube.Xui.Converters;
+using NUnit.Framework;
 
 namespace Cube.Xui.Tests.Converters
 {

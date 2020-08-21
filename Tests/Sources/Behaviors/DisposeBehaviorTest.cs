@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Behaviors;
-using NUnit.Framework;
 using System.Threading;
 using System.Windows;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
 
 namespace Cube.Xui.Tests.Behaviors
 {

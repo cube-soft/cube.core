@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Linq;
 using Cube.Mixin.String;
 using Microsoft.Win32;
-using System.Linq;
 using WinForms = System.Windows.Forms;
 
 namespace Cube.Xui.Behaviors

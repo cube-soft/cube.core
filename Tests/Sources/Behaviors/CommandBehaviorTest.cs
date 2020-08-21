@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Controls;
 using Cube.Mixin.Commands;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
-using System.Windows.Controls;
 
 namespace Cube.Xui.Tests.Behaviors
 {

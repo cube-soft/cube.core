@@ -15,9 +15,9 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Media.Imaging;
 using Cube.Xui.Converters;
 using NUnit.Framework;
-using System.Windows.Media.Imaging;
 
 namespace Cube.Xui.Tests.Converters
 {

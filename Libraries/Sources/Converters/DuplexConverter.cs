@@ -27,7 +27,8 @@ namespace Cube.Xui.Converters
     /// DuplexConverter
     ///
     /// <summary>
-    /// 双方向の変換をサポートしている Converter クラスです。
+    /// Represents the base class that supports Convert and ConvertBack
+    /// methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,11 +41,12 @@ namespace Cube.Xui.Converters
         /// DuplexConverter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DuplexConverter class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="convert">変換関数</param>
-        /// <param name="back">逆変換関数</param>
+        /// <param name="convert">Function to convert.</param>
+        /// <param name="back">Function for reverse conversion.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected DuplexConverter(Func<object, object> convert, Func<object, object> back) :
@@ -55,11 +57,12 @@ namespace Cube.Xui.Converters
         /// DuplexConverter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the DuplexConverter class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="convert">変換関数</param>
-        /// <param name="back">逆変換関数</param>
+        /// <param name="convert">Function to convert.</param>
+        /// <param name="back">Function for reverse conversion.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected DuplexConverter(
@@ -79,7 +82,7 @@ namespace Cube.Xui.Converters
         /// Convert
         ///
         /// <summary>
-        /// 変換処理を実行します。
+        /// Invokes the conversion.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -91,7 +94,7 @@ namespace Cube.Xui.Converters
         /// ConvertBack
         ///
         /// <summary>
-        /// 逆変換を実行します。
+        /// Invokes the reverse conversion.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -103,7 +106,7 @@ namespace Cube.Xui.Converters
         /// ProvideValue
         ///
         /// <summary>
-        /// 自身のオブジェクトを返します。
+        /// Returns the self object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

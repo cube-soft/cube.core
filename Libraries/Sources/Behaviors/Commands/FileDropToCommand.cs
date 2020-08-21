@@ -15,8 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Generics;
 using System.Windows;
+using Cube.Mixin.Generics;
 
 namespace Cube.Xui.Behaviors
 {

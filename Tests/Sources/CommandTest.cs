@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Input;
 using Cube.Mixin.Commands;
 using Cube.Mixin.Observing;
 using NUnit.Framework;
-using System.Windows.Input;
 
 namespace Cube.Xui.Tests
 {

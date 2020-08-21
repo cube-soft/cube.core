@@ -15,10 +15,10 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logging;
-using NUnit.Framework;
 using System.Reflection;
 using System.Windows;
+using Cube.Mixin.Logging;
+using NUnit.Framework;
 
 namespace Cube.Xui.Tests
 {
