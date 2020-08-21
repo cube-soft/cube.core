@@ -27,8 +27,8 @@ namespace Cube.Forms
     /// SizeGripControl
     ///
     /// <summary>
-    /// フォーム右下に表示されるリサイズ用グリップの機能を提供する
-    /// コントロールクラスです。
+    /// Represents the resize grip control that appears in the right-bottom
+    /// corner of the window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,7 +41,7 @@ namespace Cube.Forms
         /// OnCreateControl
         ///
         /// <summary>
-        /// コントロール生成時に実行されます。
+        /// Occurs when the control is created.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -56,7 +56,7 @@ namespace Cube.Forms
         /// OnBackColorChanged
         ///
         /// <summary>
-        /// 背景色の変更時に実行されます。
+        /// Occurs when the background color is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -71,7 +71,7 @@ namespace Cube.Forms
         /// OnResize
         ///
         /// <summary>
-        /// コントロール自体のサイズ変更時に実行されます。
+        /// Occurs when the control size is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -86,7 +86,7 @@ namespace Cube.Forms
         /// OnMouseMove
         ///
         /// <summary>
-        /// マウス移動時に実行されます。
+        /// Occurs when the mouse is moved.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -105,7 +105,7 @@ namespace Cube.Forms
         /// OnMouseDown
         ///
         /// <summary>
-        /// マウスのボタンを押下時に実行されます。
+        /// Occurs when any mouse button is pressed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -125,7 +125,7 @@ namespace Cube.Forms
         /// DrawSizeGrip
         ///
         /// <summary>
-        /// リサイズ用グリップの外観を描画します。
+        /// Draws the resize grip.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

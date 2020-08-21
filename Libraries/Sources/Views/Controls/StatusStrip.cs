@@ -25,7 +25,7 @@ namespace Cube.Forms
     /// StatusStrip
     ///
     /// <summary>
-    /// System.Windows.Forms.StatusStrip を拡張したクラスです。
+    /// Represents the customized version of the WinForms StatusStrip class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ namespace Cube.Forms
         /// NcHitTest
         ///
         /// <summary>
-        /// マウスのヒットテスト時に発生するイベントです。
+        /// Occurs when the hit test of the non-client area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -51,7 +51,7 @@ namespace Cube.Forms
         /// OnNcHitTest
         ///
         /// <summary>
-        /// NcHitTest イベントを発生させます。
+        /// Raises the NcHitTest event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -69,7 +69,7 @@ namespace Cube.Forms
         /// OnMouseMove
         ///
         /// <summary>
-        /// マウス移動時に実行されます。
+        /// Occurs when the mouse is moved.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -88,7 +88,7 @@ namespace Cube.Forms
         /// OnMouseDown
         ///
         /// <summary>
-        /// マウスのボタンを押下時に実行されます。
+        /// Occurs when any mouse button is pressed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -116,8 +116,10 @@ namespace Cube.Forms
         /// WndProc
         ///
         /// <summary>
-        /// ウィンドウメッセージを処理します。
+        /// Processes the specified window message.
         /// </summary>
+        ///
+        /// <param name="m">Window message.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)
@@ -145,7 +147,7 @@ namespace Cube.Forms
         /// IsSizingGrip
         ///
         /// <summary>
-        /// リサイズ用グリップ部分かどうかを判別します。
+        /// Determines if the control at the specified point is a resize grip.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -162,7 +164,8 @@ namespace Cube.Forms
         /// IsNormalWindow
         ///
         /// <summary>
-        /// FindForm で見つかるフォームが通常状態かどうかを判別します。
+        /// Determines if the value returned from the FindForm method is
+        /// the normal state.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

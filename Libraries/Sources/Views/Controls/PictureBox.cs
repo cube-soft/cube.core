@@ -25,7 +25,7 @@ namespace Cube.Forms
     /// PictureBox
     ///
     /// <summary>
-    /// System.Windows.Forms.PictureBox を拡張したクラスです。
+    /// Represents the customized version of the WinForms PictureBox class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ namespace Cube.Forms
         /// NcHitTest
         ///
         /// <summary>
-        /// マウスのヒットテスト時に発生するイベントです。
+        /// Occurs when the hit test of the non-client area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -51,7 +51,7 @@ namespace Cube.Forms
         /// OnNcHitTest
         ///
         /// <summary>
-        /// NcHitTest イベントを発生させます。
+        /// Raises the NcHitTest event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -69,8 +69,10 @@ namespace Cube.Forms
         /// WndProc
         ///
         /// <summary>
-        /// ウィンドウメッセージを処理します。
+        /// Processes the specified window message.
         /// </summary>
+        ///
+        /// <param name="m">Window message.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)

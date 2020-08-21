@@ -355,7 +355,7 @@ namespace Cube.Forms
         /// NcHitTest
         ///
         /// <summary>
-        /// マウスのヒットテスト時に発生するイベントです。
+        /// Occurs when the hit test of the non-client area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -366,7 +366,7 @@ namespace Cube.Forms
         /// OnNcHitTest
         ///
         /// <summary>
-        /// NcHitTest イベントを発生させます。
+        /// Raises the NcHitTest event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

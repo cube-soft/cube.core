@@ -25,12 +25,8 @@ namespace Cube.Forms
     /// ControlBase
     ///
     /// <summary>
-    /// 各種コントロールの基底となるクラスです。
+    /// Represents the base class of controls.
     /// </summary>
-    ///
-    /// <remarks>
-    /// System.Windows.Forms.UserControl をベースに実装されています。
-    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public class ControlBase : System.Windows.Forms.UserControl
@@ -42,14 +38,11 @@ namespace Cube.Forms
         /// ControlBase
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ControlBase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ControlBase()
-        {
-            DoubleBuffered = true;
-        }
+        protected ControlBase() { DoubleBuffered = true; }
 
         #endregion
 
@@ -62,7 +55,7 @@ namespace Cube.Forms
         /// NcHitTest
         ///
         /// <summary>
-        /// マウスのヒットテスト時に発生するイベントです。
+        /// Occurs when the hit test of the non-client area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -73,7 +66,7 @@ namespace Cube.Forms
         /// OnNcHitTest
         ///
         /// <summary>
-        /// NcHitTest イベントを発生させます。
+        /// Raises the NcHitTest event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -91,8 +84,10 @@ namespace Cube.Forms
         /// WndProc
         ///
         /// <summary>
-        /// ウィンドウメッセージを処理します。
+        /// Processes the specified window message.
         /// </summary>
+        ///
+        /// <param name="m">Window message.</param>
         ///
         /* ----------------------------------------------------------------- */
         protected override void WndProc(ref System.Windows.Forms.Message m)
