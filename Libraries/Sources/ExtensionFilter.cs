@@ -44,7 +44,7 @@ namespace Cube.FileSystem
         ///
         /// <summary>
         /// Initializes a new instance of the ExtensionFilter class
-        /// with the specfied parameters
+        /// with the specified parameters
         /// </summary>
         ///
         /// <param name="description">Description for the filter.</param>
@@ -66,7 +66,7 @@ namespace Cube.FileSystem
         ///
         /// <summary>
         /// Initializes a new instance of the ExtensionFilter class
-        /// with the specfied parameters
+        /// with the specified parameters
         /// </summary>
         ///
         /// <param name="text">Description for the filter.</param>
