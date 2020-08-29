@@ -26,7 +26,7 @@ namespace Cube.Forms.Behaviors
     /// PathBehavior
     ///
     /// <summary>
-    /// パス入力用テキストボックスの挙動を定義したクラスです。
+    /// Represents the behavior of a textbox to entering a path.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,10 +39,11 @@ namespace Cube.Forms.Behaviors
         /// PathBehavior
         ///
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// Initializes a new instance of the PathBehavior class with the
+        /// specified control.
         /// </summary>
         ///
-        /// <param name="src">パス入力用テキストボックス</param>
+        /// <param name="src">Textbox control.</param>
         ///
         /* ----------------------------------------------------------------- */
         public PathBehavior(TextBox src) : this(src, new ToolTip
@@ -59,11 +60,12 @@ namespace Cube.Forms.Behaviors
         /// PathBehavior
         ///
         /// <summary>
-        /// オブジェクトを破棄します。
+        /// Initializes a new instance of the PathBehavior class with the
+        /// specified controls.
         /// </summary>
         ///
-        /// <param name="src">パス入力用テキストボックス</param>
-        /// <param name="tips">ツールチップ表示用コントロール</param>
+        /// <param name="src">Textbox control.</param>
+        /// <param name="tips">Tooltip control.</param>
         ///
         /* ----------------------------------------------------------------- */
         public PathBehavior(TextBox src, ToolTip tips)
@@ -90,11 +92,13 @@ namespace Cube.Forms.Behaviors
         /// Dispose
         ///
         /// <summary>
-        /// リソースを開放します。
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
         /// </summary>
         ///
         /// <param name="disposing">
-        /// マネージオブジェクトを開放するかどうか
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
@@ -113,7 +117,7 @@ namespace Cube.Forms.Behaviors
         /// WhenTextChanged
         ///
         /// <summary>
-        /// テキスト変更時に実行されるハンドラです。
+        /// Occurs when the value of the provided textbox is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -137,7 +141,7 @@ namespace Cube.Forms.Behaviors
         /// WhenClick
         ///
         /// <summary>
-        /// テキストボックスのクリック時に実行されるハンドラです。
+        /// Occurs when the provided textbox is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -158,7 +162,7 @@ namespace Cube.Forms.Behaviors
         /// WhenLeave
         ///
         /// <summary>
-        /// テキストボックスがフォーカスを失った時に実行されるハンドラです。
+        /// Occurs when the focus of the provided textbox is lost.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

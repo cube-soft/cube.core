@@ -107,11 +107,9 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Invoke(TViewModel e)
         {
-            using(var view = new TView())
-            {
-                if (view is IBindable binder) binder.Bind(e);
-                _ = view.ShowDialog();
-            }
+            using var view = new TView();
+            if (view is IBindable binder) binder.Bind(e);
+            _ = view.ShowDialog();
         }
     }
 

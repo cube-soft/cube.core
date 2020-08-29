@@ -26,7 +26,7 @@ namespace Cube.Forms.Behaviors
     /// PasswordBehavior
     ///
     /// <summary>
-    /// パスワード入力用テキストボックスの挙動を定義したクラスです。
+    /// Represents the behavior of a textbox for entering a password.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,11 +39,12 @@ namespace Cube.Forms.Behaviors
         /// PasswordBehavior
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the PasswordBehavior with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="master">パスワード入力欄</param>
-        /// <param name="confirm">確認用パスワード入力欄</param>
+        /// <param name="master">Textbox to input a password.</param>
+        /// <param name="confirm">Textbox to confirm the password.</param>
         ///
         /* ----------------------------------------------------------------- */
         public PasswordBehavior(System.Windows.Forms.TextBox master,
@@ -55,13 +56,14 @@ namespace Cube.Forms.Behaviors
         /// PasswordBehavior
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the PasswordBehavior with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="master">パスワード入力欄</param>
-        /// <param name="confirm">確認用パスワード入力欄</param>
+        /// <param name="master">Textbox to input a password.</param>
+        /// <param name="confirm">Textbox to confirm the password.</param>
         /// <param name="showPassword">
-        /// パスワードを表示するかどうかを示すチェック項目
+        /// Value indicating whether to show the entered password.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
@@ -92,14 +94,14 @@ namespace Cube.Forms.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsValid
+        /// Valid
         ///
         /// <summary>
-        /// 入力内容が正しいかどうかを示す値です。
+        /// Gets a value indicating whether the entered password is valid.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsValid =>
+        public bool Valid =>
             _master.TextLength > 0 &&
             (!UseSystemPasswordChar || _master.Text.Equals(_confirm.Text));
 
@@ -108,7 +110,7 @@ namespace Cube.Forms.Behaviors
         /// DefaultColor
         ///
         /// <summary>
-        /// パスワード確認欄の既定の背景色を取得または設定します。
+        /// Gets or sets the default background color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,7 +130,7 @@ namespace Cube.Forms.Behaviors
         /// WarningColor
         ///
         /// <summary>
-        /// パスワード確認欄の警告時の背景色を取得または設定します。
+        /// Gets or sets the background color that represents a warning.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -148,7 +150,7 @@ namespace Cube.Forms.Behaviors
         /// DisabledColor
         ///
         /// <summary>
-        /// パスワード確認欄の無効時の背景色を取得または設定します。
+        /// Gets or sets the background color when the textbox is disabled.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -168,8 +170,8 @@ namespace Cube.Forms.Behaviors
         /// UseSystemPasswordChar
         ///
         /// <summary>
-        /// パスワード入力欄の文字を隠すかどうかを示す値を取得または設定
-        /// します。
+        /// Gets or sets a value indicating whether to show special symbols
+        /// in place of the entered password.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -194,7 +196,7 @@ namespace Cube.Forms.Behaviors
         /// Updated
         ///
         /// <summary>
-        /// 関連オブジェクトの状態が更新された時に発生するイベントです。
+        /// Occurs when the state of related objects is updated.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -205,12 +207,11 @@ namespace Cube.Forms.Behaviors
         /// OnUpdated
         ///
         /// <summary>
-        /// Updated イベントを発生させます。
+        /// Raises the Updated event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnUpdated(EventArgs e) =>
-            Updated?.Invoke(this, e);
+        protected virtual void OnUpdated(EventArgs e) => Updated?.Invoke(this, e);
 
         #endregion
 
@@ -221,11 +222,13 @@ namespace Cube.Forms.Behaviors
         /// Dispose
         ///
         /// <summary>
-        /// リソースを開放します。
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
         /// </summary>
         ///
         /// <param name="disposing">
-        /// マネージオブジェクトを開放するかどうか
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
@@ -244,7 +247,7 @@ namespace Cube.Forms.Behaviors
         /// UpdateConfirmTextBox
         ///
         /// <summary>
-        /// パスワード確認欄の状態を更新します。
+        /// Updates the state of the textbox for confirming password.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -267,8 +270,7 @@ namespace Cube.Forms.Behaviors
         /// WhenPasswordChanged
         ///
         /// <summary>
-        /// パスワード入力欄の文字列が変更された時に実行される
-        /// ハンドラです。
+        /// Occurs when the value of the textbox is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -283,8 +285,7 @@ namespace Cube.Forms.Behaviors
         /// WhenConfirmChanged
         ///
         /// <summary>
-        /// パスワード確認欄の文字列が変更された時に実行される
-        /// ハンドラです。
+        /// Occurs when the value of the textbox is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -296,8 +297,8 @@ namespace Cube.Forms.Behaviors
         /// WhenShowPasswordChanged
         ///
         /// <summary>
-        /// パスワードを表示するかどうかの値が変化した時に実行される
-        /// ハンドラです。
+        /// Occurs when the value of UseSystemPasswordChar property is
+        /// changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
