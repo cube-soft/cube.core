@@ -30,7 +30,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class WindowBase : WinForms.Form, IBindable
+    public class WindowBase : WinForms.Form, IBindable
     {
         #region Properties
 
