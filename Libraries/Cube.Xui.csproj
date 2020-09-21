@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
-        <Version>2.1.0</Version>
+        <Version>2.2.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Support the MVVM pattern in WPF applications.</Description>
@@ -25,7 +25,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cube.FileSystem" Version="2.1.0" />
+        <PackageReference Include="Cube.FileSystem" Version="2.2.0" />
         <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
     </ItemGroup>
     <ItemGroup>
