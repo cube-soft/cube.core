@@ -203,7 +203,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
-        public string Platform => string.Format("{0}{1}Microsoft .NET Framework {2}{3}",
+        public string Platform => string.Format("{0}{1}CLR {2}{3}",
             Environment.OSVersion,
             Environment.NewLine,
             Environment.Version,
