@@ -108,6 +108,30 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Touch
+        ///
+        /// <summary>
+        /// Tests the Touch extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Touch()
+        {
+            var src = Get($"{nameof(Touch)}.txt");
+            Assert.That(IO.Exists(src), Is.False);
+
+            IO.Touch(src);
+            Assert.That(IO.Exists(src), Is.True);
+
+            var cmp = IO.Get(src).LastWriteTime;
+            System.Threading.Thread.Sleep(1000);
+            IO.Touch(src);
+            Assert.That(IO.Get(src).LastWriteTime, Is.GreaterThan(cmp));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Rename
         ///
         /// <summary>

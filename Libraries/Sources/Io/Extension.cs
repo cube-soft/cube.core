@@ -128,6 +128,43 @@ namespace Cube.Mixin.IO
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Touch
+        ///
+        /// <summary>
+        /// Creates a new file or updates the timestamp of the specified
+        /// path.
+        /// </summary>
+        ///
+        /// <param name="io">I/O handler.</param>
+        /// <param name="src">Path to create or update.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Touch(this Source io, string src) => Touch(io, src, DateTime.Now);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Touch
+        ///
+        /// <summary>
+        /// Creates a new file or updates the timestamp of the specified
+        /// path.
+        /// </summary>
+        ///
+        /// <param name="io">I/O handler.</param>
+        /// <param name="src">Path to create or update.</param>
+        /// <param name="timestamp">Timestamp to set.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Touch(this Source io, string src, DateTime timestamp)
+        {
+            using (io.Create(src)) { }
+            io.SetLastWriteTime(src, timestamp);
+        }
+
+        #region Rename
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Rename
         ///
         /// <summary>
@@ -164,6 +201,8 @@ namespace Cube.Mixin.IO
             var e = io.Get(src);
             return io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");
         }
+
+        #endregion
 
         #region GetTypeName
 
