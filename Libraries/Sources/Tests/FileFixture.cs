@@ -18,6 +18,7 @@
 using System.Reflection;
 using Cube.FileSystem;
 using Cube.Mixin.Assembly;
+using Cube.Mixin.IO;
 using Cube.Mixin.Syntax;
 
 namespace Cube.Tests

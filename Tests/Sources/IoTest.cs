@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Tests;
+using Cube.Mixin.IO;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests

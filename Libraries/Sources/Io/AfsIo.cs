@@ -79,6 +79,22 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
+        /// CombineCore
+        ///
+        /// <summary>
+        /// Combiles the specified paths.
+        /// </summary>
+        ///
+        /// <param name="paths">Collection of paths.</param>
+        ///
+        /// <returns>Combined path.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override string CombineCore(params string[] paths) =>
+            Path.Combine(paths);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// SetAttributesCore
         ///
         /// <summary>
@@ -151,38 +167,6 @@ namespace Cube.FileSystem
             if (Directory.Exists(path)) Directory.SetLastAccessTime(path, time);
             else if (File.Exists(path)) File.SetLastAccessTime(path, time);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CombineCore
-        ///
-        /// <summary>
-        /// Combiles the specified paths.
-        /// </summary>
-        ///
-        /// <param name="paths">Collection of paths.</param>
-        ///
-        /// <returns>Combined path.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override string CombineCore(params string[] paths) =>
-            Path.Combine(paths);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ExistsCore
-        ///
-        /// <summary>
-        /// Determines whether the specified file or directory exists.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        ///
-        /// <returns>true for exists.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override bool ExistsCore(string path) =>
-            File.Exists(path) || Directory.Exists(path);
 
         /* ----------------------------------------------------------------- */
         ///

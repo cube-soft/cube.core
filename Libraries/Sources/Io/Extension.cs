@@ -110,20 +110,56 @@ namespace Cube.Mixin.IO
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ChangeExtension
+        /// Exists
         ///
         /// <summary>
-        /// Gets the string with the extension of the specified path changed.
+        /// Determines if the specified path exists.
+        /// </summary>
+        ///
+        /// <param name="io">I/O handler.</param>
+        /// <param name="src">Path to check.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool Exists(this Source io, string src)
+        {
+            try { return io.Get(src).Exists; }
+            catch { return false; }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Rename
+        ///
+        /// <summary>
+        /// Changes the filename of a path string.
         /// </summary>
         ///
         /// <param name="io">I/O handler.</param>
         /// <param name="src">Source path.</param>
-        /// <param name="extension">Extension to change.</param>
+        /// <param name="filename">Filename to rename.</param>
         ///
-        /// <returns>Changed path.</returns>
+        /// <returns>Renamed path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string ChangeExtension(this Source io, string src, string extension)
+        public static string Rename(this Source io, string src, string filename) =>
+            io.Combine(io.Get(src).DirectoryName, filename);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RenameExtension
+        ///
+        /// <summary>
+        /// Changes the extension of a path string.
+        /// </summary>
+        ///
+        /// <param name="io">I/O handler.</param>
+        /// <param name="src">Source path.</param>
+        /// <param name="extension">Extension to rename.</param>
+        ///
+        /// <returns>Renamed path.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string RenameExtension(this Source io, string src, string extension)
         {
             var e = io.Get(src);
             return io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");

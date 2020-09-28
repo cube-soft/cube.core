@@ -108,18 +108,31 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ChangeExtension
+        /// Rename
         ///
         /// <summary>
-        /// Tests the ChangeExtension extended method.
+        /// Tests the Rename extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(@"c:\foo\Sample.txt", "Rename.dat", ExpectedResult = @"c:\foo\Rename.dat")]
+        [TestCase(@"c:\bar\Remove.txt", "",           ExpectedResult = @"c:\bar")]
+        public string Rename(string src, string filename) => IO.Rename(src, filename);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// RenameExtension
+        ///
+        /// <summary>
+        /// Tests the RenameExtension extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase("Sample.txt", ".new", ExpectedResult = "Sample.new")]
         [TestCase("Sample.txt", "",     ExpectedResult = "Sample")]
         [TestCase("Sample",     ".txt", ExpectedResult = "Sample.txt")]
-        public string ChangeExtension(string src, string extension) =>
-            IO.Get(IO.ChangeExtension(src, extension)).Name;
+        public string RenameExtension(string src, string extension) =>
+            IO.Get(IO.RenameExtension(src, extension)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
