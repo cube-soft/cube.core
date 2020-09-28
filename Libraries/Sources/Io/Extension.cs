@@ -108,6 +108,27 @@ namespace Cube.Mixin.IO
             ss.CopyTo(ds);
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ChangeExtension
+        ///
+        /// <summary>
+        /// Gets the string with the extension of the specified path changed.
+        /// </summary>
+        ///
+        /// <param name="io">I/O handler.</param>
+        /// <param name="src">Source path.</param>
+        /// <param name="extension">Extension to change.</param>
+        ///
+        /// <returns>Changed path.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string ChangeExtension(this Source io, string src, string extension)
+        {
+            var e = io.Get(src);
+            return io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");
+        }
+
         #region GetTypeName
 
         /* ----------------------------------------------------------------- */

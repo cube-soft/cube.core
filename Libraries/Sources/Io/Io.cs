@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Cube.Mixin.Logging;
 
 namespace Cube.FileSystem
@@ -191,7 +192,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public IEnumerable<string> GetFiles(string path, string pattern, SearchOption option) =>
-            GetFilesCore(path, pattern, option) ?? new string[0];
+            GetFilesCore(path, pattern, option) ?? Enumerable.Empty<string>();
 
         /* ----------------------------------------------------------------- */
         ///

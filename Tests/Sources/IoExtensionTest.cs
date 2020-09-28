@@ -108,6 +108,21 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ChangeExtension
+        ///
+        /// <summary>
+        /// Tests the ChangeExtension extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Sample.txt", ".new", ExpectedResult = "Sample.new")]
+        [TestCase("Sample.txt", "",     ExpectedResult = "Sample")]
+        [TestCase("Sample",     ".txt", ExpectedResult = "Sample.txt")]
+        public string ChangeExtension(string src, string extension) =>
+            IO.Get(IO.ChangeExtension(src, extension)).Name;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetTypeName
         ///
         /// <summary>
