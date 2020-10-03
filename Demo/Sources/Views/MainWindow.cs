@@ -15,9 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Windows.Forms;
-
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
@@ -49,7 +46,7 @@ namespace Cube.Forms.Demo
             Caption = HeaderCaptionControl;
             Text    = $"{ProductName} {ProductVersion}";
 
-            ContentsControl.Resize += WhenResize;
+            Behaviors.Add(new FlowLayoutBehavior(ContentsControl));
         }
 
         #endregion
@@ -73,26 +70,6 @@ namespace Cube.Forms.Demo
             DemoButton1.Click += (s, e) => vm.About();
 
             Behaviors.Add(new ShowVersionBehavior(vm, this));
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// WhenResize
-        ///
-        /// <summary>
-        /// Occurs when resizing the main component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void WhenResize(object s, EventArgs e)
-        {
-            if (!(s is Control c)) return;
-
-            var width = c.ClientSize.Width;
-            var left  = c.Padding.Left;
-            var right = c.Padding.Right;
-
-            DemoButton1.Width = width - left - right;
         }
 
         #endregion

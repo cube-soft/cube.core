@@ -15,72 +15,78 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Drawing;
-using System.Reflection;
-using Cube.Forms.Behaviors;
+using System;
+using System.Collections.Generic;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowVersionBehavior
+    /// FlowLayoutBehavior
     ///
     /// <summary>
-    /// Represents the behavior to show a version dialog.
+    /// Provides functionality to adjust the width of components in the
+    /// provided control when resizing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowVersionBehavior : MessageBehavior<AboutMessage>
+    public class FlowLayoutBehavior : DisposableBase
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// ShowVersionBehavior
+        /// FlowLayoutHacker
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowVersionBehavior class
+        /// Initializes a new instance of the FlowLayoutBehavior class
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">ViewModel object.</param>
-        /// <param name="view">View object.</param>
+        /// <param name="src">View object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ShowVersionBehavior(IPresentable vm, WindowBase view) : base(vm)
+        public FlowLayoutBehavior(FlowLayoutPanel src)
         {
-            _icon = view.Icon;
-            _text = view.Text;
+            void resize(object s, EventArgs e)
+            {
+                if (src.Controls.Count <= 0) return;
+                src.Controls[0].Width = src.ClientSize.Width - src.Padding.Left - src.Padding.Right;
+            }
+
+            src.Resize += resize;
+            _disposables.Add(Disposable.Create(() => src.Resize -= resize));
         }
 
         #endregion
 
         #region Implementations
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Dispose
         ///
         /// <summary>
-        /// Invokes the action.
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        protected override void Invoke(AboutMessage e)
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
         {
-            using var view = new VersionWindow(Assembly.GetExecutingAssembly())
-            {
-                Icon = _icon,
-                Text = _text,
-            };
-            view.ShowDialog();
+            if (!disposing) return;
+            foreach (var e in _disposables) e.Dispose();
         }
 
         #endregion
 
         #region Fields
-        private readonly Icon _icon;
-        private readonly string _text;
+        private readonly IList<IDisposable> _disposables = new List<IDisposable>();
         #endregion
     }
 }
