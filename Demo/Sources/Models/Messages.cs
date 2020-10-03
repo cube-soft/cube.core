@@ -15,39 +15,16 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Program
+    /// AboutMessage
     ///
     /// <summary>
-    /// Represents the main program.
+    /// Represents the message to show a version dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class Program
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Main
-        ///
-        /// <summary>
-        /// Executes the main program of the application.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [STAThread]
-        static void Main()
-        {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-
-            var view = new MainWindow();
-            view.Bind(new MainViewModel());
-            System.Windows.Forms.Application.Run(view);
-        }
-    }
+    public class AboutMessage { }
 }

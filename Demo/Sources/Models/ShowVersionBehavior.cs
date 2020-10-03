@@ -15,41 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Windows.Forms;
+using System.Drawing;
+using System.Reflection;
+using Cube.Forms.Behaviors;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainWindow
+    /// ShowVersionBehavior
     ///
     /// <summary>
-    /// Represents the main window.
+    /// Represents the behavior to show a version dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainWindow : BorderlessWindow
+    public class ShowVersionBehavior : MessageBehavior<AboutMessage>
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// MainWindow
+        /// ShowVersionBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the MainWindow class.
+        /// Initializes a new instance of the ShowVersionBehavior class
+        /// with the specified arguments.
         /// </summary>
         ///
+        /// <param name="vm">ViewModel object.</param>
+        /// <param name="view">View object.</param>
+        ///
         /* --------------------------------------------------------------------- */
-        public MainWindow()
+        public ShowVersionBehavior(IPresentable vm, WindowBase view) : base(vm)
         {
-            InitializeComponent();
-
-            Caption = HeaderCaptionControl;
-            Text    = $"{ProductName} {ProductVersion}";
-
-            ContentsControl.Resize += WhenResize;
+            _icon = view.Icon;
+            _text = view.Text;
         }
 
         #endregion
@@ -58,43 +59,28 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnBind
+        /// Version
         ///
         /// <summary>
-        /// Binds the window with the specified presenter.
+        /// Invokes the action.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void OnBind(IPresentable src)
+        protected override void Invoke(AboutMessage e)
         {
-            base.OnBind(src);
-            if (!(src is MainViewModel vm)) return;
-
-            DemoButton1.Click += (s, e) => vm.About();
-
-            Behaviors.Add(new ShowVersionBehavior(vm, this));
+            using var view = new VersionWindow(Assembly.GetExecutingAssembly())
+            {
+                Icon = _icon,
+                Text = _text,
+            };
+            view.ShowDialog();
         }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// WhenResize
-        ///
-        /// <summary>
-        /// Occurs when resizing the main component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private void WhenResize(object s, EventArgs e)
-        {
-            if (!(s is Control c)) return;
+        #endregion
 
-            var width = c.ClientSize.Width;
-            var left  = c.Padding.Left;
-            var right = c.Padding.Right;
-
-            DemoButton1.Width = width - left - right;
-        }
-
+        #region Fields
+        private readonly Icon _icon;
+        private readonly string _text;
         #endregion
     }
 }

@@ -15,39 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Program
+    /// MainViewModel
     ///
     /// <summary>
-    /// Represents the main program.
+    /// Represents the ViewModel for the main window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class Program
+    public class MainViewModel : Presentable<object>
     {
-        /* ----------------------------------------------------------------- */
+        #region Constructors
+
+        /* --------------------------------------------------------------------- */
         ///
-        /// Main
+        /// MainViewModel
         ///
         /// <summary>
-        /// Executes the main program of the application.
+        /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        [STAThread]
-        static void Main()
-        {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        /* --------------------------------------------------------------------- */
+        public MainViewModel() : base(new object()) { }
 
-            var view = new MainWindow();
-            view.Bind(new MainViewModel());
-            System.Windows.Forms.Application.Run(view);
-        }
+        #endregion
+
+        #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// About
+        ///
+        /// <summary>
+        /// Invokes the command to show a version dialog.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void About() => Send<AboutMessage>();
+
+        #endregion
     }
 }
