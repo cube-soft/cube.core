@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Reflection;
+
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
@@ -26,5 +28,39 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class AboutMessage { }
+    public class AboutMessage
+    {
+        #region Constructors
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// AboutMessage
+        ///
+        /// <summary>
+        /// Initializes a new instance of the AboutMessage class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Assembly information.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public AboutMessage(Assembly src) { Value = src; }
+
+        #endregion
+
+        #region Properties
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets the value for the message.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Assembly Value { get; }
+
+        #endregion
+    }
 }

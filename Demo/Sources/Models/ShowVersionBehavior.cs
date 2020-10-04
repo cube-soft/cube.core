@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Drawing;
-using System.Reflection;
 using Cube.Forms.Behaviors;
 
 namespace Cube.Forms.Demo
@@ -68,7 +67,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         protected override void Invoke(AboutMessage e)
         {
-            using var view = new VersionWindow(Assembly.GetExecutingAssembly())
+            using var view = new VersionWindow(e.Value)
             {
                 Icon = _icon,
                 Text = _text,

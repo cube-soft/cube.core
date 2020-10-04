@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Reflection;
+
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
@@ -26,7 +28,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MainViewModel : Presentable<object>
+    public class MainViewModel : Presentable<Assembly>
     {
         #region Constructors
 
@@ -39,7 +41,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public MainViewModel() : base(new object()) { }
+        public MainViewModel() : base(Assembly.GetExecutingAssembly()) { }
 
         #endregion
 
@@ -54,7 +56,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void About() => Send<AboutMessage>();
+        public void About() => Send(new AboutMessage(Facade));
 
         #endregion
     }
