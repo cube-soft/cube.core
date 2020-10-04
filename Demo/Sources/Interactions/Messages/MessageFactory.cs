@@ -15,33 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Reflection;
+using Cube.Mixin.Assembly;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AboutMessage
+    /// MessageFactory
     ///
     /// <summary>
-    /// Represents the message to show a version dialog.
+    /// Provides functionality to create messages.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class AboutMessage : Message<Assembly>
+    public static class MessageFactory
     {
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// AboutMessage
+        /// CreateForNotice
         ///
         /// <summary>
-        /// Initializes a new instance of the AboutMessage class with the
-        /// specified arguments.
+        /// Creates a new instance of the NoticeMessage class.
         /// </summary>
         ///
         /// <param name="src">Assembly information.</param>
         ///
-        /* --------------------------------------------------------------------- */
-        public AboutMessage(Assembly src) { Value = src; }
+        /* ----------------------------------------------------------------- */
+        public static NoticeMessage CreateForNotice(Assembly src) => new NoticeMessage(new Notice
+        {
+            Title        = src.GetTitle(),
+            Description  = Properties.Resources.NoticeSample,
+            DisplayTime  = TimeSpan.FromSeconds(60),
+            InitialDelay = TimeSpan.FromMilliseconds(100),
+            Priority     = NoticePriority.Normal,
+            Value        = (Action<NoticeComponents>)(e => { }),
+        });
     }
 }

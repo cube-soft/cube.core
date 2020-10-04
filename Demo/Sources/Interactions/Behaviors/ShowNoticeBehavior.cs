@@ -15,42 +15,38 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Drawing;
+using System;
 using Cube.Forms.Behaviors;
+using Cube.Mixin.Generics;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowVersionBehavior
+    /// ShowNoticeBehavior
     ///
     /// <summary>
-    /// Represents the behavior to show a version dialog.
+    /// Represents the behavior to show a notice dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class ShowVersionBehavior : MessageBehavior<AboutMessage>
+    public sealed class ShowNoticeBehavior : MessageBehavior<NoticeMessage>
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// ShowVersionBehavior
+        /// ShowNoticeBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowVersionBehavior class
+        /// Initializes a new instance of the ShowNoticeBehavior class
         /// with the specified arguments.
         /// </summary>
         ///
         /// <param name="vm">ViewModel object.</param>
-        /// <param name="view">View object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ShowVersionBehavior(IPresentable vm, WindowBase view) : base(vm)
-        {
-            _icon = view.Icon;
-            _text = view.Text;
-        }
+        public ShowNoticeBehavior(IPresentable vm) : base(vm) { }
 
         #endregion
 
@@ -65,21 +61,14 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void Invoke(AboutMessage message)
+        protected override void Invoke(NoticeMessage m)
         {
-            using var view = new VersionWindow(message.Value)
-            {
-                Icon = _icon,
-                Text = _text,
-            };
-            view.ShowDialog();
+            var view = new NoticeWindow();
+            view.Selected  += (s, e) => m.Value.Value.TryCast<Action<NoticeComponents>>()?.Invoke(e.Value);
+            view.Completed += (s, e) => view.Close();
+            view.Show(m.Value);
         }
 
-        #endregion
-
-        #region Fields
-        private readonly Icon _icon;
-        private readonly string _text;
         #endregion
     }
 }

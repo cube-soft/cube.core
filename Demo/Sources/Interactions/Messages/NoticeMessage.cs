@@ -19,60 +19,30 @@ namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainWindow
+    /// NoticeMessage
     ///
     /// <summary>
-    /// Represents the main window.
+    /// Represents the message to show a notice dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainWindow : BorderlessWindow
+    public class NoticeMessage : Message<Notice>
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// MainWindow
+        /// NoticeMessage
         ///
         /// <summary>
-        /// Initializes a new instance of the MainWindow class.
+        /// Initializes a new instance of the NoticeMessage class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            Caption = HeaderCaptionControl;
-            Text    = $"{ProductName} {ProductVersion}";
-
-            Behaviors.Add(new FlowLayoutBehavior(ContentsControl));
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnBind
-        ///
-        /// <summary>
-        /// Binds the window with the specified presenter.
-        /// </summary>
+        /// <param name="src">Notice information.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void OnBind(IPresentable src)
-        {
-            base.OnBind(src);
-            if (!(src is MainViewModel vm)) return;
-
-            DemoButton1.Click += (s, e) => vm.About();
-            DemoButton2.Click += (s, e) => vm.Notice();
-
-            Behaviors.Add(new ShowVersionBehavior(vm, this));
-            Behaviors.Add(new ShowNoticeBehavior(vm));
-        }
+        public NoticeMessage(Notice src) { Value = src; }
 
         #endregion
     }

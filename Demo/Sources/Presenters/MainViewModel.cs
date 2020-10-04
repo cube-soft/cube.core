@@ -49,6 +49,17 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
+        /// Notice
+        ///
+        /// <summary>
+        /// Invokes the command to show a notice dialog.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Notice() => Send(MessageFactory.CreateForNotice(Facade));
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// About
         ///
         /// <summary>

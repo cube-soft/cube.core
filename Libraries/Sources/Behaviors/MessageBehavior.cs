@@ -64,10 +64,10 @@ namespace Cube.Forms.Behaviors
         /// Invokes the user action.
         /// </summary>
         ///
-        /// <param name="e">Message object.</param>
+        /// <param name="message">Message object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected abstract void Invoke(TMessage e);
+        protected abstract void Invoke(TMessage message);
 
         /* ----------------------------------------------------------------- */
         ///
