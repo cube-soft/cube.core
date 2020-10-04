@@ -79,22 +79,6 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// AutoEllipsis
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether to omit the overflow contents.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public bool AutoEllipsis
-        {
-            get => _text.AutoEllipsis;
-            set => _text.AutoEllipsis = value;
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
         /// Busy
         ///
         /// <summary>
@@ -380,7 +364,7 @@ namespace Cube.Forms
             _title.Dock = System.Windows.Forms.DockStyle.Fill;
             _title.Font = FontFactory.Create(12, FontStyle.Bold, GraphicsUnit.Pixel);
             _title.Margin = new System.Windows.Forms.Padding(0);
-            _title.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _title.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
             _title.TextAlign = ContentAlignment.MiddleLeft;
             _title.Styles.NormalStyle.BackColor = SystemColors.Window;
             _title.Styles.NormalStyle.BorderSize = 0;
@@ -392,7 +376,7 @@ namespace Cube.Forms
             _text.Cursor = System.Windows.Forms.Cursors.Hand;
             _text.Dock = System.Windows.Forms.DockStyle.Fill;
             _text.Margin = new System.Windows.Forms.Padding(0);
-            _text.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            _text.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
             _text.TextAlign = ContentAlignment.TopLeft;
             _text.Styles.NormalStyle.BackColor = SystemColors.Window;
             _text.Styles.NormalStyle.BorderSize = 0;
@@ -446,7 +430,7 @@ namespace Cube.Forms
 
         #region Fields
         private Notice _value;
-        private readonly Size _size = new Size(350, 80);
+        private readonly Size _size = new Size(350, 88);
         private readonly TableLayoutPanel _panel = new TableLayoutPanel();
         private readonly FlatButton _image = new FlatButton();
         private readonly FlatButton _title = new FlatButton();
