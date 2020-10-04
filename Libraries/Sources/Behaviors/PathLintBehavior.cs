@@ -23,14 +23,15 @@ namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PathBehavior
+    /// PathLintBehavior
     ///
     /// <summary>
-    /// Represents the behavior of a textbox to entering a path.
+    /// Represents the behavior to detect invalid characters from the
+    /// entered path.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PathBehavior : DisposableBase
+    public class PathLintBehavior : DisposableBase
     {
         #region Constructors
 
@@ -46,7 +47,7 @@ namespace Cube.Forms.Behaviors
         /// <param name="src">Textbox control.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathBehavior(TextBox src) : this(src, new ToolTip
+        public PathLintBehavior(TextBox src) : this(src, new ToolTip
         {
             ToolTipTitle = Properties.Resources.MessageInvalidPath,
             IsBalloon    = false,
@@ -68,7 +69,7 @@ namespace Cube.Forms.Behaviors
         /// <param name="tips">Tooltip control.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathBehavior(TextBox src, ToolTip tips)
+        public PathLintBehavior(TextBox src, ToolTip tips)
         {
             _chars   = new[] { '/', '*', '"', '<', '>', '|', '?', ':' };
             _tips    = tips;
