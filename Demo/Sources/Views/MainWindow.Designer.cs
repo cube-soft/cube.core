@@ -111,7 +111,7 @@
             //
             // DemoButton2
             //
-            this.DemoButton2.Content = "DemoButton1";
+            this.DemoButton2.Content = "Notice";
             this.DemoButton2.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton2.FlatAppearance.BorderSize = 0;
             this.DemoButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -133,7 +133,7 @@
             //
             // DemoButton3
             //
-            this.DemoButton3.Content = "DemoButton2";
+            this.DemoButton3.Content = "DemoButton1";
             this.DemoButton3.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton3.FlatAppearance.BorderSize = 0;
             this.DemoButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -155,7 +155,7 @@
             //
             // DemoButton4
             //
-            this.DemoButton4.Content = "DemoButton3";
+            this.DemoButton4.Content = "DemoButton2";
             this.DemoButton4.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton4.FlatAppearance.BorderSize = 0;
             this.DemoButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -177,7 +177,7 @@
             //
             // DemoButton5
             //
-            this.DemoButton5.Content = "DemoButton4";
+            this.DemoButton5.Content = "DemoButton3";
             this.DemoButton5.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton5.FlatAppearance.BorderSize = 0;
             this.DemoButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
