@@ -271,7 +271,13 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private new void Show() => base.Show();
+        private new void Show()
+        {
+            Size = _size;
+            var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
+            SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
+            base.Show();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -302,9 +308,6 @@ namespace Cube.Forms
             try
             {
                 Busy = true;
-
-                var screen = System.Windows.Forms.Screen.GetWorkingArea(Location);
-                SetDesktopLocation(screen.Width - Width - 1, screen.Height - Height - 1);
 
                 this.SetTopMost(false);
                 if (delay > TimeSpan.Zero) await Task.Delay(delay).ConfigureAwait(false);
@@ -424,7 +427,7 @@ namespace Cube.Forms
 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor     = SystemColors.Window;
-            Size          = new Size(350, 80);
+            Size          = _size;
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
             Busy          = false;
             Location      = new Point(0, 0);
@@ -443,6 +446,7 @@ namespace Cube.Forms
 
         #region Fields
         private Notice _value;
+        private readonly Size _size = new Size(350, 80);
         private readonly TableLayoutPanel _panel = new TableLayoutPanel();
         private readonly FlatButton _image = new FlatButton();
         private readonly FlatButton _title = new FlatButton();
