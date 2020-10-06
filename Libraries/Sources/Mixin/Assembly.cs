@@ -266,32 +266,16 @@ namespace Cube.Mixin.Assembly
         ///
         /// <param name="src">Assembly object.</param>
         ///
-        /// <returns>ProcessorArchitecture value.</returns>
+        /// <returns>32bit or 64bit</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static ProcessorArchitecture GetArchitecture(this Source src) =>
-            src.GetName().ProcessorArchitecture;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetPlatform
-        ///
-        /// <summary>
-        /// Gets the value that represents the executing platform.
-        /// </summary>
-        ///
-        /// <param name="src">Assembly object.</param>
-        ///
-        /// <returns>x86 or x64</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string GetPlatform(this Source src)
+        public static string GetArchitecture(this Source src)
         {
-            var ac = src.GetArchitecture();
-            return ac == ProcessorArchitecture.X86      ? "x86" :
+            var ac = src.GetName().ProcessorArchitecture;
+            return ac == ProcessorArchitecture.X86      ? "32bit" :
                    ac == ProcessorArchitecture.Amd64 ||
-                   ac == ProcessorArchitecture.IA64     ? "x64" :
-                   IntPtr.Size == 4                     ? "x86" : "x64";
+                   ac == ProcessorArchitecture.IA64     ? "64bit" :
+                   IntPtr.Size == 4                     ? "32bit" : "64bit";
         }
 
         #endregion

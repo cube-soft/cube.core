@@ -53,8 +53,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public SoftwareVersion(Assembly src)
         {
-            Number   = src.GetVersion();
-            Platform = src.GetPlatform();
+            Number       = src.GetVersion();
+            Architecture = src.GetArchitecture();
         }
 
         /* ----------------------------------------------------------------- */
@@ -154,14 +154,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Platform
+        /// Architecture
         ///
         /// <summary>
-        /// Gets or sets the platform identification.
+        /// Gets the architecture identification (32bit or 64bit).
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Platform { get; }
+        public string Architecture { get; }
 
         #endregion
 
@@ -203,7 +203,7 @@ namespace Cube
             if (Prefix.HasValue()) Append(ss, Prefix);
             AppendNumber(ss);
             if (Suffix.HasValue()) Append(ss, Suffix);
-            if (platform) Append(ss, $" ({Platform})");
+            if (platform) Append(ss, $" ({Architecture})");
 
             return ss.ToString();
         }

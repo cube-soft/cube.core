@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>2.1.0</Version>
+        <Version>3.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Support the MVVM pattern in WPF or WinForms applications.</Description>
@@ -24,7 +24,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NLog" Version="4.7.3" />
+        <PackageReference Include="NLog" Version="4.7.5" />
         <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
         <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.7.0" />
     </ItemGroup>
