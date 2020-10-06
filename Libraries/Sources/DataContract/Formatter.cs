@@ -77,7 +77,7 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         public static RegistryKey DefaultKey
         {
-            get => _defaultKey ?? (_defaultKey = Registry.CurrentUser.OpenSubKey("Software", true));
+            get => _defaultKey ??= Registry.CurrentUser.OpenSubKey("Software", true);
             set => _defaultKey = value;
         }
 
