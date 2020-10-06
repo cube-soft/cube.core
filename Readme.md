@@ -15,7 +15,7 @@ You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
     <ItemGroup>
-        <PackageReference Include="Cube.Forms" Version="2.1.1" />
+        <PackageReference Include="Cube.Forms" Version="3.0.0" />
     </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
