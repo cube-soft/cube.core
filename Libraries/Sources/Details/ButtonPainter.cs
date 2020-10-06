@@ -291,10 +291,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Color GetBorderColor() => Select(
-            Styles.NormalStyle.BorderColor,
-            Styles.CheckedStyle.BorderColor,
-            Styles.MouseOverStyle.BorderColor,
-            Styles.MouseDownStyle.BorderColor
+            Styles.Normal.BorderColor,
+            Styles.Checked.BorderColor,
+            Styles.MouseOver.BorderColor,
+            Styles.MouseDown.BorderColor
         );
 
         /* ----------------------------------------------------------------- */
@@ -307,10 +307,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private int GetBorderSize() => Select(
-            Styles.NormalStyle.BorderSize,
-            Styles.CheckedStyle.BorderSize,
-            Styles.MouseOverStyle.BorderSize,
-            Styles.MouseDownStyle.BorderSize,
+            Styles.Normal.BorderSize,
+            Styles.Checked.BorderSize,
+            Styles.MouseOver.BorderSize,
+            Styles.MouseDown.BorderSize,
             -1
         );
 
@@ -332,10 +332,10 @@ namespace Cube.Forms
         private Color GetBackColor()
         {
             var dest = Select(
-                Styles.NormalStyle.BackColor,
-                Styles.CheckedStyle.BackColor,
-                Styles.MouseOverStyle.BackColor,
-                Styles.MouseDownStyle.BackColor
+                Styles.Normal.BackColor,
+                Styles.Checked.BackColor,
+                Styles.MouseOver.BackColor,
+                Styles.MouseDown.BackColor
             );
 
             if (dest != Color.Empty) return dest;
@@ -357,10 +357,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Color GetContentColor() => Select(
-            Styles.NormalStyle.ContentColor,
-            Styles.CheckedStyle.ContentColor,
-            Styles.MouseOverStyle.ContentColor,
-            Styles.MouseDownStyle.ContentColor
+            Styles.Normal.ContentColor,
+            Styles.Checked.ContentColor,
+            Styles.MouseOver.ContentColor,
+            Styles.MouseDown.ContentColor
         );
 
         /* ----------------------------------------------------------------- */
@@ -373,10 +373,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Image GetImage() => Select(
-            Styles.NormalStyle.Image,
-            Styles.CheckedStyle.Image,
-            Styles.MouseOverStyle.Image,
-            Styles.MouseDownStyle.Image
+            Styles.Normal.Image,
+            Styles.Checked.Image,
+            Styles.MouseOver.Image,
+            Styles.MouseDown.Image
         );
 
         /* ----------------------------------------------------------------- */
@@ -389,10 +389,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Image GetBackgroundImage() => Select(
-            Styles.NormalStyle.BackgroundImage,
-            Styles.CheckedStyle.BackgroundImage,
-            Styles.MouseOverStyle.BackgroundImage,
-            Styles.MouseDownStyle.BackgroundImage
+            Styles.Normal.BackgroundImage,
+            Styles.Checked.BackgroundImage,
+            Styles.MouseOver.BackgroundImage,
+            Styles.MouseDown.BackgroundImage
         );
 
         /* ----------------------------------------------------------------- */

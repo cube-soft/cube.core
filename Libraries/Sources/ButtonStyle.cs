@@ -195,11 +195,11 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public ButtonStyleContainer()
         {
-            NormalStyle.PropertyChanged    += (s, e) => Refresh(nameof(NormalStyle));
-            CheckedStyle.PropertyChanged   += (s, e) => Refresh(nameof(CheckedStyle));
-            DisabledStyle.PropertyChanged  += (s, e) => Refresh(nameof(DisabledStyle));
-            MouseOverStyle.PropertyChanged += (s, e) => Refresh(nameof(MouseOverStyle));
-            MouseDownStyle.PropertyChanged += (s, e) => Refresh(nameof(MouseDownStyle));
+            Normal.PropertyChanged    += (s, e) => Refresh(nameof(Normal));
+            Checked.PropertyChanged   += (s, e) => Refresh(nameof(Checked));
+            Disabled.PropertyChanged  += (s, e) => Refresh(nameof(Disabled));
+            MouseOver.PropertyChanged += (s, e) => Refresh(nameof(MouseOver));
+            MouseDown.PropertyChanged += (s, e) => Refresh(nameof(MouseDown));
         }
 
         #endregion
@@ -208,7 +208,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// NormalStyle
+        /// Normal
         ///
         /// <summary>
         /// 通常時の外観を取得または設定します。
@@ -216,7 +216,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle NormalStyle { get; } = new ButtonStyle
+        public ButtonStyle Normal { get; } = new ButtonStyle
         {
             ContentColor = SystemColors.ControlText,
             BorderColor  = SystemColors.ActiveBorder,
@@ -225,7 +225,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CheckedStyle
+        /// Checked
         ///
         /// <summary>
         /// チェック時の外観を取得または設定します。
@@ -233,11 +233,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle CheckedStyle { get; } = new ButtonStyle();
+        public ButtonStyle Checked { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisabledStyle
+        /// Disabled
         ///
         /// <summary>
         /// 無効時の外観を取得または設定します。
@@ -245,7 +245,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle DisabledStyle { get; } = new ButtonStyle
+        public ButtonStyle Disabled { get; } = new ButtonStyle
         {
             BackColor    = SystemColors.Control,
             ContentColor = SystemColors.GrayText,
@@ -254,7 +254,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseOverStyle
+        /// MouseOver
         ///
         /// <summary>
         /// マウスオーバ時の外観を取得または設定します。
@@ -262,11 +262,11 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle MouseOverStyle { get; } = new ButtonStyle();
+        public ButtonStyle MouseOver { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// MouseDownStyle
+        /// MouseDown
         ///
         /// <summary>
         /// マウス押下時の外観を取得または設定します。
@@ -274,7 +274,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle MouseDownStyle { get; } = new ButtonStyle();
+        public ButtonStyle MouseDown { get; } = new ButtonStyle();
 
         #endregion
 

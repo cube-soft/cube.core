@@ -82,9 +82,9 @@ namespace Cube.Forms.Demo
         protected override void OnActivated(EventArgs e)
         {
             BackColor = _backColor;
-            MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.Minimize;
-            MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.Maximize;
-            ExitButton.Styles.NormalStyle.Image = Properties.Resources.Close;
+            MinimizeButton.Styles.Normal.Image = Properties.Resources.Minimize;
+            MaximizeButton.Styles.Normal.Image = Properties.Resources.Maximize;
+            ExitButton.Styles.Normal.Image = Properties.Resources.Close;
             base.OnActivated(e);
         }
 
@@ -100,9 +100,9 @@ namespace Cube.Forms.Demo
         protected override void OnDeactivate(EventArgs e)
         {
             BackColor = Color.White;
-            MinimizeButton.Styles.NormalStyle.Image = Properties.Resources.MinimizeGray;
-            MaximizeButton.Styles.NormalStyle.Image = Properties.Resources.MaximizeGray;
-            ExitButton.Styles.NormalStyle.Image = Properties.Resources.CloseGray;
+            MinimizeButton.Styles.Normal.Image = Properties.Resources.MinimizeGray;
+            MaximizeButton.Styles.Normal.Image = Properties.Resources.MaximizeGray;
+            ExitButton.Styles.Normal.Image = Properties.Resources.CloseGray;
             base.OnDeactivate(e);
         }
 
