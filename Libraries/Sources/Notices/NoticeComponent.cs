@@ -19,14 +19,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// NoticeComponents
+    /// NoticeComponent
     ///
     /// <summary>
     /// Specifies the component of the notice window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum NoticeComponents
+    public enum NoticeComponent
     {
         /// <summary>Image</summary>
         Image = 1,

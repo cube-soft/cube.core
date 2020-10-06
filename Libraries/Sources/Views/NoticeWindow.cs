@@ -73,7 +73,7 @@ namespace Cube.Forms
                 _value = value;
 
                 _title.Content = value?.Title ?? string.Empty;
-                _text.Content  = value?.Description ?? string.Empty;
+                _message.Content  = value?.Message ?? string.Empty;
             }
         }
 
@@ -157,7 +157,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event ValueEventHandler<NoticeComponents> Selected;
+        public event ValueEventHandler<NoticeComponent> Selected;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -168,7 +168,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnSelected(ValueEventArgs<NoticeComponents> e)
+        protected virtual void OnSelected(ValueEventArgs<NoticeComponent> e)
         {
             Selected?.Invoke(this, e);
             Hide();
@@ -323,19 +323,32 @@ namespace Cube.Forms
         private void SetStyle(NoticeStyle style)
         {
             if (style == null) return;
-            if (style.ImageColor != Color.Empty) _image.Styles.NormalStyle.BackColor = style.ImageColor;
-            if (style.Image != null) _image.Styles.NormalStyle.Image = style.Image;
-            if (style.Title != null) _title.Font = style.Title;
-            if (style.TitleColor != Color.Empty) _title.Styles.NormalStyle.ContentColor = style.TitleColor;
-            if (style.Description != null) _text.Font = style.Description;
-            if (style.DescriptionColor != Color.Empty) _text.Styles.NormalStyle.ContentColor = style.DescriptionColor;
-            if (style.BackColor != Color.Empty)
+
+            if (style.Image != null)
             {
-                BackColor                           = style.BackColor;
-                _panel.BackColor                    = style.BackColor;
-                _close.Styles.NormalStyle.BackColor = style.BackColor;
-                _title.Styles.NormalStyle.BackColor = style.BackColor;
-                _text.Styles.NormalStyle.BackColor  = style.BackColor;
+                if (style.Image.Color != Color.Empty) _image.Styles.NormalStyle.BackColor = style.Image.Color;
+                if (style.Image.Value != null) _image.Styles.NormalStyle.Image = style.Image.Value;
+            }
+
+            if (style.Title != null)
+            {
+                if (style.Title.Font != null) _title.Font = style.Title.Font;
+                if (style.Title.Color != Color.Empty) _title.Styles.NormalStyle.ContentColor = style.Title.Color;
+            }
+
+            if (style.Message != null)
+            {
+                if (style.Message.Font != null) _message.Font = style.Message.Font;
+                if (style.Message.Color != Color.Empty) _message.Styles.NormalStyle.ContentColor = style.Message.Color;
+            }
+
+            if (style.Color != Color.Empty)
+            {
+                BackColor                             = style.Color;
+                _panel.BackColor                      = style.Color;
+                _close.Styles.NormalStyle.BackColor   = style.Color;
+                _title.Styles.NormalStyle.BackColor   = style.Color;
+                _message.Styles.NormalStyle.BackColor = style.Color;
             }
         }
 
@@ -358,7 +371,7 @@ namespace Cube.Forms
             _image.Styles.NormalStyle.BorderSize = 0;
             _image.Styles.NormalStyle.BackColor = Color.FromArgb(230, 230, 230);
             _image.Styles.NormalStyle.Image = Properties.Resources.LogoLarge;
-            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Image));
+            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Image));
 
             _title.Content = string.Empty;
             _title.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -369,18 +382,18 @@ namespace Cube.Forms
             _title.Styles.NormalStyle.BackColor = SystemColors.Window;
             _title.Styles.NormalStyle.BorderSize = 0;
             _title.Styles.NormalStyle.ContentColor = Color.DimGray;
-            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Title));
+            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Title));
 
-            _text.AutoEllipsis = true;
-            _text.Content = string.Empty;
-            _text.Cursor = System.Windows.Forms.Cursors.Hand;
-            _text.Dock = System.Windows.Forms.DockStyle.Fill;
-            _text.Margin = new System.Windows.Forms.Padding(0);
-            _text.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            _text.TextAlign = ContentAlignment.TopLeft;
-            _text.Styles.NormalStyle.BackColor = SystemColors.Window;
-            _text.Styles.NormalStyle.BorderSize = 0;
-            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Description));
+            _message.AutoEllipsis = true;
+            _message.Content = string.Empty;
+            _message.Cursor = System.Windows.Forms.Cursors.Hand;
+            _message.Dock = System.Windows.Forms.DockStyle.Fill;
+            _message.Margin = new System.Windows.Forms.Padding(0);
+            _message.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            _message.TextAlign = ContentAlignment.TopLeft;
+            _message.Styles.NormalStyle.BackColor = SystemColors.Window;
+            _message.Styles.NormalStyle.BorderSize = 0;
+            _message.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Description));
 
             _close.Content = string.Empty;
             _close.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -392,7 +405,7 @@ namespace Cube.Forms
             _close.Styles.MouseOverStyle.BorderColor = Color.FromArgb(230, 230, 230);
             _close.Styles.MouseOverStyle.BorderSize = 1;
             _close.Styles.MouseDownStyle.BackColor = Color.FromArgb(236, 236, 236);
-            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponents.Others));
+            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Others));
 
             _panel.SuspendLayout();
             _panel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -405,7 +418,7 @@ namespace Cube.Forms
             _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             _panel.Controls.Add(_image, 0, 0);
             _panel.Controls.Add(_title, 1, 0);
-            _panel.Controls.Add(_text,  1, 1);
+            _panel.Controls.Add(_message,  1, 1);
             _panel.Controls.Add(_close, 2, 0);
             _panel.SetRowSpan(_image, 2);
 
@@ -434,7 +447,7 @@ namespace Cube.Forms
         private readonly TableLayoutPanel _panel = new TableLayoutPanel();
         private readonly FlatButton _image = new FlatButton();
         private readonly FlatButton _title = new FlatButton();
-        private readonly FlatButton _text = new FlatButton();
+        private readonly FlatButton _message = new FlatButton();
         private readonly FlatButton _close = new FlatButton();
         #endregion
     }

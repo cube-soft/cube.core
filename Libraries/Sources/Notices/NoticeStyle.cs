@@ -16,10 +16,11 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Drawing;
-using System.ComponentModel;
 
 namespace Cube.Forms
 {
+    #region NoticeStyle
+
     /* --------------------------------------------------------------------- */
     ///
     /// NoticeStyle
@@ -29,95 +30,128 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TypeConverter(typeof(OnlyExpandableConverter))]
     public class NoticeStyle
     {
-        #region Properties
-
         /* --------------------------------------------------------------------- */
         ///
-        /// BackColor
+        /// Color
         ///
         /// <summary>
         /// Gets or sets the background color.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Color BackColor { get; set; }
+        public Color Color { get; set; }
 
         /* --------------------------------------------------------------------- */
         ///
         /// Image
         ///
         /// <summary>
-        /// Gets or sets the image.
+        /// Gets or sets the style of the image part.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Image Image { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// ImageColor
-        ///
-        /// <summary>
-        /// Gets or sets the background color of the image component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Color ImageColor { get; set; }
+        public NoticeImageStyle Image { get; set; }
 
         /* --------------------------------------------------------------------- */
         ///
         /// Title
         ///
         /// <summary>
-        /// Gets or sets the font of the notice title.
+        /// Gets or sets the style of the title part.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Font Title { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// TitleColor
-        ///
-        /// <summary>
-        /// Gets or sets the color of the notice title.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Color TitleColor { get; set; }
+        public NoticeTextStyle Title { get; set; }
 
         /* --------------------------------------------------------------------- */
         ///
         /// Description
         ///
         /// <summary>
-        /// Gets or sets the font of the notice description.
+        /// Gets or sets the style of the message part.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Font Description { get; set; }
+        public NoticeTextStyle Message { get; set; }
+    }
 
+    #endregion
+
+    #region NoticeTextStyle
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NoticeTextStyle
+    ///
+    /// <summary>
+    /// Repesents the styles of a text part of the notice window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class NoticeTextStyle
+    {
         /* --------------------------------------------------------------------- */
         ///
-        /// DescriptionColor
+        /// Color
         ///
         /// <summary>
-        /// Gets or sets the color of the notice description.
+        /// Gets or sets the content/foreground color of the component.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        [Browsable(true)]
-        public Color DescriptionColor { get; set; }
+        public Color Color { get; set; }
 
-        #endregion
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Font
+        ///
+        /// <summary>
+        /// Gets or sets the font object of the component.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Font Font { get; set; }
     }
+
+    #endregion
+
+    #region NoticeImageStyle
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NoticeImageStyle
+    ///
+    /// <summary>
+    /// Repesents the styles of an image part of the notice window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class NoticeImageStyle
+    {
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Color
+        ///
+        /// <summary>
+        /// Gets or sets the background color of the component.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Color Color { get; set; }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets or sets the image object of the component.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Image Value { get; set; }
+    }
+
+    #endregion
 }

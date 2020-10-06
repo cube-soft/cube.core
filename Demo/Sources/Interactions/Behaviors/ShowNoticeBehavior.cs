@@ -64,7 +64,7 @@ namespace Cube.Forms.Demo
         protected override void Invoke(NoticeMessage m)
         {
             var view = new NoticeWindow();
-            view.Selected  += (s, e) => m.Value.Value.TryCast<Action<NoticeComponents>>()?.Invoke(e.Value);
+            view.Selected  += (s, e) => m.Value.Value.TryCast<Action<NoticeComponent>>()?.Invoke(e.Value);
             view.Completed += (s, e) => view.Close();
             view.Show(m.Value);
         }

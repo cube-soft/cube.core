@@ -54,17 +54,27 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public string Title { get; set; }
 
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Description
+        /// Message
         ///
         /// <summary>
-        /// Gets or sets the description of the notice.
+        /// Gets or sets the message of the notice.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Description { get; set; }
+        public string Message { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Value
+        ///
+        /// <summary>
+        /// Gets or sets the user data of the notice.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public object Value { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -87,17 +97,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public TimeSpan InitialDelay { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets or sets the user data of the notice.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Value { get; set; }
 
         #endregion
     }

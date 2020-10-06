@@ -46,11 +46,11 @@ namespace Cube.Forms.Demo
         public static NoticeMessage CreateForNotice(Assembly src) => new NoticeMessage(new Notice
         {
             Title        = src.GetTitle(),
-            Description  = Properties.Resources.NoticeSample,
+            Message  = Properties.Resources.NoticeSample,
             DisplayTime  = TimeSpan.FromSeconds(60),
             InitialDelay = TimeSpan.FromMilliseconds(100),
             Priority     = NoticePriority.Normal,
-            Value        = (Action<NoticeComponents>)(e => { }),
+            Value        = (Action<NoticeComponent>)(e => { }),
         });
     }
 }
