@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+namespace Cube.Forms.Controls
 {
     partial class WebControl
     {

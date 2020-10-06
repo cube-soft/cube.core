@@ -20,7 +20,7 @@ using System.Text;
 using Cube.Mixin.Logging;
 using Cube.Mixin.String;
 
-namespace Cube.Forms
+namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///

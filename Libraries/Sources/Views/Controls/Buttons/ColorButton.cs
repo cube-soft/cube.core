@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 
-namespace Cube.Forms
+namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///

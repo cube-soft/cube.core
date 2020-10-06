@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms.Demo
 {

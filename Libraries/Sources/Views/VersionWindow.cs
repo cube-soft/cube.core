@@ -59,7 +59,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public VersionWindow(Assembly assembly)
         {
-            _control = new VersionControl(assembly);
+            _control = new Controls.VersionControl(assembly);
             InitializeLayout();
         }
 
@@ -236,9 +236,9 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private readonly VersionControl _control;
-        private readonly TableLayoutPanel _panel = new TableLayoutPanel();
-        private readonly Button _button = new Button();
+        private readonly Controls.VersionControl _control;
+        private readonly Controls.TableLayoutPanel _panel = new Controls.TableLayoutPanel();
+        private readonly Controls.Button _button = new Controls.Button();
         #endregion
     }
 }

@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.LayoutPanel = new Cube.Forms.TableLayoutPanel();
-            this.HeaderCaptionControl = new Cube.Forms.Demo.CustomCaptionControl();
-            this.ContentsControl = new Cube.Forms.FlowLayoutPanel();
-            this.DemoButton1 = new Cube.Forms.FlatButton();
-            this.DemoButton2 = new Cube.Forms.FlatButton();
-            this.DemoButton3 = new Cube.Forms.FlatButton();
-            this.DemoButton4 = new Cube.Forms.FlatButton();
-            this.DemoButton5 = new Cube.Forms.FlatButton();
-            this.FooterControl = new Cube.Forms.StatusStrip();
+            this.LayoutPanel = new Cube.Forms.Controls.TableLayoutPanel();
+            this.HeaderCaptionControl = new CustomCaptionControl();
+            this.ContentsControl = new Cube.Forms.Controls.FlowLayoutPanel();
+            this.DemoButton1 = new Cube.Forms.Controls.FlatButton();
+            this.DemoButton2 = new Cube.Forms.Controls.FlatButton();
+            this.DemoButton3 = new Cube.Forms.Controls.FlatButton();
+            this.DemoButton4 = new Cube.Forms.Controls.FlatButton();
+            this.DemoButton5 = new Cube.Forms.Controls.FlatButton();
+            this.FooterControl = new Cube.Forms.Controls.StatusStrip();
             this.LayoutPanel.SuspendLayout();
             this.ContentsControl.SuspendLayout();
             this.SuspendLayout();
@@ -133,7 +133,7 @@
             //
             // DemoButton3
             //
-            this.DemoButton3.Content = "DemoButton1";
+            this.DemoButton3.Content = "DemoButton3";
             this.DemoButton3.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton3.FlatAppearance.BorderSize = 0;
             this.DemoButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -155,7 +155,7 @@
             //
             // DemoButton4
             //
-            this.DemoButton4.Content = "DemoButton2";
+            this.DemoButton4.Content = "DemoButton4";
             this.DemoButton4.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton4.FlatAppearance.BorderSize = 0;
             this.DemoButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -177,7 +177,7 @@
             //
             // DemoButton5
             //
-            this.DemoButton5.Content = "DemoButton3";
+            this.DemoButton5.Content = "DemoButton5";
             this.DemoButton5.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton5.FlatAppearance.BorderSize = 0;
             this.DemoButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -223,14 +223,14 @@
 
         #endregion
 
-        private TableLayoutPanel LayoutPanel;
+        private Cube.Forms.Controls.TableLayoutPanel LayoutPanel;
         private CustomCaptionControl HeaderCaptionControl;
-        private FlowLayoutPanel ContentsControl;
-        private StatusStrip FooterControl;
-        private FlatButton DemoButton1;
-        private FlatButton DemoButton2;
-        private FlatButton DemoButton3;
-        private FlatButton DemoButton4;
-        private FlatButton DemoButton5;
+        private Cube.Forms.Controls.FlowLayoutPanel ContentsControl;
+        private Cube.Forms.Controls.StatusStrip FooterControl;
+        private Cube.Forms.Controls.FlatButton DemoButton1;
+        private Cube.Forms.Controls.FlatButton DemoButton2;
+        private Cube.Forms.Controls.FlatButton DemoButton3;
+        private Cube.Forms.Controls.FlatButton DemoButton4;
+        private Cube.Forms.Controls.FlatButton DemoButton5;
     }
 }

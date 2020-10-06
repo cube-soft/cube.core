@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 
-namespace Cube.Forms
+namespace Cube.Forms.Controls
 {
     partial class WebControl
     {

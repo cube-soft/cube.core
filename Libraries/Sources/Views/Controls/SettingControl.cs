@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Cube.Forms
+namespace Cube.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
