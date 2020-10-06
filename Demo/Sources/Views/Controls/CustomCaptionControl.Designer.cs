@@ -83,8 +83,8 @@
             this.ExitButton.Styles.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.ExitButton.Styles.MouseOver.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
             this.ExitButton.Styles.MouseOver.BorderSize = 1;
-            this.ExitButton.Styles.Normal.BorderSize = 0;
-            this.ExitButton.Styles.Normal.Image = global::Cube.Forms.Demo.Properties.Resources.Close;
+            this.ExitButton.Styles.Default.BorderSize = 0;
+            this.ExitButton.Styles.Default.Image = global::Cube.Forms.Demo.Properties.Resources.Close;
             this.ExitButton.TabIndex = 8;
             this.ExitButton.UseVisualStyleBackColor = false;
             //
@@ -108,8 +108,8 @@
             this.MaximizeButton.Styles.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.MaximizeButton.Styles.MouseOver.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
             this.MaximizeButton.Styles.MouseOver.BorderSize = 1;
-            this.MaximizeButton.Styles.Normal.BorderSize = 0;
-            this.MaximizeButton.Styles.Normal.Image = global::Cube.Forms.Demo.Properties.Resources.Maximize;
+            this.MaximizeButton.Styles.Default.BorderSize = 0;
+            this.MaximizeButton.Styles.Default.Image = global::Cube.Forms.Demo.Properties.Resources.Maximize;
             this.MaximizeButton.TabIndex = 7;
             this.MaximizeButton.UseVisualStyleBackColor = false;
             //
@@ -166,9 +166,9 @@
             this.MinimizeButton.Styles.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.MinimizeButton.Styles.MouseOver.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(228)))), ((int)(((byte)(228)))));
             this.MinimizeButton.Styles.MouseOver.BorderSize = 1;
-            this.MinimizeButton.Styles.Normal.BorderSize = 0;
-            this.MinimizeButton.Styles.Normal.ContentColor = System.Drawing.SystemColors.ControlText;
-            this.MinimizeButton.Styles.Normal.Image = global::Cube.Forms.Demo.Properties.Resources.Minimize;
+            this.MinimizeButton.Styles.Default.BorderSize = 0;
+            this.MinimizeButton.Styles.Default.ContentColor = System.Drawing.SystemColors.ControlText;
+            this.MinimizeButton.Styles.Default.Image = global::Cube.Forms.Demo.Properties.Resources.Minimize;
             this.MinimizeButton.TabIndex = 9;
             this.MinimizeButton.UseVisualStyleBackColor = false;
             //

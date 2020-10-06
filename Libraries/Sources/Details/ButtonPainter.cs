@@ -291,7 +291,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Color GetBorderColor() => Select(
-            Styles.Normal.BorderColor,
+            Styles.Default.BorderColor,
             Styles.Checked.BorderColor,
             Styles.MouseOver.BorderColor,
             Styles.MouseDown.BorderColor
@@ -307,7 +307,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private int GetBorderSize() => Select(
-            Styles.Normal.BorderSize,
+            Styles.Default.BorderSize,
             Styles.Checked.BorderSize,
             Styles.MouseOver.BorderSize,
             Styles.MouseDown.BorderSize,
@@ -332,7 +332,7 @@ namespace Cube.Forms
         private Color GetBackColor()
         {
             var dest = Select(
-                Styles.Normal.BackColor,
+                Styles.Default.BackColor,
                 Styles.Checked.BackColor,
                 Styles.MouseOver.BackColor,
                 Styles.MouseDown.BackColor
@@ -357,7 +357,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Color GetContentColor() => Select(
-            Styles.Normal.ContentColor,
+            Styles.Default.ContentColor,
             Styles.Checked.ContentColor,
             Styles.MouseOver.ContentColor,
             Styles.MouseDown.ContentColor
@@ -373,7 +373,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Image GetImage() => Select(
-            Styles.Normal.Image,
+            Styles.Default.Image,
             Styles.Checked.Image,
             Styles.MouseOver.Image,
             Styles.MouseDown.Image
@@ -389,7 +389,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Image GetBackgroundImage() => Select(
-            Styles.Normal.BackgroundImage,
+            Styles.Default.BackgroundImage,
             Styles.Checked.BackgroundImage,
             Styles.MouseOver.BackgroundImage,
             Styles.MouseDown.BackgroundImage

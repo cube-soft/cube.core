@@ -195,7 +195,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public ButtonStyleContainer()
         {
-            Normal.PropertyChanged    += (s, e) => Refresh(nameof(Normal));
+            Default.PropertyChanged   += (s, e) => Refresh(nameof(Default));
             Checked.PropertyChanged   += (s, e) => Refresh(nameof(Checked));
             Disabled.PropertyChanged  += (s, e) => Refresh(nameof(Disabled));
             MouseOver.PropertyChanged += (s, e) => Refresh(nameof(MouseOver));
@@ -208,7 +208,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Normal
+        /// Default
         ///
         /// <summary>
         /// 通常時の外観を取得または設定します。
@@ -216,7 +216,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle Normal { get; } = new ButtonStyle
+        public ButtonStyle Default { get; } = new ButtonStyle
         {
             ContentColor = SystemColors.ControlText,
             BorderColor  = SystemColors.ActiveBorder,

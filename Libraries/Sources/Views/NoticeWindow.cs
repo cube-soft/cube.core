@@ -326,29 +326,29 @@ namespace Cube.Forms
 
             if (style.Image != null)
             {
-                if (style.Image.Color != Color.Empty) _image.Styles.Normal.BackColor = style.Image.Color;
-                if (style.Image.Value != null) _image.Styles.Normal.Image = style.Image.Value;
+                if (style.Image.Color != Color.Empty) _image.Styles.Default.BackColor = style.Image.Color;
+                if (style.Image.Value != null) _image.Styles.Default.Image = style.Image.Value;
             }
 
             if (style.Title != null)
             {
                 if (style.Title.Font != null) _title.Font = style.Title.Font;
-                if (style.Title.Color != Color.Empty) _title.Styles.Normal.ContentColor = style.Title.Color;
+                if (style.Title.Color != Color.Empty) _title.Styles.Default.ContentColor = style.Title.Color;
             }
 
             if (style.Message != null)
             {
                 if (style.Message.Font != null) _message.Font = style.Message.Font;
-                if (style.Message.Color != Color.Empty) _message.Styles.Normal.ContentColor = style.Message.Color;
+                if (style.Message.Color != Color.Empty) _message.Styles.Default.ContentColor = style.Message.Color;
             }
 
             if (style.Color != Color.Empty)
             {
-                BackColor                             = style.Color;
-                _panel.BackColor                      = style.Color;
-                _close.Styles.Normal.BackColor   = style.Color;
-                _title.Styles.Normal.BackColor   = style.Color;
-                _message.Styles.Normal.BackColor = style.Color;
+                BackColor                         = style.Color;
+                _panel.BackColor                  = style.Color;
+                _close.Styles.Default.BackColor   = style.Color;
+                _title.Styles.Default.BackColor   = style.Color;
+                _message.Styles.Default.BackColor = style.Color;
             }
         }
 
@@ -368,9 +368,9 @@ namespace Cube.Forms
             _image.Content = string.Empty;
             _image.Dock = System.Windows.Forms.DockStyle.Fill;
             _image.Margin = new System.Windows.Forms.Padding(0);
-            _image.Styles.Normal.BorderSize = 0;
-            _image.Styles.Normal.BackColor = Color.FromArgb(230, 230, 230);
-            _image.Styles.Normal.Image = Properties.Resources.LogoLarge;
+            _image.Styles.Default.BorderSize = 0;
+            _image.Styles.Default.BackColor = Color.FromArgb(230, 230, 230);
+            _image.Styles.Default.Image = Properties.Resources.LogoLarge;
             _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Image));
 
             _title.Content = string.Empty;
@@ -379,9 +379,9 @@ namespace Cube.Forms
             _title.Margin = new System.Windows.Forms.Padding(0);
             _title.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
             _title.TextAlign = ContentAlignment.MiddleLeft;
-            _title.Styles.Normal.BackColor = SystemColors.Window;
-            _title.Styles.Normal.BorderSize = 0;
-            _title.Styles.Normal.ContentColor = Color.DimGray;
+            _title.Styles.Default.BackColor = SystemColors.Window;
+            _title.Styles.Default.BorderSize = 0;
+            _title.Styles.Default.ContentColor = Color.DimGray;
             _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Title));
 
             _message.AutoEllipsis = true;
@@ -391,16 +391,16 @@ namespace Cube.Forms
             _message.Margin = new System.Windows.Forms.Padding(0);
             _message.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
             _message.TextAlign = ContentAlignment.TopLeft;
-            _message.Styles.Normal.BackColor = SystemColors.Window;
-            _message.Styles.Normal.BorderSize = 0;
+            _message.Styles.Default.BackColor = SystemColors.Window;
+            _message.Styles.Default.BorderSize = 0;
             _message.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Description));
 
             _close.Content = string.Empty;
             _close.Dock = System.Windows.Forms.DockStyle.Fill;
             _close.Margin = new System.Windows.Forms.Padding(0);
-            _close.Styles.Normal.BackColor = SystemColors.Window;
-            _close.Styles.Normal.BorderSize = 0;
-            _close.Styles.Normal.Image = Properties.Resources.CloseButton;
+            _close.Styles.Default.BackColor = SystemColors.Window;
+            _close.Styles.Default.BorderSize = 0;
+            _close.Styles.Default.Image = Properties.Resources.CloseButton;
             _close.Styles.MouseOver.BackColor = Color.FromArgb(240, 240, 240);
             _close.Styles.MouseOver.BorderColor = Color.FromArgb(230, 230, 230);
             _close.Styles.MouseOver.BorderSize = 1;
