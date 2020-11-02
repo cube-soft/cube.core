@@ -61,7 +61,7 @@ namespace Cube.FileSystem.Tests
             Assert.That(n, Is.EqualTo(count));
             Assert.That(dest.Format, Is.EqualTo(format));
             Assert.That(dest.Value, Is.Not.Null);
-            Assert.That(dest.Version.ToString(), Is.EqualTo("3.0.0.0"));
+            Assert.That(dest.Version.ToString(), Is.EqualTo("3.1.0.0"));
             Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
 
             var asm = dest.Assembly;
