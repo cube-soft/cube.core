@@ -208,8 +208,7 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(T value, IEqualityComparer<T> compare,
-            [CallerMemberName] string name = null)
+        protected bool SetProperty<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
         {
             var src = GetProperty<T>(name);
             var set = compare.Set(ref src, value);
@@ -257,8 +256,7 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value, IEqualityComparer<T> compare,
-            [CallerMemberName] string name = null)
+        protected bool SetProperty<T>(ref T field, T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
         {
             var set = compare.Set(ref field, value);
             if (set) Refresh(name);
