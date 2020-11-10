@@ -188,11 +188,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public PowerModes Mode
         {
-            get => _mode;
+            get => GetProperty<PowerModes>();
             set
             {
                 if (IgnoreStatusChanged && value == PowerModes.StatusChange) return;
-                _ = SetProperty(ref _mode, value);
+                _ = SetProperty(value);
             }
         }
 
@@ -208,15 +208,10 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public bool IgnoreStatusChanged
         {
-            get => _ignore;
-            set => SetProperty(ref _ignore, value);
+            get => GetProperty<bool>(() => true);
+            set => SetProperty(value);
         }
 
-        #endregion
-
-        #region Fields
-        private PowerModes _mode;
-        private bool _ignore = true;
         #endregion
     }
 }
