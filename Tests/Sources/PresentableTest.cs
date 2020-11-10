@@ -190,6 +190,7 @@ namespace Cube.Tests
             using (src.Subscribe<DialogMessage>(e => dest = e))
             {
                 src.TrackAsync(() => { /* OK */ });
+                src.TrackSync(() => throw new OperationCanceledException("Ignore"));
                 src.TrackSync(() => throw new ArgumentException(nameof(Track)));
             }
 
@@ -279,6 +280,7 @@ namespace Cube.Tests
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
             public Invoker GetInvoker() => GetInvoker(false);
+            protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);
             private void Observe() { Use(Facade.Subscribe(e => { })); }
             public string TestValue
             {

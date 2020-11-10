@@ -258,7 +258,10 @@ namespace Cube
         private void TrackCore(Action action)
         {
             try { action(); }
-            catch (Exception err) { Send(OnMessage(err)); }
+            catch (Exception e)
+            {
+                if (OnMessage(e) is DialogMessage msg) Send(msg);
+            }
         }
 
         #endregion

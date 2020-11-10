@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -140,7 +141,29 @@ namespace Cube
         /// GetProperty
         ///
         /// <summary>
-        /// Sets the value of the specified property name.
+        /// Gets the value of the specified property name. The specified
+        /// property will be initialized with the specified creator object
+        /// as needed.
+        /// </summary>
+        ///
+        /// <param name="creator">Function to create an initial value.</param>
+        /// <param name="name">Name of the property.</param>
+        ///
+        /// <returns>Value of the property.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected T GetProperty<T>(Func<T> creator, [CallerMemberName] string name = null)
+        {
+            if (!_fields.ContainsKey(name)) _fields.Add(name, creator());
+            return (T)_fields[name];
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetProperty
+        ///
+        /// <summary>
+        /// Gets the value of the specified property name.
         /// </summary>
         ///
         /// <param name="name">Name of the property.</param>
@@ -148,11 +171,8 @@ namespace Cube
         /// <returns>Value of the property.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected T GetProperty<T>([CallerMemberName] string name = null)
-        {
-            if (!_fields.ContainsKey(name)) _fields.Add(name, default(T));
-            return (T)_fields[name];
-        }
+        protected T GetProperty<T>([CallerMemberName] string name = null) =>
+            GetProperty(() => default(T), name);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,8 +208,7 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(T value, IEqualityComparer<T> compare,
-            [CallerMemberName] string name = null)
+        protected bool SetProperty<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
         {
             var src = GetProperty<T>(name);
             var set = compare.Set(ref src, value);
@@ -237,8 +256,7 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value, IEqualityComparer<T> compare,
-            [CallerMemberName] string name = null)
+        protected bool SetProperty<T>(ref T field, T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
         {
             var set = compare.Set(ref field, value);
             if (set) Refresh(name);
