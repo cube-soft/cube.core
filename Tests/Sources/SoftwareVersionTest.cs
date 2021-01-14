@@ -105,6 +105,29 @@ namespace Cube.Tests
         [TestCase(null,                    ExpectedResult = false)]
         public bool Parse(string src) => new SoftwareVersion(src).ToString() == src;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compare
+        ///
+        /// <summary>
+        /// Tests the CompareTo method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("1.0.0",       "1.0.0",      ExpectedResult =  0)]
+        [TestCase("1.0.0",       "1.0",        ExpectedResult =  0)]
+        [TestCase("1.0.0",       "2.0.0",      ExpectedResult = -1)]
+        [TestCase("1.0.0",       "1.1.0",      ExpectedResult = -1)]
+        [TestCase("1.0.0",       "1.0.1",      ExpectedResult = -1)]
+        [TestCase("1.0.0",       "0.9.9",      ExpectedResult =  1)]
+        [TestCase("3.1.4",       "2.2.2",      ExpectedResult =  1)]
+        [TestCase("3.1.4",       "4.3.2",      ExpectedResult = -1)]
+        [TestCase("v1.0.0",      "1.0.0",      ExpectedResult =  1)]
+        [TestCase("v1.0.0",      "V1.0.0",     ExpectedResult =  0)]
+        [TestCase("0.0.1-alpha", "0.0.1-beta", ExpectedResult = -1)]
+        [TestCase("0.1.0-beta",  "0.1.0-BETA", ExpectedResult =  0)]
+        public int Compare(string src, string cmp) => new SoftwareVersion(src).CompareTo(new SoftwareVersion(cmp));
+
         #endregion
     }
 }
