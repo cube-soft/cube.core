@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Forms.Behaviors;
+
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
@@ -65,11 +67,10 @@ namespace Cube.Forms.Demo
         protected override void OnBind(IPresentable src)
         {
             base.OnBind(src);
-            if (!(src is MainViewModel vm)) return;
+            if (src is not MainViewModel vm) return;
 
-            DemoButton1.Click += (s, e) => vm.About();
-            DemoButton2.Click += (s, e) => vm.Notice();
-
+            Behaviors.Add(new ClickBehavior(DemoButton1, vm.About));
+            Behaviors.Add(new ClickBehavior(DemoButton2, vm.Notice));
             Behaviors.Add(new ShowVersionBehavior(vm, this));
             Behaviors.Add(new ShowNoticeBehavior(vm));
         }
