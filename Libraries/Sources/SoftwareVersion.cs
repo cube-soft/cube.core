@@ -35,7 +35,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SoftwareVersion : IComparable<SoftwareVersion>, IComparable
+    public class SoftwareVersion
     {
         #region Constructors
 
@@ -169,72 +169,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CompareTo
-        ///
-        /// <summary>
-        /// Compares this instance with a specified object and indicates
-        /// whether this instance precedes, follows, or appears in the same
-        /// position in the sort order as the specified object.
-        /// </summary>
-        ///
-        /// <param name="value">Compared value.</param>
-        ///
-        /// <returns>
-        /// 32-bit signed integer that indicates whether this instance
-        /// precedes, follows, or appears in the same position in the sort
-        /// order as the value parameter.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int CompareTo(SoftwareVersion value)
-        {
-            var e0 = CompareValue(Prefix, value.Prefix);
-            if (e0 != 0) return e0;
-
-            var e1 = CompareValue(Zero(Number.Major), Zero(value.Number.Major));
-            if (e1 != 0) return e1;
-
-            var e2 = CompareValue(Zero(Number.Minor), Zero(value.Number.Minor));
-            if (e2 != 0) return e2;
-
-            var e3 = CompareValue(Zero(Number.Build), Zero(value.Number.Build));
-            if (e3 != 0) return e3;
-
-            var e4 = CompareValue(Zero(Number.Revision), Zero(value.Number.Revision));
-            if (e4 != 0) return e4;
-
-            return CompareValue(Suffix, value.Suffix);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CompareTo
-        ///
-        /// <summary>
-        /// Compares this instance with a specified object and indicates
-        /// whether this instance precedes, follows, or appears in the same
-        /// position in the sort order as the specified object.
-        /// </summary>
-        ///
-        /// <param name="value">
-        /// Object that evaluates to a SoftwareVersion.
-        /// </param>
-        ///
-        /// <returns>
-        /// 32-bit signed integer that indicates whether this instance
-        /// precedes, follows, or appears in the same position in the sort
-        /// order as the value parameter.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int CompareTo(object value)
-        {
-            if (value is SoftwareVersion e) return CompareTo(e);
-            else return 1;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ToString
         ///
         /// <summary>
@@ -255,21 +189,21 @@ namespace Cube
         /// Returns the string that represents the version.
         /// </summary>
         ///
-        /// <param name="platform">
-        /// Indicates whether the platform identification is displayed.
+        /// <param name="architecture">
+        /// Indicates whether the architecture identification is displayed.
         /// </param>
         ///
         /// <returns>String for the version.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public string ToString(bool platform)
+        public string ToString(bool architecture)
         {
             var ss = new StringBuilder();
 
             if (Prefix.HasValue()) Append(ss, Prefix);
             AppendNumber(ss);
             if (Suffix.HasValue()) Append(ss, Suffix);
-            if (platform) Append(ss, $" ({Architecture})");
+            if (architecture) Append(ss, $" ({Architecture})");
 
             return ss.ToString();
         }
@@ -310,45 +244,6 @@ namespace Cube
             var check = src.Append(value);
             Debug.Assert(check == src);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Zero
-        ///
-        /// <summary>
-        /// Returns zero if the specified value is negative.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private int Zero(int src) => src > 0 ? src : 0;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CompareValue
-        ///
-        /// <summary>
-        /// Compares the specified values.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private int CompareValue(int src, int cmp)
-        {
-            var value = src - cmp;
-            return value < 0 ? -1 :
-                   value > 0 ?  1 : 0;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CompareValue
-        ///
-        /// <summary>
-        /// Compares the specified values.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private int CompareValue(string src, string cmp) =>
-            string.Compare(src, cmp, StringComparison.InvariantCultureIgnoreCase);
 
         #endregion
 

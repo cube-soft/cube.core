@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using Cube.Mixin.Assembly;
 using NUnit.Framework;
 
@@ -25,7 +26,7 @@ namespace Cube.Tests
     /// SoftwareVersionTest
     ///
     /// <summary>
-    /// Tests for the SoftwareVersion class.
+    /// Tests for the SoftwareVersion and related classes.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -126,7 +127,102 @@ namespace Cube.Tests
         [TestCase("v1.0.0",      "V1.0.0",     ExpectedResult =  0)]
         [TestCase("0.0.1-alpha", "0.0.1-beta", ExpectedResult = -1)]
         [TestCase("0.1.0-beta",  "0.1.0-BETA", ExpectedResult =  0)]
-        public int Compare(string src, string cmp) => new SoftwareVersion(src).CompareTo(new SoftwareVersion(cmp));
+        public int Compare(string src, string cmp)
+        {
+            var v1 = new SoftwareVersion(src);
+            var v2 = new SoftwareVersion(cmp);
+            return new SoftwareVersionComparer().Compare(v1, v2);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Equals_GetHashCode
+        ///
+        /// <summary>
+        /// Tests the Equals and GetHashCode methods.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("1.0.0",       "1.0.0",      true )]
+        [TestCase("1.0.0",       "1.0",        true )]
+        [TestCase("1.0.0",       "2.0.0",      false)]
+        [TestCase("v1.0.0",      "1.0.0",      false)]
+        [TestCase("v1.0.0",      "V1.0.0",     true )]
+        [TestCase("0.0.1-alpha", "0.0.1-beta", false)]
+        [TestCase("0.1.0-beta",  "0.1.0-BETA", true )]
+        public void Equals_GetHashCode(string src, string cmp, bool expected)
+        {
+            var engine = new SoftwareVersionComparer();
+
+            var v1  = new SoftwareVersion(src);
+            var v2  = new SoftwareVersion(cmp);
+            Assert.That(engine.Equals(v1, v2), Is.EqualTo(expected), nameof(engine.Equals));
+
+            var h1 = engine.GetHashCode(v1);
+            var h2 = engine.GetHashCode(v2);
+            Assert.That(h1.Equals(h2), Is.EqualTo(expected), nameof(engine.GetHashCode));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compare_Object
+        ///
+        /// <summary>
+        /// Tests the CompareTo method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Compare_Object()
+        {
+            var src = new SoftwareVersionComparer();
+
+            Assert.That(src.Compare(0, 0),    Is.EqualTo(0));
+            Assert.That(src.Compare(0, 1),    Is.EqualTo(-1));
+            Assert.That(src.Compare(1, 0),    Is.EqualTo(1));
+            Assert.That(src.Compare(null, 0), Is.EqualTo(-1));
+            Assert.That(src.Compare(0, null), Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Equals_Object
+        ///
+        /// <summary>
+        /// Tests the CompareTo method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Equals_Object()
+        {
+            var src = new SoftwareVersionComparer();
+
+            Assert.That(src.Equals(0, 0),    Is.True);
+            Assert.That(src.Equals(0, 1),    Is.False);
+            Assert.That(src.Equals(1, 0),    Is.False);
+            Assert.That(src.Equals(null, 0), Is.False);
+            Assert.That(src.Equals(0, null), Is.False);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetHashCode_Object
+        ///
+        /// <summary>
+        /// Tests the CompareTo method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetHashCode_Object()
+        {
+            var src = new SoftwareVersionComparer();
+
+            Assert.That(src.GetHashCode(0), Is.EqualTo(0));
+            Assert.That(src.GetHashCode(1), Is.Not.EqualTo(0));
+            Assert.That(() => src.GetHashCode(null), Throws.TypeOf<NullReferenceException>());
+        }
 
         #endregion
     }
