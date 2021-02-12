@@ -57,10 +57,11 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Equals
+        /// Compare
         ///
         /// <summary>
-        /// Determines whether two objects of type T are equal.
+        /// Compares two objects of type T and returns an indication of
+        /// their relative sort order.
         /// </summary>
         ///
         /// <param name="x">The first object to compare.</param>
