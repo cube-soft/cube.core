@@ -73,6 +73,7 @@ namespace Cube.Forms.Demo
             Behaviors.Add(new ClickBehavior(DemoButton2, vm.Notice));
             Behaviors.Add(new ShowVersionBehavior(vm, this));
             Behaviors.Add(new ShowNoticeBehavior(vm));
+            Behaviors.Add(new ShownBehavior(this, () => vm.Setup()));
         }
 
         #endregion

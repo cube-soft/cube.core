@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
+using Cube.Mixin.Logging;
 
 namespace Cube.Forms.Demo
 {
@@ -46,6 +47,17 @@ namespace Cube.Forms.Demo
         #endregion
 
         #region Methods
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Setup
+        ///
+        /// <summary>
+        /// Invokes the command when the form is shown.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Setup() => this.LogDebug("Shown");
 
         /* --------------------------------------------------------------------- */
         ///

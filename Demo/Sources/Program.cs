@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Reflection;
 
 namespace Cube.Forms.Demo
 {
@@ -40,8 +41,12 @@ namespace Cube.Forms.Demo
         ///
         /* ----------------------------------------------------------------- */
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            Logger.ObserveTaskException();
+            Logger.Info(typeof(Program), Assembly.GetExecutingAssembly());
+            Logger.Info(typeof(Program), $"[ {string.Join(" ", args)} ]");
+
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
