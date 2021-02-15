@@ -96,6 +96,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Create_DisposableOnceAction
+        ///
+        /// <summary>
+        /// Tests the DisposableOnceAction class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_DisposableProxy()
+        {
+            var n = 0;
+            using (var src = new MockDisposableProxy(() => Disposable.Create(() => n++))) { }
+
+            Assert.That(n, Is.EqualTo(1));
+            Assert.That(() => new MockDisposableProxy(() => default), Throws.ArgumentNullException);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Create_Null
         ///
         /// <summary>
@@ -130,6 +149,24 @@ namespace Cube.Tests
         {
             Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
             Assert.That(() => new DisposableOnceAction(null, e => { }), Throws.ArgumentNullException);
+        }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MockDisposableProxy
+        ///
+        /// <summary>
+        /// Represents the mock class to test the DisposableProxy class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        class MockDisposableProxy : DisposableProxy
+        {
+            public MockDisposableProxy(Func<IDisposable> func) : base(func) { }
         }
 
         #endregion
