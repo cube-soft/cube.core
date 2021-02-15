@@ -29,10 +29,8 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShownBehavior : DisposableBase
+    public class ShownBehavior : DisposableProxy
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// ShownBehavior
@@ -46,41 +44,11 @@ namespace Cube.Forms.Behaviors
         /// <param name="action">Action to be shown.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShownBehavior(Form src, Action action)
+        public ShownBehavior(Form src, Action action) : base(() =>
         {
             void invoke(object s, EventArgs e) => action();
             src.Shown += invoke;
-            _subscriber = Disposable.Create(() => src.Shown -= invoke);
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _subscriber.Dispose();
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly IDisposable _subscriber;
-        #endregion
+            return Disposable.Create(() => src.Shown -= invoke);
+        }) { }
     }
 }

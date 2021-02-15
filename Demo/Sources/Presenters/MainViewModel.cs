@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
+using System.Windows.Forms;
 using Cube.Mixin.Logging;
 
 namespace Cube.Forms.Demo
@@ -80,6 +81,38 @@ namespace Cube.Forms.Demo
         ///
         /* --------------------------------------------------------------------- */
         public void About() => Send(new AboutMessage(Facade));
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Confirm
+        ///
+        /// <summary>
+        /// Invokes the command when closing the window.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Confirm(FormClosingEventArgs src) => Send(new DialogMessage
+        {
+            Text    = "Closing window... Do you want to continue?",
+            Icon    = DialogIcon.Information,
+            Buttons = DialogButtons.OkCancel,
+        },
+        e => {
+            src.Cancel = e == DialogStatus.Cancel;
+            this.LogDebug("Closing", $"Reason:{src.CloseReason}", $"Cancel:{src.Cancel}");
+        },
+        e => true);
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Log
+        ///
+        /// <summary>
+        /// Invokes the command when the window is closed.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Log(FormClosedEventArgs src) => this.LogDebug("Closed", $"Reason:{src.CloseReason}");
 
         #endregion
     }

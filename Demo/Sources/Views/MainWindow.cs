@@ -69,11 +69,14 @@ namespace Cube.Forms.Demo
             base.OnBind(src);
             if (src is not MainViewModel vm) return;
 
+            Behaviors.Add(new DialogBehavior(vm));
             Behaviors.Add(new ClickBehavior(DemoButton1, vm.About));
             Behaviors.Add(new ClickBehavior(DemoButton2, vm.Notice));
             Behaviors.Add(new ShowVersionBehavior(vm, this));
             Behaviors.Add(new ShowNoticeBehavior(vm));
             Behaviors.Add(new ShownBehavior(this, () => vm.Setup()));
+            Behaviors.Add(new ClosingBehavior(this, e => vm.Confirm(e)));
+            Behaviors.Add(new ClosedBehavior(this, e => vm.Log(e)));
         }
 
         #endregion

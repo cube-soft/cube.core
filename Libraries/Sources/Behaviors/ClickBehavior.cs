@@ -29,10 +29,8 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ClickBehavior : DisposableBase
+    public class ClickBehavior : DisposableProxy
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// ClickBehavior
@@ -46,41 +44,11 @@ namespace Cube.Forms.Behaviors
         /// <param name="action">Action to click.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ClickBehavior(Control src, Action action)
+        public ClickBehavior(Control src, Action action) : base(() =>
         {
             void invoke(object s, EventArgs e) => action();
             src.Click += invoke;
-            _subscriber = Disposable.Create(() => src.Click -= invoke);
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _subscriber.Dispose();
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly IDisposable _subscriber;
-        #endregion
+            return Disposable.Create(() => src.Click -= invoke);
+        }) { }
     }
 }
