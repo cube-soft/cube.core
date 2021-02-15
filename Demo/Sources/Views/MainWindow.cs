@@ -72,11 +72,13 @@ namespace Cube.Forms.Demo
             Behaviors.Add(new DialogBehavior(vm));
             Behaviors.Add(new ClickBehavior(DemoButton1, vm.About));
             Behaviors.Add(new ClickBehavior(DemoButton2, vm.Notice));
+            Behaviors.Add(new ClickBehavior(DemoButton5, vm.Close));
             Behaviors.Add(new ShowVersionBehavior(vm, this));
             Behaviors.Add(new ShowNoticeBehavior(vm));
-            Behaviors.Add(new ShownBehavior(this, () => vm.Setup()));
-            Behaviors.Add(new ClosingBehavior(this, e => vm.Confirm(e)));
-            Behaviors.Add(new ClosedBehavior(this, e => vm.Log(e)));
+            Behaviors.Add(new ShownBehavior(this, vm.Setup));
+            Behaviors.Add(new CloseBehavior(vm, this));
+            Behaviors.Add(new ClosingBehavior(this, vm.Confirm));
+            Behaviors.Add(new ClosedBehavior(this, vm.Log));
         }
 
         #endregion

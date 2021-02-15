@@ -84,6 +84,17 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
+        /// Close
+        ///
+        /// <summary>
+        /// Invokes the close command.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Close() => Send<CloseMessage>();
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// Confirm
         ///
         /// <summary>
@@ -91,17 +102,19 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Confirm(FormClosingEventArgs src) => Send(new DialogMessage
+        public void Confirm(FormClosingEventArgs src)
         {
-            Text    = "Closing window... Do you want to continue?",
-            Icon    = DialogIcon.Information,
-            Buttons = DialogButtons.OkCancel,
-        },
-        e => {
-            src.Cancel = e == DialogStatus.Cancel;
+            var msg = new DialogMessage
+            {
+                Text    = "Closing window... Do you want to continue?",
+                Icon    = DialogIcon.Information,
+                Buttons = DialogButtons.OkCancel,
+            };
+
+            Send(msg);
+            src.Cancel = msg.Value == DialogStatus.Cancel;
             this.LogDebug("Closing", $"Reason:{src.CloseReason}", $"Cancel:{src.Cancel}");
-        },
-        e => true);
+        }
 
         /* --------------------------------------------------------------------- */
         ///

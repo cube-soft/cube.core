@@ -177,7 +177,7 @@
             //
             // DemoButton5
             //
-            this.DemoButton5.Content = "DemoButton5";
+            this.DemoButton5.Content = "Close";
             this.DemoButton5.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton5.FlatAppearance.BorderSize = 0;
             this.DemoButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
