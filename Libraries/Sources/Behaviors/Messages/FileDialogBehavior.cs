@@ -28,7 +28,7 @@ namespace Cube.Forms.Behaviors
     /// OpenFileBehavior
     ///
     /// <summary>
-    /// Pvovides functionality to show a open-file dialog.
+    /// Provides functionality to show a open-file dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -43,10 +43,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileBehavior(IPresentable src) :base (src) { }
+        public OpenFileBehavior(IPresentable vm) :base (vm) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,7 +86,7 @@ namespace Cube.Forms.Behaviors
     /// SaveFileBehavior
     ///
     /// <summary>
-    /// Pvovides functionality to show a save-file dialog.
+    /// Provides functionality to show a save-file dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -101,10 +101,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileBehavior(IPresentable src) : base(src) { }
+        public SaveFileBehavior(IPresentable vm) : base(vm) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -144,7 +144,7 @@ namespace Cube.Forms.Behaviors
     /// OpenDirectoryBehavior
     ///
     /// <summary>
-    /// Pvovides functionality to show a directory dialog.
+    /// Provides functionality to show a directory dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -161,10 +161,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenDirectoryBehavior(IPresentable src) : base(src) { }
+        public OpenDirectoryBehavior(IPresentable vm) : base(vm) { }
 
         #endregion
 

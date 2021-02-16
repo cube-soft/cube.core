@@ -42,10 +42,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogBehavior(IPresentable src) : base(src) { }
+        public DialogBehavior(IPresentable vm) : base(vm) { }
 
         #endregion
 

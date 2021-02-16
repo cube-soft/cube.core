@@ -41,11 +41,11 @@ namespace Cube.Forms.Behaviors
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
-        /// <param name="view">View object to be closed.</param>
+        /// <param name="view">Source view.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public CloseBehavior(IPresentable src, Form view) : base(src)
+        public CloseBehavior(Form view, IPresentable vm) : base(vm)
         {
             _view = view;
         }

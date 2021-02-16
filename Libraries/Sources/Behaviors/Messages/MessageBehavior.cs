@@ -44,12 +44,12 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected MessageBehavior(IPresentable src)
+        protected MessageBehavior(IPresentable vm)
         {
-            _subscriber = src.Subscribe<TMessage>(Invoke);
+            _subscriber = vm.Subscribe<TMessage>(Invoke);
         }
 
         #endregion

@@ -43,10 +43,10 @@ namespace Cube.Forms.Behaviors
         /// specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IPresentable src) : base(src) { }
+        public ShowBehavior(IPresentable vm) : base(vm) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -91,10 +91,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="src">Presentable object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowDialogBehavior(IPresentable src) : base(src) { }
+        public ShowDialogBehavior(IPresentable vm) : base(vm) { }
 
         /* ----------------------------------------------------------------- */
         ///
