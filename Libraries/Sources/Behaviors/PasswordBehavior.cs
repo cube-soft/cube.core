@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 using Cube.Mixin.String;
 
 namespace Cube.Forms.Behaviors
@@ -47,9 +48,7 @@ namespace Cube.Forms.Behaviors
         /// <param name="confirm">Textbox to confirm the password.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PasswordBehavior(System.Windows.Forms.TextBox master,
-            System.Windows.Forms.TextBox confirm) :
-            this(master, confirm, null) { }
+        public PasswordBehavior(TextBox master, TextBox confirm) : this(master, confirm, null) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,9 +66,7 @@ namespace Cube.Forms.Behaviors
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public PasswordBehavior(System.Windows.Forms.TextBox master,
-            System.Windows.Forms.TextBox confirm,
-            System.Windows.Forms.CheckBox showPassword)
+        public PasswordBehavior(TextBox master, TextBox confirm, CheckBox showPassword)
         {
             _master  = master  ?? throw new ArgumentNullException();
             _confirm = confirm ?? throw new ArgumentNullException();
@@ -308,9 +305,9 @@ namespace Cube.Forms.Behaviors
         #endregion
 
         #region Fields
-        private readonly System.Windows.Forms.TextBox _master;
-        private readonly System.Windows.Forms.TextBox _confirm;
-        private readonly System.Windows.Forms.CheckBox _show;
+        private readonly TextBox _master;
+        private readonly TextBox _confirm;
+        private readonly CheckBox _show;
         private Color _warning = Color.FromArgb(255, 102, 102);
         private Color _default = SystemColors.Window;
         private Color _disabled = SystemColors.Control;
