@@ -80,7 +80,7 @@ namespace Cube
         ///
         /// <param name="oldvalue">Value before changed.</param>
         /// <param name="newvalue">Value after changed.</param>
-        /// 
+        ///
         /// <remarks>
         /// bool 型の値を指定すると ValueCancelEventArgs(T) のオブジェクトが
         /// 生成される場合があります。
