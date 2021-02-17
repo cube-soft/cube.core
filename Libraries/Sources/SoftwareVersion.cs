@@ -76,14 +76,14 @@ namespace Cube
 
             var match = Regex.Match(
                 src,
-                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){0,3})(?<suffix>.*)",
+                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){1,3})(?<suffix>.*)",
                 RegexOptions.Singleline
             );
 
             Prefix = match.Groups["prefix"].Value;
             Suffix = match.Groups["suffix"].Value;
 
-            var number = Normalize(match.Groups["number"].Value);
+            var number = match.Groups["number"].Value;
             if (Version.TryParse(number, out var result)) Number = result;
         }
 

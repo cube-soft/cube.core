@@ -81,10 +81,31 @@ namespace Cube.Tests
         [TestCase("v1.0.0.0-suffix",       4, ExpectedResult = true )]
         [TestCase("v1.0.0.0-p21",          4, ExpectedResult = true )]
         [TestCase("p21-v1.0.0.0-suffix",   4, ExpectedResult = true )]
-        [TestCase("1",                     1, ExpectedResult = true )]
-        [TestCase("InvalidVersionNumber",  0, ExpectedResult = false)]
-        [TestCase(null,                    0, ExpectedResult = false)]
         public bool Parse(string src, int digit) => new SoftwareVersion(src).ToString(digit, false) == src;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Parse_Ignore
+        ///
+        /// <summary>
+        /// Tests to create a new instance of the SoftwareVersion class
+        /// with the specified invalid string.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("1")]
+        [TestCase("InvalidVersionNumber")]
+        [TestCase(null)]
+        public void Parse_Ignore(string str)
+        {
+            var src = new SoftwareVersion(str);
+            var cmp = new SoftwareVersion(typeof(SoftwareVersion).Assembly);
+
+            Assert.That(src.Number.Major,    Is.EqualTo(cmp.Number.Major));
+            Assert.That(src.Number.Minor,    Is.EqualTo(cmp.Number.Minor));
+            Assert.That(src.Number.Build,    Is.EqualTo(cmp.Number.Build));
+            Assert.That(src.Number.Revision, Is.EqualTo(cmp.Number.Revision));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
