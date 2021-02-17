@@ -57,49 +57,10 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_DisposableOnceAction
+        /// Create_DisposableProxy
         ///
         /// <summary>
-        /// Tests the DisposableOnceAction class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_DisposableOnceAction()
-        {
-            var n   = 0;
-            var src = new DisposableOnceAction(() => n++, e => n--);
-
-            Assert.That(src.IgnoreTwice, Is.True);
-            Assert.That(src.Invoked, Is.False);
-            Assert.That(src.Disposed, Is.False);
-
-            src.Invoke();
-            Assert.That(src.Invoked, Is.True);
-            Assert.That(n, Is.EqualTo(1));
-
-            src.Invoke(); // ignore
-            Assert.That(n, Is.EqualTo(1));
-
-            src.IgnoreTwice = false;
-            Assert.That(() => src.Invoke(), Throws.TypeOf<TwiceException>());
-            Assert.That(n, Is.EqualTo(1));
-
-            src.Dispose();
-            Assert.That(src.Disposed, Is.True);
-            Assert.That(n, Is.EqualTo(0));
-
-            src.Dispose(); // ignore
-            src.IgnoreTwice = true;
-            Assert.That(() => src.Invoke(), Throws.TypeOf<ObjectDisposedException>());
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_DisposableOnceAction
-        ///
-        /// <summary>
-        /// Tests the DisposableOnceAction class.
+        /// Tests the DisposableProxy class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -115,28 +76,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Null
-        ///
-        /// <summary>
-        /// Tests the creating methods with the null disposer.
-        /// The DisposableOnceAction class allows the null disposer.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Null()
-        {
-            var n = 0;
-            using (var src = new DisposableOnceAction(() => ++n, null))
-            {
-                src.Invoke();
-                src.Invoke();
-            }
-            Assert.That(n, Is.EqualTo(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Create_Throws
         ///
         /// <summary>
@@ -148,7 +87,6 @@ namespace Cube.Tests
         public void Create_Throws()
         {
             Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
-            Assert.That(() => new DisposableOnceAction(null, e => { }), Throws.ArgumentNullException);
         }
 
         #endregion
