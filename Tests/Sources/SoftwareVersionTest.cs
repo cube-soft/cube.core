@@ -51,7 +51,7 @@ namespace Cube.Tests
             var major = src.GetVersion().Major;
             var minor = src.GetVersion().Minor;
             var pf    = src.GetArchitecture();
-            var dest  = new SoftwareVersion(src)
+            var dest  = new SoftwareVersion(src.GetVersion())
             {
                 Prefix = "begin-",
                 Suffix = "-end"
@@ -99,7 +99,7 @@ namespace Cube.Tests
         public void Parse_Ignore(string str)
         {
             var src = new SoftwareVersion(str);
-            var cmp = new SoftwareVersion(typeof(SoftwareVersion).Assembly);
+            var cmp = new SoftwareVersion();
 
             Assert.That(src.Number.Major,    Is.EqualTo(cmp.Number.Major));
             Assert.That(src.Number.Minor,    Is.EqualTo(cmp.Number.Minor));

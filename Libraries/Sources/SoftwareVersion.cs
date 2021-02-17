@@ -43,17 +43,28 @@ namespace Cube
         /// SoftwareVersion
         ///
         /// <summary>
-        /// Initializes a new instance of the class with the specified
-        /// assembly.
+        /// Initializes a new instance of the class.
         /// </summary>
         ///
-        /// <param name="src">Assembly object.</param>
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion() : this(new Version(1, 0, 0, 0)) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SoftwareVersion
+        ///
+        /// <summary>
+        /// Initializes a new instance of the class with the specified
+        /// arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Version object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(Assembly src)
+        public SoftwareVersion(Version src)
         {
-            Number       = src.GetVersion();
-            Architecture = src.GetArchitecture();
+            Number       = src;
+            Architecture = GetType().Assembly.GetArchitecture();
         }
 
         /* ----------------------------------------------------------------- */
@@ -70,7 +81,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(string src) : this(typeof(SoftwareVersion).Assembly)
+        public SoftwareVersion(string src) : this()
         {
             if (!src.HasValue()) return;
 

@@ -192,7 +192,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public static void Info(Type type, Assembly assembly)
         {
-            Info(type, $"{assembly.GetProduct()} {new SoftwareVersion(assembly).ToString(4, true)}");
+            Info(type, $"{assembly.GetProduct()} {assembly.GetVersionString(4, true)}");
             Info(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
             Info(type, $"{Environment.UserName}@{Environment.MachineName}");
         }

@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using Cube.Mixin.Assembly;
 using Cube.Mixin.Uri;
 using NUnit.Framework;
 
@@ -159,7 +160,7 @@ namespace Cube.Tests.Mixin
         {
             var asm  = typeof(UriTest).Assembly;
             var dest = $"{Create()}?ver=4.0.0-beta";
-            var src  = Create().With(new SoftwareVersion(asm) { Suffix = "-beta" });
+            var src  = Create().With(new SoftwareVersion(asm.GetVersion()) { Suffix = "-beta" });
 
             Assert.That(src.ToString(), Is.EqualTo(dest));
         }

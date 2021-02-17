@@ -54,6 +54,26 @@ namespace Cube.Mixin.Assembly
 
         /* ----------------------------------------------------------------- */
         ///
+        /// GetVersion
+        ///
+        /// <summary>
+        /// Gets the version string of the specified assembly.
+        /// </summary>
+        ///
+        /// <param name="src">Assembly object.</param>
+        /// <param name="digit">Number of display digits</param>
+        /// <param name="architecture">
+        /// Indicates whether the architecture identification is displayed.
+        /// </param>
+        ///
+        /// <returns>Version string.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string GetVersionString(this Source src, int digit, bool architecture) =>
+            new SoftwareVersion(src.GetVersion()).ToString(digit, architecture);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetFileVersion
         ///
         /// <summary>
