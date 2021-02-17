@@ -1,4 +1,4 @@
-version: 3.2.0.{build}
+version: 4.0.0.{build}
 environment:
     PROJECT_NAME:  'Cube.Core'
     TEST_TOOL:     '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
