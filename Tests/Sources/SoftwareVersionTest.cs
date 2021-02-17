@@ -37,26 +37,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Digit
-        ///
-        /// <summary>
-        /// Executes the test for setting the digit.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(1, ExpectedResult = 2)]
-        [TestCase(2, ExpectedResult = 2)]
-        [TestCase(3, ExpectedResult = 3)]
-        [TestCase(4, ExpectedResult = 4)]
-        [TestCase(5, ExpectedResult = 4)]
-        public int Digit(int src)
-        {
-            var asm = typeof(SoftwareVersionTest).Assembly;
-            return new SoftwareVersion(asm) { Digit = src }.Digit;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// GetString
         ///
         /// <summary>
@@ -73,15 +53,15 @@ namespace Cube.Tests
             var pf    = src.GetArchitecture();
             var dest  = new SoftwareVersion(src)
             {
-                Digit  = 2,
                 Prefix = "begin-",
                 Suffix = "-end"
             };
 
-            Assert.That(dest.Architecture,    Is.EqualTo(pf));
-            Assert.That(dest.ToString(true),  Is.EqualTo($"begin-{major}.{minor}-end ({pf})"));
-            Assert.That(dest.ToString(false), Is.EqualTo($"begin-{major}.{minor}-end"));
-            Assert.That(dest.ToString(),      Is.EqualTo(dest.ToString(false)));
+            Assert.That(dest.Architecture,       Is.EqualTo(pf));
+            Assert.That(dest.ToString(1, true),  Is.EqualTo($"begin-{major}-end ({pf})"));
+            Assert.That(dest.ToString(2, true),  Is.EqualTo($"begin-{major}.{minor}-end ({pf})"));
+            Assert.That(dest.ToString(4, false), Is.EqualTo($"begin-{major}.{minor}.0.0-end"));
+            Assert.That(dest.ToString(),         Is.EqualTo(dest.ToString(3, false)));
         }
 
         /* ----------------------------------------------------------------- */
@@ -94,17 +74,17 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("1.0",                   ExpectedResult = true )]
-        [TestCase("1.0.0",                 ExpectedResult = true )]
-        [TestCase("1.0.0.0",               ExpectedResult = true )]
-        [TestCase("1.0.0.0-suffix",        ExpectedResult = true )]
-        [TestCase("v1.0.0.0-suffix",       ExpectedResult = true )]
-        [TestCase("v1.0.0.0-p21",          ExpectedResult = true )]
-        [TestCase("p21-v1.0.0.0-suffix",   ExpectedResult = true )]
-        [TestCase("1",                     ExpectedResult = false)]
-        [TestCase("InvalidVersionNumber",  ExpectedResult = false)]
-        [TestCase(null,                    ExpectedResult = false)]
-        public bool Parse(string src) => new SoftwareVersion(src).ToString() == src;
+        [TestCase("1.0",                   2, ExpectedResult = true )]
+        [TestCase("1.0.0",                 3, ExpectedResult = true )]
+        [TestCase("1.0.0.0",               4, ExpectedResult = true )]
+        [TestCase("1.0.0.0-suffix",        4, ExpectedResult = true )]
+        [TestCase("v1.0.0.0-suffix",       4, ExpectedResult = true )]
+        [TestCase("v1.0.0.0-p21",          4, ExpectedResult = true )]
+        [TestCase("p21-v1.0.0.0-suffix",   4, ExpectedResult = true )]
+        [TestCase("1",                     1, ExpectedResult = true )]
+        [TestCase("InvalidVersionNumber",  0, ExpectedResult = false)]
+        [TestCase(null,                    0, ExpectedResult = false)]
+        public bool Parse(string src, int digit) => new SoftwareVersion(src).ToString(digit, false) == src;
 
         /* ----------------------------------------------------------------- */
         ///

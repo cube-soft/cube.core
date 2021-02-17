@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -66,30 +65,26 @@ namespace Cube
         /// string.
         /// </summary>
         ///
-        /// <param name="version">
+        /// <param name="src">
         /// String value that represents the version.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion(string version) : this(typeof(SoftwareVersion).Assembly)
+        public SoftwareVersion(string src) : this(typeof(SoftwareVersion).Assembly)
         {
-            if (!version.HasValue()) return;
+            if (!src.HasValue()) return;
 
             var match = Regex.Match(
-                version,
-                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){1,3})(?<suffix>.*)",
+                src,
+                @"(?<prefix>.*?)(?<number>[0-9]+(\.[0-9]+){0,3})(?<suffix>.*)",
                 RegexOptions.Singleline
             );
 
             Prefix = match.Groups["prefix"].Value;
             Suffix = match.Groups["suffix"].Value;
 
-            var number = match.Groups["number"].Value;
-            if (Version.TryParse(number, out var result))
-            {
-                Number = result;
-                Digit = number.Count(c => c == '.') + 1;
-            }
+            var number = Normalize(match.Groups["number"].Value);
+            if (Version.TryParse(number, out var result)) Number = result;
         }
 
         #endregion
@@ -106,29 +101,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public Version Number { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Digit
-        ///
-        /// <summary>
-        /// Gets or sets the number of significant digits of version.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// 2, 3, or 4 is available.
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int Digit
-        {
-            get => _digit;
-            set
-            {
-                if (_digit == value) return;
-                _digit = Math.Min(Math.Max(value, 2), 4);
-            }
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -179,7 +151,7 @@ namespace Cube
         /// <returns>String for the version.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public override string ToString() => ToString(false);
+        public override string ToString() => ToString(3, false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -189,6 +161,7 @@ namespace Cube
         /// Returns the string that represents the version.
         /// </summary>
         ///
+        /// <param name="digit">Number of display digits</param>
         /// <param name="architecture">
         /// Indicates whether the architecture identification is displayed.
         /// </param>
@@ -196,12 +169,12 @@ namespace Cube
         /// <returns>String for the version.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public string ToString(bool architecture)
+        public string ToString(int digit, bool architecture)
         {
             var ss = new StringBuilder();
 
             if (Prefix.HasValue()) Append(ss, Prefix);
-            AppendNumber(ss);
+            AppendNumber(ss, Math.Max(Math.Min(digit, 4), 1));
             if (Suffix.HasValue()) Append(ss, Suffix);
             if (architecture) Append(ss, $" ({Architecture})");
 
@@ -221,12 +194,14 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void AppendNumber(StringBuilder dest)
+        private void AppendNumber(StringBuilder dest, int digit)
         {
-            Append(dest, $"{Number.Major}.{Number.Minor}");
-            if (Digit <= 2) return;
+            Append(dest, $"{Number.Major}");
+            if (digit <= 1) return;
+            Append(dest, $".{Number.Minor}");
+            if (digit <= 2) return;
             Append(dest, $".{Number.Build}");
-            if (Digit <= 3) return;
+            if (digit <= 3) return;
             Append(dest, $".{Number.Revision}");
         }
 
@@ -245,10 +220,17 @@ namespace Cube
             Debug.Assert(check == src);
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Normalize
+        ///
+        /// <summary>
+        /// Normalized the specified version string.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private string Normalize(string src) => src.Contains(".") ? src : $"{src}.0";
 
-        #region Fields
-        private int _digit = 4;
         #endregion
     }
 }

@@ -146,7 +146,7 @@ namespace Cube.Mixin.Uri
         ///
         /* ----------------------------------------------------------------- */
         public static Source With(this Source src, SoftwareVersion version) =>
-            With(src, "ver", version.ToString(false));
+            With(src, "ver", version.ToString(3, false));
 
         /* ----------------------------------------------------------------- */
         ///

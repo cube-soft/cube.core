@@ -158,12 +158,8 @@ namespace Cube.Tests.Mixin
         public void With_SoftwareVersion()
         {
             var asm  = typeof(UriTest).Assembly;
-            var dest = $"{Create()}?ver=4.0beta";
-            var src  = Create().With(new SoftwareVersion(asm)
-            {
-                Digit  = 2,
-                Suffix = "beta"
-            });
+            var dest = $"{Create()}?ver=4.0.0-beta";
+            var src  = Create().With(new SoftwareVersion(asm) { Suffix = "-beta" });
 
             Assert.That(src.ToString(), Is.EqualTo(dest));
         }
