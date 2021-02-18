@@ -61,7 +61,6 @@ namespace Cube.Tests.Mixin
             Assert.That(src.GetTrademark(),     Is.EqualTo(expected.Trademark));
             Assert.That(src.GetCulture(),       Is.EqualTo(expected.Culture));
             Assert.That(src.GetVersion(),       Is.EqualTo(expected.Version));
-            Assert.That(src.GetFileVersion(),   Is.EqualTo(expected.FileVersion));
         }
 
         #endregion
@@ -95,7 +94,6 @@ namespace Cube.Tests.Mixin
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(4, 0, 0, 0),
-                    FileVersion   = new Version(4, 0, 0, 0),
                 });
 
                 yield return new TestCaseData(typeof(Extension).Assembly, new Expected
@@ -112,7 +110,6 @@ namespace Cube.Tests.Mixin
                     Trademark     = string.Empty,
                     Culture       = string.Empty,
                     Version       = new Version(4, 0, 0, 0),
-                    FileVersion   = new Version(4, 0, 0, 0),
                 });
             }
         }
@@ -144,7 +141,6 @@ namespace Cube.Tests.Mixin
             public string Configuration { get; set; }
             public string Culture { get; set; }
             public Version Version { get; set; }
-            public Version FileVersion { get; set; }
         }
 
         #endregion

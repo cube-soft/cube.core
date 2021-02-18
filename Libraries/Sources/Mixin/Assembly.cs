@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Cube.Mixin.String;
@@ -47,14 +46,30 @@ namespace Cube.Mixin.Assembly
         ///
         /// <param name="src">Assembly object.</param>
         ///
-        /// <returns>Version information.</returns>
+        /// <returns>Version object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static Version GetVersion(this Source src) => src.GetName().Version;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetVersion
+        /// GetSoftwareVersion
+        ///
+        /// <summary>
+        /// Gets the version information of the specified assembly.
+        /// </summary>
+        ///
+        /// <param name="src">Assembly object.</param>
+        ///
+        /// <returns>SoftwareVersion object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static SoftwareVersion GetSoftwareVersion(this Source src) =>
+            new SoftwareVersion(src.GetVersion());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetVersionString
         ///
         /// <summary>
         /// Gets the version string of the specified assembly.
@@ -70,23 +85,7 @@ namespace Cube.Mixin.Assembly
         ///
         /* ----------------------------------------------------------------- */
         public static string GetVersionString(this Source src, int digit, bool architecture) =>
-            new SoftwareVersion(src.GetVersion()).ToString(digit, architecture);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFileVersion
-        ///
-        /// <summary>
-        /// Gets the file version information of the specified assembly.
-        /// </summary>
-        ///
-        /// <param name="src">Assembly object.</param>
-        ///
-        /// <returns>Version information.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Version GetFileVersion(this Source src) =>
-            new Version(FileVersionInfo.GetVersionInfo(src.Location).FileVersion);
+            src.GetSoftwareVersion().ToString(digit, architecture);
 
         /* ----------------------------------------------------------------- */
         ///
