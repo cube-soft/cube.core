@@ -23,14 +23,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WindowBase
+    /// BindableWindow
     ///
     /// <summary>
-    /// Represents the base class of WinForms based window.
+    /// Represents the base class of WinForms-based IBindable implementation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WindowBase : WinForms.Form, IBindable
+    public class BindableWindow : WinForms.Form, IBindable
     {
         #region Properties
 

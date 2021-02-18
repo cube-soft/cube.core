@@ -46,7 +46,7 @@ namespace Cube.Forms.Demo
         /// <param name="view">View object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ShowVersionBehavior(WindowBase view, IPresentable vm) : base(vm)
+        public ShowVersionBehavior(BindableWindow view, IPresentable vm) : base(vm)
         {
             _icon = view.Icon;
             _text = view.Text;

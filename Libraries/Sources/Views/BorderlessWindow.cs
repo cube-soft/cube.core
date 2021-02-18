@@ -29,7 +29,7 @@ namespace Cube.Forms
     /// BorderlessWindow
     ///
     /// <summary>
-    /// 枠線やタイトルバーのないフォームを作成するためのクラスです。
+    /// Represents an Windows form with no title bar and borders.
     /// </summary>
     ///
     /// <remarks>
