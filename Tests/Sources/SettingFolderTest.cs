@@ -53,7 +53,7 @@ namespace Cube.FileSystem.Tests
         public void Create(Format format, int count)
         {
             var n    = 0;
-            var dest = new SettingFolder<Person>(Assembly, format);
+            var dest = new SettingFolder<Person>(format, Assembly);
 
             dest.Loaded += (s, e) => ++n;
 
@@ -63,10 +63,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.Value, Is.Not.Null);
             Assert.That(dest.Version.ToString(), Is.EqualTo("4.0.0"));
             Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
-
-            var asm = dest.Assembly;
-            Assert.That(asm.GetCompany(), Is.EqualTo("CubeSoft"));
-            Assert.That(asm.GetProduct(), Is.EqualTo("Cube.FileSystem.Tests"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -84,31 +80,28 @@ namespace Cube.FileSystem.Tests
             var fmt  = Format.Registry;
             var name = GetKeyName(Default);
 
-            using (var src = new SettingFolder<Person>(Assembly, fmt, name))
-            {
-                src.AutoSave = false;
-                src.Load();
+            using var src = new SettingFolder<Person>(fmt, name) { AutoSave = false };
+            src.Load();
 
-                var dest = src.Value;
-                Assert.That(dest.Name,            Is.EqualTo("山田太郎"));
-                Assert.That(dest.Age,             Is.EqualTo(52));
-                Assert.That(dest.Sex,             Is.EqualTo(Sex.Male));
-                Assert.That(dest.Reserved,        Is.EqualTo(true));
-                Assert.That(dest.Creation,        Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
-                Assert.That(dest.Identification,  Is.EqualTo(1357));
-                Assert.That(dest.Secret,          Is.EqualTo("secret message"));
-                Assert.That(dest.Contact.Type,    Is.EqualTo("Phone"));
-                Assert.That(dest.Contact.Value,   Is.EqualTo("090-1234-5678"));
-                Assert.That(dest.Others.Count,    Is.EqualTo(2));
-                Assert.That(dest.Others[0].Type,  Is.EqualTo("PC"));
-                Assert.That(dest.Others[0].Value, Is.EqualTo("pc@example.com"));
-                Assert.That(dest.Others[1].Type,  Is.EqualTo("Mobile"));
-                Assert.That(dest.Others[1].Value, Is.EqualTo("mobile@example.com"));
-                Assert.That(dest.Messages.Length, Is.EqualTo(3));
-                Assert.That(dest.Messages[0],     Is.EqualTo("1st message"));
-                Assert.That(dest.Messages[1],     Is.EqualTo("2nd message"));
-                Assert.That(dest.Messages[2],     Is.EqualTo("3rd message"));
-            }
+            var dest = src.Value;
+            Assert.That(dest.Name,            Is.EqualTo("山田太郎"));
+            Assert.That(dest.Age,             Is.EqualTo(52));
+            Assert.That(dest.Sex,             Is.EqualTo(Sex.Male));
+            Assert.That(dest.Reserved,        Is.EqualTo(true));
+            Assert.That(dest.Creation,        Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
+            Assert.That(dest.Identification,  Is.EqualTo(1357));
+            Assert.That(dest.Secret,          Is.EqualTo("secret message"));
+            Assert.That(dest.Contact.Type,    Is.EqualTo("Phone"));
+            Assert.That(dest.Contact.Value,   Is.EqualTo("090-1234-5678"));
+            Assert.That(dest.Others.Count,    Is.EqualTo(2));
+            Assert.That(dest.Others[0].Type,  Is.EqualTo("PC"));
+            Assert.That(dest.Others[0].Value, Is.EqualTo("pc@example.com"));
+            Assert.That(dest.Others[1].Type,  Is.EqualTo("Mobile"));
+            Assert.That(dest.Others[1].Value, Is.EqualTo("mobile@example.com"));
+            Assert.That(dest.Messages.Length, Is.EqualTo(3));
+            Assert.That(dest.Messages[0],     Is.EqualTo("1st message"));
+            Assert.That(dest.Messages[1],     Is.EqualTo("2nd message"));
+            Assert.That(dest.Messages[2],     Is.EqualTo("3rd message"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -123,7 +116,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(Format.Json)]
         [TestCase(Format.Xml )]
         public void Load_Throws(Format format) => Assert.That(
-            () => new SettingFolder<Person>(Assembly, format).Load(),
+            () => new SettingFolder<Person>(format, Assembly).Load(),
             Throws.InstanceOf<System.IO.IOException>()
         );
 
@@ -141,8 +134,8 @@ namespace Cube.FileSystem.Tests
         {
             var count = 0;
             var name  = GetKeyName(Default);
-            var src   = new SettingFolder<Person>(Assembly, Format.Registry, name);
 
+            using var src = new SettingFolder<Person>(Format.Registry, name);
             src.Loaded += (s, e) => ++count;
             src.AutoSave = false;
             src.Load();
@@ -171,7 +164,7 @@ namespace Cube.FileSystem.Tests
             var change = 0;
             var delay  = TimeSpan.FromMilliseconds(100);
 
-            using (var src = new SettingFolder<Person>(Assembly, Format.Registry, name))
+            using (var src = new SettingFolder<Person>(Format.Registry, name))
             {
                 src.Saved           += (s, e) => ++save;
                 src.PropertyChanged += (s, e) => ++change;

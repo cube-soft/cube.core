@@ -55,8 +55,8 @@ namespace Cube.FileSystem
         /// <param name="format">Serialization format.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingFolder(Assembly assembly, Format format) :
-            this(assembly, format, new IO()) { }
+        public SettingFolder(Format format, Assembly assembly) :
+            this(format, assembly, new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,8 +72,8 @@ namespace Cube.FileSystem
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingFolder(Assembly assembly, Format format, IO io) :
-            this(assembly, format, GetLocation(assembly, format, io), io) { }
+        public SettingFolder(Format format, Assembly assembly, IO io) :
+            this(format, GetLocation(assembly, format, io), assembly.GetSoftwareVersion(), io) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -84,13 +84,12 @@ namespace Cube.FileSystem
         /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="assembly">Assembly information.</param>
         /// <param name="format">Serialization format.</param>
         /// <param name="location">Saved data location.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingFolder(Assembly assembly, Format format, string location) :
-            this(assembly, format, location, new IO()) { }
+        public SettingFolder(Format format, string location) :
+            this(format, location, new IO()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,23 +100,55 @@ namespace Cube.FileSystem
         /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="assembly">Assembly information.</param>
         /// <param name="format">Serialization format.</param>
         /// <param name="location">Saved data location.</param>
         /// <param name="io">I/O handler.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingFolder(Assembly assembly, Format format, string location, IO io)
+        public SettingFolder(Format format, string location, IO io) :
+            this(format, location, new SoftwareVersion(), io) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingFolder(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the SettingsFolder class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="format">Serialization format.</param>
+        /// <param name="location">Saved data location.</param>
+        /// <param name="version">Software version.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingFolder(Format format, string location, SoftwareVersion version) :
+            this(format, location, version, new IO()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SettingFolder(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the SettingsFolder class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="format">Serialization format.</param>
+        /// <param name="location">Saved data location.</param>
+        /// <param name="version">Software version.</param>
+        /// <param name="io">I/O handler.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SettingFolder(Format format, string location, SoftwareVersion version, IO io)
         {
             _autosaver.AutoReset = false;
             _autosaver.Elapsed += (s, e) => Task.Run(() => Save()).Forget();
 
-            Assembly = assembly;
-            IO       = io;
             Format   = format;
             Location = location;
-            Version  = new SoftwareVersion(assembly);
-            Value    = new T();
+            Version  = version;
+            IO       = io;
 
             Value.PropertyChanged += WhenChanged;
         }
@@ -135,29 +166,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public T Value { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Assembly
-        ///
-        /// <summary>
-        /// Gets the assembly information.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Assembly Assembly { get; private set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Version
-        ///
-        /// <summary>
-        /// Gets the software version.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SoftwareVersion Version { get; private set; }
+        public T Value { get; private set; } = new T();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -180,6 +189,17 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public string Location { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Version
+        ///
+        /// <summary>
+        /// Gets the software version.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public SoftwareVersion Version { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
