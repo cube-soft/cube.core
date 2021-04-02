@@ -29,7 +29,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FileDropToCommand<T> : CommandBehavior<T> where T : UIElement
+    public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElement
     {
         /* ----------------------------------------------------------------- */
         ///
