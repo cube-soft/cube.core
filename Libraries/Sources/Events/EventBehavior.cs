@@ -50,11 +50,30 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public EventBehavior(object src, string name, Action action)
+        public EventBehavior(object src, string name, Action action) :
+            this(src, name, new EventHandler((s, e) => action())) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EventBehavior
+        ///
+        /// <summary>
+        /// Creates a new instance of the EventBehavior class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Source object.</param>
+        /// <param name="name">Event name to wrap.</param>
+        /// <param name="handler">
+        /// Handler when the specified event is fired.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public EventBehavior(object src, string name, Delegate handler)
         {
             _source  = src ?? throw new ArgumentNullException(nameof(src));
             _event   = src.GetType().GetEvent(name) ?? throw new ArgumentNullException(name);
-            _handler = new EventHandler((s, e) => action());
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
 
             _event.AddEventHandler(_source, _handler);
         }
