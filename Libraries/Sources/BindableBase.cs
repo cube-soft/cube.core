@@ -127,7 +127,7 @@ namespace Cube.Xui
         #endregion
 
         #region Fields
-        private readonly List<IDisposable> _observer = new List<IDisposable>();
+        private readonly List<IDisposable> _observer = new();
         #endregion
     }
 }

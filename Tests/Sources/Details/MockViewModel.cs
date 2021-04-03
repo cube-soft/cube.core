@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Threading;
+using System.Windows.Input;
 
 namespace Cube.Xui.Tests
 {
@@ -51,6 +52,20 @@ namespace Cube.Xui.Tests
         ///
         /* ----------------------------------------------------------------- */
         public Person Value => Facade;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Detect
+        ///
+        /// <summary>
+        /// Gets the Detect command.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ICommand Detect { get; } = new DelegateCommand(
+            () => Logger.Debug(typeof(MockViewModel), "Event is fired"),
+            () => true
+        );
 
         /* ----------------------------------------------------------------- */
         ///
