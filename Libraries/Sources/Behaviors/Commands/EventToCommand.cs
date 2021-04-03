@@ -106,7 +106,7 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            if (Event.HasValue()) Exchange(Event);
+            if (Event.HasValue() && _behavior is null) Exchange(Event);
         }
 
         /* ----------------------------------------------------------------- */
@@ -135,6 +135,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         private void Exchange(string name)
         {
+            if (AssociatedObject is null) return;
+
             var src = name.HasValue() ?
                       new EventBehavior(AssociatedObject, name, _handler) :
                       default;
