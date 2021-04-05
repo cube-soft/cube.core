@@ -18,11 +18,11 @@
 using System;
 using Alphaleonis.Win32.Filesystem;
 
-namespace Cube.FileSystem
+namespace Cube.FileSystem.AlphaFS
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AfsController
+    /// EntityController
     ///
     /// <summary>
     /// Provides functionality to refresh properties of a EntityControllable
@@ -31,7 +31,7 @@ namespace Cube.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class AfsController : EntityController
+    public class EntityController : FileSystem.EntityController
     {
         #region Methods
 

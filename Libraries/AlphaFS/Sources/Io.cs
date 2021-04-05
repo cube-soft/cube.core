@@ -19,11 +19,11 @@ using System;
 using System.Collections.Generic;
 using Alphaleonis.Win32.Filesystem;
 
-namespace Cube.FileSystem
+namespace Cube.FileSystem.AlphaFS
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// AfsIO
+    /// IO
     ///
     /// <summary>
     /// Provides functionality to do something to a file or directory by
@@ -31,7 +31,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class AfsIO : IO
+    public class IO : FileSystem.IO
     {
         #region Methods
 
@@ -46,8 +46,7 @@ namespace Cube.FileSystem
         /// <returns>Controller object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected override EntityController GetControllerCore() => _shared ??= new AfsController()
-;
+        protected override FileSystem.EntityController GetControllerCore() => _shared ??= new EntityController();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -107,7 +106,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected override void SetAttributesCore(string path, System.IO.FileAttributes attr)
         {
-            if (Directory.Exists(path)) new DirectoryInfo(path) { Attributes = attr };
+            if (Directory.Exists(path)) _ = new DirectoryInfo(path) { Attributes = attr };
             else if (File.Exists(path)) File.SetAttributes(path, attr);
         }
 
