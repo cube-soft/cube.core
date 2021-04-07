@@ -22,11 +22,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\FileSystem\Cube.FileSystem.csproj" />
         <ProjectReference Include="..\..\Libraries\FileSystem.AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-        <PackageReference Include="NUnit" Version="3.13.1" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-        <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />
-        <PackageReference Include="OpenCover" Version="4.7.922" />
+        <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
