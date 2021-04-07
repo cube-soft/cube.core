@@ -17,16 +17,16 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Cube.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>..\..\Cube.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
         <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NLog" Version="4.7.7" />
+        <PackageReference Include="NLog" Version="4.7.9" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\Icon.png" Pack="true" PackagePath="images" />
+        <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
     </ItemGroup>
 </Project>

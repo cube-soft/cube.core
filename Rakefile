@@ -24,7 +24,7 @@ require 'rake/clean'
 PROJECT   = "Cube.Core"
 BRANCHES  = ["master", "netstandard2.0", "net35"]
 PLATFORMS = ["Any CPU"]
-PACKAGES  = ["Libraries/#{PROJECT}"]
+PACKAGES  = ["Libraries/Core/Cube.Core"]
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -71,7 +71,7 @@ end
 desc "Build projects in pre-defined branches and platforms."
 task :build_all, [:test] do |_, e|
     e.with_defaults(:test => false)
-    
+
     BRANCHES.product(PLATFORMS).each do |bp|
         checkout(bp[0]) do
             Rake::Task[:build].reenable

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cube.Core", "Libraries\Cube.Core.csproj", "{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cube.Core", "Libraries\Core\Cube.Core.csproj", "{4E3BDEFA-B4C7-4AAC-8148-FF03044E0CA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cube.Core.Tests", "Tests\Cube.Core.Tests.csproj", "{922E9CB4-168D-4D66-BCBD-4A6D8C5F50E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cube.Core.Tests", "Tests\Core\Cube.Core.Tests.csproj", "{922E9CB4-168D-4D66-BCBD-4A6D8C5F50E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
