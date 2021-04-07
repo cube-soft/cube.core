@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Core", "Libraries\Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.FileSystem", "Libraries\FileSystem\Cube.FileSystem.csproj", "{B7FDA0E0-58C8-46BC-866A-BF39ED2D7AE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.FileSystem.AlphaFS", "Libraries\FileSystem.AlphaFS\Cube.FileSystem.AlphaFS.csproj", "{B0C3224E-6BA2-434E-B9F9-8DE45A4095A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.FileSystem.AlphaFS", "Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj", "{B0C3224E-6BA2-434E-B9F9-8DE45A4095A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Tests", "Libraries\Tests\Cube.Tests.csproj", "{8E1FF307-C59B-428D-9769-9A53B4CB81A4}"
 EndProject

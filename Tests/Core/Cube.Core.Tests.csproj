@@ -27,7 +27,9 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\Core\Cube.Core.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.*" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.17.*" />
+        <PackageReference Include="Appveyor.TestLogger" Version="2.0.*" />
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>

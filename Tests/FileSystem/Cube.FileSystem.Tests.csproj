@@ -21,9 +21,11 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\FileSystem\Cube.FileSystem.csproj" />
-        <ProjectReference Include="..\..\Libraries\FileSystem.AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
+        <ProjectReference Include="..\..\Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.*" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.17.*" />
+        <PackageReference Include="Appveyor.TestLogger" Version="2.0.*" />
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />

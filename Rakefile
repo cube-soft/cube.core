@@ -26,7 +26,7 @@ BRANCHES  = ["master", "netstandard2.0", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/Core/Cube.Core",
              "Libraries/FileSystem/Cube.FileSystem",
-             "Libraries/FileSystem.AlphaFS/Cube.FileSystem.AlphaFS",
+             "Libraries/AlphaFS/Cube.FileSystem.AlphaFS",
              "Libraries/Tests/Cube.Tests"]
 
 # --------------------------------------------------------------------------- #
