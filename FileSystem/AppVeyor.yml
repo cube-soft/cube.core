@@ -1,0 +1,46 @@
+version: 4.0.0.{build}
+environment:
+    PROJECT_NAME:  'Cube.FileSystem'
+    TEST_TOOL:     '..\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe'
+    TEST_ARGS:     'test --no-restore --no-build --logger:Appveyor'
+    TEST_FILTERS:  '+[Cube*]* -[*]*NativeMethods -[*]*Properties.* -[*]*.Program'
+    TEST_COVERAGE: 'CoverResults.xml'
+    TEST_RESULTS:  'TestResults'
+clone_folder: 'C:\Cube\%PROJECT_NAME%'
+image: Visual Studio 2019
+platform: Any CPU
+configuration: Release
+skip_tags: true
+branches:
+    only:
+        - master
+nuget:
+    project_feed: true
+    disable_publish_on_pr: true
+before_build:
+    - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
+    - nuget restore "%PROJECT_NAME%.sln"
+build:
+    project: '%PROJECT_NAME%.sln'
+    parallel: true
+    publish_nuget: true
+    verbosity: minimal
+test_script:
+    - >
+      "%TEST_TOOL%"
+      -log:Error
+      -register:appveyor
+      -target:dotnet.exe
+      -targetargs:"%TEST_ARGS% %PROJECT_NAME%.sln"
+      -returntargetcode
+      -hideskipped:All
+      -mergeoutput
+      -output:"%TEST_COVERAGE%"
+      -filter:"%TEST_FILTERS%"
+after_test:
+    - choco install codecov
+    - codecov -f "%TEST_COVERAGE%"
+    - xcopy /q /Y /I "%TEST_COVERAGE%" "%TEST_RESULTS%\"
+    - cmd: for /f "delims=" %%x in ('dir /b /s *.log') do xcopy /q /Y /I "%%x" "%TEST_RESULTS%\"
+artifacts:
+    - path: '%TEST_RESULTS%'
