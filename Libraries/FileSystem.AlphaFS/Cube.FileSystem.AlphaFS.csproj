@@ -7,7 +7,7 @@
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageTags>Cube;IO;AlphaFS</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/cube-soft/cube.filesystem</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
         <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -23,7 +23,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Core\Cube.FileSystem.csproj" />
+        <ProjectReference Include="..\FileSystem\Cube.FileSystem.csproj" />
         <PackageReference Include="AlphaFS" Version="2.2.6" />
     </ItemGroup>
     <ItemGroup>

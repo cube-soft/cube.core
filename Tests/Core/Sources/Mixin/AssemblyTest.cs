@@ -84,7 +84,7 @@ namespace Cube.Tests.Mixin
                 {
                     Name          = "Cube.Core.Tests",
                     FileName      = "Cube.Core.Tests.exe",
-                    DirectoryName = @"Tests\bin",
+                    DirectoryName = @"Tests\Core\bin",
                     Title         = "Cube.Core UnitTest",
                     Description   = "NUnit framework を用いて Cube.Core プロジェクトをテストします。",
                     Company       = "CubeSoft, Inc.",
@@ -100,7 +100,7 @@ namespace Cube.Tests.Mixin
                 {
                     Name          = "Cube.Core",
                     FileName      = "Cube.Core.dll",
-                    DirectoryName = @"Tests\bin",
+                    DirectoryName = @"Tests\Core\bin",
                     Title         = "Cube.Core",
                     Description   = "Support the MVVM pattern in WPF or WinForms applications.",
                     Company       = "CubeSoft",

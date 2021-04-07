@@ -20,9 +20,9 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Libraries\Core\Cube.FileSystem.csproj" />
-        <ProjectReference Include="..\Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+        <ProjectReference Include="..\..\Libraries\FileSystem\Cube.FileSystem.csproj" />
+        <ProjectReference Include="..\..\Libraries\FileSystem.AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="NUnit" Version="3.13.1" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
         <PackageReference Include="Appveyor.TestLogger" Version="2.0.0" />

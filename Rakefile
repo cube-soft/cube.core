@@ -24,7 +24,9 @@ require 'rake/clean'
 PROJECT   = "Cube.Core"
 BRANCHES  = ["master", "netstandard2.0", "net35"]
 PLATFORMS = ["Any CPU"]
-PACKAGES  = ["Libraries/Core/Cube.Core"]
+PACKAGES  = ["Libraries/Core/Cube.Core",
+             "Libraries/FileSystem/Cube.FileSystem",
+             "Libraries/FileSystem.AlphaFS/Cube.FileSystem.AlphaFS"]
 
 # --------------------------------------------------------------------------- #
 # clean
