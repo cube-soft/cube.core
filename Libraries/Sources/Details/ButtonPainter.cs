@@ -93,7 +93,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonStyleContainer Style { get; } = new ButtonStyleContainer();
+        public ButtonStyle Style { get; } = new ButtonStyle();
 
         /* ----------------------------------------------------------------- */
         ///

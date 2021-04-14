@@ -22,7 +22,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ButtonStyle
+    /// ButtonStyleElement
     ///
     /// <summary>
     /// Represents the style of the customized button.
@@ -30,7 +30,7 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(OnlyExpandableConverter))]
-    public class ButtonStyle : ObservableBase
+    public class ButtonStyleElement : ObservableBase
     {
         #region Properties
 
@@ -162,7 +162,7 @@ namespace Cube.Forms
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ButtonStyleContainer
+    /// ButtonStyle
     ///
     /// <summary>
     /// Represents the style of the customized button (default, checked,
@@ -171,20 +171,20 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [TypeConverter(typeof(OnlyExpandableConverter))]
-    public class ButtonStyleContainer : ObservableBase
+    public class ButtonStyle : ObservableBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ButtonStyleContainer
+        /// ButtonStyle
         ///
         /// <summary>
-        /// Initialized a new instance of the ButtonStyleContainer class.
+        /// Initialized a new instance of the ButtonStyle class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonStyleContainer()
+        public ButtonStyle()
         {
             Default.PropertyChanged   += (s, e) => Refresh(nameof(Default));
             Checked.PropertyChanged   += (s, e) => Refresh(nameof(Checked));
@@ -207,7 +207,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle Default { get; } = new ButtonStyle
+        public ButtonStyleElement Default { get; } = new ButtonStyleElement
         {
             ContentColor = SystemColors.ControlText,
             BorderColor  = SystemColors.ActiveBorder,
@@ -224,7 +224,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle Checked { get; } = new ButtonStyle();
+        public ButtonStyleElement Checked { get; } = new ButtonStyleElement();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -236,7 +236,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle Disabled { get; } = new ButtonStyle
+        public ButtonStyleElement Disabled { get; } = new ButtonStyleElement
         {
             BackColor    = SystemColors.Control,
             ContentColor = SystemColors.GrayText,
@@ -253,7 +253,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle MouseOver { get; } = new ButtonStyle();
+        public ButtonStyleElement MouseOver { get; } = new ButtonStyleElement();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -265,7 +265,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyle MouseDown { get; } = new ButtonStyle();
+        public ButtonStyleElement MouseDown { get; } = new ButtonStyleElement();
 
         #endregion
 

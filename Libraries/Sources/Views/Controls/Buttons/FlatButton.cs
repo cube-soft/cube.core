@@ -63,7 +63,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyleContainer Style => _painter.Style;
+        public ButtonStyle Style => _painter.Style;
 
         /* ----------------------------------------------------------------- */
         ///
