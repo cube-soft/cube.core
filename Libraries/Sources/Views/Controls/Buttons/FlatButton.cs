@@ -45,7 +45,7 @@ namespace Cube.Forms.Controls
         public FlatButton()
         {
             _painter = new ButtonPainter(this);
-            _painter.Styles.PropertyChanged += (s, e) => Invalidate();
+            _painter.Style.PropertyChanged += (s, e) => Invalidate();
         }
 
         #endregion
@@ -54,7 +54,7 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Styles
+        /// Style
         ///
         /// <summary>
         /// ボタンの外観を取得または設定します。
@@ -63,7 +63,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyleContainer Styles => _painter.Styles;
+        public ButtonStyleContainer Style => _painter.Style;
 
         /* ----------------------------------------------------------------- */
         ///

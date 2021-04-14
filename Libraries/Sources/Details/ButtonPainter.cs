@@ -55,7 +55,7 @@ namespace Cube.Forms
             View.MouseDown  += (s, e) => OnMouseDown(e);
             View.MouseUp    += (s, e) => OnMouseUp(e);
 
-            DisableSystemStyles();
+            DisableSystemStyle();
         }
 
         #endregion
@@ -86,47 +86,47 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Styles
+        /// Style
         ///
         /// <summary>
         /// ボタンの基本となる外観を定義したオブジェクトを取得します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public ButtonStyleContainer Styles { get; } = new ButtonStyleContainer();
+        public ButtonStyleContainer Style { get; } = new ButtonStyleContainer();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsChecked
+        /// Checked
         ///
         /// <summary>
         /// ボタンがチェック状態かどうかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsChecked { get; protected set; } = false;
+        public bool Checked { get; protected set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsMouseDown
+        /// MouseDown
         ///
         /// <summary>
         /// マウスがクリック状態かどうかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsMouseDown { get; protected set; } = false;
+        public bool MouseDown { get; protected set; } = false;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IsMouseOver
+        /// MouseOver
         ///
         /// <summary>
         /// マウスポインタがボタンの境界範囲内に存在するかを判別します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsMouseOver { get; protected set; } = false;
+        public bool MouseOver { get; protected set; } = false;
 
         #endregion
 
@@ -164,7 +164,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseEnter(EventArgs e) => IsMouseOver = true;
+        protected virtual void OnMouseEnter(EventArgs e) => MouseOver = true;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -175,7 +175,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnMouseLeave(EventArgs e) => IsMouseOver = false;
+        protected virtual void OnMouseLeave(EventArgs e) => MouseOver = false;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -187,7 +187,7 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnMouseDown(System.Windows.Forms.MouseEventArgs e) =>
-            IsMouseDown = (e.Button == System.Windows.Forms.MouseButtons.Left);
+            MouseDown = (e.Button == System.Windows.Forms.MouseButtons.Left);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -200,7 +200,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
         {
-            IsMouseDown = false;
+            MouseDown = false;
             View.Invalidate();
         }
 
@@ -210,7 +210,7 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DisableSystemStyles
+        /// DisableSystemStyle
         ///
         /// <summary>
         /// 外観の描画に関して ButtonBase オブジェクトと競合するプロパティを
@@ -218,7 +218,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void DisableSystemStyles()
+        private void DisableSystemStyle()
         {
             var color = Color.Empty;
 
@@ -273,12 +273,12 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private T Select<T>(T normal, T check, T over, T down, T ignore = default)
         {
-            var x0 = !EqualityComparer<T>.Default.Equals(check, ignore) && IsChecked ? check : normal;
+            var x0 = !EqualityComparer<T>.Default.Equals(check, ignore) && Checked ? check : normal;
             var x1 = !EqualityComparer<T>.Default.Equals(over,  ignore) ? over : x0;
             var x2 = !EqualityComparer<T>.Default.Equals(down,  ignore) ? down : x1;
 
-            return IsMouseDown ? x2 :
-                   IsMouseOver ? x1 : x0;
+            return MouseDown ? x2 :
+                   MouseOver ? x1 : x0;
         }
 
         /* ----------------------------------------------------------------- */
@@ -291,10 +291,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Color GetBorderColor() => Select(
-            Styles.Default.BorderColor,
-            Styles.Checked.BorderColor,
-            Styles.MouseOver.BorderColor,
-            Styles.MouseDown.BorderColor
+            Style.Default.BorderColor,
+            Style.Checked.BorderColor,
+            Style.MouseOver.BorderColor,
+            Style.MouseDown.BorderColor
         );
 
         /* ----------------------------------------------------------------- */
@@ -307,10 +307,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private int GetBorderSize() => Select(
-            Styles.Default.BorderSize,
-            Styles.Checked.BorderSize,
-            Styles.MouseOver.BorderSize,
-            Styles.MouseDown.BorderSize,
+            Style.Default.BorderSize,
+            Style.Checked.BorderSize,
+            Style.MouseOver.BorderSize,
+            Style.MouseDown.BorderSize,
             -1
         );
 
@@ -332,10 +332,10 @@ namespace Cube.Forms
         private Color GetBackColor()
         {
             var dest = Select(
-                Styles.Default.BackColor,
-                Styles.Checked.BackColor,
-                Styles.MouseOver.BackColor,
-                Styles.MouseDown.BackColor
+                Style.Default.BackColor,
+                Style.Checked.BackColor,
+                Style.MouseOver.BackColor,
+                Style.MouseDown.BackColor
             );
 
             if (dest != Color.Empty) return dest;
@@ -357,10 +357,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Color GetContentColor() => Select(
-            Styles.Default.ContentColor,
-            Styles.Checked.ContentColor,
-            Styles.MouseOver.ContentColor,
-            Styles.MouseDown.ContentColor
+            Style.Default.ContentColor,
+            Style.Checked.ContentColor,
+            Style.MouseOver.ContentColor,
+            Style.MouseDown.ContentColor
         );
 
         /* ----------------------------------------------------------------- */
@@ -373,10 +373,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Image GetImage() => Select(
-            Styles.Default.Image,
-            Styles.Checked.Image,
-            Styles.MouseOver.Image,
-            Styles.MouseDown.Image
+            Style.Default.Image,
+            Style.Checked.Image,
+            Style.MouseOver.Image,
+            Style.MouseDown.Image
         );
 
         /* ----------------------------------------------------------------- */
@@ -389,10 +389,10 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         private Image GetBackgroundImage() => Select(
-            Styles.Default.BackgroundImage,
-            Styles.Checked.BackgroundImage,
-            Styles.MouseOver.BackgroundImage,
-            Styles.MouseDown.BackgroundImage
+            Style.Default.BackgroundImage,
+            Style.Checked.BackgroundImage,
+            Style.MouseOver.BackgroundImage,
+            Style.MouseDown.BackgroundImage
         );
 
         /* ----------------------------------------------------------------- */
@@ -443,7 +443,7 @@ namespace Cube.Forms
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
             view.Appearance = System.Windows.Forms.Appearance.Button;
-            view.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            view.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         #endregion
@@ -462,9 +462,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnCheckedChanged(EventArgs e)
         {
-            var control = View as System.Windows.Forms.RadioButton;
-            if (control == null) return;
-            IsChecked = control.Checked;
+            if (View is not System.Windows.Forms.RadioButton control) return;
+            Checked = control.Checked;
             control.Invalidate();
         }
 
@@ -497,7 +496,7 @@ namespace Cube.Forms
         {
             view.CheckedChanged += (s, e) => OnCheckedChanged(e);
             view.Appearance = System.Windows.Forms.Appearance.Button;
-            view.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            view.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         #endregion
@@ -516,9 +515,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         protected virtual void OnCheckedChanged(EventArgs e)
         {
-            var control = View as System.Windows.Forms.CheckBox;
-            if (control == null) return;
-            IsChecked = control.Checked;
+            if (View is not System.Windows.Forms.CheckBox control) return;
+            Checked = control.Checked;
         }
 
         #endregion
