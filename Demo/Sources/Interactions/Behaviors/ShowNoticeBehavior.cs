@@ -15,9 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using Cube.Forms.Behaviors;
-using Cube.Mixin.Generics;
 using Cube.Forms.Controls;
 
 namespace Cube.Forms.Demo
@@ -68,9 +66,10 @@ namespace Cube.Forms.Demo
             view.Selected += (s, e) => view.Close();
             view.Title = m.Value.Title;
             view.Message = m.Value.Message;
-            view.SetStyle(m.Value.Style);
             view.SetTopMost(false);
+            view.SetStyle(m.Value.Style);
             view.Size = new(350, 88);
+            view.SetLocation(NoticeLocation.BottomRight);
             view.Show();
         }
 

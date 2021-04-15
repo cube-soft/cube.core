@@ -165,6 +165,29 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
+        /// SetLocation
+        ///
+        /// <summary>
+        /// Sets the location corresponding to the specified value.
+        /// </summary>
+        ///
+        /// <param name="src">Location to show.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void SetLocation(NoticeLocation src)
+        {
+            var screen = WinForms.Screen.GetWorkingArea(Location);
+            var x = src == NoticeLocation.TopLeft || src == NoticeLocation.BottomLeft ?
+                    0 :
+                    screen.Width - Width - 1;
+            var y = src == NoticeLocation.TopLeft || src == NoticeLocation.TopRight ?
+                    0 :
+                    screen.Height - Height - 1;
+            SetDesktopLocation(x, y);
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// SetStyle
         ///
         /// <summary>
