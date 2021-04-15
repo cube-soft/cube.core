@@ -187,8 +187,8 @@ namespace Cube.Forms
         public ButtonStyle()
         {
             Default.PropertyChanged   += (s, e) => Refresh(nameof(Default));
-            Checked.PropertyChanged   += (s, e) => Refresh(nameof(Checked));
             Disabled.PropertyChanged  += (s, e) => Refresh(nameof(Disabled));
+            Checked.PropertyChanged   += (s, e) => Refresh(nameof(Checked));
             MouseOver.PropertyChanged += (s, e) => Refresh(nameof(MouseOver));
             MouseDown.PropertyChanged += (s, e) => Refresh(nameof(MouseDown));
         }
@@ -209,22 +209,10 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyleElement Default { get; } = new ButtonStyleElement
         {
-            ContentColor = SystemColors.ControlText,
-            BorderColor  = SystemColors.ActiveBorder,
-            BorderSize   = 1
+            ContentColor    = SystemColors.ControlText,
+            BorderColor     = SystemColors.ActiveBorder,
+            BorderSize      = 1,
         };
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Checked
-        ///
-        /// <summary>
-        /// Gets or sets the style of the checked state.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ButtonStyleElement Checked { get; } = new ButtonStyleElement();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -238,10 +226,22 @@ namespace Cube.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ButtonStyleElement Disabled { get; } = new ButtonStyleElement
         {
-            BackColor    = SystemColors.Control,
-            ContentColor = SystemColors.GrayText,
-            BorderColor  = SystemColors.InactiveBorder
+            BackColor = SystemColors.Control,
+            ContentColor    = SystemColors.GrayText,
+            BorderColor     = SystemColors.InactiveBorder
         };
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Checked
+        ///
+        /// <summary>
+        /// Gets or sets the style of the checked state.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        public ButtonStyleElement Checked { get; } = new ButtonStyleElement();
 
         /* ----------------------------------------------------------------- */
         ///

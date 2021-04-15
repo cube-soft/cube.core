@@ -98,6 +98,17 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public TimeSpan InitialDelay { get; set; }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Style
+        ///
+        /// <summary>
+        /// Gets or sets the notice style.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NoticeStyle Style { get; set; }
+
         #endregion
     }
 }

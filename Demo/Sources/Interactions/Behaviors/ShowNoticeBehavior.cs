@@ -18,6 +18,7 @@
 using System;
 using Cube.Forms.Behaviors;
 using Cube.Mixin.Generics;
+using Cube.Forms.Controls;
 
 namespace Cube.Forms.Demo
 {
@@ -64,9 +65,13 @@ namespace Cube.Forms.Demo
         protected override void Invoke(NoticeMessage m)
         {
             var view = new NoticeWindow();
-            view.Selected  += (s, e) => m.Value.Value.TryCast<Action<NoticeComponent>>()?.Invoke(e.Value);
-            view.Completed += (s, e) => view.Close();
-            view.Show(m.Value);
+            view.Selected += (s, e) => view.Close();
+            view.Title = m.Value.Title;
+            view.Message = m.Value.Message;
+            view.SetStyle(m.Value.Style);
+            view.SetTopMost(false);
+            view.Size = new(350, 88);
+            view.Show();
         }
 
         #endregion
