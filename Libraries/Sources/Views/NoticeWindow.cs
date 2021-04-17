@@ -53,36 +53,6 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Title
-        ///
-        /// <summary>
-        /// Gets or sets the title of the window.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public string Title
-        {
-            get => _title.Content;
-            set => _title.Content = value;
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Message
-        ///
-        /// <summary>
-        /// Gets or sets the message of the window.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public string Message
-        {
-            get => _message.Content;
-            set => _message.Content = value;
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
         /// ShowWithoutActivation
         ///
         /// <summary>
@@ -92,8 +62,6 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected override bool ShowWithoutActivation => true;
-
-        #region Hiding properties
 
         /* --------------------------------------------------------------------- */
         ///
@@ -106,7 +74,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Don't use this property, use Title")]
+        [Obsolete("Use Set(string, string) method, instread of this.")]
         public new string Text
         {
             get => base.Text;
@@ -124,14 +92,12 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Don't use this property")]
+        [Obsolete("Use SetTopMost extended method, instead of this.")]
         public new bool TopMost
         {
             get => base.TopMost;
             set => base.TopMost = value;
         }
-
-        #endregion
 
         #endregion
 
@@ -165,7 +131,25 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SetLocation
+        /// Set
+        ///
+        /// <summary>
+        /// Sets the message.
+        /// </summary>
+        ///
+        /// <param name="message">Message to show.</param>
+        /// <param name="title">Title of the window.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Set(string message, string title)
+        {
+            _message.Content = message;
+            _title.Content   = title;
+        }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Set
         ///
         /// <summary>
         /// Sets the location corresponding to the specified value.
@@ -174,7 +158,7 @@ namespace Cube.Forms
         /// <param name="src">Location to show.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void SetLocation(NoticeLocation src)
+        public void Set(NoticeLocation src)
         {
             var screen = WinForms.Screen.GetWorkingArea(Location);
             var x = src == NoticeLocation.TopLeft || src == NoticeLocation.BottomLeft ?
@@ -188,7 +172,7 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// SetStyle
+        /// Set
         ///
         /// <summary>
         /// Applies the specified style to the window.
@@ -197,7 +181,7 @@ namespace Cube.Forms
         /// <param name="src">User defined style.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void SetStyle(NoticeStyle src)
+        public void Set(NoticeStyle src)
         {
             if (src == null) return;
 
