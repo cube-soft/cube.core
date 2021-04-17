@@ -86,7 +86,7 @@ namespace Cube
         /// <returns>QueryMessage(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new QueryMessage<T, U>
+        public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new()
         {
             Source = src,
             Value  = value,

@@ -50,7 +50,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected SerializableBase() : this(Invoker.Vanilla) { }
+        protected SerializableBase() : this(Dispatcher.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -58,13 +58,13 @@ namespace Cube
         ///
         /// <summary>
         /// Initializes a new instance of the ObservableBase class with
-        /// the specified invoker.
+        /// the specified dispatcher.
         /// </summary>
         ///
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected SerializableBase(Invoker invoker) { Reset(invoker); }
+        protected SerializableBase(Dispatcher dispatcher) { Reset(dispatcher); }
 
         #endregion
 
@@ -72,18 +72,18 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoker
+        /// Dispatcher
         ///
         /// <summary>
-        /// Gets or sets the invoker object.
+        /// Gets or sets the dispatcher object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [IgnoreDataMember]
-        public Invoker Invoker
+        public Dispatcher Dispatcher
         {
-            get => _invoker;
-            set => _invoker = value;
+            get => _dispatcher;
+            set => _dispatcher = value;
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace Cube
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             if (PropertyChanged == null) return;
-            Invoker.Invoke(() => PropertyChanged(this, e));
+            Dispatcher.Invoke(() => PropertyChanged(this, e));
         }
 
         #endregion
@@ -137,8 +137,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public void Refresh(string name, params string[] more)
         {
-            OnPropertyChanged(new PropertyChangedEventArgs(name));
-            foreach (var s in more) OnPropertyChanged(new PropertyChangedEventArgs(s));
+            OnPropertyChanged(new(name));
+            foreach (var s in more) OnPropertyChanged(new(s));
         }
 
         /* ----------------------------------------------------------------- */
@@ -284,7 +284,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         [OnDeserializing]
-        private void OnDeserializing(StreamingContext context) => Reset(Invoker.Vanilla);
+        private void OnDeserializing(StreamingContext context) => Reset(Dispatcher.Vanilla);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -295,16 +295,16 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Reset(Invoker invoker)
+        private void Reset(Dispatcher dispatcher)
         {
-            _invoker = invoker;
-            _fields  = new Hashtable();
+            _dispatcher = dispatcher;
+            _fields     = new();
         }
 
         #endregion
 
         #region Fields
-        [NonSerialized] private Invoker _invoker;
+        [NonSerialized] private Dispatcher _dispatcher;
         private Hashtable _fields;
         #endregion
     }

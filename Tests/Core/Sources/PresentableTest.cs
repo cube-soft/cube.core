@@ -70,7 +70,7 @@ namespace Cube.Tests
             var n = 0;
             void action(int i) => ++n;
 
-            using var src = new Presenter(new SynchronizationContext());
+            using var src = new Presenter(new());
             using (src.Subscribe<int>(action))
             using (src.Subscribe<int>(action))
             {
@@ -98,7 +98,7 @@ namespace Cube.Tests
         public void Post()
         {
             var cts = new CancellationTokenSource();
-            using (var src = new Presenter(new SynchronizationContext()))
+            using (var src = new Presenter(new()))
             using (src.Subscribe<int>(e => cts.Cancel()))
             {
                 src.PostMessage<int>();
@@ -121,7 +121,7 @@ namespace Cube.Tests
         public int Send(DialogStatus value)
         {
             var n = 0;
-            using (var src = new Presenter(new SynchronizationContext()))
+            using (var src = new Presenter(new()))
             using (src.Subscribe<DialogMessage>(e => e.Value = value))
             {
                 2.Times(i => src.SendMessage(new DialogMessage(),
@@ -148,7 +148,7 @@ namespace Cube.Tests
         public int Send_CancelMessage(bool cancel)
         {
             var n = 0;
-            using (var src = new Presenter(new SynchronizationContext()))
+            using (var src = new Presenter(new()))
             using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
             {
                 2.Times(i => src.SendMessage(new OpenFileMessage(), e => n++));
@@ -169,7 +169,7 @@ namespace Cube.Tests
         [Test]
         public void Send_Throws()
         {
-            using var src = new Presenter(new SynchronizationContext());
+            using var src = new Presenter(new());
             Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
         }
 
@@ -186,7 +186,7 @@ namespace Cube.Tests
         public void Track()
         {
             var dest = default(DialogMessage);
-            using (var src = new Presenter(new SynchronizationContext()))
+            using (var src = new Presenter(new()))
             using (src.Subscribe<DialogMessage>(e => dest = e))
             {
                 src.TrackAsync(() => { /* OK */ });
@@ -215,7 +215,7 @@ namespace Cube.Tests
         {
             var n   = 0;
             var cts = new CancellationTokenSource();
-            using var src = new Presenter(new SynchronizationContext());
+            using var src = new Presenter(new());
             5.Times(i => src.TestValue = nameof(PropertyChanged));
             Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
             Assert.That(n, Is.EqualTo(0));
@@ -230,18 +230,18 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetInvoker
+        /// GetDispatcher
         ///
         /// <summary>
-        /// Tests the GetInvoker method.
+        /// Tests the GetDispatcher method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetInvoker()
+        public void GetDispatcher()
         {
-            using var src = new Presenter(new SynchronizationContext());
-            Assert.That(src.GetInvoker(), Is.Not.Null);
+            using var src = new Presenter(new());
+            Assert.That(src.GetDispatcher(), Is.Not.Null);
         }
 
         #endregion
@@ -279,7 +279,7 @@ namespace Cube.Tests
             public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
-            public Invoker GetInvoker() => GetInvoker(false);
+            public Dispatcher GetDispatcher() => GetDispatcher(false);
             protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);
             private void Observe() { Use(Facade.Subscribe(e => { })); }
             public string TestValue

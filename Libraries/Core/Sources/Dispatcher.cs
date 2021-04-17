@@ -20,40 +20,40 @@ using System.Threading;
 
 namespace Cube
 {
-    #region Invoker
+    #region Dispatcher
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Invoker
+    /// Dispatcher
     ///
     /// <summary>
     /// Provides functionality to invoke the provided action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class Invoker
+    public abstract class Dispatcher
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoker
+        /// Dispatcher
         ///
         /// <summary>
-        /// Initializes a new instance of the Invoker class.
+        /// Initializes a new instance of the Dispatcher class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Invoker() { }
+        protected Dispatcher() { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// Vanilla
         ///
         /// <summary>
-        /// Gets the invoker that invokes the provided action directly.
+        /// Gets the dispatcher that invokes the provided action directly.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Invoker Vanilla { get; } = new VanillaInvoker();
+        public static Dispatcher Vanilla { get; } = new VanillaDispatcher();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -71,11 +71,11 @@ namespace Cube
 
     #endregion
 
-    #region ContextInvoker
+    #region ContextDispatcher
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ContextInvoker
+    /// ContextDispatcher
     ///
     /// <summary>
     /// Provides functionality to invoke the provided action with a
@@ -83,14 +83,14 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ContextInvoker : Invoker
+    public class ContextDispatcher : Dispatcher
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ContextInvoker
+        /// ContextDispatcher
         ///
         /// <summary>
-        /// Initializes a new instance of the ContextInvoker class with
+        /// Initializes a new instance of the ContextDispatcher class with
         /// the specified arguments.
         /// </summary>
         ///
@@ -104,14 +104,14 @@ namespace Cube
         /// </exception>
         ///
         /* ----------------------------------------------------------------- */
-        public ContextInvoker(bool synchronous) : this(SynchronizationContext.Current, synchronous) { }
+        public ContextDispatcher(bool synchronous) : this(SynchronizationContext.Current, synchronous) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ContextInvoker
+        /// ContextDispatcher
         ///
         /// <summary>
-        /// Initializes a new instance of the ContextInvoker class with
+        /// Initializes a new instance of the ContextDispatcher class with
         /// the specified arguments.
         /// </summary>
         ///
@@ -126,7 +126,7 @@ namespace Cube
         /// </exception>
         ///
         /* ----------------------------------------------------------------- */
-        public ContextInvoker(SynchronizationContext context, bool synchronous)
+        public ContextDispatcher(SynchronizationContext context, bool synchronous)
         {
             Synchronous = synchronous;
             Context     = context ?? throw new ArgumentNullException(nameof(context));
@@ -180,18 +180,18 @@ namespace Cube
 
     #endregion
 
-    #region VanillaInvoker
+    #region VanillaDispatcher
 
     /* --------------------------------------------------------------------- */
     ///
-    /// VanillaInvoker
+    /// VanillaDispatcher
     ///
     /// <summary>
     /// Provides functionality to invoke the provided action directly.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal sealed class VanillaInvoker : Invoker
+    internal sealed class VanillaDispatcher : Dispatcher
     {
         /* ----------------------------------------------------------------- */
         ///

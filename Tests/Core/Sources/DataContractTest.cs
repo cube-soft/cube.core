@@ -202,7 +202,7 @@ namespace Cube.Tests
         public string Deserialize_File(Format format, string filename)
         {
             var dest = format.Deserialize<Person>(GetSource(filename));
-            Assert.That(dest.Invoker, Is.EqualTo(Invoker.Vanilla));
+            Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
             dest.Refresh(nameof(dest.Identification), nameof(dest.Name));
             return dest.Name;
         }
@@ -223,7 +223,7 @@ namespace Cube.Tests
             var dest     = default(RegistryKey).Deserialize<Person>();
             var expected = new Person();
 
-            Assert.That(dest.Invoker,        Is.EqualTo(Invoker.Vanilla));
+            Assert.That(dest.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
             Assert.That(dest.Identification, Is.EqualTo(expected.Identification));
             Assert.That(dest.Name,           Is.EqualTo(expected.Name));
             Assert.That(dest.Age,            Is.EqualTo(expected.Age));
@@ -250,11 +250,9 @@ namespace Cube.Tests
         public void Deserialize_Throws()
         {
             var src = GetSource("Settings.xml");
-            using (var e = File.OpenRead(src))
-            {
-                var dest = Format.Registry;
-                Assert.That(() => dest.Deserialize<Person>(e), Throws.ArgumentException);
-            }
+            using var e = File.OpenRead(src);
+            var dest = Format.Registry;
+            Assert.That(() => dest.Deserialize<Person>(e), Throws.ArgumentException);
         }
 
         #endregion

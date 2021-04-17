@@ -36,7 +36,7 @@ namespace Cube.Tests
     [TestFixture]
     class ObservableCollectionTest
     {
-        #region
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,7 +67,7 @@ namespace Cube.Tests
         ///
         /// <summary>
         /// Confirms that CollectinChanged events are fired with the
-        /// provided invoker.
+        /// provided dispatcher.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -75,7 +75,7 @@ namespace Cube.Tests
         public void Invoke_SynchronizationContext()
         {
             var src = new TestCollection<int>();
-            src.Set(new ContextInvoker(new SynchronizationContext(), true));
+            src.Set(new ContextDispatcher(new(), true));
 
             for (var i = 0; i < 10; ++i) src.Add(i);
             var count = 0;
@@ -126,11 +126,11 @@ namespace Cube.Tests
         /// Set
         ///
         /// <summary>
-        /// Sets the specified invoker.
+        /// Sets the specified dispatcher.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Set(Invoker invoker) => Invoker = invoker;
+        public void Set(Dispatcher dispatcher) => Dispatcher = dispatcher;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -178,7 +178,7 @@ namespace Cube.Tests
         #endregion
 
         #region Fields
-        private readonly ObservableCollection<T> _inner = new ObservableCollection<T>();
+        private readonly ObservableCollection<T> _inner = new();
         #endregion
     }
 }

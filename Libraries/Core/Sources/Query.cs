@@ -88,7 +88,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public Query(Action<QueryMessage<T, U>> callback) :
-            this(callback, QueryInvoker.Create()) { }
+            this(callback, QueryDispatcher.Create()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -100,13 +100,13 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="callback">Callback function.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Query(Action<QueryMessage<T, U>> callback, Invoker invoker)
+        public Query(Action<QueryMessage<T, U>> callback, Dispatcher dispatcher)
         {
-            _invoker  = invoker;
-            _callback = callback ?? throw new ArgumentNullException(nameof(callback));
+            _dispatcher = dispatcher;
+            _callback   = callback ?? throw new ArgumentNullException(nameof(callback));
         }
 
         /* ----------------------------------------------------------------- */
@@ -121,12 +121,12 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Request(QueryMessage<T, U> message) =>
-            _invoker.Invoke(() => _callback(message));
+            _dispatcher.Invoke(() => _callback(message));
 
         #endregion
 
         #region Fields
-        private readonly Invoker _invoker;
+        private readonly Dispatcher _dispatcher;
         private readonly Action<QueryMessage<T, U>> _callback;
         #endregion
     }
@@ -166,11 +166,11 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="callback">Callback function.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Query(Action<QueryMessage<T, T>> callback, Invoker invoker) :
-            base(callback, invoker) { }
+        public Query(Action<QueryMessage<T, T>> callback, Dispatcher dispatcher) :
+            base(callback, dispatcher) { }
     }
 
     #endregion
@@ -203,7 +203,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public OnceQuery(Action<QueryMessage<T, U>> callback) :
-            this(callback, QueryInvoker.Create()) { }
+            this(callback, QueryDispatcher.Create()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -215,16 +215,13 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="callback">Callback function.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(Action<QueryMessage<T, U>> callback, Invoker invoker)
+        public OnceQuery(Action<QueryMessage<T, U>> callback, Dispatcher dispatcher)
         {
-            _invoker  = invoker;
-            _callback = new OnceAction<QueryMessage<T, U>>(callback)
-            {
-                IgnoreTwice = false
-            };
+            _dispather = dispatcher;
+            _callback  = new(callback) { IgnoreTwice = false };
         }
 
         /* ----------------------------------------------------------------- */
@@ -243,12 +240,12 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public void Request(QueryMessage<T, U> message) =>
-            _invoker.Invoke(() => _callback.Invoke(message));
+            _dispather.Invoke(() => _callback.Invoke(message));
 
         #endregion
 
         #region Fields
-        private readonly Invoker _invoker;
+        private readonly Dispatcher _dispather;
         private readonly OnceAction<QueryMessage<T, U>> _callback;
         #endregion
     }
@@ -288,39 +285,39 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="callback">Callback function.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnceQuery(Action<QueryMessage<T, T>> callback, Invoker invoker) :
-            base(callback, invoker) { }
+        public OnceQuery(Action<QueryMessage<T, T>> callback, Dispatcher dispatcher) :
+            base(callback, dispatcher) { }
     }
 
     #endregion
 
-    #region QueryInvoker
+    #region QueryDispatcher
 
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryInvoker
+    /// QueryDispatcher
     ///
     /// <summary>
-    /// Provides functionality to create a invoker.
+    /// Provides functionality to create a dispatcher.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class QueryInvoker
+    internal static class QueryDispatcher
     {
         /* ----------------------------------------------------------------- */
         ///
         /// Create
         ///
         /// <summary>
-        /// Creates a new instance of the Invoker class.
+        /// Creates a new instance of the Dispatcher class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Invoker Create() =>
-            SynchronizationContext.Current != null ? new ContextInvoker(true) : Invoker.Vanilla;
+        public static Dispatcher Create() =>
+            SynchronizationContext.Current != null ? new ContextDispatcher(true) : Dispatcher.Vanilla;
     }
 
     #endregion

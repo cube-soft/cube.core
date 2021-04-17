@@ -43,7 +43,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() : this(Invoker.Vanilla) { }
+        protected ObservableBase() : this(Dispatcher.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -51,15 +51,15 @@ namespace Cube.Collections
         ///
         /// <summary>
         /// Initializes a new instance of the ObservableBase class with
-        /// the specified invoker.
+        /// the specified dispatcher.
         /// </summary>
         ///
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase(Invoker invoker)
+        protected ObservableBase(Dispatcher dispatcher)
         {
-            Invoker = invoker;
+            Dispatcher = dispatcher;
         }
 
         #endregion
@@ -68,14 +68,14 @@ namespace Cube.Collections
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoker
+        /// Dispatcher
         ///
         /// <summary>
-        /// Gets or sets the invoker object.
+        /// Gets or sets the dispatcher object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Invoker Invoker { get; set; }
+        protected Dispatcher Dispatcher { get; set; }
 
         #endregion
 
@@ -106,7 +106,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (CollectionChanged != null) Invoker.Invoke(() => CollectionChanged(this, e));
+            if (CollectionChanged != null) Dispatcher.Invoke(() => CollectionChanged(this, e));
         }
 
         #endregion
