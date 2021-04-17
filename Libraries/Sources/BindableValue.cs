@@ -38,10 +38,10 @@ namespace Cube.Xui
         /// Initializes a new instance of the BindableValue class.
         /// </summary>
         ///
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableValue(Invoker invoker) : this(default(T), invoker) { }
+        public BindableValue(Dispatcher dispatcher) : this(default(T), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -53,11 +53,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="value">Initial value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableValue(T value, Invoker invoker) :
-            this(new Accessor<T>(value), invoker) { }
+        public BindableValue(T value, Dispatcher dispatcher) :
+            this(new Accessor<T>(value), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -69,11 +69,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="getter">Function to get value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableValue(Getter<T> getter, Invoker invoker) :
-            this(new Accessor<T>(getter), invoker) { }
+        public BindableValue(Getter<T> getter, Dispatcher dispatcher) :
+            this(new Accessor<T>(getter), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,11 +86,11 @@ namespace Cube.Xui
         ///
         /// <param name="getter">Function to get value.</param>
         /// <param name="setter">Function to set value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableValue(Getter<T> getter, Setter<T> setter, Invoker invoker) :
-            this(new Accessor<T>(getter, setter), invoker) { }
+        public BindableValue(Getter<T> getter, Setter<T> setter, Dispatcher dispatcher) :
+            this(new Accessor<T>(getter, setter), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -102,10 +102,10 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="accessor">Function to get and set value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableValue(Accessor<T> accessor, Invoker invoker) : base(invoker)
+        public BindableValue(Accessor<T> accessor, Dispatcher dispatcher) : base(dispatcher)
         {
             _accessor = accessor;
         }

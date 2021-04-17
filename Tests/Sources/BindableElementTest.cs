@@ -46,12 +46,10 @@ namespace Cube.Xui.Tests
         [TestCase("Hello, world!", 10)]
         public void Create(string text, int n)
         {
-            using (var src = new BindableElement<int>(() => text, () => n, Invoker.Vanilla))
-            {
-                Assert.That(src.Text,    Is.EqualTo(text));
-                Assert.That(src.Value,   Is.EqualTo(n));
-                Assert.That(src.Command, Is.Null);
-            }
+            using var src = new BindableElement<int>(() => text, () => n, Dispatcher.Vanilla);
+            Assert.That(src.Text,    Is.EqualTo(text));
+            Assert.That(src.Value,   Is.EqualTo(n));
+            Assert.That(src.Command, Is.Null);
         }
 
         /* ----------------------------------------------------------------- */
@@ -72,7 +70,7 @@ namespace Cube.Xui.Tests
                 () => "Set",
                 () => value,
                 e  => value = e,
-                Invoker.Vanilla
+                Dispatcher.Vanilla
             )) {
                 src.PropertyChanged += (s, e) => ++count;
                 src.Value = 10;
@@ -98,15 +96,13 @@ namespace Cube.Xui.Tests
         [Test]
         public void Set_InvalidOperationException()
         {
-            using (var src = new BindableElement<string>(() => "Text", () => "Get", Invoker.Vanilla))
-            {
-                Assert.That(src.Text, Is.EqualTo("Text"));
-                Assert.That(src.Value, Is.EqualTo("Get"));
-                Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
-                Assert.That(src.Command, Is.Null);
-                src.Command = new DelegateCommand(() => { });
-                Assert.That(src.Command, Is.Not.Null);
-            }
+            using var src = new BindableElement<string>(() => "Text", () => "Get", Dispatcher.Vanilla);
+            Assert.That(src.Text, Is.EqualTo("Text"));
+            Assert.That(src.Value, Is.EqualTo("Get"));
+            Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
+            Assert.That(src.Command, Is.Null);
+            src.Command = new DelegateCommand(() => { });
+            Assert.That(src.Command, Is.Not.Null);
         }
 
         /* ----------------------------------------------------------------- */
@@ -122,7 +118,7 @@ namespace Cube.Xui.Tests
         public void SetLanguage()
         {
             var count = 0;
-            using (var src = new BindableElement<int>(() => "Language", () => count, Invoker.Vanilla))
+            using (var src = new BindableElement<int>(() => "Language", () => count, Dispatcher.Vanilla))
             {
                 src.PropertyChanged += (s, e) => ++count;
                 Locale.Set(Language.French);

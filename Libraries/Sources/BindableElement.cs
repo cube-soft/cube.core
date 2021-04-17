@@ -43,10 +43,10 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="gettext">Function to get text.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, Invoker invoker) : base(invoker)
+        public BindableElement(Getter<string> gettext, Dispatcher dispatcher) : base(dispatcher)
         {
             _gettext = gettext;
             _locale  = Locale.Subscribe(e => React());

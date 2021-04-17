@@ -41,11 +41,11 @@ namespace Cube.Xui
         ///
         /// <param name="gettext">Function to get text.</param>
         /// <param name="getvalue">Function to get value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, Getter<T> getvalue, Invoker invoker) :
-            this(gettext, new Accessor<T>(getvalue), invoker) { }
+        public BindableElement(Getter<string> gettext, Getter<T> getvalue, Dispatcher dispatcher) :
+            this(gettext, new Accessor<T>(getvalue), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -59,11 +59,11 @@ namespace Cube.Xui
         /// <param name="gettext">Function to get text.</param>
         /// <param name="getvalue">Function to get value.</param>
         /// <param name="setvalue">Function to set value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, Invoker invoker) :
-            this(gettext, new Accessor<T>(getvalue, setvalue), invoker) { }
+        public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, Dispatcher dispatcher) :
+            this(gettext, new Accessor<T>(getvalue, setvalue), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,11 +76,11 @@ namespace Cube.Xui
         ///
         /// <param name="gettext">Function to get text.</param>
         /// <param name="accessor">Function to get and set value.</param>
-        /// <param name="invoker">Invoker object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, Accessor<T> accessor, Invoker invoker) :
-            base(gettext, invoker) { _accessor = accessor; }
+        public BindableElement(Getter<string> gettext, Accessor<T> accessor, Dispatcher dispatcher) :
+            base(gettext, dispatcher) { _accessor = accessor; }
 
         #endregion
 
