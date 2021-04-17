@@ -43,14 +43,14 @@ namespace Cube.Forms.Demo
         /// <param name="src">Assembly information.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static NoticeMessage CreateForNotice(Assembly src) => new NoticeMessage(new Notice
+        public static NoticeMessage CreateForNotice(Assembly src) => new NoticeMessage
         {
             Title        = src.GetTitle(),
-            Message  = Properties.Resources.NoticeSample,
+            Text         = Properties.Resources.NoticeSample,
             DisplayTime  = TimeSpan.FromSeconds(60),
             InitialDelay = TimeSpan.FromMilliseconds(100),
             Priority     = NoticePriority.Normal,
             Value        = (Action<NoticeComponent>)(e => { }),
-        });
+        };
     }
 }

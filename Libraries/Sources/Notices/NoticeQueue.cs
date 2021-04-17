@@ -32,7 +32,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NoticeQueue : IEnumerable<Notice>, INotifyCollectionChanged
+    public class NoticeQueue : IEnumerable<NoticeMessage>, INotifyCollectionChanged
     {
         #region Properties
 
@@ -89,17 +89,16 @@ namespace Cube.Forms
         /// <param name="item">Notice item.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Enqueue(Notice item)
+        public void Enqueue(NoticeMessage item)
         {
             lock (_lock)
             {
                 var key = item.Priority;
-                if (!_inner.ContainsKey(key)) _inner.Add(key, new Queue<Notice>());
+                if (!_inner.ContainsKey(key)) _inner.Add(key, new());
                 _inner[key].Enqueue(item);
             }
 
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Add, item));
+            OnCollectionChanged(new(NotifyCollectionChangedAction.Add, item));
         }
 
         /* --------------------------------------------------------------------- */
@@ -113,13 +112,12 @@ namespace Cube.Forms
         /// <returns>null if empty, others notice item.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public Notice Dequeue()
+        public NoticeMessage Dequeue()
         {
             if (_inner.Count <= 0) return null;
 
             var dest = DequeueCore();
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Remove, dest));
+            OnCollectionChanged(new(NotifyCollectionChangedAction.Remove, dest));
             return dest;
         }
 
@@ -134,7 +132,7 @@ namespace Cube.Forms
         /// <returns>null if empty, others notice item.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public Notice Peek() =>
+        public NoticeMessage Peek() =>
             _inner.Count > 0 ? _inner.First().Value.Peek() : null;
 
         /* --------------------------------------------------------------------- */
@@ -149,8 +147,7 @@ namespace Cube.Forms
         public void Clear()
         {
             lock (_lock) _inner.Clear();
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                NotifyCollectionChangedAction.Reset));
+            OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
         }
 
         /* --------------------------------------------------------------------- */
@@ -170,9 +167,7 @@ namespace Cube.Forms
             lock (_lock) result = _inner.Remove(priority);
             if (result)
             {
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(
-                    NotifyCollectionChangedAction.Reset)
-                );
+                OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -189,7 +184,7 @@ namespace Cube.Forms
         /// </returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IEnumerator<Notice> GetEnumerator()
+        public IEnumerator<NoticeMessage> GetEnumerator()
         {
             foreach (var queue in _inner.Values)
             foreach (var value in queue)
@@ -227,13 +222,13 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        private Notice DequeueCore()
+        private NoticeMessage DequeueCore()
         {
             lock (_lock)
             {
                 var pair = _inner.First();
                 var dest = pair.Value.Dequeue();
-                if (pair.Value.Count <= 0) _inner.Remove(pair.Key);
+                if (pair.Value.Count <= 0) _ = _inner.Remove(pair.Key);
                 return dest;
             }
         }
@@ -241,11 +236,9 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private readonly object _lock = new object();
-        private readonly SortedDictionary<NoticePriority, Queue<Notice>> _inner =
-            new SortedDictionary<NoticePriority, Queue<Notice>>(
-              new LambdaComparer<NoticePriority>((x, y) => y.CompareTo(x))
-            );
+        private readonly object _lock = new();
+        private readonly SortedDictionary<NoticePriority, Queue<NoticeMessage>> _inner =
+            new(new LambdaComparer<NoticePriority>((x, y) => y.CompareTo(x)));
         #endregion
     }
 }

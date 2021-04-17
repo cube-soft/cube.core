@@ -21,14 +21,14 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Notice
+    /// NoticeMessage
     ///
     /// <summary>
     /// Represents the information of a notice.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Notice
+    public class NoticeMessage : Message<object>
     {
         #region Properties
 
@@ -53,28 +53,6 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public string Title { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Message
-        ///
-        /// <summary>
-        /// Gets or sets the message of the notice.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Message { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets or sets the user data of the notice.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Value { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///

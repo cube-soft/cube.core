@@ -65,9 +65,8 @@ namespace Cube.Forms.Demo
             var view = new NoticeWindow();
             view.Selected += (s, e) => view.Close();
             view.SetTopMost(false);
-            //view.Size = new(350, 88);
-            view.Set(m.Value.Message, m.Value.Title);
-            view.Set(m.Value.Style);
+            view.Set(m.Text, m.Title);
+            view.Set(m.Style);
             view.Set(NoticeLocation.BottomRight);
             view.Show();
         }

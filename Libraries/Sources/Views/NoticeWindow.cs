@@ -137,14 +137,14 @@ namespace Cube.Forms
         /// Sets the message.
         /// </summary>
         ///
-        /// <param name="message">Message to show.</param>
+        /// <param name="text">Message to show.</param>
         /// <param name="title">Title of the window.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Set(string message, string title)
+        public void Set(string text, string title)
         {
-            _message.Content = message;
-            _title.Content   = title;
+            _text.Content  = text;
+            _title.Content = title;
         }
 
         /* --------------------------------------------------------------------- */
@@ -160,13 +160,13 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Set(NoticeLocation src)
         {
-            var screen = WinForms.Screen.GetWorkingArea(Location);
+            var area = WinForms.Screen.GetWorkingArea(Location);
             var x = src == NoticeLocation.TopLeft || src == NoticeLocation.BottomLeft ?
                     0 :
-                    screen.Width - Width - 1;
+                    area.Width - Width - 1;
             var y = src == NoticeLocation.TopLeft || src == NoticeLocation.TopRight ?
                     0 :
-                    screen.Height - Height - 1;
+                    area.Height - Height - 1;
             SetDesktopLocation(x, y);
         }
 
@@ -197,19 +197,19 @@ namespace Cube.Forms
                 if (src.Title.Font != null) _title.Font = src.Title.Font;
             }
 
-            if (src.Message != null)
+            if (src.Text != null)
             {
-                if (src.Message.Color != Color.Empty) _message.Style.Default.ContentColor = src.Message.Color;
-                if (src.Message.Font != null) _message.Font = src.Message.Font;
+                if (src.Text.Color != Color.Empty) _text.Style.Default.ContentColor = src.Text.Color;
+                if (src.Text.Font != null) _text.Font = src.Text.Font;
             }
 
             if (src.Color != Color.Empty)
             {
-                BackColor                        = src.Color;
-                _panel.BackColor                 = src.Color;
-                _close.Style.Default.BackColor   = src.Color;
-                _title.Style.Default.BackColor   = src.Color;
-                _message.Style.Default.BackColor = src.Color;
+                BackColor                      = src.Color;
+                _panel.BackColor               = src.Color;
+                _close.Style.Default.BackColor = src.Color;
+                _title.Style.Default.BackColor = src.Color;
+                _text.Style.Default.BackColor  = src.Color;
             }
         }
 
@@ -253,18 +253,18 @@ namespace Cube.Forms
             _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Title));
             _title.ResumeLayout(false);
 
-            _message.SuspendLayout();
-            _message.AutoEllipsis = true;
-            _message.Content = string.Empty;
-            _message.Cursor = WinForms.Cursors.Hand;
-            _message.Dock = WinForms.DockStyle.Fill;
-            _message.Margin = new(0);
-            _message.Padding = new(3, 0, 3, 3);
-            _message.TextAlign = ContentAlignment.TopLeft;
-            _message.Style.Default.BackColor = SystemColors.Window;
-            _message.Style.Default.BorderSize = 0;
-            _message.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Description));
-            _message.ResumeLayout(false);
+            _text.SuspendLayout();
+            _text.AutoEllipsis = true;
+            _text.Content = string.Empty;
+            _text.Cursor = WinForms.Cursors.Hand;
+            _text.Dock = WinForms.DockStyle.Fill;
+            _text.Margin = new(0);
+            _text.Padding = new(3, 0, 3, 3);
+            _text.TextAlign = ContentAlignment.TopLeft;
+            _text.Style.Default.BackColor = SystemColors.Window;
+            _text.Style.Default.BorderSize = 0;
+            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Text));
+            _text.ResumeLayout(false);
 
             _close.SuspendLayout();
             _close.Content = string.Empty;
@@ -291,7 +291,7 @@ namespace Cube.Forms
             _ = _panel.RowStyles.Add(new(WinForms.SizeType.Percent, 100F));
             _panel.Controls.Add(_image, 0, 0);
             _panel.Controls.Add(_title, 1, 0);
-            _panel.Controls.Add(_message,  1, 1);
+            _panel.Controls.Add(_text,  1, 1);
             _panel.Controls.Add(_close, 2, 0);
             _panel.SetRowSpan(_image, 2);
             _panel.ResumeLayout(false);
@@ -316,7 +316,7 @@ namespace Cube.Forms
         private readonly TableLayoutPanel _panel = new();
         private readonly FlatButton _image = new();
         private readonly FlatButton _title = new();
-        private readonly FlatButton _message = new();
+        private readonly FlatButton _text = new();
         private readonly FlatButton _close = new();
         #endregion
     }

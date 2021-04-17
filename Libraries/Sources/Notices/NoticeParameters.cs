@@ -17,6 +17,35 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms
 {
+    #region NoticePriority
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NoticePriority
+    ///
+    /// <summary>
+    /// Specifies the priority of a notice.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public enum NoticePriority
+    {
+        /// <summary>Highest</summary>
+        Highest = 40,
+        /// <summary>High</summary>
+        High = 30,
+        /// <summary>Normal</summary>
+        Normal = 20,
+        /// <summary>Low</summary>
+        Low = 10,
+        /// <summary>Lowest</summary>
+        Lowest = 0,
+    }
+
+    #endregion
+
+    #region NoticeLocation
+
     /* --------------------------------------------------------------------- */
     ///
     /// NoticeLocation
@@ -37,4 +66,31 @@ namespace Cube.Forms
         /// <summary>Bottom-right corner of the screen.</summary>
         BottomRight,
     }
+
+    #endregion
+
+    #region NoticeComponent
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NoticeComponent
+    ///
+    /// <summary>
+    /// Specifies the component of the notice window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public enum NoticeComponent
+    {
+        /// <summary>Others</summary>
+        Others,
+        /// <summary>Image</summary>
+        Image,
+        /// <summary>Title</summary>
+        Title,
+        /// <summary>Text</summary>
+        Text,
+    }
+
+    #endregion
 }

@@ -67,14 +67,14 @@ namespace Cube.Forms
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Description
+        /// Text
         ///
         /// <summary>
         /// Gets or sets the style of the message part.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NoticeTextStyle Message { get; set; }
+        public NoticeTextStyle Text { get; set; }
     }
 
     #endregion
