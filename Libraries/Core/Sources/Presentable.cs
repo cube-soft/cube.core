@@ -48,7 +48,7 @@ namespace Cube
         /// <param name="facade">Model object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected Presentable(TModel facade) : this(facade, new Aggregator()) { }
+        protected Presentable(TModel facade) : this(facade, new()) { }
 
         /* ----------------------------------------------------------------- */
         ///

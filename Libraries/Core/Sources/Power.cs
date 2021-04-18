@@ -47,7 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static Power()
         {
-            _context = new PowerModeContext(PowerModes.Resume);
+            _context = new(PowerModes.Resume);
             _context.PropertyChanged += WhenPropertyChanged;
             SystemEvents.PowerModeChanged += WhenModeChanged;
         }
@@ -138,7 +138,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private static readonly Subscription<Action> _subscription = new Subscription<Action>();
+        private static readonly Subscription<Action> _subscription = new();
         private static PowerModeContext _context;
         #endregion
     }
@@ -168,10 +168,7 @@ namespace Cube
         /// <param name="mode">Initial value for power mode.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PowerModeContext(PowerModes mode)
-        {
-            Mode = mode;
-        }
+        public PowerModeContext(PowerModes mode) { Mode = mode; }
 
         #endregion
 
@@ -208,7 +205,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public bool IgnoreStatusChanged
         {
-            get => GetProperty<bool>(() => true);
+            get => GetProperty(() => true);
             set => SetProperty(value);
         }
 

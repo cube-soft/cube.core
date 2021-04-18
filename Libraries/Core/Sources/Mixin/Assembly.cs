@@ -65,7 +65,7 @@ namespace Cube.Mixin.Assembly
         ///
         /* ----------------------------------------------------------------- */
         public static SoftwareVersion GetSoftwareVersion(this Source src) =>
-            new SoftwareVersion(src.GetVersion());
+            new(src.GetVersion());
 
         /* ----------------------------------------------------------------- */
         ///

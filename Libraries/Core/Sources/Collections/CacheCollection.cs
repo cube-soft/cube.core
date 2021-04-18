@@ -348,8 +348,8 @@ namespace Cube.Collections
         #region Fields
         private readonly Func<TKey, TValue> _creator;
         private readonly Action<TKey, TValue> _disposer;
-        private readonly ConcurrentDictionary<TKey, TValue> _created = new ConcurrentDictionary<TKey, TValue>();
-        private readonly ConcurrentDictionary<TKey, byte> _creating = new ConcurrentDictionary<TKey, byte>();
+        private readonly ConcurrentDictionary<TKey, TValue> _created = new();
+        private readonly ConcurrentDictionary<TKey, byte> _creating = new();
         #endregion
     }
 }

@@ -107,7 +107,7 @@ namespace Cube
         /// <param name="src">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static DialogMessage Create(Exception src) => new DialogMessage
+        public static DialogMessage Create(Exception src) => new()
         {
             Text    = $"{src.Message} ({src.GetType().Name})",
             Icon    = DialogIcon.Error,

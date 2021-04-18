@@ -192,7 +192,7 @@ namespace Cube.Collections
         ///
         /* --------------------------------------------------------------------- */
         public bool Contains(KeyValuePair<TKey, TValue> item) =>
-            ContainsKey(item.Key) ? _core[item.Key].Equals(item.Value) : false;
+            ContainsKey(item.Key) && _core[item.Key].Equals(item.Value);
 
         /* --------------------------------------------------------------------- */
         ///
@@ -355,7 +355,7 @@ namespace Cube.Collections
         public bool TryGetValue(TKey key, out TValue dest)
         {
             var result = ContainsKey(key);
-            dest = result ? this[key] : default(TValue);
+            dest = result ? this[key] : default;
             return result;
         }
 
@@ -404,7 +404,7 @@ namespace Cube.Collections
         #endregion
 
         #region Fields
-        private readonly OrderedDictionary _core = new OrderedDictionary();
+        private readonly OrderedDictionary _core = new();
         #endregion
     }
 }

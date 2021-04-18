@@ -15,11 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Collections;
-using Cube.Mixin.String;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cube.Mixin.Collections;
+using Cube.Mixin.String;
 
 namespace Cube.Collections
 {
@@ -116,9 +116,7 @@ namespace Cube.Collections
         {
             Preprocessor = preprocessor;
             IgnoreCase   = ignoreCase;
-            _options     = ignoreCase ?
-                           new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) :
-                           new Dictionary<string, string>();
+            _options     = ignoreCase ? new(StringComparer.InvariantCultureIgnoreCase) : new();
             Invoke(src);
         }
 
@@ -264,7 +262,7 @@ namespace Cube.Collections
         #endregion
 
         #region Fields
-        private readonly List<string> _oprands = new List<string>();
+        private readonly List<string> _oprands = new();
         private readonly Dictionary<string, string> _options;
         #endregion
     }

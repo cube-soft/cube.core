@@ -198,7 +198,7 @@ namespace Cube.Collections.Differences
         /* ----------------------------------------------------------------- */
         private Result<T> Create(Condition condition,
             T[] older, int ostart, int ocount,
-            T[] newer, int nstart, int ncount) => new Result<T>(
+            T[] newer, int nstart, int ncount) => new(
             condition,
             Slice(older, ostart, ocount),
             Slice(newer, nstart, ncount)

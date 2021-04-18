@@ -46,10 +46,7 @@ namespace Cube.Collections
         /// <param name="src">Function to compare.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public LambdaComparer(Func<T, T, int> src)
-        {
-            _comparer = src;
-        }
+        public LambdaComparer(Func<T, T, int> src) { _comparer = src; }
 
         #endregion
 

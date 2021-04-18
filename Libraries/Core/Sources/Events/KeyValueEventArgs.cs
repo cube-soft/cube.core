@@ -48,8 +48,7 @@ namespace Cube
         /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static KeyValueEventArgs<T, U> Create<T, U>(T key, U value) =>
-            new KeyValueEventArgs<T, U>(key, value);
+        public static KeyValueEventArgs<T, U> Create<T, U>(T key, U value) => new(key, value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -68,7 +67,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static KeyValueCancelEventArgs<T, U> Create<T, U>(T key, U value, bool cancel) =>
-            new KeyValueCancelEventArgs<T, U>(key, value, cancel);
+            new(key, value, cancel);
 
         #endregion
     }
@@ -103,10 +102,7 @@ namespace Cube
         /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueEventArgs(T key, U value) : base(value)
-        {
-            Key = key;
-        }
+        public KeyValueEventArgs(T key, U value) : base(value) { Key = key; }
 
         #endregion
 
@@ -175,10 +171,8 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public KeyValueCancelEventArgs(T key, U value, bool cancel) : base(value, cancel)
-        {
-            Key = key;
-        }
+        public KeyValueCancelEventArgs(T key, U value, bool cancel) :
+            base(value, cancel) { Key = key; }
 
         #endregion
 

@@ -99,7 +99,7 @@ namespace Cube.Collections
         protected virtual IEnumerable<ArgumentToken> Convert(string src) =>
             src.StartsWith("-") ?
             src.Skip(1).Select(c => new ArgumentToken(c.ToString(), "-")) :
-            AsEnumerable(new ArgumentToken(src));
+            AsEnumerable(new(src));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -144,7 +144,7 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected override IEnumerable<ArgumentToken> Convert(string src) =>
             src.StartsWith("--") ?
-            AsEnumerable(new ArgumentToken(src.Substring(2), "--")) :
+            AsEnumerable(new(src.Substring(2), "--")) :
             base.Convert(src);
     }
 
@@ -193,9 +193,7 @@ namespace Cube.Collections
         ///
         /* ----------------------------------------------------------------- */
         protected virtual ArgumentToken Convert(string src) =>
-            src.StartsWith("/") ?
-            new ArgumentToken(src.Substring(1), "/") :
-            new ArgumentToken(src);
+            src.StartsWith("/") ? new(src.Substring(1), "/") : new(src);
     }
 
     #endregion
@@ -229,8 +227,8 @@ namespace Cube.Collections
         ///
         /* ----------------------------------------------------------------- */
         protected override ArgumentToken Convert(string src) =>
-            src.StartsWith("--") ? new ArgumentToken(src.Substring(2), "--") :
-            src.StartsWith("-")  ? new ArgumentToken(src.Substring(1), "-" ) :
+            src.StartsWith("--") ? new(src.Substring(2), "--") :
+            src.StartsWith("-")  ? new(src.Substring(1), "-" ) :
             base.Convert(src);
     }
 

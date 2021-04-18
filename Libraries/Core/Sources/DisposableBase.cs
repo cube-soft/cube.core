@@ -41,10 +41,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected DisposableBase()
-        {
-            _dispose = new OnceAction<bool>(Dispose);
-        }
+        protected DisposableBase() { _dispose = new(Dispose); }
 
         #endregion
 

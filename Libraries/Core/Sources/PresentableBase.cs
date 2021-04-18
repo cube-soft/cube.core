@@ -83,7 +83,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected PresentableBase() : this(new Aggregator()) { }
+        protected PresentableBase() : this(new()) { }
 
         /* ----------------------------------------------------------------- */
         ///

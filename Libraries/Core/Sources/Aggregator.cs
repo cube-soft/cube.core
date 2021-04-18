@@ -82,8 +82,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly ConcurrentDictionary<Type, Subscription<Action<object>>> _subscription =
-            new ConcurrentDictionary<Type, Subscription<Action<object>>>();
+        private readonly ConcurrentDictionary<Type, Subscription<Action<object>>> _subscription = new();
         #endregion
     }
 }

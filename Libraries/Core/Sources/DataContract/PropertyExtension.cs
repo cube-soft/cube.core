@@ -51,7 +51,7 @@ namespace Cube.DataContract.Mixin
         /* ----------------------------------------------------------------- */
         public static object Parse(this Type src, object value) =>
             value == null ? null :
-            src.IsEnum ? (int)value :
+            src.IsEnum ? value :
             src == typeof(DateTime) ? DateTime.Parse(value as string).ToLocalTime() :
             Convert.ChangeType(value, src);
 

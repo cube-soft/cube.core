@@ -115,7 +115,7 @@ namespace Cube.Mixin.Time
                            System.Globalization.DateTimeStyles.AssumeUniversal |
                            System.Globalization.DateTimeStyles.AdjustToUniversal
                        );
-            return new DateTime(dest.Ticks, DateTimeKind.Utc);
+            return new(dest.Ticks, DateTimeKind.Utc);
         }
 
         #endregion
@@ -178,7 +178,7 @@ namespace Cube.Mixin.Time
                            System.Globalization.DateTimeFormatInfo.InvariantInfo,
                            System.Globalization.DateTimeStyles.AssumeLocal
                        );
-            return new DateTime(dest.Ticks, DateTimeKind.Local);
+            return new(dest.Ticks, DateTimeKind.Local);
         }
 
         #endregion

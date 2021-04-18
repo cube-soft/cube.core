@@ -65,21 +65,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public abstract class ObserverBase : DisposableBase, IObservePropertyChanged
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObserverBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ObserverBase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ObserverBase() { }
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -155,7 +140,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly List<IDisposable> _observer = new List<IDisposable>();
+        private readonly List<IDisposable> _observer = new();
         #endregion
     }
 

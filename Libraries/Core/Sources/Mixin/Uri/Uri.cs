@@ -56,10 +56,10 @@ namespace Cube.Mixin.Uri
         /* ----------------------------------------------------------------- */
         public static Source ToUri(this string src) =>
            !src.HasValue()       ? default :
-            src.Contains("://")  ? new Source(src) :
-            src.StartsWith("//") ? new Source("http:" + src) :
-            src.StartsWith("/")  ? new Source("http://localhost" + src) :
-                                   new Source("http://" + src);
+            src.Contains("://")  ? new(src) :
+            src.StartsWith("//") ? new("http:" + src) :
+            src.StartsWith("/")  ? new("http://localhost" + src) :
+                                   new("http://" + src);
 
         #endregion
 
@@ -193,7 +193,7 @@ namespace Cube.Mixin.Uri
         ///
         /* ----------------------------------------------------------------- */
         public static Source WithoutQuery(this Source src) =>
-            new Source(src.GetLeftPart(UriPartial.Path));
+            new(src.GetLeftPart(UriPartial.Path));
 
         #endregion
 

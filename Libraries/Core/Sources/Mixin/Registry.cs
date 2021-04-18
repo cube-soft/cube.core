@@ -49,7 +49,8 @@ namespace Cube.Mixin.Registry
         /* ----------------------------------------------------------------- */
         public static void SetValue<T>(this RegistryKey src, string subkey, string name, T value)
         {
-            using (var sk = src.CreateSubKey(subkey)) sk.SetValue(name, value);
+            using var sk = src.CreateSubKey(subkey);
+            sk.SetValue(name, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -90,12 +91,10 @@ namespace Cube.Mixin.Registry
         /* ----------------------------------------------------------------- */
         public static T GetValue<T>(this RegistryKey src, string subkey, string name, T defaultValue)
         {
-            using (var sk = src.OpenSubKey(subkey, false))
-            {
-                return sk != null ?
-                       sk.GetValue(name, defaultValue).TryCast(defaultValue) :
-                       defaultValue;
-            }
+            using var sk = src.OpenSubKey(subkey, false);
+            return sk != null ?
+                   sk.GetValue(name, defaultValue).TryCast(defaultValue) :
+                   defaultValue;
         }
 
         #endregion

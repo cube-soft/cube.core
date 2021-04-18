@@ -32,21 +32,6 @@ namespace Cube.Collections
     /* --------------------------------------------------------------------- */
     public abstract class EnumerableBase<T> : DisposableBase, IEnumerable<T>
     {
-        #region Constructors
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// EnumerableBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the EnumerableBase class.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected EnumerableBase() { }
-
-        #endregion
-
         #region Methods
 
         /* --------------------------------------------------------------------- */

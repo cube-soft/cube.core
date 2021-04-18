@@ -54,8 +54,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ConcurrentDictionary<Guid, T> Subscribers { get; } =
-            new ConcurrentDictionary<Guid, T>();
+        protected ConcurrentDictionary<Guid, T> Subscribers { get; } = new();
 
         #endregion
 

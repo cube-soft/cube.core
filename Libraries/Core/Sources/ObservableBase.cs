@@ -61,10 +61,7 @@ namespace Cube
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase(Dispatcher dispatcher) : base()
-        {
-            Dispatcher = dispatcher;
-        }
+        protected ObservableBase(Dispatcher dispatcher) : base() { Dispatcher = dispatcher; }
 
         #endregion
 

@@ -67,7 +67,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private class DisposableCore : IDisposable
         {
-            public DisposableCore(Action src) { _dispose = new OnceAction(src); }
+            public DisposableCore(Action src) { _dispose = new(src); }
             public void Dispose() => _dispose.Invoke();
             private readonly OnceAction _dispose;
         }

@@ -64,10 +64,7 @@ namespace Cube.Collections.Differences
         /// <param name="comparer">Object to compare.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OnpAlgorithm(IEqualityComparer<T> comparer)
-        {
-            _cmp = comparer;
-        }
+        public OnpAlgorithm(IEqualityComparer<T> comparer) { _cmp = comparer; }
 
         #endregion
 
@@ -203,9 +200,7 @@ namespace Cube.Collections.Differences
                 ++p1;
             }
 
-            _fp[kk].Sequence = (start0 != p0) ?
-                               new CommonSequence<T>(start0, start1, p0 - start0, cs) :
-                               cs;
+            _fp[kk].Sequence = (start0 != p0) ? new(start0, start1, p0 - start0, cs) : cs;
             _fp[kk].Position = p1 + 1;
         }
 

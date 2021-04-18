@@ -95,7 +95,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static CultureInfo ToCultureInfo(this Language src) =>
-            src == Language.Auto ? _auto : new CultureInfo((int)src);
+            src == Language.Auto ? _auto : new((int)src);
 
         #endregion
 

@@ -48,8 +48,7 @@ namespace Cube
         /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static CollectionEventArgs<T> Create<T>(IEnumerable<T> value) =>
-            new CollectionEventArgs<T>(value);
+        public static CollectionEventArgs<T> Create<T>(IEnumerable<T> value) => new(value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,7 +66,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static CollectionCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
-            new CollectionCancelEventArgs<T>(value, cancel);
+            new(value, cancel);
 
         #endregion
     }
@@ -154,7 +153,8 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) : base(value, cancel) { }
+        public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) :
+            base(value, cancel) { }
 
         #endregion
     }

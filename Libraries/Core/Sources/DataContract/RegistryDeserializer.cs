@@ -154,7 +154,7 @@ namespace Cube.DataContract
             foreach (var name in src.GetSubKeyNames())
             {
                 var obj = OpenGet(src, name, e => GetListElement(elementType, e));
-                if (obj != null) dest.Add(obj);
+                if (obj != null) _ = dest.Add(obj);
             }
 
             return dest;

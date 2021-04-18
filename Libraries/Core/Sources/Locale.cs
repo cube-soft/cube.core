@@ -47,7 +47,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         static Locale()
         {
-            _default  = new Accessor<Language>(Language.Auto);
+            _default  = new(Language.Auto);
             _accessor = _default;
         }
 
@@ -133,7 +133,7 @@ namespace Cube
         #region Fields
         private static Accessor<Language> _accessor;
         private static readonly Accessor<Language> _default;
-        private static readonly Subscription<Action<Language>> _subscription = new Subscription<Action<Language>>();
+        private static readonly Subscription<Action<Language>> _subscription = new();
         #endregion
     }
 }

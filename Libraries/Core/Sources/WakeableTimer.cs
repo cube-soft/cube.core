@@ -64,7 +64,7 @@ namespace Cube
         {
             _span  = interval;
             _power = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
-            _inner = new Timer { AutoReset = false };
+            _inner = new() { AutoReset = false };
             _inner.Elapsed += DoConstant;
         }
 
@@ -136,7 +136,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected Subscription<AsyncAction> Subscription { get; } = new Subscription<AsyncAction>();
+        protected Subscription<AsyncAction> Subscription { get; } = new();
 
         #endregion
 

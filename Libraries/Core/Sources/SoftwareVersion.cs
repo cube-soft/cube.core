@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Cube.Mixin.Assembly;
@@ -230,17 +229,6 @@ namespace Cube
             var check = src.Append(value);
             Debug.Assert(check == src);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Normalize
-        ///
-        /// <summary>
-        /// Normalized the specified version string.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string Normalize(string src) => src.Contains(".") ? src : $"{src}.0";
 
         #endregion
     }

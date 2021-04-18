@@ -47,8 +47,7 @@ namespace Cube.Collections
         /// <returns>KeyValuePair(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static KeyValuePair<T, U> Create<T, U>(T key, U value) =>
-            new KeyValuePair<T, U>(key, value);
+        public static KeyValuePair<T, U> Create<T, U>(T key, U value) => new(key, value);
 
         #endregion
     }

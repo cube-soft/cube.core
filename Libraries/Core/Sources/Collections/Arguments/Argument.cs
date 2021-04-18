@@ -67,14 +67,13 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IDictionary<Argument, IArgumentPreprocessor> Map { get; } =
-            new Dictionary<Argument, IArgumentPreprocessor>
-            {
-                { Argument.Posix,   new PosixArgumentPreprocessor()   },
-                { Argument.Gnu,     new GnuArgumentPreprocessor()     },
-                { Argument.Dos,     new DosArgumentPreprocessor()     },
-                { Argument.Windows, new WindowsArgumentPreprocessor() },
-            };
+        private static Dictionary<Argument, IArgumentPreprocessor> Map { get; } = new()
+        {
+            { Argument.Posix,   new PosixArgumentPreprocessor()   },
+            { Argument.Gnu,     new GnuArgumentPreprocessor()     },
+            { Argument.Dos,     new DosArgumentPreprocessor()     },
+            { Argument.Windows, new WindowsArgumentPreprocessor() },
+        };
 
         /* ----------------------------------------------------------------- */
         ///

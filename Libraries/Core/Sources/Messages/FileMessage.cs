@@ -75,17 +75,6 @@ namespace Cube
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// OpenOrSaveFileMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenOrSaveFileMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected OpenOrSaveFileMessage() { }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// CheckPathExists
         ///
         /// <summary>

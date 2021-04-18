@@ -181,10 +181,8 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         private void Create(RegistryKey dest, string name, Action<RegistryKey> callback)
         {
-            using (var e = dest.CreateSubKey(name))
-            {
-                if (e != null) callback(e);
-            }
+            using var e = dest.CreateSubKey(name);
+            if (e != null) callback(e);
         }
 
         /* ----------------------------------------------------------------- */

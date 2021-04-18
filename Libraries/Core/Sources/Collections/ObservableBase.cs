@@ -57,10 +57,7 @@ namespace Cube.Collections
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase(Dispatcher dispatcher)
-        {
-            Dispatcher = dispatcher;
-        }
+        protected ObservableBase(Dispatcher dispatcher) { Dispatcher = dispatcher; }
 
         #endregion
 

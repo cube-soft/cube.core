@@ -31,6 +31,8 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public sealed class StreamProxy : Stream
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// StreamProxy
@@ -66,6 +68,8 @@ namespace Cube
             _leave  = leaveOpen;
             _source = stream ?? throw new ArgumentNullException(nameof(stream));
         }
+
+        #endregion
 
         #region Properties
 

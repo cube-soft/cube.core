@@ -48,8 +48,7 @@ namespace Cube
         /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static ValueEventArgs<T> Create<T>(T value) =>
-            new ValueEventArgs<T>(value);
+        public static ValueEventArgs<T> Create<T>(T value) => new(value);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,7 +66,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static ValueCancelEventArgs<T> Create<T>(T value, bool cancel) =>
-            new ValueCancelEventArgs<T>(value, cancel);
+            new(value, cancel);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,7 +87,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public static ValueChangedEventArgs<T> Create<T>(T oldvalue, T newvalue) =>
-            new ValueChangedEventArgs<T>(oldvalue, newvalue);
+            new(oldvalue, newvalue);
 
         #endregion
     }
@@ -122,10 +121,7 @@ namespace Cube
         /// <param name="value">Value to use for the event.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ValueEventArgs(T value)
-        {
-            Value = value;
-        }
+        public ValueEventArgs(T value) { Value = value; }
 
         #endregion
 
@@ -192,10 +188,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public ValueCancelEventArgs(T value, bool cancel) : base(cancel)
-        {
-            Value = value;
-        }
+        public ValueCancelEventArgs(T value, bool cancel) : base(cancel) { Value = value; }
 
         #endregion
 
