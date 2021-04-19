@@ -64,7 +64,18 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(NoticeMessage src)
+        protected override void Invoke(NoticeMessage src) => ShowAsync(src).Forget();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowAsync
+        ///
+        /// <summary>
+        /// Shows a new window with the specified notice information.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async Task ShowAsync(NoticeMessage src)
         {
             var cts  = new CancellationTokenSource();
             var view = new NoticeWindow();
@@ -72,6 +83,7 @@ namespace Cube.Forms.Behaviors
             void handler(object s, ValueEventArgs<NoticeComponent> e)
             {
                 cts.Cancel();
+                view.Selected -= handler;
                 view.Close();
                 src.Callback?.Invoke(e.Value, src.Value);
             }
@@ -82,20 +94,6 @@ namespace Cube.Forms.Behaviors
             view.Set(src.Style);
             view.Set(src.Location);
 
-            ShowAsync(src, view, cts).Forget();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Shows a new window with the specified notice information.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private async Task ShowAsync(NoticeMessage src, NoticeWindow view, CancellationTokenSource cts)
-        {
             if (src.InitialDelay > TimeSpan.Zero) await Task.Delay(src.InitialDelay);
             view.Show();
             if (src.DisplayTime == TimeSpan.Zero) return; // Zero means infinity.
@@ -103,6 +101,7 @@ namespace Cube.Forms.Behaviors
             try
             {
                 await Task.Delay(src.DisplayTime, cts.Token);
+                view.Selected -= handler;
                 view.Close();
             }
             catch (TaskCanceledException) { /* ignore user cancel */ }
