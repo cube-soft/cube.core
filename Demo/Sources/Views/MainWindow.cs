@@ -74,7 +74,7 @@ namespace Cube.Forms.Demo
             Behaviors.Add(new ClickBehavior(DemoButton2, vm.Notice));
             Behaviors.Add(new ClickBehavior(DemoButton5, vm.Close));
             Behaviors.Add(new ShowVersionBehavior(this, vm));
-            Behaviors.Add(new ShowNoticeBehavior(vm));
+            Behaviors.Add(new NoticeBehavior(vm));
             Behaviors.Add(new ShownBehavior(this, vm.Setup));
             Behaviors.Add(new CloseBehavior(this, vm));
             Behaviors.Add(new ClosingBehavior(this, vm.Confirm));

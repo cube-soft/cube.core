@@ -15,59 +15,59 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Behaviors;
 using Cube.Forms.Controls;
 
-namespace Cube.Forms.Demo
+namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowNoticeBehavior
+    /// NoticeBehavior
     ///
     /// <summary>
-    /// Represents the behavior to show a notice dialog.
+    /// Provides functionality to show a notice window with the specified
+    /// information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class ShowNoticeBehavior : MessageBehavior<NoticeMessage>
+    public class NoticeBehavior : MessageBehavior<NoticeMessage>
     {
         #region Constructors
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
-        /// ShowNoticeBehavior
+        /// NoticeBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowNoticeBehavior class
-        /// with the specified arguments.
+        /// Initializes a new instance of the NoticeBehavior class with
+        /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">ViewModel object.</param>
+        /// <param name="vm">Presentable object.</param>
         ///
-        /* --------------------------------------------------------------------- */
-        public ShowNoticeBehavior(IPresentable vm) : base(vm) { }
+        /* ----------------------------------------------------------------- */
+        public NoticeBehavior(IPresentable vm) : base(vm) { }
 
         #endregion
 
         #region Implementations
 
-        /* --------------------------------------------------------------------- */
+        /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// Invokes the action.
+        /// Shows a new window with the specified notice information.
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        protected override void Invoke(NoticeMessage m)
+        /* ----------------------------------------------------------------- */
+        protected override void Invoke(NoticeMessage message)
         {
             var view = new NoticeWindow();
             view.Selected += (s, e) => view.Close();
             view.SetTopMost(false);
-            view.Set(m.Text, m.Title);
-            view.Set(m.Style);
-            view.Set(NoticeLocation.BottomRight);
+            view.Set(message.Text, message.Title);
+            view.Set(message.Style);
+            view.Set(message.Location);
             view.Show();
         }
 

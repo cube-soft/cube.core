@@ -299,7 +299,6 @@ namespace Cube.Forms
             AutoScaleMode = WinForms.AutoScaleMode.None;
             BackColor     = SystemColors.Window;
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            Location      = new(0, 0);
             Size          = new(350, 88);
             MaximizeBox   = false;
             MinimizeBox   = false;

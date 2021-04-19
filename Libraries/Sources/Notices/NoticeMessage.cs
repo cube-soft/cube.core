@@ -78,6 +78,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Location
+        ///
+        /// <summary>
+        /// Gets or sets the location to show the notice window.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NoticeLocation Location { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Style
         ///
         /// <summary>
