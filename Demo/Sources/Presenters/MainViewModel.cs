@@ -69,7 +69,9 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Notice() => Send(MessageFactory.CreateForNotice(Facade));
+        public void Notice() => Send(MessageFactory.CreateForNotice(Facade,
+            (k, v) => this.LogDebug(nameof(Notice), $"Component:{k}", $"Value:{v}")
+        ));
 
         /* --------------------------------------------------------------------- */
         ///

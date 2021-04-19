@@ -15,7 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Cube.Forms.Controls;
+using Cube.Mixin.Tasks;
 
 namespace Cube.Forms.Behaviors
 {
@@ -60,15 +64,48 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(NoticeMessage message)
+        protected override void Invoke(NoticeMessage src)
         {
+            var cts  = new CancellationTokenSource();
             var view = new NoticeWindow();
-            view.Selected += (s, e) => view.Close();
+
+            void handler(object s, ValueEventArgs<NoticeComponent> e)
+            {
+                cts.Cancel();
+                view.Close();
+                src.Callback?.Invoke(e.Value, src.Value);
+            }
+
+            view.Selected += handler;
             view.SetTopMost(false);
-            view.Set(message.Text, message.Title);
-            view.Set(message.Style);
-            view.Set(message.Location);
+            view.Set(src.Text, src.Title);
+            view.Set(src.Style);
+            view.Set(src.Location);
+
+            ShowAsync(src, view, cts).Forget();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Shows a new window with the specified notice information.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async Task ShowAsync(NoticeMessage src, NoticeWindow view, CancellationTokenSource cts)
+        {
+            if (src.InitialDelay > TimeSpan.Zero) await Task.Delay(src.InitialDelay);
             view.Show();
+            if (src.DisplayTime == TimeSpan.Zero) return; // Zero means infinity.
+
+            try
+            {
+                await Task.Delay(src.DisplayTime, cts.Token);
+                view.Close();
+            }
+            catch (TaskCanceledException) { /* ignore user cancel */ }
         }
 
         #endregion

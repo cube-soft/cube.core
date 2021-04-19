@@ -21,6 +21,19 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
+    /// NoticeCallback
+    ///
+    /// <summary>
+    /// Represents the method called when a part of the notice window
+    /// is clicked.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Serializable]
+    public delegate void NoticeCallback(NoticeComponent result, object value);
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// NoticeMessage
     ///
     /// <summary>
@@ -31,17 +44,6 @@ namespace Cube.Forms
     public class NoticeMessage : Message<object>
     {
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Priority
-        ///
-        /// <summary>
-        /// Gets or sets the priority of the notice.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public NoticePriority Priority { get; set; } = NoticePriority.Normal;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -78,6 +80,17 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Priority
+        ///
+        /// <summary>
+        /// Gets or sets the priority of the notice.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NoticePriority Priority { get; set; } = NoticePriority.Normal;
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Location
         ///
         /// <summary>
@@ -97,6 +110,18 @@ namespace Cube.Forms
         ///
         /* ----------------------------------------------------------------- */
         public NoticeStyle Style { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Callback
+        ///
+        /// <summary>
+        /// Gets or sets the callback action when the user clicks on the
+        /// notice window.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NoticeCallback Callback { get; set; }
 
         #endregion
     }

@@ -32,6 +32,8 @@ namespace Cube.Forms.Demo
     /* --------------------------------------------------------------------- */
     public static class MessageFactory
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// CreateForNotice
@@ -41,16 +43,28 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /// <param name="src">Assembly information.</param>
+        /// <param name="callback">
+        /// Callback action called when a part of the notice window is
+        /// clicked.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public static NoticeMessage CreateForNotice(Assembly src) => new NoticeMessage
+        public static NoticeMessage CreateForNotice(Assembly src, NoticeCallback callback) => new()
         {
             Title        = src.GetTitle(),
-            Text         = Properties.Resources.NoticeSample,
+            Text         = $"{Properties.Resources.NoticeSample} ({++_notice})",
+            Value        = "DummyData",
             DisplayTime  = TimeSpan.FromSeconds(60),
-            InitialDelay = TimeSpan.FromMilliseconds(100),
+            InitialDelay = TimeSpan.FromSeconds(1),
             Priority     = NoticePriority.Normal,
-            Value        = (Action<NoticeComponent>)(e => { }),
+            Location     = (NoticeLocation)(_notice % Enum.GetValues(typeof(NoticeLocation)).Length),
+            Callback     = callback,
         };
+
+        #endregion
+
+        #region Fields
+        private static int _notice = 0;
+        #endregion
     }
 }
