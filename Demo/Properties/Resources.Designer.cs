@@ -191,15 +191,6 @@ namespace Cube.Forms.Demo.Properties {
         }
         
         /// <summary>
-        ///   これは通知サンプルです。 に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string NoticeSample {
-            get {
-                return ResourceManager.GetString("NoticeSample", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
         internal static System.Drawing.Bitmap Refresh {

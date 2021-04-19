@@ -134,7 +134,7 @@ namespace Cube.Forms.Demo
         private NoticeMessage Create(NoticeCallback callback) => new()
         {
             Title        = "Notice Demo",
-            Text         = $"{Properties.Resources.NoticeSample} ({++_count})",
+            Text         = $"This is a sample message ({++_count})",
             Value        = "DummyData",
             DisplayTime  = TimeSpan.FromSeconds(60),
             InitialDelay = TimeSpan.FromSeconds(1),
