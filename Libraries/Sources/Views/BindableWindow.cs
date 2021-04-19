@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using Cube.Forms.Controls;
 using WinForms = System.Windows.Forms;
 
 namespace Cube.Forms
@@ -32,6 +33,24 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class BindableWindow : WinForms.Form, IBindable
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableWindow
+        ///
+        /// <summary>
+        /// Initializes a new instance of the BindableWindow class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableWindow()
+        {
+            Behaviors.Add(Locale.Subscribe(this.UpdateCulture));
+        }
+
+        #endregion
+
         #region Properties
 
         /* ----------------------------------------------------------------- */
