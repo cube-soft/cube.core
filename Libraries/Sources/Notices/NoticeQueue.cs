@@ -47,6 +47,17 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public int Count => _inner.Values.Aggregate(0, (n, q) => n + q.Count);
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Empty
+        ///
+        /// <summary>
+        /// Gets a value indicating whether the queue has no items.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public bool Empty => _inner.Count == 0;
+
         #endregion
 
         #region Events
