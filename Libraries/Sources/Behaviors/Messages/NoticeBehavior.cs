@@ -32,6 +32,11 @@ namespace Cube.Forms.Behaviors
     /// information.
     /// </summary>
     ///
+    /// <remarks>
+    /// When a view object is shared, exclusive control is the responsibility
+    /// of the user.
+    /// </remarks>
+    ///
     /* --------------------------------------------------------------------- */
     public class NoticeBehavior : MessageBehavior<NoticeMessage>
     {
@@ -49,7 +54,38 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public NoticeBehavior(IPresentable vm) : base(vm) { }
+        public NoticeBehavior(IPresentable vm) : this(default, vm) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NoticeBehavior
+        ///
+        /// <summary>
+        /// Initializes a new instance of the NoticeBehavior class with
+        /// the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="view">Shared view object.</param>
+        /// <param name="vm">Presentable object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public NoticeBehavior(NoticeWindow view, IPresentable vm) : base(vm) { View = view; }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// View
+        ///
+        /// <summary>
+        /// Gets the view object that is shared in the instance.
+        /// This property may be null.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected NoticeWindow View { get; }
 
         #endregion
 
@@ -64,7 +100,22 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(NoticeMessage src) => ShowAsync(src).Forget();
+        protected override void Invoke(NoticeMessage src) => InvokeAsync(src).Forget();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowAsync
+        ///
+        /// <summary>
+        /// Shows a new window with the specified notice information.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private async Task InvokeAsync(NoticeMessage src)
+        {
+            if (src.InitialDelay > TimeSpan.Zero) await Task.Delay(src.InitialDelay);
+            await ShowAsync(src);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -77,14 +128,16 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         private async Task ShowAsync(NoticeMessage src)
         {
-            var cts  = new CancellationTokenSource();
-            var view = new NoticeWindow();
+            var view   = View ?? new NoticeWindow();
+            var shared = View != null;
+            var cts    = new CancellationTokenSource();
 
             void handler(object s, ValueEventArgs<NoticeComponent> e)
             {
-                cts.Cancel();
                 view.Selected -= handler;
-                view.Close();
+                cts.Cancel();
+                if (shared) view.Hide();
+                else view.Close();
                 src.Callback?.Invoke(e.Value, src.Value);
             }
 
@@ -93,16 +146,16 @@ namespace Cube.Forms.Behaviors
             view.Set(src.Text, src.Title);
             view.Set(src.Style);
             view.Set(src.Location);
-
-            if (src.InitialDelay > TimeSpan.Zero) await Task.Delay(src.InitialDelay);
             view.Show();
+
             if (src.DisplayTime == TimeSpan.Zero) return; // Zero means infinity.
 
             try
             {
                 await Task.Delay(src.DisplayTime, cts.Token);
                 view.Selected -= handler;
-                view.Close();
+                if (shared) view.Hide();
+                else view.Close();
             }
             catch (TaskCanceledException) { /* ignore user cancel */ }
         }
