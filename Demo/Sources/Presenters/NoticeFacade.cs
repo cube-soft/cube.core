@@ -15,37 +15,35 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows.Forms;
+using System;
+using System.Threading;
 using Cube.Mixin.Logging;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainViewModel
+    /// NoticeFacade
     ///
     /// <summary>
-    /// Represents the ViewModel for the main window.
+    /// Represents the facade for notice functions.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MainViewModel : Presentable<MainFacade>
+    public sealed class NoticeFacade
     {
-        #region Constructors
+        #region Properties
 
         /* --------------------------------------------------------------------- */
         ///
-        /// MainViewModel
+        /// Notify
         ///
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
+        /// Gets the action to take when notified of a new message.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public MainViewModel() : base(new())
-        {
-            Facade.Notice.Notify = Send;
-        }
+        public Action<NoticeMessage> Notify { get; set; }
 
         #endregion
 
@@ -53,76 +51,105 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Setup
+        /// Enqueue
         ///
         /// <summary>
-        /// Invokes the command when the form is shown.
+        /// Adds a new message with the specified callback.
         /// </summary>
         ///
+        /// <param name="callback">Callback action.</param>
+        ///
         /* --------------------------------------------------------------------- */
-        public void Setup() => this.LogDebug("Shown");
+        public void Enqueue(NoticeCallback callback) => Enqueue(Create(callback));
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Notice
+        /// Enqueue
         ///
         /// <summary>
-        /// Invokes the command to show a notice dialog.
+        /// Adds the specified message.
         /// </summary>
         ///
-        /* --------------------------------------------------------------------- */
-        public void Notice() => Facade.Notice.Enqueue(Facade.Notice.Invoke);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// About
-        ///
-        /// <summary>
-        /// Invokes the command to show a version dialog.
-        /// </summary>
+        /// <param name="src">New message.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void About() => Send(new AboutMessage(Facade.Assembly));
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Close
-        ///
-        /// <summary>
-        /// Invokes the close command.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public void Close() => Send<CloseMessage>();
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Confirm
-        ///
-        /// <summary>
-        /// Invokes the command when closing the window.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public void Confirm(FormClosingEventArgs src)
+        public void Enqueue(NoticeMessage src)
         {
-            var msg = MessageFactory.CreateForConfirm();
-            Send(msg);
-            src.Cancel = msg.Value == DialogStatus.Cancel;
-            this.LogDebug("Closing", $"Reason:{src.CloseReason}", $"Cancel:{src.Cancel}");
+            _queue.Enqueue(src);
+            Consume(false);
         }
 
         /* --------------------------------------------------------------------- */
         ///
-        /// Log
+        /// Invoke
         ///
         /// <summary>
-        /// Invokes the command when the window is closed.
+        /// Invokes the operation corresponding to the user's choice.
+        /// </summary>
+        ///
+        /// <param name="result">User action.</param>
+        /// <param name="value">Notice data.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void Invoke(NoticeComponent result, object value)
+        {
+            try { this.LogDebug($"Select:{result}", $"Value:{value}"); }
+            finally
+            {
+                if (!_queue.Empty) Consume(true);
+                else _ = Interlocked.Exchange(ref _busy, default);
+            }
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Consume
+        ///
+        /// <summary>
+        /// Dequeues a message and invokes the provided action.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Log(FormClosedEventArgs src) => this.LogDebug("Closed", $"Reason:{src.CloseReason}");
+        private void Consume(bool continuous)
+        {
+            if (_queue.Empty) return;
+            if (!continuous && _busy != null) return;
+            if (!continuous && Interlocked.Exchange(ref _busy, new()) != null) return;
+            Notify?.Invoke(_queue.Dequeue());
+        }
 
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates a new message.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private NoticeMessage Create(NoticeCallback callback) => new()
+        {
+            Title        = "Notice Demo",
+            Text         = $"{Properties.Resources.NoticeSample} ({++_count})",
+            Value        = "DummyData",
+            DisplayTime  = TimeSpan.FromSeconds(60),
+            InitialDelay = TimeSpan.FromSeconds(1),
+            Priority     = NoticePriority.Normal,
+            Location     = (NoticeLocation)(_count % Enum.GetValues(typeof(NoticeLocation)).Length),
+            Callback     = callback,
+        };
+
+
+        #endregion
+
+        #region Fields
+        private readonly NoticeQueue _queue = new();
+        private object _busy;
+        private int _count = 0;
         #endregion
     }
 }

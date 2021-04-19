@@ -15,72 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Forms.Behaviors;
+using System.Reflection;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainWindow
+    /// MainFacade
     ///
     /// <summary>
-    /// Represents the main window.
+    /// Represents the facade model to communicate with the MainViewModel
+    /// object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainWindow : BorderlessWindow
+    public class MainFacade
     {
-        #region Constructors
-
         /* --------------------------------------------------------------------- */
         ///
-        /// MainWindow
+        /// Assembly
         ///
         /// <summary>
-        /// Initializes a new instance of the MainWindow class.
+        /// Gets the assembly object.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            Caption = HeaderCaptionControl;
-            Text    = $"{ProductName} {ProductVersion}";
-
-            Behaviors.Add(new FlowLayoutBehavior(ContentsControl));
-        }
-
-        #endregion
-
-        #region Implementations
+        public Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         /* --------------------------------------------------------------------- */
         ///
-        /// OnBind
+        /// Notice
         ///
         /// <summary>
-        /// Binds the window with the specified presenter.
+        /// Gets the model for notice component.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void OnBind(IPresentable src)
-        {
-            base.OnBind(src);
-            if (src is not MainViewModel vm) return;
-
-            Behaviors.Add(new DialogBehavior(vm));
-            Behaviors.Add(new ClickBehavior(DemoButton1, vm.About));
-            Behaviors.Add(new ClickBehavior(DemoButton2, vm.Notice));
-            Behaviors.Add(new ClickBehavior(DemoButton5, vm.Close));
-            Behaviors.Add(new ShowVersionBehavior(this, vm));
-            Behaviors.Add(new NoticeBehavior(new(), vm));
-            Behaviors.Add(new ShownBehavior(this, vm.Setup));
-            Behaviors.Add(new CloseBehavior(this, vm));
-            Behaviors.Add(new ClosingBehavior(this, vm.Confirm));
-            Behaviors.Add(new ClosedBehavior(this, vm.Log));
-        }
-
-        #endregion
+        public NoticeFacade Notice { get; } = new();
     }
 }

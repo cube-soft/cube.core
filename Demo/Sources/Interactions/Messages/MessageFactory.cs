@@ -15,10 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Reflection;
-using Cube.Mixin.Assembly;
-
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
@@ -36,35 +32,22 @@ namespace Cube.Forms.Demo
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateForNotice
+        /// CreateForConfirm
         ///
         /// <summary>
-        /// Creates a new instance of the NoticeMessage class.
+        /// Creates a new instance of the DialogMessage class.
         /// </summary>
         ///
-        /// <param name="src">Assembly information.</param>
-        /// <param name="callback">
-        /// Callback action called when a part of the notice window is
-        /// clicked.
-        /// </param>
+        /// <returns>DialogMessage object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static NoticeMessage CreateForNotice(Assembly src, NoticeCallback callback) => new()
+        public static DialogMessage CreateForConfirm() => new()
         {
-            Title        = src.GetTitle(),
-            Text         = $"{Properties.Resources.NoticeSample} ({++_notice})",
-            Value        = "DummyData",
-            DisplayTime  = TimeSpan.FromSeconds(60),
-            InitialDelay = TimeSpan.FromSeconds(1),
-            Priority     = NoticePriority.Normal,
-            Location     = (NoticeLocation)(_notice % Enum.GetValues(typeof(NoticeLocation)).Length),
-            Callback     = callback,
+            Text    = "Closing window... Do you want to continue?",
+            Icon    = DialogIcon.Information,
+            Buttons = DialogButtons.OkCancel,
         };
 
-        #endregion
-
-        #region Fields
-        private static int _notice = 0;
         #endregion
     }
 }
