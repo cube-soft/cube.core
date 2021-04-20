@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Threading.Tasks;
 using System.Timers;
 using Cube.Collections;
 using Cube.Mixin.Logging;
@@ -23,49 +24,40 @@ using Microsoft.Win32;
 
 namespace Cube
 {
+    #region WakeableTimerBase
+
     /* --------------------------------------------------------------------- */
     ///
-    /// WakeableTimer
+    /// WakeableTimerBase
     ///
     /// <summary>
-    /// Represents the timer that suspends/resumes corresponding to the
-    /// power mode.
+    /// Represents the base class of timer that suspends/resumes
+    /// corresponding to the power mode.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WakeableTimer : DisposableBase
+    public abstract class WakeableTimerBase : DisposableBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WakeableTimer
+        /// WakeableTimerBase
         ///
         /// <summary>
-        /// Initializes a new instance of the WakeableTimer class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public WakeableTimer() : this(TimeSpan.FromSeconds(1)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WakeableTimer
-        ///
-        /// <summary>
-        /// Initializes a new instance of the WakeableTimer class with the
-        /// specified interval.
+        /// Initializes a new instance of the WakeableTimerBase class
+        /// with the specified interval.
         /// </summary>
         ///
         /// <param name="interval">Execution interval.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public WakeableTimer(TimeSpan interval)
+        protected WakeableTimerBase(TimeSpan interval)
         {
-            _span  = interval;
-            _power = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
-            _inner = new() { AutoReset = false };
-            _inner.Elapsed += DoConstant;
+            _interval = interval;
+            _power    = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
+            _inner    = new() { AutoReset = false };
+            _inner.Elapsed += RaiseTick;
         }
 
         #endregion
@@ -94,11 +86,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public TimeSpan Interval
         {
-            get => _span;
+            get => _interval;
             set
             {
-                if (_span == value) return;
-                _span = value;
+                if (_interval == value) return;
+                _interval = value;
                 Reset();
             }
         }
@@ -108,8 +100,7 @@ namespace Cube
         /// Last
         ///
         /// <summary>
-        /// Gets the last time to invoke the actions registered with the
-        /// Subscribe method.
+        /// Gets the last time to invoke the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -126,55 +117,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected DateTime Next { get; set; } = DateTime.Now;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscriptions
-        ///
-        /// <summary>
-        /// Gets the collection of subscriptions.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected Subscription<AsyncAction> Subscription { get; } = new();
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PowerModeChanged
-        ///
-        /// <summary>
-        /// Occurs when the power mode of the computer is changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler PowerModeChanged;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPowerModeChanged
-        ///
-        /// <summary>
-        /// Raises the PowerModeChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnPowerModeChanged(EventArgs e)
-        {
-            switch (Power.Mode)
-            {
-                case PowerModes.Resume:
-                    Resume(TimeSpan.FromMilliseconds(100));
-                    break;
-                case PowerModes.Suspend:
-                    Suspend();
-                    break;
-            }
-            PowerModeChanged?.Invoke(this, e);
-        }
 
         #endregion
 
@@ -259,41 +201,14 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Subscribe
+        /// OnTick
         ///
         /// <summary>
-        /// Sets the specified asynchronous action to the timer.
+        /// Occurs when the timer is expired.
         /// </summary>
         ///
-        /// <param name="callback">Asynchronous user action.</param>
-        ///
-        /// <returns>Object to remove from the subscription.</returns>
-        ///
         /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(AsyncAction callback) => Subscription.Subscribe(callback);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the WakeableTimer
-        /// and optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            State = TimerState.Stop;
-            _power?.Dispose();
-            _inner?.Dispose();
-        }
+        protected abstract Task OnTick();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -308,6 +223,28 @@ namespace Cube
         {
             Next = DateTime.Now + Interval;
             _inner.Interval = Interval.TotalMilliseconds;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnPowerModeChanged
+        ///
+        /// <summary>
+        /// Raises the PowerModeChanged event.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnPowerModeChanged(EventArgs e)
+        {
+            switch (Power.Mode)
+            {
+                case PowerModes.Resume:
+                    Resume(TimeSpan.FromMilliseconds(100));
+                    break;
+                case PowerModes.Suspend:
+                    Suspend();
+                    break;
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -336,6 +273,29 @@ namespace Cube
 
             _inner.Interval = Math.Max(value.TotalMilliseconds, 1);
             _inner.Start();
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the WakeableTimer
+        /// and optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            State = TimerState.Stop;
+            _power?.Dispose();
+            _inner?.Dispose();
         }
 
         #endregion
@@ -384,20 +344,20 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DoConstant
+        /// RaiseTick
         ///
         /// <summary>
         /// Occurs at the provided intervals.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private async void DoConstant(object s, ElapsedEventArgs e)
+        private async void RaiseTick(object s, ElapsedEventArgs e)
         {
             if (State != TimerState.Run) return;
             try
             {
                 Last = e.SignalTime;
-                foreach (var cb in Subscription) await cb().ConfigureAwait(false);
+                await OnTick().ConfigureAwait(false);
             }
             finally { Restart(e.SignalTime); }
         }
@@ -407,9 +367,96 @@ namespace Cube
         #region Fields
         private readonly IDisposable _power;
         private readonly Timer _inner;
-        private TimeSpan _span;
+        private TimeSpan _interval;
         #endregion
     }
+
+    #endregion
+
+    #region WakeableTimer
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WakeableTimer
+    ///
+    /// <summary>
+    /// Represents the timer that suspends/resumes corresponding to the
+    /// power mode.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public sealed class WakeableTimer : WakeableTimerBase
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WakeableTimer
+        ///
+        /// <summary>
+        /// Initializes a new instance of the WakeableTimer class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public WakeableTimer() : this(TimeSpan.FromSeconds(1)) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WakeableTimer
+        ///
+        /// <summary>
+        /// Initializes a new instance of the WakeableTimer class with the
+        /// specified interval.
+        /// </summary>
+        ///
+        /// <param name="interval">Execution interval.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public WakeableTimer(TimeSpan interval) : base(interval) { }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Sets the specified asynchronous action to the timer.
+        /// </summary>
+        ///
+        /// <param name="callback">Asynchronous user action.</param>
+        ///
+        /// <returns>Object to remove from the subscription.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IDisposable Subscribe(AsyncAction callback) => _subscription.Subscribe(callback);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnTick
+        ///
+        /// <summary>
+        /// Occurs when the timer is expired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override async Task OnTick()
+        {
+            foreach (var cb in _subscription) await cb().ConfigureAwait(false);
+        }
+
+        #endregion
+
+        #region Fields
+        private readonly Subscription<AsyncAction> _subscription = new();
+        #endregion
+    }
+
+    #endregion
+
+    #region TimerState
 
     /* --------------------------------------------------------------------- */
     ///
@@ -431,4 +478,6 @@ namespace Cube
         /// <summary>Unknown</summary>
         Unknown = -1
     }
+
+    #endregion
 }

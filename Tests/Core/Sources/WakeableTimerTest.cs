@@ -119,7 +119,6 @@ namespace Cube.Tests
         public void Transition_PowerMode()
         {
             var pmc   = new PowerModeContext(Power.Mode);
-            var count = 0;
             var dummy = 0;
 
             Power.Configure(pmc);
@@ -127,7 +126,6 @@ namespace Cube.Tests
             using (var src = new WakeableTimer())
             using (src.Subscribe(Synchronous.AsTask(() => ++dummy)))
             {
-                src.PowerModeChanged += (s, e) => ++count;
                 src.Start();
 
                 pmc.Mode = PowerModes.Suspend;
