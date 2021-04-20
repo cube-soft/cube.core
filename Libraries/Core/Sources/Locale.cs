@@ -53,18 +53,22 @@ namespace Cube
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Get
+        /// Language
         ///
         /// <summary>
-        /// Sets the current language.
+        /// Gets the current language.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static Language Get() => _accessor.Get();
+        public static Language Language => _accessor.Get();
+
+        #endregion
+
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
