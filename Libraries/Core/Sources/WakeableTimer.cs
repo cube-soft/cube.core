@@ -45,17 +45,14 @@ namespace Cube
         /// WakeableTimerBase
         ///
         /// <summary>
-        /// Initializes a new instance of the WakeableTimerBase class
-        /// with the specified interval.
+        /// Initializes a new instance of the WakeableTimerBase class.
         /// </summary>
         ///
-        /// <param name="interval">Execution interval.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        protected WakeableTimerBase(TimeSpan interval)
+        protected WakeableTimerBase()
         {
-            _interval = interval;
-            _power    = Power.Subscribe(() => OnPowerModeChanged(EventArgs.Empty));
+            _interval = TimeSpan.FromSeconds(1);
+            _power    = Power.Subscribe(OnPowerModeChanged);
             _inner    = new() { AutoReset = false };
             _inner.Elapsed += RaiseTick;
         }
@@ -234,7 +231,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnPowerModeChanged(EventArgs e)
+        protected virtual void OnPowerModeChanged()
         {
             switch (Power.Mode)
             {
@@ -387,35 +384,6 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public sealed class WakeableTimer : WakeableTimerBase
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WakeableTimer
-        ///
-        /// <summary>
-        /// Initializes a new instance of the WakeableTimer class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public WakeableTimer() : this(TimeSpan.FromSeconds(1)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WakeableTimer
-        ///
-        /// <summary>
-        /// Initializes a new instance of the WakeableTimer class with the
-        /// specified interval.
-        /// </summary>
-        ///
-        /// <param name="interval">Execution interval.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public WakeableTimer(TimeSpan interval) : base(interval) { }
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
