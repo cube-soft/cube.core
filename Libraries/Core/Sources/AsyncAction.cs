@@ -15,44 +15,18 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Threading.Tasks;
 
-namespace Cube.Synchronous
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// WakeableTimerExtension
+    /// AsyncAction
     ///
     /// <summary>
-    /// Provides extended methods of the WakeableTimer class.
+    /// Represents the method to invoke as an asynchronous method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class WakeableTimerExtension
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Sets the specified action to the timer.
-        /// </summary>
-        ///
-        /// <param name="src">WakeableTimer object.</param>
-        /// <param name="callback">User action.</param>
-        ///
-        /// <returns>Object to remove from the subscription.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable SubscribeSync(this WakeableTimer src, Action callback) => src.Subscribe(() =>
-        {
-            callback();
-            return Task.FromResult(0);
-        });
-
-        #endregion
-    }
+    public delegate Task AsyncAction();
 }

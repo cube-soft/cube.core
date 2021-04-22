@@ -19,6 +19,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Cube.Mixin.Tasks;
+using Cube.Synchronous;
 using Microsoft.Win32;
 using NUnit.Framework;
 
@@ -124,7 +125,7 @@ namespace Cube.Tests
             Power.Configure(pmc);
 
             using (var src = new WakeableTimer())
-            using (src.Subscribe(Synchronous.AsTask(() => ++dummy)))
+            using (src.SubscribeSync(() => ++dummy))
             {
                 src.Start();
 
@@ -231,12 +232,12 @@ namespace Cube.Tests
 
             using var src = new WakeableTimer { Interval = TimeSpan.FromSeconds(1) };
             src.Start(TimeSpan.FromMilliseconds(100));
-            using var ds = src.Subscribe(Synchronous.AsTask(() =>
+            using var ds = src.SubscribeSync(() =>
             {
                 ++count;
                 src.Stop();
                 cts.Cancel();
-            }));
+            });
             src.Start();
             src.Suspend();
 
@@ -315,14 +316,14 @@ namespace Cube.Tests
             var n   = 0;
             var cts = new CancellationTokenSource();
 
-            using (src.Subscribe(Synchronous.AsTask(() =>
+            using (src.SubscribeSync(() =>
             {
                 if (++n >= count)
                 {
                     src.Stop();
                     cts.Cancel();
                 }
-            }))) return Execute(src, msec, cts);
+            })) return Execute(src, msec, cts);
         }
 
         #endregion
