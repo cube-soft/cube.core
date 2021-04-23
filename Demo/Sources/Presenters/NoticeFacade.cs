@@ -88,12 +88,12 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /// <param name="src">Notice message.</param>
-        /// <param name="result">User action.</param>
+        /// <param name="result">User action or timeout.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Invoke(NoticeMessage src, NoticeComponent result)
+        public void Invoke(NoticeMessage src, NoticeResult result)
         {
-            try { this.LogDebug($"Select:{result}", $"Value:{src.Value}"); }
+            try { this.LogDebug($"Result:{result}", $"Value:{src.Value}"); }
             finally
             {
                 if (!_queue.Empty) Consume(true);

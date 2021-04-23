@@ -112,7 +112,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public event ValueEventHandler<NoticeComponent> Selected;
+        public event ValueEventHandler<NoticeResult> Selected;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -123,7 +123,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnSelected(ValueEventArgs<NoticeComponent> e) => Selected?.Invoke(this, e);
+        protected virtual void OnSelected(ValueEventArgs<NoticeResult> e) => Selected?.Invoke(this, e);
 
         #endregion
 
@@ -237,7 +237,7 @@ namespace Cube.Forms
             _image.Style.Default.BorderSize = 0;
             _image.Style.Default.BackColor = Color.FromArgb(230, 230, 230);
             _image.Style.Default.Image = Properties.Resources.LogoLarge;
-            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Image));
+            _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Image));
             _image.ResumeLayout(false);
 
             _title.SuspendLayout();
@@ -250,7 +250,7 @@ namespace Cube.Forms
             _title.Style.Default.BackColor = SystemColors.Window;
             _title.Style.Default.BorderSize = 0;
             _title.Style.Default.ContentColor = Color.DimGray;
-            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Title));
+            _title.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Title));
             _title.ResumeLayout(false);
 
             _text.SuspendLayout();
@@ -263,7 +263,7 @@ namespace Cube.Forms
             _text.TextAlign = ContentAlignment.TopLeft;
             _text.Style.Default.BackColor = SystemColors.Window;
             _text.Style.Default.BorderSize = 0;
-            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Text));
+            _text.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Text));
             _text.ResumeLayout(false);
 
             _close.SuspendLayout();
@@ -277,7 +277,7 @@ namespace Cube.Forms
             _close.Style.MouseOver.BorderColor = Color.FromArgb(230, 230, 230);
             _close.Style.MouseOver.BorderSize = 1;
             _close.Style.MouseDown.BackColor = Color.FromArgb(236, 236, 236);
-            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeComponent.Others));
+            _close.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Close));
             _close.ResumeLayout(false);
 
             _panel.SuspendLayout();

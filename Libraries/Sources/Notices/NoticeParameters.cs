@@ -69,21 +69,23 @@ namespace Cube.Forms
 
     #endregion
 
-    #region NoticeComponent
+    #region NoticeResult
 
     /* --------------------------------------------------------------------- */
     ///
-    /// NoticeComponent
+    /// NoticeResult
     ///
     /// <summary>
-    /// Specifies the component of the notice window.
+    /// Specifies the result of the displayed notice window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public enum NoticeComponent
+    public enum NoticeResult
     {
-        /// <summary>Others</summary>
-        Others,
+        /// <summary>Timeout</summary>
+        Timeout,
+        /// <summary>Close</summary>
+        Close,
         /// <summary>Image</summary>
         Image,
         /// <summary>Title</summary>

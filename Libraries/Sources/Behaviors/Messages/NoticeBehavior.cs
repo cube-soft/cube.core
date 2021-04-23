@@ -132,7 +132,7 @@ namespace Cube.Forms.Behaviors
             var shared = View != null;
             var cts    = new CancellationTokenSource();
 
-            void handler(object s, ValueEventArgs<NoticeComponent> e)
+            void handler(object s, ValueEventArgs<NoticeResult> e)
             {
                 view.Selected -= handler;
                 cts.Cancel();
@@ -156,6 +156,7 @@ namespace Cube.Forms.Behaviors
                 view.Selected -= handler;
                 if (shared) view.Hide();
                 else view.Close();
+                src.Callback?.Invoke(src, NoticeResult.Timeout);
             }
             catch (TaskCanceledException) { /* ignore user cancel */ }
         }
