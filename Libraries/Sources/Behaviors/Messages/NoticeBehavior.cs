@@ -138,7 +138,7 @@ namespace Cube.Forms.Behaviors
                 cts.Cancel();
                 if (shared) view.Hide();
                 else view.Close();
-                src.Callback?.Invoke(e.Value, src.Value);
+                src.Callback?.Invoke(src, e.Value);
             }
 
             view.Selected += handler;

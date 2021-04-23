@@ -87,13 +87,13 @@ namespace Cube.Forms.Demo
         /// Invokes the operation corresponding to the user's choice.
         /// </summary>
         ///
+        /// <param name="src">Notice message.</param>
         /// <param name="result">User action.</param>
-        /// <param name="value">Notice data.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public void Invoke(NoticeComponent result, object value)
+        public void Invoke(NoticeMessage src, NoticeComponent result)
         {
-            try { this.LogDebug($"Select:{result}", $"Value:{value}"); }
+            try { this.LogDebug($"Select:{result}", $"Value:{src.Value}"); }
             finally
             {
                 if (!_queue.Empty) Consume(true);

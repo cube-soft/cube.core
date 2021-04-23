@@ -30,7 +30,7 @@ namespace Cube.Forms
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public delegate void NoticeCallback(NoticeComponent result, object value);
+    public delegate void NoticeCallback(NoticeMessage src, NoticeComponent result);
 
     /* --------------------------------------------------------------------- */
     ///
