@@ -148,6 +148,24 @@ namespace Cube.Tests.Mixin
 
         /* ----------------------------------------------------------------- */
         ///
+        /// With_Assembly
+        ///
+        /// <summary>
+        /// Tests the With extended method with an Assembly object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void With_Assembly()
+        {
+            var dest = $"{Create()}?ver=4.0.0";
+            var src = Create().With(GetType().Assembly);
+
+            Assert.That(src.ToString(), Is.EqualTo(dest));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// With_SoftwareVersion
         ///
         /// <summary>
@@ -158,7 +176,7 @@ namespace Cube.Tests.Mixin
         [Test]
         public void With_SoftwareVersion()
         {
-            var asm  = typeof(UriTest).Assembly;
+            var asm  = GetType().Assembly;
             var dest = $"{Create()}?ver=4.0.0-beta";
             var src  = Create().With(new SoftwareVersion(asm.GetVersion()) { Suffix = "-beta" });
 

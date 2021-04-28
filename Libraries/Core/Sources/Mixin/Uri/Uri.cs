@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cube.Mixin.Assembly;
 using Cube.Mixin.Collections;
 using Cube.Mixin.String;
 using Cube.Mixin.Time;
@@ -147,6 +148,24 @@ namespace Cube.Mixin.Uri
         /* ----------------------------------------------------------------- */
         public static Source With(this Source src, SoftwareVersion version) =>
             With(src, "ver", version.ToString(3, false));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// With
+        ///
+        /// <summary>
+        /// Combines the specified Uri object and version information of
+        /// the specified assembly.
+        /// </summary>
+        ///
+        /// <param name="src">Source URL.</param>
+        /// <param name="asm">Assembly object.</param>
+        ///
+        /// <returns>Combined Uri object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static Source With(this Source src, System.Reflection.Assembly asm) =>
+            With(src, asm.GetSoftwareVersion());
 
         /* ----------------------------------------------------------------- */
         ///
