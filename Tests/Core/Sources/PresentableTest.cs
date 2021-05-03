@@ -284,8 +284,8 @@ namespace Cube.Tests
             private void Observe() { Use(Facade.Subscribe(e => { })); }
             public string TestValue
             {
-                get => GetProperty<string>();
-                set => SetProperty(value);
+                get => Get<string>();
+                set => Set(value);
             }
         }
 

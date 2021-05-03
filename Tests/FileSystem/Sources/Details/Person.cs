@@ -115,8 +115,8 @@ namespace Cube.FileSystem.Tests
         [DataMember(Name = "ID")]
         public int Identification
         {
-            get => GetProperty<int>();
-            set => SetProperty(value);
+            get => Get<int>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -131,8 +131,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public string Name
         {
-            get => GetProperty<string>();
-            set => SetProperty(value);
+            get => Get<string>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -147,8 +147,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public Sex Sex
         {
-            get => GetProperty<Sex>();
-            set => SetProperty(value);
+            get => Get<Sex>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -163,8 +163,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public int Age
         {
-            get => GetProperty<int>();
-            set => SetProperty(value);
+            get => Get<int>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -179,8 +179,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public DateTime? Creation
         {
-            get => GetProperty<DateTime?>();
-            set => SetProperty(value);
+            get => Get<DateTime?>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -195,8 +195,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public Address Contact
         {
-            get => GetProperty<Address>();
-            set => SetProperty(value);
+            get => Get<Address>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -211,8 +211,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public IList<Address> Others
         {
-            get => GetProperty<IList<Address>>();
-            set => SetProperty(value);
+            get => Get<IList<Address>>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -227,8 +227,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public string[] Messages
         {
-            get => GetProperty<string[]>();
-            set => SetProperty(value);
+            get => Get<string[]>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -243,8 +243,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public bool Reserved
         {
-            get => GetProperty<bool>();
-            set => SetProperty(value);
+            get => Get<bool>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -258,8 +258,8 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         public string Secret
         {
-            get => GetProperty<string>();
-            set => SetProperty(value);
+            get => Get<string>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */

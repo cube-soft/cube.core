@@ -143,7 +143,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetProperty
+        /// Get
         ///
         /// <summary>
         /// Gets the value of the specified property name. The specified
@@ -157,7 +157,7 @@ namespace Cube
         /// <returns>Value of the property.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected T GetProperty<T>(Func<T> creator, [CallerMemberName] string name = null)
+        protected T Get<T>(Func<T> creator, [CallerMemberName] string name = null)
         {
             if (!_fields.ContainsKey(name)) _fields.Add(name, creator());
             return (T)_fields[name];
@@ -165,7 +165,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetProperty
+        /// Get
         ///
         /// <summary>
         /// Gets the value of the specified property name.
@@ -176,12 +176,12 @@ namespace Cube
         /// <returns>Value of the property.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected T GetProperty<T>([CallerMemberName] string name = null) =>
-            GetProperty(() => default(T), name);
+        protected T Get<T>([CallerMemberName] string name = null) =>
+            Get(() => default(T), name);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetProperty
+        /// Set
         ///
         /// <summary>
         /// Sets the specified value to the inner field of the specified
@@ -194,12 +194,12 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(T value, [CallerMemberName] string name = null) =>
-            SetProperty(value, EqualityComparer<T>.Default, name);
+        protected bool Set<T>(T value, [CallerMemberName] string name = null) =>
+            Set(value, EqualityComparer<T>.Default, name);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetProperty
+        /// Set
         ///
         /// <summary>
         /// Sets the specified value to the inner field of the specified
@@ -213,10 +213,9 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(T value, IEqualityComparer<T> compare,
-            [CallerMemberName] string name = null)
+        protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
         {
-            var src = GetProperty<T>(name);
+            var src = Get<T>(name);
             var set = compare.Set(ref src, value);
             if (set)
             {
@@ -228,7 +227,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetProperty
+        /// Set
         ///
         /// <summary>
         /// Sets the specified value to the specified field if they are
@@ -242,12 +241,12 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string name = null) =>
-            SetProperty(ref field, value, EqualityComparer<T>.Default, name);
+        protected bool Set<T>(ref T field, T value, [CallerMemberName] string name = null) =>
+            Set(ref field, value, EqualityComparer<T>.Default, name);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetProperty
+        /// Set
         ///
         /// <summary>
         /// Set the specified value in the specified field if they are not
@@ -262,7 +261,7 @@ namespace Cube
         /// <returns>True for done; false for cancel.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool SetProperty<T>(ref T field, T value, IEqualityComparer<T> compare,
+        protected bool Set<T>(ref T field, T value, IEqualityComparer<T> compare,
             [CallerMemberName] string name = null)
         {
             var set = compare.Set(ref field, value);

@@ -185,11 +185,11 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public PowerModes Mode
         {
-            get => GetProperty<PowerModes>();
+            get => Get<PowerModes>();
             set
             {
                 if (IgnoreStatusChanged && value == PowerModes.StatusChange) return;
-                _ = SetProperty(value);
+                _ = Set(value);
             }
         }
 
@@ -205,8 +205,8 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public bool IgnoreStatusChanged
         {
-            get => GetProperty(() => true);
-            set => SetProperty(value);
+            get => Get(() => true);
+            set => Set(value);
         }
 
         #endregion

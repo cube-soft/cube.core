@@ -128,13 +128,13 @@ namespace Cube.Tests
             protected override void Dispose(bool disposing) { }
             public string Value
             {
-                get => GetProperty<string>();
-                set => SetProperty(value);
+                get => Get<string>();
+                set => Set(value);
             }
             public int Age
             {
-                get => GetProperty<int>();
-                set => SetProperty(value);
+                get => Get<int>();
+                set => Set(value);
             }
         }
 

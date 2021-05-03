@@ -115,8 +115,8 @@ namespace Cube.Tests
         [DataMember(Name = "ID")]
         public int Identification
         {
-            get => GetProperty<int>();
-            set => SetProperty(value);
+            get => Get<int>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -131,8 +131,8 @@ namespace Cube.Tests
         [DataMember]
         public string Name
         {
-            get => GetProperty<string>();
-            set => SetProperty(value);
+            get => Get<string>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -147,8 +147,8 @@ namespace Cube.Tests
         [DataMember]
         public Sex Sex
         {
-            get => GetProperty<Sex>();
-            set => SetProperty(value);
+            get => Get<Sex>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -179,8 +179,8 @@ namespace Cube.Tests
         [DataMember]
         public DateTime? Creation
         {
-            get => GetProperty<DateTime?>();
-            set => SetProperty(value);
+            get => Get<DateTime?>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -195,8 +195,8 @@ namespace Cube.Tests
         [DataMember]
         public Address Contact
         {
-            get => GetProperty<Address>();
-            set => SetProperty(value);
+            get => Get<Address>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -212,7 +212,7 @@ namespace Cube.Tests
         public IList<Address> Others
         {
             get => _others;
-            set => SetProperty(ref _others, value);
+            set => Set(ref _others, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -227,8 +227,8 @@ namespace Cube.Tests
         [DataMember]
         public string[] Messages
         {
-            get => GetProperty<string[]>();
-            set => SetProperty(value);
+            get => Get<string[]>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -244,7 +244,7 @@ namespace Cube.Tests
         public bool Reserved
         {
             get => _reserved;
-            set => SetProperty(ref _reserved, value);
+            set => Set(ref _reserved, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -259,7 +259,7 @@ namespace Cube.Tests
         public string Secret
         {
             get => _secret;
-            set => SetProperty(ref _secret, value);
+            set => Set(ref _secret, value);
         }
 
         /* ----------------------------------------------------------------- */

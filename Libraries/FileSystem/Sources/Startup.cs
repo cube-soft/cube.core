@@ -76,8 +76,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public string Command
         {
-            get => GetProperty<string>();
-            set => SetProperty(value);
+            get => Get<string>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -92,8 +92,8 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public bool Enabled
         {
-            get => GetProperty<bool>();
-            set => SetProperty(value);
+            get => Get<bool>();
+            set => Set(value);
         }
 
         #endregion
