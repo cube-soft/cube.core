@@ -41,8 +41,8 @@ namespace Cube.Xui.Tests
         /* ----------------------------------------------------------------- */
         public string Name
         {
-            get => GetProperty<string>();
-            set => SetProperty(value);
+            get => Get<string>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -56,8 +56,8 @@ namespace Cube.Xui.Tests
         /* ----------------------------------------------------------------- */
         public int Age
         {
-            get => GetProperty<int>();
-            set => SetProperty(value);
+            get => Get<int>();
+            set => Set(value);
         }
 
         #endregion

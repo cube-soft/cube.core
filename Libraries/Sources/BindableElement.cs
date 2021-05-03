@@ -78,8 +78,8 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         public ICommand Command
         {
-            get => GetProperty<ICommand>();
-            set => SetProperty(value);
+            get => Get<ICommand>();
+            set => Set(value);
         }
 
         #endregion
