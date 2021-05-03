@@ -26,7 +26,7 @@ namespace Cube.Forms
     /// TaskbarProgress
     ///
     /// <summary>
-    /// タスクバー上に進捗状況を表示するためのクラスです。
+    /// Provides functionality to display the progress status on the taskbar.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,10 +39,11 @@ namespace Cube.Forms
         /// TaskbarProgress
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initialies a new instance of the TaskbarProgress class with the
+        /// specified window object.
         /// </summary>
         ///
-        /// <param name="window">ウィンドウ・オブジェクト</param>
+        /// <param name="window">Window object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public TaskbarProgress(IWin32Window window) : this(window.Handle) { }
@@ -52,16 +53,14 @@ namespace Cube.Forms
         /// TaskbarProgress
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initialies a new instance of the TaskbarProgress class with the
+        /// specified handle.
         /// </summary>
         ///
-        /// <param name="handle">ウィンドウ・ハンドル</param>
+        /// <param name="handle">Window handle.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public TaskbarProgress(IntPtr handle)
-        {
-            _handle = handle;
-        }
+        public TaskbarProgress(IntPtr handle) { _handle = handle; }
 
         #endregion
 
@@ -72,14 +71,14 @@ namespace Cube.Forms
         /// State
         ///
         /// <summary>
-        /// 表示状態を示す値を取得または設定します。
+        /// Gets or sets a value representing the progress status.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public TaskbarProgressState State
         {
-            get => _state;
-            set { if (SetProperty(ref _state, value)) Refresh(); }
+            get => Get(() => TaskbarProgressState.None);
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -87,14 +86,14 @@ namespace Cube.Forms
         /// Value
         ///
         /// <summary>
-        /// 進捗状況を示す値を取得または設定します。
+        /// Gets or sets a value representing the current progress.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public int Value
         {
-            get => _value;
-            set { if (SetProperty(ref _value, value)) Refresh(); }
+            get => Get(() => 0);
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -102,14 +101,14 @@ namespace Cube.Forms
         /// Maximum
         ///
         /// <summary>
-        /// 進捗状況の最大値を取得または設定します。
+        /// Gets or sets the maximum value of the progress.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public int Maximum
         {
-            get => _maximum;
-            set { if (SetProperty(ref _maximum, value)) Refresh(); }
+            get => Get(() => 100);
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -117,7 +116,7 @@ namespace Cube.Forms
         /// IsSupported
         ///
         /// <summary>
-        /// 実行環境でサポートされているかどうかを示す値を取得します。
+        /// Gets a value indicating whether the function is supported.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,7 +127,7 @@ namespace Cube.Forms
         /// Core
         ///
         /// <summary>
-        /// コアオブジェクトを取得します。
+        /// Gets the core object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -138,7 +137,7 @@ namespace Cube.Forms
             {
                 if (IsSupported && _core == null)
                 {
-                    try { _core = (ITaskbarList3)(new TaskbarListInstance()); }
+                    try { _core = (ITaskbarList3)new TaskbarListInstance(); }
                     catch (Exception err)
                     {
                         this.LogWarn(err);
@@ -158,7 +157,7 @@ namespace Cube.Forms
         /// Refresh
         ///
         /// <summary>
-        /// 進捗状況を更新します。
+        /// Updates on progress.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -191,9 +190,6 @@ namespace Cube.Forms
         #region Fields
         private readonly IntPtr _handle;
         private ITaskbarList3 _core;
-        private TaskbarProgressState _state = TaskbarProgressState.None;
-        private int _value = 0;
-        private int _maximum = 100;
         #endregion
     }
 
@@ -202,21 +198,21 @@ namespace Cube.Forms
     /// TaskbarProgressState
     ///
     /// <summary>
-    /// 進捗状況の表示状態を示す列挙型です。
+    /// Specifies the progress status.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public enum TaskbarProgressState
     {
-        /// <summary>進捗表示なし</summary>
+        /// <summary>No progress indicator.</summary>
         None = 0,
-        /// <summary>進捗割合は不明</summary>
+        /// <summary>Progress unknown.</summary>
         Indeterminate = 0x1,
-        /// <summary>正常</summary>
+        /// <summary>Normal.</summary>
         Normal = 0x2,
-        /// <summary>エラー</summary>
+        /// <summary>Error.</summary>
         Error = 0x4,
-        /// <summary>中断</summary>
+        /// <summary>Paused.</summary>
         Paused = 0x8
     }
 }

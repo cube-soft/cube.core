@@ -47,8 +47,8 @@ namespace Cube.Forms
         [DefaultValue(typeof(Color), "")]
         public Color BackColor
         {
-            get => GetProperty<Color>();
-            set => SetProperty(value);
+            get => Get<Color>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -64,8 +64,8 @@ namespace Cube.Forms
         [DefaultValue(null)]
         public Image BackgroundImage
         {
-            get => GetProperty<Image>();
-            set => SetProperty(value);
+            get => Get<Image>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -81,8 +81,8 @@ namespace Cube.Forms
         [DefaultValue(typeof(Color), "")]
         public Color BorderColor
         {
-            get => GetProperty<Color>();
-            set => SetProperty(value);
+            get => Get<Color>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -98,8 +98,8 @@ namespace Cube.Forms
         [DefaultValue(-1)]
         public int BorderSize
         {
-            get => GetProperty(() => -1);
-            set => SetProperty(value);
+            get => Get(() => -1);
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -115,8 +115,8 @@ namespace Cube.Forms
         [DefaultValue(null)]
         public Image Image
         {
-            get => GetProperty<Image>();
-            set => SetProperty(value);
+            get => Get<Image>();
+            set => Set(value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -132,8 +132,8 @@ namespace Cube.Forms
         [DefaultValue(typeof(Color), "")]
         public Color ContentColor
         {
-            get => GetProperty<Color>();
-            set => SetProperty(value);
+            get => Get<Color>();
+            set => Set(value);
         }
 
         #endregion
