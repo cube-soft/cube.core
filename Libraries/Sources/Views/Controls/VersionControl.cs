@@ -31,7 +31,7 @@ namespace Cube.Forms.Controls
     /// VersionControl
     ///
     /// <summary>
-    /// バージョン情報を表示するためのユーザコントロールです。
+    /// Represetns the user control to show the version information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,7 +44,7 @@ namespace Cube.Forms.Controls
         /// VersionControl
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the VersionControl class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -55,10 +55,11 @@ namespace Cube.Forms.Controls
         /// VersionControl
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the VersionControl class with the
+        /// specified assembly information.
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="assembly">Assembly information.</param>
         ///
         /* ----------------------------------------------------------------- */
         public VersionControl(Assembly assembly)
@@ -77,8 +78,7 @@ namespace Cube.Forms.Controls
         /// Image
         ///
         /// <summary>
-        /// バージョン画面に表示するイメージオブジェクトを取得
-        /// または設定します。
+        /// Gets or sets the product image.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -103,7 +103,7 @@ namespace Cube.Forms.Controls
         /// Product
         ///
         /// <summary>
-        /// 製品名を取得または設定します。
+        /// Gets or sets the product name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -119,7 +119,7 @@ namespace Cube.Forms.Controls
         /// Version
         ///
         /// <summary>
-        /// バージョンを表す文字列を取得または設定します。
+        /// Gets or sets the version information.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -135,8 +135,8 @@ namespace Cube.Forms.Controls
         /// OneLine
         ///
         /// <summary>
-        /// 製品名とバージョン番号を 1 行で記述するかどうかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether the product name and
+        /// version number should be written on a single line.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -153,7 +153,8 @@ namespace Cube.Forms.Controls
         /// Description
         ///
         /// <summary>
-        /// バージョン画面に表示するその他の情報を取得または設定します。
+        /// Gets or sets other information to be displayed on the version
+        /// control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -169,7 +170,7 @@ namespace Cube.Forms.Controls
         /// Copyright
         ///
         /// <summary>
-        /// コピーライト表記を取得または設定します。
+        /// Gets or sets the copyright notation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -185,8 +186,8 @@ namespace Cube.Forms.Controls
         /// Uri
         ///
         /// <summary>
-        /// コピーライト表記をクリックした時に表示する Web ページの
-        /// URL を取得または設定します。
+        /// Gets or sets the URL of the Web page to be displayed when the
+        /// copyright notation is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -198,7 +199,7 @@ namespace Cube.Forms.Controls
         /// Platform
         ///
         /// <summary>
-        /// プラットフォームのバージョンを表す文字列を取得します。
+        /// Gets the platform information.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -219,10 +220,10 @@ namespace Cube.Forms.Controls
         /// Update
         ///
         /// <summary>
-        /// アセンブリ情報を基に表示内容を更新します。
+        /// Update the display contents with the assembly information.
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="assembly">Assembly information.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Update(Assembly assembly)
@@ -230,7 +231,7 @@ namespace Cube.Forms.Controls
             if (assembly == null) return;
 
             Product   = assembly.GetProduct();
-            Version   = $"Version {assembly.GetVersion().ToString()}";
+            Version   = $"Version {assembly.GetVersion()}";
             Copyright = assembly.GetCopyright();
         }
 
@@ -243,7 +244,7 @@ namespace Cube.Forms.Controls
         /// Set
         ///
         /// <summary>
-        /// 値を設定します。
+        /// Sets the specified value to the specified field.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -262,7 +263,7 @@ namespace Cube.Forms.Controls
         /// Set
         ///
         /// <summary>
-        /// ラベルの内容を更新します。
+        /// Updates the label content.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -280,7 +281,7 @@ namespace Cube.Forms.Controls
         /// InitializeLayout
         ///
         /// <summary>
-        /// レイアウトを初期化します。
+        /// Initializes the layout.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -336,7 +337,7 @@ namespace Cube.Forms.Controls
             _copyright.LinkClicked += (s, e) =>
             {
                 if (Uri == null) return;
-                try { System.Diagnostics.Process.Start(Uri.ToString()); }
+                try { _ = System.Diagnostics.Process.Start(Uri.ToString()); }
                 catch (Exception err) { this.LogWarn(err); }
             };
 
@@ -363,13 +364,13 @@ namespace Cube.Forms.Controls
         #endregion
 
         #region Fields
-        private readonly System.Windows.Forms.SplitContainer _panel = new System.Windows.Forms.SplitContainer();
-        private readonly System.Windows.Forms.FlowLayoutPanel _contents = new System.Windows.Forms.FlowLayoutPanel();
-        private readonly System.Windows.Forms.PictureBox _image = new System.Windows.Forms.PictureBox();
-        private readonly System.Windows.Forms.Label _info = new System.Windows.Forms.Label();
-        private readonly System.Windows.Forms.Label _platform = new System.Windows.Forms.Label();
-        private readonly System.Windows.Forms.Label _others = new System.Windows.Forms.Label();
-        private readonly System.Windows.Forms.LinkLabel _copyright = new System.Windows.Forms.LinkLabel();
+        private readonly System.Windows.Forms.SplitContainer _panel = new();
+        private readonly System.Windows.Forms.FlowLayoutPanel _contents = new();
+        private readonly System.Windows.Forms.PictureBox _image = new();
+        private readonly System.Windows.Forms.Label _info = new();
+        private readonly System.Windows.Forms.Label _platform = new();
+        private readonly System.Windows.Forms.Label _others = new();
+        private readonly System.Windows.Forms.LinkLabel _copyright = new();
         private string _product;
         private string _version;
         private bool _oneline = false;
