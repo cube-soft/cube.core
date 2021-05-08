@@ -112,27 +112,32 @@ namespace Cube.Tests
         /// Compare
         ///
         /// <summary>
-        /// Tests the CompareTo method.
+        /// Tests the Compare method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("1.0.0",       "1.0.0",      ExpectedResult =  0)]
-        [TestCase("1.0.0",       "1.0",        ExpectedResult =  0)]
-        [TestCase("1.0.0",       "2.0.0",      ExpectedResult = -1)]
-        [TestCase("1.0.0",       "1.1.0",      ExpectedResult = -1)]
-        [TestCase("1.0.0",       "1.0.1",      ExpectedResult = -1)]
-        [TestCase("1.0.0",       "0.9.9",      ExpectedResult =  1)]
-        [TestCase("3.1.4",       "2.2.2",      ExpectedResult =  1)]
-        [TestCase("3.1.4",       "4.3.2",      ExpectedResult = -1)]
-        [TestCase("v1.0.0",      "1.0.0",      ExpectedResult =  1)]
-        [TestCase("v1.0.0",      "V1.0.0",     ExpectedResult =  0)]
-        [TestCase("0.0.1-alpha", "0.0.1-beta", ExpectedResult = -1)]
-        [TestCase("0.1.0-beta",  "0.1.0-BETA", ExpectedResult =  0)]
-        public int Compare(string src, string cmp)
+        [TestCase("1.0.0",       "1.0.0",        0)]
+        [TestCase("1.0.0",       "1.0",          0)]
+        [TestCase("1.0.0",       "2.0.0",       -1)]
+        [TestCase("1.0.0",       "1.1.0",       -1)]
+        [TestCase("1.0.0",       "1.0.1",       -1)]
+        [TestCase("1.0.0",       "0.9.9",        1)]
+        [TestCase("3.1.4",       "2.2.2",        1)]
+        [TestCase("3.1.4",       "4.3.2",       -1)]
+        [TestCase("v1.0.0",      "1.0.0",        1)]
+        [TestCase("v1.0.0",      "V1.0.0",       0)]
+        [TestCase("0.0.1-alpha", "0.0.1-beta",  -1)]
+        [TestCase("0.1.0-beta",  "0.1.0-BETA",   0)]
+        [TestCase("0.9.2-beta",  "0.10.1-beta", -1)]
+        [TestCase("0.11.0-beta", "0.10.1-beta",  1)]
+        [TestCase("0.10.1",      "0.10.1-beta", -1)]
+        public void Compare(string src, string cmp, int expected)
         {
-            var v1 = new SoftwareVersion(src);
-            var v2 = new SoftwareVersion(cmp);
-            return new SoftwareVersionComparer().Compare(v1, v2);
+            var engine = new SoftwareVersionComparer();
+            var v1     = new SoftwareVersion(src);
+            var v2     = new SoftwareVersion(cmp);
+            Assert.That(engine.Compare(v1, v2),   Is.EqualTo(expected), nameof(engine.Compare));
+            Assert.That(engine.Compare(src, cmp), Is.EqualTo(expected), "Compare(string)");
         }
 
         /* ----------------------------------------------------------------- */
@@ -157,11 +162,16 @@ namespace Cube.Tests
 
             var v1  = new SoftwareVersion(src);
             var v2  = new SoftwareVersion(cmp);
-            Assert.That(engine.Equals(v1, v2), Is.EqualTo(expected), nameof(engine.Equals));
+            Assert.That(engine.Equals(v1, v2),   Is.EqualTo(expected), nameof(engine.Equals));
+            Assert.That(engine.Equals(src, cmp), Is.EqualTo(expected), "Equals(string)");
 
-            var h1 = engine.GetHashCode(v1);
-            var h2 = engine.GetHashCode(v2);
-            Assert.That(h1.Equals(h2), Is.EqualTo(expected), nameof(engine.GetHashCode));
+            var vh1 = engine.GetHashCode(v1);
+            var vh2 = engine.GetHashCode(v2);
+            Assert.That(vh1.Equals(vh2), Is.EqualTo(expected), nameof(engine.GetHashCode));
+
+            var sh1 = engine.GetHashCode(src);
+            var sh2 = engine.GetHashCode(cmp);
+            Assert.That(sh1.Equals(sh2), Is.EqualTo(expected), "GetHashCode(string)");
         }
 
         /* ----------------------------------------------------------------- */

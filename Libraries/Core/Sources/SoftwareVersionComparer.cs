@@ -100,7 +100,8 @@ namespace Cube
             if (x == y) return 0;
             if (x == null) return -1;
             if (y == null) return 1;
-            if (x is SoftwareVersion sx && y is SoftwareVersion sy) return Compare(sx, sy);
+            if (x is SoftwareVersion vx && y is SoftwareVersion vy) return Compare(vx, vy);
+            if (x is string sx && y is string sy) return Compare(new(sx), new(sy));
             if (x is IComparable cx) return cx.CompareTo(y);
             throw new ArgumentException();
         }
@@ -143,7 +144,8 @@ namespace Cube
         {
             if (x == y) return true;
             if (x == null || y == null) return false;
-            if (x is SoftwareVersion sx && y is SoftwareVersion sy) return Equals(sx, sy);
+            if (x is SoftwareVersion vx && y is SoftwareVersion vy) return Equals(vx, vy);
+            if (x is string sx && y is string sy) return Equals(new(sx), new(sy));
             return x.Equals(y);
         }
 
@@ -188,7 +190,9 @@ namespace Cube
         /// <returns>Hash code for the specified object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public int GetHashCode(object obj) => obj is SoftwareVersion e ? GetHashCode(e) : obj.GetHashCode();
+        public int GetHashCode(object obj) =>
+            obj is SoftwareVersion v ? GetHashCode(v) :
+            obj is string s ? GetHashCode(new(s)) : obj.GetHashCode();
 
         #endregion
 
