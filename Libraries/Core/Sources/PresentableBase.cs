@@ -148,6 +148,18 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected SynchronizationContext Context { get; }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Assets
+        ///
+        /// <summary>
+        /// Gets the collection of disposable resources that will be
+        /// released automatically when disposing.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ICollection<IDisposable> Assets { get; } = new List<IDisposable>();
+
         #endregion
 
         #region Methods
@@ -170,21 +182,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public IDisposable Subscribe<T>(Action<T> callback) => Aggregator.Subscribe(callback);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Use
-        ///
-        /// <summary>
-        /// Marks the specified IDisposable object as a resource of the
-        /// class. The specified object will be released automatically
-        /// when disposing.
-        /// </summary>
-        ///
-        /// <param name="src">Disposable resource.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Use(IDisposable src) => _sources.Add(src);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -221,8 +218,8 @@ namespace Cube
         protected override void Dispose(bool disposing)
         {
             if (!disposing) return;
-            foreach (var obj in _sources) obj.Dispose();
-            _sources.Clear();
+            foreach (var obj in Assets) obj.Dispose();
+            Assets.Clear();
         }
 
         #region Send
@@ -290,7 +287,6 @@ namespace Cube
         #region Fields
         private readonly Dispatcher _send;
         private readonly Dispatcher _post;
-        private readonly List<IDisposable> _sources = new();
         #endregion
     }
 
