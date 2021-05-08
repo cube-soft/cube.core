@@ -73,7 +73,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IList<IDisposable> Behaviors { get; } = new List<IDisposable>();
+        protected ICollection<IDisposable> Behaviors { get; } = new List<IDisposable>();
 
         #endregion
 
