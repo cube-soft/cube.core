@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Cube.Mixin.Generics;
+using Cube.Mixin.Collections;
+using System.Linq;
 
 namespace Cube
 {
@@ -123,6 +125,23 @@ namespace Cube
         /// the PropertyChanged event.
         /// </summary>
         ///
+        /// <param name="names">Property names.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Refresh(IEnumerable<string> names)
+        {
+            foreach (var s in names) OnPropertyChanged(new(s));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Refresh
+        ///
+        /// <summary>
+        /// Notifies the update of the specified properties by raising
+        /// the PropertyChanged event.
+        /// </summary>
+        ///
         /// <param name="name">Property name.</param>
         /// <param name="more">More property names.</param>
         ///
@@ -130,7 +149,7 @@ namespace Cube
         public void Refresh(string name, params string[] more)
         {
             OnPropertyChanged(new(name));
-            foreach (var s in more) OnPropertyChanged(new(s));
+            Refresh(more.AsEnumerable());
         }
 
         /* ----------------------------------------------------------------- */

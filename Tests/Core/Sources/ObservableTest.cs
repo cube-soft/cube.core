@@ -101,12 +101,94 @@ namespace Cube.Tests
             using (var src = new Mock())
             {
                 var dc = src.Subscribe(e => dest[e]++);
+                src.Refresh(nameof(Mock.Value));
                 src.Refresh(nameof(Mock.Value), nameof(Mock.Age), nameof(Mock.Value));
                 dc.Dispose();
             }
 
-            Assert.That(dest[nameof(Mock.Value)], Is.EqualTo(2));
+            Assert.That(dest[nameof(Mock.Value)], Is.EqualTo(3));
             Assert.That(dest[nameof(Mock.Age)],   Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Forward
+        ///
+        /// <summary>
+        /// Tests the ObservableProxy class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Forward()
+        {
+            var dic = new Dictionary<string, int>
+            {
+                { nameof(Mock.Value), 0 },
+                { nameof(Mock.Age),   0 },
+            };
+
+            var src  = new Mock();
+            var dest = new Mock();
+
+            using var dp = dest.Subscribe(e => dic[e]++);
+            using (new ObservableProxy(src, dest))
+            {
+                src.Refresh(nameof(Mock.Value));
+                src.Refresh(nameof(Mock.Age));
+                src.Refresh(nameof(Mock.Value), nameof(Mock.Age), nameof(Mock.Value));
+            }
+
+            Assert.That(dic[nameof(Mock.Value)], Is.EqualTo(3));
+            Assert.That(dic[nameof(Mock.Age)],   Is.EqualTo(2));
+
+            src.Refresh(nameof(Mock.Value));
+            src.Refresh(nameof(Mock.Age));
+            src.Refresh(nameof(Mock.Value), nameof(Mock.Age), nameof(Mock.Value));
+
+            Assert.That(dic[nameof(Mock.Value)], Is.EqualTo(3));
+            Assert.That(dic[nameof(Mock.Age)],   Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Forward_MatchOnly
+        ///
+        /// <summary>
+        /// Tests the Rules and MatchOnly properties of the ObservableProxy
+        /// class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Forward_MatchOnly()
+        {
+            var dic = new Dictionary<string, int>
+            {
+                { nameof(Mock.Value), 0 },
+                { nameof(Mock.Age),   0 },
+                { "Dummy",            0 },
+            };
+
+            var rules = new Dictionary<string, IEnumerable<string>>
+            {
+                { nameof(Mock.Value), new[] { "Dummy" } }
+            };
+
+            var src  = new Mock();
+            var dest = new Mock();
+
+            using var dp = dest.Subscribe(e => dic[e]++);
+            using (new ObservableProxy(src, dest, rules) { MatchOnly = true })
+            {
+                src.Refresh(nameof(Mock.Value));
+                src.Refresh(nameof(Mock.Age));
+                src.Refresh(nameof(Mock.Value), nameof(Mock.Age), nameof(Mock.Value));
+            }
+
+            Assert.That(dic[nameof(Mock.Value)], Is.EqualTo(0));
+            Assert.That(dic[nameof(Mock.Age)],   Is.EqualTo(0));
+            Assert.That(dic["Dummy"],            Is.EqualTo(3));
         }
 
         #endregion
