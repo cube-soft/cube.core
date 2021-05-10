@@ -170,16 +170,13 @@ namespace Cube.Tests
                 { "Dummy",            0 },
             };
 
-            var rules = new Dictionary<string, IEnumerable<string>>
-            {
-                { nameof(Mock.Value), new[] { "Dummy" } }
-            };
-
             var src  = new Mock();
             var dest = new Mock();
 
             using var dp = dest.Subscribe(e => dic[e]++);
-            using (new ObservableProxy(src, dest, rules) { MatchOnly = true })
+            using (new ObservableProxy(src, dest, new() {
+                { nameof(Mock.Value), new[] { "Dummy" } }
+            }) { MatchOnly = true })
             {
                 src.Refresh(nameof(Mock.Value));
                 src.Refresh(nameof(Mock.Age));

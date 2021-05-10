@@ -50,7 +50,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest) :
-            this(src, dest, new Dictionary<string, IEnumerable<string>>()) { }
+            this(src, dest, new()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -66,8 +66,7 @@ namespace Cube
         /// <param name="rules">Forwarding rules.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest,
-            IDictionary<string, IEnumerable<string>> rules)
+        public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest, RuleDictionary rules)
         {
             Rules = rules;
             _disposable = src.Subscribe(e => {
@@ -75,6 +74,21 @@ namespace Cube
                 else if (!MatchOnly) dest.Refresh(e);
             });
         }
+
+        #endregion
+
+        #region Classes
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// RuleDictionary
+        ///
+        /// <summary>
+        /// Represents the forwarding rules at the ObservableProxy class.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public class RuleDictionary : Dictionary<string, IEnumerable<string>> { }
 
         #endregion
 
@@ -89,7 +103,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public IDictionary<string, IEnumerable<string>> Rules { get; }
+        public RuleDictionary Rules { get; }
 
         /* ----------------------------------------------------------------- */
         ///
