@@ -45,29 +45,18 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogBehavior(IPresentable vm) : base(vm) { }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Shows a message box with the specified message.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(DialogMessage e)
+        public DialogBehavior(IPresentable vm) : base(vm, e =>
         {
             var icon    = Icons[e.Icon];
             var buttons = Buttons[e.Buttons];
             var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
 
             e.Value = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
-        }
+        }) { }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///

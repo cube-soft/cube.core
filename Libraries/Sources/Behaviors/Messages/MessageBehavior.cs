@@ -19,9 +19,75 @@ using System;
 
 namespace Cube.Forms.Behaviors
 {
+    #region MessageBehavior
+
     /* --------------------------------------------------------------------- */
     ///
     /// MessageBehavior(TMessage)
+    ///
+    /// <summary>
+    /// Provides functionality to invoke the provided action when the
+    /// message is received.
+    /// </summary>
+    ///
+    /// <typeparam name="TMessage">Message type.</typeparam>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class MessageBehavior<TMessage> : MessageBehaviorBase<TMessage>
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// MessageBehavior
+        ///
+        /// <summary>
+        /// Initializes a new instance of the MessageBehavior class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="vm">Presentable object.</param>
+        /// <param name="action">
+        /// Action to be invoked when a message is received.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public MessageBehavior(IPresentable vm, Action<TMessage> action) : base(vm)
+        {
+            _action = action;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the user action.
+        /// </summary>
+        ///
+        /// <param name="message">Message object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Invoke(TMessage message) => _action(message);
+
+        #endregion
+
+        #region Fields
+        private readonly Action<TMessage> _action;
+        #endregion
+    }
+
+    #endregion
+
+    #region MessageBehaviorBase
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MessageBehaviorBase(TMessage)
     ///
     /// <summary>
     /// Represents the behavior that communicates with a presentable
@@ -31,7 +97,7 @@ namespace Cube.Forms.Behaviors
     /// <typeparam name="TMessage">Message type.</typeparam>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessageBehavior<TMessage> : DisposableBase
+    public abstract class MessageBehaviorBase<TMessage> : DisposableBase
     {
         #region Constructors
 
@@ -47,7 +113,7 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected MessageBehavior(IPresentable vm)
+        protected MessageBehaviorBase(IPresentable vm)
         {
             _subscriber = vm.Subscribe<TMessage>(Invoke);
         }
@@ -95,4 +161,6 @@ namespace Cube.Forms.Behaviors
         private readonly IDisposable _subscriber;
         #endregion
     }
+
+    #endregion
 }

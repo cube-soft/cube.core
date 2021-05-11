@@ -38,7 +38,7 @@ namespace Cube.Forms.Behaviors
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class NoticeBehavior : MessageBehavior<NoticeMessage>
+    public class NoticeBehavior : MessageBehaviorBase<NoticeMessage>
     {
         #region Constructors
 

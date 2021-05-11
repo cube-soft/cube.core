@@ -43,17 +43,6 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public UriBehavior(IPresentable vm) : base(vm) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(Uri e) => Process.Start(e.ToString());
+        public UriBehavior(IPresentable vm) : base(vm, e => Process.Start(e.ToString())) { }
     }
 }

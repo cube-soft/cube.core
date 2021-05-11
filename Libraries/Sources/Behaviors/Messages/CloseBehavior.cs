@@ -30,8 +30,6 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class CloseBehavior : MessageBehavior<CloseMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// CloseBehavior
@@ -45,51 +43,6 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public CloseBehavior(Form view, IPresentable vm) : base(vm)
-        {
-            _view = view;
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Closes the provided window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(CloseMessage e) => _view?.Close();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _view = null;
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
-        #region Fields
-        private Form _view;
-        #endregion
+        public CloseBehavior(Form view, IPresentable vm) : base(vm, _ => view.Close()) { }
     }
 }

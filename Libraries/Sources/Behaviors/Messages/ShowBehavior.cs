@@ -46,23 +46,12 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IPresentable vm) : base(vm) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Shows a new window with the specified ViewModel.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e)
+        public ShowBehavior(IPresentable vm) : base(vm, e =>
         {
             var view = new TView();
             if (view is IBindable binder) binder.Bind(e);
             view.Show();
-        }
+        }) { }
     }
 
     #endregion
@@ -94,23 +83,12 @@ namespace Cube.Forms.Behaviors
         /// <param name="vm">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowDialogBehavior(IPresentable vm) : base(vm) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Shows a new window with the specified ViewModel.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e)
+        public ShowDialogBehavior(IPresentable vm) : base(vm, e =>
         {
             using var view = new TView();
             if (view is IBindable binder) binder.Bind(e);
             _ = view.ShowDialog();
-        }
+        }) { }
     }
 
     #endregion

@@ -29,7 +29,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class ShowVersionBehavior : MessageBehavior<AboutMessage>
+    public sealed class ShowVersionBehavior : MessageBehaviorBase<AboutMessage>
     {
         #region Constructors
 
