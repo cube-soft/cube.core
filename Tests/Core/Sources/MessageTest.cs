@@ -169,8 +169,9 @@ namespace Cube.Tests
         [Test]
         public void Create_EmptyMessages()
         {
-            Assert.That(new CloseMessage(), Is.Not.Null);
-            Assert.That(new ApplyMessage(), Is.Not.Null);
+            Assert.That(new CloseMessage(),    Is.Not.Null);
+            Assert.That(new ActivateMessage(), Is.Not.Null);
+            Assert.That(new ApplyMessage(),    Is.Not.Null);
         }
 
         #endregion

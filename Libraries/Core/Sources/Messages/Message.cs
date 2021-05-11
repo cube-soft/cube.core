@@ -121,11 +121,26 @@ namespace Cube
     /// CloseMessage
     ///
     /// <summary>
-    /// Represents the message that is sent when closing a window.
+    /// Represents the message to close the displayed window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public class CloseMessage { }
+
+    #endregion
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ActivateMessage
+    ///
+    /// <summary>
+    /// Represents the message to activate the target window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    #region ActivateMessage
+
+    public class ActivateMessage { }
 
     #endregion
 
