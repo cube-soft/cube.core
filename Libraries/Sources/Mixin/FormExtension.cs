@@ -127,23 +127,6 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BringToFront
-        ///
-        /// <summary>
-        /// Shows the specified window at the top most.
-        /// </summary>
-        ///
-        /// <param name="src">Form object</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void BringToFront(this Form src)
-        {
-            src.Activate();
-            src.ResetTopMost();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// ResetTopMost
         ///
         /// <summary>
