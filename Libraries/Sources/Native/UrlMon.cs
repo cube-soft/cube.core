@@ -25,12 +25,14 @@ namespace Cube.Forms.UrlMon
     /// UrlMon.NativeMethods
     ///
     /// <summary>
-    /// urlmon.dll に定義された関数を宣言するためのクラスです。
+    /// Provides functions defined in the urlmon.dll.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     internal static class NativeMethods
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// UrlMkSetSessionOption
@@ -56,6 +58,32 @@ namespace Cube.Forms.UrlMon
         [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         public static extern int UrlMkGetSessionOption(int dwOption, StringBuilder pBuffer,
             int dwBufferLength, ref int pdwBufferLength, int dwReserved);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CoInternetIsFeatureEnabled
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/ms537164.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName)]
+        public static extern int CoInternetIsFeatureEnabled(int featureEntry, int dwFlags);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CoInternetSetFeatureEnabled
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/ja-jp/library/ms537168.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName)]
+        public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
+
+        #endregion
 
         #region Fields
         const string LibName = "urlmon.dll";
