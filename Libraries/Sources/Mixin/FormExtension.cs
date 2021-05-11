@@ -175,9 +175,10 @@ namespace Cube.Forms.Controls
         /// </param>
         ///
         /// <remarks>
-        /// SetTopMost メソッドは主にフォーカスを奪わずに最前面に表示する
-        /// 時に使用します。この場合、最前面に表示された状態でも TopMost
-        /// プロパティは false となります。
+        /// The method is mainly used to display at the top-most without
+        /// taking the focus away. In this case, the TopMost property
+        /// will be false even when it is displayed in the top-most
+        /// position.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -198,11 +199,6 @@ namespace Cube.Forms.Controls
         /// <summary>
         /// Sets the TopMost flag without making the window active.
         /// </summary>
-        ///
-        /// <remarks>
-        /// 実行後に Window のサイズ等が変更される現象が確認されているため、暫定的に
-        /// 実行直前の位置とサイズを再代入します。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         private static void SetTopMostWithoutActivate(this Form src)

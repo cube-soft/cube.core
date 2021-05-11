@@ -115,7 +115,7 @@ namespace Cube.Forms.Controls
         private static WebControlVersion GetEmulateVersion()
         {
             using var root = OpenFeatureControl();
-            using var sk   = root.OpenSubKey(_RegEmulation, false);
+            using var sk   = root?.OpenSubKey(_RegEmulation, false);
             if (sk == null) return WebControlVersion.IE7;
 
             var module   = Process.GetCurrentProcess().MainModule;
@@ -136,7 +136,8 @@ namespace Cube.Forms.Controls
         private static void SetEmulateVersion(WebControlVersion version)
         {
             using var root = OpenFeatureControl(true);
-            using var sk   = root.CreateSubKey(_RegEmulation);
+            using var sk   = root?.CreateSubKey(_RegEmulation);
+            if (sk == null) return;
 
             var module   = Process.GetCurrentProcess().MainModule;
             var filename = Path.GetFileName(module.FileName);
@@ -160,7 +161,7 @@ namespace Cube.Forms.Controls
         private static bool GetGpuRendering()
         {
             using var root = OpenFeatureControl();
-            using var sk   = root.OpenSubKey(_RegRendering, false);
+            using var sk   = root?.OpenSubKey(_RegRendering, false);
             if (sk == null) return false;
 
             var module   = Process.GetCurrentProcess().MainModule;
@@ -181,7 +182,8 @@ namespace Cube.Forms.Controls
         private static void SetGpuRendering(bool enabled)
         {
             using var root = OpenFeatureControl(true);
-            using var sk   = root.CreateSubKey(_RegRendering);
+            using var sk   = root?.CreateSubKey(_RegRendering);
+            if (sk == null) return;
 
             var module   = Process.GetCurrentProcess().MainModule;
             var filename = Path.GetFileName(module.FileName);
@@ -207,12 +209,12 @@ namespace Cube.Forms.Controls
             const int default_max_connection = 6;
 
             using var root = OpenFeatureControl();
-            using var subkey = root.OpenSubKey(_RegMaxConnections, false);
-            if (subkey == null) return default_max_connection;
+            using var sk = root?.OpenSubKey(_RegMaxConnections, false);
+            if (sk == null) return default_max_connection;
 
             var module   = Process.GetCurrentProcess().MainModule;
             var filename = Path.GetFileName(module.FileName);
-            var value    = subkey.GetValue(filename);
+            var value    = sk.GetValue(filename);
             return value != null ? (int)value : default_max_connection;
         }
 
@@ -230,13 +232,13 @@ namespace Cube.Forms.Controls
             if (number < 2 || number > 128) return;
 
             using var root = OpenFeatureControl(true);
-            using var sk   = root.CreateSubKey(_RegMaxConnections);
-            using var sk10 = root.CreateSubKey(_RegMaxConnections10);
+            using var sk   = root?.CreateSubKey(_RegMaxConnections);
+            using var sk10 = root?.CreateSubKey(_RegMaxConnections10);
 
             var module   = Process.GetCurrentProcess().MainModule;
             var filename = Path.GetFileName(module.FileName);
-            sk.SetValue(filename, number);
-            sk10.SetValue(filename, number);
+            if (sk != null) sk.SetValue(filename, number);
+            if (sk10 != null) sk10.SetValue(filename, number);
         }
 
         #endregion
@@ -304,10 +306,10 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         private static WebControlVersion GetLatestVersion()
         {
-            using var sk = Registry.LocalMachine.OpenSubKey(_RegRoot);
+            using var sk = Registry.LocalMachine.OpenSubKey(_RegRoot, false);
 
-            var value = sk.GetValue("svcVersion") as string ??
-                        sk.GetValue("Version")    as string;
+            var value = sk?.GetValue("svcVersion") as string ??
+                        sk?.GetValue("Version")    as string;
             if (value == null) return WebControlVersion.IE7;
 
             var src = int.Parse(value.Substring(0, value.IndexOf('.')));
