@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Core"
-BRANCHES  = ["master", "netstd20", "net35"]
+BRANCHES  = ["master", "netstandard2.0", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/Core/Cube.Core",
              "Libraries/FileSystem/Cube.FileSystem",
@@ -60,7 +60,7 @@ task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
 
     branch = %x(git rev-parse --abbrev-ref HEAD).chomp
-    build  = branch.include?("netstd") || branch.include?("netcore") ?
+    build  = branch.include?(".") ?
              "dotnet build -c Release" :
              "msbuild -v:m -p:Configuration=Release"
 
