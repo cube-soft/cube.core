@@ -93,7 +93,7 @@ namespace Cube.Mixin.String
         ///
         /* ----------------------------------------------------------------- */
         public static bool FuzzyEquals(this string src, string cmp) =>
-            src.Equals(cmp, StringComparison.InvariantCultureIgnoreCase);
+            src.Equals(cmp, StringComparison.OrdinalIgnoreCase);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -111,7 +111,7 @@ namespace Cube.Mixin.String
         ///
         /* ----------------------------------------------------------------- */
         public static bool FuzzyStartsWith(this string src, string cmp) =>
-            src.StartsWith(cmp, StringComparison.InvariantCultureIgnoreCase);
+            src.StartsWith(cmp, StringComparison.OrdinalIgnoreCase);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -129,7 +129,7 @@ namespace Cube.Mixin.String
         ///
         /* ----------------------------------------------------------------- */
         public static bool FuzzyEndsWith(this string src, string cmp) =>
-            src.EndsWith(cmp, StringComparison.InvariantCultureIgnoreCase);
+            src.EndsWith(cmp, StringComparison.OrdinalIgnoreCase);
 
         #endregion
     }
