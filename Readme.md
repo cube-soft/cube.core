@@ -1,29 +1,29 @@
 Cube.Core
 ====
 
-[![NuGet](https://img.shields.io/nuget/v/Cube.Core.svg)](https://www.nuget.org/packages/Cube.Core/)
+[![NuGet](https://img.shields.io/nuget/v/Cube.Core.svg?label=core)](https://www.nuget.org/packages/Cube.Core/)
+[![NuGet](https://img.shields.io/nuget/v/Cube.FileSystem.svg?label=filesystem)](https://www.nuget.org/packages/Cube.FileSystem/)
+[![NuGet](https://img.shields.io/nuget/v/Cube.FileSystem.AlphaFS.svg?label=alphafs)](https://www.nuget.org/packages/Cube.FileSystem.AlphaFS/)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/romqhgh1ben6eedn?svg=true)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
 
-Cube.Core supports the MVVM pattern in WPF or WinForms applications.
-The library is available for .NET Framework 3.5, 4.5, .NET Standard 2.0, or later.
+The Cube.Core package provides support the MVVM pattern in WPF or WinForms applications,
+and the repository has some more utility packages.
+These packages are basically available for .NET Framework 3.5, 4.5, .NET Standard 2.0, or later.
+Note that Cube.FileSystem.AlphaFS package supports only .NET Framework.
 
 ## Installation
 
 You can install the library through the NuGet package.
-Add a dependency in your project file using the following syntax:
+Add dependencies, as you need, in your project file using the following syntax:
 
     <ItemGroup>
-        <PackageReference Include="Cube.Core" Version="3.1.0" />
+        <PackageReference Include="Cube.Core" Version="4.0.0" />
+        <PackageReference Include="Cube.FileSystem" Version="4.0.0" />
+        <PackageReference Include="Cube.FileSystem.AlphaFS" Version="4.0.0" />
     </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
-
-## Dependencies
-
-* [NLog](https://nlog-project.org/)
-* [Microsoft.Win32.Registry](https://www.nuget.org/packages/Microsoft.Win32.Registry/) ... .NET Standard 2.0
-* [Microsoft.Win32.SystemEvents](https://www.nuget.org/packages/Microsoft.Win32.SystemEvents/) ... .NET Standard 2.0
 
 ## Contributing
 
@@ -37,4 +37,4 @@ Or select it from the NuGet packages UI on Visual Studio.
 ## License
 
 Copyright © 2010 [CubeSoft, Inc.](https://www.cube-soft.jp/)
-The project is licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Core/blob/master/License.txt).
+These packages are licensed under the [Apache 2.0](https://github.com/cube-soft/Cube.Core/blob/master/License.txt).
