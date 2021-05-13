@@ -104,7 +104,7 @@ namespace Cube.Xui.Behaviors
             _subscriber = AssociatedObject
                 ?.DataContext
                 ?.TryCast<IPresentable>()
-                ?.Subscribe<TMessage>(e => Invoke(e));
+                ?.Subscribe<TMessage>(Invoke);
         }
 
         /* ----------------------------------------------------------------- */
