@@ -5,8 +5,9 @@ Cube.Xui
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/brama8ylsuk8xjer?svg=true)](https://ci.appveyor.com/project/clown/cube-xui)
 [![Codecov](https://codecov.io/gh/cube-soft/Cube.Xui/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Xui)
 
-Cube.Xui is a library to support the MVVM pattern in WPF applications.
-The library is available for .NET Framework 3.5, 4.5, .NET Core 3.0, or later.
+The Cube.Xui package has bindings, converters, commands, behaviors, and other components
+to provide support the MVVM pattern in WPF applications.
+The package is available for .NET Framework 3.5, 4.5, .NET 5.0, or later.
 Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://github.com/cube-soft/Cube.Core), and the WinForms part is in the [Cube.Forms](https://github.com/cube-soft/Cube.Forms).
 
 ## Installation
@@ -15,19 +16,19 @@ You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
     <ItemGroup>
-        <PackageReference Include="Cube.Xui" Version="3.1.0" />
+        <PackageReference Include="Cube.Xui" Version="4.0.0" />
     </ItemGroup>
 
 Or select it from the NuGet packages UI on Visual Studio.
 
 ## Dependencies
 
-Cube.Xui depends on the [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801).
+The project depends on the [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801).
 Note that we will migrate to the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) in the future, which is the [OSS project](https://github.com/Microsoft/XamlBehaviorsWpf) of the Expression Blend SDK.
 
 ## References
 
-Cube.Xui referred to the code of the following projects to implement some functions.
+This project implements some features by referring to some of the code in the following projects.
 
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
 * [Prism](https://github.com/PrismLibrary/Prism)

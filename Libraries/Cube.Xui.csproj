@@ -3,11 +3,11 @@
         <Version>4.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
-        <Description>Support the MVVM pattern in WPF applications.</Description>
+        <Description>Bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
-        <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
         <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
         <UseWpf>true</UseWpf>

@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Xui"
-BRANCHES  = ["master", "netcoreapp3.0", "net35"]
+BRANCHES  = ["master", "net5.0", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/Cube.Xui"]
 
@@ -57,7 +57,7 @@ task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
 
     branch = %x(git rev-parse --abbrev-ref HEAD).chomp
-    build  = branch.include?("netstandard") || branch.include?("netcore") ?
+    build  = branch.include?(".") ?
              "dotnet build -c Release" :
              "msbuild -v:m -p:Configuration=Release"
 
