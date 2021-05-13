@@ -2,8 +2,8 @@
 <package >
     <metadata>
         <version>4.0.0</version>
-        <id>Cube.Core</id>
-        <title>Cube.Core</title>
+        <id>Cube.Tests</id>
+        <title>Cube.Tests</title>
         <authors>clown,cube-soft</authors>
         <owners>clown,cube-soft</owners>
         <description>Private package to test Cube.* projects.</description>
