@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <version>4.0.0</version>
+        <id>Cube.FileSystem.AlphaFS</id>
+        <title>Cube.FileSystem.AlphaFS</title>
+        <authors>clown,cube-soft</authors>
+        <owners>clown,cube-soft</owners>
+        <description>Wraps the AlphaFS package compatible with the Cube.FileSystem interface.</description>
+        <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
+        <tags>Cube IO AlphaFS</tags>
+        <icon>images\Icon.png</icon>
+        <license type="expression">Apache-2.0</license>
+        <projectUrl>https://github.com/cube-soft/Cube.Core</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <dependencies>
+            <group targetFramework="net45">
+                <dependency id="Cube.FileSystem" version="4.0.0" />
+                <dependency id="AlphaFS" version="2.2.6" />
+            </group>
+            <group targetFramework="net35">
+                <dependency id="Cube.FileSystem" version="4.0.0" />
+                <dependency id="AlphaFS" version="2.2.6" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\..\Icon.png" target="images" />
+        <file src="bin\Any CPU\Release\net45\Cube.FileSystem.AlphaFS.*" target="lib\net45" />
+        <file src="bin\Any CPU\Release\net35\Cube.FileSystem.AlphaFS.*" target="lib\net35" />
+    </files>
+</package>
