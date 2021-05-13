@@ -3,7 +3,7 @@
         <Version>4.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
-        <Description>AlphaFS wrapper library compatible with the Cube.FileSystem interface.</Description>
+        <Description>Wraps the AlphaFS package compatible with the Cube.FileSystem interface.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageTags>Cube;IO;AlphaFS</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
