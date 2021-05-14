@@ -45,7 +45,25 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public NoticeWindow() { InitializeLayout(); }
+        public NoticeWindow() : this(SystemIcons.Information) { }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// NoticeWindow
+        ///
+        /// <summary>
+        /// Initializes a new instance of the NoticeWindow class with the
+        /// specified icon.
+        /// </summary>
+        ///
+        /// <param name="icon">Icon object.</param>
+        ///
+        /* --------------------------------------------------------------------- */
+        public NoticeWindow(Icon icon)
+        {
+            InitializeLayout();
+            Icon = icon;
+        }
 
         #endregion
 
@@ -62,24 +80,6 @@ namespace Cube.Forms
         ///
         /* --------------------------------------------------------------------- */
         protected override bool ShowWithoutActivation => true;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Text
-        ///
-        /// <summary>
-        /// Don't use this property, use Title.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use Set(string, string) method, instread of this.")]
-        public new string Text
-        {
-            get => base.Text;
-            set => base.Text = value;
-        }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -145,6 +145,7 @@ namespace Cube.Forms
         {
             _text.Content  = text;
             _title.Content = title;
+            Text = title;
         }
 
         /* --------------------------------------------------------------------- */
