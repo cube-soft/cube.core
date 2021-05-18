@@ -61,8 +61,8 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public NoticeWindow(Icon icon)
         {
-            InitializeLayout();
             Icon = icon;
+            InitializeLayout();
         }
 
         #endregion
@@ -300,10 +300,10 @@ namespace Cube.Forms
             AutoScaleMode = WinForms.AutoScaleMode.None;
             BackColor     = SystemColors.Window;
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
-            Size          = new(350, 88);
             MaximizeBox   = false;
             MinimizeBox   = false;
             ShowInTaskbar = false;
+            ClientSize    = new(350, 88);
             Sizable       = false;
 
             Controls.Add(_panel);

@@ -187,15 +187,15 @@ namespace Cube.Forms.Controls
         private static void SetTopMostWithoutActivate(this Form src)
         {
             var pos  = src.Location;
-            var size = src.Size;
+            var size = src.ClientSize;
 
             if (User32.NativeMethods.SetWindowPos(src.Handle,
                 (IntPtr)(-1), // HWND_TOPMOST
                 0, 0, 0, 0,
                 0x0413 // SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
             )) {
-                src.Location = pos;
-                src.Size     = size;
+                src.Location   = pos;
+                src.ClientSize = size;
             }
         }
 
