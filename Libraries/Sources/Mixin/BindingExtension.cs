@@ -26,7 +26,7 @@ namespace Cube.Forms.Bindings
     /// BindingExtension
     ///
     /// <summary>
-    /// Binding 関連の拡張用クラスです。
+    /// Provides extended methods about Binding functions.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,16 +39,20 @@ namespace Cube.Forms.Bindings
         /// ToBindingSource
         ///
         /// <summary>
-        /// INotifyCollectionChanged を実装するコレクションを
-        /// BindingSource オブジェクトに変換します。
+        /// Converts the specified INotifyCollectionChanged implementation
+        /// object to a BindingSource object.
         /// </summary>
         ///
-        /// <remarks>
-        /// CollectionChanged イベント発生時に ResetBindings(false) を
-        /// 実行します。
-        /// </remarks>
+        /// <param name="src">
+        /// INotifyCollectionChanged implementation object.
+        /// </param>
         ///
-        /// <param name="src">コレクションオブジェクト</param>
+        /// <returns>BindingSource object.</returns>
+        ///
+        /// <remarks>
+        /// Invokes the ResetBindings(false) method when CollectionChanged
+        /// event is fired.
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static BindingSource ToBindingSource(this INotifyCollectionChanged src) =>
@@ -59,24 +63,29 @@ namespace Cube.Forms.Bindings
         /// ToBindingSource
         ///
         /// <summary>
-        /// INotifyCollectionChanged を実装するコレクションを
-        /// BindingSource オブジェクトに変換します。
+        /// Converts the specified INotifyCollectionChanged implementation
+        /// object to a BindingSource object.
         /// </summary>
         ///
-        /// <remarks>
-        /// CollectionChanged イベント発生時に ResetBindings(false) を
-        /// 実行します。
-        /// </remarks>
+        /// <param name="src">
+        /// INotifyCollectionChanged implementation object.
+        /// </param>
         ///
-        /// <param name="src">コレクションオブジェクト</param>
-        /// <param name="ctx">UI スレッドを表すコンテキスト</param>
+        /// <param name="context">Synchronization context.</param>
+        ///
+        /// <returns>BindingSource object.</returns>
+        ///
+        /// <remarks>
+        /// Invokes the ResetBindings(false) method when CollectionChanged
+        /// event is fired.
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public static BindingSource ToBindingSource(this INotifyCollectionChanged src,
-            SynchronizationContext ctx)
+            SynchronizationContext context)
         {
             var dest = new BindingSource { DataSource = src };
-            src.CollectionChanged += (s, e) => ctx.Send(_ => dest.ResetBindings(false), null);
+            src.CollectionChanged += (s, e) => context.Send(_ => dest.ResetBindings(false), null);
             return dest;
         }
 

@@ -17,8 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Cube.Forms.Controls;
-using WinForms = System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableWindow : WinForms.Form, IBindable
+    public class BindableWindow : Form, IBindable
     {
         #region Constructors
 

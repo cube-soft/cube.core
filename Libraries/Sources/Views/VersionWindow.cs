@@ -19,6 +19,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -27,7 +28,7 @@ namespace Cube.Forms
     /// VersionWindow
     ///
     /// <summary>
-    /// バージョン情報を表示するためのフォームです。
+    /// Represents the window to show the version information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,10 +38,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// VersionForm
+        /// VersionWindow
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the VersionWindow class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -51,15 +52,16 @@ namespace Cube.Forms
         /// VersionForm
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the VersionWindow class with the
+        /// specified assembly.
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public VersionWindow(Assembly assembly)
         {
-            _control = new Controls.VersionControl(assembly);
+            _control = new(assembly);
             InitializeLayout();
         }
 
@@ -72,8 +74,7 @@ namespace Cube.Forms
         /// Image
         ///
         /// <summary>
-        /// バージョン画面に表示するイメージオブジェクトを取得
-        /// または設定します。
+        /// Gets or sets the Image object to show in the window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -89,7 +90,7 @@ namespace Cube.Forms
         /// Product
         ///
         /// <summary>
-        /// 製品名を取得または設定します。
+        /// Gets or sets the product name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -105,7 +106,7 @@ namespace Cube.Forms
         /// Version
         ///
         /// <summary>
-        /// バージョンを表す文字列を取得または設定します。
+        /// Gets or sets the string that represents the version.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -121,7 +122,7 @@ namespace Cube.Forms
         /// Description
         ///
         /// <summary>
-        /// バージョン画面に表示するその他の情報を取得または設定します。
+        /// Gets or sets other information to be displayed on the window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -137,7 +138,7 @@ namespace Cube.Forms
         /// Copyright
         ///
         /// <summary>
-        /// コピーライト表記を取得または設定します。
+        /// Gets or sets the copyright notation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -153,8 +154,8 @@ namespace Cube.Forms
         /// Uri
         ///
         /// <summary>
-        /// コピーライト表記をクリックした時に表示する Web ページの
-        /// URL を取得または設定します。
+        /// Get or set the URL of the Web page to be displayed when the
+        /// copyright notation is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -174,10 +175,11 @@ namespace Cube.Forms
         /// Update
         ///
         /// <summary>
-        /// アセンブリ情報を基に表示内容を更新します。
+        /// Updates the display contents based on the specified assembly
+        /// information.
         /// </summary>
         ///
-        /// <param name="assembly">アセンブリ情報</param>
+        /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public void Update(Assembly assembly) => _control.Update(assembly);
@@ -191,7 +193,7 @@ namespace Cube.Forms
         /// InitializeLayout
         ///
         /// <summary>
-        /// レイアウトを初期化します。
+        /// Initializes the layout of the window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -200,22 +202,22 @@ namespace Cube.Forms
             Size = new Size(400, 270);
             SuspendLayout();
 
-            _panel.Dock = System.Windows.Forms.DockStyle.Fill;
-            _panel.Margin = new System.Windows.Forms.Padding(0);
+            _panel.Dock = DockStyle.Fill;
+            _panel.Margin = new(0);
             _panel.ColumnCount = 1;
-            _panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            _ = _panel.ColumnStyles.Add(new(SizeType.Percent, 100F));
             _panel.RowCount = 2;
-            _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            _panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            _ = _panel.RowStyles.Add(new(SizeType.Percent, 100F));
+            _ = _panel.RowStyles.Add(new(SizeType.Absolute, 60F));
             _panel.SuspendLayout();
 
             _control.BackColor = SystemColors.Window;
-            _control.Dock = System.Windows.Forms.DockStyle.Fill;
-            _control.Margin = new System.Windows.Forms.Padding(0);
-            _control.Padding = new System.Windows.Forms.Padding(20, 20, 0, 0);
+            _control.Dock = DockStyle.Fill;
+            _control.Margin = new(0);
+            _control.Padding = new(20, 20, 0, 0);
 
-            _button.Anchor = System.Windows.Forms.AnchorStyles.None;
-            _button.Size = new Size(100, 25);
+            _button.Anchor = AnchorStyles.None;
+            _button.Size = new(100, 25);
             _button.Text = "OK";
             _button.Click += (s, e) => Close();
 
@@ -223,7 +225,7 @@ namespace Cube.Forms
             _panel.Controls.Add(_button, 0, 1);
 
             Font = FontFactory.Create(9, FontStyle.Regular, GraphicsUnit.Point);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
@@ -237,8 +239,8 @@ namespace Cube.Forms
 
         #region Fields
         private readonly Controls.VersionControl _control;
-        private readonly Controls.TableLayoutPanel _panel = new Controls.TableLayoutPanel();
-        private readonly Controls.Button _button = new Controls.Button();
+        private readonly Controls.TableLayoutPanel _panel = new();
+        private readonly Controls.Button _button = new();
         #endregion
     }
 }

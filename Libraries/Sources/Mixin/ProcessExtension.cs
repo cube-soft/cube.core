@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Diagnostics;
 
 namespace Cube.Forms.Processes
 {
@@ -37,18 +38,18 @@ namespace Cube.Forms.Processes
         /// Activate
         ///
         /// <summary>
-        /// プロセスのメイン画面をアクティブ化します。
+        /// Activates the main window of the specified process.
         /// </summary>
         ///
-        /// <param name="process">Process オブジェクト</param>
+        /// <param name="src">Source process.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Activate(this System.Diagnostics.Process process)
+        public static void Activate(this Process src)
         {
-            var h = process?.MainWindowHandle ?? IntPtr.Zero;
+            var h = src?.MainWindowHandle ?? IntPtr.Zero;
             if (h == IntPtr.Zero) return;
-            if (User32.NativeMethods.IsIconic(h)) User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
-            User32.NativeMethods.SetForegroundWindow(h);
+            if (User32.NativeMethods.IsIconic(h)) _ = User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
+            _ = User32.NativeMethods.SetForegroundWindow(h);
         }
 
         #endregion

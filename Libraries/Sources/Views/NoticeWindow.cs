@@ -18,8 +18,8 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Forms;
 using Cube.Forms.Controls;
-using WinForms = System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -161,7 +161,7 @@ namespace Cube.Forms
         /* --------------------------------------------------------------------- */
         public void Set(NoticeLocation src)
         {
-            var area = WinForms.Screen.GetWorkingArea(Location);
+            var area = Screen.GetWorkingArea(Location);
             var x = src == NoticeLocation.TopLeft || src == NoticeLocation.BottomLeft ?
                     0 :
                     area.Width - Width - 1;
@@ -233,7 +233,7 @@ namespace Cube.Forms
 
             _image.SuspendLayout();
             _image.Content = string.Empty;
-            _image.Dock = WinForms.DockStyle.Fill;
+            _image.Dock = DockStyle.Fill;
             _image.Margin = new(0);
             _image.Style.Default.BorderSize = 0;
             _image.Style.Default.BackColor = Color.FromArgb(230, 230, 230);
@@ -243,7 +243,7 @@ namespace Cube.Forms
 
             _title.SuspendLayout();
             _title.Content = string.Empty;
-            _title.Dock = WinForms.DockStyle.Fill;
+            _title.Dock = DockStyle.Fill;
             _title.Font = FontFactory.Create(12, FontStyle.Bold, GraphicsUnit.Pixel);
             _title.Margin = new(0);
             _title.Padding = new(3, 0, 3, 0);
@@ -257,8 +257,8 @@ namespace Cube.Forms
             _text.SuspendLayout();
             _text.AutoEllipsis = true;
             _text.Content = string.Empty;
-            _text.Cursor = WinForms.Cursors.Hand;
-            _text.Dock = WinForms.DockStyle.Fill;
+            _text.Cursor = Cursors.Hand;
+            _text.Dock = DockStyle.Fill;
             _text.Margin = new(0);
             _text.Padding = new(3, 0, 3, 3);
             _text.TextAlign = ContentAlignment.TopLeft;
@@ -269,7 +269,7 @@ namespace Cube.Forms
 
             _close.SuspendLayout();
             _close.Content = string.Empty;
-            _close.Dock = WinForms.DockStyle.Fill;
+            _close.Dock = DockStyle.Fill;
             _close.Margin = new(0);
             _close.Style.Default.BackColor = SystemColors.Window;
             _close.Style.Default.BorderSize = 0;
@@ -282,14 +282,14 @@ namespace Cube.Forms
             _close.ResumeLayout(false);
 
             _panel.SuspendLayout();
-            _panel.Dock = WinForms.DockStyle.Fill;
+            _panel.Dock = DockStyle.Fill;
             _panel.ColumnCount = 3;
-            _ = _panel.ColumnStyles.Add(new(WinForms.SizeType.Absolute, 64F));
-            _ = _panel.ColumnStyles.Add(new(WinForms.SizeType.Percent, 100F));
-            _ = _panel.ColumnStyles.Add(new(WinForms.SizeType.Absolute, 22F));
+            _ = _panel.ColumnStyles.Add(new(SizeType.Absolute, 64F));
+            _ = _panel.ColumnStyles.Add(new(SizeType.Percent, 100F));
+            _ = _panel.ColumnStyles.Add(new(SizeType.Absolute, 22F));
             _panel.RowCount = 2;
-            _ = _panel.RowStyles.Add(new(WinForms.SizeType.Absolute, 22F));
-            _ = _panel.RowStyles.Add(new(WinForms.SizeType.Percent, 100F));
+            _ = _panel.RowStyles.Add(new(SizeType.Absolute, 22F));
+            _ = _panel.RowStyles.Add(new(SizeType.Percent, 100F));
             _panel.Controls.Add(_image, 0, 0);
             _panel.Controls.Add(_title, 1, 0);
             _panel.Controls.Add(_text,  1, 1);
@@ -297,7 +297,7 @@ namespace Cube.Forms
             _panel.SetRowSpan(_image, 2);
             _panel.ResumeLayout(false);
 
-            AutoScaleMode = WinForms.AutoScaleMode.None;
+            AutoScaleMode = AutoScaleMode.None;
             BackColor     = SystemColors.Window;
             Font          = FontFactory.Create(12, FontStyle.Regular, GraphicsUnit.Pixel);
             MaximizeBox   = false;
@@ -313,7 +313,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private readonly TableLayoutPanel _panel = new();
+        private readonly Controls.TableLayoutPanel _panel = new();
         private readonly FlatButton _image = new();
         private readonly FlatButton _title = new();
         private readonly FlatButton _text = new();

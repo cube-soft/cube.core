@@ -27,12 +27,12 @@ namespace Cube.Forms
     /// SizeHacker
     ///
     /// <summary>
-    /// フォームのリサイズを補助するクラスです。
+    /// Provides functionality to resize a Control object.
     /// </summary>
     ///
     /// <remarks>
-    /// FormBorderStyle = None 等でリサイズ用の枠線が描画されていない場合に
-    /// リサイズ用の枠線と同様のリサイズ方法を提供します。
+    /// This class provides the same resizing method as the resize border
+    /// when the resize border is not drawn with FormBorderStyle = None.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -45,8 +45,12 @@ namespace Cube.Forms
         /// SizeHacker
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SizeHacker with the specified
+        /// arguments.
         /// </summary>
+        ///
+        /// <param name="control">Source control.</param>
+        /// <param name="grip">Grip size.</param>
         ///
         /* ----------------------------------------------------------------- */
         public SizeHacker(Control control, int grip)
@@ -65,7 +69,7 @@ namespace Cube.Forms
         /// Root
         ///
         /// <summary>
-        /// 監視するコントロール群の基底となるコントロールを取得します。
+        /// Get the root control for the group of controls to be monitored.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -76,7 +80,7 @@ namespace Cube.Forms
         /// SizeGrip
         ///
         /// <summary>
-        /// リサイズ用のグリップに使用する幅を取得します。
+        /// Get the width to use for the grip for resizing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -91,11 +95,13 @@ namespace Cube.Forms
         /// Dispose
         ///
         /// <summary>
-        /// リソースを解放します。
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
         /// </summary>
         ///
         /// <param name="disposing">
-        /// マネージリソースを解放するかどうか
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
@@ -113,7 +119,7 @@ namespace Cube.Forms
         /// WhenControlAdded
         ///
         /// <summary>
-        /// コントロールが追加された時に実行されるハンドラです。
+        /// Occurs when a control is added.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -124,7 +130,7 @@ namespace Cube.Forms
         /// WhenControlRemoved
         ///
         /// <summary>
-        /// コントロールが削除された時に実行されるハンドラです。
+        /// Occurs when a control is removed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -135,13 +141,13 @@ namespace Cube.Forms
         /// WhenMouseMove
         ///
         /// <summary>
-        /// マウスが移動した時に実行されるハンドラです。
+        /// Occurs when the mouse is moved.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private void WhenMouseMove(object s, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.None || !(s is Control control)) return;
+            if (e.Button != MouseButtons.None || s is not Control control) return;
 
             var form = control.FindForm();
             if (form == null || form.WindowState != FormWindowState.Normal) return;
@@ -157,13 +163,13 @@ namespace Cube.Forms
         /// WhenMouseDown
         ///
         /// <summary>
-        /// マウスのボタンが押下された時に実行されるハンドラです。
+        /// Occurs when the mouse is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private void WhenMouseDown(object s, MouseEventArgs e)
         {
-            if (!(s is Control control)) return;
+            if (s is not Control control) return;
 
             var form = control.FindForm();
             if (form == null || form.WindowState != FormWindowState.Normal) return;
@@ -175,8 +181,8 @@ namespace Cube.Forms
                 result != Position.TopLeft    && result != Position.TopRight &&
                 result != Position.BottomLeft && result != Position.BottomRight) return;
 
-            User32.NativeMethods.ReleaseCapture();
-            User32.NativeMethods.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)result, IntPtr.Zero);
+            _ = User32.NativeMethods.ReleaseCapture();
+            _ = User32.NativeMethods.SendMessage(form.Handle, 0xa1 /* WM_NCLBUTTONDOWN */, (IntPtr)result, IntPtr.Zero);
         }
 
         /* ----------------------------------------------------------------- */
@@ -184,8 +190,9 @@ namespace Cube.Forms
         /// StartMonitor
         ///
         /// <summary>
-        /// 指定されたコントロールおよび Controls に含まれる全ての
-        /// コントロールの MouseMove/MouseDown イベントを監視します。
+        /// Starts monitoring the MouseMove/MouseDown events for the
+        /// specified control and all controls included in the Controls
+        /// property.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -210,8 +217,8 @@ namespace Cube.Forms
         /// EndMonitor
         ///
         /// <summary>
-        /// 指定されたコントロールおよび Controls に含まれる全ての
-        /// コントロールの監視を終了します。
+        /// Terminates monitoring the MouseMove/MouseDown events of all
+        /// controls.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -232,8 +239,8 @@ namespace Cube.Forms
         /// Stash
         ///
         /// <summary>
-        /// コントロールが元々保持していたカーソルを退避し、新たなカーソルに
-        /// 設定します。
+        /// Stashes the cursor originally held by the specified control and
+        /// set it to the specified cursor.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -248,7 +255,7 @@ namespace Cube.Forms
         /// Push
         ///
         /// <summary>
-        /// コントロールが元々保持していたカーソルを記憶します。
+        /// Remembers the cursor originally held by the specified control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -262,7 +269,7 @@ namespace Cube.Forms
         /// Pop
         ///
         /// <summary>
-        /// コントロールが元々保持していたカーソルを復元します。
+        /// Restores the cursor originally held by the specified control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -271,13 +278,13 @@ namespace Cube.Forms
             if (!_cursors.ContainsKey(control)) return;
 
             control.Cursor = _cursors[control];
-            _cursors.Remove(control);
+            _ = _cursors.Remove(control);
         }
 
         #endregion
 
         #region Fields
-        private readonly IDictionary<Control, Cursor> _cursors = new Dictionary<Control, Cursor>();
+        private readonly Dictionary<Control, Cursor> _cursors = new();
         #endregion
     }
 }

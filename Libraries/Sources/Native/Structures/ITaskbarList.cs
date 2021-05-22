@@ -36,6 +36,8 @@ namespace Cube.Forms
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface ITaskbarList3
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// HrInit
@@ -148,6 +150,8 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         [PreserveSig]
         void SetProgressState(IntPtr hwnd, TaskbarProgressState state);
+
+        #endregion
     }
 
     /* --------------------------------------------------------------------- */

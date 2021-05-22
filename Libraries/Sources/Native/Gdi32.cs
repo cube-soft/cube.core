@@ -25,12 +25,14 @@ namespace Cube.Forms.Gdi32
     /// Gdi32.NativeMethods
     ///
     /// <summary>
-    /// user32.dll に定義された関数を宣言するためのクラスです。
+    /// Provides functions defined in user32.dll.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     internal static class NativeMethods
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// CreateRoundRectRgn
@@ -44,9 +46,10 @@ namespace Cube.Forms.Gdi32
         public static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect,
             int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
 
+        #endregion
+
         #region Fields
         const string LibName = "Gdi32.dll";
         #endregion
-
     }
 }

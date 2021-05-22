@@ -34,12 +34,14 @@ namespace Cube.Forms
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IDocHostShowUI
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// ShowMessage
         ///
         /// <summary>
-        /// メッセージを表示します。
+        /// Called by MSHTML to display a message box.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -59,7 +61,7 @@ namespace Cube.Forms
         /// ShowHelp
         ///
         /// <summary>
-        /// ヘルプを表示します。
+        /// Called by MSHTML to display Help.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -73,5 +75,7 @@ namespace Cube.Forms
             IntPtr ptMouse, // POINT
             [MarshalAs(UnmanagedType.IDispatch)] object pDispatchObjectHit
         );
+
+        #endregion
     }
 }

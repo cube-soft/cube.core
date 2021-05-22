@@ -19,7 +19,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
-using WinForms = System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -28,7 +28,7 @@ namespace Cube.Forms.Controls
     /// ControlExtension
     ///
     /// <summary>
-    /// System.Windows.Forms.Control の拡張用クラスです。
+    /// Provides extended methods of the Control class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,17 +41,18 @@ namespace Cube.Forms.Controls
         /// HitTest
         ///
         /// <summary>
-        /// コントロール中のどの位置にいるのかヒットテストを行います。
+        /// Invokes a hit-test to confirm where the specified point is in
+        /// the control.
         /// </summary>
         ///
-        /// <param name="src">コントロール</param>
-        /// <param name="point">コントロールを基準とした座標</param>
-        /// <param name="grip">グリップサイズ</param>
+        /// <param name="src">Source control.</param>
+        /// <param name="point">Point based on the source control.</param>
+        /// <param name="grip">Grip size.</param>
         ///
-        /// <returns>コントロール中の位置</returns>
+        /// <returns>Position enum. value</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Position HitTest(this WinForms.Control src, Point point, int grip)
+        public static Position HitTest(this Control src, Point point, int grip)
         {
             var x = point.X;
             var y = point.Y;
@@ -81,19 +82,17 @@ namespace Cube.Forms.Controls
         /// HasEventHandler
         ///
         /// <summary>
-        /// 指定されたイベントに対して、イベントハンドラが設定されているか
-        /// どうかを判別します。
+        /// Determines whether any event handlers have been set for the
+        /// specified event.
         /// </summary>
         ///
-        /// <param name="src">判別するコントロール</param>
-        /// <param name="name">イベント名</param>
+        /// <param name="src">Source control.</param>
+        /// <param name="name">Event name to check.</param>
         ///
-        /// <returns>
-        /// イベントハンドラが設定されているかどうかを示す値
-        /// </returns>
+        /// <returns>true for any event handler has been set.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool HasEventHandler(this WinForms.Control src, string name)
+        public static bool HasEventHandler(this Control src, string name)
         {
             var key = GetEventKey(src, name);
             var map = GetEventHandlers(src);
@@ -109,14 +108,13 @@ namespace Cube.Forms.Controls
         /// GetEventHandlers
         ///
         /// <summary>
-        /// 指定されたオブジェクトに設定されているイベントハンドラの
-        /// 一覧を取得します。
+        /// Get a list of event handlers set for the specified object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private static EventHandlerList GetEventHandlers(object obj)
         {
-            MethodInfo method(Type t)
+            static MethodInfo method(Type t)
             {
                 var mi = t.GetMethod("get_Events", GetAllFlags());
                 if (mi == null && t.BaseType != null) mi = method(t.BaseType);
@@ -130,13 +128,13 @@ namespace Cube.Forms.Controls
         /// GetEventKey
         ///
         /// <summary>
-        /// 指定されたイベント名に対応するオブジェクトを取得します。
+        /// Get the object corresponding to the specified event name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private static object GetEventKey(object obj, string name)
         {
-            FieldInfo method(Type t, string n)
+            static FieldInfo method(Type t, string n)
             {
                 var fi = t.GetField($"Event{n}", GetAllFlags());
                 if (fi == null && t.BaseType != null) fi = method(t.BaseType, n);
@@ -150,7 +148,7 @@ namespace Cube.Forms.Controls
         /// GetAllFlags
         ///
         /// <summary>
-        /// 全ての属性が有効になった BindingFlags を取得します。
+        /// Get the BindingFlags object with all values enabled.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

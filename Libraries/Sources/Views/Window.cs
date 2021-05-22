@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using WinForms = System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace Cube.Forms
 {
@@ -47,7 +47,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public Window()
         {
-            AutoScaleMode = WinForms.AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.Dpi;
             DoubleBuffered = true;
             Font = FontFactory.Create(Font);
         }
@@ -65,14 +65,14 @@ namespace Cube.Forms
         /// </summary>
         ///
         /// <remarks>
-        /// ShortcutKeys に登録された動作が ProcessCmdKey(Message, Keys)
-        /// にて実行されます。
+        /// The action registered in the property will be executed when
+        /// the ProcessCmdKey(Message, Keys) method is invoked.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IDictionary<WinForms.Keys, Action> ShortcutKeys { get; } = new Dictionary<WinForms.Keys, Action>();
+        public IDictionary<Keys, Action> ShortcutKeys { get; } = new Dictionary<Keys, Action>();
 
         #endregion
 
@@ -154,8 +154,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         public void AdjustDesktopLocation()
         {
-            var screen = WinForms.Screen.FromPoint(DesktopLocation) ??
-                         WinForms.Screen.PrimaryScreen;
+            var screen = Screen.FromPoint(DesktopLocation) ?? Screen.PrimaryScreen;
             var x      = DesktopLocation.X;
             var y      = DesktopLocation.Y;
 
@@ -186,7 +185,7 @@ namespace Cube.Forms
         /// <returns>true for executed.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected bool DoShortcutKeys(WinForms.Keys keys)
+        protected bool DoShortcutKeys(Keys keys)
         {
             if (!ShortcutKeys.ContainsKey(keys)) return false;
             ShortcutKeys[keys]();
@@ -223,7 +222,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool ProcessCmdKey(ref WinForms.Message msg, WinForms.Keys keys)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keys)
         {
             if (ShortcutKeys.ContainsKey(keys))
             {
@@ -242,7 +241,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void WndProc(ref WinForms.Message m)
+        protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
 

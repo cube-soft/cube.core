@@ -26,40 +26,42 @@ namespace Cube.Forms.Images
     /// ImageExtension
     ///
     /// <summary>
-    /// Image オブジェクトの拡張用クラスです。
+    /// Provides extended methods of the Image class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public static class ImageExtension
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToImageList
-        ///
-        /// <summary>
-        /// ImageList オブジェクトに変換します。
-        /// </summary>
-        ///
-        /// <param name="src">Image オブジェクト一覧</param>
-        ///
-        /// <returns>ImageList オブジェクト</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static ImageList ToImageList(this IEnumerable<Image> src) =>
-            ToImageList(src, new Size(16, 16));
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
         /// ToImageList
         ///
         /// <summary>
-        /// ImageList オブジェクトに変換します。
+        /// Converts the specified Image collection to an ImageList object.
         /// </summary>
         ///
-        /// <param name="src">Image オブジェクト一覧</param>
-        /// <param name="size">イメージサイズ</param>
+        /// <param name="src">Image collection.</param>
         ///
-        /// <returns>ImageList オブジェクト</returns>
+        /// <returns>ImageList object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static ImageList ToImageList(this IEnumerable<Image> src) =>
+            ToImageList(src, new(16, 16));
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ToImageList
+        ///
+        /// <summary>
+        /// Converts the specified Image collection to an ImageList object.
+        /// </summary>
+        ///
+        /// <param name="src">Image collection.</param>
+        /// <param name="size">Image size.</param>
+        ///
+        /// <returns>ImageList object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static ImageList ToImageList(this IEnumerable<Image> src, Size size) =>
@@ -70,18 +72,17 @@ namespace Cube.Forms.Images
         /// ToImageList
         ///
         /// <summary>
-        /// ImageList オブジェクトに変換します。
+        /// Converts the specified Image collection to an ImageList object.
         /// </summary>
         ///
-        /// <param name="src">Image オブジェクト一覧</param>
-        /// <param name="size">イメージサイズ</param>
-        /// <param name="depth">ビット深度</param>
+        /// <param name="src">Image collection.</param>
+        /// <param name="size">Image size.</param>
+        /// <param name="depth">Bit depth.</param>
         ///
-        /// <returns>ImageList オブジェクト</returns>
+        /// <returns>ImageList object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static ImageList ToImageList(this IEnumerable<Image> src,
-            Size size, ColorDepth depth)
+        public static ImageList ToImageList(this IEnumerable<Image> src, Size size, ColorDepth depth)
         {
             var dest = new ImageList
             {
@@ -97,29 +98,29 @@ namespace Cube.Forms.Images
         /// ToImageList
         ///
         /// <summary>
-        /// ImageList オブジェクトに変換します。
+        /// Converts the specified Icon collection to an ImageList object.
         /// </summary>
         ///
-        /// <param name="src">Icon オブジェクト一覧</param>
+        /// <param name="src">Icon collection.</param>
         ///
-        /// <returns>ImageList オブジェクト</returns>
+        /// <returns>ImageList object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static ImageList ToImageList(this IEnumerable<Icon> src) =>
-            ToImageList(src, new Size(16, 16));
+            ToImageList(src, new(16, 16));
 
         /* ----------------------------------------------------------------- */
         ///
         /// ToImageList
         ///
         /// <summary>
-        /// ImageList オブジェクトに変換します。
+        /// Converts the specified Icon collection to an ImageList object.
         /// </summary>
         ///
-        /// <param name="src">Icon オブジェクト一覧</param>
-        /// <param name="size">イメージサイズ</param>
+        /// <param name="src">Icon collection.</param>
+        /// <param name="size">Image size.</param>
         ///
-        /// <returns>ImageList オブジェクト</returns>
+        /// <returns>ImageList object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static ImageList ToImageList(this IEnumerable<Icon> src, Size size) =>
@@ -130,18 +131,17 @@ namespace Cube.Forms.Images
         /// ToImageList
         ///
         /// <summary>
-        /// ImageList オブジェクトに変換します。
+        /// Converts the specified Icon collection to an ImageList object.
         /// </summary>
         ///
-        /// <param name="src">Icon オブジェクト一覧</param>
-        /// <param name="size">イメージサイズ</param>
-        /// <param name="depth">ビット深度</param>
+        /// <param name="src">Icon collection.</param>
+        /// <param name="size">Image size.</param>
+        /// <param name="depth">Bit depth.</param>
         ///
-        /// <returns>ImageList オブジェクト</returns>
+        /// <returns>ImageList object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static ImageList ToImageList(this IEnumerable<Icon> src,
-            Size size, ColorDepth depth)
+        public static ImageList ToImageList(this IEnumerable<Icon> src, Size size, ColorDepth depth)
         {
             var dest = new ImageList
             {
@@ -151,5 +151,7 @@ namespace Cube.Forms.Images
             foreach (var image in src) dest.Images.Add(image);
             return dest;
         }
+
+        #endregion
     }
 }

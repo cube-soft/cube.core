@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Cube.Forms
 {
@@ -25,14 +26,14 @@ namespace Cube.Forms
     /// OnlyExpandableConverter
     ///
     /// <summary>
-    /// プロパティエディタにおいて、ネストされたプロパティを展開可能に
-    /// するクラスです。
+    /// Provides functionality to expand nested properties in the property
+    /// editor.
     /// </summary>
     ///
     /// <remarks>
-    /// ネストされたプロパティに対して、文字列では編集できないようにする
-    /// ための ExpandableObjectConverter です。編集を行う際にはプロパティを
-    /// 展開し、個々のプロパティを編集するように強制します。
+    /// This is an ExpandableObjectConverter for nested properties to prevent
+    /// editing by string. When editing, it expands the property and forces
+    /// the user to edit the individual property.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -45,8 +46,8 @@ namespace Cube.Forms
         /// CanConvertTo
         ///
         /// <summary>
-        /// コンバーターがオブジェクトを指定した型に変換できるかどうかを
-        /// 示す値を返します。
+        /// Gets a value indicating whether the converter can convert the
+        /// object to the specified type.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -61,13 +62,13 @@ namespace Cube.Forms
         /// ConvertTo
         ///
         /// <summary>
-        /// 指定したコンテキストとカルチャ情報を使用して、
-        /// 指定した値オブジェクトを、指定した型に変換します。
+        /// Converts the specified object to the specified type with the
+        /// specified arguments.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override object ConvertTo(ITypeDescriptorContext context,
-            System.Globalization.CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture,
+            object value, Type destinationType)
         {
             if (destinationType == typeof(string)) return string.Empty;
             return base.ConvertTo(context, culture, value, destinationType);
@@ -78,9 +79,9 @@ namespace Cube.Forms
         /// CanConvertFrom
         ///
         /// <summary>
-        /// 指定したコンテキストを使用して、コンバーターが特定の型の
-        /// オブジェクトをコンバーターの型に変換できるかどうかを示す値を
-        /// 返します。
+        /// Gets a value indicating whether the converter can convert objects
+        /// of a certain type to the converter's type using the specified
+        /// context.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

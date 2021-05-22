@@ -24,8 +24,7 @@ namespace Cube.Forms
     /// FontFactory
     ///
     /// <summary>
-    /// Cube.Forms で使用する既定のフォントオブジェクトを生成するための
-    /// クラスです。
+    /// Provides functionality to create a default Font object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,8 +37,13 @@ namespace Cube.Forms
         /// Create
         ///
         /// <summary>
-        /// フォントオブジェクトを生成します。
+        /// Creates a new instance of the Font class with the specified
+        /// arguments.
         /// </summary>
+        ///
+        /// <param name="hint">Hint object.</param>
+        ///
+        /// <returns>Font object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static Font Create(Font hint) => Create(hint.Size, hint.Style, hint.Unit);
@@ -49,19 +53,24 @@ namespace Cube.Forms
         /// Create
         ///
         /// <summary>
-        /// フォントオブジェクトを生成します。
+        /// Creates a new instance of the Font class with the specified
+        /// arguments.
         /// </summary>
+        ///
+        /// <param name="size">Font size.</param>
+        /// <param name="style">Font style.</param>
+        /// <param name="unit">Font size unit.</param>
+        ///
+        /// <returns>Font object.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static Font Create(float size, FontStyle style, GraphicsUnit unit)
         {
-            var primary   = "Meiryo UI";
-            var secondary = SystemFonts.DefaultFont.FontFamily.Name;
+            var f0 = "Meiryo UI";
+            var f1 = SystemFonts.DefaultFont.FontFamily.Name;
 
-            var dest = new Font(primary, size, style, unit);
-            return dest.Name == primary ?
-                   dest :
-                   new Font(secondary, size, style, unit);
+            var dest = new Font(f0, size, style, unit);
+            return dest.Name == f0 ? dest : new(f1, size, style, unit);
         }
 
         #endregion

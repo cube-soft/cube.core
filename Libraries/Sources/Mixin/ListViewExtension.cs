@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -25,7 +26,7 @@ namespace Cube.Forms.Controls
     /// ListViewExtension
     ///
     /// <summary>
-    /// System.Windows.Forms.ListView の拡張用クラスです。
+    /// Provides extended methods of the ListView class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,26 +39,30 @@ namespace Cube.Forms.Controls
         /// Ascend
         ///
         /// <summary>
-        /// 昇順にソートします。
+        /// Sorts the specified SelectedIndexCollection object in ascending
+        /// order.
         /// </summary>
         ///
+        /// <param name="src">Source collection.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Ascend(
-            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
-            indices.Cast<int>().OrderBy(x => x);
+        public static IEnumerable<int> Ascend(this ListView.SelectedIndexCollection src) =>
+            src.Cast<int>().OrderBy(i => i);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Descend
         ///
         /// <summary>
-        /// 降順にソートします。
+        /// Sorts the specified SelectedIndexCollection object in
+        /// descending order.
         /// </summary>
         ///
+        /// <param name="src">Source collection.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Descend(
-            this System.Windows.Forms.ListView.SelectedIndexCollection indices) =>
-            indices.Cast<int>().OrderByDescending(x => x);
+        public static IEnumerable<int> Descend(ListView.SelectedIndexCollection src) =>
+            src.Cast<int>().OrderByDescending(i => i);
 
         #endregion
     }

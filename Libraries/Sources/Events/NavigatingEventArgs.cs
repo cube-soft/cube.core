@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.ComponentModel;
+
 namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
@@ -22,12 +24,12 @@ namespace Cube.Forms
     /// NavigatingEventArgs
     ///
     /// <summary>
-    /// Web ブラウザにおいて、画面遷移が発生した時の引数を保持するための
-    /// クラスです。
+    /// Represents the event arguments when a screen transition occurs in a
+    /// Web browser.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NavigatingEventArgs : System.ComponentModel.CancelEventArgs
+    public class NavigatingEventArgs : CancelEventArgs
     {
         #region Constructors
 
@@ -36,8 +38,12 @@ namespace Cube.Forms
         /// NavigatingEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the NavigatingEventArgs class
+        /// with the specified arguments.
         /// </summary>
+        ///
+        /// <param name="url">URL.</param>
+        /// <param name="frame">Target frame.</param>
         ///
         /* ----------------------------------------------------------------- */
         public NavigatingEventArgs(string url, string frame) : base(false)
@@ -55,7 +61,7 @@ namespace Cube.Forms
         /// Url
         ///
         /// <summary>
-        /// 遷移先の URL を取得します。
+        /// Get the URL of the transition destination.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,7 +72,7 @@ namespace Cube.Forms
         /// Frame
         ///
         /// <summary>
-        /// 遷移先のターゲットフレームを取得します。
+        /// Get the target frame of the transition destination.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -80,8 +86,8 @@ namespace Cube.Forms
     /// NavigateErrorEventArgs
     ///
     /// <summary>
-    /// ウェブブラウザにおいて、移動中にエラーが発生した時の引数を保持する
-    /// ためのクラスです。
+    /// Represents the event arguments when an error occurs while navigating
+    /// in a web browser.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -94,12 +100,16 @@ namespace Cube.Forms
         /// NavigatingErrorEventArgs
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the NavigatingErrorEventArgs class
+        /// with the specified arguments.
         /// </summary>
         ///
+        /// <param name="url">URL.</param>
+        /// <param name="frame">Target frame.</param>
+        /// <param name="code">HTTP status code.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public NavigatingErrorEventArgs(string url, string frame, int code) :
-            base(url, frame)
+        public NavigatingErrorEventArgs(string url, string frame, int code) : base(url, frame)
         {
             StatusCode = code;
         }
@@ -113,7 +123,7 @@ namespace Cube.Forms
         /// StatusCode
         ///
         /// <summary>
-        /// ステータスコードを取得します。
+        /// Gets the HTTP status code.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

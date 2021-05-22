@@ -25,7 +25,7 @@ namespace Cube.Forms.UrlMon
     /// UrlMon.NativeMethods
     ///
     /// <summary>
-    /// Provides functions defined in the urlmon.dll.
+    /// Provides functions defined in urlmon.dll.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

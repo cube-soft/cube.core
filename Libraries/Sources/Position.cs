@@ -24,7 +24,7 @@ namespace Cube.Forms
     /// Position
     ///
     /// <summary>
-    /// コントロール中の位置を表すための列挙型です。
+    /// Specifies a position in a control.
     /// </summary>
     ///
     /// <remarks>
@@ -34,51 +34,51 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public enum Position
     {
-        /// <summary>不明 (HTNOWHERE)</summary>
+        /// <summary>Unknown. (HTNOWHERE)</summary>
         NoWhere = 0x00,
-        /// <summary>クライアント領域 (HTCLIENT)</summary>
+        /// <summary>Client area. (HTCLIENT)</summary>
         Client = 0x01,
-        /// <summary>キャプション・ヘッダバー (HTCAPTION)</summary>
+        /// <summary>Caption, aka header bar. (HTCAPTION)</summary>
         Caption = 0x02,
-        /// <summary>システムメニュー (HTSYSMENU)</summary>
+        /// <summary>System menu. (HTSYSMENU)</summary>
         SystemMenu = 0x03,
-        /// <summary>リサイズ用グリップ (HTSIZE or HTGROWBOX)</summary>
+        /// <summary>Grips for resizing. (HTSIZE or HTGROWBOX)</summary>
         Size = 0x04,
-        /// <summary>メニュー (HTMENU)</summary>
+        /// <summary>Menu. (HTMENU)</summary>
         Menu = 0x05,
-        /// <summary>水平スクロールバー (HTHSCROLL)</summary>
+        /// <summary>Horizontal scroll bar. (HTHSCROLL)</summary>
         HorizontalScroll = 0x06,
-        /// <summary>垂直スクロールバー (HTVSCROLL)</summary>
+        /// <summary>Vertical scroll bar. (HTVSCROLL)</summary>
         VerticalScroll = 0x07,
-        /// <summary>最小化ボタン (HTMINBUTTON or HTREDUCE)</summary>
+        /// <summary>Minimize button. (HTMINBUTTON or HTREDUCE)</summary>
         Minimize = 0x08,
-        /// <summary>最大化ボタン (HTMAXBUTTON or HTZOOM)</summary>
+        /// <summary>Maximize button. (HTMAXBUTTON or HTZOOM)</summary>
         Maximize = 0x09,
-        /// <summary>左端 (HTLEFT)</summary>
+        /// <summary>Left edge. (HTLEFT)</summary>
         Left = 0x0a,
-        /// <summary>右端 (HTRIGHT)</summary>
+        /// <summary>Right edge. (HTRIGHT)</summary>
         Right = 0x0b,
-        /// <summary>上端 (HTTOP)</summary>
+        /// <summary>Top edge. (HTTOP)</summary>
         Top = 0x0c,
-        /// <summary>左上 (HTTOPLEFT)</summary>
+        /// <summary>Top left corner. (HTTOPLEFT)</summary>
         TopLeft = 0x0d,
-        /// <summary>右上 (HTTOPRIGHT)</summary>
+        /// <summary>Top right corner. (HTTOPRIGHT)</summary>
         TopRight = 0x0e,
-        /// <summary>下端 (HTBOTTOM)</summary>
+        /// <summary>Bottom edge. (HTBOTTOM)</summary>
         Bottom = 0x0f,
-        /// <summary>左下 (HTBOTTOMLEFT)</summary>
+        /// <summary>Bottom left corner. (HTBOTTOMLEFT)</summary>
         BottomLeft = 0x10,
-        /// <summary>右下 (HTBOTTOMRIGHT)</summary>
+        /// <summary>Bottom right corner. (HTBOTTOMRIGHT)</summary>
         BottomRight = 0x11,
-        /// <summary>枠線上 (HTBORDER)</summary>
+        /// <summary>On the border. (HTBORDER)</summary>
         Border = 0x12,
-        /// <summary>閉じるボタン (HTCLOSE)</summary>
+        /// <summary>Close button. (HTCLOSE)</summary>
         Close = 0x14,
-        /// <summary>ヘルプボタン (HTHELP)</summary>
+        /// <summary>Help button. (HTHELP)</summary>
         Help = 0x15,
-        /// <summary>透過領域 (HTTRANSPARENT)</summary>
+        /// <summary>Transparent area. (HTTRANSPARENT)</summary>
         Transparent = -1,
-        /// <summary>エラー (HTERROR)</summary>
+        /// <summary>Error. (HTERROR)</summary>
         Error = -2,
     }
 
@@ -87,7 +87,7 @@ namespace Cube.Forms
     /// PositionExtension
     ///
     /// <summary>
-    /// Position の拡張用クラスです。
+    /// Provides extended methods of the Position enum.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -100,8 +100,12 @@ namespace Cube.Forms
         /// ToCursor
         ///
         /// <summary>
-        /// Position に対応するカーソルを取得します。
+        /// Get the Cursor object corresponding to the specified Position object.
         /// </summary>
+        ///
+        /// <param name="position">Source position.</param>
+        ///
+        /// <returns>Cursor object.</returns>
         ///
         /* --------------------------------------------------------------------- */
         public static Cursor ToCursor(this Position position)

@@ -19,6 +19,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Cube.Forms.Controls;
 using Microsoft.Win32;
 
@@ -33,8 +34,8 @@ namespace Cube.Forms
     /// </summary>
     ///
     /// <remarks>
-    /// 既存の Form クラスに対して、タイトルバーや枠線等を全てクライアント
-    /// 領域と見なすように修正されています。
+    /// All title bars and borders are changed to be considered as client
+    /// areas against the WinForms Form class.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,10 +45,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BorderlessForm
+        /// BorderlessWindow
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the BorderlessWindow class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -66,13 +67,13 @@ namespace Cube.Forms
         /// MaximizeBox
         ///
         /// <summary>
-        /// 最大化ボタンを有効にするかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets a value indicating whether the Maximize button is
+        /// displayed in the caption bar of the window.
         /// </summary>
         ///
         /// <remarks>
-        /// 変更内容を Caption に反映させるため、元々の MaximizeBox
-        /// プロパティを隠ぺいしています。
+        /// In order to reflect the changes in Caption, the original
+        /// MaximizeBox property is hidden.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -94,13 +95,13 @@ namespace Cube.Forms
         /// MinimizeBox
         ///
         /// <summary>
-        /// 最小化ボタンを有効にするかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets a value indicating whether the Minimize button is
+        /// displayed in the caption bar of the form.
         /// </summary>
         ///
         /// <remarks>
-        /// 変更内容を Caption に反映させるため、元々の MinimizeBox
-        /// プロパティを隠ぺいしています。
+        /// In order to reflect the changes in Caption, the original
+        /// MinimizeBox property is hidden.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -122,8 +123,8 @@ namespace Cube.Forms
         /// DropShadow
         ///
         /// <summary>
-        /// フォームの外部に陰影を描画するかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets a value indicating whether to draw shading outside
+        /// the window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -136,7 +137,7 @@ namespace Cube.Forms
         /// Sizable
         ///
         /// <summary>
-        /// サイズ変更を可能にするかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the windows is resizable.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -158,13 +159,13 @@ namespace Cube.Forms
         /// SizeGrip
         ///
         /// <summary>
-        /// サイズを変更するためのグリップ幅を取得または設定します。
-        /// このプロパティは Sizable が無効の場合は無視されます。
+        /// Gets or sets the grip width for resizing. The property is ignored
+        /// when the Sizable property is set to false.
         /// </summary>
         ///
         /// <remarks>
-        /// フォームの上下左右から指定されたピクセル分の領域をサイズ変更の
-        /// ためのグリップとして利用します。
+        /// The class uses the specified pixels from the top, bottom, left,
+        /// and right of the form as a grip for resizing.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -174,45 +175,18 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CornerRadius
-        ///
-        /// <summary>
-        /// 四隅の角の丸みを表す値を取得または設定します。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// TODO: ShowInTaskbar の値を変更した時に Region がリセット
-        /// されてしまうので、該当部分の処理を要検討。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Browsable(true)]
-        [DefaultValue(0)]
-        public int CornerRadius
-        {
-            get => _cornerRadius;
-            set
-            {
-                if (_cornerRadius == value) return;
-                _cornerRadius = value;
-                Region = CreateNewRegion();
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// SystemMenu
         ///
         /// <summary>
-        /// システムメニューを表示するかどうかを示す値を取得または
-        /// 設定します。
+        /// Gets or sets a value indicating whether to display the system
+        /// menu.
         /// </summary>
         ///
         /// <remarks>
-        /// システムメニューの有無は FormBorderStyle の値を変更する事で
-        /// 対応します。 SystemMenu を false に設定した場合は、
-        /// システムメニューの非表示に加えて最小化時のアニメーション等、
-        /// いくつかのシステムによる動作が無効化されます。
+        /// The presence of the system menu is handled by changing the value
+        /// of FormBorderStyle. If SystemMenu is set to false, in addition
+        /// to hiding the system menu, some system behaviors such as
+        /// minimization animation will be disabled.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -220,12 +194,10 @@ namespace Cube.Forms
         [DefaultValue(true)]
         public bool SystemMenu
         {
-            get => base.FormBorderStyle != System.Windows.Forms.FormBorderStyle.None;
+            get => base.FormBorderStyle != FormBorderStyle.None;
             set
             {
-                var dest = value ?
-                           System.Windows.Forms.FormBorderStyle.Sizable :
-                           System.Windows.Forms.FormBorderStyle.None;
+                var dest = value ? FormBorderStyle.Sizable : FormBorderStyle.None;
                 if (base.FormBorderStyle == dest) return;
                 base.FormBorderStyle = dest;
             }
@@ -236,8 +208,7 @@ namespace Cube.Forms
         /// Caption
         ///
         /// <summary>
-        /// キャプション（タイトルバー）を表すコントロールを取得または
-        /// 設定します。
+        /// Get or set the control that represents the caption, aka title bar.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -261,8 +232,8 @@ namespace Cube.Forms
         /// CaptionMonitoring
         ///
         /// <summary>
-        /// キャプションから発生するイベントを監視するかどうかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether to monitor events
+        /// generated by the caption control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -275,18 +246,19 @@ namespace Cube.Forms
         /// CreateParams
         ///
         /// <summary>
-        /// コントロールの作成時に必要な情報をカプセル化します。
+        /// Gets the required creation parameters when the control handle
+        /// is created.
         /// </summary>
         ///
         /// <remarks>
-        /// いくつかのメソッド (メッセージ) では、カスタマイズされた
-        /// 非クライアント領域に関する不都合が存在します。
-        /// そこで、CreateParams から一時的に WS_THICKFRAME 等の値を除去
-        /// する事によって、この不都合を回避します。
+        /// In some methods (messages), there are some inconveniences
+        /// related to customized non-client areas. We avoid this
+        /// inconvenience by temporarily removing values such as
+        /// WS_THICKFRAME from CreateParams property.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected override System.Windows.Forms.CreateParams CreateParams
+        protected override CreateParams CreateParams
         {
             get
             {
@@ -312,13 +284,13 @@ namespace Cube.Forms
         /// FormBorderStyle
         ///
         /// <summary>
-        /// 枠線の表示方法を取得または設定します。
+        /// Gets or sets the border style of the window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.FormBorderStyle FormBorderStyle
+        public new FormBorderStyle FormBorderStyle
         {
             get => base.FormBorderStyle;
             set => base.FormBorderStyle = value;
@@ -337,7 +309,7 @@ namespace Cube.Forms
         /// OnLoad
         ///
         /// <summary>
-        /// フォームのロード時に実行されます。
+        /// Occurs when the Load event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -352,7 +324,7 @@ namespace Cube.Forms
         /// OnActivated
         ///
         /// <summary>
-        /// フォームがアクティブ化された時に実行されます。
+        /// Occurs when the Activated event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -368,7 +340,7 @@ namespace Cube.Forms
         /// OnDeactivate
         ///
         /// <summary>
-        /// フォームが非アクティブ化された時に実行されます。
+        /// Occurs when the Deactivate event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -384,11 +356,11 @@ namespace Cube.Forms
         /// OnNcHitTest
         ///
         /// <summary>
-        /// マウスのヒットテスト発生時に実行されます。
+        /// Occurs when the NcHitTest event is fired.
         /// </summary>
         ///
         /// <remarks>
-        /// サイズ変更用のマウスカーソルを描画するかどうかを決定します。
+        /// Determines whether to draw the mouse cursor for resizing.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -404,26 +376,7 @@ namespace Cube.Forms
             e.Value  = result;
             e.Cancel = e.Value == Position.Caption ? false :
                        e.Value == Position.NoWhere ? true :
-                       WindowState != System.Windows.Forms.FormWindowState.Normal;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnResize
-        ///
-        /// <summary>
-        /// リサイズ時に実行されます。
-        /// </summary>
-        ///
-        /// <remarks>
-        /// サイズ変更用のマウスカーソルを描画するかどうかを決定します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            if (Region != null) Region = CreateNewRegion();
+                       WindowState != FormWindowState.Normal;
         }
 
         /* ----------------------------------------------------------------- */
@@ -431,17 +384,17 @@ namespace Cube.Forms
         /// SetClientSizeCore
         ///
         /// <summary>
-        /// コントロールのクライアント領域のサイズを設定します。
+        /// Sets the client size of the form. This will adjust the bounds
+        /// of the form to make the client size the requested size.
         /// </summary>
         ///
-        /// <remarks>
-        /// 処理内容の詳細については、CreateParams の remarks を参照下さい。
-        /// </remarks>
+        /// <see cref="CreateParams" />
         ///
         /* ----------------------------------------------------------------- */
         protected override void SetClientSizeCore(int x, int y)
         {
-            try {
+            try
+            {
                 _fakeMode = true;
                 base.SetClientSizeCore(x, y);
             }
@@ -453,7 +406,7 @@ namespace Cube.Forms
         /// WndProc
         ///
         /// <summary>
-        /// ウィンドウメッセージを処理します。
+        /// Processes Windows messages.
         /// </summary>
         ///
         /// <remarks>
@@ -467,7 +420,7 @@ namespace Cube.Forms
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref Message m)
         {
             switch (m.Msg)
             {
@@ -519,13 +472,13 @@ namespace Cube.Forms
         /// WhenNcActive
         ///
         /// <summary>
-        /// 非クライアント領域のアクティブ状態が変更された時に実行されます。
+        /// Occurs when the active state of a non-client area is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool WhenNcActive(ref System.Windows.Forms.Message m)
+        private bool WhenNcActive(ref Message m)
         {
-            if (WindowState != System.Windows.Forms.FormWindowState.Minimized)
+            if (WindowState != FormWindowState.Minimized)
             {
                 m.Result = new IntPtr(1);
                 return true;
@@ -538,11 +491,11 @@ namespace Cube.Forms
         /// WhenSystemMenu
         ///
         /// <summary>
-        /// システムメニューの表示コマンドを受信した時に実行されます。
+        /// Occurs when the system menu display command is received.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool WhenSystemMenu(ref System.Windows.Forms.Message m)
+        private bool WhenSystemMenu(ref Message m)
         {
             var point = new Point(
                 (int)m.LParam & 0xffff,
@@ -559,11 +512,12 @@ namespace Cube.Forms
         /// WhenSystemMaximize
         ///
         /// <summary>
-        /// 最大化ボタンのクリック以外で最大化要求が発生した時に実行されます。
+        /// Occurs when maximization is requested by means other than
+        /// clicking the maximize button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool WhenSystemMaximize(ref System.Windows.Forms.Message m)
+        private bool WhenSystemMaximize(ref Message m)
         {
             var point = new Point(
                 (int)m.LParam & 0xffff,
@@ -580,15 +534,15 @@ namespace Cube.Forms
         /// WhenGetMinMaxInfo
         ///
         /// <summary>
-        /// 最小値・最大値を決定する時に実行されます。
+        /// Occurs when determining the minimum and maximum values.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool WhenGetMinMaxInfo(ref System.Windows.Forms.Message m)
+        private bool WhenGetMinMaxInfo(ref Message m)
         {
             if (MaximumSize.Width <= 0 || MaximumSize.Height <= 0) return false;
 
-            var screen = System.Windows.Forms.Screen.FromControl(this);
+            var screen = Screen.FromControl(this);
             var info = (MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(MINMAXINFO));
             info.ptMaxPosition.x = screen.WorkingArea.X - screen.Bounds.X;
             info.ptMaxPosition.y = screen.WorkingArea.Y - screen.Bounds.Y;
@@ -609,7 +563,7 @@ namespace Cube.Forms
         /// WhenMaximizeRequested
         ///
         /// <summary>
-        /// 最大化要求時に実行されます。
+        /// Occurs when the maximization is requested.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -620,7 +574,7 @@ namespace Cube.Forms
         /// WhenMinimizeRequested
         ///
         /// <summary>
-        /// 最小化要求時に実行されます。
+        /// Occurs when the minimization is requested.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -631,7 +585,7 @@ namespace Cube.Forms
         /// WhenCloseRequested
         ///
         /// <summary>
-        /// 画面を閉じる操作が要求された時に実行されます。
+        /// Occurs when the close action is requested.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -646,7 +600,7 @@ namespace Cube.Forms
         /// DoMaximize
         ///
         /// <summary>
-        /// 最大化します。
+        /// Invokes the miximization.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -654,9 +608,9 @@ namespace Cube.Forms
         {
             if (!Sizable || !MaximizeBox) return;
 
-            WindowState = WindowState == System.Windows.Forms.FormWindowState.Normal ?
-                          System.Windows.Forms.FormWindowState.Maximized :
-                          System.Windows.Forms.FormWindowState.Normal;
+            WindowState = WindowState == FormWindowState.Normal ?
+                          FormWindowState.Maximized :
+                          FormWindowState.Normal;
 
             if (Caption != null) Caption.WindowState = WindowState;
         }
@@ -666,13 +620,13 @@ namespace Cube.Forms
         /// DoMinimize
         ///
         /// <summary>
-        /// 最小化します。
+        /// Invokes the minimization.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private void DoMinimize()
         {
-            var state = System.Windows.Forms.FormWindowState.Minimized;
+            var state = FormWindowState.Minimized;
             if (WindowState == state) return;
             WindowState = state;
             if (Caption != null) Caption.WindowState = WindowState;
@@ -683,7 +637,7 @@ namespace Cube.Forms
         /// PopupSystemMenu
         ///
         /// <summary>
-        /// システムメニューを表示します。
+        /// Shows the system menu.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -694,18 +648,18 @@ namespace Cube.Forms
 
             var enabled = 0x0000u; // MF_ENABLED
             var grayed  = 0x0001u; // MF_GRAYED
-            var normal  = (WindowState == System.Windows.Forms.FormWindowState.Normal);
+            var normal  = (WindowState == FormWindowState.Normal);
             var sizable = (Sizable && normal) ? enabled : grayed;
             var movable = (Caption != null && normal) ? enabled : grayed;
 
-            User32.NativeMethods.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
-            User32.NativeMethods.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
+            _ = User32.NativeMethods.EnableMenuItem(menu, 0xf000 /* SC_SIZE */, sizable);
+            _ = User32.NativeMethods.EnableMenuItem(menu, 0xf010 /* SC_MOVE */, movable);
 
             var command = User32.NativeMethods.TrackPopupMenuEx(menu, 0x100 /* TPM_RETURNCMD */,
                 absolute.X, absolute.Y, Handle, IntPtr.Zero);
             if (command == 0) return;
 
-            User32.NativeMethods.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
+            _ = User32.NativeMethods.PostMessage(Handle, 0x0112 /* WM_SYSCOMMAND */, new IntPtr(command), IntPtr.Zero);
         }
 
         /* ----------------------------------------------------------------- */
@@ -713,7 +667,7 @@ namespace Cube.Forms
         /// IsCaption
         ///
         /// <summary>
-        /// Position.Caption を表す領域かどうかを判別します。
+        /// Determines whether the specified point is in the Caption area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -730,7 +684,7 @@ namespace Cube.Forms
         /// UpdateMaximumSize
         ///
         /// <summary>
-        /// フォームの最大サイズを更新します。
+        /// Updates the maximum size of the window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -738,7 +692,7 @@ namespace Cube.Forms
         {
             if (DesignMode) return;
 
-            var size = System.Windows.Forms.Screen.FromControl(this).WorkingArea.Size;
+            var size = Screen.FromControl(this).WorkingArea.Size;
             if (MaximumSize == size) return;
             MaximumSize = size;
         }
@@ -748,7 +702,7 @@ namespace Cube.Forms
         /// Attach
         ///
         /// <summary>
-        /// CaptionControl オブジェクトにイベントハンドラを設定します。
+        /// Sets event handlers to the specified CaptionControl object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -770,7 +724,7 @@ namespace Cube.Forms
         /// Detach
         ///
         /// <summary>
-        /// CaptionBase オブジェクトからイベントハンドラを削除します。
+        /// Remove event handlers from the specified CaptionBase object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -783,20 +737,6 @@ namespace Cube.Forms
             caption.CloseRequested    -= WhenCloseRequested;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateNewRegion
-        ///
-        /// <summary>
-        /// Region オブジェクトを生成します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private Region CreateNewRegion() =>
-            Region.FromHrgn(Gdi32.NativeMethods.CreateRoundRectRgn(
-                0, 0, Width, Height, CornerRadius, CornerRadius
-            ));
-
         #endregion
 
         #endregion
@@ -804,7 +744,6 @@ namespace Cube.Forms
         #region Fields
         private bool _sizable = true;
         private bool _fakeMode = false;
-        private int _cornerRadius = 0;
         private CaptionControl _caption;
         #endregion
     }

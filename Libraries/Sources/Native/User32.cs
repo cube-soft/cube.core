@@ -25,12 +25,14 @@ namespace Cube.Forms.User32
     /// User32.NativeMethods
     ///
     /// <summary>
-    /// user32.dll に定義された関数を宣言するためのクラスです。
+    /// Provides functions defined in user32.dll.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     internal static class NativeMethods
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// SendMessage
@@ -153,6 +155,8 @@ namespace Cube.Forms.User32
         /* ----------------------------------------------------------------- */
         [DllImport(LibName)]
         public static extern bool IsIconic(IntPtr hWnd);
+
+        #endregion
 
         #region Fields
         const string LibName = "user32.dll";

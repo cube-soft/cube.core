@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -24,7 +25,7 @@ namespace Cube.Forms.Controls
     /// ComboBoxExtension
     ///
     /// <summary>
-    /// System.Windows.Forms.ComboBox の拡張用クラスです。
+    /// Provides the extended methods of the ComboBox class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -37,16 +38,14 @@ namespace Cube.Forms.Controls
         /// Bind
         ///
         /// <summary>
-        /// ComboBox オブジェクトに対してデータ・バインディングを
-        /// 実行します。
+        /// Binds the specified ComboBox object with the specified data.
         /// </summary>
         ///
-        /// <param name="src">ComboBox オブジェクト</param>
-        /// <param name="data">データ</param>
+        /// <param name="src">ComboBox object.</param>
+        /// <param name="data">UserData</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Bind<T>(this System.Windows.Forms.ComboBox src,
-            IEnumerable<KeyValuePair<string, T>> data)
+        public static void Bind<T>(this ComboBox src, IEnumerable<KeyValuePair<string, T>> data)
         {
             var selected = src.SelectedValue;
 

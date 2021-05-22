@@ -35,12 +35,15 @@ namespace Cube.Forms
      TypeLibType(TypeLibTypeFlags.FHidden)]
     internal interface DWebBrowserEvents2
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// BeforeNavigate2
         ///
         /// <summary>
-        /// ページ遷移の直前に実行されます。
+        /// Fires before navigation occurs in the given object (on either
+        /// a window element or a frameset element).
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -60,7 +63,8 @@ namespace Cube.Forms
         /// NewWindow3
         ///
         /// <summary>
-        /// 新しいウィンドウが開く直前に実行されます。
+        /// Raised when a new window is to be created. Extends NewWindow2
+        /// with additional information about the new window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +82,7 @@ namespace Cube.Forms
         /// NavigateError
         ///
         /// <summary>
-        /// ページ遷移のエラー時に実行されます。
+        /// Fires when an error occurs during navigation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -90,5 +94,7 @@ namespace Cube.Forms
             [In] ref object statusCode,
             [In, Out] ref bool cancel
         );
+
+        #endregion
     }
 }
