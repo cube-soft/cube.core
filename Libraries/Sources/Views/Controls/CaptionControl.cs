@@ -25,7 +25,7 @@ namespace Cube.Forms.Controls
     /// CaptionControl
     ///
     /// <summary>
-    /// 画面上部のキャプション（タイトルバー）を表すコントロールです。
+    /// Represents the caption control, aka title bar.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,8 +38,8 @@ namespace Cube.Forms.Controls
         /// Active
         ///
         /// <summary>
-        /// 関連付けられているフォームがアクティブかどうかを示す値を取得
-        /// または設定します。
+        /// Gets or sets a value indicating whether the related window is
+        /// active.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -61,7 +61,7 @@ namespace Cube.Forms.Controls
         /// WindowState
         ///
         /// <summary>
-        /// ウィンドウの状態を取得または設定します。
+        /// Gets or sets the state of the window.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -95,7 +95,7 @@ namespace Cube.Forms.Controls
         /// MaximizeControl
         ///
         /// <summary>
-        /// 最大化ボタンを表すコントロールを取得します。
+        /// Gets the control that represents the maximize button.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -107,9 +107,11 @@ namespace Cube.Forms.Controls
             protected set
             {
                 if (_maximize == value) return;
-                if (_maximize != null) _maximize.Click -= WhenMaximizeRequested;
+
+                void handler(object s, EventArgs e) => OnMaximizeRequested(e);
+                if (_maximize != null) _maximize.Click -= handler;
                 _maximize = value;
-                if (_maximize != null) _maximize.Click += WhenMaximizeRequested;
+                if (_maximize != null) _maximize.Click += handler;
             }
         }
 
@@ -118,7 +120,7 @@ namespace Cube.Forms.Controls
         /// MinimizeControl
         ///
         /// <summary>
-        /// 最小化ボタンを表すコントロールを取得します。
+        /// Gets the control that represents the minimize button.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -130,9 +132,11 @@ namespace Cube.Forms.Controls
             protected set
             {
                 if (_minimize == value) return;
-                if (_minimize != null) _minimize.Click -= WhenMinimizeRequested;
+
+                void handler(object s, EventArgs e) => OnMinmizeRequested(e);
+                if (_minimize != null) _minimize.Click -= handler;
                 _minimize = value;
-                if (_minimize != null) _minimize.Click += WhenMinimizeRequested;
+                if (_minimize != null) _minimize.Click += handler;
             }
         }
 
@@ -141,7 +145,7 @@ namespace Cube.Forms.Controls
         /// CloseControl
         ///
         /// <summary>
-        /// 閉じるボタンを表すコントロールを取得します。
+        /// Gets the control that represents the close button.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -153,9 +157,11 @@ namespace Cube.Forms.Controls
             protected set
             {
                 if (_close == value) return;
-                if (_close != null) _close.Click -= WhenCloseRequested;
+
+                void handler(object s, EventArgs e) => OnCloseRequested(e);
+                if (_close != null) _close.Click -= handler;
                 _close = value;
-                if (_close != null) _close.Click += WhenCloseRequested;
+                if (_close != null) _close.Click += handler;
             }
         }
 
@@ -170,7 +176,7 @@ namespace Cube.Forms.Controls
         /// CloseRequested
         ///
         /// <summary>
-        /// 画面を閉じる操作が要求された時に発生するイベントです。
+        /// Occurs when the close command is requested.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -181,12 +187,11 @@ namespace Cube.Forms.Controls
         /// OnCloseRequested
         ///
         /// <summary>
-        /// CloseRequested イベントを発生させます。
+        /// Raises the CloseRequested event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnCloseRequested(EventArgs e) =>
-            CloseRequested?.Invoke(this, e);
+        protected virtual void OnCloseRequested(EventArgs e) => CloseRequested?.Invoke(this, e);
 
         #endregion
 
@@ -197,7 +202,7 @@ namespace Cube.Forms.Controls
         /// MaximizeRequested
         ///
         /// <summary>
-        /// 最大化が要求された時に発生するイベントです。
+        /// Occurs when the maximize command is requested.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -208,12 +213,11 @@ namespace Cube.Forms.Controls
         /// OnMaximizeRequested
         ///
         /// <summary>
-        /// MaximizeRequested イベントを発生させます。
+        /// Raises the MaximizeRequested event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnMaximizeRequested(EventArgs e) =>
-            MaximizeRequested?.Invoke(this, e);
+        protected virtual void OnMaximizeRequested(EventArgs e) => MaximizeRequested?.Invoke(this, e);
 
         #endregion
 
@@ -224,7 +228,7 @@ namespace Cube.Forms.Controls
         /// Maximized
         ///
         /// <summary>
-        /// 最大化時に発生するイベントです。
+        /// Occurs when the windows is maximized.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -235,7 +239,7 @@ namespace Cube.Forms.Controls
         /// OnMaximized
         ///
         /// <summary>
-        /// Maximized イベントを発生させます。
+        /// Raises the Maximized event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -250,7 +254,7 @@ namespace Cube.Forms.Controls
         /// MinimizeRequested
         ///
         /// <summary>
-        /// 最小化が要求された時に発生するイベントです。
+        /// Occurs when the minimize command is requested.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -261,12 +265,11 @@ namespace Cube.Forms.Controls
         /// OnMinimizeRequested
         ///
         /// <summary>
-        /// MinimizeRequested イベントを発生させます。
+        /// Raises the MinimizeRequested event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        protected virtual void OnMinmizeRequested(EventArgs e) =>
-            MinimizeRequested?.Invoke(this, e);
+        protected virtual void OnMinmizeRequested(EventArgs e) => MinimizeRequested?.Invoke(this, e);
 
         #endregion
 
@@ -277,7 +280,7 @@ namespace Cube.Forms.Controls
         /// Minimized
         ///
         /// <summary>
-        /// 最小化時に発生するイベントです。
+        /// Occurs when the window is minimized.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -288,7 +291,7 @@ namespace Cube.Forms.Controls
         /// OnMinimized
         ///
         /// <summary>
-        /// Minimized イベントを発生させます。
+        /// Raises the Minimized event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -303,7 +306,8 @@ namespace Cube.Forms.Controls
         /// Normalized
         ///
         /// <summary>
-        /// 元の大きさに戻った時に発生するイベントです。
+        /// Occurs when the window is normalized, i.e., unmaximized or
+        /// unminimized.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -314,7 +318,7 @@ namespace Cube.Forms.Controls
         /// OnNormalized
         ///
         /// <summary>
-        /// Normalized イベントを発生させます。
+        /// Raises the Normalized event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -329,7 +333,7 @@ namespace Cube.Forms.Controls
         /// Activated
         ///
         /// <summary>
-        /// アクティブ化された時に発生するイベントです。
+        /// Occurs when the window is active.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -340,7 +344,7 @@ namespace Cube.Forms.Controls
         /// OnActivated
         ///
         /// <summary>
-        /// Activated イベントを発生させます。
+        /// Raises the Activated event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -355,7 +359,7 @@ namespace Cube.Forms.Controls
         /// Deactivate
         ///
         /// <summary>
-        /// 非アクティブ化された時に発生するイベントです。
+        /// Occurs when the window is deactive.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -366,7 +370,7 @@ namespace Cube.Forms.Controls
         /// OnDeactivate
         ///
         /// <summary>
-        /// Deactivate イベントを発生させます。
+        /// Raises the Deactivate event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -374,12 +378,6 @@ namespace Cube.Forms.Controls
 
         #endregion
 
-        #endregion
-
-        #region Handlers
-        private void WhenMaximizeRequested(object s, EventArgs e) => OnMaximizeRequested(e);
-        private void WhenMinimizeRequested(object s, EventArgs e) => OnMinmizeRequested(e);
-        private void WhenCloseRequested(object s, EventArgs e) => OnCloseRequested(e);
         #endregion
 
         #region Fields

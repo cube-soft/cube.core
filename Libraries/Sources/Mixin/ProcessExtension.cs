@@ -18,7 +18,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Cube.Forms.Processes
+namespace Cube.Mixin.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -48,8 +48,11 @@ namespace Cube.Forms.Processes
         {
             var h = src?.MainWindowHandle ?? IntPtr.Zero;
             if (h == IntPtr.Zero) return;
-            if (User32.NativeMethods.IsIconic(h)) _ = User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
-            _ = User32.NativeMethods.SetForegroundWindow(h);
+            if (Cube.Forms.User32.NativeMethods.IsIconic(h))
+            {
+                _ = Cube.Forms.User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
+            }
+            _ = Cube.Forms.User32.NativeMethods.SetForegroundWindow(h);
         }
 
         #endregion

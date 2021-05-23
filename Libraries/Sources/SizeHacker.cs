@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Cube.Forms.Controls;
+using Cube.Mixin.Forms.Controls;
 
 namespace Cube.Forms
 {

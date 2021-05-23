@@ -16,53 +16,45 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Controls
+namespace Cube.Mixin.Forms.Controls
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ListViewExtension
+    /// ComboBoxExtension
     ///
     /// <summary>
-    /// Provides extended methods of the ListView class.
+    /// Provides the extended methods of the ComboBox class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ListViewExtension
+    public static class ComboBoxExtension
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Ascend
+        /// Bind
         ///
         /// <summary>
-        /// Sorts the specified SelectedIndexCollection object in ascending
-        /// order.
+        /// Binds the specified ComboBox object with the specified data.
         /// </summary>
         ///
-        /// <param name="src">Source collection.</param>
+        /// <param name="src">ComboBox object.</param>
+        /// <param name="data">UserData</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Ascend(this ListView.SelectedIndexCollection src) =>
-            src.Cast<int>().OrderBy(i => i);
+        public static void Bind<T>(this ComboBox src, IEnumerable<KeyValuePair<string, T>> data)
+        {
+            var selected = src.SelectedValue;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Descend
-        ///
-        /// <summary>
-        /// Sorts the specified SelectedIndexCollection object in
-        /// descending order.
-        /// </summary>
-        ///
-        /// <param name="src">Source collection.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Descend(ListView.SelectedIndexCollection src) =>
-            src.Cast<int>().OrderByDescending(i => i);
+            src.DataSource    = data;
+            src.DisplayMember = "Key";
+            src.ValueMember   = "Value";
+
+            if (selected is T) src.SelectedValue = selected;
+        }
 
         #endregion
     }

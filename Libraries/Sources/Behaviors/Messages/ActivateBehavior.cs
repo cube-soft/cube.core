@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Windows.Forms;
-using Cube.Forms.Controls;
+using Cube.Mixin.Forms;
 
 namespace Cube.Forms.Behaviors
 {

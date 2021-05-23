@@ -18,7 +18,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Forms.Controls;
+using Cube.Mixin.Forms;
 using Cube.Mixin.Tasks;
 
 namespace Cube.Forms.Behaviors

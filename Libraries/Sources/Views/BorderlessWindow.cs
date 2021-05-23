@@ -21,6 +21,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Cube.Forms.Controls;
+using Cube.Mixin.Forms.Controls;
 using Microsoft.Win32;
 
 namespace Cube.Forms

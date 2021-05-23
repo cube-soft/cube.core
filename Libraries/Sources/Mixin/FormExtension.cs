@@ -21,7 +21,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Cube.Mixin.String;
 
-namespace Cube.Forms.Controls
+namespace Cube.Mixin.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -189,7 +189,7 @@ namespace Cube.Forms.Controls
             var pos  = src.Location;
             var size = src.ClientSize;
 
-            if (User32.NativeMethods.SetWindowPos(src.Handle,
+            if (Cube.Forms.User32.NativeMethods.SetWindowPos(src.Handle,
                 (IntPtr)(-1), // HWND_TOPMOST
                 0, 0, 0, 0,
                 0x0413 // SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSENDCHANGING | SWP_NOSIZE
