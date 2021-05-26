@@ -17,47 +17,10 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
 
 namespace Cube
 {
-    #region IPresentable
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IPresentable
-    ///
-    /// <summary>
-    /// Represents the interface of presentable (Controller, Presenter,
-    /// ViewModel, and so on) components.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IPresentable : INotifyPropertyChanged, IDisposable
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Subscribes the message of type T.
-        /// </summary>
-        ///
-        /// <typeparam name="T">message type.</typeparam>
-        ///
-        /// <param name="callback">
-        /// Action to be invoked when the message of type T is published.
-        /// </param>
-        ///
-        /// <returns>Object to clear the subscription.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        IDisposable Subscribe<T>(Action<T> callback);
-    }
-
-    #endregion
-
     #region PresentableBase
 
     /* --------------------------------------------------------------------- */
@@ -65,12 +28,12 @@ namespace Cube
     /// PresentableBase
     ///
     /// <summary>
-    /// Represents the base behavior of presentable (Controller, Presenter,
-    /// ViewModel, and so on) components.
+    /// Represents the base behavior of presentable components. (Controller,
+    /// Presenter, ViewModel, and so on)
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresentableBase : ObservableBase, IPresentable
+    public abstract class PresentableBase : ObservableBase, IBindable
     {
         #region Constructors
 

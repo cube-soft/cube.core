@@ -21,6 +21,43 @@ using Cube.Collections;
 
 namespace Cube
 {
+    #region IAggregator
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IAggregator
+    ///
+    /// <summary>
+    /// Represents the interface of the aggregator.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IAggregator
+    {
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Subscribes the message of type T.
+        /// </summary>
+        ///
+        /// <typeparam name="T">Message type.</typeparam>
+        ///
+        /// <param name="callback">
+        /// Callback function for the message of type T.
+        /// </param>
+        ///
+        /// <returns>Object to clear the subscription.</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IDisposable Subscribe<T>(Action<T> callback);
+    }
+
+    #endregion
+
+    #region Aggregator
+
     /* --------------------------------------------------------------------- */
     ///
     /// Aggregator
@@ -30,7 +67,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class Aggregator
+    public sealed class Aggregator : IAggregator
     {
         #region Methods
 
@@ -85,4 +122,6 @@ namespace Cube
         private readonly ConcurrentDictionary<Type, Subscription<Action<object>>> _subscription = new();
         #endregion
     }
+
+    #endregion
 }
