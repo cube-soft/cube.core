@@ -40,9 +40,9 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /// <param name="view">Source view.</param>
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public CloseBehavior(Form view, IPresentable vm) : base(vm, _ => view.Close()) { }
+        public CloseBehavior(Form view, IAggregator aggregator) : base(aggregator, _ => view.Close()) { }
     }
 }

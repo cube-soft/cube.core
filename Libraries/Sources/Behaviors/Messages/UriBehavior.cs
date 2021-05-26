@@ -40,9 +40,9 @@ namespace Cube.Forms.Behaviors
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public UriBehavior(IPresentable vm) : base(vm, e => Process.Start(e.ToString())) { }
+        public UriBehavior(IAggregator aggregator) : base(aggregator, e => Process.Start(e.ToString())) { }
     }
 }

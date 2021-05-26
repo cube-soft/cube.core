@@ -41,10 +41,10 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /// <param name="view">Source view.</param>
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ActivateBehavior(Form view, IPresentable vm) : base(vm, e =>
+        public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>
         {
             if (view.WindowState == FormWindowState.Minimized) view.WindowState = FormWindowState.Normal;
             view.Activate();

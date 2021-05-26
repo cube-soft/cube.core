@@ -19,7 +19,7 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IBindable
+    /// IBinder
     ///
     /// <summary>
     /// Represents the interface that a view can be bindable with a
@@ -27,7 +27,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IBindable
+    public interface IBinder
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -40,6 +40,6 @@ namespace Cube.Forms
         /// <param name="src">Object to bind.</param>
         ///
         /* ----------------------------------------------------------------- */
-        void Bind(IPresentable src);
+        void Bind(IBindable src);
     }
 }

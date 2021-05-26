@@ -43,10 +43,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileBehavior(IPresentable vm) : base (vm, e =>
+        public OpenFileBehavior(IAggregator aggregator) : base (aggregator, e =>
         {
             var dialog = new OpenFileDialog
             {
@@ -90,10 +90,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileBehavior(IPresentable vm) : base(vm, e =>
+        public SaveFileBehavior(IAggregator aggregator) : base(aggregator, e =>
         {
             var dialog = new SaveFileDialog
             {
@@ -137,10 +137,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenDirectoryBehavior(IPresentable vm) : base(vm, e =>
+        public OpenDirectoryBehavior(IAggregator aggregator) : base(aggregator, e =>
         {
             var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 

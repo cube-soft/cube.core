@@ -42,11 +42,11 @@ namespace Cube.Forms.Demo
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">ViewModel object.</param>
         /// <param name="view">View object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ShowVersionBehavior(BindableWindow view, IPresentable vm) : base(vm)
+        public ShowVersionBehavior(BindableWindow view, IAggregator aggregator) : base(aggregator)
         {
             _icon = view.Icon;
             _text = view.Text;
@@ -72,7 +72,7 @@ namespace Cube.Forms.Demo
                 Icon = _icon,
                 Text = _text,
             };
-            view.ShowDialog();
+            _ = view.ShowDialog();
         }
 
         #endregion

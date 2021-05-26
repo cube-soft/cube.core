@@ -46,13 +46,13 @@ namespace Cube.Forms.Behaviors
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         /// <param name="action">
         /// Action to be invoked when a message is received.
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBehavior(IPresentable vm, Action<TMessage> action) : base(vm)
+        public MessageBehavior(IAggregator aggregator, Action<TMessage> action) : base(aggregator)
         {
             _action = action;
         }
@@ -110,12 +110,12 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected MessageBehaviorBase(IPresentable vm)
+        protected MessageBehaviorBase(IAggregator aggregator)
         {
-            _subscriber = vm.Subscribe<TMessage>(Invoke);
+            _subscriber = aggregator.Subscribe<TMessage>(Invoke);
         }
 
         #endregion

@@ -32,7 +32,7 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Form, new()
-        where TViewModel : IPresentable
+        where TViewModel : IBindable
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -43,13 +43,13 @@ namespace Cube.Forms.Behaviors
         /// specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="vm">Bindable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IPresentable vm) : base(vm, e =>
+        public ShowBehavior(IBindable vm) : base(vm, e =>
         {
             var view = new TView();
-            if (view is IBindable binder) binder.Bind(e);
+            if (view is IBinder binder) binder.Bind(e);
             view.Show();
         }) { }
     }
@@ -69,7 +69,7 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Form, new()
-        where TViewModel : IPresentable
+        where TViewModel : IBindable
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -80,13 +80,13 @@ namespace Cube.Forms.Behaviors
         /// with the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="vm">Bindable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowDialogBehavior(IPresentable vm) : base(vm, e =>
+        public ShowDialogBehavior(IBindable vm) : base(vm, e =>
         {
             using var view = new TView();
-            if (view is IBindable binder) binder.Bind(e);
+            if (view is IBinder binder) binder.Bind(e);
             _ = view.ShowDialog();
         }) { }
     }

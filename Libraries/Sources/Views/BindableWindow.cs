@@ -31,7 +31,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableWindow : Form, IBindable
+    public class BindableWindow : Form, IBinder
     {
         #region Constructors
 
@@ -55,14 +55,14 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Presenter
+        /// Bindable
         ///
         /// <summary>
-        /// Gets or the presenter object.
+        /// Gets the bindable object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected IPresentable Presenter { get; private set; }
+        protected IBindable Bindable { get; private set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -84,17 +84,18 @@ namespace Cube.Forms
         /// Bind
         ///
         /// <summary>
-        /// Binds the window to the specified object. If the Presenter is
-        /// already set, the specified object is ignored.
+        /// Binds the window to the specified object.
+        /// If the Bindable property is already set, the specified object
+        /// is ignored.
         /// </summary>
         ///
         /// <param name="src">Object to bind.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Bind(IPresentable src)
+        public void Bind(IBindable src)
         {
-            if (Presenter != null) return;
-            Presenter = src;
+            if (Bindable != null) return;
+            Bindable = src;
             OnBind(src);
         }
 
@@ -109,7 +110,7 @@ namespace Cube.Forms
         /// <param name="src">Object to bind.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual void OnBind(IPresentable src) { }
+        protected virtual void OnBind(IBindable src) { }
 
         #endregion
 
@@ -140,8 +141,8 @@ namespace Cube.Forms
 
                 foreach (var behavior in Behaviors) behavior.Dispose();
                 Behaviors.Clear();
-                Presenter?.Dispose();
-                Presenter = null;
+                Bindable?.Dispose();
+                Bindable = null;
             }
             finally { base.Dispose(disposing); }
         }

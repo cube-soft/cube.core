@@ -51,10 +51,10 @@ namespace Cube.Forms.Behaviors
         /// the specified arguments.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public NoticeBehavior(IPresentable vm) : this(default, vm) { }
+        public NoticeBehavior(IAggregator aggregator) : this(default, aggregator) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -66,10 +66,11 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /// <param name="view">Shared view object.</param>
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public NoticeBehavior(NoticeWindow view, IPresentable vm) : base(vm) { View = view; }
+        public NoticeBehavior(NoticeWindow view, IAggregator aggregator) :
+            base(aggregator) { View = view; }
 
         #endregion
 

@@ -42,10 +42,10 @@ namespace Cube.Forms.Behaviors
         /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="vm">Presentable object.</param>
+        /// <param name="aggregator">Aggregator object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DialogBehavior(IPresentable vm) : base(vm, e =>
+        public DialogBehavior(IAggregator aggregator) : base(aggregator, e =>
         {
             var icon    = Icons[e.Icon];
             var buttons = Buttons[e.Buttons];
