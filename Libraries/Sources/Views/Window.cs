@@ -32,7 +32,7 @@ namespace Cube.Forms
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Window : BindableWindow
+    public class Window : WindowBase
     {
         #region Constructors
 

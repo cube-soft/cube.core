@@ -24,27 +24,27 @@ namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableWindow
+    /// WindowBase
     ///
     /// <summary>
     /// Represents the base class of WinForms-based IBindable implementation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableWindow : Form, IBinder
+    public class WindowBase : Form, IBinder
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BindableWindow
+        /// WindowBase
         ///
         /// <summary>
         /// Initializes a new instance of the BindableWindow class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableWindow()
+        public WindowBase()
         {
             Behaviors.Add(Locale.Subscribe(this.UpdateCulture));
         }

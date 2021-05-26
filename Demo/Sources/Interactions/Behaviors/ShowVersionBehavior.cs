@@ -46,7 +46,7 @@ namespace Cube.Forms.Demo
         /// <param name="aggregator">Aggregator object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ShowVersionBehavior(BindableWindow view, IAggregator aggregator) : base(aggregator)
+        public ShowVersionBehavior(WindowBase view, IAggregator aggregator) : base(aggregator)
         {
             _icon = view.Icon;
             _text = view.Text;
