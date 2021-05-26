@@ -25,7 +25,7 @@ namespace Cube.Forms.Controls
     /// ToggleButton
     ///
     /// <summary>
-    /// トグルボタンを作成するためのクラスです。
+    /// Represents the toggle button control.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,7 +38,7 @@ namespace Cube.Forms.Controls
         /// ToggleButton
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ToggleButton class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -57,7 +57,7 @@ namespace Cube.Forms.Controls
         /// Style
         ///
         /// <summary>
-        /// ボタンの外観を取得または設定します。
+        /// Gets the styles of the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -70,7 +70,7 @@ namespace Cube.Forms.Controls
         /// Content
         ///
         /// <summary>
-        /// ボタンに表示する内容を取得または設定します。
+        /// Gets or sets the content to be displayed on the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -91,7 +91,8 @@ namespace Cube.Forms.Controls
         /// ShowFocusCues
         ///
         /// <summary>
-        /// フォーカス時に枠線を描画するかどうかを取得します。
+        /// Gets the value indicating whether or not to display a border
+        /// when focusing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -106,7 +107,7 @@ namespace Cube.Forms.Controls
         /// BackColor
         ///
         /// <summary>
-        /// 背景色を取得または設定します。
+        /// Gets or sets the background color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -120,10 +121,10 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// BackColor
+        /// BackgroundImage
         ///
         /// <summary>
-        /// 背景イメージを取得または設定します。
+        /// Gets or sets the background image.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -140,21 +141,21 @@ namespace Cube.Forms.Controls
         /// FlatAppearance
         ///
         /// <summary>
-        /// 表示内容を取得します。
+        /// Gets the appearance of the border and the colors used to
+        /// indicate check state and mouse state.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public new System.Windows.Forms.FlatButtonAppearance FlatAppearance =>
-            base.FlatAppearance;
+        public new System.Windows.Forms.FlatButtonAppearance FlatAppearance => base.FlatAppearance;
 
         /* ----------------------------------------------------------------- */
         ///
         /// FlatStyle
         ///
         /// <summary>
-        /// 表示方法を取得または設定します。
+        /// Gets or sets the flat style appearance of the button control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -171,7 +172,7 @@ namespace Cube.Forms.Controls
         /// ForeColor
         ///
         /// <summary>
-        /// 前景色を取得または設定します。
+        /// Gets or sets the foreground color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -188,7 +189,7 @@ namespace Cube.Forms.Controls
         /// Image
         ///
         /// <summary>
-        /// 表示イメージを取得または設定します。
+        /// Gets or sets the image that is displayed on a button control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -205,7 +206,8 @@ namespace Cube.Forms.Controls
         /// ImageIndex
         ///
         /// <summary>
-        /// イメージを取得するためのインデックスを取得または設定します。
+        /// Gets or sets the image list index value of the image displayed
+        /// on the button control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -222,7 +224,7 @@ namespace Cube.Forms.Controls
         /// ImageKey
         ///
         /// <summary>
-        /// イメージを取得するためのキーを取得または設定します。
+        /// Gets or sets the key accessor for the image in the ImageList.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -239,7 +241,8 @@ namespace Cube.Forms.Controls
         /// ImageList
         ///
         /// <summary>
-        /// イメージリストを取得または設定します。
+        /// Gets or sets the ImageList that contains the Image displayed
+        /// on a button control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -256,7 +259,7 @@ namespace Cube.Forms.Controls
         /// Text
         ///
         /// <summary>
-        /// 表示テキストを取得または設定します。
+        /// Gets or sets the text associated with this control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -273,7 +276,8 @@ namespace Cube.Forms.Controls
         /// TextImageRelation
         ///
         /// <summary>
-        /// テキストとイメージの位置関係を取得または設定します。
+        /// Gets or sets the position of text and image relative to each
+        /// other.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -290,7 +294,8 @@ namespace Cube.Forms.Controls
         /// UseVisualStyleBakColor
         ///
         /// <summary>
-        /// VisualStyle を適用するかどうかを示す値を取得または設定します。
+        /// Gets or sets a value that determines if the background is drawn
+        /// using visual styles, if supported.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -311,7 +316,7 @@ namespace Cube.Forms.Controls
         /// Appearance
         ///
         /// <summary>
-        /// 表示方法を取得または設定します。
+        /// Gets or sets a value determining the appearance.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -327,7 +332,7 @@ namespace Cube.Forms.Controls
         /// CheckAlign
         ///
         /// <summary>
-        /// チェックボックスの表示位置を取得または設定します。
+        /// Gets or sets the location of the check box portion.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

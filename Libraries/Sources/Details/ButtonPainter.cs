@@ -27,7 +27,7 @@ namespace Cube.Forms
     /// ButtonPainter
     ///
     /// <summary>
-    /// ボタンの外観を描画するためのクラスです。
+    /// Provides functionality to draw the appearance of the button.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,8 +40,11 @@ namespace Cube.Forms
         /// ButtonPainter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ButtonPainter class with the
+        /// specified view.
         /// </summary>
+        ///
+        /// <param name="view">View object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public ButtonPainter(System.Windows.Forms.ButtonBase view)
@@ -67,7 +70,7 @@ namespace Cube.Forms
         /// View
         ///
         /// <summary>
-        /// 描画する対象となるボタンオブジェクトを取得します。
+        /// Get the button object to draw.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +81,7 @@ namespace Cube.Forms
         /// Content
         ///
         /// <summary>
-        /// ボタンに表示する内容を取得または設定します。
+        /// Gets or sets the content to be displayed on the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -89,7 +92,7 @@ namespace Cube.Forms
         /// Style
         ///
         /// <summary>
-        /// ボタンの基本となる外観を定義したオブジェクトを取得します。
+        /// Get the object that defines the basic appearance of the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -100,7 +103,8 @@ namespace Cube.Forms
         /// Checked
         ///
         /// <summary>
-        /// ボタンがチェック状態かどうかを判別します。
+        /// Gets a value indicating whether the button is in the checked
+        /// state.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -111,7 +115,7 @@ namespace Cube.Forms
         /// MouseDown
         ///
         /// <summary>
-        /// マウスがクリック状態かどうかを判別します。
+        /// Gets a value indicating whether the mouse is in the click state.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -122,7 +126,8 @@ namespace Cube.Forms
         /// MouseOver
         ///
         /// <summary>
-        /// マウスポインタがボタンの境界範囲内に存在するかを判別します。
+        /// Gets a value indicating whether the mouse pointer is within
+        /// the boundary of the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -137,7 +142,7 @@ namespace Cube.Forms
         /// OnPaint
         ///
         /// <summary>
-        /// 描画対象となるボタンの Paint イベントを捕捉するハンドラです。
+        /// Occurs when painting a button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -160,7 +165,7 @@ namespace Cube.Forms
         /// OnMouseEnter
         ///
         /// <summary>
-        /// 描画対象となるボタンの MouseEnter イベントを捕捉するハンドラです。
+        /// Occurs when the mouse is within the boundary of the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -171,7 +176,7 @@ namespace Cube.Forms
         /// OnMouseLeave
         ///
         /// <summary>
-        /// 描画対象となるボタンの MouseLeave イベントを捕捉するハンドラです。
+        /// Occurs when the mouse leaves the boundary of the button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -182,7 +187,7 @@ namespace Cube.Forms
         /// OnMouseDown
         ///
         /// <summary>
-        /// 描画対象となるボタンの MouseDown イベントを捕捉するハンドラです。
+        /// Occurs when the mouse is down.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -194,7 +199,7 @@ namespace Cube.Forms
         /// OnMouseUp
         ///
         /// <summary>
-        /// 描画対象となるボタンの MouseUp イベントを捕捉するハンドラです。
+        /// Occurs when the mouse is up.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -213,8 +218,7 @@ namespace Cube.Forms
         /// DisableSystemStyle
         ///
         /// <summary>
-        /// 外観の描画に関して ButtonBase オブジェクトと競合するプロパティを
-        /// 無効にします。
+        /// Disables the properties related to drawing the system's appearance.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -241,33 +245,33 @@ namespace Cube.Forms
         /// Select
         ///
         /// <summary>
-        /// 描画に使用するオブジェクトを選択して返します。
+        /// Selects the object to be used for drawing
         /// </summary>
         ///
-        /// <param name="normal">通常時のオブジェクト</param>
-        /// <param name="check">ボタンがチェック状態のオブジェクト</param>
-        /// <param name="over">マウスオーバ時のオブジェクト</param>
-        /// <param name="down">マウスクリック時のオブジェクト</param>
-        /// <param name="ignore">一致する時に無視する値</param>
+        /// <param name="normal">Normal state.</param>
+        /// <param name="check">Checked state.</param>
+        /// <param name="over">Mouse over state.</param>
+        /// <param name="down">Mouse down state.</param>
+        /// <param name="ignore">Ignored state.</param>
         ///
         /// <remarks>
-        /// オブジェクトを使用する優先順位は以下の通りです。
+        /// The order of preference for using objects is as follows:
         ///
-        ///   1. マウスクリック時のオブジェクト (down)
-        ///   2. マウスオーバ時のオブジェクト (over)
-        ///   3. ボタンがチェック状態のオブジェクト (check)
-        ///   4. 通常時のオブジェクト (normal)
+        ///   1. MouseDown object (down)
+        ///   2. MouseOver object (over)
+        ///   3. Checked object (check)
+        ///   4. Normal (normal)
         ///
-        /// 例えば、マウスクリック時 (IsMouseDown == true) の選択方法は、
-        /// down が有効なオブジェクトであれば down を使用し、down が無効で
-        /// over が有効なオブジェクトであれば over を使用します。
-        /// そして、両方とも無効なオブジェクトであれば check と normal の
-        /// 内、より適切なオブジェクトを使用します。
+        /// For example, when the mouse is clicked (IsMouseDown == true),
+        /// the selection method is down if the object has down enabled,
+        /// and over if the object has down disabled and over enabled.
+        /// If down is disabled and over is enabled, use over.
+        /// And if both are disabled, use the more appropriate object
+        /// between check and normal.
         ///
-        /// check と normal どちらのオブジェクトを使用するかについては、
-        /// ボタンがチェック状態 (IsChecked == true) であり、かつ、check が
-        /// 有効なオブジェクトであれば check を、それ以外の場合は normal を
-        /// 使用します。
+        /// As for whether to use the check or normal object,
+        /// if the button is in the checked state (IsChecked == true) and
+        /// check is a valid object, then use check, otherwise use normal.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -286,7 +290,7 @@ namespace Cube.Forms
         /// GetBorderColor
         ///
         /// <summary>
-        /// 現在の境界線の色を取得します。
+        /// Gets the border color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -299,10 +303,10 @@ namespace Cube.Forms
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetBorderColor
+        /// GetBorderSize
         ///
         /// <summary>
-        /// 現在の境界線のサイズ (ピクセル単位) を取得します。
+        /// Gets the border size in pixels.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -319,13 +323,13 @@ namespace Cube.Forms
         /// GetBackColor
         ///
         /// <summary>
-        /// 現在の背景色を取得します。
+        /// Gets the background color.
         /// </summary>
         ///
         /// <remarks>
-        /// 背景色の描画を行わない場合、FocusCue 等の意図しないものが描画
-        /// される可能性があるため、可能な限り Color.Empty 以外の値を返す
-        /// ようにしています。
+        /// If the background color is not drawn, there is a possibility that
+        /// something unintended, such as FocusCue, will be drawn, so we try
+        /// to return a value other than Color.Empty whenever possible.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -352,7 +356,7 @@ namespace Cube.Forms
         /// GetContentColor
         ///
         /// <summary>
-        /// 現在のテキスト色を取得します。
+        /// Gets the content color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -368,7 +372,7 @@ namespace Cube.Forms
         /// GetImage
         ///
         /// <summary>
-        /// 現在のイメージを取得します。
+        /// Gets the image.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -384,7 +388,7 @@ namespace Cube.Forms
         /// GetBackgroundImage
         ///
         /// <summary>
-        /// 現在の背景イメージを取得します。
+        /// Gets the background image.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -400,7 +404,7 @@ namespace Cube.Forms
         /// GetDrawBounds
         ///
         /// <summary>
-        /// 描画領域を表すオブジェクトを取得します。
+        /// Gets the drawing area.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -422,7 +426,7 @@ namespace Cube.Forms
     /// RadioButtonPainter
     ///
     /// <summary>
-    /// ラジオボタンの外観を描画するためのクラスです。
+    /// Provides functionality to draw the appearance of the radio button.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -435,8 +439,11 @@ namespace Cube.Forms
         /// RadioButtonPainter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the RadioButtonPainter class
+        /// with the specified view.
         /// </summary>
+        ///
+        /// <param name="view">View object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public RadioButtonPainter(System.Windows.Forms.RadioButton view) : base(view)
@@ -455,8 +462,7 @@ namespace Cube.Forms
         /// OnCheckedChanged
         ///
         /// <summary>
-        /// 描画対象となるボタンの CheckedChanged イベントを捕捉する
-        /// ハンドラです。
+        /// Occurs when the checked state of the button is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -475,7 +481,7 @@ namespace Cube.Forms
     /// ToggleButtonPainter
     ///
     /// <summary>
-    /// トグルボタンの外観を描画するためのクラスです。
+    /// Provides functionality to draw the appearance of the toggle button.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -488,8 +494,11 @@ namespace Cube.Forms
         /// ToggleButtonPainter
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ToggleButtonPainter class
+        /// with the specified view.
         /// </summary>
+        ///
+        /// <param name="view">View object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public ToggleButtonPainter(System.Windows.Forms.CheckBox view) : base(view)
@@ -508,8 +517,7 @@ namespace Cube.Forms
         /// OnCheckedChanged
         ///
         /// <summary>
-        /// 描画対象となるボタンの CheckedChanged イベントを捕捉する
-        /// ハンドラです。
+        /// Occurs when the checked state of the button is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

@@ -25,7 +25,7 @@ namespace Cube.Forms.Controls
     /// FontButton
     ///
     /// <summary>
-    /// フォントを設定するためのボタンクラスです。
+    /// Represents a button control for setting the font.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -38,9 +38,9 @@ namespace Cube.Forms.Controls
         /// AllowScriptChange
         ///
         /// <summary>
-        /// [スクリプト] コンボボックスに指定されている文字セットを
-        /// ユーザーが変更し、現在表示されている文字セットとは異なる
-        /// 文字セットを表示できるかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the user can change the
+        /// character set specified in the Script combo box to display a
+        /// different character set than the one currently displayed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,9 +53,8 @@ namespace Cube.Forms.Controls
         /// AllowSimulations
         ///
         /// <summary>
-        /// ダイアログ ボックスで、 Graphics Device Interface (GDI) に
-        /// おけるフォント表示をシミュレーションできるかどうかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether the dialog box can
+        /// simulate font display in the GDI.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -68,8 +67,8 @@ namespace Cube.Forms.Controls
         /// AllowVectorFonts
         ///
         /// <summary>
-        /// ダイアログボックスでベクターフォントを選択できるかどうかを
-        /// 示す値を取得または設定します。
+        /// Gets or sets a value indicating whether vector fonts can be
+        /// selected in the dialog box.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -82,9 +81,8 @@ namespace Cube.Forms.Controls
         /// AllowVerticalFonts
         ///
         /// <summary>
-        /// ダイアログボックスに縦書きと横書きのフォントを両方とも
-        /// 表示するのか、横書きフォントだけを表示するのかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether vertical fonts can be
+        /// selected in the dialog box.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -97,8 +95,8 @@ namespace Cube.Forms.Controls
         /// FixedPitchOnly
         ///
         /// <summary>
-        /// ダイアログボックスで選択できるフォントを固定幅フォントだけに
-        /// 限定するかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether to limit the selection
+        /// of fonts in the dialog box to fixed-width fonts only.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -111,9 +109,9 @@ namespace Cube.Forms.Controls
         /// FontMustExist
         ///
         /// <summary>
-        /// 存在しないフォントやスタイルをユーザーが選択しようとした場合
-        /// ダイアログボックスにエラーメッセージが表示されるかどうかを
-        /// 示す値を取得または設定します。
+        /// Gets or sets a value indicating whether or not an error message
+        /// will be displayed in the dialog box if the user tries to select
+        /// a non-existent font or style.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -126,9 +124,9 @@ namespace Cube.Forms.Controls
         /// ScriptsOnly
         ///
         /// <summary>
-        /// ダイアログボックスで、非 OEM 文字セット、Symbol 文字セット、
-        /// および ANSI 文字セットのすべてに対するフォントを選択できるか
-        /// どうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the dialog box allows
+        /// you to select fonts for all non-OEM, Symbol, and ANSI character
+        /// sets.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -141,8 +139,8 @@ namespace Cube.Forms.Controls
         /// ShowApply
         ///
         /// <summary>
-        /// ダイアログボックスに [適用] ボタンを表示するかどうかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether to show the apply
+        /// button in the dialog box.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -155,8 +153,8 @@ namespace Cube.Forms.Controls
         /// ShowColor
         ///
         /// <summary>
-        /// ダイアログボックスに色の選択肢を表示するかどうかを示す値を
-        /// 取得または設定します。
+        /// Gets or sets a value indicating whether the dialog box shows
+        /// color selection.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -169,9 +167,9 @@ namespace Cube.Forms.Controls
         /// ShowEffects
         ///
         /// <summary>
-        /// ダイアログボックスに、取り消し線、下線、テキストの色などの
-        /// オプションをユーザーが指定するためのコントロールを表示するか
-        /// どうかを示す値を設定または取得します。
+        /// Sets or gets a value indicating whether the dialog box shows
+        /// controls for the user to specify options such as strike-through,
+        /// underline, text color, etc.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -184,7 +182,7 @@ namespace Cube.Forms.Controls
         /// MaxSize
         ///
         /// <summary>
-        /// 選択可能なポイントサイズの最大値を取得または設定します。
+        /// Gets or sets the maximum size in points.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -197,7 +195,7 @@ namespace Cube.Forms.Controls
         /// MinSize
         ///
         /// <summary>
-        /// 選択可能なポイントサイズの最小値を取得または設定します。
+        /// Gets or sets the minimum size in points.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -214,7 +212,7 @@ namespace Cube.Forms.Controls
         /// Apply
         ///
         /// <summary>
-        /// 適用ボタンが押下された時に発生するイベントです。
+        /// Occurs when the apply button is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -225,7 +223,7 @@ namespace Cube.Forms.Controls
         /// OnApply
         ///
         /// <summary>
-        /// Apply イベントを発生させます。
+        /// Raises the Apply event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -240,7 +238,7 @@ namespace Cube.Forms.Controls
         /// OnClick
         ///
         /// <summary>
-        /// ボタンがクリックされた時に実行されます。
+        /// Occurs when the button is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -248,43 +246,33 @@ namespace Cube.Forms.Controls
         {
             base.OnClick(e);
 
-            var dialog = new System.Windows.Forms.FontDialog();
-            dialog.AllowScriptChange = AllowScriptChange;
-            dialog.AllowSimulations = AllowSimulations;
-            dialog.AllowVectorFonts = AllowVectorFonts;
-            dialog.AllowVerticalFonts = AllowVerticalFonts;
-            dialog.FixedPitchOnly = FixedPitchOnly;
-            dialog.FontMustExist = FontMustExist;
-            dialog.MaxSize = MaxSize;
-            dialog.MinSize = MinSize;
-            dialog.ScriptsOnly = ScriptsOnly;
-            dialog.ShowApply = ShowApply;
-            dialog.ShowColor = ShowColor;
-            dialog.ShowEffects = ShowEffects;
-            dialog.Apply -= WhenApply;
-            dialog.Apply += WhenApply;
+            var dialog = new System.Windows.Forms.FontDialog
+            {
+                AllowScriptChange   = AllowScriptChange,
+                AllowSimulations    = AllowSimulations,
+                AllowVectorFonts    = AllowVectorFonts,
+                AllowVerticalFonts  = AllowVerticalFonts,
+                Color               = ForeColor,
+                FixedPitchOnly      = FixedPitchOnly,
+                Font                = Font,
+                FontMustExist       = FontMustExist,
+                MaxSize             = MaxSize,
+                MinSize             = MinSize,
+                ScriptsOnly         = ScriptsOnly,
+                ShowApply           = ShowApply,
+                ShowColor           = ShowColor,
+                ShowEffects         = ShowEffects,
+            };
 
-            dialog.Color = ForeColor;
-            dialog.Font = Font;
-
+            void handler(object s, EventArgs e) => OnApply(e);
+            dialog.Apply += handler;
             var result = dialog.ShowDialog();
-            dialog.Apply -= WhenApply;
+            dialog.Apply -= handler;
             if (result == System.Windows.Forms.DialogResult.Cancel) return;
 
             ForeColor = dialog.Color;
             Font = dialog.Font;
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenApply
-        ///
-        /// <summary>
-        /// FontDialog の適用ボタンが押下された時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenApply(object sender, EventArgs e) => OnApply(e);
 
         #endregion
     }

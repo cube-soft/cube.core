@@ -26,22 +26,24 @@ namespace Cube.Forms.Controls
         /// ShowUIWebBrowserSite
         ///
         /// <summary>
-        /// WebBrowser 上で表示されるメッセージダイアログ等を処理する
-        /// ためのクラスです。
+        /// Provides functionality to show message dialogs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
         {
-            #region Methods
+            #region Constructors
 
             /* ------------------------------------------------------------- */
             ///
             /// ShowUIWebBrowserSite
             ///
             /// <summary>
-            /// オブジェクトを初期化します。
+            /// Initializes a new instance of the ShowUIWebBrowserSite class
+            /// with the specified host control.
             /// </summary>
+            ///
+            /// <param name="host">Host control.</param>
             ///
             /* ------------------------------------------------------------- */
             public ShowUIWebBrowserSite(WebControl host) : base(host)
@@ -49,23 +51,31 @@ namespace Cube.Forms.Controls
                 Host = host;
             }
 
+            #endregion
+
+            #region Properties
+
             /* ------------------------------------------------------------- */
             ///
             /// Host
             ///
             /// <summary>
-            /// 関連付ける WebBrowser オブジェクトを取得します。
+            /// Gets the host control.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
             public WebControl Host { get; private set; }
+
+            #endregion
+
+            #region Methods
 
             /* ------------------------------------------------------------- */
             ///
             /// ShowMessage
             ///
             /// <summary>
-            /// メッセージを表示します。
+            /// Shows a message dialog with the specified arguments.
             /// </summary>
             ///
             /// <returns>
@@ -94,7 +104,7 @@ namespace Cube.Forms.Controls
             /// ShowHelp
             ///
             /// <summary>
-            /// ヘルプを表示します。
+            /// Shows a help dialog with the specified arguments.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -110,7 +120,7 @@ namespace Cube.Forms.Controls
             /// GetButtons
             ///
             /// <summary>
-            /// 表示ボタンを示すオブジェクトを取得します。
+            /// Gets the buttons.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -128,7 +138,7 @@ namespace Cube.Forms.Controls
             /// GetIcon
             ///
             /// <summary>
-            /// 表示アイコンを示すオブジェクトを取得します。
+            /// Gets the icons.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */

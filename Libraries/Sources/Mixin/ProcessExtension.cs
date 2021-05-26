@@ -25,7 +25,7 @@ namespace Cube.Mixin.Forms
     /// ProcessExtension
     ///
     /// <summary>
-    /// Process の拡張用クラスです。
+    /// Provides extended methods of the Process class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */

@@ -25,13 +25,13 @@ namespace Cube.Forms.Controls
     /// Button
     ///
     /// <summary>
-    /// ボタンを作成するためのクラスです。
+    /// Represents the button control.
     /// </summary>
     ///
     /// <remarks>
-    /// Button クラスは、System.Windows.Forms.Button クラスにおける
-    /// いくつかの表示上の問題を解決するために定義されたクラスです。
-    /// さらに柔軟な外観を定義する場合は、FlatButton クラスを利用して下さい。
+    /// The class solves some display problems in the System.Windows.Forms.
+    /// If you want to define a more flexible appearance, use the FlatButton
+    /// class.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -44,7 +44,8 @@ namespace Cube.Forms.Controls
         /// ShowFocusCues
         ///
         /// <summary>
-        /// フォーカス時に枠線を表示するかどうかを示す値を取得します。
+        /// Gets the value indicating whether or not to display a border
+        /// when focusing.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -87,10 +88,10 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowFocusCues
+        /// OnEnabledChanged
         ///
         /// <summary>
-        /// フォーカス時に枠線を表示するかどうかを示す値を取得します。
+        /// Occurs when the Enabled property is changed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -112,7 +113,7 @@ namespace Cube.Forms.Controls
         /// SetEnabledColor
         ///
         /// <summary>
-        /// ボタンが有効状態の時の色を設定します。
+        /// Sets the color of the button when it is enabled.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -128,7 +129,7 @@ namespace Cube.Forms.Controls
         /// SetDisabledColor
         ///
         /// <summary>
-        /// ボタンが無効状態の時の色を設定します。
+        /// Sets the color of the button when it is disabled.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

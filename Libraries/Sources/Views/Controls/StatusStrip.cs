@@ -96,12 +96,12 @@ namespace Cube.Forms.Controls
         {
             if (IsNormalWindow() && IsSizingGrip(e.Location))
             {
-                User32.NativeMethods.ReleaseCapture();
+                _ = User32.NativeMethods.ReleaseCapture();
 
                 var form = FindForm();
                 if (form == null) return;
 
-                User32.NativeMethods.SendMessage(
+                _ = User32.NativeMethods.SendMessage(
                     form.Handle,
                     0xa1 /* WM_NCLBUTTONDOWN */,
                     (IntPtr)Position.BottomRight,

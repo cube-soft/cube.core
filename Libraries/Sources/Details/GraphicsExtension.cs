@@ -26,7 +26,7 @@ namespace Cube.Forms.Drawing
     /// GraphicsExtension
     ///
     /// <summary>
-    /// System.Drawing.Graphics の拡張用クラスです。
+    /// Provides extended methods of the Graphics class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,7 +39,7 @@ namespace Cube.Forms.Drawing
         /// FillBackground
         ///
         /// <summary>
-        /// 指定した色で背景を塗りつぶします。
+        /// Fills the background with the specified color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -53,7 +53,7 @@ namespace Cube.Forms.Drawing
         /// DrawBorder
         ///
         /// <summary>
-        /// 指定した色、幅で枠線を描画します。
+        /// Draws a border with the specified color and width.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -73,7 +73,8 @@ namespace Cube.Forms.Drawing
         /// DrawText
         ///
         /// <summary>
-        /// 指定したフォント、色で指定された位置にテキストを描画します。
+        /// Draws the text at the specified position with the specified
+        /// font and color.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -90,7 +91,7 @@ namespace Cube.Forms.Drawing
         /// DrawImage
         ///
         /// <summary>
-        /// 指定した位置に画像を描画します。
+        /// Draws an image at the specified position.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -107,7 +108,7 @@ namespace Cube.Forms.Drawing
         /// DrawImage
         ///
         /// <summary>
-        /// 指定した位置に画像を描画します。
+        /// Draws an image at the specified position.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -147,7 +148,7 @@ namespace Cube.Forms.Drawing
         /// DrawStretchImage
         ///
         /// <summary>
-        /// 画像を縦横比を無視して、できるだけ大きく描画します。
+        /// Draws the image as large as possible, ignoring the aspect ratio.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -162,7 +163,8 @@ namespace Cube.Forms.Drawing
         /// DrawZoomImage
         ///
         /// <summary>
-        /// 画像を縦横比を保ったまま、できるだけ大きく描画します。
+        /// Draw the image as large as possible while maintaining the
+        /// aspect ratio.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -188,14 +190,16 @@ namespace Cube.Forms.Drawing
         /// DrawTileImage
         ///
         /// <summary>
-        /// 画像をタイル状に描画します。
+        /// Draws the image as a tile.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         private static void DrawTileImage(Graphics gs, Rectangle bounds, Image image)
         {
-            using var brush = new TextureBrush(image);
-            brush.WrapMode = System.Drawing.Drawing2D.WrapMode.Tile;
+            using var brush = new TextureBrush(image)
+            {
+                WrapMode = System.Drawing.Drawing2D.WrapMode.Tile
+            };
             gs.FillRectangle(brush, bounds);
         }
 
@@ -204,7 +208,7 @@ namespace Cube.Forms.Drawing
         /// GetClipBounds
         ///
         /// <summary>
-        /// 画像の描画領域を取得します。
+        /// Get the drawing area of an image.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -267,7 +271,7 @@ namespace Cube.Forms.Drawing
         /// GetStringFormat
         ///
         /// <summary>
-        /// 文字列を描画するための書式オブジェクトを取得します。
+        /// Get a format object to draw a string.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

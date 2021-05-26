@@ -16,9 +16,11 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.IO;
 using System.Text;
 using Cube.Mixin.Logging;
 using Cube.Mixin.String;
+using WF = System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -27,11 +29,11 @@ namespace Cube.Forms.Controls
     /// WebControl
     ///
     /// <summary>
-    /// Web ページを表示するためのコントロールです。
+    /// Represents the control to show a Web page.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class WebControl : System.Windows.Forms.WebBrowser
+    public partial class WebControl : WF.WebBrowser
     {
         #region Properties
 
@@ -40,7 +42,7 @@ namespace Cube.Forms.Controls
         /// UserAgent
         ///
         /// <summary>
-        /// UserAgent を取得または設定します。
+        /// Gets or sets the user agent.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -70,7 +72,7 @@ namespace Cube.Forms.Controls
         /// BeforeNavigating
         ///
         /// <summary>
-        /// ページ遷移が発生する直前に発生するイベントです。
+        /// Occurs before navigating.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -81,7 +83,7 @@ namespace Cube.Forms.Controls
         /// OnBeforeNavigating
         ///
         /// <summary>
-        /// BeforeNavigating を発生させます。
+        /// Raises the BeforeNavigating event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -97,7 +99,7 @@ namespace Cube.Forms.Controls
         /// BeforeNewWindow
         ///
         /// <summary>
-        /// 新しいウィンドウでページを開く直前に発生するイベントです。
+        /// Occurs before opening the Web page in a new window.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -108,7 +110,7 @@ namespace Cube.Forms.Controls
         /// OnBeforeNewWindow
         ///
         /// <summary>
-        /// BeforeNewWindow を発生させます。
+        /// Raises the BeforeNewWindow event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -124,7 +126,7 @@ namespace Cube.Forms.Controls
         /// NavigatingError
         ///
         /// <summary>
-        /// ページ遷移中にエラーが生じた際に発生するイベントです。
+        /// Occurs when an error detects during page transition.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -135,7 +137,7 @@ namespace Cube.Forms.Controls
         /// OnNavigatingError
         ///
         /// <summary>
-        /// ページ遷移中にエラーが生じた際に実行されます。
+        /// Raises the NavigatingError event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -151,7 +153,7 @@ namespace Cube.Forms.Controls
         /// MessageShowing
         ///
         /// <summary>
-        /// メッセージボックスが表示される直前に発生するイベントです。
+        /// Occurs before showing a message box.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -162,7 +164,7 @@ namespace Cube.Forms.Controls
         /// OnMessageShowing
         ///
         /// <summary>
-        /// メッセージボックスが表示される直前に実行されます。
+        /// Raises the MessageShowing event.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -180,7 +182,7 @@ namespace Cube.Forms.Controls
         /// Start
         ///
         /// <summary>
-        /// URL で示されたコンテンツの表示を開始します。
+        /// Starts displaying the content indicated by the URL.
         /// </summary>
         ///
         /// <param name="uri">URL</param>
@@ -197,7 +199,7 @@ namespace Cube.Forms.Controls
         /// Start
         ///
         /// <summary>
-        /// HTML で示されたコンテンツの表示を開始します。
+        /// Starts displaying the content indicated by the HTML.
         /// </summary>
         ///
         /// <param name="html">HTML</param>
@@ -214,13 +216,13 @@ namespace Cube.Forms.Controls
         /// Start
         ///
         /// <summary>
-        /// HTML で示されたコンテンツの表示を開始します。
+        /// Starts displaying the content indicated by the HTML.
         /// </summary>
         ///
-        /// <param name="stream">HTML コンテンツを含むストリーム</param>
+        /// <param name="stream">Streams containing HTML content.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Start(System.IO.Stream stream)
+        public void Start(Stream stream)
         {
             if (IsBusy) Stop();
             DocumentStream = stream;
@@ -235,7 +237,7 @@ namespace Cube.Forms.Controls
         /// WndProc
         ///
         /// <summary>
-        /// ウィンドウメッセージを受信します。
+        /// Processes the specified window message.
         /// </summary>
         ///
         /// <remarks>
@@ -244,7 +246,7 @@ namespace Cube.Forms.Controls
         /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref WF.Message m)
         {
             if (m.Msg == 0x0210) // WM_PARENTNOTIFY
             {
@@ -258,33 +260,28 @@ namespace Cube.Forms.Controls
         /// CreateWebBrowserSiteBase
         ///
         /// <summary>
-        /// ActiveX コントロールを使用した機能拡張を行うためのオブジェクトを
-        /// 生成します。
+        /// Generates an object to extend functionality using ActiveX
+        /// controls.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override System.Windows.Forms.WebBrowserSiteBase CreateWebBrowserSiteBase() =>
-            new ShowUIWebBrowserSite(this);
+        protected override WF.WebBrowserSiteBase CreateWebBrowserSiteBase() => new ShowUIWebBrowserSite(this);
 
         /* --------------------------------------------------------------------- */
         ///
         /// CreateSink
         ///
         /// <summary>
-        /// コントロール イベントを処理できるクライアントに、基になる ActiveX
-        /// コントロールを関連付けます。
+        /// Associates the underlying ActiveX Control with a Client that can
+        /// handle Control events.
         /// </summary>
-        ///
-        /// <remarks>
-        /// System.Windows.Forms.WebBrowser から継承されます。
-        /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
         protected override void CreateSink()
         {
             base.CreateSink();
-            _ax = new ActiveXControlEvents(this);
-            _cookie = new System.Windows.Forms.AxHost.ConnectionPointCookie(ActiveXInstance, _ax, typeof(DWebBrowserEvents2));
+            _ax = new(this);
+            _cookie = new(ActiveXInstance, _ax, typeof(DWebBrowserEvents2));
         }
 
         /* --------------------------------------------------------------------- */
@@ -292,13 +289,9 @@ namespace Cube.Forms.Controls
         /// DetachSink
         ///
         /// <summary>
-        /// 基になる ActiveX コントロールの CreateSink メソッドでアタッチされた
-        /// イベント処理クライアントを解放します。
+        /// Releases the event handling client attached by the CreateSink method
+        /// of the underlying ActiveX control.
         /// </summary>
-        ///
-        /// <remarks>
-        /// System.Windows.Forms.WebBrowser から継承されます。
-        /// </remarks>
         ///
         /* --------------------------------------------------------------------- */
         protected override void DetachSink()
@@ -316,7 +309,7 @@ namespace Cube.Forms.Controls
         /// GetUserAgent
         ///
         /// <summary>
-        /// UserAgent を取得します。
+        /// Gets the UserAgent value.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -338,7 +331,7 @@ namespace Cube.Forms.Controls
         /// SetUserAgent
         ///
         /// <summary>
-        /// UserAgent を設定します。
+        /// Sets the UserAgent value.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -358,7 +351,7 @@ namespace Cube.Forms.Controls
         /// CloseForm
         ///
         /// <summary>
-        /// コンポーネントが関連付られているフォームを閉じます。
+        /// Closes the form to which the control is joined.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -372,7 +365,7 @@ namespace Cube.Forms.Controls
 
         #region Fields
         private string _agent = string.Empty;
-        private System.Windows.Forms.AxHost.ConnectionPointCookie _cookie;
+        private WF.AxHost.ConnectionPointCookie _cookie;
         private ActiveXControlEvents _ax;
         #endregion
     }

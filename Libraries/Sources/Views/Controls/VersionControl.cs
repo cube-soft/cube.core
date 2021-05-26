@@ -31,7 +31,7 @@ namespace Cube.Forms.Controls
     /// VersionControl
     ///
     /// <summary>
-    /// Represetns the user control to show the version information.
+    /// Represents the user control to show the version information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -64,7 +64,7 @@ namespace Cube.Forms.Controls
         /* ----------------------------------------------------------------- */
         public VersionControl(Assembly assembly)
         {
-            Size = new Size(340, 120);
+            Size = new(340, 120);
             InitializeLayout();
             Update(assembly);
         }

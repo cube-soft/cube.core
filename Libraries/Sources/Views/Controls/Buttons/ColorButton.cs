@@ -28,7 +28,7 @@ namespace Cube.Forms.Controls
     /// ColorButton
     ///
     /// <summary>
-    /// 色を設定するためのボタンクラスです。
+    /// Represents a button control for setting the color.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -41,7 +41,7 @@ namespace Cube.Forms.Controls
         /// ColorButton
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the ColorButton class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -64,8 +64,8 @@ namespace Cube.Forms.Controls
         /// AnyColor
         ///
         /// <summary>
-        /// 使用可能なすべての色を基本色セットとしてダイアログボックスに
-        /// 表示するかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether all available colors
+        /// should be displayed in the dialog box as a basic color set.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,8 +78,8 @@ namespace Cube.Forms.Controls
         /// SolidColorOnly
         ///
         /// <summary>
-        /// ダイアログボックスでユーザーが選択できる色を純色だけに
-        /// 制限するかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether to limit the colors
+        /// in the dialog box to only solid colors.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -92,8 +92,8 @@ namespace Cube.Forms.Controls
         /// AllowFullOpen
         ///
         /// <summary>
-        /// ユーザーがダイアログボックスを使用してカスタムカラーを定義
-        /// できるかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether the user can define a
+        /// custom color using the dialog box.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -106,8 +106,8 @@ namespace Cube.Forms.Controls
         /// FullOpen
         ///
         /// <summary>
-        /// ダイアログボックスが開かれたときに、カスタムカラーの作成用の
-        /// コントロールを表示するかどうかを示す値を取得または設定します。
+        /// Gets or sets a value indicating whether to display the controls
+        /// for creating a custom color when the dialog box is opened.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -120,8 +120,7 @@ namespace Cube.Forms.Controls
         /// CustomColors
         ///
         /// <summary>
-        /// ダイアログボックスに表示されるカスタムカラーセットを取得または
-        /// 設定します。
+        /// Gets or sets the custom color set displayed in the dialog box.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -138,7 +137,7 @@ namespace Cube.Forms.Controls
         /// OnClick
         ///
         /// <summary>
-        /// ボタンが押下された時に実行されます。
+        /// Occurs when the button is clicked.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

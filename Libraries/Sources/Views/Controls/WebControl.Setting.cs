@@ -71,7 +71,7 @@ namespace Cube.Forms.Controls
         /// MaxConnections
         ///
         /// <summary>
-        /// Gets or sets the maximun number of simultaneous connections.
+        /// Gets or sets the maximum number of simultaneous connections.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -86,7 +86,7 @@ namespace Cube.Forms.Controls
         /// NavigationSounds
         ///
         /// <summary>
-        /// Gets or sets a value indicating whetehr the navigation sounds
+        /// Gets or sets a value indicating whether the navigation sounds
         /// is enabled.
         /// </summary>
         ///
@@ -200,7 +200,7 @@ namespace Cube.Forms.Controls
         /// GetMaxConnections
         ///
         /// <summary>
-        /// Gets the maximun number of simultaneous connections.
+        /// Gets the maximum number of simultaneous connections.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -223,7 +223,7 @@ namespace Cube.Forms.Controls
         /// SetMaxConnections
         ///
         /// <summary>
-        /// Sets the maximun number of simultaneous connections.
+        /// Sets the maximum number of simultaneous connections.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -250,7 +250,7 @@ namespace Cube.Forms.Controls
         /// GetNavigationSounds
         ///
         /// <summary>
-        /// Gets a value indicating whetehr the navigation sounds is enabled.
+        /// Gets a value indicating whether the navigation sounds is enabled.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -265,7 +265,7 @@ namespace Cube.Forms.Controls
         /// SetNavigationSounds
         ///
         /// <summary>
-        /// Sets a value indicating whetehr the navigation sounds is enabled.
+        /// Sets a value indicating whether the navigation sounds is enabled.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */

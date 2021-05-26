@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using WF = System.Windows.Forms;
 
 namespace Cube.Forms.Controls
 {
@@ -26,7 +27,7 @@ namespace Cube.Forms.Controls
     /// SettingControl
     ///
     /// <summary>
-    /// 設定フォームを補助するためのコントロールです。
+    /// Provides functionality to assist the user configuration.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,7 +40,7 @@ namespace Cube.Forms.Controls
         /// SettingControl
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SettingControl class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -50,35 +51,31 @@ namespace Cube.Forms.Controls
         /// SettingControl
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SettingControl class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="ok">OK ボタン</param>
-        /// <param name="cancel">キャンセルボタン</param>
+        /// <param name="ok">OK button.</param>
+        /// <param name="cancel">Cancel button.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingControl(
-            System.Windows.Forms.Control ok,
-            System.Windows.Forms.Control cancel
-        ) : this(ok, cancel, null) { }
+        public SettingControl(WF.Control ok, WF.Control cancel) : this(ok, cancel, null) { }
 
         /* ----------------------------------------------------------------- */
         ///
         /// SettingControl
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the SettingControl class with the
+        /// specified arguments.
         /// </summary>
         ///
-        /// <param name="ok">OK ボタン</param>
-        /// <param name="cancel">キャンセルボタン</param>
-        /// <param name="apply">適用ボタン</param>
+        /// <param name="ok">OK button.</param>
+        /// <param name="cancel">Cancel button.</param>
+        /// <param name="apply">Apply button.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingControl(
-            System.Windows.Forms.Control ok,
-            System.Windows.Forms.Control cancel,
-            System.Windows.Forms.Control apply)
+        public SettingControl(WF.Control ok, WF.Control cancel, WF.Control apply)
         {
             OKButton     = ok;
             CancelButton = cancel;
@@ -94,25 +91,27 @@ namespace Cube.Forms.Controls
         /// OKButton
         ///
         /// <summary>
-        /// OK ボタンを表すコントロールを取得または設定します。
+        /// Gets or sets the control that represents the OK button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public System.Windows.Forms.Control OKButton
+        public WF.Control OKButton
         {
             get => _ok;
             set
             {
-                if (_ok == value) return;
-                if (_ok != null) _ok.Click -= WhenOK;
-                _ok = value;
-                if (_ok != null)
+                void handler(object sender, EventArgs e)
                 {
-                    _ok.Click -= WhenOK;
-                    _ok.Click += WhenOK;
+                    if (ApplyButton == null || ApplyButton.Enabled) OnApply(e);
+                    FindForm()?.Close();
                 }
+
+                if (_ok == value) return;
+                if (_ok != null) _ok.Click -= handler;
+                _ok = value;
+                if (_ok != null) _ok.Click += handler;
             }
         }
 
@@ -121,25 +120,28 @@ namespace Cube.Forms.Controls
         /// ApplyButton
         ///
         /// <summary>
-        /// 適用ボタンを表すコントロールを取得または設定します。
+        /// Gets or sets the control that represents the apply button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public System.Windows.Forms.Control ApplyButton
+        public WF.Control ApplyButton
         {
             get => _apply;
             set
             {
-                if (_apply == value) return;
-                if (_apply != null) _apply.Click -= WhenApply;
-                _apply = value;
-                if (_apply != null)
+                void handler(object s, EventArgs e)
                 {
-                    _apply.Click -= WhenApply;
-                    _apply.Click += WhenApply;
+                    if (s is not WF.Control src) return;
+                    OnApply(e);
+                    src.Enabled = false;
                 }
+
+                if (_apply == value) return;
+                if (_apply != null) _apply.Click -= handler;
+                _apply = value;
+                if (_apply != null) _apply.Click += handler;
             }
         }
 
@@ -148,25 +150,27 @@ namespace Cube.Forms.Controls
         /// CancelButton
         ///
         /// <summary>
-        /// キャンセルボタンを表すコントロールを取得または設定します。
+        /// Gets or sets the control that represents the cancel button.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public System.Windows.Forms.Control CancelButton
+        public WF.Control CancelButton
         {
             get => _cancel;
             set
             {
-                if (_cancel == value) return;
-                if (_cancel != null) _cancel.Click -= WhenCancel;
-                _cancel = value;
-                if (_cancel != null)
+                void handler(object sender, EventArgs e)
                 {
-                    _cancel.Click -= WhenCancel;
-                    _cancel.Click += WhenCancel;
+                    OnCancel(e);
+                    FindForm()?.Close();
                 }
+
+                if (_cancel == value) return;
+                if (_cancel != null) _cancel.Click -= handler;
+                _cancel = value;
+                if (_cancel != null) _cancel.Click += handler;
             }
         }
 
@@ -175,21 +179,20 @@ namespace Cube.Forms.Controls
         /// MonitoredControls
         ///
         /// <summary>
-        /// 監視されているコントロールの一覧を取得します。
+        /// Get the list of monitored controls.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnumerable<System.Windows.Forms.Control> MonitoredControls => _controls;
+        public IEnumerable<WF.Control> MonitoredControls => _controls;
 
         /* ----------------------------------------------------------------- */
         ///
         /// CustomColors
         ///
         /// <summary>
-        /// 全ての ColorButton で共有する CustomColors オブジェクトを
-        /// 取得します。
+        /// Gets the custom color object shared by all ColorButton controls.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -202,8 +205,8 @@ namespace Cube.Forms.Controls
         /// UseCustomColors
         ///
         /// <summary>
-        /// 全ての ColorButton で CustomColors オブジェクトを共有するか
-        /// どうかを示す値を取得します。
+        /// Gets or sets a value indicating whether the CustomColors object
+        /// is shared by all ColorButtons.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -222,7 +225,7 @@ namespace Cube.Forms.Controls
         /// Apply
         ///
         /// <summary>
-        /// OK ボタン、または適用ボタンが押下された時に発生するイベントです。
+        /// Occurs when the apply button is pressed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -233,7 +236,7 @@ namespace Cube.Forms.Controls
         /// OnApply
         ///
         /// <summary>
-        /// Apply イベントを発生させます。
+        /// Raises the Apply event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -248,7 +251,7 @@ namespace Cube.Forms.Controls
         /// Cancel
         ///
         /// <summary>
-        /// キャンセルボタンが押下された時に発生するイベントです。
+        /// Occurs when the cancel button is pressed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -259,7 +262,7 @@ namespace Cube.Forms.Controls
         /// OnCancel
         ///
         /// <summary>
-        /// Cancel イベントを発生させます。
+        /// Raises the Cancel event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -274,7 +277,7 @@ namespace Cube.Forms.Controls
         /// ControlChanged
         ///
         /// <summary>
-        /// 監視中のコントロールの状態が変化した時に発生するイベントです。
+        /// Occurs when the state of the monitored control changes.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -285,7 +288,7 @@ namespace Cube.Forms.Controls
         /// OnControlChanged
         ///
         /// <summary>
-        /// PropertyChanged イベントを発生させます。
+        /// Raises the ControlChanged event.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -306,7 +309,7 @@ namespace Cube.Forms.Controls
         /// OnCreateControl
         ///
         /// <summary>
-        /// コントロールが生成された時に実行されます。
+        /// Occurs when the control is created.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -321,11 +324,11 @@ namespace Cube.Forms.Controls
         /// OnControlAdded
         ///
         /// <summary>
-        /// コントロールが追加された時に実行されます。
+        /// Occurs when a new control is added to the control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnControlAdded(System.Windows.Forms.ControlEventArgs e)
+        protected override void OnControlAdded(WF.ControlEventArgs e)
         {
             base.OnControlAdded(e);
             Attach(e.Control);
@@ -336,11 +339,11 @@ namespace Cube.Forms.Controls
         /// OnControlRemoved
         ///
         /// <summary>
-        /// コントロールが削除された時に実行されます。
+        /// Occurs when a control is removed from the control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnControlRemoved(System.Windows.Forms.ControlEventArgs e)
+        protected override void OnControlRemoved(WF.ControlEventArgs e)
         {
             base.OnControlRemoved(e);
             Detach(e.Control);
@@ -348,128 +351,78 @@ namespace Cube.Forms.Controls
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenOK
-        ///
-        /// <summary>
-        /// OK ボタンのクリック時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenOK(object sender, EventArgs e)
-        {
-            if (ApplyButton == null || ApplyButton.Enabled) OnApply(e);
-            FindForm()?.Close();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenApply
-        ///
-        /// <summary>
-        /// 適用ボタンのクリック時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenApply(object sender, EventArgs e)
-        {
-            var control = sender as System.Windows.Forms.Control;
-            if (control == null) return;
-
-            OnApply(e);
-            control.Enabled = false;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenCancel
-        ///
-        /// <summary>
-        /// キャンセルボタンのクリック時に実行されるハンドラです。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenCancel(object sender, EventArgs e)
-        {
-            OnCancel(e);
-            FindForm()?.Close();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// WhenAdded
         ///
         /// <summary>
-        /// 子コントロールが追加された時に実行されるハンドラです。
+        /// Invokes when a new child control is added.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenAdded(object sender, System.Windows.Forms.ControlEventArgs e) =>
-            Attach(e.Control);
+        private void WhenAdded(object s, WF.ControlEventArgs e) => Attach(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
         /// WhenRemoved
         ///
         /// <summary>
-        /// 子コントロールが削除された時に実行されるハンドラです。
+        /// Invokes when a child control is removed.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenRemoved(object sender, System.Windows.Forms.ControlEventArgs e) =>
-            Detach(e.Control);
+        private void WhenRemoved(object s, WF.ControlEventArgs e) => Detach(e.Control);
 
         /* ----------------------------------------------------------------- */
         ///
         /// Attach
         ///
         /// <summary>
-        /// 指定されたコントロール以下の全てのコントロールに対して
-        /// 必要なイベントを関連付けます。
+        /// Associates the necessary events for all controls below the
+        /// specified control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Attach(System.Windows.Forms.Control control)
+        private void Attach(WF.Control src)
         {
-            control.ControlAdded   -= WhenAdded;
-            control.ControlAdded   += WhenAdded;
-            control.ControlRemoved -= WhenRemoved;
-            control.ControlRemoved += WhenRemoved;
+            src.ControlAdded   -= WhenAdded;
+            src.ControlAdded   += WhenAdded;
+            src.ControlRemoved -= WhenRemoved;
+            src.ControlRemoved += WhenRemoved;
 
-            switch (control.GetType().Name)
+            switch (src.GetType().Name)
             {
                 case nameof(ColorButton):
-                    var color = control as ColorButton;
+                    var color = src as ColorButton;
                     color.BackColorChanged -= OnControlChanged;
                     color.BackColorChanged += OnControlChanged;
                     if (UseCustomColors && CustomColors != null) color.CustomColors = CustomColors;
                     break;
                 case nameof(FontButton):
-                    var font = control as FontButton;
+                    var font = src as FontButton;
                     font.FontChanged -= OnControlChanged;
                     font.FontChanged += OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.CheckBox):
-                    var check = control as System.Windows.Forms.CheckBox;
+                case nameof(WF.CheckBox):
+                    var check = src as WF.CheckBox;
                     check.CheckedChanged -= OnControlChanged;
                     check.CheckedChanged += OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.ComboBox):
-                    var combo = control as System.Windows.Forms.ComboBox;
+                case nameof(WF.ComboBox):
+                    var combo = src as WF.ComboBox;
                     combo.SelectedIndexChanged -= OnControlChanged;
                     combo.SelectedIndexChanged += OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.NumericUpDown):
-                    var num = control as System.Windows.Forms.NumericUpDown;
+                case nameof(WF.NumericUpDown):
+                    var num = src as WF.NumericUpDown;
                     num.ValueChanged -= OnControlChanged;
                     num.ValueChanged += OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.RadioButton):
-                    var radio = control as System.Windows.Forms.RadioButton;
+                case nameof(WF.RadioButton):
+                    var radio = src as WF.RadioButton;
                     radio.CheckedChanged -= OnControlChanged;
                     radio.CheckedChanged += OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.TextBox):
-                    var text = control as System.Windows.Forms.TextBox;
+                case nameof(WF.TextBox):
+                    var text = src as WF.TextBox;
                     text.TextChanged -= OnControlChanged;
                     text.TextChanged += OnControlChanged;
                     break;
@@ -477,7 +430,7 @@ namespace Cube.Forms.Controls
                     return;
             }
 
-            _controls.Add(control);
+            _controls.Add(src);
         }
 
         /* ----------------------------------------------------------------- */
@@ -485,47 +438,47 @@ namespace Cube.Forms.Controls
         /// Detach
         ///
         /// <summary>
-        /// 指定されたコントロール以下の全てのコントロールから関連付けた
-        /// イベントを解除します。
+        /// Removes the associated event from all controls below the
+        /// specified control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Detach(System.Windows.Forms.Control control)
+        private void Detach(WF.Control src)
         {
-            _controls.Remove(control);
+            _ = _controls.Remove(src);
 
-            control.ControlAdded   -= WhenAdded;
-            control.ControlRemoved -= WhenRemoved;
+            src.ControlAdded   -= WhenAdded;
+            src.ControlRemoved -= WhenRemoved;
 
-            switch (control.GetType().Name)
+            switch (src.GetType().Name)
             {
                 case nameof(ColorButton):
-                    var color = control as ColorButton;
+                    var color = src as ColorButton;
                     color.BackColorChanged -= OnControlChanged;
                     if (CustomColors == color.CustomColors) color.CustomColors = null;
                     break;
                 case nameof(FontButton):
-                    var font = control as FontButton;
+                    var font = src as FontButton;
                     font.FontChanged -= OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.CheckBox):
-                    var check = control as System.Windows.Forms.CheckBox;
+                case nameof(WF.CheckBox):
+                    var check = src as WF.CheckBox;
                     check.CheckedChanged -= OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.ComboBox):
-                    var combo = control as System.Windows.Forms.ComboBox;
+                case nameof(WF.ComboBox):
+                    var combo = src as WF.ComboBox;
                     combo.SelectedIndexChanged -= OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.NumericUpDown):
-                    var num = control as System.Windows.Forms.NumericUpDown;
+                case nameof(WF.NumericUpDown):
+                    var num = src as WF.NumericUpDown;
                     num.ValueChanged -= OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.RadioButton):
-                    var radio = control as System.Windows.Forms.RadioButton;
+                case nameof(WF.RadioButton):
+                    var radio = src as WF.RadioButton;
                     radio.CheckedChanged -= OnControlChanged;
                     break;
-                case nameof(System.Windows.Forms.TextBox):
-                    var text = control as System.Windows.Forms.TextBox;
+                case nameof(WF.TextBox):
+                    var text = src as WF.TextBox;
                     text.TextChanged -= OnControlChanged;
                     break;
                 default:
@@ -536,10 +489,10 @@ namespace Cube.Forms.Controls
         #endregion
 
         #region Fields
-        private System.Windows.Forms.Control _ok;
-        private System.Windows.Forms.Control _cancel;
-        private System.Windows.Forms.Control _apply;
-        private readonly IList<System.Windows.Forms.Control> _controls = new List<System.Windows.Forms.Control>();
+        private WF.Control _ok;
+        private WF.Control _cancel;
+        private WF.Control _apply;
+        private readonly List<WF.Control> _controls = new();
         #endregion
     }
 }

@@ -26,7 +26,7 @@ namespace Cube.Forms.Demo
     /// CustomCaptionControl
     ///
     /// <summary>
-    /// 画面上部のキャプション（タイトルバー）を表すコントロールです。
+    /// Represents the caption control, aka title bar.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -39,7 +39,7 @@ namespace Cube.Forms.Demo
         /// CustomCaptionControl
         ///
         /// <summary>
-        /// オブジェクトを初期化します。
+        /// Initializes a new instance of the CustomCaptionControl class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -61,7 +61,7 @@ namespace Cube.Forms.Demo
         /// OnControlAdded
         ///
         /// <summary>
-        /// このコントロールが何らかのコンテナに追加された時に実行されます。
+        /// Occurs when this control is added to some container.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -76,7 +76,7 @@ namespace Cube.Forms.Demo
         /// OnActivated
         ///
         /// <summary>
-        /// アクティブ化された時に実行されます。
+        /// Occurs when the control is activated.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
@@ -94,7 +94,7 @@ namespace Cube.Forms.Demo
         /// OnDeactivate
         ///
         /// <summary>
-        /// 非アクティブ化された時に実行されるハンドラです。
+        /// Occurs when the control is deactivate.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */

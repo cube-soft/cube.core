@@ -26,20 +26,25 @@ namespace Cube.Forms.Controls
         /// ActiveXControlEvents
         ///
         /// <summary>
-        /// ActiveX コントロールで発生するイベントを WebBrowser に
-        /// 伝播させるためのクラスです。
+        /// Represents the functionality to propagate the events generated
+        /// by ActiveX controls to the WebBrowser control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected class ActiveXControlEvents : StandardOleMarshalObject, DWebBrowserEvents2
         {
+            #region Constructors
+
             /* ------------------------------------------------------------- */
             ///
             /// ActiveXControlEvents
             ///
             /// <summary>
-            /// オブジェクトを初期化します。
+            /// Initializes a new instance of the ActiveXControlEvents class
+            /// with the specified host control.
             /// </summary>
+            ///
+            /// <param name="host">Host control.</param>
             ///
             /* ------------------------------------------------------------- */
             public ActiveXControlEvents(WebControl host)
@@ -47,23 +52,31 @@ namespace Cube.Forms.Controls
                 Host = host;
             }
 
+            #endregion
+
+            #region Properties
+
             /* ------------------------------------------------------------- */
             ///
             /// WebBrowser
             ///
             /// <summary>
-            /// 関連付けられた WebBrowser オブジェクトを取得します。
+            /// Gets the host control.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
             public WebControl Host { get; private set; }
+
+            #endregion
+
+            #region Methods
 
             /* ------------------------------------------------------------- */
             ///
             /// BeforeNavigate2
             ///
             /// <summary>
-            /// ページ遷移が発生する直前に実行されます。
+            /// Occurs before navigating.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -74,7 +87,6 @@ namespace Cube.Forms.Controls
                 var e = new NavigatingEventArgs((string)URL, (string)targetFrameName);
                 Host.OnBeforeNavigating(e);
                 cancel = e.Cancel;
-
             }
 
             /* ------------------------------------------------------------- */
@@ -82,7 +94,7 @@ namespace Cube.Forms.Controls
             /// NewWindow3
             ///
             /// <summary>
-            /// 新しいウィンドウが開く直前に実行されます。
+            /// Occurs before opening in a new window..
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -100,7 +112,7 @@ namespace Cube.Forms.Controls
             /// NavigateError
             ///
             /// <summary>
-            /// ページ遷移時にエラーが発生した時に実行されます。
+            /// Occurs when an error detects during page transition.
             /// </summary>
             ///
             /* ------------------------------------------------------------- */
@@ -111,6 +123,8 @@ namespace Cube.Forms.Controls
                 Host.OnNavigatingError(e);
                 cancel = e.Cancel;
             }
+
+            #endregion
         }
     }
 }
