@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Cube.Mixin.Forms;
 
 namespace Cube.Forms
 {
@@ -33,24 +32,6 @@ namespace Cube.Forms
     /* --------------------------------------------------------------------- */
     public class WindowBase : Form, IBinder
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WindowBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BindableWindow class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public WindowBase()
-        {
-            Behaviors.Add(Locale.Subscribe(this.UpdateCulture));
-        }
-
-        #endregion
-
         #region Properties
 
         /* ----------------------------------------------------------------- */
