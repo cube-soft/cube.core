@@ -16,6 +16,10 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Cube.Mixin.Collections;
+using Cube.Mixin.IO;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 
@@ -30,7 +34,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Startup : ObservableBase
+    public class Startup : DisposableBase
     {
         #region Constructors
 
@@ -43,11 +47,32 @@ namespace Cube.FileSystem
         /// specified name.
         /// </summary>
         ///
+        /// <param name="name">Name to register.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public Startup(string name)
+        public Startup(string name) : this(name, new()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Startup
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Startup class with the
+        /// specified name.
+        /// </summary>
+        ///
+        /// <param name="name">Name to register.</param>
+        /// <param name="io">I/O handler.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Startup(string name, IO io)
         {
+            bool exists(string s) { using var k = Open(false); return k?.GetValue(s) != null; }
+
             if (!name.HasValue()) throw new ArgumentException(nameof(name));
-            Name = name;
+            Name    = name;
+            IO      = io;
+            Enabled = exists(name);
         }
 
         #endregion
@@ -67,21 +92,6 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Command
-        ///
-        /// <summary>
-        /// Gets or sets the command corresponding to the name.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Command
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Enabled
         ///
         /// <summary>
@@ -90,31 +100,59 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Enabled
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
+        public bool Enabled { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Source
+        ///
+        /// <summary>
+        /// Gets or sets the source (filename, etc) that executes when
+        /// startup.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Source { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Arguments
+        ///
+        /// <summary>
+        /// Gets or sets the arguments of the Source property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ICollection<string> Arguments { get; } = new List<string>();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Command
+        ///
+        /// <summary>
+        /// Gets the registered command.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Command =>
+            Source.HasValue() ?
+            Source.ToEnumerable().Concat(Arguments).Join(" ", e => e.Quote()) :
+            string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IO
+        ///
+        /// <summary>
+        /// Gets the I/O handler.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected IO IO { get; }
 
         #endregion
 
         #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        ///
-        /// <summary>
-        /// Loads settings from the registry.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Load()
-        {
-            using var sk = OpenSubkey(false);
-            Command = sk.GetValue(Name, string.Empty) as string;
-            Enabled = Command.HasValue();
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -125,13 +163,36 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save()
+        public void Save() => Save(false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Save
+        ///
+        /// <summary>
+        /// Saves settings to the registry with the specified settings.
+        /// </summary>
+        ///
+        /// <param name="checkExists">
+        /// Value indicating whether to check for the existence of the
+        /// provided source. If the value is set to true and the provided
+        /// source does not exist, the provided name will be removed from
+        /// the registry regardless of the Enabled property.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Save(bool checkExists)
         {
-            using var sk = OpenSubkey(true);
-            if (Enabled)
+            bool isadd()
             {
-                if (Command.HasValue()) sk.SetValue(Name, Command);
+                if (!Enabled) return false;
+                if (!checkExists) return true;
+                if (!Source.HasValue()) return false;
+                return IO.Exists(Source);
             }
+
+            using var sk = Open(true);
+            if (isadd()) sk.SetValue(Name, Command);
             else sk.DeleteValue(Name, false);
         }
 
@@ -158,14 +219,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OpenSubkey
+        /// Open
         ///
         /// <summary>
         /// Gets the RegistryKey object for startup programs.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private RegistryKey OpenSubkey(bool writable) => Registry.CurrentUser.OpenSubKey(
+        private RegistryKey Open(bool writable) => Registry.CurrentUser.OpenSubKey(
             @"Software\Microsoft\Windows\CurrentVersion\Run", writable
         );
 
