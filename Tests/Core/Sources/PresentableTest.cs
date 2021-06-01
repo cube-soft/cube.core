@@ -111,47 +111,19 @@ namespace Cube.Tests
         /// Send
         ///
         /// <summary>
-        /// Tests the Send method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(DialogStatus.Ok,     ExpectedResult = 2)]
-        [TestCase(DialogStatus.Yes,    ExpectedResult = 2)]
-        [TestCase(DialogStatus.Cancel, ExpectedResult = 0)]
-        public int Send(DialogStatus value)
-        {
-            var n = 0;
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => e.Value = value))
-            {
-                2.Times(i => src.SendMessage(new DialogMessage(),
-                    e => n++,
-                    e => e.Any(DialogStatus.Ok, DialogStatus.Yes)
-                ));
-
-                Task.Delay(200).Wait();
-            }
-            return n;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
         /// Tests the Send method with CancelMessage objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(true,  ExpectedResult = 0)]
         [TestCase(false, ExpectedResult = 2)]
-        public int Send_CancelMessage(bool cancel)
+        public int Track_CancelMessage(bool cancel)
         {
             var n = 0;
             using (var src = new Presenter(new()))
             using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
             {
-                2.Times(i => src.SendMessage(new OpenFileMessage(), e => n++));
+                2.Times(i => src.TrackAsync(e => n++, new OpenFileMessage()));
                 Task.Delay(200).Wait();
             }
             return n;
@@ -275,10 +247,9 @@ namespace Cube.Tests
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
-            public void SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
-            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
+            public void TrackAsync<T>(Action<T> e, CancelMessage<T> m) => Track(e, m);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }

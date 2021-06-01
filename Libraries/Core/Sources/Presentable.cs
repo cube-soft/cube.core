@@ -188,55 +188,53 @@ namespace Cube
             else Task.Run(() => TrackCore(action)).Forget();
         }
 
-        #endregion
-
-        #region Send
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Track
         ///
         /// <summary>
         /// Sends the specified message, and then invokes the specified
-        /// action as an asynchronous method if the specified function
-        /// returns true.
+        /// action as an asynchronous method if the Cancel property is set
+        /// to false.
         /// </summary>
         ///
-        /// <param name="message">Message to be sent.</param>
-        /// <param name="next">Action to be invoked.</param>
-        /// <param name="predicate">
-        /// Function to determine whether to invoke the specified action.
+        /// <param name="action">
+        /// Action to be invoked if the Cancel property of the message is
+        /// set to false.
         /// </param>
         ///
-        /// <returns>Task object.</returns>
+        /// <param name="src">Message to be sent.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(Message<T> message, Action<T> next, Func<T, bool> predicate)
-        {
-            Send(message);
-            if (predicate(message.Value)) Track(() => next(message.Value));
-        }
+        protected void Track<T>(Action<T> action, CancelMessage<T> src) =>
+            Track(action, src, false);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Track
         ///
         /// <summary>
         /// Sends the specified message, and then invokes the specified
-        /// action as an asynchronous method if the Cancel property is
-        /// set to false.
+        /// action if the Cancel property is set to false.
         /// </summary>
         ///
-        /// <param name="message">Message to be sent.</param>
-        /// <param name="next">Action to be invoked.</param>
+        /// <param name="action">
+        /// Action to be invoked if the Cancel property of the message is
+        /// set to false.
+        /// </param>
         ///
-        /// <returns>Task object.</returns>
+        /// <param name="src">Message to be sent.</param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(CancelMessage<T> message, Action<T> next)
+        protected void Track<T>(Action<T> action, CancelMessage<T> src, bool synchronous)
         {
-            Send(message);
-            if (!message.Cancel) Track(() => next(message.Value));
+            TrackCore(() => Send(src));
+            if (!src.Cancel) Track(() => action(src.Value), synchronous);
         }
 
         #endregion
