@@ -149,7 +149,7 @@ namespace Cube.Tests
             var n = 0;
             using (var src = new Presenter(new()))
             {
-                3.Times(i => src.TrackAsync(e => n++, new DialogMessage()));
+                3.Times(i => src.TrackAsync(new DialogMessage(), e => n++));
                 Task.Delay(300).Wait();
             }
             Assert.That(n, Is.EqualTo(3));
@@ -173,7 +173,7 @@ namespace Cube.Tests
             using (var src = new Presenter(new()))
             using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
             {
-                2.Times(i => src.TrackAsync(e => n++, new OpenFileMessage()));
+                2.Times(i => src.TrackAsync(new OpenFileMessage(), e => n++));
                 Task.Delay(200).Wait();
             }
             return n;
@@ -271,8 +271,8 @@ namespace Cube.Tests
             public void SendMessage<T>(T m) => Send(m);
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
-            public void TrackAsync<T>(Action<T> e, Message<T> m) => Track(e, m);
-            public void TrackAsync<T>(Action<T> e, CancelMessage<T> m) => Track(e, m);
+            public void TrackAsync<T>(Message<T> m, Action<T> e) => Track(m, e);
+            public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
