@@ -274,7 +274,6 @@ namespace Cube.Tests
             public void TrackAsync<T>(Message<T> m, Action<T> e) => Track(m, e);
             public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
-            protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
             public string TestValue
             {

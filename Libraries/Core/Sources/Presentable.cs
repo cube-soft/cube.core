@@ -141,7 +141,8 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual DialogMessage OnMessage(Exception src) => DialogMessage.Create(src);
+        protected virtual DialogMessage OnMessage(Exception src) =>
+            src is OperationCanceledException ? null : DialogMessage.From(src);
 
         #region Track
 
