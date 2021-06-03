@@ -54,7 +54,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ICollection<IDisposable> Behaviors { get; } = new List<IDisposable>();
+        protected DisposableContainer Behaviors { get; } = new();
 
         #endregion
 
@@ -120,8 +120,7 @@ namespace Cube.Forms
                 _disposed = true;
                 if (!disposing) return;
 
-                foreach (var behavior in Behaviors) behavior.Dispose();
-                Behaviors.Clear();
+                Behaviors.Dispose();
                 Bindable?.Dispose();
                 Bindable = null;
             }

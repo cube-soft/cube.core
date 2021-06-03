@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using Cube.Forms.Controls;
 
 namespace Cube.Forms.Demo
@@ -56,7 +55,7 @@ namespace Cube.Forms.Demo
             }
 
             src.Resize += resize;
-            _disposables.Add(Disposable.Create(() => src.Resize -= resize));
+            _disposable.Add(() => src.Resize -= resize);
         }
 
         #endregion
@@ -81,13 +80,13 @@ namespace Cube.Forms.Demo
         protected override void Dispose(bool disposing)
         {
             if (!disposing) return;
-            foreach (var e in _disposables) e.Dispose();
+            _disposable.Dispose();
         }
 
         #endregion
 
         #region Fields
-        private readonly IList<IDisposable> _disposables = new List<IDisposable>();
+        private readonly DisposableContainer _disposable = new();
         #endregion
     }
 }
