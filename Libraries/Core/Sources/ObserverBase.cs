@@ -92,7 +92,7 @@ namespace Cube
             }
 
             src.PropertyChanged += handler;
-            _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
+            _disposable.Add(Disposable.Create(() => src.PropertyChanged -= handler));
         }
 
         /* ----------------------------------------------------------------- */
@@ -132,15 +132,13 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (!disposing) return;
-            foreach (var obj in _observer) obj.Dispose();
-            _observer.Clear();
+            if (disposing) _disposable.Dispose();
         }
 
         #endregion
 
         #region Fields
-        private readonly List<IDisposable> _observer = new();
+        private readonly DisposableContainer _disposable = new();
         #endregion
     }
 

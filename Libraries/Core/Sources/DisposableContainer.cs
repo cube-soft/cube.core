@@ -16,97 +16,93 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using NUnit.Framework;
+using System.Collections.Concurrent;
+using Cube.Mixin.Collections;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposableTest
+    /// DisposableContainer
     ///
     /// <summary>
-    /// Test the Disposable class.
+    /// Provides functionality to invoke the provided IDisposable objects
+    /// at once.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class DisposableTest
+    public class DisposableContainer : DisposableBase
     {
-        #region Tests
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Make_Disposable
+        /// Add
         ///
         /// <summary>
-        /// Tests the Disposable.Create method.
+        /// Adds the specified disposable objects.
         /// </summary>
         ///
+        /// <param name="src">IDisposable objects.</param>
+        ///
+        /// <remarks>
+        /// If the object has already been disposed when called, the Dispose
+        /// method of the specified object will be invoked immediately.
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make_Disposable()
+        public void Add(params IDisposable[] src)
         {
-            var n   = 0;
-            var src = Disposable.Create(() => n++);
-
-            src.Dispose();
-            Assert.That(n, Is.EqualTo(1));
-            src.Dispose(); // ignore
-            Assert.That(n, Is.EqualTo(1));
+            foreach (var e in src.Compact())
+            {
+                if (Disposed) e.Dispose();
+                else _core.Enqueue(e);
+            }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Make_DisposableProxy
+        /// Add
         ///
         /// <summary>
-        /// Tests the DisposableProxy class.
+        /// Converts the specified action to an IDisposable object and adds it.
         /// </summary>
         ///
+        /// <param name="action">
+        /// Action to be invoked when disposing.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make_DisposableProxy()
-        {
-            var n = 0;
-            using (var src = new MockDisposableProxy(() => Disposable.Create(() => n++))) { }
+        public void Add(Action action) => Add(Disposable.Create(action));
 
-            Assert.That(n, Is.EqualTo(1));
-            Assert.That(() => new MockDisposableProxy(() => default), Throws.ArgumentNullException);
-        }
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Make_Throws
+        /// Dispose
         ///
         /// <summary>
-        /// Tests the creating methods with the null actions.
+        /// Releases the all IDisposable objects. The class will always
+        /// invoke the dispose operation, regardless of the disposing
+        /// parameter.
         /// </summary>
         ///
+        /// <param name="disposing">
+        /// Note that the class ignores the parameter.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make_Throws()
+        protected override void Dispose(bool disposing)
         {
-            Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
+            while (_core.TryDequeue(out var e)) e.Dispose();
         }
 
         #endregion
 
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MockDisposableProxy
-        ///
-        /// <summary>
-        /// Represents the mock class to test the DisposableProxy class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        class MockDisposableProxy : DisposableProxy
-        {
-            public MockDisposableProxy(Func<IDisposable> func) : base(func) { }
-        }
-
+        #region Fields
+        private readonly ConcurrentQueue<IDisposable> _core = new();
         #endregion
     }
 }

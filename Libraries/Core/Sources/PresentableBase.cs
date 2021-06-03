@@ -121,7 +121,7 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ICollection<IDisposable> Assets { get; } = new List<IDisposable>();
+        protected DisposableContainer Assets { get; } = new();
 
         #endregion
 
@@ -180,9 +180,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (!disposing) return;
-            foreach (var obj in Assets) obj.Dispose();
-            Assets.Clear();
+            if (disposing) Assets.Dispose();
         }
 
         #region Send
