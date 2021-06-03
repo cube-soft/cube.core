@@ -50,5 +50,24 @@ namespace Cube.Forms.Behaviors
             src.Click += invoke;
             return Disposable.Create(() => src.Click -= invoke);
         }) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ClickBehavior
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ClickBehavior class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Source view.</param>
+        /// <param name="action">Action to click.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ClickBehavior(ToolStripItem src, Action action) : base(() => {
+            void invoke(object s, EventArgs e) => action();
+            src.Click += invoke;
+            return Disposable.Create(() => src.Click -= invoke);
+        }) { }
     }
 }
