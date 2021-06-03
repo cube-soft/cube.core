@@ -81,12 +81,8 @@ namespace Cube
         ///
         /// <param name="message">Message to be published.</param>
         ///
-        /// <remarks>
-        /// Type of the specified object is used for selecting the subscriber.
-        /// </remarks>
-        ///
         /* --------------------------------------------------------------------- */
-        public void Publish(object message)
+        public void Publish<T>(T message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
             if (_subscription.TryGetValue(message.GetType(), out var dest))
@@ -113,7 +109,7 @@ namespace Cube
         ///
         /* --------------------------------------------------------------------- */
         public IDisposable Subscribe<T>(Action<T> callback) => _subscription
-            .GetOrAdd(typeof(T), e => new Subscription<Action<object>>())
+            .GetOrAdd(typeof(T), e => new())
             .Subscribe(e => callback((T)e));
 
         #endregion
