@@ -108,10 +108,60 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Track
         ///
         /// <summary>
-        /// Tests the Send method with CancelMessage objects.
+        /// Tests the Track method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Track()
+        {
+            var dest = default(DialogMessage);
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => dest = e))
+            {
+                src.TrackAsync(() => { /* OK */ });
+                src.TrackSync(() => throw new OperationCanceledException("Ignore"));
+                src.TrackSync(() => throw new ArgumentException(nameof(Track)));
+            }
+
+            Assert.That(dest.Text,    Does.StartWith(nameof(Track)));
+            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
+            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
+            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track_Message
+        ///
+        /// <summary>
+        /// Tests the Track method with objects of Message inherited class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Track_Message()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            {
+                3.Times(i => src.TrackAsync(e => n++, new DialogMessage()));
+                Task.Delay(300).Wait();
+            }
+            Assert.That(n, Is.EqualTo(3));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track_CancelMessage
+        ///
+        /// <summary>
+        /// Tests the Track method with objects of CancelMessage inherited
+        /// class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -143,34 +193,6 @@ namespace Cube.Tests
         {
             using var src = new Presenter(new());
             Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track
-        ///
-        /// <summary>
-        /// Tests the Track method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Track()
-        {
-            var dest = default(DialogMessage);
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => dest = e))
-            {
-                src.TrackAsync(() => { /* OK */ });
-                src.TrackSync(() => throw new OperationCanceledException("Ignore"));
-                src.TrackSync(() => throw new ArgumentException(nameof(Track)));
-            }
-
-            Assert.That(dest.Text,    Does.StartWith(nameof(Track)));
-            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
         }
 
         /* ----------------------------------------------------------------- */
@@ -249,6 +271,7 @@ namespace Cube.Tests
             public void SendMessage<T>(T m) => Send(m);
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(Action e) => Track(e);
+            public void TrackAsync<T>(Action<T> e, Message<T> m) => Track(e, m);
             public void TrackAsync<T>(Action<T> e, CancelMessage<T> m) => Track(e, m);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);

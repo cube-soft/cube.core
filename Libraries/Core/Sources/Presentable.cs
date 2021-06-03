@@ -194,6 +194,45 @@ namespace Cube
         ///
         /// <summary>
         /// Sends the specified message, and then invokes the specified
+        /// action as an asynchronous method.
+        /// </summary>
+        ///
+        /// <param name="action">Action to be invoked.</param>
+        /// <param name="src">Message to be sent.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Track<T>(Action<T> action, Message<T> src) =>
+            Track(action, src, false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Sends the specified message, and then invokes the specified
+        /// action.
+        /// </summary>
+        ///
+        /// <param name="action">Action to be invoked.</param>
+        /// <param name="src">Message to be sent.</param>
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Track<T>(Action<T> action, Message<T> src, bool synchronous)
+        {
+            TrackCore(() => Send(src));
+            Track(() => action(src.Value), synchronous);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Sends the specified message, and then invokes the specified
         /// action as an asynchronous method if the Cancel property is set
         /// to false.
         /// </summary>
