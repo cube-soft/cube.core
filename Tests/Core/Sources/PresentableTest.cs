@@ -136,6 +136,28 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Track_Sequence
+        ///
+        /// <summary>
+        /// Tests the Track method with multiple actions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Track_Sequence()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => n++))
+            {
+                src.TrackAsync(() => throw new ArgumentException(), () => n++);
+                Task.Delay(200).Wait();
+            }
+            Assert.That(n, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Track_Message
         ///
         /// <summary>
@@ -270,7 +292,7 @@ namespace Cube.Tests
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
             public void TrackSync(Action e) => Track(e, true);
-            public void TrackAsync(Action e) => Track(e);
+            public void TrackAsync(params Action[] e) => Track(e);
             public void TrackAsync<T>(Message<T> m, Action<T> e) => Track(m, e);
             public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
             public Dispatcher GetDispatcher() => GetDispatcher(false);

@@ -151,18 +151,23 @@ namespace Cube
         /// Track
         ///
         /// <summary>
-        /// Invokes the specified action as an asynchronous method, and
+        /// Invokes the specified actions as an asynchronous method, and
         /// will send the error message if any exceptions are thrown.
+        /// All the specified actions will always be invoked.
+        /// If an action throws an exception, the method will send a
+        /// DialogMessage object corresponding to the exception, and then
+        /// invoke the next action.
         /// </summary>
         ///
-        /// <param name="action">
-        /// Action to be invoked as an asynchronous method.
-        /// </param>
+        /// <param name="actions">Sequence of actions to be invoked.</param>
         ///
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Track(Action action) => Track(action, false);
+        protected void Track(params Action[] actions) => Task.Run(() =>
+        {
+            foreach (var e in actions) TrackCore(e);
+        }).Forget();
 
         /* ----------------------------------------------------------------- */
         ///
