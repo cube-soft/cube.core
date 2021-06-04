@@ -47,15 +47,14 @@ namespace Cube.Tests
         public void Add()
         {
             var n   = 0;
-            var src = new DisposableContainer();
-
-            src.Add(() => ++n);
-            src.Add(() => ++n);
-            src.Add(
+            var src = new DisposableContainer(
                 Disposable.Create(() => ++n),
                 Disposable.Create(() => ++n),
                 Disposable.Create(() => ++n)
-            );
+             );
+
+            src.Add(() => ++n);
+            src.Add(() => ++n);
 
             Assert.That(n, Is.EqualTo(0));
             src.Dispose();

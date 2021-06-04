@@ -33,6 +33,40 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public class DisposableContainer : DisposableBase
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DisposableContainer
+        ///
+        /// <summary>
+        /// Initializes a new instance of the DisposableContainer class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DisposableContainer() { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DisposableContainer
+        ///
+        /// <summary>
+        /// Initializes a new instance of the DisposableContainer class with
+        /// the specified IDisposable objects.
+        /// </summary>
+        ///
+        /// <param name="src">IDisposable object.</param>
+        /// <param name="additional">IDisposable objects.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DisposableContainer(IDisposable src, params IDisposable[] additional)
+        {
+            Add(src);
+            Add(additional);
+        }
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
