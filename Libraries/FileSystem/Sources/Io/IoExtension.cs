@@ -28,14 +28,14 @@ namespace Cube.Mixin.IO
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// IoExtension
     ///
     /// <summary>
     /// Provides extended methods of the IO class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static class IoExtension
     {
         #region Methods
 

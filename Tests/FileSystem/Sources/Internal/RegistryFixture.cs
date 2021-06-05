@@ -16,7 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
-using Cube.DataContract;
+using Cube.FileSystem.DataContract;
+using Cube.Mixin.Registry;
 using Cube.Tests;
 using Microsoft.Win32;
 using NUnit.Framework;
@@ -28,7 +29,7 @@ namespace Cube.FileSystem.Tests
     /// RegistryFixture
     ///
     /// <summary>
-    /// Provides functionality to support for registry-related testing.
+    /// Provides functionality to assist the test with the registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -52,7 +53,7 @@ namespace Cube.FileSystem.Tests
         /// Shared
         ///
         /// <summary>
-        /// Gets the shared registry subkey name.
+        /// Gets the subkey name that is shared in the tests.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -63,7 +64,7 @@ namespace Cube.FileSystem.Tests
         /// Default
         ///
         /// <summary>
-        /// Gets the default name of the registry subkey.
+        /// Gets the default subkey name.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -78,7 +79,7 @@ namespace Cube.FileSystem.Tests
         /// GetKeyName
         ///
         /// <summary>
-        /// Gets the registry subkey name.
+        /// Gets the registry key name with the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -89,7 +90,7 @@ namespace Cube.FileSystem.Tests
         /// CreateSubKey
         ///
         /// <summary>
-        /// Creates a registry subkey with the specified name.
+        /// Creates a new subkey of the registry with the specified value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -101,21 +102,19 @@ namespace Cube.FileSystem.Tests
         /// OpenSubKey
         ///
         /// <summary>
-        /// Opens the registry subkey of the specified name in readonly mode.
+        /// Opens the specified subkey as read-only.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         protected RegistryKey OpenSubKey(string subkey) =>
             Formatter.DefaultKey.OpenSubKey(GetKeyName(subkey), false);
 
-        #region Setup
-
         /* ----------------------------------------------------------------- */
         ///
         /// Setup
         ///
         /// <summary>
-        /// Invokes the setup for each test.
+        /// Invokes the setup operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -138,15 +137,17 @@ namespace Cube.FileSystem.Tests
 
             using (var sk = k.CreateSubKey(nameof(Person.Others)))
             {
-                using (var ssk = sk.CreateSubKey("0")) SetAddress(ssk, "PC", "pc@example.com");
-                using (var ssk = sk.CreateSubKey("1")) SetAddress(ssk, "Mobile", "mobile@example.com");
+                sk.SetValue("0", nameof(Address.Type),  "PC");
+                sk.SetValue("0", nameof(Address.Value), "pc@example.com");
+                sk.SetValue("1", nameof(Address.Type),  "Mobile");
+                sk.SetValue("1", nameof(Address.Value), "mobile@example.com");
             }
 
             using (var sk = k.CreateSubKey(nameof(Person.Messages)))
             {
-                using (var ssk = sk.CreateSubKey("0")) ssk.SetValue("", "1st message");
-                using (var ssk = sk.CreateSubKey("1")) ssk.SetValue("", "2nd message");
-                using (var ssk = sk.CreateSubKey("2")) ssk.SetValue("", "3rd message");
+                sk.SetValue("0", "", "1st message");
+                sk.SetValue("1", "", "2nd message");
+                sk.SetValue("2", "", "3rd message");
             }
         }
 
@@ -155,34 +156,12 @@ namespace Cube.FileSystem.Tests
         /// Teardown
         ///
         /// <summary>
-        /// Invokes the teardown for each test.
+        /// Invokes the tear-down operation.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TearDown]
         protected virtual void Teardown() => Formatter.DefaultKey.DeleteSubKeyTree(Shared, false);
-
-        #endregion
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetAddress
-        ///
-        /// <summary>
-        /// Set the specified address information to the specified registry
-        /// subkey.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void SetAddress(RegistryKey src, string type, string value)
-        {
-            src.SetValue(nameof(Address.Type),  type );
-            src.SetValue(nameof(Address.Value), value);
-        }
 
         #endregion
     }

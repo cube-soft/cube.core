@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading.Tasks;
-using Cube.DataContract;
+using Cube.FileSystem.DataContract;
 using Cube.Mixin.Assembly;
 using NUnit.Framework;
 

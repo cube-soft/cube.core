@@ -30,7 +30,7 @@ namespace Cube.FileSystem.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    internal enum Sex : int
+    enum Sex
     {
         Male    =  0,
         Female  =  1,
@@ -47,7 +47,7 @@ namespace Cube.FileSystem.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Address
+    class Address
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -84,23 +84,8 @@ namespace Cube.FileSystem.Tests
     ///
     /* ----------------------------------------------------------------- */
     [DataContract]
-    internal class Person : SerializableBase
+    class Person : SerializableBase
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Person
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Persion class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Person() { Reset(); }
-
-        #endregion
-
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -115,7 +100,7 @@ namespace Cube.FileSystem.Tests
         [DataMember(Name = "ID")]
         public int Identification
         {
-            get => Get<int>();
+            get => Get(() => -1);
             set => Set(value);
         }
 
@@ -131,7 +116,7 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public string Name
         {
-            get => Get<string>();
+            get => Get(() => string.Empty);
             set => Set(value);
         }
 
@@ -147,7 +132,7 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public Sex Sex
         {
-            get => Get<Sex>();
+            get => Get(() => Sex.Unknown);
             set => Set(value);
         }
 
@@ -163,7 +148,7 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public int Age
         {
-            get => Get<int>();
+            get => Get(() => -1);
             set => Set(value);
         }
 
@@ -195,7 +180,7 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public Address Contact
         {
-            get => Get<Address>();
+            get => Get(() => new Address { Type = "Phone", Value = string.Empty });
             set => Set(value);
         }
 
@@ -211,7 +196,7 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public IList<Address> Others
         {
-            get => Get<IList<Address>>();
+            get => Get(() => new List<Address>());
             set => Set(value);
         }
 
@@ -227,7 +212,7 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public string[] Messages
         {
-            get => Get<string[]>();
+            get => Get(() => new string[0]);
             set => Set(value);
         }
 
@@ -252,52 +237,14 @@ namespace Cube.FileSystem.Tests
         /// Secret
         ///
         /// <summary>
-        /// Gets or sets the secret value that is not serialized.
+        /// Gets or sets the non-datamember value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public string Secret
         {
-            get => Get<string>();
+            get => Get(() => "secret message");
             set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Guid
-        ///
-        /// <summary>
-        /// Gets the GUID of the object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Guid Guid { get; } = Guid.NewGuid();
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reset
-        ///
-        /// <summary>
-        /// Resets values.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Reset()
-        {
-            Identification = -1;
-            Name           = string.Empty;
-            Sex            = Sex.Unknown;
-            Age            = 0;
-            Creation       = DateTime.MinValue;
-            Contact        = new Address { Type = "Phone", Value = string.Empty };
-            Others         = new List<Address>();
-            Messages       = new string[0];
-            Reserved       = false;
-            Secret         = "secret message";
         }
 
         #endregion

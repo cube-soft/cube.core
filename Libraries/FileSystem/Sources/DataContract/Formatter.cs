@@ -23,28 +23,8 @@ using System.Text;
 using System.Xml;
 using Microsoft.Win32;
 
-namespace Cube.DataContract
+namespace Cube.FileSystem.DataContract
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Format
-    ///
-    /// <summary>
-    /// Specifies formats that can be serialized and deserialized by the
-    /// DataContract module.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum Format
-    {
-        /// <summary>Registry</summary>
-        Registry,
-        /// <summary>XML</summary>
-        Xml,
-        /// <summary>JSON</summary>
-        Json,
-    }
-
     /* --------------------------------------------------------------------- */
     ///
     /// Formatter
@@ -69,8 +49,8 @@ namespace Cube.DataContract
         /// </summary>
         ///
         /// <remarks>
-        /// シリアライズまたはデシリアライズ時に明示的にサブキーを指定しな
-        /// かった場合、このサブキーが利用されます。
+        /// If you do not explicitly specify a subkey when serializing or
+        /// deserializing, this subkey will be used.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -80,9 +60,22 @@ namespace Cube.DataContract
             set => _defaultKey = value;
         }
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IO
+        ///
+        /// <summary>
+        /// Gets or sets the I/O handler used in the Formatter class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IO IO
+        {
+            get => _io ??= new IO();
+            set => _io = value;
+        }
 
-        #region Methods
+        #endregion
 
         #region Serialize
 
@@ -165,7 +158,7 @@ namespace Cube.DataContract
             using var ms = new MemoryStream();
             callback(ms);
 
-            using var ds = File.Create(dest);
+            using var ds = IO.Create(dest);
             ms.Position = 0;
             ms.CopyTo(ds);
         }
@@ -245,8 +238,8 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         public static T Deserialize<T>(this Format format, Stream src) => format switch
         {
-            Format.Xml  => DeserializeXml<T>(src),
-            Format.Json => DeserializeJson<T>(src),
+            Format.Xml  => (T)new DataContractSerializer(typeof(T)).ReadObject(src),
+            Format.Json => (T)new DataContractJsonSerializer(typeof(T)).ReadObject(src),
             _           => throw new ArgumentException($"{format}:cannot deserialize from stream"),
         };
 
@@ -277,40 +270,15 @@ namespace Cube.DataContract
         /* ----------------------------------------------------------------- */
         private static T Deserialize<T>(string src, Func<Stream, T> callback)
         {
-            using var ss = File.OpenRead(src);
+            using var ss = IO.OpenRead(src);
             return callback(ss);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeserializeXml
-        ///
-        /// <summary>
-        /// Deserializes contents of the specified stream as XML format.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static T DeserializeXml<T>(Stream src) =>
-            (T)new DataContractSerializer(typeof(T)).ReadObject(src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeserializeJson
-        ///
-        /// <summary>
-        /// Deserializes contents of the specified stream as JSON format.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static T DeserializeJson<T>(Stream src) =>
-            (T)new DataContractJsonSerializer(typeof(T)).ReadObject(src);
-
-        #endregion
 
         #endregion
 
         #region Fields
         private static RegistryKey _defaultKey;
+        private static IO _io;
         #endregion
     }
 }

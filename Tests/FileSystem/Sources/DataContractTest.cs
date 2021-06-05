@@ -16,15 +16,16 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cube.DataContract;
+using Cube.FileSystem.DataContract;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Registry;
 using Microsoft.Win32;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -56,7 +57,7 @@ namespace Cube.Tests
         public void Serialize_File(Format format, string filename)
         {
             var dest = Get(filename);
-            format.Serialize(dest, Person.CreateDummy());
+            format.Serialize(dest, CreateDummy());
             Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
         }
 
@@ -74,7 +75,7 @@ namespace Cube.Tests
         {
             var name = GetKeyName(nameof(Serialize_Registry));
 
-            Format.Registry.Serialize(name, Person.CreateDummy());
+            Format.Registry.Serialize(name, CreateDummy());
             Format.Registry.Serialize(name, default(Person)); // ignore
 
             using var sk = OpenSubKey(nameof(Serialize_Registry));
@@ -112,7 +113,7 @@ namespace Cube.Tests
         public void Serialize_Registry_Remove()
         {
             var name = GetKeyName(nameof(Serialize_Registry_Remove));
-            var src  = Person.CreateDummy();
+            var src  = CreateDummy();
 
             Format.Registry.Serialize(name, src);
             src.Others.RemoveAt(0);
@@ -135,7 +136,7 @@ namespace Cube.Tests
         public void Serialize_Registry_Add()
         {
             var name = GetKeyName(nameof(Serialize_Registry_Add));
-            var src  = Person.CreateDummy();
+            var src  = CreateDummy();
 
             Format.Registry.Serialize(name, src);
             src.Messages = 10.Make(i => $"{i}th message").ToArray();
@@ -159,7 +160,7 @@ namespace Cube.Tests
         public void Serialize_Registry_Null()
         {
             var src  = default(RegistryKey);
-            var data = Person.CreateDummy();
+            var data = CreateDummy();
             Assert.DoesNotThrow(() => src.Serialize(data));
         }
 
@@ -178,7 +179,7 @@ namespace Cube.Tests
             var dest = Get("Person.reg");
             using var file = File.Create(dest);
             var src = Format.Registry;
-            var data = Person.CreateDummy();
+            var data = CreateDummy();
             Assert.That(() => src.Serialize(file, data), Throws.ArgumentException);
         }
 
@@ -256,6 +257,42 @@ namespace Cube.Tests
         }
 
         #endregion
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateDummy
+        ///
+        /// <summary>
+        /// Creates dummy data.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Person CreateDummy() => new()
+        {
+            Identification = 123,
+            Name           = "山田花子",
+            Sex            = Sex.Female,
+            Age            = 15,
+            Creation       = new DateTime(2014, 12, 31, 23, 25, 30),
+            Contact        = new Address { Type = "Phone", Value = "080-9876-5432" },
+            Reserved       = true,
+            Secret         = "dummy data",
+            Others         = new List<Address>
+            {
+                new Address { Type = "PC",     Value = "pc@example.com" },
+                new Address { Type = "Mobile", Value = "mobile@example.com" }
+            },
+            Messages       = new[]
+            {
+                "1st message",
+                "2nd message",
+                "3rd message",
+            }
+        };
 
         #endregion
     }

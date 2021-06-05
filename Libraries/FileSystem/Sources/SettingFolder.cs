@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
-using Cube.DataContract;
+using Cube.FileSystem.DataContract;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
 using Cube.Mixin.IO;
@@ -437,7 +437,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private readonly Timer _autosaver = new Timer();
+        private readonly Timer _autosaver = new();
         #endregion
     }
 }

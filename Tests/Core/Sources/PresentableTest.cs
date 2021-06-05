@@ -232,15 +232,15 @@ namespace Cube.Tests
             var n   = 0;
             var cts = new CancellationTokenSource();
             using var src = new Presenter(new());
-            5.Times(i => src.TestValue = nameof(PropertyChanged));
-            Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
+            5.Times(i => src.Value = nameof(PropertyChanged));
+            Assert.That(src.Value, Is.EqualTo(nameof(PropertyChanged)));
             Assert.That(n, Is.EqualTo(0));
 
-            src.TestValue = string.Empty;
+            src.Value = string.Empty;
             src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
-            5.Times(i => src.TestValue = nameof(PropertyChanged));
+            5.Times(i => src.Value = nameof(PropertyChanged));
             Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
-            Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
+            Assert.That(src.Value, Is.EqualTo(nameof(PropertyChanged)));
             Assert.That(n, Is.EqualTo(1));
         }
 
@@ -286,8 +286,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private class Presenter : Presentable<Person>
         {
-            public Presenter() : base(new Person()) { Observe(); }
-            public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { Observe(); }
+            public Presenter() : base(new()) { Observe(); }
+            public Presenter(SynchronizationContext ctx) : base(new(), new(), ctx) { Observe(); }
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
@@ -297,7 +297,7 @@ namespace Cube.Tests
             public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
-            public string TestValue
+            public string Value
             {
                 get => Get<string>();
                 set => Set(value);
