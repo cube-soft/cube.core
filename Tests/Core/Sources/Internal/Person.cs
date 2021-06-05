@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.Serialization;
 
 namespace Cube.Tests
 {
@@ -45,7 +44,6 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    [DataContract]
     class Address
     {
         /* ----------------------------------------------------------------- */
@@ -57,7 +55,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public string Type { get; set; }
 
         /* ----------------------------------------------------------------- */
@@ -69,7 +66,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public string Value { get; set; }
     }
 
@@ -82,8 +78,7 @@ namespace Cube.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    [DataContract]
-    class Person : SerializableBase
+    class Person : ObservableBase
     {
         #region Constructors
 
@@ -104,15 +99,14 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Identification
+        /// ID
         ///
         /// <summary>
         /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember(Name = "ID")]
-        public int Identification
+        public int ID
         {
             get => Get(() => -1);
             set => Set(value);
@@ -127,7 +121,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public string Name
         {
             get => Get(() => string.Empty);
@@ -143,7 +136,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public Sex Sex
         {
             get => Get(() => Sex.Unknown);
@@ -159,7 +151,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public int Age
         {
             get => _age.Get();
@@ -175,7 +166,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public DateTime? Creation
         {
             get => Get<DateTime?>();
@@ -191,7 +181,6 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public Address Contact
         {
             get => Get(() => new Address { Type = "Phone", Value = string.Empty });
@@ -209,8 +198,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         public string Secret
         {
-            get => Get(() => string.Empty);
-            set => Set(value);
+            get => _secret;
+            set => Set(ref _secret, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -226,8 +215,30 @@ namespace Cube.Tests
 
         #endregion
 
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { }
+
+        #endregion
+
         #region Fields
         private Accessor<int> _age;
+        private string _secret;
         #endregion
     }
 }
