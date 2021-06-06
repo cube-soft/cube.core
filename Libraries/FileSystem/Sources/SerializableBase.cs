@@ -159,7 +159,10 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected T Get<T>(Func<T> creator, [CallerMemberName] string name = null)
         {
-            if (!_fields.ContainsKey(name)) _fields.Add(name, creator());
+            if (!_fields.ContainsKey(name))
+            {
+                lock(_fields.SyncRoot) _fields[name] = creator();
+            }
             return (T)_fields[name];
         }
 
@@ -219,7 +222,7 @@ namespace Cube.FileSystem
             var set = compare.Set(ref src, value);
             if (set)
             {
-                _fields[name] = src;
+                lock (_fields.SyncRoot) _fields[name] = src;
                 Refresh(name);
             }
             return set;
