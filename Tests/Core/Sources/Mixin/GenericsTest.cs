@@ -199,6 +199,7 @@ namespace Cube.Tests.Mixin
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
+        [Serializable]
         private class SerializableData
         {
             public int Identification { get; set; } = -1;

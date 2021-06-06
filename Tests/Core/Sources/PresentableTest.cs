@@ -287,7 +287,10 @@ namespace Cube.Tests
         private class Presenter : Presentable<Person>
         {
             public Presenter() : base(new()) { Observe(); }
-            public Presenter(SynchronizationContext ctx) : base(new(), new(), ctx) { Observe(); }
+            public Presenter(SynchronizationContext ctx) : base(new(), new(), ctx) {
+                Assert.That(Context, Is.Not.Null);
+                Observe();
+            }
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
@@ -297,11 +300,7 @@ namespace Cube.Tests
             public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
-            public string Value
-            {
-                get => Get<string>();
-                set => Set(value);
-            }
+            public string Value { get => Get<string>(); set => Set(value); }
         }
 
         #endregion

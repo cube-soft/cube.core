@@ -56,13 +56,13 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="src">IDisposable object.</param>
-        /// <param name="additional">IDisposable objects.</param>
+        /// <param name="latter">IDisposable objects.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DisposableContainer(IDisposable src, params IDisposable[] additional)
+        public DisposableContainer(IDisposable src, params IDisposable[] latter)
         {
             Add(src);
-            Add(additional);
+            Add(latter);
         }
 
         #endregion
