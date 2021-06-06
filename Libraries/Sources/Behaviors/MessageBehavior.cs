@@ -103,7 +103,7 @@ namespace Cube.Xui.Behaviors
             _subscriber?.Dispose();
             _subscriber = AssociatedObject
                 ?.DataContext
-                ?.TryCast<IPresentable>()
+                ?.TryCast<IAggregator>()
                 ?.Subscribe<TMessage>(Invoke);
         }
 

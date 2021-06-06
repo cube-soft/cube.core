@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -73,7 +72,7 @@ namespace Cube.Xui
             }
 
             src.PropertyChanged += handler;
-            _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
+            _observable.Add(() => src.PropertyChanged -= handler);
         }
 
         /* ----------------------------------------------------------------- */
@@ -105,9 +104,7 @@ namespace Cube.Xui
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (!disposing) return;
-            foreach (var obj in _observer) obj.Dispose();
-            _observer.Clear();
+            if (disposing) _observable.Dispose();
         }
 
         /* ----------------------------------------------------------------- */
@@ -127,7 +124,7 @@ namespace Cube.Xui
         #endregion
 
         #region Fields
-        private readonly List<IDisposable> _observer = new();
+        private readonly DisposableContainer _observable = new();
         #endregion
     }
 }
