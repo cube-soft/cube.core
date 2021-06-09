@@ -60,7 +60,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Setup() => this.LogDebug("Shown");
+        public void Setup() => GetType().LogDebug("Shown");
 
         /* --------------------------------------------------------------------- */
         ///
@@ -109,7 +109,7 @@ namespace Cube.Forms.Demo
             var msg = MessageFactory.CreateForConfirm();
             Send(msg);
             src.Cancel = msg.Value == DialogStatus.Cancel;
-            this.LogDebug("Closing", $"Reason:{src.CloseReason}", $"Cancel:{src.Cancel}");
+            GetType().LogDebug("Closing", $"Reason:{src.CloseReason}", $"Cancel:{src.Cancel}");
         }
 
         /* --------------------------------------------------------------------- */
@@ -121,7 +121,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Log(FormClosedEventArgs src) => this.LogDebug("Closed", $"Reason:{src.CloseReason}");
+        public void Log(FormClosedEventArgs src) => GetType().LogDebug("Closed", $"Reason:{src.CloseReason}");
 
         #endregion
     }

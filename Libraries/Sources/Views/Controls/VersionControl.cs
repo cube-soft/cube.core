@@ -338,7 +338,7 @@ namespace Cube.Forms.Controls
             {
                 if (Uri == null) return;
                 try { _ = System.Diagnostics.Process.Start(Uri.ToString()); }
-                catch (Exception err) { this.LogWarn(err); }
+                catch (Exception err) { GetType().LogWarn(err); }
             };
 
             _contents.Controls.Add(_info);

@@ -140,7 +140,7 @@ namespace Cube.Forms
                     try { _core = (ITaskbarList3)new TaskbarListInstance(); }
                     catch (Exception err)
                     {
-                        this.LogWarn(err);
+                        GetType().LogWarn(err);
                         IsSupported = false;
                     }
                 }

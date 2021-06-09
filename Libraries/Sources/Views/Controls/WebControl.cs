@@ -322,7 +322,7 @@ namespace Cube.Forms.Controls
                 sb, sb.Capacity, ref size, 0
             );
 
-            if (result != 0) this.LogWarn($"UrlMkGetSessionOption:{result}");
+            if (result != 0) GetType().LogWarn($"UrlMkGetSessionOption:{result}");
             return result == 0 ? sb.ToString() : string.Empty;
         }
 
@@ -343,7 +343,7 @@ namespace Cube.Forms.Controls
             );
 
             if (result == 0) dest = value;
-            else this.LogWarn($"UrlMkSetSessionOption:{result}");
+            else GetType().LogWarn($"UrlMkSetSessionOption:{result}");
         }
 
         /* --------------------------------------------------------------------- */

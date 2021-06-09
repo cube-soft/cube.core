@@ -17,6 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Reflection;
+using Cube.Mixin.Collections;
+using Cube.Mixin.Logging;
 
 namespace Cube.Forms.Demo
 {
@@ -43,9 +45,10 @@ namespace Cube.Forms.Demo
         [STAThread]
         static void Main(string[] args)
         {
-            Logger.ObserveTaskException();
-            Logger.Info(typeof(Program), Assembly.GetExecutingAssembly());
-            Logger.Info(typeof(Program), $"[ {string.Join(" ", args)} ]");
+            var src = typeof(Program);
+            _ = Logger.ObserveTaskException();
+            src.LogInfo(Assembly.GetExecutingAssembly());
+            src.LogInfo($"[ {args.Join(" ")} ]");
 
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);

@@ -94,7 +94,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         public void Invoke(NoticeMessage src, NoticeResult result)
         {
-            try { this.LogDebug($"Result:{result}", $"Value:{src.Value}"); }
+            try { GetType().LogDebug($"Result:{result}", $"Value:{src.Value}"); }
             finally
             {
                 if (!_queue.Empty) Consume(true);
