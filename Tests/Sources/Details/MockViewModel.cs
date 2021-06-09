@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.Threading;
 using System.Windows.Input;
+using Cube.Mixin.Logging;
 
 namespace Cube.Xui.Tests
 {
@@ -63,7 +64,7 @@ namespace Cube.Xui.Tests
         ///
         /* ----------------------------------------------------------------- */
         public ICommand Detect { get; } = new DelegateCommand(
-            () => Logger.Debug(typeof(MockViewModel), "Event is fired"),
+            () => typeof(MockViewModel).LogDebug("Event is fired"),
             () => true
         );
 

@@ -70,7 +70,7 @@ namespace Cube.Xui
         /// <param name="message">Message to write.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public override void WriteLine(string message) => this.LogDebug(message);
+        public override void WriteLine(string message) => GetType().LogDebug(message);
 
         /* ----------------------------------------------------------------- */
         ///

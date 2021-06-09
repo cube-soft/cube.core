@@ -49,7 +49,7 @@ namespace Cube.Xui.Tests
             BindingLogger.Setup();
             _ = Logger.ObserveTaskException();
             _ = Application.Current.ObserveUiException();
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
+            typeof(GlobalSetup).LogInfo(Assembly.GetExecutingAssembly());
         }
     }
 }
