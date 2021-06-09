@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Logging;
 using NUnit.Framework;
 
 namespace Cube.Tests
@@ -44,7 +45,7 @@ namespace Cube.Tests
         public void OneTimeSetup()
         {
             _ = Logger.ObserveTaskException();
-            Logger.Info(typeof(GlobalSetup), typeof(GlobalSetup).Assembly);
+            typeof(GlobalSetup).LogInfo(typeof(GlobalSetup).Assembly);
         }
     }
 }

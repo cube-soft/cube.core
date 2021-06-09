@@ -336,7 +336,7 @@ namespace Cube.FileSystem
         public bool TryLoad()
         {
             try { Load(); return true; }
-            catch (Exception err) { this.LogWarn(err); }
+            catch (Exception err) { GetType().LogWarn(err); }
             return false;
         }
 
@@ -373,7 +373,7 @@ namespace Cube.FileSystem
         protected override void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
-            if (AutoSave) this.LogWarn(() => Save());
+            if (AutoSave) GetType().LogWarn(() => Save());
         }
 
         /* ----------------------------------------------------------------- */
@@ -429,7 +429,7 @@ namespace Cube.FileSystem
                     _autosaver.Interval = AutoSaveDelay.TotalMilliseconds;
                     _autosaver.Start();
                 }
-                else this.LogWarn(() => Save());
+                else GetType().LogWarn(() => Save());
             }
             finally { OnPropertyChanged(e); }
         }

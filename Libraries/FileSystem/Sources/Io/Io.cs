@@ -327,7 +327,7 @@ namespace Cube.FileSystem
         /// Combine
         ///
         /// <summary>
-        /// Combiles the specified paths.
+        /// Combines the specified paths.
         /// </summary>
         ///
         /// <param name="paths">Collection of paths.</param>
@@ -342,7 +342,7 @@ namespace Cube.FileSystem
         /// CombineCore
         ///
         /// <summary>
-        /// Combiles the specified paths.
+        /// Combines the specified paths.
         /// </summary>
         ///
         /// <param name="paths">Collection of paths.</param>
@@ -540,7 +540,7 @@ namespace Cube.FileSystem
         public bool TryDelete(string path)
         {
             try { DeleteCore(path); return true; }
-            catch (Exception err) { this.LogWarn(err); }
+            catch (Exception err) { GetType().LogWarn(err); }
             return false;
         }
 

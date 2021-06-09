@@ -46,7 +46,7 @@ namespace Cube.Mixin.Tasks
         ///
         /* --------------------------------------------------------------------- */
         public static void Forget(this Task src) =>
-            src.ContinueWith(e => e.LogWarn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
+            src.ContinueWith(e => e.GetType().LogWarn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
 
         /* --------------------------------------------------------------------- */
         ///
