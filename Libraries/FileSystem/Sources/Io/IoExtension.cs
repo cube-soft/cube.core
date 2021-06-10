@@ -29,14 +29,14 @@ namespace Cube.Mixin.IO
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// IoExtension
     ///
     /// <summary>
     /// Provides extended methods of the IO class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static class IoExtension
     {
         #region Methods
 
@@ -82,8 +82,12 @@ namespace Cube.Mixin.IO
         /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T LoadOrDefault<T>(this Source io, string src, Func<Stream, T> callback, T error) =>
-            io.LogWarn(() => io.Load(src, callback), error);
+        public static T LoadOrDefault<T>(this Source io, string src, Func<Stream, T> callback, T error)
+        {
+            try { return io.Load(src, callback); }
+            catch (Exception e) { io.GetType().LogWarn(e); }
+            return error;
+        }
 
         /* ----------------------------------------------------------------- */
         ///

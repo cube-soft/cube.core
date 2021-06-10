@@ -66,8 +66,7 @@ namespace Cube.FileSystem
         /// <returns>Entity object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual Entity GetCore(string path) =>
-            new Entity(path, GetController());
+        protected virtual Entity GetCore(string path) => new(path, GetController());
 
         #endregion
 
@@ -97,7 +96,7 @@ namespace Cube.FileSystem
         /// <returns>Controller object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual EntityController GetControllerCore() => _shared ??= new EntityController();
+        protected virtual EntityController GetControllerCore() => _shared ??= new();
 
         #endregion
 
@@ -328,7 +327,7 @@ namespace Cube.FileSystem
         /// Combine
         ///
         /// <summary>
-        /// Combiles the specified paths.
+        /// Combines the specified paths.
         /// </summary>
         ///
         /// <param name="paths">Collection of paths.</param>
@@ -343,7 +342,7 @@ namespace Cube.FileSystem
         /// CombineCore
         ///
         /// <summary>
-        /// Combiles the specified paths.
+        /// Combines the specified paths.
         /// </summary>
         ///
         /// <param name="paths">Collection of paths.</param>
@@ -389,7 +388,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected virtual void SetAttributesCore(string path, FileAttributes attr)
         {
-            if (Directory.Exists(path)) new DirectoryInfo(path) { Attributes = attr };
+            if (Directory.Exists(path)) _ = new DirectoryInfo(path) { Attributes = attr };
             else if (File.Exists(path)) File.SetAttributes(path, attr);
         }
 
@@ -544,7 +543,7 @@ namespace Cube.FileSystem
         public bool TryDelete(string path)
         {
             try { DeleteCore(path); return true; }
-            catch (Exception err) { this.LogWarn(err); }
+            catch (Exception err) { GetType().LogWarn(err); }
             return false;
         }
 
@@ -752,8 +751,8 @@ namespace Cube.FileSystem
         public void Move(string src, string dest, bool overwrite)
         {
             var info = Get(src);
-            if (info.IsDirectory) MoveDirectory(info, Get(dest), overwrite);
-            else MoveFile(info, Get(dest), overwrite);
+            if (info.IsDirectory) _ = MoveDirectory(info, Get(dest), overwrite);
+            else _ = MoveFile(info, Get(dest), overwrite);
         }
 
         /* ----------------------------------------------------------------- */
@@ -804,8 +803,8 @@ namespace Cube.FileSystem
         public void Copy(string src, string dest, bool overwrite)
         {
             var info = Get(src);
-            if (info.IsDirectory) CopyDirectory(info, Get(dest), overwrite);
-            else CopyFile(info, Get(dest), overwrite);
+            if (info.IsDirectory) _ = CopyDirectory(info, Get(dest), overwrite);
+            else _ = CopyFile(info, Get(dest), overwrite);
         }
 
         /* ----------------------------------------------------------------- */
@@ -839,8 +838,9 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// Key には失敗したメソッド名、Value には失敗した時に送出された例外
-        /// オブジェクトが設定されます。
+        /// Key is set to the name of the method that failed, and Value is
+        /// set to the exception object that was thrown when the method
+        /// failed.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -853,11 +853,6 @@ namespace Cube.FileSystem
         /// <summary>
         /// Raises the Failed event.
         /// </summary>
-        ///
-        /// <remarks>
-        /// Failed イベントにハンドラが設定されていない場合、
-        /// 例外をそのまま送出します。
-        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnFailed(FailedEventArgs e) => Failed(this, e);
@@ -940,12 +935,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool CopyFile(Entity src, Entity dest, bool overwrite) =>
-            Action(nameof(Copy), () =>
-            {
-                CreateParentDirectory(dest);
-                CopyCore(src.FullName, dest.FullName, overwrite);
-            }, src.FullName, dest.FullName);
+        private bool CopyFile(Entity src, Entity dest, bool overwrite) => Action(nameof(Copy), () =>
+        {
+            CreateParentDirectory(dest);
+            CopyCore(src.FullName, dest.FullName, overwrite);
+        }, src.FullName, dest.FullName);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -1014,12 +1008,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveFile(Entity src, Entity dest) =>
-            Action(nameof(Move), () =>
-            {
-                CreateParentDirectory(dest);
-                MoveCore(src.FullName, dest.FullName);
-            }, src.FullName, dest.FullName);
+        private bool MoveFile(Entity src, Entity dest) => Action(nameof(Move), () =>
+        {
+            CreateParentDirectory(dest);
+            MoveCore(src.FullName, dest.FullName);
+        }, src.FullName, dest.FullName);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -1030,8 +1023,8 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// 操作に失敗した場合、イベントハンドラで Cancel が設定されるまで
-        /// 実行し続けます。
+        /// If the operation fails, it will continue to run until Cancel
+        /// is set in the event handler.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -1059,8 +1052,8 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// 操作に失敗した場合、イベントハンドラで Cancel が設定されるまで
-        /// 実行し続けます。
+        /// If the operation fails, it will continue to run until Cancel
+        /// is set in the event handler.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */

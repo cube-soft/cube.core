@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
-using Cube.DataContract;
+using Cube.FileSystem.DataContract;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
 using Cube.Mixin.IO;
@@ -336,7 +336,7 @@ namespace Cube.FileSystem
         public bool TryLoad()
         {
             try { Load(); return true; }
-            catch (Exception err) { this.LogWarn(err); }
+            catch (Exception err) { GetType().LogWarn(err); }
             return false;
         }
 
@@ -373,7 +373,7 @@ namespace Cube.FileSystem
         protected override void Dispose(bool disposing)
         {
             if (disposing) _autosaver.Dispose();
-            if (AutoSave) this.LogWarn(() => Save());
+            if (AutoSave) GetType().LogWarn(() => Save());
         }
 
         /* ----------------------------------------------------------------- */
@@ -429,7 +429,7 @@ namespace Cube.FileSystem
                     _autosaver.Interval = AutoSaveDelay.TotalMilliseconds;
                     _autosaver.Start();
                 }
-                else this.LogWarn(() => Save());
+                else GetType().LogWarn(() => Save());
             }
             finally { OnPropertyChanged(e); }
         }
@@ -437,7 +437,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private readonly Timer _autosaver = new Timer();
+        private readonly Timer _autosaver = new();
         #endregion
     }
 }

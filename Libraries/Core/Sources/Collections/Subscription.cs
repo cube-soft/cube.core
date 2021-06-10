@@ -30,7 +30,7 @@ namespace Cube.Collections
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Subscription<T> : EnumerableBase<T>
+    public sealed class Subscription<T> : EnumerableBase<T>
     {
         #region Properties
 
@@ -43,18 +43,7 @@ namespace Cube.Collections
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Count => Subscribers.Count;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribers
-        ///
-        /// <summary>
-        /// Gets the collection of subscribers.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ConcurrentDictionary<Guid, T> Subscribers { get; } = new();
+        public int Count => _subscribers.Count;
 
         #endregion
 
@@ -78,8 +67,9 @@ namespace Cube.Collections
         public IDisposable Subscribe(T subscriber)
         {
             var key = Guid.NewGuid();
-            _ = Subscribers.TryAdd(key, subscriber);
-            return Disposable.Create(() => _ = Subscribers.TryRemove(key, out _));
+            return _subscribers.TryAdd(key, subscriber) ?
+                   Disposable.Create(() => _subscribers.TryRemove(key, out _)) :
+                   Subscribe(subscriber); // Retry due to GUID confliction.
         }
 
         /* --------------------------------------------------------------------- */
@@ -95,7 +85,7 @@ namespace Cube.Collections
         /// </returns>
         ///
         /* --------------------------------------------------------------------- */
-        public override IEnumerator<T> GetEnumerator() => Subscribers.Values.GetEnumerator();
+        public override IEnumerator<T> GetEnumerator() => _subscribers.Values.GetEnumerator();
 
         #endregion
 
@@ -118,9 +108,13 @@ namespace Cube.Collections
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) Subscribers.Clear();
+            if (disposing) _subscribers.Clear();
         }
 
+        #endregion
+
+        #region Fields
+        private readonly ConcurrentDictionary<Guid, T> _subscribers = new();
         #endregion
     }
 }

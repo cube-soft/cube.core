@@ -16,11 +16,48 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Concurrent;
+using System.Collections;
 using Cube.Collections;
 
 namespace Cube
 {
+    #region IAggregator
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IAggregator
+    ///
+    /// <summary>
+    /// Represents the interface of the aggregator.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public interface IAggregator
+    {
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Subscribe
+        ///
+        /// <summary>
+        /// Subscribes the message of type T.
+        /// </summary>
+        ///
+        /// <typeparam name="T">Message type.</typeparam>
+        ///
+        /// <param name="callback">
+        /// Callback function for the message of type T.
+        /// </param>
+        ///
+        /// <returns>Object to clear the subscription.</returns>
+        ///
+        /* --------------------------------------------------------------------- */
+        public IDisposable Subscribe<T>(Action<T> callback);
+    }
+
+    #endregion
+
+    #region Aggregator
+
     /* --------------------------------------------------------------------- */
     ///
     /// Aggregator
@@ -30,7 +67,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class Aggregator
+    public sealed class Aggregator : IAggregator
     {
         #region Methods
 
@@ -44,18 +81,13 @@ namespace Cube
         ///
         /// <param name="message">Message to be published.</param>
         ///
-        /// <remarks>
-        /// Type of the specified object is used for selecting the subscriber.
-        /// </remarks>
-        ///
         /* --------------------------------------------------------------------- */
-        public void Publish(object message)
+        public void Publish<T>(T message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            if (_subscription.TryGetValue(message.GetType(), out var dest))
-            {
-                foreach (var e in dest) e(message);
-            }
+            var dest = Get(message.GetType());
+            if (dest is null) return;
+            foreach (var e in dest) e(message);
         }
 
         /* --------------------------------------------------------------------- */
@@ -75,14 +107,52 @@ namespace Cube
         /// <returns>Object to clear the subscription.</returns>
         ///
         /* --------------------------------------------------------------------- */
-        public IDisposable Subscribe<T>(Action<T> callback) => _subscription
-            .GetOrAdd(typeof(T), e => new Subscription<Action<object>>())
-            .Subscribe(e => callback((T)e));
+        public IDisposable Subscribe<T>(Action<T> callback) =>
+            GetOrAdd(typeof(T)).Subscribe(e => callback((T)e));
+
+        #endregion
+
+        #region Implementations
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Get
+        ///
+        /// <summary>
+        /// Gets the object of the specified key.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private Subscription<Action<object>> Get(Type key) =>
+            _subscription[key] as Subscription<Action<object>>;
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// GetOrAdd
+        ///
+        /// <summary>
+        /// Gets the object of the specified key.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        private Subscription<Action<object>> GetOrAdd(Type key)
+        {
+            if (!_subscription.ContainsKey(key))
+            {
+                lock (_subscription.SyncRoot)
+                {
+                    _subscription[key] = new Subscription<Action<object>>();
+                }
+            }
+            return Get(key);
+        }
 
         #endregion
 
         #region Fields
-        private readonly ConcurrentDictionary<Type, Subscription<Action<object>>> _subscription = new();
+        private readonly Hashtable _subscription = new();
         #endregion
     }
+
+    #endregion
 }

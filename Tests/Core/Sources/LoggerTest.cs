@@ -50,14 +50,10 @@ namespace Cube.Tests
         public void Debug()
         {
             Logger.Separator = ",";
-            this.LogDebug();
-            this.LogDebug("Debug");
-            this.LogDebug("Debug", "multiple", "messages");
-            this.LogDebug(() => { }, "Action");
-            Assert.That(this.LogDebug(() => 1, "Func"), Is.EqualTo(1));
-
-            try { this.LogDebug(() => throw new ArgumentException("Debug (throw)"), "Error"); }
-            catch (ArgumentException err) { this.LogDebug(err); }
+            var src = GetType();
+            src.LogDebug();
+            src.LogDebug("Debug");
+            src.LogDebug("Debug", "multiple", "messages");
         }
 
         /* ----------------------------------------------------------------- */
@@ -73,13 +69,10 @@ namespace Cube.Tests
         public void Info()
         {
             Logger.Separator = "\t";
-            this.LogInfo();
-            this.LogInfo("Info");
-            this.LogInfo("Info", "multiple", "messages");
-            this.LogInfo(typeof(LoggerTest).Assembly);
-
-            try { throw new ArgumentException("Info (throw)"); }
-            catch (ArgumentException err) { this.LogInfo(err); }
+            var src = GetType();
+            src.LogInfo();
+            src.LogInfo("Info");
+            src.LogInfo("Info", "multiple", "messages");
         }
 
         /* ----------------------------------------------------------------- */
@@ -95,17 +88,16 @@ namespace Cube.Tests
         public void Warn()
         {
             Logger.Separator = ":";
-            this.LogWarn();
-            this.LogWarn("Warn");
-            this.LogWarn("Warn", "multiple", "messages");
+            var src = GetType();
+            src.LogWarn();
+            src.LogWarn("Warn");
+            src.LogWarn("Warn", "multiple", "messages");
 
             var error = new ArgumentException("Warn (throw)");
-            this.LogWarn(() => throw error);
-            Assert.That(this.LogWarn(() => 3), Is.EqualTo(3));
-            Assert.That(this.LogWarn(() => throw error, -3), Is.EqualTo(-3));
+            src.LogWarn(() => throw error);
 
             try { throw error; }
-            catch (ArgumentException err) { this.LogWarn(err); }
+            catch (ArgumentException err) { src.LogWarn(err); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -120,42 +112,16 @@ namespace Cube.Tests
         [Test]
         public void Error()
         {
-            this.LogError();
-            this.LogError("Error");
-            this.LogError("Error", "multiple", "messages");
+            var src = GetType();
+            src.LogError();
+            src.LogError("Error");
+            src.LogError("Error", "multiple", "messages");
 
             var error = new Win32Exception(0);
-            this.LogError(() => throw error);
-            Assert.That(this.LogError(() => 4), Is.EqualTo(4));
-            Assert.That(this.LogError(() => throw error, -4), Is.EqualTo(-4));
+            src.LogError(() => throw error);
 
             try { throw error; }
-            catch (Win32Exception err) { this.LogError(err); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Fatal
-        ///
-        /// <summary>
-        /// Executes the test of the LogFatal extended methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Fatal()
-        {
-            this.LogFatal();
-            this.LogFatal("Fatal");
-            this.LogFatal("Fatal", "multiple", "messages");
-
-            var error = new Win32Exception(1);
-            this.LogFatal(() => throw error);
-            Assert.That(this.LogFatal(() => 5), Is.EqualTo(5));
-            Assert.That(this.LogFatal(() => throw error, -5), Is.EqualTo(-5));
-
-            try { throw error; }
-            catch (Win32Exception err) { this.LogFatal(err); }
+            catch (Win32Exception err) { src.LogError(err); }
         }
 
         /* ----------------------------------------------------------------- */

@@ -116,11 +116,12 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("1.0.0",       "1.0.0",        0)]
+        [TestCase("1.0.0.0",     "1.0.0.0",      0)]
         [TestCase("1.0.0",       "1.0",          0)]
         [TestCase("1.0.0",       "2.0.0",       -1)]
         [TestCase("1.0.0",       "1.1.0",       -1)]
         [TestCase("1.0.0",       "1.0.1",       -1)]
+        [TestCase("1.0.0",       "1.0.0.1",     -1)]
         [TestCase("1.0.0",       "0.9.9",        1)]
         [TestCase("3.1.4",       "2.2.2",        1)]
         [TestCase("3.1.4",       "4.3.2",       -1)]
@@ -179,7 +180,7 @@ namespace Cube.Tests
         /// Compare_Object
         ///
         /// <summary>
-        /// Tests the CompareTo method.
+        /// Tests the Compare method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -187,12 +188,31 @@ namespace Cube.Tests
         public void Compare_Object()
         {
             var src = new SoftwareVersionComparer();
+            var v0  = (object)(new SoftwareVersion("1.0.0"));
+            var v1  = (object)(new SoftwareVersion("1.0.1"));
 
+            Assert.That(src.Compare(v0, v1),  Is.EqualTo(-1));
             Assert.That(src.Compare(0, 0),    Is.EqualTo(0));
             Assert.That(src.Compare(0, 1),    Is.EqualTo(-1));
             Assert.That(src.Compare(1, 0),    Is.EqualTo(1));
             Assert.That(src.Compare(null, 0), Is.EqualTo(-1));
             Assert.That(src.Compare(0, null), Is.EqualTo(1));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Compare_Throws
+        ///
+        /// <summary>
+        /// Tests the Compare method with error cases.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Compare_Throws()
+        {
+            var src = new SoftwareVersionComparer();
+            Assert.That(() => src.Compare(new object(), "1"), Throws.ArgumentException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -208,12 +228,16 @@ namespace Cube.Tests
         public void Equals_Object()
         {
             var src = new SoftwareVersionComparer();
+            var v0  = (object)(new SoftwareVersion("1.0.0"));
+            var v1  = (object)(new SoftwareVersion("1.0.0"));
 
-            Assert.That(src.Equals(0, 0),    Is.True);
-            Assert.That(src.Equals(0, 1),    Is.False);
-            Assert.That(src.Equals(1, 0),    Is.False);
-            Assert.That(src.Equals(null, 0), Is.False);
-            Assert.That(src.Equals(0, null), Is.False);
+            Assert.That(src.Equals(src, src), Is.True);
+            Assert.That(src.Equals(v0, v1),   Is.True);
+            Assert.That(src.Equals(0, 0),     Is.True);
+            Assert.That(src.Equals(0, 1),     Is.False);
+            Assert.That(src.Equals(1, 0),     Is.False);
+            Assert.That(src.Equals(null, 0),  Is.False);
+            Assert.That(src.Equals(0, null),  Is.False);
         }
 
         /* ----------------------------------------------------------------- */

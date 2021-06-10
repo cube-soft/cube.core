@@ -64,8 +64,12 @@ namespace Cube.Backports
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static T LoadOrDefault<T>(this Source io, string src, Func<TextReader, T> callback, T error) =>
-            io.LogWarn(() => io.Load(src, callback), error);
+        public static T LoadOrDefault<T>(this Source io, string src, Func<TextReader, T> callback, T error)
+        {
+            try { return io.Load(src, callback); }
+            catch (Exception e) { io.GetType().LogWarn(e); }
+            return error;
+        }
 
         /* ----------------------------------------------------------------- */
         ///

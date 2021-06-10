@@ -36,7 +36,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Dispose
+        /// Make_Disposable
         ///
         /// <summary>
         /// Tests the Disposable.Create method.
@@ -44,7 +44,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Disposable()
+        public void Make_Disposable()
         {
             var n   = 0;
             var src = Disposable.Create(() => n++);
@@ -57,7 +57,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_DisposableProxy
+        /// Make_DisposableProxy
         ///
         /// <summary>
         /// Tests the DisposableProxy class.
@@ -65,7 +65,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_DisposableProxy()
+        public void Make_DisposableProxy()
         {
             var n = 0;
             using (var src = new MockDisposableProxy(() => Disposable.Create(() => n++))) { }
@@ -76,7 +76,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Throws
+        /// Make_Throws
         ///
         /// <summary>
         /// Tests the creating methods with the null actions.
@@ -84,7 +84,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_Throws()
+        public void Make_Throws()
         {
             Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
         }

@@ -84,7 +84,7 @@ namespace Cube.Tests
         [Test]
         public void Create_ErrorMessage()
         {
-            var src = DialogMessage.Create(new ArgumentException("TEST"));
+            var src = DialogMessage.From(new ArgumentException("TEST"));
             Assert.That(src.Text,    Is.EqualTo("TEST (ArgumentException)"));
             Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
             Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));

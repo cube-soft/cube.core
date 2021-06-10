@@ -16,10 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.Tests
 {
     /* ----------------------------------------------------------------- */
     ///
@@ -30,7 +28,7 @@ namespace Cube.FileSystem.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    internal enum Sex : int
+    enum Sex
     {
         Male    =  0,
         Female  =  1,
@@ -46,8 +44,7 @@ namespace Cube.FileSystem.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    [DataContract]
-    internal class Address
+    class Address
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -58,7 +55,6 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public string Type { get; set; }
 
         /* ----------------------------------------------------------------- */
@@ -70,7 +66,6 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public string Value { get; set; }
     }
 
@@ -83,8 +78,7 @@ namespace Cube.FileSystem.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    [DataContract]
-    internal class Person : SerializableBase
+    class Person : ObservableBase
     {
         #region Constructors
 
@@ -93,11 +87,11 @@ namespace Cube.FileSystem.Tests
         /// Person
         ///
         /// <summary>
-        /// Initializes a new instance of the Persion class.
+        /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Person() { Reset(); }
+        public Person() { _age = new(0); }
 
         #endregion
 
@@ -105,17 +99,16 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Identification
+        /// ID
         ///
         /// <summary>
         /// Gets or sets the ID.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember(Name = "ID")]
-        public int Identification
+        public int ID
         {
-            get => Get<int>();
+            get => Get(() => -1);
             set => Set(value);
         }
 
@@ -128,10 +121,9 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public string Name
         {
-            get => Get<string>();
+            get => Get(() => string.Empty);
             set => Set(value);
         }
 
@@ -144,10 +136,9 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public Sex Sex
         {
-            get => Get<Sex>();
+            get => Get(() => Sex.Unknown);
             set => Set(value);
         }
 
@@ -160,11 +151,10 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public int Age
         {
-            get => Get<int>();
-            set => Set(value);
+            get => _age.Get();
+            set { if (_age.Set(value)) Refresh(nameof(Age)); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -176,7 +166,6 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public DateTime? Creation
         {
             get => Get<DateTime?>();
@@ -192,58 +181,9 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [DataMember]
         public Address Contact
         {
-            get => Get<Address>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Others
-        ///
-        /// <summary>
-        /// Gets or sets the other addresses.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public IList<Address> Others
-        {
-            get => Get<IList<Address>>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Messages
-        ///
-        /// <summary>
-        /// Gets or sets the message.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string[] Messages
-        {
-            get => Get<string[]>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reserved
-        ///
-        /// <summary>
-        /// Gets or sets the reserved value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public bool Reserved
-        {
-            get => Get<bool>();
+            get => Get(() => new Address { Type = "Phone", Value = string.Empty });
             set => Set(value);
         }
 
@@ -252,14 +192,14 @@ namespace Cube.FileSystem.Tests
         /// Secret
         ///
         /// <summary>
-        /// Gets or sets the secret value that is not serialized.
+        /// Gets or sets the non-datamember value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public string Secret
         {
-            get => Get<string>();
-            set => Set(value);
+            get => _secret;
+            set => Set(ref _secret, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -279,27 +219,26 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Reset
+        /// Dispose
         ///
         /// <summary>
-        /// Resets values.
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
         /// </summary>
         ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        private void Reset()
-        {
-            Identification = -1;
-            Name           = string.Empty;
-            Sex            = Sex.Unknown;
-            Age            = 0;
-            Creation       = DateTime.MinValue;
-            Contact        = new Address { Type = "Phone", Value = string.Empty };
-            Others         = new List<Address>();
-            Messages       = new string[0];
-            Reserved       = false;
-            Secret         = "secret message";
-        }
+        protected override void Dispose(bool disposing) { }
 
+        #endregion
+
+        #region Fields
+        private Accessor<int> _age;
+        private string _secret;
         #endregion
     }
 }

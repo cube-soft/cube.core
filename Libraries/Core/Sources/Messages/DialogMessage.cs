@@ -97,7 +97,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// From
         ///
         /// <summary>
         /// Creates a new instance of the DialogMessage class with the
@@ -107,7 +107,7 @@ namespace Cube
         /// <param name="src">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static DialogMessage Create(Exception src) => new()
+        public static DialogMessage From(Exception src) => new()
         {
             Text    = $"{src.Message} ({src.GetType().Name})",
             Icon    = DialogIcon.Error,

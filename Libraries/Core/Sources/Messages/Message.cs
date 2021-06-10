@@ -131,6 +131,8 @@ namespace Cube
 
     #endregion
 
+    #region ActivateMessage
+
     /* --------------------------------------------------------------------- */
     ///
     /// ActivateMessage
@@ -140,8 +142,6 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    #region ActivateMessage
-
     public class ActivateMessage { }
 
     #endregion

@@ -36,6 +36,21 @@ namespace Cube.Mixin.Collections
 
         /* ----------------------------------------------------------------- */
         ///
+        /// ToEnumerable(T)
+        ///
+        /// <summary>
+        /// Converts the specified type T object to IEnumerable(T) object.
+        /// </summary>
+        ///
+        /// <param name="src">Source value.</param>
+        ///
+        /// <returns>Collection that has only the specified value.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static IEnumerable<T> ToEnumerable<T>(this T src) { yield return src; }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// GetOrEmpty(T)
         ///
         /// <summary>

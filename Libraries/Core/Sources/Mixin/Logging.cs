@@ -16,16 +16,20 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Runtime.CompilerServices;
+using System.ComponentModel;
+using System.Reflection;
+using System.Threading.Tasks;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.Collections;
 
 namespace Cube.Mixin.Logging
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// Logger
     ///
     /// <summary>
-    /// Provides extended methods of the Logger class.
+    /// Provides methods for logging.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -33,7 +37,7 @@ namespace Cube.Mixin.Logging
     {
         #region Methods
 
-        #region LogDebug
+        #region Debug
 
         /* ----------------------------------------------------------------- */
         ///
@@ -43,67 +47,16 @@ namespace Cube.Mixin.Logging
         /// Outputs log as DEBUG level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogDebug<T>(this T src, params string[] values) =>
-            Logger.Debug(src.GetType(), values);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogDebug
-        ///
-        /// <summary>
-        /// Outputs log as DEBUG level.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="error">Exception object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogDebug<T>(this T src, Exception error) =>
-            Logger.Debug(src.GetType(), error);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogDebug
-        ///
-        /// <summary>
-        /// Monitors the running time and outputs it as DEBUG level.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        /// <param name="message">Method name of message.</param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogDebug<T, U>(this T src, Func<U> func,
-            [CallerMemberName] string message = null) =>
-            Logger.Debug(src.GetType(), func, message);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogDebug
-        ///
-        /// <summary>
-        /// Monitors the running time and outputs it as DEBUG level.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="action">Action to monitor.</param>
-        /// <param name="message">Method name or message.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogDebug<T>(this T src, Action action,
-            [CallerMemberName] string message = null) =>
-            Logger.Debug(src.GetType(), action, message);
+        public static void LogDebug(this Type type, params string[] values) =>
+            GetCore(type).Debug(GetMessage(values));
 
         #endregion
 
-        #region LogInfo
+        #region Info
 
         /* ----------------------------------------------------------------- */
         ///
@@ -113,27 +66,12 @@ namespace Cube.Mixin.Logging
         /// Outputs log as INFO level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, params string[] values) =>
-            Logger.Info(src.GetType(), values);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogInfo
-        ///
-        /// <summary>
-        /// Outputs log as INFO level.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="error">Exception object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, Exception error) =>
-            Logger.Info(src.GetType(), error);
+        public static void LogInfo(this Type type, params string[] values) =>
+            GetCore(type).Info(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -143,16 +81,20 @@ namespace Cube.Mixin.Logging
         /// Outputs system information as INFO level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="assembly">Assembly object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogInfo<T>(this T src, System.Reflection.Assembly assembly) =>
-            Logger.Info(src.GetType(), assembly);
+        public static void LogInfo(this Type type, System.Reflection.Assembly assembly)
+        {
+            LogInfo(type, $"{assembly.GetProduct()} {assembly.GetVersionString(4, true)}");
+            LogInfo(type, $"CLR {System.Environment.Version} ({System.Environment.OSVersion})");
+            LogInfo(type, $"{System.Environment.UserName}@{System.Environment.MachineName}");
+        }
 
         #endregion
 
-        #region LogWarn
+        #region Warn
 
         /* ----------------------------------------------------------------- */
         ///
@@ -162,12 +104,12 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogWarn<T>(this T src, params string[] values) =>
-            Logger.Warn(src.GetType(), values);
+        public static void LogWarn(this Type type, params string[] values) =>
+            GetCore(type).Warn(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -177,12 +119,12 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogWarn<T>(this T src, Exception error) =>
-            Logger.Warn(src.GetType(), error);
+        public static void LogWarn(this Type type, Exception error) =>
+            GetCore(type).Warn(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -192,53 +134,16 @@ namespace Cube.Mixin.Logging
         /// Outputs log as WARN level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogWarn<T, U>(this T src, Func<U> func) =>
-            LogWarn(src, func, default);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogWarn
-        ///
-        /// <summary>
-        /// Outputs log as WARN level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        /// <param name="error">
-        /// Value that returns when an exception occurs.
-        /// </param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogWarn<T, U>(this T src, Func<U> func, U error) =>
-            Logger.Warn(src.GetType(), func, error);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogWarn
-        ///
-        /// <summary>
-        /// Outputs log as WARN level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogWarn<T>(this T src, Action action) =>
-            Logger.Warn(src.GetType(), action);
+        public static void LogWarn(this Type type, Action action) =>
+            Invoke(action, e => LogWarn(type, e));
 
         #endregion
 
-        #region LogError
+        #region Error
 
         /* ----------------------------------------------------------------- */
         ///
@@ -248,12 +153,12 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="values">User messages.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogError<T>(this T src, params string[] values) =>
-            Logger.Error(src.GetType(), values);
+        public static void LogError(this Type type, params string[] values) =>
+            GetCore(type).Error(GetMessage(values));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -263,12 +168,12 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="error">Exception object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogError<T>(this T src, Exception error) =>
-            Logger.Error(src.GetType(), error);
+        public static void LogError(this Type type, Exception error) =>
+            GetCore(type).Error(GetErrorMessage(error));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -278,137 +183,83 @@ namespace Cube.Mixin.Logging
         /// Outputs log as ERROR level when an exception occurs.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogError<T, U>(this T src, Func<U> func) =>
-            LogError(src, func, default);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogError
-        ///
-        /// <summary>
-        /// Outputs log as ERROR level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        /// <param name="error">
-        /// Value that returns when an exception occurs.
-        /// </param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogError<T, U>(this T src, Func<U> func, U error) =>
-            Logger.Error(src.GetType(), func, error);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogError
-        ///
-        /// <summary>
-        /// Outputs log as ERROR level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
+        /// <param name="type">Target type information.</param>
         /// <param name="action">Function to monitor.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void LogError<T>(this T src, Action action) =>
-            Logger.Error(src.GetType(), action);
+        public static void LogError(this Type type, Action action) =>
+            Invoke(action, e => LogError(type, e));
 
         #endregion
 
-        #region LogFatal
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogFatal
-        ///
-        /// <summary>
-        /// Outputs log as FATAL level.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="values">User messages.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogFatal<T>(this T src, params string[] values) =>
-            Logger.Fatal(src.GetType(), values);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogFatal
-        ///
-        /// <summary>
-        /// Outputs log as FATAL level.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="error">Exception object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogFatal<T>(this T src, Exception error) =>
-            Logger.Fatal(src.GetType(), error);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogFatal
-        ///
-        /// <summary>
-        /// Outputs log as FATAL level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogFatal<T, U>(this T src, Func<U> func) =>
-            LogFatal(src, func, default);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogFatal
-        ///
-        /// <summary>
-        /// Outputs log as FATAL level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="func">Function to monitor.</param>
-        /// <param name="error">
-        /// Value that returns when an exception occurs.
-        /// </param>
-        ///
-        /// <returns>Function result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static U LogFatal<T, U>(this T src, Func<U> func, U error) =>
-            Logger.Fatal(src.GetType(), func, error);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogFatal
-        ///
-        /// <summary>
-        /// Outputs log as FATAL level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        /// <param name="action">Function to monitor.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogFatal<T>(this T src, Action action) =>
-            Logger.Fatal(src.GetType(), action);
-
         #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetCore
+        ///
+        /// <summary>
+        /// Gets the logger object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static NLog.Logger GetCore(Type type) => NLog.LogManager.GetLogger(type.FullName);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetMessage
+        ///
+        /// <summary>
+        /// Gets the message from the specified arguments.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetMessage(string[] values) =>
+            values.Length == 1 ? values[0] :
+            values.Length >  1 ? values.Join(Logger.Separator) : string.Empty;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetErrorMessage
+        ///
+        /// <summary>
+        /// Gets the error message from the specified exception.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetErrorMessage(Exception src) =>
+            src is Win32Exception we ?
+            $"{we.Message} (0x{we.NativeErrorCode:X8}){System.Environment.NewLine}{we.StackTrace}" :
+            src.ToString();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Invoke
+        ///
+        /// <summary>
+        /// Invokes the specified action.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void Invoke(Action action, Action<Exception> error)
+        {
+            try { action(); }
+            catch (Exception err) { error(err); }
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenTaskError
+        ///
+        /// <summary>
+        /// Occurs when the UnobservedTaskException is raised.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
+            LogError(typeof(TaskScheduler), e.Exception);
 
         #endregion
     }

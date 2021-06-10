@@ -15,13 +15,15 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Reflection;
 using Cube.Backports;
-using Cube.DataContract;
+using Cube.FileSystem.DataContract;
 using Cube.Mixin.Registry;
+using Cube.Tests;
 using Microsoft.Win32;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -35,6 +37,17 @@ namespace Cube.Tests
     class RegistryFixture : FileFixture
     {
         #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Assembly
+        ///
+        /// <summary>
+        /// Gets the Assembly object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -125,8 +138,10 @@ namespace Cube.Tests
 
             using (var sk = k.CreateSubKey(nameof(Person.Others)))
             {
-                sk.SetValue("0", "PC", "pc@example.com");
-                sk.SetValue("1", "Mobile", "mobile@example.com");
+                sk.SetValue("0", nameof(Address.Type),  "PC");
+                sk.SetValue("0", nameof(Address.Value), "pc@example.com");
+                sk.SetValue("1", nameof(Address.Type),  "Mobile");
+                sk.SetValue("1", nameof(Address.Value), "mobile@example.com");
             }
 
             using (var sk = k.CreateSubKey(nameof(Person.Messages)))

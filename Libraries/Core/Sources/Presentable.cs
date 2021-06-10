@@ -141,7 +141,8 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        protected virtual DialogMessage OnMessage(Exception src) => DialogMessage.Create(src);
+        protected virtual DialogMessage OnMessage(Exception src) =>
+            src is OperationCanceledException ? null : DialogMessage.From(src);
 
         #region Track
 
@@ -150,18 +151,23 @@ namespace Cube
         /// Track
         ///
         /// <summary>
-        /// Invokes the specified action as an asynchronous method, and
+        /// Invokes the specified actions as an asynchronous method, and
         /// will send the error message if any exceptions are thrown.
+        /// All the specified actions will always be invoked.
+        /// If an action throws an exception, the method will send a
+        /// DialogMessage object corresponding to the exception, and then
+        /// invoke the next action.
         /// </summary>
         ///
-        /// <param name="action">
-        /// Action to be invoked as an asynchronous method.
-        /// </param>
+        /// <param name="actions">Sequence of actions to be invoked.</param>
         ///
         /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Track(Action action) => Track(action, false);
+        protected void Track(params Action[] actions) => TaskEx.Run(() =>
+        {
+            foreach (var e in actions) TrackCore(e);
+        }).Forget();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,55 +194,91 @@ namespace Cube
             else TaskEx.Run(() => TrackCore(action)).Forget();
         }
 
-        #endregion
-
-        #region Send
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Track
         ///
         /// <summary>
         /// Sends the specified message, and then invokes the specified
-        /// action as an asynchronous method if the specified function
-        /// returns true.
+        /// action as an asynchronous method.
         /// </summary>
         ///
         /// <param name="message">Message to be sent.</param>
         /// <param name="next">Action to be invoked.</param>
-        /// <param name="predicate">
-        /// Function to determine whether to invoke the specified action.
-        /// </param>
-        ///
-        /// <returns>Task object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(Message<T> message, Action<T> next, Func<T, bool> predicate)
+        protected void Track<T>(Message<T> message, Action<T> next) =>
+            Track(message, next, false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Sends the specified message, and then invokes the specified
+        /// action.
+        /// </summary>
+        ///
+        /// <param name="message">Message to be sent.</param>
+        /// <param name="next">Action to be invoked.</param>
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Track<T>(Message<T> message, Action<T> next, bool synchronous)
         {
-            Send(message);
-            if (predicate(message.Value)) Track(() => next(message.Value));
+            TrackCore(() => Send(message));
+            Track(() => next(message.Value), synchronous);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
+        /// Track
         ///
         /// <summary>
         /// Sends the specified message, and then invokes the specified
-        /// action as an asynchronous method if the Cancel property is
-        /// set to false.
+        /// action as an asynchronous method if the Cancel property is set
+        /// to false.
         /// </summary>
         ///
         /// <param name="message">Message to be sent.</param>
-        /// <param name="next">Action to be invoked.</param>
-        ///
-        /// <returns>Task object.</returns>
+        /// <param name="next">
+        /// Action to be invoked if the Cancel property of the message is
+        /// set to false.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(CancelMessage<T> message, Action<T> next)
+        protected void Track<T>(CancelMessage<T> message, Action<T> next) =>
+            Track(message, next, false);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track
+        ///
+        /// <summary>
+        /// Sends the specified message, and then invokes the specified
+        /// action if the Cancel property is set to false.
+        /// </summary>
+        ///
+        /// <param name="message">Message to be sent.</param>
+        ///
+        /// <param name="next">
+        /// Action to be invoked if the Cancel property of the message is
+        /// set to false.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Track<T>(CancelMessage<T> message, Action<T> next, bool synchronous)
         {
-            Send(message);
-            if (!message.Cancel) Track(() => next(message.Value));
+            TrackCore(() => Send(message));
+            if (!message.Cancel) Track(() => next(message.Value), synchronous);
         }
 
         #endregion

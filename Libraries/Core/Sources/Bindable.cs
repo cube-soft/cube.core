@@ -15,36 +15,19 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using NUnit.Framework;
+using System;
+using System.ComponentModel;
 
-namespace Cube.Tests
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// IBindable
     ///
     /// <summary>
-    /// Provides functionality to run at the beginning of the NUnit.
+    /// Represents the interface of bindable components.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OneTimeSetup
-        ///
-        /// <summary>
-        /// Invokes the setup only once.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-            _ = Logger.ObserveTaskException();
-            Logger.Info(typeof(GlobalSetup), typeof(GlobalSetup).Assembly);
-        }
-    }
+    public interface IBindable : IAggregator, INotifyPropertyChanged, IDisposable { }
 }
