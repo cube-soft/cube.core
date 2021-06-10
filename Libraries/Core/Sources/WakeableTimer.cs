@@ -193,7 +193,7 @@ namespace Cube
             if (State != TimerState.Run) return;
             _inner.Stop();
             State = TimerState.Suspend;
-            this.LogDebug(nameof(Suspend), $"{nameof(Interval)}:{Interval}");
+            GetType().LogDebug(nameof(Suspend), $"{nameof(Interval)}:{Interval}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -265,8 +265,11 @@ namespace Cube
             State = TimerState.Run;
             Next  = DateTime.Now + value;
 
-            this.LogDebug(nameof(Resume), $"{nameof(Interval)}:{Interval}",
-                $"{nameof(Last)}:{Last}", $"{nameof(Next)}:{Next}");
+            GetType().LogDebug(nameof(Resume),
+                $"{nameof(Interval)}:{Interval}",
+                $"{nameof(Last)}:{Last}",
+                $"{nameof(Next)}:{Next}"
+            );
 
             _inner.Interval = Math.Max(value.TotalMilliseconds, 1);
             _inner.Start();
@@ -308,10 +311,11 @@ namespace Cube
         /// </summary>
         ///
         /// <remarks>
-        /// 原則としてユーザの設定したインターバルで実行を開始します。
-        /// ただし、Subscribe で登録されているハンドラの総処理時間がユーザの
-        /// 設定したインターバルを超える場合、最低でもその 1/10 秒ほど間隔を
-        /// あけて次回の処理を実行します。
+        /// As a general rule, execution will start at the interval set by
+        /// the user. However, if the total processing time of the handlers
+        /// registered in Subscribe exceeds the interval set by the user,
+        /// the next processing will be executed after an interval of
+        /// at least 1/10 of a second.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */

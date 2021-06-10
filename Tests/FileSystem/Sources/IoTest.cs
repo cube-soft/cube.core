@@ -101,7 +101,7 @@ namespace Cube.FileSystem.Tests
         [TestCaseSource(nameof(TestCases))]
         public void GetFiles(int id, IO io)
         {
-            Assert.That(io.GetFiles(Examples).Count(), Is.EqualTo(2), $"{id}");
+            Assert.That(io.GetFiles(Examples).Count(), Is.EqualTo(6), $"{id}");
             Assert.That(io.GetFiles(GetSource("Sample.txt")).Count(), Is.EqualTo(0));
 
             var empty = Get("Empty");

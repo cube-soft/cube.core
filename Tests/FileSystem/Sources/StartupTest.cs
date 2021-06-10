@@ -15,9 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Reflection;
-using Cube.Mixin.String;
 using Cube.Tests;
+using Microsoft.Win32;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
@@ -41,41 +40,33 @@ namespace Cube.FileSystem.Tests
         /// Create
         ///
         /// <summary>
-        /// Confirms the default values of properties.
+        /// Tests the constructor and properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
         public void Create()
         {
-            var src = new Startup("Test");
-            Assert.That(src.Name,    Is.EqualTo("Test"));
-            Assert.That(src.Command, Is.Null);
-            Assert.That(src.Enabled, Is.False);
+            var src = new Startup(nameof(StartupTest));
+            Assert.That(src.Name,      Is.EqualTo(nameof(StartupTest)));
+            Assert.That(src.Enabled,   Is.False);
+            Assert.That(src.Source,    Is.Null);
+            Assert.That(src.Arguments, Is.Not.Null);
+            Assert.That(src.Command,   Is.Empty);
+
+            src.Source = "path";
+            Assert.That(src.Command, Is.EqualTo("\"path\""));
+            src.Arguments.Add("arg1");
+            Assert.That(src.Command, Is.EqualTo("\"path\" \"arg1\""));
+            src.Arguments.Add("arg2");
+            Assert.That(src.Command, Is.EqualTo("\"path\" \"arg1\" \"arg2\""));
+            src.Source = string.Empty;
+            Assert.That(src.Command, Is.Empty);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Load
-        ///
-        /// <summary>
-        /// Tests the Load method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Load()
-        {
-            var exec = Assembly.GetExecutingAssembly().Location;
-            var name = IO.Get(exec).BaseName;
-            var src  = new Startup(name) { Command = exec };
-            src.Load();
-            Assert.That(src.Enabled, Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save
+        /// Create
         ///
         /// <summary>
         /// Tests the Save method.
@@ -85,29 +76,47 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Save()
         {
-            var exec = Assembly.GetExecutingAssembly().Location;
-            var name = IO.Get(exec).BaseName;
-            var cmd  = exec.Quote();
+            var src = new Startup(nameof(StartupTest));
+            Assert.That(src.Enabled,      Is.False);
+            Assert.That(Exists(src.Name), Is.False, "Step1");
 
-            var s0 = new Startup(name)
-            {
-                Command = cmd,
-                Enabled = true
-            };
-            s0.Save();
+            src.Enabled = true;
+            src.Save();
+            Assert.That(Exists(src.Name), Is.True,  "Step2");
 
-            var s1 = new Startup(name);
-            s1.Load();
-            Assert.That(s1.Enabled, Is.True);
-            Assert.That(s1.Command, Is.EqualTo(cmd));
+            src.Save(true);
+            Assert.That(Exists(src.Name), Is.False, "Step3");
 
-            s1.Enabled = false;
-            s1.Save();
+            src.Source = @"path\to\notfound.exe";
+            src.Save(false);
+            Assert.That(Exists(src.Name), Is.True,  "Step4");
+            src.Save(true);
+            Assert.That(Exists(src.Name), Is.False, "Step5");
 
-            var s2 = new Startup(name);
-            s2.Load();
-            Assert.That(s2.Enabled, Is.False);
+            src.Save();
+            Assert.That(Exists(src.Name), Is.True,  "Step6");
+            src.Enabled = false;
+            src.Save();
+            Assert.That(Exists(src.Name), Is.False, "Step7");
         }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Exists
+        ///
+        /// <summary>
+        /// Determines whether the specified value name exists in the
+        /// registry.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private bool Exists(string name) => Registry.GetValue(
+            @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", name, null
+        ) != null;
 
         #endregion
     }

@@ -108,73 +108,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
-        ///
-        /// <summary>
-        /// Tests the Send method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(DialogStatus.Ok,     ExpectedResult = 2)]
-        [TestCase(DialogStatus.Yes,    ExpectedResult = 2)]
-        [TestCase(DialogStatus.Cancel, ExpectedResult = 0)]
-        public int Send(DialogStatus value)
-        {
-            var n = 0;
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => e.Value = value))
-            {
-                2.Times(i => src.SendMessage(new DialogMessage(),
-                    e => n++,
-                    e => e.Any(DialogStatus.Ok, DialogStatus.Yes)
-                ));
-
-                Task.Delay(200).Wait();
-            }
-            return n;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send
-        ///
-        /// <summary>
-        /// Tests the Send method with CancelMessage objects.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(true,  ExpectedResult = 0)]
-        [TestCase(false, ExpectedResult = 2)]
-        public int Send_CancelMessage(bool cancel)
-        {
-            var n = 0;
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
-            {
-                2.Times(i => src.SendMessage(new OpenFileMessage(), e => n++));
-                Task.Delay(200).Wait();
-            }
-            return n;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Send_Throws
-        ///
-        /// <summary>
-        /// Tests the Send method with a null object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Send_Throws()
-        {
-            using var src = new Presenter(new());
-            Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Track
         ///
         /// <summary>
@@ -203,6 +136,89 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Track_Sequence
+        ///
+        /// <summary>
+        /// Tests the Track method with multiple actions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Track_Sequence()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => n++))
+            {
+                src.TrackAsync(() => throw new ArgumentException(), () => n++);
+                Task.Delay(200).Wait();
+            }
+            Assert.That(n, Is.EqualTo(2));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track_Message
+        ///
+        /// <summary>
+        /// Tests the Track method with objects of Message inherited class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Track_Message()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            {
+                3.Times(i => src.TrackAsync(new DialogMessage(), e => n++));
+                Task.Delay(300).Wait();
+            }
+            Assert.That(n, Is.EqualTo(3));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Track_CancelMessage
+        ///
+        /// <summary>
+        /// Tests the Track method with objects of CancelMessage inherited
+        /// class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase(true,  ExpectedResult = 0)]
+        [TestCase(false, ExpectedResult = 2)]
+        public int Track_CancelMessage(bool cancel)
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
+            {
+                2.Times(i => src.TrackAsync(new OpenFileMessage(), e => n++));
+                Task.Delay(200).Wait();
+            }
+            return n;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send_Throws
+        ///
+        /// <summary>
+        /// Tests the Send method with a null object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Send_Throws()
+        {
+            using var src = new Presenter(new());
+            Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// PropertyChanged
         ///
         /// <summary>
@@ -216,15 +232,15 @@ namespace Cube.Tests
             var n   = 0;
             var cts = new CancellationTokenSource();
             using var src = new Presenter(new());
-            5.Times(i => src.TestValue = nameof(PropertyChanged));
-            Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
+            5.Times(i => src.Value = nameof(PropertyChanged));
+            Assert.That(src.Value, Is.EqualTo(nameof(PropertyChanged)));
             Assert.That(n, Is.EqualTo(0));
 
-            src.TestValue = string.Empty;
+            src.Value = string.Empty;
             src.PropertyChanged += (s, e) => { ++n; cts.Cancel(); };
-            5.Times(i => src.TestValue = nameof(PropertyChanged));
+            5.Times(i => src.Value = nameof(PropertyChanged));
             Assert.That(() => Wait(cts), Throws.TypeOf<AggregateException>());
-            Assert.That(src.TestValue, Is.EqualTo(nameof(PropertyChanged)));
+            Assert.That(src.Value, Is.EqualTo(nameof(PropertyChanged)));
             Assert.That(n, Is.EqualTo(1));
         }
 
@@ -270,23 +286,21 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private class Presenter : Presentable<Person>
         {
-            public Presenter() : base(new Person()) { Observe(); }
-            public Presenter(SynchronizationContext ctx) : base(new Person(), new Aggregator(), ctx) { Observe(); }
+            public Presenter() : base(new()) { Observe(); }
+            public Presenter(SynchronizationContext ctx) : base(new(), new(), ctx) {
+                Assert.That(Context, Is.Not.Null);
+                Observe();
+            }
             public void PostMessage<T>() where T : new() => Post<T>();
             public void SendMessage<T>() where T : new() => Send<T>();
             public void SendMessage<T>(T m) => Send(m);
-            public void SendMessage<T>(Message<T> m, Action<T> e, Func<T, bool> f) => Send(m, e, f);
-            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
             public void TrackSync(Action e) => Track(e, true);
-            public void TrackAsync(Action e) => Track(e);
+            public void TrackAsync(params Action[] e) => Track(e);
+            public void TrackAsync<T>(Message<T> m, Action<T> e) => Track(m, e);
+            public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
-            protected override DialogMessage OnMessage(Exception e) => e is OperationCanceledException ? null : base.OnMessage(e);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
-            public string TestValue
-            {
-                get => Get<string>();
-                set => Set(value);
-            }
+            public string Value { get => Get<string>(); set => Set(value); }
         }
 
         #endregion

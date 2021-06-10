@@ -50,11 +50,11 @@ namespace Cube.Tests.Mixin
         [Test]
         public void TryCast()
         {
-            var c0 = new Person { Identification = 1 };
+            var c0 = new Person { ID = 1 };
             Assert.That(c0, Is.Not.Null);
             var c1 = c0.TryCast<INotifyPropertyChanged>();
             Assert.That(c1, Is.Not.Null);
-            var c2 = c1.TryCast<SerializableBase>();
+            var c2 = c1.TryCast<ObservableBase>();
             Assert.That(c2, Is.Not.Null);
             var c3 = c0.TryCast<Person>();
             Assert.That(c3, Is.Not.Null);
@@ -105,14 +105,12 @@ namespace Cube.Tests.Mixin
                 Name           = "Copy Serializable",
                 Sex            = Sex.Male,
                 Creation       = DateTime.Now,
-                Reserved       = true
             };
             var copy = src.Copy();
             Assert.That(copy.Identification, Is.EqualTo(src.Identification));
             Assert.That(copy.Name,           Is.EqualTo(src.Name));
             Assert.That(copy.Sex,            Is.EqualTo(src.Sex));
             Assert.That(copy.Creation,       Is.EqualTo(src.Creation));
-            Assert.That(copy.Reserved,       Is.EqualTo(src.Reserved));
         }
 
         /* ----------------------------------------------------------------- */
@@ -127,25 +125,24 @@ namespace Cube.Tests.Mixin
         [Test]
         public void Copy_NonSerializable()
         {
-            var src = new Person
+            using var src = new Person
             {
-                Identification = 10,
+                ID = 10,
                 Name           = "Copy Serializable",
                 Sex            = Sex.Male,
                 Age            = 25,
                 Creation       = DateTime.Now,
-                Reserved       = true
             };
             src.Contact.Value = "01-2345-6789";
             src.Secret        = "Non-DataMember";
 
             var copy = src.Copy();
-            Assert.That(copy.Identification, Is.EqualTo(src.Identification));
+            Assert.That(copy.ID, Is.EqualTo(src.ID));
             Assert.That(copy.Name,           Is.EqualTo(src.Name));
             Assert.That(copy.Sex,            Is.EqualTo(src.Sex));
             Assert.That(copy.Age,            Is.EqualTo(src.Age));
             Assert.That(copy.Creation,       Is.EqualTo(src.Creation));
-            Assert.That(copy.Reserved,       Is.EqualTo(src.Reserved));
+            Assert.That(copy.Contact.Type,   Is.EqualTo(src.Contact.Type));
             Assert.That(copy.Contact.Value,  Is.EqualTo(src.Contact.Value));
             Assert.That(copy.Secret,         Is.EqualTo(src.Secret));
             Assert.That(copy.Guid,           Is.Not.EqualTo(src.Guid));
@@ -166,7 +163,7 @@ namespace Cube.Tests.Mixin
         {
             var src = new Person
             {
-                Identification = 10,
+                ID = 10,
                 Name           = "Copy Serializable",
                 Contact        = new Address
                 {
@@ -177,16 +174,39 @@ namespace Cube.Tests.Mixin
 
             var dest = src.Copy();
 
-            src.Identification = 20;
+            src.ID = 20;
             src.Name           = "Re-assign";
             src.Contact.Value  = "98-7654-3210";
 
-            Assert.That(dest.Identification, Is.Not.EqualTo(src.Identification));
+            Assert.That(dest.ID, Is.Not.EqualTo(src.ID));
             Assert.That(dest.Name,           Is.Not.EqualTo(src.Name));
+            Assert.That(dest.Contact.Type,   Is.EqualTo(src.Contact.Type));
             Assert.That(dest.Contact.Value,  Is.EqualTo(src.Contact.Value));
         }
 
         #endregion
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SerializableData
+        ///
+        /// <summary>
+        /// Represents the dummy data.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Serializable]
+        private class SerializableData
+        {
+            public int Identification { get; set; } = -1;
+            public string Name { get; set; } = string.Empty;
+            public Sex Sex { get; set; } = Sex.Unknown;
+            public DateTime? Creation { get; set; }
+        }
 
         #endregion
     }

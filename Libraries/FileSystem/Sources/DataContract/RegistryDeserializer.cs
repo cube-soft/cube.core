@@ -18,11 +18,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cube.DataContract.Mixin;
+using Cube.FileSystem.DataContract.Internal;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 
-namespace Cube.DataContract
+namespace Cube.FileSystem.DataContract
 {
     /* --------------------------------------------------------------------- */
     ///

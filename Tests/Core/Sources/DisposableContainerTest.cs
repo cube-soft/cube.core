@@ -15,70 +15,69 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Threading.Tasks;
-using Cube.Mixin.Logging;
+using NUnit.Framework;
 
-namespace Cube
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Logger
+    /// DisposableContainerTest
     ///
     /// <summary>
-    /// Provides settings and methods for logging.
+    /// Test the DisposableContainer class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Logger
+    [TestFixture]
+    class DisposableContainerTest
     {
-        #region Methods
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Separator
+        /// Add
         ///
         /// <summary>
-        /// Gets or sets values to separate words.
+        /// Tests the Add and Dispose methods.
+        /// objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static string Separator { get; set; } = "\t";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObserveTaskException
-        ///
-        /// <summary>
-        /// Observes UnobservedTaskException exceptions and outputs to the
-        /// log file.
-        /// </summary>
-        ///
-        /// <returns>Disposable object to stop to monitor.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable ObserveTaskException()
+        [Test]
+        public void Add()
         {
-            TaskScheduler.UnobservedTaskException -= WhenTaskError;
-            TaskScheduler.UnobservedTaskException += WhenTaskError;
-            return Disposable.Create(() => TaskScheduler.UnobservedTaskException -= WhenTaskError);
+            var n   = 0;
+            var src = new DisposableContainer(
+                Disposable.Create(() => ++n),
+                Disposable.Create(() => ++n),
+                Disposable.Create(() => ++n)
+             );
+
+            src.Add(() => ++n);
+            src.Add(() => ++n);
+
+            Assert.That(n, Is.EqualTo(0));
+            src.Dispose();
+            Assert.That(n, Is.EqualTo(5));
+            src.Add(() => ++n);
+            Assert.That(n, Is.EqualTo(6));
         }
 
-        #endregion
-
-        #region Implementations
-
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenTaskError
+        /// Make_Empty
         ///
         /// <summary>
-        /// Occurs when the UnobservedTaskException is raised.
+        /// Tests the constructor and Dispose method with no disposable
+        /// objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
-            typeof(TaskScheduler).LogError(e.Exception);
+        [Test]
+        public void Make_Empty()
+        {
+            Assert.DoesNotThrow(() => { using (new DisposableContainer()) { } });
+        }
 
         #endregion
     }

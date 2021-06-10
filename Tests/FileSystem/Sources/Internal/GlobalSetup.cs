@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
+using Cube.Mixin.Logging;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
@@ -44,7 +45,7 @@ namespace Cube.FileSystem.Tests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
+            typeof(GlobalSetup).LogInfo(Assembly.GetExecutingAssembly());
         }
     }
 }
