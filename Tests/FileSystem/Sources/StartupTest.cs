@@ -50,7 +50,7 @@ namespace Cube.FileSystem.Tests
             var src = new Startup(nameof(StartupTest));
             Assert.That(src.Name,      Is.EqualTo(nameof(StartupTest)));
             Assert.That(src.Enabled,   Is.False);
-            Assert.That(src.Source,    Is.Null);
+            Assert.That(src.Source,    Is.EqualTo(string.Empty));
             Assert.That(src.Arguments, Is.Not.Null);
             Assert.That(src.Command,   Is.Empty);
 

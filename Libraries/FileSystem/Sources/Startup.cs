@@ -34,7 +34,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Startup : DisposableBase
+    public class Startup : ObservableBase
     {
         #region Constructors
 
@@ -100,7 +100,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Enabled { get; set; }
+        public bool Enabled
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -112,7 +116,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source { get; set; }
+        public string Source
+        {
+            get => Get(() => string.Empty);
+            set => Set(value);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
