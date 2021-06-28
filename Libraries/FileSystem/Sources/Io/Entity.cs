@@ -39,34 +39,6 @@ namespace Cube.FileSystem
         /// Entity
         ///
         /// <summary>
-        /// Creates a new instance of the Entity class with the
-        /// specified path of file or directory.
-        /// </summary>
-        ///
-        /// <param name="src">Path of file or directory.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Entity(string src) : this(src, new EntityController()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Information
-        ///
-        /// <summary>
-        /// Creates a new instance of the Information class with the
-        /// specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Copied information.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Entity(Entity src) : this(src.Source, src.Controller) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Information
-        ///
-        /// <summary>
         /// Creates a new instance of the Information class with the
         /// specified arguments.
         /// </summary>

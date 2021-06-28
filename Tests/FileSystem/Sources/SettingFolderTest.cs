@@ -138,21 +138,26 @@ namespace Cube.FileSystem.Tests
 
             using (var src = new SettingFolder<Person>(Format.Registry, name, new()))
             {
-                src.AutoSave      = true;
-                src.AutoSaveDelay = ts;
-                src.Value.Name    = "AutoSave";
-                src.Value.Age     = 77;
-                src.Value.Sex     = Sex.Female;
-                src.Value.Secret  = "SecretChanged";
+                src.AutoSave         = true;
+                src.AutoSaveDelay    = ts;
+                src.Value.Dispatcher = Dispatcher.Vanilla;
+                src.Value.Name       = "AutoSave";
+                src.Value.Age        = 77;
+                src.Value.Sex        = Sex.Female;
+                src.Value.Secret     = "SecretChanged";
+                src.Value.Reserved   = true;
+                src.Value.Reserved   = false;
+                src.Value.Reserved   = false;
 
                 Task.Delay(TimeSpan.FromTicks(ts.Ticks * 2)).Wait();
             }
 
             using var dest = OpenSubKey(key);
-            Assert.That(dest.GetValue("Name"),   Is.EqualTo("AutoSave"));
-            Assert.That(dest.GetValue("Age"),    Is.EqualTo(77));
-            Assert.That(dest.GetValue("Sex"),    Is.EqualTo(1));
-            Assert.That(dest.GetValue("Secret"), Is.Null);
+            Assert.That(dest.GetValue("Name"),     Is.EqualTo("AutoSave"));
+            Assert.That(dest.GetValue("Age"),      Is.EqualTo(77));
+            Assert.That(dest.GetValue("Sex"),      Is.EqualTo(1));
+            Assert.That(dest.GetValue("Reserved"), Is.EqualTo(0));
+            Assert.That(dest.GetValue("Secret"),   Is.Null);
         }
 
         #endregion

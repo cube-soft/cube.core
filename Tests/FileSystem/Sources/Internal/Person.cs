@@ -228,8 +228,8 @@ namespace Cube.FileSystem.Tests
         [DataMember]
         public bool Reserved
         {
-            get => Get<bool>();
-            set => Set(value);
+            get => _reserved;
+            set => Set(ref _reserved, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -247,6 +247,10 @@ namespace Cube.FileSystem.Tests
             set => Set(value);
         }
 
+        #endregion
+
+        #region Fields
+        private bool _reserved;
         #endregion
     }
 }

@@ -254,22 +254,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Wait
-        ///
-        /// <summary>
-        /// Waits until the Cancel event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool Wait(CancellationTokenSource cts)
-        {
-            try { Task.Delay(30000, cts.Token).Wait(); }
-            catch (AggregateException err) { return err.InnerException is TaskCanceledException; }
-            return false;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Execute
         ///
         /// <summary>
@@ -291,7 +275,7 @@ namespace Cube.Tests
                 else src.Start(TimeSpan.FromMilliseconds(msec));
             }).Forget();
 
-            return Wait(cts);
+            return Wait.For(cts.Token);
         }
 
         /* ----------------------------------------------------------------- */
