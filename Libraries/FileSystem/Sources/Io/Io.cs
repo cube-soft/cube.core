@@ -19,24 +19,49 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cube.Mixin.Logging;
 
 namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IO
+    /// Io
     ///
     /// <summary>
-    /// Provides functionality to do something to a file or directory.
+    /// Provides functionality to do something to a path, file, or directory.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class IO
+    public static class Io
     {
         #region Methods
 
-        #region Get
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Configure
+        ///
+        /// <summary>
+        /// Sets the specified object as the controller of the class.
+        /// </summary>
+        ///
+        /// <param name="src">I/O controller.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Configure(IoController src) => _core = src;
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Exists
+        ///
+        /// <summary>
+        /// Determines if the specified file or directory exists.
+        /// </summary>
+        ///
+        /// <param name="path">Path to check.</param>
+        ///
+        /// <returns>true for exists.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static bool Exists(string path) => _core.Exists(path);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -51,56 +76,7 @@ namespace Cube.FileSystem
         /// <returns>Entity object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public Entity Get(string path) => GetCore(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetCore
-        ///
-        /// <summary>
-        /// Gets the Entity object from the specified path.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        ///
-        /// <returns>Entity object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual Entity GetCore(string path) => new(path, GetController());
-
-        #endregion
-
-        #region GetController
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetController
-        ///
-        /// <summary>
-        /// Gets the EntityController object.
-        /// </summary>
-        ///
-        /// <returns>EntityController object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public EntityController GetController() => GetControllerCore();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetControllerCore
-        ///
-        /// <summary>
-        /// Gets the Controller object.
-        /// </summary>
-        ///
-        /// <returns>Controller object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual EntityController GetControllerCore() => _shared ??= new();
-
-        #endregion
-
-        #region GetFiles
+        public static Entity Get(string path) => _core.Get(path);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -122,7 +98,7 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> GetFiles(string path) => GetFiles(path, "*");
+        public static IEnumerable<string> GetFiles(string path) => GetFiles(path, "*");
 
         /* ----------------------------------------------------------------- */
         ///
@@ -152,7 +128,7 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> GetFiles(string path, string pattern) =>
+        public static IEnumerable<string> GetFiles(string path, string pattern) =>
             GetFiles(path, pattern, SearchOption.TopDirectoryOnly);
 
         /* ----------------------------------------------------------------- */
@@ -190,26 +166,8 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> GetFiles(string path, string pattern, SearchOption option) =>
-            GetFilesCore(path, pattern, option) ?? Enumerable.Empty<string>();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilesCore
-        ///
-        /// <summary>
-        /// Returns the names of files (including their paths) that
-        /// match the specified search pattern in the specified directory,
-        /// using a value to determine whether to search subdirectories.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual IEnumerable<string> GetFilesCore(string path, string pattern, SearchOption option) =>
-            Directory.Exists(path) ? Directory.GetFiles(path, pattern, option) : null;
-
-        #endregion
-
-        #region GetDirectories
+        public static IEnumerable<string> GetFiles(string path, string pattern, SearchOption option) =>
+            _core.GetFiles(path, pattern, option) ?? Enumerable.Empty<string>();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -231,7 +189,7 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> GetDirectories(string path) => GetDirectories(path, "*");
+        public static IEnumerable<string> GetDirectories(string path) => GetDirectories(path, "*");
 
         /* ----------------------------------------------------------------- */
         ///
@@ -262,7 +220,7 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> GetDirectories(string path, string pattern) =>
+        public static IEnumerable<string> GetDirectories(string path, string pattern) =>
             GetDirectories(path, pattern, SearchOption.TopDirectoryOnly);
 
         /* ----------------------------------------------------------------- */
@@ -301,26 +259,8 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IEnumerable<string> GetDirectories(string path, string pattern, SearchOption option) =>
-            GetDirectoriesCore(path, pattern, option) ?? new string[0];
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetDirectoriesCore
-        ///
-        /// <summary>
-        /// Returns the names of the subdirectories (including their paths)
-        /// that match the specified search pattern in the specified
-        /// directory, and optionally searches subdirectories.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual IEnumerable<string> GetDirectoriesCore(string path, string pattern, SearchOption option) =>
-            Directory.Exists(path) ? Directory.GetDirectories(path, pattern, option) : null;
-
-        #endregion
-
-        #region Combine
+        public static IEnumerable<string> GetDirectories(string path, string pattern, SearchOption option) =>
+            _core.GetDirectories(path, pattern, option) ?? Enumerable.Empty<string>();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -335,277 +275,22 @@ namespace Cube.FileSystem
         /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public string Combine(params string[] paths) => CombineCore(paths);
+        public static string Combine(params string[] paths) => _core.Combine(paths);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CombineCore
+        /// Open
         ///
         /// <summary>
-        /// Combines the specified paths.
+        /// Opens the specified file as read-only.
         /// </summary>
         ///
-        /// <param name="paths">Collection of paths.</param>
+        /// <param name="path">File path.</param>
         ///
-        /// <returns>Combined path.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual string CombineCore(params string[] paths) => Path.Combine(paths);
-
-        #endregion
-
-        #region SetAttributes
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetAttributes
-        ///
-        /// <summary>
-        /// Sets the specified attributes to the specified file or directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="attr">Attributes to set.</param>
+        /// <returns>Read-only stream.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public void SetAttributes(string path, FileAttributes attr) =>
-            SetAttributesCore(path, attr);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetAttributesCore
-        ///
-        /// <summary>
-        /// Sets the specified attributes to the specified file or directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="attr">Attributes to set.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void SetAttributesCore(string path, FileAttributes attr)
-        {
-            if (Directory.Exists(path)) _ = new DirectoryInfo(path) { Attributes = attr };
-            else if (File.Exists(path)) File.SetAttributes(path, attr);
-        }
-
-        #endregion
-
-        #region SetCreationTime
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetCreationTime
-        ///
-        /// <summary>
-        /// Sets the specified creation time to the specified file or
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="time">Creation time.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void SetCreationTime(string path, DateTime time) =>
-            SetCreationTimeCore(path, time);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetCreationTimeCore
-        ///
-        /// <summary>
-        /// Sets the specified creation time to the specified file or
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="time">Creation time.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void SetCreationTimeCore(string path, DateTime time)
-        {
-            if (Directory.Exists(path)) Directory.SetCreationTime(path, time);
-            else if (File.Exists(path)) File.SetCreationTime(path, time);
-        }
-
-        #endregion
-
-        #region SetLastWriteTime
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetLastWriteTime
-        ///
-        /// <summary>
-        /// Sets the specified last updated time to the specified file or
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="time">Last updated time.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void SetLastWriteTime(string path, DateTime time) =>
-            SetLastWriteTimeCore(path, time);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetLastWriteTimeCore
-        ///
-        /// <summary>
-        /// Sets the specified last updated time to the specified file or
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="time">Last updated time.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void SetLastWriteTimeCore(string path, DateTime time)
-        {
-            if (Directory.Exists(path)) Directory.SetLastWriteTime(path, time);
-            else if (File.Exists(path)) File.SetLastWriteTime(path, time);
-        }
-
-        #endregion
-
-        #region SetLastAccessTime
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetLastAccessTime
-        ///
-        /// <summary>
-        /// Sets the specified last accessed time to the specified file or
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="time">Last accessed time.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void SetLastAccessTime(string path, DateTime time) =>
-            SetLastAccessTimeCore(path, time);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetLastAccessTimeCore
-        ///
-        /// <summary>
-        /// Sets the specified last accessed time to the specified file or
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        /// <param name="time">Last accessed time.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void SetLastAccessTimeCore(string path, DateTime time)
-        {
-            if (Directory.Exists(path)) Directory.SetLastAccessTime(path, time);
-            else if (File.Exists(path)) File.SetLastAccessTime(path, time);
-        }
-
-        #endregion
-
-        #region Delete
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Delete
-        ///
-        /// <summary>
-        /// Deletes the specified file or directory.
-        /// </summary>
-        ///
-        /// <param name="path">Path to delete.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Delete(string path) =>
-            Action(nameof(Delete), () => DeleteCore(path), path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryDelete
-        ///
-        /// <summary>
-        /// Tries to delete the specified file or directory.
-        /// </summary>
-        ///
-        /// <param name="path">Path to delete.</param>
-        ///
-        /// <returns>true for success.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool TryDelete(string path)
-        {
-            try { DeleteCore(path); return true; }
-            catch (Exception err) { GetType().LogWarn(err); }
-            return false;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeleteCore
-        ///
-        /// <summary>
-        /// Deletes the specified file or directory.
-        /// </summary>
-        ///
-        /// <param name="path">Path to delete.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void DeleteCore(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                foreach (var f in Directory.GetFiles(path)) DeleteCore(f);
-                foreach (var d in Directory.GetDirectories(path)) DeleteCore(d);
-                SetAttributes(path, FileAttributes.Normal);
-                Directory.Delete(path, false);
-            }
-            else if (File.Exists(path))
-            {
-                SetAttributes(path, FileAttributes.Normal);
-                File.Delete(path);
-            }
-        }
-
-        #endregion
-
-        #region CreateDirectory
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateDirectory
-        ///
-        /// <summary>
-        /// Creates a directory.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void CreateDirectory(string path) =>
-            Action(nameof(CreateDirectory), () => CreateDirectoryCore(path), path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateDirectoryCore
-        ///
-        /// <summary>
-        /// Creates a directory.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void CreateDirectoryCore(string path) =>
-            Directory.CreateDirectory(path);
-
-        #endregion
-
-        #region Create
+        public static FileStream Open(string path) => _core.Open(path);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -620,261 +305,150 @@ namespace Cube.FileSystem
         /// <returns>FileStream object to write.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public FileStream Create(string path) => Func(nameof(Create), () =>
+        public static FileStream Create(string path)
         {
             CreateParentDirectory(Get(path));
-            return CreateCore(path);
-        }, path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateCore
-        ///
-        /// <summary>
-        /// Creates or opens the specified file and gets the stream.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create or open file.</param>
-        ///
-        /// <returns>FileStream object to write.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual FileStream CreateCore(string path) => File.Create(path);
-
-        #endregion
-
-        #region OpenRead
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenRead
-        ///
-        /// <summary>
-        /// Opens the specified file as read-only.
-        /// </summary>
-        ///
-        /// <param name="path">File path.</param>
-        ///
-        /// <returns>Read-only stream.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileStream OpenRead(string path) =>
-            Func(nameof(OpenRead), () => OpenReadCore(path), path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenReadCore
-        ///
-        /// <summary>
-        /// Opens the specified file as read-only.
-        /// </summary>
-        ///
-        /// <param name="path">File path.</param>
-        ///
-        /// <returns>Read-only stream.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual FileStream OpenReadCore(string path) => File.OpenRead(path);
-
-        #endregion
-
-        #region OpenWrite
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenWrite
-        ///
-        /// <summary>
-        /// Creates or opens the specified file and gets the stream.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create or open file.</param>
-        ///
-        /// <returns>FileStream object to write.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileStream OpenWrite(string path) => Func(nameof(OpenWrite), () =>
-        {
-            CreateParentDirectory(Get(path));
-            return OpenWriteCore(path);
-        }, path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenWriteCore
-        ///
-        /// <summary>
-        /// Creates or opens the specified file and gets the stream.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create or open file.</param>
-        ///
-        /// <returns>FileStream object to write.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual FileStream OpenWriteCore(string path) => File.OpenWrite(path);
-
-        #endregion
-
-        #region Move
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Move
-        ///
-        /// <summary>
-        /// Moves the specified file.
-        /// </summary>
-        ///
-        /// <param name="src">Source path.</param>
-        /// <param name="dest">Destination path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Move(string src, string dest) => Move(src, dest, false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Move
-        ///
-        /// <summary>
-        /// Moves the specified file.
-        /// </summary>
-        ///
-        /// <param name="src">Source path.</param>
-        /// <param name="dest">Destination path.</param>
-        /// <param name="overwrite">Overwrite or not.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Move(string src, string dest, bool overwrite)
-        {
-            var info = Get(src);
-            if (info.IsDirectory) _ = MoveDirectory(info, Get(dest), overwrite);
-            else _ = MoveFile(info, Get(dest), overwrite);
+            return _core.Create(path);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MoveCore
-        ///
-        /// <summary>
-        /// Moves the specified file.
-        /// </summary>
-        ///
-        /// <param name="src">Source path.</param>
-        /// <param name="dest">Destination path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void MoveCore(string src, string dest) => File.Move(src, dest);
-
-        #endregion
-
-        #region Copy
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Copy
-        ///
-        /// <summary>
-        /// Copies the specified file.
-        /// </summary>
-        ///
-        /// <param name="src">Source path.</param>
-        /// <param name="dest">Destination path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Copy(string src, string dest) => Copy(src, dest, false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Copy
-        ///
-        /// <summary>
-        /// Copies the specified file.
-        /// </summary>
-        ///
-        /// <param name="src">Source path.</param>
-        /// <param name="dest">Destination path.</param>
-        /// <param name="overwrite">Overwrite or not.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Copy(string src, string dest, bool overwrite)
-        {
-            var info = Get(src);
-            if (info.IsDirectory) _ = CopyDirectory(info, Get(dest), overwrite);
-            else _ = CopyFile(info, Get(dest), overwrite);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CopyCore
-        ///
-        /// <summary>
-        /// Copies the specified file.
-        /// </summary>
-        ///
-        /// <param name="src">Source path.</param>
-        /// <param name="dest">Destination path.</param>
-        /// <param name="overwrite">Overwrite or not.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void CopyCore(string src, string dest, bool overwrite) =>
-            File.Copy(src, dest, overwrite);
-
-        #endregion
-
-        #endregion
-
-        #region Events
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Failed
-        ///
-        /// <summary>
-        /// Occurs when any operations are failed.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// Key is set to the name of the method that failed, and Value is
-        /// set to the exception object that was thrown when the method
-        /// failed.
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event FailedEventHandler Failed;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnFailed
-        ///
-        /// <summary>
-        /// Raises the Failed event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnFailed(FailedEventArgs e) => Failed(this, e);
-
-        #endregion
-
-        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
         /// CreateDirectory
         ///
         /// <summary>
-        /// Creates a directory and sets the attributes.
+        /// Creates a directory. If a file or directory with the specified
+        /// path exists, the method will be skipped.
         /// </summary>
         ///
+        /// <param name="path">Path to create.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        private void CreateDirectory(string path, Entity src)
+        public static void CreateDirectory(string path)
         {
-            CreateDirectory(path);
-            SetCreationTime(path, src.CreationTime);
-            SetLastWriteTime(path, src.LastWriteTime);
-            SetLastAccessTime(path, src.LastAccessTime);
-            SetAttributes(path, src.Attributes);
+            if (!Exists(path)) _core.CreateDirectory(path);
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetAttributes
+        ///
+        /// <summary>
+        /// Sets the specified attributes to the specified file or directory.
+        /// </summary>
+        ///
+        /// <param name="path">Target path.</param>
+        /// <param name="attr">Attributes to set.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SetAttributes(string path, FileAttributes attr) =>
+            _core.SetAttributes(path, attr);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetCreationTime
+        ///
+        /// <summary>
+        /// Sets the specified creation time to the specified file or
+        /// directory.
+        /// </summary>
+        ///
+        /// <param name="path">Target path.</param>
+        /// <param name="time">Creation time.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SetCreationTime(string path, DateTime time) =>
+            _core.SetCreationTime(path, time);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetLastWriteTime
+        ///
+        /// <summary>
+        /// Sets the specified last updated time to the specified file or
+        /// directory.
+        /// </summary>
+        ///
+        /// <param name="path">Target path.</param>
+        /// <param name="time">Last updated time.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SetLastWriteTime(string path, DateTime time) =>
+            _core.SetLastWriteTime(path, time);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetLastAccessTime
+        ///
+        /// <summary>
+        /// Sets the specified last accessed time to the specified file or
+        /// directory.
+        /// </summary>
+        ///
+        /// <param name="path">Target path.</param>
+        /// <param name="time">Last accessed time.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void SetLastAccessTime(string path, DateTime time) =>
+            _core.SetLastAccessTime(path, time);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Delete
+        ///
+        /// <summary>
+        /// Deletes the specified file or directory.
+        /// If the specified path is a directory and has subdirectories,
+        /// the method will recursively remove all of them.
+        /// </summary>
+        ///
+        /// <param name="path">Path to delete.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Delete(string path) => _core.Delete(path);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Move
+        ///
+        /// <summary>
+        /// Moves the specified file.
+        /// </summary>
+        ///
+        /// <param name="src">Source path.</param>
+        /// <param name="dest">Destination path.</param>
+        /// <param name="overwrite">Overwrite or not.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Move(string src, string dest, bool overwrite)
+        {
+            var si = Get(src);
+            if (si.IsDirectory) MoveDirectory(si, Get(dest), overwrite);
+            else MoveFile(si, Get(dest), overwrite);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Copy
+        ///
+        /// <summary>
+        /// Copies the specified file.
+        /// </summary>
+        ///
+        /// <param name="src">Source path.</param>
+        /// <param name="dest">Destination path.</param>
+        /// <param name="overwrite">Overwrite or not.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Copy(string src, string dest, bool overwrite)
+        {
+            var si = Get(src);
+            if (si.IsDirectory) CopyDirectory(si, Get(dest), overwrite);
+            else CopyFile(si, Get(dest), overwrite);
+        }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -885,10 +459,28 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void CreateParentDirectory(Entity info)
+        private static void CreateParentDirectory(Entity info)
         {
             var dir = Get(info.DirectoryName);
             if (!dir.Exists) CreateDirectory(dir.FullName);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateDirectory
+        ///
+        /// <summary>
+        /// Creates a directory and sets the attributes.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static void CreateDirectory(string path, Entity src)
+        {
+            CreateDirectory(path);
+            SetCreationTime(path, src.CreationTime);
+            SetLastWriteTime(path, src.LastWriteTime);
+            SetLastAccessTime(path, src.LastAccessTime);
+            SetAttributes(path, src.Attributes);
         }
 
         /* ----------------------------------------------------------------- */
@@ -900,27 +492,23 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool CopyDirectory(Entity src, Entity dest, bool overwrite)
+        private static void CopyDirectory(Entity src, Entity dest, bool overwrite)
         {
             if (!dest.Exists) CreateDirectory(dest.FullName, src);
-
-            var result = true;
 
             foreach (var file in GetFiles(src.FullName))
             {
                 var si = Get(file);
                 var di = Get(Combine(dest.FullName, si.Name));
-                result &= CopyFile(si, di, overwrite);
+                CopyFile(si, di, overwrite);
             }
 
             foreach (var dir in GetDirectories(src.FullName))
             {
                 var si = Get(dir);
                 var di = Get(Combine(dest.FullName, si.Name));
-                result &= CopyDirectory(si, di, overwrite);
+                CopyDirectory(si, di, overwrite);
             }
-
-            return result;
         }
 
         /* ----------------------------------------------------------------- */
@@ -932,11 +520,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool CopyFile(Entity src, Entity dest, bool overwrite) => Action(nameof(Copy), () =>
+        private static void CopyFile(Entity src, Entity dest, bool overwrite)
         {
             CreateParentDirectory(dest);
-            CopyCore(src.FullName, dest.FullName, overwrite);
-        }, src.FullName, dest.FullName);
+            _core.Copy(src.FullName, dest.FullName, overwrite);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -947,29 +535,25 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveDirectory(Entity src, Entity dest, bool overwrite)
+        private static void MoveDirectory(Entity src, Entity dest, bool overwrite)
         {
             if (!dest.Exists) CreateDirectory(dest.FullName, src);
-
-            var result = true;
 
             foreach (var file in GetFiles(src.FullName))
             {
                 var si = Get(file);
                 var di = Get(Combine(dest.FullName, si.Name));
-                result &= MoveFile(si, di, overwrite);
+                MoveFile(si, di, overwrite);
             }
 
             foreach (var dir in GetDirectories(src.FullName))
             {
                 var si = Get(dir);
                 var di = Get(Combine(dest.FullName, si.Name));
-                result &= MoveDirectory(si, di, overwrite);
+                MoveDirectory(si, di, overwrite);
             }
 
-            if (result && src.Exists) Delete(src.FullName);
-
-            return result;
+            Delete(src.FullName);
         }
 
         /* ----------------------------------------------------------------- */
@@ -981,19 +565,25 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveFile(Entity src, Entity dest, bool overwrite)
+        private static void MoveFile(Entity src, Entity dest, bool overwrite)
         {
-            if (!overwrite || !dest.Exists) return MoveFile(src, dest);
-            else
-            {
-                var tmp = Combine(src.DirectoryName, Guid.NewGuid().ToString("D"));
-                var ti  = Get(tmp);
+            if (!dest.Exists) { MoveFile(src, dest); return; }
+            if (!overwrite) return;
 
-                if (!MoveFile(dest, ti)) return false;
-                if (!MoveFile(src, dest)) return MoveFile(ti, dest); // recover
-                else Delete(tmp);
+            var tmp = Combine(src.DirectoryName, Guid.NewGuid().ToString("D"));
+            var ti  = Get(tmp);
+
+            MoveFile(dest, ti);
+            try
+            {
+                MoveFile(src, dest);
+                Delete(tmp);
             }
-            return true;
+            catch
+            {
+                MoveFile(ti, dest); // recover
+                throw;
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -1005,74 +595,16 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private bool MoveFile(Entity src, Entity dest) => Action(nameof(Move), () =>
+        private static void MoveFile(Entity src, Entity dest)
         {
             CreateParentDirectory(dest);
-            MoveCore(src.FullName, dest.FullName);
-        }, src.FullName, dest.FullName);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Action
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// If the operation fails, it will continue to run until Cancel
-        /// is set in the event handler.
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool Action(string name, Action f, params string[] paths)
-        {
-            while (true)
-            {
-                try { f(); return true; }
-                catch (Exception err)
-                {
-                    if (Failed == null) throw;
-                    var args = new FailedEventArgs(name, paths, err);
-                    OnFailed(args);
-                    if (args.Cancel) return false;
-                }
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Func
-        ///
-        /// <summary>
-        /// Invokes the function.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// If the operation fails, it will continue to run until Cancel
-        /// is set in the event handler.
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        private T Func<T>(string name, Func<T> f, params string[] paths)
-        {
-            while (true)
-            {
-                try { return f(); }
-                catch (Exception err)
-                {
-                    if (Failed == null) throw;
-                    var args = new FailedEventArgs(name, paths, err);
-                    OnFailed(args);
-                    if (args.Cancel) return default;
-                }
-            }
+            _core.Move(src.FullName, dest.FullName);
         }
 
         #endregion
 
         #region Fields
-        private static EntityController _shared;
+        private static IoController _core = new(new());
         #endregion
     }
 }

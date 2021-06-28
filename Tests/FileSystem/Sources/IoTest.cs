@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Tests;
-using Cube.Mixin.IO;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
@@ -29,7 +28,7 @@ namespace Cube.FileSystem.Tests
     /// IoTest
     ///
     /// <summary>
-    /// Provides a test fixture for the IO class.
+    /// Provides a test fixture for the Io class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -48,9 +47,11 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get(int id, IO io)
+        public void Get(int id, IoController controller)
         {
-            var file = io.Get(GetSource("Sample.txt"));
+            Io.Configure(controller);
+
+            var file = Io.Get(GetSource("Sample.txt"));
             Assert.That(file, Is.Not.Null, $"{id}");
 
             var cmp = new DateTime(2017, 6, 5);
@@ -63,7 +64,7 @@ namespace Cube.FileSystem.Tests
             Assert.That(file.LastWriteTime,  Is.GreaterThan(cmp));
             Assert.That(file.LastAccessTime, Is.GreaterThan(cmp));
 
-            var dir = io.Get(file.DirectoryName);
+            var dir = Io.Get(file.DirectoryName);
             Assert.That(dir.FullName,        Is.EqualTo(Examples));
             Assert.That(dir.Name,            Is.EqualTo("Examples"));
             Assert.That(dir.BaseName,        Is.EqualTo("Examples"));
@@ -84,9 +85,10 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Get_Throws(int id, IO io)
+        public void Get_Throws(int id, IoController controller)
         {
-            Assert.That(() => io.Get(string.Empty), Throws.ArgumentException, $"{id}");
+            Io.Configure(controller);
+            Assert.That(() => Io.Get(string.Empty), Throws.ArgumentException, $"{id}");
         }
 
        /* ----------------------------------------------------------------- */
@@ -99,14 +101,15 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void GetFiles(int id, IO io)
+        public void GetFiles(int id, IoController controller)
         {
-            Assert.That(io.GetFiles(Examples).Count(), Is.EqualTo(6), $"{id}");
-            Assert.That(io.GetFiles(GetSource("Sample.txt")).Count(), Is.EqualTo(0));
+            Io.Configure(controller);
+            Assert.That(Io.GetFiles(Examples).Count(), Is.EqualTo(7), $"{id}");
+            Assert.That(Io.GetFiles(GetSource("Sample.txt")).Count(), Is.EqualTo(0));
 
             var empty = Get("Empty");
-            io.CreateDirectory(empty);
-            var result = io.GetFiles(empty);
+            Io.CreateDirectory(empty);
+            var result = Io.GetFiles(empty);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count(), Is.EqualTo(0));
         }
@@ -121,14 +124,15 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void GetDirectories(int id, IO io)
+        public void GetDirectories(int id, IoController controller)
         {
-            Assert.That(io.GetDirectories(Examples).Count(), Is.EqualTo(1), $"{id}");
-            Assert.That(io.GetDirectories(GetSource("Sample.txt")).Count(), Is.EqualTo(0));
+            Io.Configure(controller);
+            Assert.That(Io.GetDirectories(Examples).Count(), Is.EqualTo(1), $"{id}");
+            Assert.That(Io.GetDirectories(GetSource("Sample.txt")).Count(), Is.EqualTo(0));
 
             var empty = Get("Empty");
-            io.CreateDirectory(empty);
-            var result = io.GetDirectories(empty);
+            Io.CreateDirectory(empty);
+            var result = Io.GetDirectories(empty);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count(), Is.EqualTo(0));
         }
@@ -143,41 +147,12 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Create(int id, IO io)
+        public void Create(int id, IoController controller)
         {
+            Io.Configure(controller);
             var dest = Get("Directory", $"{nameof(Create)}.txt");
-            using (var stream = io.Create(dest)) stream.WriteByte((byte)'A');
-            Assert.That(io.Get(dest).Length, Is.EqualTo(1), $"{id}");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenWrite
-        ///
-        /// <summary>
-        /// Tests the OpenWrite method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void OpenWrite(int id, IO io)
-        {
-            var src  = io.Get(GetSource("Sample.txt"));
-            var dest = io.Get(Get($"{nameof(OpenWrite)}.txt"));
-
-            io.Copy(src.FullName, dest.FullName, true);
-            io.SetAttributes(dest.FullName, src.Attributes);
-            io.SetCreationTime(dest.FullName, src.CreationTime);
-            io.SetLastWriteTime(dest.FullName, DateTime.Now);
-            io.SetLastAccessTime(dest.FullName, DateTime.Now);
-
-            var count = dest.Length;
-            using (var stream = io.OpenWrite(dest.FullName)) stream.WriteByte((byte)'A');
-            Assert.That(dest.Length, Is.EqualTo(count), $"{id}");
-
-            var newfile = Get("Directory", $"{nameof(OpenWrite)}.txt");
-            using (var stream = io.OpenWrite(newfile)) stream.WriteByte((byte)'A');
-            Assert.That(io.Get(newfile).Length, Is.EqualTo(1));
+            using (var stream = Io.Create(dest)) stream.WriteByte((byte)'A');
+            Assert.That(Io.Get(dest).Length, Is.EqualTo(1), $"{id}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -190,36 +165,17 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Delete(int id, IO io)
+        public void Delete(int id, IoController controller)
         {
+            Io.Configure(controller);
+
             var dest = Get($"{nameof(Delete)}.txt");
 
-            io.Copy(GetSource("Sample.txt"), dest);
-            io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
-            io.Delete(dest);
+            Io.Copy(GetSource("Sample.txt"), dest, true);
+            Io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
+            Io.Delete(dest);
 
-            Assert.That(io.Exists(dest), Is.False, $"{id}");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryDelete
-        ///
-        /// <summary>
-        /// Tests the TryDelete method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void TryDelete(int id, IO io)
-        {
-            var dest = Get($"{nameof(TryDelete)}-{id}.txt");
-
-            io.Copy(GetSource("Sample.txt"), dest);
-            io.SetAttributes(dest, System.IO.FileAttributes.ReadOnly);
-
-            Assert.That(io.TryDelete(dest), Is.True);
-            Assert.That(io.Exists(dest), Is.False);
+            Assert.That(Io.Exists(dest), Is.False, $"{id}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -232,16 +188,18 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void DeleteRecursive(int id, IO io)
+        public void DeleteRecursive(int id, IoController controller)
         {
+            Io.Configure(controller);
+
             var name = "SampleDirectory";
             var dest = Get(name);
 
-            io.Copy(GetSource(name), dest, true);
-            foreach (var f in io.GetFiles(dest)) io.SetAttributes(f, System.IO.FileAttributes.ReadOnly);
-            io.Delete(dest);
+            Io.Copy(GetSource(name), dest, true);
+            foreach (var f in Io.GetFiles(dest)) Io.SetAttributes(f, System.IO.FileAttributes.ReadOnly);
+            Io.Delete(dest);
 
-            Assert.That(io.Exists(dest), Is.False, $"{id}");
+            Assert.That(Io.Exists(dest), Is.False, $"{id}");
         }
 
         /* ----------------------------------------------------------------- */
@@ -254,48 +212,11 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Delete_NotFound(int id, IO io)
+        public void Delete_NotFound(int id, IoController controller)
         {
+            Io.Configure(controller);
             var src = Get($"{nameof(Delete_NotFound)}-{id}");
-            io.Delete(src); // Assert.DoesNotThrow
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryDelete_NotFound
-        ///
-        /// <summary>
-        /// Confirms the behavior when deleting a non-existent file.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// 存在しないファイルを削除した時には例外が発生しないため、
-        /// TryDelete の戻り値は true となります。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void TryDelete_NotFound(int id, IO io)
-        {
-            var src = Get($"{nameof(TryDelete_NotFound)}-{id}");
-            Assert.That(io.TryDelete(src), Is.True);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryDelete_AccessDenied
-        ///
-        /// <summary>
-        /// Confirms the behavior when deleting a file used by another
-        /// process.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void TryDelete_AccessDenied(int id, IO io)
-        {
-            var src = Get($"{nameof(TryDelete_AccessDenied)}-{id}.txt");
-            using (io.Create(src)) Assert.That(io.TryDelete(src), Is.False);
+            Io.Delete(src); // Assert.DoesNotThrow
         }
 
         /* ----------------------------------------------------------------- */
@@ -308,65 +229,34 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move(int id, IO io)
+        public void Move(int id, IoController controller)
         {
-            io.Failed += (s, e) => Assert.Fail($"{e.Name}: {e.Exception}");
+            Io.Configure(controller);
 
             var name = "SampleDirectory";
-            var src  = io.Get(io.Combine(Results, name));
-            var dest = io.Get(io.Combine(Results, $"{name}-{nameof(Move)}-{id}"));
+            var src  = Io.Get(Io.Combine(Results, name));
+            var dest = Io.Get(Io.Combine(Results, $"{name}-{nameof(Move)}-{id}"));
 
-            io.Copy(GetSource(name), src.FullName, false);
+            Io.Copy(GetSource(name), src.FullName, false);
             src.Refresh();
             Assert.That(src.Exists, Is.True);
 
-            io.Copy(src.FullName, dest.FullName, false);
-            io.Move(src.FullName, dest.FullName, true);
+            Io.Copy(src.FullName, dest.FullName, false);
+            Io.Move(src.FullName, dest.FullName, true);
             src.Refresh();
             dest.Refresh();
             Assert.That(src.Exists, Is.False);
             Assert.That(dest.Exists, Is.True);
 
-            io.Move(dest.FullName, src.FullName);
+            Io.Move(dest.FullName, src.FullName, false);
             src.Refresh();
             dest.Refresh();
             Assert.That(src.Exists, Is.True);
             Assert.That(dest.Exists, Is.False);
 
-            io.Delete(src.FullName);
+            Io.Delete(src.FullName);
             src.Refresh();
             Assert.That(src.Exists, Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Move_Failed
-        ///
-        /// <summary>
-        /// Confirms the Failed event when moving files.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void Move_Failed(int id, IO io)
-        {
-            var failed = false;
-            io.Failed += (s, e) =>
-            {
-                // try twice
-                e.Cancel = failed;
-                failed   = true;
-
-                Assert.That(e.Name,          Is.EqualTo("Move"));
-                Assert.That(e.Paths.Count(), Is.EqualTo(2));
-                Assert.That(e.Exception,     Is.TypeOf<System.IO.FileNotFoundException>());
-            };
-
-            var src  = io.Combine(Results, "FileNotFound.txt");
-            var dest = io.Combine(Results, $"{nameof(Move_Failed)}-{id}.txt");
-            io.Move(src, dest);
-
-            Assert.That(failed, Is.True);
         }
 
         /* ----------------------------------------------------------------- */
@@ -377,49 +267,14 @@ namespace Cube.FileSystem.Tests
         /// Confirms the exception when moving files.
         /// </summary>
         ///
-        /// <remarks>
-        /// Failed イベントにハンドラを登録していない場合、File.Move を
-        /// 実行した時と同様の例外が発生します。
-        /// </remarks>
-        ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Move_Throws(int id, IO io)
+        public void Move_Throws(int id, IoController controller)
         {
+            Io.Configure(controller);
             var src  = Get("FileNotFound.txt");
             var dest = Get($"{nameof(Move_Throws)}-{id}.txt");
-            Assert.That(() => io.Move(src, dest), Throws.TypeOf<System.IO.FileNotFoundException>());
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Open_Failed
-        ///
-        /// <summary>
-        /// Confirms the Failed event when opening a file.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCaseSource(nameof(TestCases))]
-        public void Open_Failed(int id, IO io)
-        {
-            var failed = false;
-            io.Failed += (s, e) =>
-            {
-                // try twice
-                e.Cancel = failed;
-                failed   = true;
-
-                Assert.That(e.Name,          Is.EqualTo("OpenRead"));
-                Assert.That(e.Paths.Count(), Is.EqualTo(1));
-                Assert.That(e.Exception,     Is.TypeOf<System.IO.FileNotFoundException>());
-            };
-
-            var src    = Get($"{nameof(Open_Failed)}-{id}.txt");
-            var stream = io.OpenRead(src);
-
-            Assert.That(failed, Is.True);
-            Assert.That(stream, Is.Null);
+            Assert.That(() => Io.Move(src, dest, true), Throws.TypeOf<System.IO.FileNotFoundException>());
         }
 
         /* ----------------------------------------------------------------- */
@@ -432,10 +287,11 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Open_Throws(int id, IO io)
+        public void Open_Throws(int id, IoController controller)
         {
+            Io.Configure(controller);
             var src = Get($"{nameof(Open_Throws)}-{id}.txt");
-            Assert.That(() => io.OpenRead(src), Throws.TypeOf<System.IO.FileNotFoundException>());
+            Assert.That(() => Io.Open(src), Throws.TypeOf<System.IO.FileNotFoundException>());
         }
 
         /* ----------------------------------------------------------------- */
@@ -448,11 +304,12 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public void Exists_NullOrEmpty(int id, IO io)
+        public void Exists_NullOrEmpty(int id, IoController controller)
         {
-            Assert.That(io.Exists(string.Empty), Is.False, $"{id}");
-            Assert.That(io.Exists(""),           Is.False, $"{id}");
-            Assert.That(io.Exists(null),         Is.False, $"{id}");
+            Io.Configure(controller);
+            Assert.That(Io.Exists(string.Empty), Is.False, $"{id}");
+            Assert.That(Io.Exists(""),           Is.False, $"{id}");
+            Assert.That(Io.Exists(null),         Is.False, $"{id}");
         }
 
         #endregion
@@ -473,8 +330,8 @@ namespace Cube.FileSystem.Tests
             get
             {
                 var n = 0;
-                yield return new TestCaseData(n++, new IO());
-                yield return new TestCaseData(n++, new AlphaFS.IO());
+                yield return new TestCaseData(n++, new IoController());
+                yield return new TestCaseData(n++, new AlphaFS.IoController());
             }
         }
 

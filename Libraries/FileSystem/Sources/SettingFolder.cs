@@ -23,7 +23,6 @@ using System.Timers;
 using Cube.FileSystem.DataContract;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
-using Cube.Mixin.IO;
 using Cube.Mixin.Logging;
 using Cube.Mixin.Tasks;
 
@@ -56,57 +55,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public SettingFolder(Format format, Assembly assembly) :
-            this(format, assembly, new IO()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SettingFolder(T)
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SettingsFolder class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly information.</param>
-        /// <param name="format">Serialization format.</param>
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SettingFolder(Format format, Assembly assembly, IO io) :
-            this(format, GetLocation(assembly, format, io), assembly.GetSoftwareVersion(), io) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SettingFolder(T)
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SettingsFolder class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="location">Saved data location.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SettingFolder(Format format, string location) :
-            this(format, location, new IO()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SettingFolder(T)
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SettingsFolder class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="location">Saved data location.</param>
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SettingFolder(Format format, string location, IO io) :
-            this(format, location, new SoftwareVersion(), io) { }
+            this(format, GetLocation(format, assembly), assembly.GetSoftwareVersion()) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -122,25 +71,7 @@ namespace Cube.FileSystem
         /// <param name="version">Software version.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SettingFolder(Format format, string location, SoftwareVersion version) :
-            this(format, location, version, new IO()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SettingFolder(T)
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SettingsFolder class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="location">Saved data location.</param>
-        /// <param name="version">Software version.</param>
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SettingFolder(Format format, string location, SoftwareVersion version, IO io)
+        public SettingFolder(Format format, string location, SoftwareVersion version)
         {
             _autosaver.AutoReset = false;
             _autosaver.Elapsed += (s, e) => Task.Run(() => Save()).Forget();
@@ -148,7 +79,7 @@ namespace Cube.FileSystem
             Format   = format;
             Location = location;
             Version  = version;
-            IO       = io;
+            Value    = new();
 
             Value.PropertyChanged += WhenChanged;
         }
@@ -166,7 +97,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public T Value { get; private set; } = new T();
+        public T Value { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -177,7 +108,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public Format Format { get; set; }
+        public Format Format { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -188,7 +119,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Location { get; set; }
+        public string Location { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -199,18 +130,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public SoftwareVersion Version { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IO
-        ///
-        /// <summary>
-        /// Gets the I/O handler.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IO IO { get; private set; }
+        public SoftwareVersion Version { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -234,80 +154,14 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// AutoSave モードの場合、短時間に大量の保存処理が実行される
-        /// 可能性があります。SettingsFolder では、直前のプロパティの
-        /// 変更から一定時間保存を保留する事で、これらの問題を回避します。
+        /// In the case of AutoSave mode, there is a possibility that a large
+        /// number of saves will be performed in a short period of time,
+        /// and SettingsFolder avoids these problems by holding off on saving
+        /// for a certain amount of time since the last property change.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         public TimeSpan AutoSaveDelay { get; set; } = TimeSpan.FromSeconds(1);
-
-        #endregion
-
-        #region Events
-
-        #region Loaded
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Loaded
-        ///
-        /// <summary>
-        /// Occurs when user settings is loaded from the provided location.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event ValueChangedEventHandler<T> Loaded;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnLoaded
-        ///
-        /// <summary>
-        /// Raises the Loaded event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnLoaded(ValueChangedEventArgs<T> e)
-        {
-            if (e.OldValue != null) e.OldValue.PropertyChanged -= WhenChanged;
-            if (e.NewValue != null) e.NewValue.PropertyChanged += WhenChanged;
-            Value = e.NewValue;
-            if (Loaded != null) Dispatcher.Invoke(() => Loaded(this, e));
-        }
-
-        #endregion
-
-        #region Saved
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Saved
-        ///
-        /// <summary>
-        /// Occurs when user settings is saved to the provided location.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event KeyValueEventHandler<Format, string> Saved;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnSaved
-        ///
-        /// <summary>
-        /// Raises the Saved event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnSaved(KeyValueEventArgs<Format, string> e)
-        {
-            if (e.Key == Format.Registry) e.Key.Serialize(e.Value, Value);
-            else IO.Save(e.Value, ss => e.Key.Serialize(ss, Value));
-            if (Saved != null) Dispatcher.Invoke(() => Saved(this, e));
-        }
-
-        #endregion
 
         #endregion
 
@@ -318,26 +172,31 @@ namespace Cube.FileSystem
         /// Load
         ///
         /// <summary>
-        /// Loads user settings.
+        /// Loads the user settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Load() => OnLoaded(ValueEventArgs.Create(Value, LoadCore()));
+        public void Load() => OnLoad();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// TryLoad
+        /// OnLoad
         ///
         /// <summary>
-        /// Tries to load user settings.
+        /// Loads the user settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool TryLoad()
+        protected virtual void OnLoad()
         {
-            try { Load(); return true; }
-            catch (Exception err) { GetType().LogWarn(err); }
-            return false;
+            var dest = Format == Format.Registry || Io.Exists(Location) ?
+                       Format.Deserialize<T>(Location) :
+                       default;
+            if (dest is null) return;
+
+            Value.PropertyChanged -= WhenChanged;
+            Value = dest;
+            Value.PropertyChanged += WhenChanged;
         }
 
         /* ----------------------------------------------------------------- */
@@ -349,7 +208,18 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Save() => OnSaved(KeyValueEventArgs.Create(Format, Location));
+        public void Save() => OnSave();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSave
+        ///
+        /// <summary>
+        /// Saves user settings.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnSave() => Format.Serialize(Location, Value);
 
         #endregion
 
@@ -385,27 +255,13 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static string GetLocation(Assembly asm, Format fmt, IO io)
+        private static string GetLocation(Format fmt, Assembly asm)
         {
             var root = fmt != Format.Registry ?
                        Environment.SpecialFolder.LocalApplicationData.GetName() :
                        string.Empty;
-            return io.Combine(root, asm.GetCompany(), asm.GetProduct());
+            return Io.Combine(root, asm.GetCompany(), asm.GetProduct());
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LoadCore
-        ///
-        /// <summary>
-        /// Loads user settings.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private T LoadCore() =>
-            Format == Format.Registry ?
-            Format.Deserialize<T>(Location) :
-            IO.Load(Location, e => Format.Deserialize<T>(e));
 
         /* ----------------------------------------------------------------- */
         ///

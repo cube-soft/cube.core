@@ -28,12 +28,9 @@ namespace Cube.FileSystem
     /// PathFilter
     ///
     /// <summary>
-    /// Provides functionality to escape the path string.
+    /// Provides functionality to escape the path string. The class escapes
+    /// characters that cannot be used on Windows.
     /// </summary>
-    ///
-    /// <remarks>
-    /// Windows で使用不可能な文字のエスケープ処理を行います。
-    /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public class PathFilter
@@ -578,11 +575,11 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected enum PathKind
         {
-            /// <summary>通常のパス</summary>
+            /// <summary>Normal path.</summary>
             Normal,
-            /// <summary>UNC パス</summary>
+            /// <summary>UNC path.</summary>
             Unc,
-            /// <summary>サービス機能の不活性化されたパス</summary>
+            /// <summary>Inactivated path.</summary>
             Inactivation,
         }
 

@@ -24,6 +24,8 @@ using Cube.Mixin.String;
 
 namespace Cube.FileSystem
 {
+    #region ExtensionFilter
+
     /* --------------------------------------------------------------------- */
     ///
     /// ExtensionFilter
@@ -53,12 +55,8 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public ExtensionFilter(string description, params string[] extensions)
-        {
-            Text = description;
-            Targets  = extensions;
-            IgnoreCase  = true;
-        }
+        public ExtensionFilter(string description, params string[] extensions) :
+            this(description, true, extensions) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -71,16 +69,16 @@ namespace Cube.FileSystem
         ///
         /// <param name="text">Description for the filter.</param>
         /// <param name="ignoreCase">Ignores case or not.</param>
-        /// <param name="targets">
+        /// <param name="extensions">
         /// List of target extensions (e.g., ".txt").
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public ExtensionFilter(string text, bool ignoreCase, params string[] targets)
+        public ExtensionFilter(string text, bool ignoreCase, params string[] extensions)
         {
             Text       = text;
-            Targets    = targets;
             IgnoreCase = ignoreCase;
+            Targets    = extensions;
         }
 
         #endregion
@@ -170,6 +168,10 @@ namespace Cube.FileSystem
         #endregion
     }
 
+    #endregion
+
+    #region ExtensionFilterConverter
+
     /* --------------------------------------------------------------------- */
     ///
     /// ExtensionFilterConverter
@@ -212,28 +214,11 @@ namespace Cube.FileSystem
         /// <param name="path">File path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static int GetFilterIndex(this IEnumerable<ExtensionFilter> src, string path) =>
-            src.GetFilterIndex(path, new IO());
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilterIndex
-        ///
-        /// <summary>
-        /// Gets the index of the first occurrence of the specified path
-        /// in the current DisplayFilter collection.
-        /// </summary>
-        ///
-        /// <param name="src">DisplayFilter collection.</param>
-        /// <param name="path">File path.</param>
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static int GetFilterIndex(this IEnumerable<ExtensionFilter> src, string path, IO io)
+        public static int GetFilterIndex(this IEnumerable<ExtensionFilter> src, string path)
         {
             if (!path.HasValue()) return 0;
 
-            var ext = io.Get(path).Extension;
+            var ext = Io.Get(path).Extension;
             var opt = StringComparison.InvariantCultureIgnoreCase;
 
             return src.Select((e, i) => KeyValuePair.Create(i + 1, e))
@@ -243,4 +228,6 @@ namespace Cube.FileSystem
 
         #endregion
     }
+
+    #endregion
 }

@@ -19,7 +19,6 @@ using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using Cube.Mixin.IO;
 using Cube.Mixin.String;
 
 namespace Cube.FileSystem
@@ -35,38 +34,6 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     public class Shortcut
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Shortcut
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Shortcut class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Shortcut() : this(new IO()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Shortcut
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Shortcut class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Shortcut(IO io)
-        {
-            _io = io;
-        }
-
-        #endregion
-
         #region Properties
 
         /* ----------------------------------------------------------------- */
@@ -155,8 +122,7 @@ namespace Cube.FileSystem
                 var index = IconLocation?.LastIndexOf(',') ?? 0;
                 if (index > 0 && index < IconLocation.Length - 1)
                 {
-                    int.TryParse(IconLocation.Substring(index + 1), out int dest);
-                    return dest;
+                    return int.TryParse(IconLocation.Substring(index + 1), out int dest) ? dest : 0;
                 }
                 else return 0;
             }
@@ -171,7 +137,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => FullName.HasValue() && _io.Exists(FullName);
+        public bool Exists => FullName.HasValue() && Io.Exists(FullName);
 
         #endregion
 
@@ -190,28 +156,12 @@ namespace Cube.FileSystem
         /// <returns>Shortcut object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Shortcut Resolve(string link) => Resolve(link, new IO());
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Resolve
-        ///
-        /// <summary>
-        /// Creates the Shortcut object with the specified link path.
-        /// </summary>
-        ///
-        /// <param name="link">Link path.</param>
-        /// <param name="io">I/O object.</param>
-        ///
-        /// <returns>Shortcut object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Shortcut Resolve(string link, IO io)
+        public static Shortcut Resolve(string link)
         {
             var cvt = Normalize(link);
-            if (cvt.HasValue() && io.Exists(cvt))
+            if (cvt.HasValue() && Io.Exists(cvt))
             {
-                var dest = new Shortcut(io);
+                var dest = new Shortcut();
                 Invoke(sh =>
                 {
                     GetPersistFile(sh).Load(cvt, 0);
@@ -237,7 +187,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Create() => Invoke(sh =>
         {
-            if (!_io.Exists(Target)) return;
+            if (!Io.Exists(Target)) return;
 
             sh.SetPath(Target);
             sh.SetArguments(Arguments);
@@ -258,7 +208,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         public void Delete()
         {
-            if (Exists) _io.Delete(FullName);
+            if (Exists) Io.Delete(FullName);
         }
 
         #endregion
@@ -368,12 +318,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static StringBuilder GetBuffer() => new StringBuilder(65536);
+        private static StringBuilder GetBuffer() => new(65536);
 
         #endregion
 
         #region Fields
-        private readonly IO _io;
         private string _path;
         #endregion
     }

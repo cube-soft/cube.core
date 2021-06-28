@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
-using Cube.Mixin.IO;
 using Cube.Mixin.String;
 using Cube.Tests;
 using NUnit.Framework;
@@ -25,15 +24,15 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IoExtensionTest
+    /// IoExTest
     ///
     /// <summary>
-    /// Tests extended methods of the IO class.
+    /// Tests the IoEx class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class IoExtensionTest : FileFixture
+    class IoExTest : FileFixture
     {
         #region Tests
 
@@ -48,26 +47,9 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void Load() => Assert.That(
-            IO.Load(GetSource("Sample.txt"), e => e.Length),
+            IoEx.Load(GetSource("Sample.txt"), e => e.Length),
             Is.EqualTo(13L)
         );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_NotFound
-        ///
-        /// <summary>
-        /// Confirms the behavior when loading from an inexistent file.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void LoadOrDefault_NotFound()
-        {
-            var src  = GetSource("NotFound.dummy");
-            var dest = IO.LoadOrDefault(src, e => e.Length, -1L);
-            Assert.That(dest, Is.EqualTo(-1L));
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,8 +64,8 @@ namespace Cube.FileSystem.Tests
         public void Save()
         {
             var dest = Get(nameof(Save));
-            IO.Save(dest, e => e.WriteByte((byte)'a'));
-            Assert.That(IO.Get(dest).Length, Is.EqualTo(1));
+            IoEx.Save(dest, e => e.WriteByte((byte)'a'));
+            Assert.That(Io.Get(dest).Length, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -100,10 +82,8 @@ namespace Cube.FileSystem.Tests
         public void Save_Throws()
         {
             var src = Assembly.GetExecutingAssembly().Location;
-            Assert.That(
-                () => IO.Save(src, e => e.WriteByte((byte)'a')),
-                Throws.TypeOf<System.IO.IOException>()
-            );
+            Assert.That(() => IoEx.Save(src, e => e.WriteByte((byte)'a')),
+                Throws.TypeOf<System.IO.IOException>());
         }
 
         /* ----------------------------------------------------------------- */
@@ -119,15 +99,15 @@ namespace Cube.FileSystem.Tests
         public void Touch()
         {
             var src = Get($"{nameof(Touch)}.txt");
-            Assert.That(IO.Exists(src), Is.False);
+            Assert.That(Io.Exists(src), Is.False);
 
-            IO.Touch(src);
-            Assert.That(IO.Exists(src), Is.True);
+            IoEx.Touch(src);
+            Assert.That(Io.Exists(src), Is.True);
 
-            var cmp = IO.Get(src).LastWriteTime;
+            var cmp = Io.Get(src).LastWriteTime;
             System.Threading.Thread.Sleep(1000);
-            IO.Touch(src);
-            Assert.That(IO.Get(src).LastWriteTime, Is.GreaterThan(cmp));
+            IoEx.Touch(src);
+            Assert.That(Io.Get(src).LastWriteTime, Is.GreaterThan(cmp));
         }
 
         /* ----------------------------------------------------------------- */
@@ -141,7 +121,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [TestCase(@"c:\foo\Sample.txt", "Rename.dat", ExpectedResult = @"c:\foo\Rename.dat")]
         [TestCase(@"c:\bar\Remove.txt", "",           ExpectedResult = @"c:\bar")]
-        public string Rename(string src, string filename) => IO.Rename(src, filename);
+        public string Rename(string src, string filename) => IoEx.Rename(src, filename);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -156,7 +136,7 @@ namespace Cube.FileSystem.Tests
         [TestCase("Sample.txt", "",     ExpectedResult = "Sample")]
         [TestCase("Sample",     ".txt", ExpectedResult = "Sample.txt")]
         public string RenameExtension(string src, string extension) =>
-            IO.Get(IO.RenameExtension(src, extension)).Name;
+            Io.Get(IoEx.RenameExtension(src, extension)).Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -170,7 +150,7 @@ namespace Cube.FileSystem.Tests
         [TestCase("Sample.txt",     ExpectedResult = true)]
         [TestCase("NotFound.dummy", ExpectedResult = true)]
         public bool GetTypeName(string filename) =>
-            IO.GetTypeName(IO.Get(GetSource(filename))).HasValue();
+            IoEx.GetTypeName(Io.Get(GetSource(filename)).FullName).HasValue();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -184,9 +164,8 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void GetTypeName_Null()
         {
-            Assert.That(IO.GetTypeName(string.Empty), Is.Empty);
-            Assert.That(IO.GetTypeName(default(string)), Is.Empty);
-            Assert.That(IO.GetTypeName(default(Entity)), Is.Empty);
+            Assert.That(IoEx.GetTypeName(string.Empty), Is.Empty);
+            Assert.That(IoEx.GetTypeName(default),      Is.Empty);
         }
 
         /* ----------------------------------------------------------------- */
@@ -202,20 +181,20 @@ namespace Cube.FileSystem.Tests
         public void GetUniqueName()
         {
             var src = Get($"UniqueTest.txt");
-            var u1 = IO.GetUniqueName(src);
+            var u1 = IoEx.GetUniqueName(src);
             Assert.That(u1, Is.EqualTo(src));
 
-            IO.Copy(GetSource("Sample.txt"), u1);
-            var u2 = IO.GetUniqueName(src);
-            Assert.That(u2, Is.EqualTo(Get($"UniqueTest (1).txt")));
+            Io.Copy(GetSource("Sample.txt"), u1, true);
+            var u2 = IoEx.GetUniqueName(src);
+            Assert.That(u2, Is.EqualTo(Get($"UniqueTest(1).txt")));
 
-            IO.Copy(GetSource("Sample.txt"), u2);
-            var u3 = IO.GetUniqueName(src);
-            Assert.That(u3, Is.EqualTo(Get($"UniqueTest (2).txt")));
+            Io.Copy(GetSource("Sample.txt"), u2, true);
+            var u3 = IoEx.GetUniqueName(src);
+            Assert.That(u3, Is.EqualTo(Get($"UniqueTest(2).txt")));
 
-            IO.Copy(GetSource("Sample.txt"), u3);
-            var u4 = IO.GetUniqueName(u3); // Not src
-            Assert.That(u4, Is.EqualTo(Get($"UniqueTest (2) (1).txt")));
+            Io.Copy(GetSource("Sample.txt"), u3, true);
+            var u4 = IoEx.GetUniqueName(u3); // Not src
+            Assert.That(u4, Is.EqualTo(Get($"UniqueTest(2)(1).txt")));
         }
 
         #endregion

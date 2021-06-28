@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -60,21 +59,6 @@ namespace Cube.FileSystem.DataContract
             set => _defaultKey = value;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IO
-        ///
-        /// <summary>
-        /// Gets or sets the I/O handler used in the Formatter class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IO IO
-        {
-            get => _io ??= new IO();
-            set => _io = value;
-        }
-
         #endregion
 
         #region Serialize
@@ -94,38 +78,17 @@ namespace Cube.FileSystem.DataContract
         /* ----------------------------------------------------------------- */
         public static void Serialize<T>(this Format format, string dest, T src)
         {
-            if (format == Format.Registry)
-            {
-                using var sk = DefaultKey.CreateSubKey(dest);
-                Serialize(sk, src);
-            }
-            else Serialize(dest, e => Serialize(format, e, src));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Serialize
-        ///
-        /// <summary>
-        /// Serializes objects to the specified stream.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="dest">Saving stream.</param>
-        /// <param name="src">Object to be serialized.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Serialize<T>(this Format format, Stream dest, T src)
-        {
             switch (format)
             {
                 case Format.Xml:
-                    SerializeXml(dest, src);
+                    IoEx.Save(dest, e => SerializeXml(e, src));
                     break;
                 case Format.Json:
-                    SerializeJson(dest, src);
+                    IoEx.Save(dest, e => SerializeJson(e, src));
                     break;
-                default: throw new ArgumentException($"{format}:cannot serialize to stream");
+                case Format.Registry:
+                    using (var e = DefaultKey.CreateSubKey(dest)) Serialize(e, src);
+                    break;
             }
         }
 
@@ -143,25 +106,6 @@ namespace Cube.FileSystem.DataContract
         /* ----------------------------------------------------------------- */
         public static void Serialize<T>(this RegistryKey dest, T src) =>
             new RegistrySerializer().Invoke(dest, src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Serialize
-        ///
-        /// <summary>
-        /// Serializes objects to the specified file.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void Serialize(string dest, Action<Stream> callback)
-        {
-            using var ms = new MemoryStream();
-            callback(ms);
-
-            using var ds = IO.Create(dest);
-            ms.Position = 0;
-            ms.CopyTo(ds);
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -214,34 +158,17 @@ namespace Cube.FileSystem.DataContract
         /* ----------------------------------------------------------------- */
         public static T Deserialize<T>(this Format format, string src)
         {
-            if (format == Format.Registry)
+            switch (format)
             {
-                using var sk = DefaultKey.OpenSubKey(src, false);
-                return Deserialize<T>(sk);
+                case Format.Xml:
+                    return IoEx.Load(src, e => (T)new DataContractSerializer(typeof(T)).ReadObject(e));
+                case Format.Json:
+                    return IoEx.Load(src, e => (T)new DataContractJsonSerializer(typeof(T)).ReadObject(e));
+                case Format.Registry:
+                    using (var e = DefaultKey.OpenSubKey(src, false)) return Deserialize<T>(e);
             }
-            else return Deserialize(src, e => Deserialize<T>(format, e));
+            return default;
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Deserialize
-        ///
-        /// <summary>
-        /// Deserializes contents of the specified stream.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="src">Stream to be loaded.</param>
-        ///
-        /// <returns>Deserialized object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Deserialize<T>(this Format format, Stream src) => format switch
-        {
-            Format.Xml  => (T)new DataContractSerializer(typeof(T)).ReadObject(src),
-            Format.Json => (T)new DataContractJsonSerializer(typeof(T)).ReadObject(src),
-            _           => throw new ArgumentException($"{format}:cannot deserialize from stream"),
-        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -259,26 +186,10 @@ namespace Cube.FileSystem.DataContract
         public static T Deserialize<T>(this RegistryKey src) =>
             new RegistryDeserializer().Invoke<T>(src);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Deserialize
-        ///
-        /// <summary>
-        /// Deserializes contents of the specified file.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static T Deserialize<T>(string src, Func<Stream, T> callback)
-        {
-            using var ss = IO.OpenRead(src);
-            return callback(ss);
-        }
-
         #endregion
 
         #region Fields
         private static RegistryKey _defaultKey;
-        private static IO _io;
         #endregion
     }
 }
