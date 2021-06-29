@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Cube.Mixin.Logging;
 using Cube.Mixin.String;
 
 namespace Cube.FileSystem

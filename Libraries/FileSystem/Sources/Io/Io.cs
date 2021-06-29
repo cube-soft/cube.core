@@ -83,59 +83,6 @@ namespace Cube.FileSystem
         /// GetFiles
         ///
         /// <summary>
-        /// Returns the names of files (including their paths).
-        /// </summary>
-        ///
-        /// <param name="path">
-        /// The relative or absolute path to the directory to search.
-        /// This string is not case-sensitive.
-        /// </param>
-        ///
-        /// <returns>
-        /// An array of the full names (including paths) for the files
-        /// in the specified directory, or an empty array if no files are
-        /// found.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<string> GetFiles(string path) => GetFiles(path, "*");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFiles
-        ///
-        /// <summary>
-        /// Returns the names of files (including their paths) that
-        /// match the specified search pattern in the specified directory.
-        /// </summary>
-        ///
-        /// <param name="path">
-        /// The relative or absolute path to the directory to search.
-        /// This string is not case-sensitive.
-        /// </param>
-        ///
-        /// <param name="pattern">
-        /// The search string to match against the names of subdirectories
-        /// in path. This parameter can contain a combination of valid
-        /// literal and wildcard characters, but doesn't support regular
-        /// expressions.
-        /// </param>
-        ///
-        /// <returns>
-        /// An array of the full names (including paths) for the files
-        /// in the specified directory that match the specified search
-        /// pattern, or an empty array if no files are found.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<string> GetFiles(string path, string pattern) =>
-            GetFiles(path, pattern, SearchOption.TopDirectoryOnly);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFiles
-        ///
-        /// <summary>
         /// Returns the names of files (including their paths) that
         /// match the specified search pattern in the specified directory,
         /// using a value to determine whether to search subdirectories.
@@ -166,62 +113,11 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<string> GetFiles(string path, string pattern, SearchOption option) =>
-            _core.GetFiles(path, pattern, option) ?? Enumerable.Empty<string>();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetDirectories
-        ///
-        /// <summary>
-        /// Returns the names of the subdirectories.
-        /// </summary>
-        ///
-        /// <param name="path">
-        /// The relative or absolute path to the directory to search.
-        /// This string is not case-sensitive.
-        /// </param>
-        ///
-        /// <returns>
-        /// An array of the full names (including paths) for the
-        /// directories in the specified directory, or an empty array
-        /// if no directories are found.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<string> GetDirectories(string path) => GetDirectories(path, "*");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetDirectories
-        ///
-        /// <summary>
-        /// Returns the names of the subdirectories (including their paths)
-        /// that match the specified search pattern in the specified
-        /// directory.
-        /// </summary>
-        ///
-        /// <param name="path">
-        /// The relative or absolute path to the directory to search.
-        /// This string is not case-sensitive.
-        /// </param>
-        ///
-        /// <param name="pattern">
-        /// The search string to match against the names of subdirectories
-        /// in path. This parameter can contain a combination of valid
-        /// literal and wildcard characters, but doesn't support regular
-        /// expressions.
-        /// </param>
-        ///
-        /// <returns>
-        /// An array of the full names (including paths) for the
-        /// directories in the specified directory that match the specified
-        /// search pattern, or an empty array if no directories are found.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<string> GetDirectories(string path, string pattern) =>
-            GetDirectories(path, pattern, SearchOption.TopDirectoryOnly);
+        public static IEnumerable<string> GetFiles(
+            string path,
+            string pattern = "*",
+            SearchOption option = SearchOption.TopDirectoryOnly
+        ) => _core.GetFiles(path, pattern, option);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -259,8 +155,11 @@ namespace Cube.FileSystem
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<string> GetDirectories(string path, string pattern, SearchOption option) =>
-            _core.GetDirectories(path, pattern, option) ?? Enumerable.Empty<string>();
+        public static IEnumerable<string> GetDirectories(
+            string path,
+            string pattern = "*",
+            SearchOption option = SearchOption.TopDirectoryOnly
+        ) => _core.GetDirectories(path, pattern, option);
 
         /* ----------------------------------------------------------------- */
         ///

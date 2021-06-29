@@ -162,14 +162,14 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /// <returns>
-        /// An enumerable collection of the full names (including paths)
-        /// for the directories in the directory specified by path and that
-        /// match the specified search pattern and search option.
+        /// An array of the full names (including paths) for the
+        /// directories in the specified directory that match the specified
+        /// search pattern and option, or an empty array if no directories
+        /// are found.
         /// </returns>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual IEnumerable<string> GetDirectories(string path, string pattern,
-            SearchOption option) =>
+        public virtual IEnumerable<string> GetDirectories(string path, string pattern, SearchOption option) =>
             Directory.Exists(path) ?
             Directory.EnumerateDirectories(path, pattern, option) :
             Enumerable.Empty<string>();
