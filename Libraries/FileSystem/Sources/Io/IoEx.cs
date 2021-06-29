@@ -234,5 +234,23 @@ namespace Cube.FileSystem
         }
 
         #endregion
+
+        #region GetEntityController
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetEntityController
+        ///
+        /// <summary>
+        /// Gets the controller for an Entity object.
+        /// </summary>
+        ///
+        /// <returns>EntityController object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static EntityController GetEntityController() =>
+            Io.GetController().GetEntityController();
+
+        #endregion
     }
 }

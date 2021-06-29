@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Reflection;
 using Cube.Mixin.String;
 using Cube.Tests;
@@ -195,6 +196,34 @@ namespace Cube.FileSystem.Tests
             Io.Copy(GetSource("Sample.txt"), u3, true);
             var u4 = IoEx.GetUniqueName(u3); // Not src
             Assert.That(u4, Is.EqualTo(Get($"UniqueTest(2)(1).txt")));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetEntityController
+        ///
+        /// <summary>
+        /// Tests the GetEntityController method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void GetEntityController()
+        {
+            var src  = GetSource("Sample.txt");
+            var dest = new Entity(src, IoEx.GetEntityController());
+            var cmp  = new DateTime(2017, 6, 5);
+
+            Assert.That(dest.Source,         Is.EqualTo(GetSource("Sample.txt")));
+            Assert.That(dest.FullName,       Is.EqualTo(dest.Source));
+            Assert.That(dest.Name,           Is.EqualTo("Sample.txt"));
+            Assert.That(dest.BaseName,       Is.EqualTo("Sample"));
+            Assert.That(dest.Extension,      Is.EqualTo(".txt"));
+            Assert.That(dest.DirectoryName,  Is.EqualTo(Examples));
+            Assert.That(dest.CreationTime,   Is.GreaterThan(cmp));
+            Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
+            Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
+
         }
 
         #endregion

@@ -82,21 +82,6 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Get
-        ///
-        /// <summary>
-        /// Gets the Entity object from the specified path.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        ///
-        /// <returns>Entity object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override Entity Get(string path) => new(path, EntityController);
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// GetFiles
         ///
         /// <summary>

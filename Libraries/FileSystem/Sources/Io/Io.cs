@@ -76,7 +76,7 @@ namespace Cube.FileSystem
         /// <returns>Entity object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Entity Get(string path) => _core.Get(path);
+        public static Entity Get(string path) => new(path, _core.GetEntityController());
 
         /* ----------------------------------------------------------------- */
         ///
@@ -449,6 +449,20 @@ namespace Cube.FileSystem
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetController
+        ///
+        /// <summary>
+        /// Get the current I/O controller. The method mainly used by the
+        /// IoEx static class.
+        /// </summary>
+        ///
+        /// <returns>IoController object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        internal static IoController GetController() => _core;
 
         /* ----------------------------------------------------------------- */
         ///

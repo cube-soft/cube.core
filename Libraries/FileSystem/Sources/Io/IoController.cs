@@ -58,26 +58,24 @@ namespace Cube.FileSystem
         /// <param name="ec">Controller for an Entity object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public IoController(EntityController ec) { EntityController = ec; }
+        public IoController(EntityController ec) { _ec = ec; }
 
         #endregion
 
-        #region Properties
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EntityController
+        /// GetEntityController
         ///
         /// <summary>
         /// Gets the controller for an Entity object.
         /// </summary>
         ///
+        /// <returns>EntityController object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        protected EntityController EntityController { get; }
-
-        #endregion
-
-        #region Methods
+        public EntityController GetEntityController() => _ec;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,21 +91,6 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public virtual bool Exists(string path) => File.Exists(path) || Directory.Exists(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// Gets the Entity object from the specified path.
-        /// </summary>
-        ///
-        /// <param name="path">Target path.</param>
-        ///
-        /// <returns>Entity object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public virtual Entity Get(string path) => new(path, EntityController);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -383,6 +366,10 @@ namespace Cube.FileSystem
         public virtual void Copy(string src, string dest, bool overwrite) =>
             File.Copy(src, dest, overwrite);
 
+        #endregion
+
+        #region Fields
+        private readonly EntityController _ec;
         #endregion
     }
 }
