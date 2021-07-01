@@ -186,17 +186,27 @@ namespace Cube.FileSystem
         /// Loads the user settings.
         /// </summary>
         ///
+        /// <remarks>
+        /// If the method fails, the AutoSave property will forcibly be
+        /// disabled in order to prevent unexpected values from being
+        /// automatically saved.
+        /// </remarks>
+        ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnLoad()
         {
-            var dest = Format == Format.Registry || Io.Exists(Location) ?
-                       Format.Deserialize<T>(Location) :
-                       default;
-            if (dest is null) return;
+            try
+            {
+                var dest = Format == Format.Registry || Io.Exists(Location) ?
+                           Format.Deserialize<T>(Location) :
+                           default;
+                if (dest is null) return;
 
-            Value.PropertyChanged -= WhenChanged;
-            Value = dest;
-            Value.PropertyChanged += WhenChanged;
+                Value.PropertyChanged -= WhenChanged;
+                Value = dest;
+                Value.PropertyChanged += WhenChanged;
+            }
+            catch { AutoSave = false; throw; }
         }
 
         /* ----------------------------------------------------------------- */
@@ -217,6 +227,11 @@ namespace Cube.FileSystem
         /// <summary>
         /// Saves user settings.
         /// </summary>
+        ///
+        /// <remarks>
+        /// If the method fails, the AutoSave property will forcibly be
+        /// disabled not to fail to invoke the Dispose method.
+        /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
         protected virtual void OnSave() => Format.Serialize(Location, Value);
