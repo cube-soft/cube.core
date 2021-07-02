@@ -17,8 +17,8 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Reflection;
+using Cube.Logging;
 using Cube.Mixin.Collections;
-using Cube.Mixin.Logging;
 
 namespace Cube.Forms.Demo
 {

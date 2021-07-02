@@ -18,7 +18,7 @@
 using System;
 using System.Threading;
 using Cube.Collections;
-using Cube.Mixin.Logging;
+using Cube.Logging;
 
 namespace Cube.Forms.Demo
 {

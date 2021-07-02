@@ -20,8 +20,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using Cube.Logging;
 using Cube.Mixin.Assembly;
-using Cube.Mixin.Logging;
 using Cube.Mixin.String;
 
 namespace Cube.Forms.Controls
