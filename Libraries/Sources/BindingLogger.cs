@@ -16,7 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Diagnostics;
-using Cube.Mixin.Logging;
+using Cube.Logging;
 
 namespace Cube.Xui
 {

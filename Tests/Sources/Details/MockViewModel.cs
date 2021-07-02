@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.Threading;
 using System.Windows.Input;
-using Cube.Mixin.Logging;
+using Cube.Logging;
 
 namespace Cube.Xui.Tests
 {

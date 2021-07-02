@@ -19,7 +19,7 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Cube.Mixin.Logging
+namespace Cube.Logging
 {
     /* --------------------------------------------------------------------- */
     ///
