@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Logging;
+using Cube.Logging;
 using NUnit.Framework;
 
 namespace Cube.Tests

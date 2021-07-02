@@ -21,9 +21,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 using Cube.FileSystem.DataContract;
+using Cube.Logging;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
-using Cube.Mixin.Logging;
 using Cube.Mixin.Tasks;
 
 namespace Cube.FileSystem

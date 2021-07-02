@@ -19,7 +19,7 @@ using System;
 using System.Threading.Tasks;
 using System.Timers;
 using Cube.Collections;
-using Cube.Mixin.Logging;
+using Cube.Logging;
 using Microsoft.Win32;
 
 namespace Cube
