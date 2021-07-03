@@ -162,7 +162,7 @@ namespace Cube.FileSystem.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TearDown]
-        protected virtual void Teardown() => Formatter.DefaultKey.DeleteSubKeyTree(Shared, false);
+        protected override void Teardown() => Formatter.DefaultKey.DeleteSubKeyTree(Shared, false);
 
         #endregion
     }

@@ -59,7 +59,7 @@ namespace Cube.FileSystem.Tests
             };
 
             Assert.That(sc.FullName, Does.EndWith(".lnk"));
-            Assert.That(IO.Get(sc.FullName).BaseName, Does.Not.EndWith(".lnk"));
+            Assert.That(Io.Get(sc.FullName).BaseName, Does.Not.EndWith(".lnk"));
 
             sc.Create();
             return sc.Exists;
@@ -206,8 +206,8 @@ namespace Cube.FileSystem.Tests
         private string GetTargetPath(string filename)
         {
             var asm = Assembly.GetExecutingAssembly().Location;
-            var dir = IO.Get(asm).DirectoryName;
-            return IO.Combine(dir, filename);
+            var dir = Io.Get(asm).DirectoryName;
+            return Io.Combine(dir, filename);
         }
 
         #endregion

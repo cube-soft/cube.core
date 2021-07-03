@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Alphaleonis.Win32.Filesystem;
 
 namespace Cube.FileSystem.AlphaFS
@@ -31,26 +32,57 @@ namespace Cube.FileSystem.AlphaFS
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class IO : FileSystem.IO
+    public class IoController : FileSystem.IoController
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IoController
+        ///
+        /// <summary>
+        /// Initializes a new instance of the IoController class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IoController() : this(new()) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// IoController
+        ///
+        /// <summary>
+        /// Initializes a new instance of the IoController class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="ec">Controller for an Entity object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IoController(EntityController ec) : base(ec) { }
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetControllerCore
+        /// Exists
         ///
         /// <summary>
-        /// Gets the Controller object.
+        /// Determines if the specified file or directory exists.
         /// </summary>
         ///
-        /// <returns>Controller object.</returns>
+        /// <param name="path">Path to check.</param>
+        ///
+        /// <returns>true for exists.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected override FileSystem.EntityController GetControllerCore() => _shared ??= new EntityController();
+        public override bool Exists(string path) => File.Exists(path) || Directory.Exists(path);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetFilesCore
+        /// GetFiles
         ///
         /// <summary>
         /// Returns the names of files (including their paths) that
@@ -58,13 +90,40 @@ namespace Cube.FileSystem.AlphaFS
         /// using a value to determine whether to search subdirectories.
         /// </summary>
         ///
+        /// <param name="path">
+        /// The relative or absolute path to the directory to search.
+        /// This string is not case-sensitive.
+        /// </param>
+        ///
+        /// <param name="pattern">
+        /// The search string to match against the names of files in path.
+        /// This parameter can contain a combination of valid literal path
+        /// and wildcard (* and ?) characters, but it doesn't support
+        /// regular expressions.
+        /// </param>
+        ///
+        /// <param name="option">
+        /// One of the enumeration values that specifies whether the search
+        /// operation should include only the current directory or should
+        /// include all subdirectories.
+        /// </param>
+        ///
+        /// <returns>
+        /// An array of the full names (including paths) for the files
+        /// in the specified directory that match the specified search
+        /// pattern and option, or an empty array if no files are found.
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
-        protected override IEnumerable<string> GetFilesCore(string path, string pattern, System.IO.SearchOption option) =>
-            Directory.Exists(path) ? Directory.GetFiles(path, pattern, option) : null;
+        public override IEnumerable<string> GetFiles(string path, string pattern,
+            System.IO.SearchOption option) =>
+            Directory.Exists(path) ?
+            Directory.GetFiles(path, pattern, option) :
+            Enumerable.Empty<string>();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetDirectoriesCore
+        /// GetDirectories
         ///
         /// <summary>
         /// Returns the names of the subdirectories (including their paths)
@@ -72,13 +131,40 @@ namespace Cube.FileSystem.AlphaFS
         /// directory, and optionally searches subdirectories.
         /// </summary>
         ///
+        /// <param name="path">
+        /// The relative or absolute path to the directory to search.
+        /// This string is not case-sensitive.
+        /// </param>
+        ///
+        /// <param name="pattern">
+        /// The search string to match against the names of subdirectories
+        /// in path. This parameter can contain a combination of valid
+        /// literal and wildcard characters, but doesn't support regular
+        /// expressions.
+        /// </param>
+        ///
+        /// <param name="option">
+        /// One of the enumeration values that specifies whether the
+        /// search operation should include all subdirectories or only
+        /// the current directory.
+        /// </param>
+        ///
+        /// <returns>
+        /// An enumerable collection of the full names (including paths)
+        /// for the directories in the directory specified by path and that
+        /// match the specified search pattern and search option.
+        /// </returns>
+        ///
         /* ----------------------------------------------------------------- */
-        protected override IEnumerable<string> GetDirectoriesCore(string path, string pattern, System.IO.SearchOption option) =>
-            Directory.Exists(path) ? Directory.GetDirectories(path, pattern, option) : null;
+        public override IEnumerable<string> GetDirectories(string path, string pattern,
+            System.IO.SearchOption option) =>
+            Directory.Exists(path) ?
+            Directory.GetDirectories(path, pattern, option) :
+            Enumerable.Empty<string>();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CombineCore
+        /// Combine
         ///
         /// <summary>
         /// Combiles the specified paths.
@@ -89,12 +175,54 @@ namespace Cube.FileSystem.AlphaFS
         /// <returns>Combined path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        protected override string CombineCore(params string[] paths) =>
-            Path.Combine(paths);
+        public override string Combine(params string[] paths) => Path.Combine(paths);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetAttributesCore
+        /// Open
+        ///
+        /// <summary>
+        /// Opens the specified file as read-only.
+        /// </summary>
+        ///
+        /// <param name="path">File path.</param>
+        ///
+        /// <returns>Read-only stream.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override System.IO.FileStream Open(string path) => File.OpenRead(path);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create
+        ///
+        /// <summary>
+        /// Creates or opens the specified file and gets the stream.
+        /// </summary>
+        ///
+        /// <param name="path">Path to create or open file.</param>
+        ///
+        /// <returns>FileStream object to write.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override System.IO.FileStream Create(string path) => File.Create(path);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateDirectory
+        ///
+        /// <summary>
+        /// Creates a directory.
+        /// </summary>
+        ///
+        /// <param name="path">Path to create.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override void CreateDirectory(string path) => Directory.CreateDirectory(path);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SetAttributes
         ///
         /// <summary>
         /// Sets the specified attributes to the specified file or directory.
@@ -104,7 +232,7 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="attr">Attributes to set.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void SetAttributesCore(string path, System.IO.FileAttributes attr)
+        public override void SetAttributes(string path, System.IO.FileAttributes attr)
         {
             if (Directory.Exists(path)) _ = new DirectoryInfo(path) { Attributes = attr };
             else if (File.Exists(path)) File.SetAttributes(path, attr);
@@ -112,7 +240,7 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetCreationTimeCore
+        /// SetCreationTime
         ///
         /// <summary>
         /// Sets the specified creation time to the specified file or
@@ -123,7 +251,7 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="time">Creation time.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void SetCreationTimeCore(string path, DateTime time)
+        public override void SetCreationTime(string path, DateTime time)
         {
             if (Directory.Exists(path)) Directory.SetCreationTime(path, time);
             else if (File.Exists(path)) File.SetCreationTime(path, time);
@@ -131,7 +259,7 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetLastWriteTimeCore
+        /// SetLastWriteTime
         ///
         /// <summary>
         /// Sets the specified last updated time to the specified file or
@@ -142,7 +270,7 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="time">Last updated time.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void SetLastWriteTimeCore(string path, DateTime time)
+        public override void SetLastWriteTime(string path, DateTime time)
         {
             if (Directory.Exists(path)) Directory.SetLastWriteTime(path, time);
             else if (File.Exists(path)) File.SetLastWriteTime(path, time);
@@ -150,7 +278,7 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SetLastAccessTimeCore
+        /// SetLastAccessTime
         ///
         /// <summary>
         /// Sets the specified last accessed time to the specified file or
@@ -161,7 +289,7 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="time">Last accessed time.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void SetLastAccessTimeCore(string path, DateTime time)
+        public override void SetLastAccessTime(string path, DateTime time)
         {
             if (Directory.Exists(path)) Directory.SetLastAccessTime(path, time);
             else if (File.Exists(path)) File.SetLastAccessTime(path, time);
@@ -169,7 +297,7 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// DeleteCore
+        /// Delete
         ///
         /// <summary>
         /// Deletes the specified file or directory.
@@ -178,12 +306,12 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="path">Path to delete.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void DeleteCore(string path)
+        public override void Delete(string path)
         {
             if (Directory.Exists(path))
             {
-                foreach (var f in Directory.GetFiles(path)) DeleteCore(f);
-                foreach (var d in Directory.GetDirectories(path)) DeleteCore(d);
+                foreach (var f in Directory.GetFiles(path)) Delete(f);
+                foreach (var d in Directory.GetDirectories(path)) Delete(d);
                 SetAttributes(path, System.IO.FileAttributes.Normal);
                 Directory.Delete(path, false);
             }
@@ -196,69 +324,7 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateCore
-        ///
-        /// <summary>
-        /// Creates or opens the specified file and gets the stream.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create or open file.</param>
-        ///
-        /// <returns>FileStream object to write.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override System.IO.FileStream CreateCore(string path) =>
-            File.Create(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenReadCore
-        ///
-        /// <summary>
-        /// Opens the specified file as read-only.
-        /// </summary>
-        ///
-        /// <param name="path">File path.</param>
-        ///
-        /// <returns>Read-only stream.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override System.IO.FileStream OpenReadCore(string path) =>
-            File.OpenRead(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenWriteCore
-        ///
-        /// <summary>
-        /// Creates or opens the specified file and gets the stream.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create or open file.</param>
-        ///
-        /// <returns>FileStream object to write.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override System.IO.FileStream OpenWriteCore(string path) =>
-            File.OpenWrite(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateDirectoryCore
-        ///
-        /// <summary>
-        /// Creates a directory.
-        /// </summary>
-        ///
-        /// <param name="path">Path to create.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void CreateDirectoryCore(string path) =>
-            Directory.CreateDirectory(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MoveCore
+        /// Move
         ///
         /// <summary>
         /// Moves the specified file.
@@ -268,12 +334,11 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="dest">Destination path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void MoveCore(string src, string dest) =>
-            File.Move(src, dest);
+        public override void Move(string src, string dest) => File.Move(src, dest);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CopyCore
+        /// Copy
         ///
         /// <summary>
         /// Copies the specified file.
@@ -284,13 +349,9 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="overwrite">Overwrite or not.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void CopyCore(string src, string dest, bool overwrite) =>
+        public override void Copy(string src, string dest, bool overwrite) =>
             File.Copy(src, dest, overwrite);
 
-        #endregion
-
-        #region Fields
-        private static EntityController _shared;
         #endregion
     }
 }

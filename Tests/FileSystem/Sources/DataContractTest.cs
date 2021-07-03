@@ -58,7 +58,7 @@ namespace Cube.FileSystem.Tests
         {
             var dest = Get(filename);
             format.Serialize(dest, CreateDummy());
-            Assert.That(new FileInfo(dest).Length, Is.AtLeast(1));
+            Assert.That(Io.Get(dest).Length, Is.AtLeast(1));
         }
 
         /* ----------------------------------------------------------------- */
@@ -161,26 +161,7 @@ namespace Cube.FileSystem.Tests
         {
             var src  = default(RegistryKey);
             var data = CreateDummy();
-            Assert.DoesNotThrow(() => src.Serialize(data));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Serialize_Throws
-        ///
-        /// <summary>
-        /// Tests the Serialize method with Registry format and stream.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Serialize_Throws()
-        {
-            var dest = Get("Person.reg");
-            using var file = File.Create(dest);
-            var src = Format.Registry;
-            var data = CreateDummy();
-            Assert.That(() => src.Serialize(file, data), Throws.ArgumentException);
+            src.Serialize(data); // Does not throw.
         }
 
         #endregion
@@ -210,6 +191,55 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Deserialize_File_Brackets
+        ///
+        /// <summary>
+        /// Tests the Deserialize method with a file that contains only "{}".
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Deserialize_File_Brackets()
+        {
+            var src  = GetSource("Brackets.json");
+            var dest = Format.Json.Deserialize<Person>(src);
+            Assert.That(dest, Is.Not.Null);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Deserialize_File_Empty
+        ///
+        /// <summary>
+        /// Tests the Deserialize methods with an empty file.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Deserialize_File_Empty() => Assert.That(() =>
+        {
+            var src = Get("Empty.json");
+            IoEx.Touch(src);
+            _ = Format.Json.Deserialize<Person>(src);
+        }, Throws.TypeOf<System.Runtime.Serialization.SerializationException>());
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Deserialize_File_NotFound
+        ///
+        /// <summary>
+        /// Tests the Deserialize methods with an inexistent file.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Deserialize_File_NotFound() => Assert.That(
+            () => Format.Json.Deserialize<Person>(GetSource("not-found.json")),
+            Throws.TypeOf<FileNotFoundException>()
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Deserialize_Registry_Null
         ///
         /// <summary>
@@ -221,39 +251,20 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void Deserialize_Registry_Null()
         {
-            var dest     = default(RegistryKey).Deserialize<Person>();
-            var expected = new Person();
+            var src  = default(RegistryKey).Deserialize<Person>();
+            var dest = new Person();
 
-            Assert.That(dest.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
-            Assert.That(dest.Identification, Is.EqualTo(expected.Identification));
-            Assert.That(dest.Name,           Is.EqualTo(expected.Name));
-            Assert.That(dest.Age,            Is.EqualTo(expected.Age));
-            Assert.That(dest.Sex,            Is.EqualTo(expected.Sex));
-            Assert.That(dest.Reserved,       Is.EqualTo(expected.Reserved));
-            Assert.That(dest.Creation,       Is.EqualTo(expected.Creation));
-            Assert.That(dest.Secret,         Is.EqualTo(expected.Secret));
-            Assert.That(dest.Contact.Type,   Is.EqualTo(expected.Contact.Type));
-            Assert.That(dest.Contact.Value,  Is.EqualTo(expected.Contact.Value));
-            Assert.That(dest.Others.Count,   Is.EqualTo(0));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Deserialize_Throws
-        ///
-        /// <summary>
-        /// Tests the Deserialize method with the Registry format and
-        /// stream.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Deserialize_Throws()
-        {
-            var src = GetSource("Settings.xml");
-            using var e = File.OpenRead(src);
-            var dest = Format.Registry;
-            Assert.That(() => dest.Deserialize<Person>(e), Throws.ArgumentException);
+            Assert.That(src.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
+            Assert.That(src.Identification, Is.EqualTo(dest.Identification));
+            Assert.That(src.Name,           Is.EqualTo(dest.Name));
+            Assert.That(src.Age,            Is.EqualTo(dest.Age));
+            Assert.That(src.Sex,            Is.EqualTo(dest.Sex));
+            Assert.That(src.Reserved,       Is.EqualTo(dest.Reserved));
+            Assert.That(src.Creation,       Is.EqualTo(dest.Creation));
+            Assert.That(src.Secret,         Is.EqualTo(dest.Secret));
+            Assert.That(src.Contact.Type,   Is.EqualTo(dest.Contact.Type));
+            Assert.That(src.Contact.Value,  Is.EqualTo(dest.Contact.Value));
+            Assert.That(src.Others.Count,   Is.EqualTo(0));
         }
 
         #endregion

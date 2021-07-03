@@ -106,9 +106,7 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         private FileSystemInfo CreateCore(string path) =>
-            Directory.Exists(path) ?
-            new DirectoryInfo(path) as FileSystemInfo :
-            new FileInfo(path);
+            Directory.Exists(path) ? new DirectoryInfo(path) : new FileInfo(path);
 
         /* ----------------------------------------------------------------- */
         ///

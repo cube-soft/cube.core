@@ -53,16 +53,15 @@ namespace Cube.Tests
 
             using var src = new CacheCollection<int, int>(i => Sigma(i));
             src.Created += (s, e) => ++n;
-            Parallel.For(0, 10, e => src.GetOrCreate(key));
+            _ = Parallel.For(0, 10, e => src.GetOrCreate(key));
 
-            Assert.That(Wait(() => n > 0), "Timeout");
+            Assert.That(Wait.For(() => n > 0), "Timeout");
             Assert.That(src.Count, Is.EqualTo(1), nameof(src.Count));
             Assert.That(src.TryGetValue(key, out _), Is.True, nameof(src.TryGetValue));
             Assert.That(src.TryGetValue(999, out _), Is.False, nameof(src.TryGetValue));
             Assert.That(src.Contains(key), Is.True, nameof(src.Contains));
             Assert.That(src.GetOrCreate(key), Is.EqualTo(55), nameof(src.GetOrCreate));
-
-            src.Remove(key);
+            Assert.That(src.Remove(key), Is.True, nameof(src.Remove));
             src.Clear();
             Assert.That(src.Count, Is.EqualTo(0));
         }
@@ -82,9 +81,9 @@ namespace Cube.Tests
             var n = 0;
             using var src = new CacheCollection<int, int>(e => throw new ArgumentException($"{e}"));
             src.Failed += (s, e) => ++n;
-            Parallel.For(0, 10, i => src.GetOrCreate(i));
+            _ = Parallel.For(0, 10, i => src.GetOrCreate(i));
 
-            Assert.That(Wait(() => n == 10), "Timeout");
+            Assert.That(Wait.For(() => n == 10), "Timeout");
             Assert.That(src.Count, Is.EqualTo(0));
         }
 
@@ -106,8 +105,8 @@ namespace Cube.Tests
                             new CacheCollection<int, int>(n => Sigma(n), (k, v) => ++cnt) :
                             new CacheCollection<int, int>(n => Sigma(n));
 
-            Parallel.For(0, 10, i => src.GetOrCreate(i));
-            Assert.That(Wait(() => src.Count == 10), "Timeout");
+            _ = Parallel.For(0, 10, i => src.GetOrCreate(i));
+            Assert.That(Wait.For(() => src.Count == 10), "Timeout");
 
             foreach (var kv in src) Assert.That(kv.Value, Is.EqualTo(Sigma(kv.Key)));
 
@@ -139,25 +138,6 @@ namespace Cube.Tests
             var dest = 0;
             for (var i = 1; i <= n; ++i) dest += i;
             return dest;
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Wait
-        ///
-        /// <summary>
-        /// Waits for the user action until the specified function is true.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private bool Wait(Func<bool> predicate)
-        {
-            for (var i = 0; i < 100; ++i)
-            {
-                if (predicate()) return true;
-                TaskEx.Delay(100).Wait();
-            }
-            return false;
         }
 
         #endregion

@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using Cube.Mixin.Collections;
 
 namespace Cube
@@ -71,10 +72,25 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Contains
+        ///
+        /// <summary>
+        /// Determines whether the specified object is included.
+        /// </summary>
+        ///
+        /// <param name="src">IDisposable objects.</param>
+        ///
+        /// <returns>true for included.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool Contains(IDisposable src) => _core.Contains(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Add
         ///
         /// <summary>
-        /// Adds the specified disposable objects.
+        /// Adds the specified one or more disposable objects.
         /// </summary>
         ///
         /// <param name="src">IDisposable objects.</param>

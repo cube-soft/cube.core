@@ -20,25 +20,22 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Cube.Backports;
-using Cube.FileSystem;
-using Cube.Mixin.Logging;
 using Cube.Mixin.String;
-using Source = Cube.FileSystem.IO;
 
-namespace Cube.Mixin.IO
+namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IoExtension
+    /// IoEx
     ///
     /// <summary>
-    /// Provides extended methods of the IO class.
+    /// Provides utility methods for a path, file, or directory.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class IoExtension
+    public static class IoEx
     {
-        #region Methods
+        #region Load and Save
 
         /* ----------------------------------------------------------------- */
         ///
@@ -49,44 +46,38 @@ namespace Cube.Mixin.IO
         /// the specified callback.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
         /// <param name="src">Path of the source file.</param>
         /// <param name="callback">User action.</param>
         ///
         /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Load<T>(this Source io, string src, Func<Stream, T> callback)
+        public static T Load<T>(string src, Func<Stream, T> callback)
         {
-            using var ss = io.OpenRead(src);
+            using var ss = Io.Open(src);
             return callback(ss);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LoadOrDefault
+        /// Load
         ///
         /// <summary>
         /// Creates a new stream from the specified file and executes
-        /// the specified callback. When an exception occurs, returns
-        /// the specified object.
+        /// the specified callback.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
-        /// <param name="src">Path of the reading file.</param>
+        /// <param name="src">Path of the source file.</param>
         /// <param name="callback">User action.</param>
-        /// <param name="error">
-        /// Returned object when an exception occurs.
-        /// </param>
         ///
         /// <returns>Executed result.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T LoadOrDefault<T>(this Source io, string src, Func<Stream, T> callback, T error)
+        public static T Load<T>(string src, Func<TextReader, T> callback)
         {
-            try { return io.Load(src, callback); }
-            catch (Exception e) { io.GetType().LogWarn(e); }
-            return error;
+            var code = System.Text.Encoding.UTF8;
+            using var ss = new StreamReader(Io.Open(src), code);
+            return callback(ss);
         }
 
         /* ----------------------------------------------------------------- */
@@ -98,38 +89,47 @@ namespace Cube.Mixin.IO
         /// and writes the result to the specified file.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
         /// <param name="dest">Path of the writing file.</param>
         /// <param name="callback">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Save(this Source io, string dest, Action<Stream> callback)
+        public static void Save(string dest, Action<Stream> callback)
         {
             using var ss = new MemoryStream();
             callback(ss);
 
-            using var ds = io.Create(dest);
+            using var ds = Io.Create(dest);
             ss.Position = 0;
             ss.CopyTo(ds);
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Exists
+        /// Save
         ///
         /// <summary>
-        /// Determines if the specified path exists.
+        /// Creates a new memory stream, executes the specified callback,
+        /// and writes the result to the specified file.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
-        /// <param name="src">Path to check.</param>
+        /// <param name="dest">Path of the writing file.</param>
+        /// <param name="callback">User action.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static bool Exists(this Source io, string src)
+        public static void Save(string dest, Action<TextWriter> callback)
         {
-            try { return io.Get(src).Exists; }
-            catch { return false; }
+            var code = System.Text.Encoding.UTF8;
+            using var ss = new StreamWriter(new MemoryStream(), code);
+            callback(ss);
+
+            using var ds = Io.Create(dest);
+            ss.BaseStream.Position = 0;
+            ss.BaseStream.CopyTo(ds);
         }
+
+        #endregion
+
+        #region Touch
 
         /* ----------------------------------------------------------------- */
         ///
@@ -140,11 +140,10 @@ namespace Cube.Mixin.IO
         /// path.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
         /// <param name="src">Path to create or update.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Touch(this Source io, string src) => Touch(io, src, DateTime.Now);
+        public static void Touch(string src) => Touch(src, DateTime.Now);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,16 +154,17 @@ namespace Cube.Mixin.IO
         /// path.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
         /// <param name="src">Path to create or update.</param>
         /// <param name="timestamp">Timestamp to set.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Touch(this Source io, string src, DateTime timestamp)
+        public static void Touch(string src, DateTime timestamp)
         {
-            using (io.Create(src)) { }
-            io.SetLastWriteTime(src, timestamp);
+            using (Io.Create(src)) { }
+            Io.SetLastWriteTime(src, timestamp);
         }
+
+        #endregion
 
         #region Rename
 
@@ -176,15 +176,14 @@ namespace Cube.Mixin.IO
         /// Changes the filename of a path string.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
         /// <param name="src">Source path.</param>
         /// <param name="filename">Filename to rename.</param>
         ///
         /// <returns>Renamed path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string Rename(this Source io, string src, string filename) =>
-            io.Combine(io.Get(src).DirectoryName, filename);
+        public static string Rename(string src, string filename) =>
+            Io.Combine(Io.Get(src).DirectoryName, filename);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -194,69 +193,16 @@ namespace Cube.Mixin.IO
         /// Changes the extension of a path string.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
         /// <param name="src">Source path.</param>
         /// <param name="extension">Extension to rename.</param>
         ///
         /// <returns>Renamed path.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string RenameExtension(this Source io, string src, string extension)
+        public static string RenameExtension(string src, string extension)
         {
-            var e = io.Get(src);
-            return io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");
-        }
-
-        #endregion
-
-        #region GetTypeName
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetTypeName
-        ///
-        /// <summary>
-        /// Gets a value that represents kind of the specified file.
-        /// </summary>
-        ///
-        /// <param name="io">I/O handler.</param>
-        /// <param name="info">File information.</param>
-        ///
-        /// <returns>Typename of the file.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this Source io, Entity info) =>
-            GetTypeName(io, info?.FullName);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetTypeName
-        ///
-        /// <summary>
-        /// Gets a value that represents type of the specified file.
-        /// </summary>
-        ///
-        /// <param name="io">I/O handler.</param>
-        /// <param name="path">Path of the source file.</param>
-        ///
-        /// <returns>Typename of the file.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string GetTypeName(this Source io, string path)
-        {
-            System.Diagnostics.Debug.Assert(io != null);
-            if (!path.HasValue()) return string.Empty;
-
-            var dest   = new Cube.FileSystem.Shell32.SHFILEINFO();
-            var status = Cube.FileSystem.Shell32.NativeMethods.SHGetFileInfo(
-                path,
-                0x0080, // FILE_ATTRIBUTE_NORMAL
-                ref dest,
-                (uint)Marshal.SizeOf(dest),
-                0x0410 // SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES
-            );
-
-            return (status != IntPtr.Zero) ? dest.szTypeName : string.Empty;
+            var e = Io.Get(src);
+            return Io.Combine(e.DirectoryName, $"{e.BaseName}{extension}");
         }
 
         #endregion
@@ -271,20 +217,15 @@ namespace Cube.Mixin.IO
         /// Gets a unique name with the specified path.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
-        /// <param name="path">Base path.</param>
+        /// <param name="src">Base path.</param>
         ///
         /// <returns>Unique name.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this Source io, string path) =>
-            io.GetUniqueName(path, (e, i) =>
+        public static string GetUniqueName(string src) => GetUniqueName(src, (e, i) =>
         {
-            var src  = io.Get(e);
-            var dir  = src.DirectoryName;
-            var name = src.BaseName;
-            var ext  = src.Extension;
-            return io.Combine(dir, $"{name} ({i}){ext}");
+            var fi = Io.Get(e);
+            return Io.Combine(fi.DirectoryName, $"{fi.BaseName}({i}){fi.Extension}");
         });
 
         /* ----------------------------------------------------------------- */
@@ -295,19 +236,67 @@ namespace Cube.Mixin.IO
         /// Gets a unique name with the specified path.
         /// </summary>
         ///
-        /// <param name="io">I/O handler.</param>
-        /// <param name="path">Path to check.</param>
+        /// <param name="src">Path to check.</param>
         /// <param name="converter">Function to convert path.</param>
         ///
         /// <returns>Unique name.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetUniqueName(this Source io, string path, Func<string, int, string> converter) =>
-            io.Exists(path) ?
-            Enumerable.Range(1, int.MaxValue).Select(e => converter(path, e)).First(e => !io.Exists(e)) :
-            path;
+        public static string GetUniqueName(string src, Func<string, int, string> converter) =>
+            Io.Exists(src) ?
+            Enumerable.Range(1, int.MaxValue).Select(e => converter(src, e)).First(e => !Io.Exists(e)) :
+            src;
 
         #endregion
+
+        #region GetTypeName
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetTypeName
+        ///
+        /// <summary>
+        /// Gets a value that represents type of the specified file.
+        /// </summary>
+        ///
+        /// <param name="src">Path of the source file.</param>
+        ///
+        /// <returns>Typename of the file.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static string GetTypeName(string src)
+        {
+            if (!src.HasValue()) return string.Empty;
+
+            var dest   = new Shell32.SHFILEINFO();
+            var status = Shell32.NativeMethods.SHGetFileInfo(
+                src,
+                0x0080, // FILE_ATTRIBUTE_NORMAL
+                ref dest,
+                (uint)Marshal.SizeOf(dest),
+                0x0410 // SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES
+            );
+
+            return (status != IntPtr.Zero) ? dest.szTypeName : string.Empty;
+        }
+
+        #endregion
+
+        #region GetEntityController
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetEntityController
+        ///
+        /// <summary>
+        /// Gets the controller for an Entity object.
+        /// </summary>
+        ///
+        /// <returns>EntityController object.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static EntityController GetEntityController() =>
+            Io.GetController().GetEntityController();
 
         #endregion
     }
