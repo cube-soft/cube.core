@@ -18,8 +18,8 @@
 using System.Reflection;
 using Cube.FileSystem;
 using Cube.Mixin.Assembly;
-using Cube.Mixin.IO;
 using Cube.Mixin.Syntax;
+using NUnit.Framework;
 
 namespace Cube.Tests
 {
@@ -45,46 +45,20 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected FileFixture() : this(new IO()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FileFixture
-        ///
-        /// <summary>
-        /// Initializes a new instance of the FileFixture class with the
-        /// specified I/O handler.
-        /// </summary>
-        ///
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected FileFixture(IO io)
+        protected FileFixture()
         {
-            IO       = io;
             Root     = Assembly.GetExecutingAssembly().GetDirectoryName();
             Name     = GetType().FullName;
-            Examples = IO.Combine(Root, nameof(Examples));
-            Results  = IO.Combine(Root, nameof(Results), Name);
+            Examples = Io.Combine(Root, nameof(Examples));
+            Results  = Io.Combine(Root, nameof(Results), Name);
 
-            if (!IO.Exists(Results)) IO.CreateDirectory(Results);
+            Io.CreateDirectory(Results);
             Delete(Results);
         }
 
         #endregion
 
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IO
-        ///
-        /// <summary>
-        /// Gets the I/O handler.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected IO IO { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -151,7 +125,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected string Get(params string[] paths) =>
-            IO.Combine(Results, IO.Combine(paths));
+            Io.Combine(Results, Io.Combine(paths));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -170,7 +144,23 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         protected string GetSource(params string[] paths) =>
-            IO.Combine(Examples, IO.Combine(paths));
+            Io.Combine(Examples, Io.Combine(paths));
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Teardown
+        ///
+        /// <summary>
+        /// Invokes the tear-down operation.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TearDown]
+        protected virtual void Teardown() => Io.Configure(new());
 
         #endregion
 
@@ -187,8 +177,8 @@ namespace Cube.Tests
         /* ----------------------------------------------------------------- */
         private void Delete(string directory)
         {
-            IO.GetFiles(directory).Each(f => IO.Delete(f));
-            IO.GetDirectories(directory).Each(d => { Delete(d); IO.Delete(d); });
+            Io.GetFiles(directory).Each(f => Io.Delete(f));
+            Io.GetDirectories(directory).Each(d => { Delete(d); Io.Delete(d); });
         }
 
         #endregion

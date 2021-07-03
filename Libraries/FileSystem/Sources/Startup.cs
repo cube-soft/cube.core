@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.Collections;
-using Cube.Mixin.IO;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 
@@ -34,7 +33,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Startup : DisposableBase
+    public class Startup : ObservableBase
     {
         #region Constructors
 
@@ -50,28 +49,12 @@ namespace Cube.FileSystem
         /// <param name="name">Name to register.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Startup(string name) : this(name, new()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Startup
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Startup class with the
-        /// specified name.
-        /// </summary>
-        ///
-        /// <param name="name">Name to register.</param>
-        /// <param name="io">I/O handler.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Startup(string name, IO io)
+        public Startup(string name)
         {
             bool exists(string s) { using var k = Open(false); return k?.GetValue(s) != null; }
 
             if (!name.HasValue()) throw new ArgumentException(nameof(name));
             Name    = name;
-            IO      = io;
             Enabled = exists(name);
         }
 
@@ -100,7 +83,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Enabled { get; set; }
+        public bool Enabled
+        {
+            get => Get<bool>();
+            set => Set(value);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -112,7 +99,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source { get; set; }
+        public string Source
+        {
+            get => Get(() => string.Empty);
+            set => Set(value);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -138,17 +129,6 @@ namespace Cube.FileSystem
             Source.HasValue() ?
             Source.ToEnumerable().Concat(Arguments).Join(" ", e => e.Quote()) :
             string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IO
-        ///
-        /// <summary>
-        /// Gets the I/O handler.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected IO IO { get; }
 
         #endregion
 
@@ -188,7 +168,7 @@ namespace Cube.FileSystem
                 if (!Enabled) return false;
                 if (!checkExists) return true;
                 if (!Source.HasValue()) return false;
-                return IO.Exists(Source);
+                return Io.Exists(Source);
             }
 
             using var sk = Open(true);

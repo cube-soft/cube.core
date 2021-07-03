@@ -18,7 +18,6 @@
 using System;
 using System.Threading.Tasks;
 using Cube.FileSystem.DataContract;
-using Cube.Mixin.Assembly;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
@@ -39,34 +38,6 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
-        ///
-        /// <summary>
-        /// Executes the test for creating a new instance of the
-        /// SettingsFolder class with the specified format.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(Format.Registry, 1)]
-        [TestCase(Format.Json    , 0)]
-        [TestCase(Format.Xml     , 0)]
-        public void Create(Format format, int count)
-        {
-            var n    = 0;
-            var dest = new SettingFolder<Person>(format, Assembly);
-
-            dest.Loaded += (s, e) => ++n;
-
-            Assert.That(dest.TryLoad(), Is.EqualTo(count > 0));
-            Assert.That(n, Is.EqualTo(count));
-            Assert.That(dest.Format, Is.EqualTo(format));
-            Assert.That(dest.Value, Is.Not.Null);
-            Assert.That(dest.Version.ToString(), Is.EqualTo("4.0.0"));
-            Assert.That(dest.Location, Does.EndWith("Cube.FileSystem.Tests"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Load
         ///
         /// <summary>
@@ -80,8 +51,12 @@ namespace Cube.FileSystem.Tests
             var fmt  = Format.Registry;
             var name = GetKeyName(Default);
 
-            using var src = new SettingFolder<Person>(fmt, name) { AutoSave = false };
+            using var src = new SettingFolder<Person>(fmt, name, new()) { AutoSave = false };
             src.Load();
+            Assert.That(src.Format,   Is.EqualTo(fmt));
+            Assert.That(src.Location, Is.EqualTo(name));
+            Assert.That(src.Value,    Is.Not.Null);
+            Assert.That(src.Version.ToString(), Is.EqualTo("1.0.0"));
 
             var dest = src.Value;
             Assert.That(dest.Name,            Is.EqualTo("山田太郎"));
@@ -109,16 +84,18 @@ namespace Cube.FileSystem.Tests
         /// Load_Throws
         ///
         /// <summary>
-        /// Confirms the behavior when the specified file does not exist.
+        /// Tests the behavior when the specified file does not exist.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(Format.Json)]
-        [TestCase(Format.Xml )]
-        public void Load_Throws(Format format) => Assert.That(
-            () => new SettingFolder<Person>(format, Assembly).Load(),
-            Throws.InstanceOf<System.IO.IOException>()
-        );
+        [TestCase(Format.Xml)]
+        public void Load_NotFound(Format format)
+        {
+            var src = new SettingFolder<Person>(format, Assembly);
+            src.Load();
+            Assert.That(src.Value, Is.Not.Null);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -132,17 +109,14 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void ReLoad()
         {
-            var count = 0;
-            var name  = GetKeyName(Default);
+            var name = GetKeyName(Default);
 
-            using var src = new SettingFolder<Person>(Format.Registry, name);
-            src.Loaded += (s, e) => ++count;
+            using var src = new SettingFolder<Person>(Format.Registry, name, new());
             src.AutoSave = false;
             src.Load();
             src.Value.Name = "Before ReLoad";
             src.Load();
 
-            Assert.That(count, Is.EqualTo(2), nameof(src.Loaded));
             Assert.That(src.Value.Name, Is.EqualTo("山田太郎"));
         }
 
@@ -158,37 +132,32 @@ namespace Cube.FileSystem.Tests
         [Test]
         public void AutoSave()
         {
-            var key    = nameof(AutoSave);
-            var name   = GetKeyName(key);
-            var save   = 0;
-            var change = 0;
-            var delay  = TimeSpan.FromMilliseconds(100);
+            var key  = nameof(AutoSave);
+            var name = GetKeyName(key);
+            var ts   = TimeSpan.FromMilliseconds(100);
 
-            using (var src = new SettingFolder<Person>(Format.Registry, name))
+            using (var src = new SettingFolder<Person>(Format.Registry, name, new()))
             {
-                src.Saved           += (s, e) => ++save;
-                src.PropertyChanged += (s, e) => ++change;
+                src.AutoSave         = true;
+                src.AutoSaveDelay    = ts;
+                src.Value.Dispatcher = Dispatcher.Vanilla;
+                src.Value.Name       = "AutoSave";
+                src.Value.Age        = 77;
+                src.Value.Sex        = Sex.Female;
+                src.Value.Secret     = "SecretChanged";
+                src.Value.Reserved   = true;
+                src.Value.Reserved   = false;
+                src.Value.Reserved   = false;
 
-                src.AutoSave      = true;
-                src.AutoSaveDelay = delay;
-                src.Value.Name    = "AutoSave";
-                src.Value.Age     = 77;
-                src.Value.Sex     = Sex.Female;
-                src.Value.Secret  = "SecretChanged";
-
-                Task.Delay(TimeSpan.FromTicks(delay.Ticks * 2)).Wait();
+                Task.Delay(TimeSpan.FromTicks(ts.Ticks * 2)).Wait();
             }
 
-            Assert.That(save,   Is.EqualTo(2), "Saved");
-            Assert.That(change, Is.EqualTo(4), "PropertyChanged");
-
-            using (var dest = OpenSubKey(key))
-            {
-                Assert.That(dest.GetValue("Name"),   Is.EqualTo("AutoSave"));
-                Assert.That(dest.GetValue("Age"),    Is.EqualTo(77));
-                Assert.That(dest.GetValue("Sex"),    Is.EqualTo(1));
-                Assert.That(dest.GetValue("Secret"), Is.Null);
-            }
+            using var dest = OpenSubKey(key);
+            Assert.That(dest.GetValue("Name"),     Is.EqualTo("AutoSave"));
+            Assert.That(dest.GetValue("Age"),      Is.EqualTo(77));
+            Assert.That(dest.GetValue("Sex"),      Is.EqualTo(1));
+            Assert.That(dest.GetValue("Reserved"), Is.EqualTo(0));
+            Assert.That(dest.GetValue("Secret"),   Is.Null);
         }
 
         #endregion

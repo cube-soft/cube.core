@@ -39,7 +39,6 @@ namespace Cube.Tests
         ///
         /// <summary>
         /// Tests the Add and Dispose methods.
-        /// objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -61,6 +60,34 @@ namespace Cube.Tests
             Assert.That(n, Is.EqualTo(5));
             src.Add(() => ++n);
             Assert.That(n, Is.EqualTo(6));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Contains
+        ///
+        /// <summary>
+        /// Tests the Contains method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Contains()
+        {
+            var src = new DisposableContainer();
+            var n   = 0;
+            var e0 = Disposable.Create(() => n++);
+            var e1 = Disposable.Create(() => n++);
+
+            Assert.That(src.Contains(e0), Is.False);
+            src.Add(e0);
+            Assert.That(src.Contains(e0), Is.True);
+            Assert.That(src.Contains(e1), Is.False);
+            src.Dispose();
+            Assert.That(src.Contains(e0), Is.False);
+            Assert.That(src.Contains(e1), Is.False);
+            src.Add(e1);
+            Assert.That(src.Contains(e1), Is.False);
         }
 
         /* ----------------------------------------------------------------- */
