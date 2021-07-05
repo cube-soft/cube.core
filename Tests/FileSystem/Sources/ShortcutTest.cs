@@ -58,6 +58,7 @@ namespace Cube.FileSystem.Tests
                 IconLocation = $"{dest},{index}",
             };
 
+            Assert.That(sc.Exists, Is.False);
             Assert.That(sc.FullName, Does.EndWith(".lnk"));
             Assert.That(Io.Get(sc.FullName).BaseName, Does.Not.EndWith(".lnk"));
 
@@ -86,7 +87,35 @@ namespace Cube.FileSystem.Tests
             };
 
             sc.Create();
-            Assert.That(sc.Exists, Is.False);
+            Assert.That(sc.IconFileName, Is.Empty);
+            Assert.That(sc.IconIndex,    Is.EqualTo(0));
+            Assert.That(sc.Exists,       Is.False);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Create_Null
+        ///
+        /// <summary>
+        /// Tests the Create method with the null target path.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Create_Null()
+        {
+            var sc = new Shortcut
+            {
+                FullName     = Get("ScEmpty"),
+                Target       = null,
+                Arguments    = null,
+                IconLocation = null,
+            };
+
+            sc.Create();
+            Assert.That(sc.IconFileName, Is.Null);
+            Assert.That(sc.IconIndex,    Is.EqualTo(0));
+            Assert.That(sc.Exists,       Is.False);
         }
 
         /* ----------------------------------------------------------------- */

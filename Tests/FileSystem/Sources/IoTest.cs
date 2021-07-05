@@ -346,9 +346,19 @@ namespace Cube.FileSystem.Tests
         public void Move_Throws(int id, IoController controller)
         {
             Io.Configure(controller);
-            var src  = Get("FileNotFound.txt");
+
+            var src  = GetSource("Sample.txt");
             var dest = Get($"{nameof(Move_Throws)}-{id}.txt");
-            Assert.That(() => Io.Move(src, dest, true), Throws.TypeOf<System.IO.FileNotFoundException>());
+
+            Io.Copy(src, dest, true);
+            Assert.That(Io.Exists(dest), Is.True);
+
+            using (Io.Open(src))
+            {
+                Assert.That(() => Io.Move(src, dest, true), Throws.TypeOf<System.IO.IOException>());
+            }
+            Assert.That(Io.Exists(src),  Is.True, src);
+            Assert.That(Io.Exists(dest), Is.True, dest);
         }
 
         /* ----------------------------------------------------------------- */
