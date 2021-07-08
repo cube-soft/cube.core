@@ -42,32 +42,6 @@ namespace Cube
         /// PresentableBase
         ///
         /// <summary>
-        /// Initializes a new instance of the PresentableBase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresentableBase() : this(new()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresentableBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the PresentableBase class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Message aggregator.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresentableBase(Aggregator aggregator) :
-            this(aggregator, SynchronizationContext.Current) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresentableBase
-        ///
-        /// <summary>
         /// Initializes a new instance of the PresentableBase class with
         /// the specified arguments.
         /// </summary>

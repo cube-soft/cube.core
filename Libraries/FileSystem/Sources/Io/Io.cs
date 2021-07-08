@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Cube.Logging;
 
 namespace Cube.FileSystem
 {
@@ -482,18 +483,17 @@ namespace Cube.FileSystem
             if (!dest.Exists) { MoveFile(src, dest); return; }
             if (!overwrite) return;
 
-            var tmp = Combine(src.DirectoryName, Guid.NewGuid().ToString("D"));
-            var ti  = Get(tmp);
+            var tmp = Get(Combine(src.DirectoryName, Guid.NewGuid().ToString("N")));
+            MoveFile(dest, tmp);
 
-            MoveFile(dest, ti);
             try
             {
                 MoveFile(src, dest);
-                Delete(tmp);
+                typeof(Io).LogWarn(() => Delete(tmp.FullName));
             }
             catch
             {
-                MoveFile(ti, dest); // recover
+                MoveFile(tmp, dest); // recover
                 throw;
             }
         }
