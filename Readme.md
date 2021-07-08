@@ -23,8 +23,8 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## Dependencies
 
-The project depends on the [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801).
-Note that we will migrate to the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) in the future, which is the [OSS project](https://github.com/Microsoft/XamlBehaviorsWpf) of the Expression Blend SDK.
+* [Cube.Core](https://github.com/cube-soft/Cube.Core)
+* [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) (net45, netcoreapp3.1) or [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801) (net35)
 
 ## References
 

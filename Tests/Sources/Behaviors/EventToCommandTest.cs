@@ -18,9 +18,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows.Interactivity;
 using Cube.Mixin.Syntax;
 using Cube.Xui.Behaviors;
+using Microsoft.Xaml.Behaviors;
 using NUnit.Framework;
 
 namespace Cube.Xui.Tests.Behaviors
