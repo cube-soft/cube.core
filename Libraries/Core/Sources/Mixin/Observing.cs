@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace Cube.Mixin.Observing
@@ -43,18 +44,16 @@ namespace Cube.Mixin.Observing
         /// </summary>
         ///
         /// <param name="src">Source observer.</param>
-        /// <param name="target">Object to be observed.</param>
+        /// <param name="obj">Object to be observed.</param>
         /// <param name="names">Target property names.</param>
         ///
         /// <returns>Source observer.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static T Associate<T>(this T src,
-            INotifyPropertyChanged target,
-            params string[] names
-        ) where T : IObservePropertyChanged
+        public static T Associate<T>(this T src, INotifyPropertyChanged obj, params string[] names)
+            where T : IObservePropertyChanged
         {
-            src.Observe(target, names);
+            src.Observe(obj, names);
             return src;
         }
 
@@ -66,7 +65,7 @@ namespace Cube.Mixin.Observing
         /// Associates the specified callback to the PropertyChanged event.
         /// </summary>
         ///
-        /// <param name="src">Source observable.</param>
+        /// <param name="src">Observable source.</param>
         /// <param name="callback">
         /// Action to invoked when the PropertyChanged event is fired.
         /// </param>

@@ -17,17 +17,17 @@
             <group targetFramework="net45">
                 <dependency id="Cube.FileSystem" version="4.0.0" />
                 <dependency id="NUnit" version="3.13.2" />
-                <dependency id="OpenCover" version="4.7.1189" />
+                <dependency id="OpenCover" version="4.7.1221" />
             </group>
             <group targetFramework="net35">
                 <dependency id="Cube.FileSystem" version="4.0.0" />
                 <dependency id="NUnit" version="3.13.2" />
-                <dependency id="OpenCover" version="4.7.1189" />
+                <dependency id="OpenCover" version="4.7.1221" />
             </group>
             <group targetFramework="netstandard2.0">
                 <dependency id="Cube.FileSystem" version="4.0.0" />
                 <dependency id="NUnit" version="3.13.2" />
-                <dependency id="OpenCover" version="4.7.1189" />
+                <dependency id="OpenCover" version="4.7.1221" />
             </group>
         </dependencies>
     </metadata>
