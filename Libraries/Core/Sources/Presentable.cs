@@ -18,6 +18,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Cube.Logging;
 using Cube.Mixin.Tasks;
 
 namespace Cube
@@ -302,6 +303,7 @@ namespace Cube
             try { action(); }
             catch (Exception e)
             {
+                GetType().LogWarn(e);
                 if (OnMessage(e) is DialogMessage msg) Send(msg);
             }
         }
