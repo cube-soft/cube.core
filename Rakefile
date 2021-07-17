@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Forms"
-BRANCHES  = ["master", "net50", "net35"]
+BRANCHES  = ["net45", "net50", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/#{PROJECT}"]
 
@@ -56,7 +56,7 @@ task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
 
     branch = %x(git rev-parse --abbrev-ref HEAD).chomp
-    build  = branch.include?("net5") || branch.include?("netstd") ?
+    build  = branch.include?("net50") ?
              "dotnet build -c Release" :
              "msbuild -v:m -p:Configuration=Release"
 
