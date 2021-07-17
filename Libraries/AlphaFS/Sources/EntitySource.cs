@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using Alphaleonis.Win32.Filesystem;
+using Cube.Mixin.Generics;
 
 namespace Cube.FileSystem.AlphaFS
 {
@@ -31,8 +32,26 @@ namespace Cube.FileSystem.AlphaFS
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class EntityController : FileSystem.EntityController
+    public class EntitySource : FileSystem.EntitySource
     {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EntitySource
+        ///
+        /// <summary>
+        /// Initializes a new instance of the EntitySource class with the
+        /// specified path.
+        /// </summary>
+        ///
+        /// <param name="src">Path of the file or directory.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public EntitySource(string src) : base(src) { }
+
+        #endregion
+
         #region Methods
 
         /* ----------------------------------------------------------------- */
@@ -40,29 +59,27 @@ namespace Cube.FileSystem.AlphaFS
         /// Refresh
         ///
         /// <summary>
-        /// Refreshes the specified object.
+        /// Refreshes the file or directory information.
         /// </summary>
         ///
-        /// <param name="src">Object to be refreshed.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public override void Refresh(EntityControllable src)
+        public override void Refresh()
         {
-            var obj = CreateCore(src.Source);
+            var obj = Create();
 
-            src.Exists         = obj.Exists;
-            src.Name           = obj.Name;
-            src.Extension      = obj.Extension;
-            src.FullName       = obj.FullName;
-            src.Attributes     = obj.Attributes;
-            src.CreationTime   = obj.CreationTime;
-            src.LastAccessTime = obj.LastAccessTime;
-            src.LastWriteTime  = obj.LastWriteTime;
-            src.Length         = obj.Exists ? (TryCast(obj)?.Length ?? 0) : 0;
-            src.IsDirectory    = obj is DirectoryInfo;
-            src.BaseName       = Path.GetFileNameWithoutExtension(src.Source);
-            src.DirectoryName  = TryCast(obj)?.DirectoryName ??
-                                 Path.GetDirectoryName(src.Source);
+            Exists         = obj.Exists;
+            Name           = obj.Name;
+            Extension      = obj.Extension;
+            FullName       = obj.FullName;
+            Attributes     = obj.Attributes;
+            CreationTime   = obj.CreationTime;
+            LastAccessTime = obj.LastAccessTime;
+            LastWriteTime  = obj.LastWriteTime;
+            Length         = Exists ? (obj.TryCast<FileInfo>()?.Length ?? 0) : 0;
+            IsDirectory    = obj is DirectoryInfo;
+            BaseName       = Path.GetFileNameWithoutExtension(RawName);
+            DirectoryName  = obj.TryCast<FileInfo>()?.DirectoryName ??
+                             Path.GetDirectoryName(RawName);
         }
 
         #endregion
@@ -71,26 +88,15 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CreateCore
+        /// Create
         ///
         /// <summary>
         /// Creates a new instance of the FileSystemInfo inherited class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private FileSystemInfo CreateCore(string path) =>
-            Directory.Exists(path) ? new DirectoryInfo(path) : new FileInfo(path);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryCast
-        ///
-        /// <summary>
-        /// Tries to cast to the FileInfo object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private FileInfo TryCast(FileSystemInfo src) => src as FileInfo;
+        private FileSystemInfo Create() =>
+            Directory.Exists(RawName) ? new DirectoryInfo(RawName) : new FileInfo(RawName);
 
         #endregion
     }

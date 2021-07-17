@@ -76,7 +76,7 @@ namespace Cube.FileSystem
         /// <returns>Entity object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Entity Get(string path) => new(path, _core.GetEntityController());
+        public static Entity Get(string path) => new(_core.GetEntitySource(path));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -516,7 +516,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private static IoController _core = new(new());
+        private static IoController _core = new();
         #endregion
     }
 }

@@ -55,8 +55,8 @@ namespace Cube.FileSystem.Tests
             Assert.That(file, Is.Not.Null, $"{id}");
 
             var cmp = new DateTime(2017, 6, 5);
-            Assert.That(file.Source,         Is.EqualTo(GetSource("Sample.txt")));
-            Assert.That(file.FullName,       Is.EqualTo(file.Source));
+            Assert.That(file.RawName,        Is.EqualTo(GetSource("Sample.txt")));
+            Assert.That(file.FullName,       Is.EqualTo(file.RawName));
             Assert.That(file.Name,           Is.EqualTo("Sample.txt"));
             Assert.That(file.BaseName,       Is.EqualTo("Sample"));
             Assert.That(file.Extension,      Is.EqualTo(".txt"));
