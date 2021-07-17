@@ -11,7 +11,7 @@
         <AssemblyName>Cube.Core.Tests</AssemblyName>
         <StartupObject>Cube.Tests.Program</StartupObject>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0-windows</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
