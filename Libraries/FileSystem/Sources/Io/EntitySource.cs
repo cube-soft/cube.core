@@ -47,10 +47,27 @@ namespace Cube.FileSystem
         /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EntitySource(string src)
+        public EntitySource(string src) : this(src, true) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EntitySource
+        ///
+        /// <summary>
+        /// Initializes a new instance of the EntitySource class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Path of the file or directory.</param>
+        /// <param name="refresh">
+        /// Value indicating whether to invoke the Refresh method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected EntitySource(string src, bool refresh)
         {
             RawName = src;
-            Refresh();
+            if (refresh) Refresh();
         }
 
         #endregion
@@ -214,7 +231,18 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual void Refresh()
+        public void Refresh() => OnRefresh();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnRefresh
+        ///
+        /// <summary>
+        /// Refreshes the file or directory information.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnRefresh()
         {
             var obj = Create();
 

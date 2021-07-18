@@ -48,7 +48,7 @@ namespace Cube.FileSystem.AlphaFS
         /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EntitySource(string src) : base(src) { }
+        public EntitySource(string src) : base(src, true) { }
 
         #endregion
 
@@ -56,14 +56,14 @@ namespace Cube.FileSystem.AlphaFS
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Refresh
+        /// OnRefresh
         ///
         /// <summary>
         /// Refreshes the file or directory information.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override void Refresh()
+        protected override void OnRefresh()
         {
             var obj = Create();
 
