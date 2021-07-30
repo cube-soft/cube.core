@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Threading.Tasks;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Collections;
@@ -101,7 +102,7 @@ namespace Cube.Logging
         {
             LogInfo(type, $"{assembly.GetProduct()} {assembly.GetVersionString(4, true)}");
             LogInfo(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
-            LogInfo(type, $"{Environment.UserName}@{Environment.MachineName}");
+            LogInfo(type, $"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})");
         }
 
         #endregion
