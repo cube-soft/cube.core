@@ -52,10 +52,13 @@ namespace Cube.Mixin.Forms
         /* ----------------------------------------------------------------- */
         public static void UpdateCulture<T>(this T src, Language value) where T : Form
         {
-            Thread.CurrentThread.CurrentUICulture = value.ToCultureInfo();
-            var rm = new ComponentResourceManager(typeof(T));
-            rm.ApplyResources(src, "$this");
-            src.Controls.UpdateCulture(rm);
+            var ci = value.ToCultureInfo();
+            Thread.CurrentThread.CurrentCulture   = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
+
+            var crm = new ComponentResourceManager(typeof(T));
+            crm.ApplyResources(src, "$this");
+            UpdateCulture(src.Controls, crm);
         }
 
         /* ----------------------------------------------------------------- */
@@ -67,12 +70,12 @@ namespace Cube.Mixin.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static void UpdateCulture(this Control.ControlCollection src, ComponentResourceManager rm)
+        private static void UpdateCulture(Control.ControlCollection src, ComponentResourceManager crm)
         {
-            foreach (Control control in src)
+            foreach (Control e in src)
             {
-                rm.ApplyResources(control, control.Name);
-                control.Controls.UpdateCulture(rm);
+                crm.ApplyResources(e, e.Name);
+                UpdateCulture(e.Controls, crm);
             }
         }
 
