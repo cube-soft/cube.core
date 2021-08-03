@@ -30,7 +30,7 @@ namespace Cube.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class Entity
+    public class Entity : DisposableBase
     {
         #region Constructors
 
@@ -40,23 +40,13 @@ namespace Cube.FileSystem
         ///
         /// <summary>
         /// Creates a new instance of the Information class with the
-        /// specified arguments.
+        /// specified source object.
         /// </summary>
         ///
-        /// <param name="src">Path of the source file.</param>
-        /// <param name="controller">Refresher object.</param>
-        /// <param name="options">Optional parameters.</param>
-        ///
-        /// <remarks>
-        /// options for the Controller inherited classes.
-        /// </remarks>
+        /// <param name="src">EntitySource object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Entity(string src, EntityController controller, params object[] options)
-        {
-            Controller   = controller;
-            Controllable = controller.Create(src, options);
-        }
+        public Entity(EntitySource src) { Source = src; }
 
         #endregion
 
@@ -64,14 +54,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Source
+        /// RawName
         ///
         /// <summary>
         /// Gets the original path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source => Controllable.Source;
+        public string RawName => Source.RawName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -82,7 +72,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => Controllable.Exists;
+        public bool Exists => Source.Exists;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -93,7 +83,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory => Controllable.IsDirectory;
+        public bool IsDirectory => Source.IsDirectory;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -104,7 +94,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name => Controllable.Name;
+        public string Name => Source.Name;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -115,7 +105,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string BaseName => Controllable.BaseName;
+        public string BaseName => Source.BaseName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -126,7 +116,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Extension => Controllable.Extension;
+        public string Extension => Source.Extension;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -137,7 +127,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string FullName => Controllable.FullName;
+        public string FullName => Source.FullName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -148,7 +138,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName => Controllable.DirectoryName;
+        public string DirectoryName => Source.DirectoryName;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -159,7 +149,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public long Length => Controllable.Length;
+        public long Length => Source.Length;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -170,7 +160,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes => Controllable.Attributes;
+        public FileAttributes Attributes => Source.Attributes;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -181,7 +171,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime CreationTime => Controllable.CreationTime;
+        public DateTime CreationTime => Source.CreationTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -192,7 +182,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime => Controllable.LastWriteTime;
+        public DateTime LastWriteTime => Source.LastWriteTime;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -203,33 +193,18 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime => Controllable.LastAccessTime;
-
-        #region Core
+        public DateTime LastAccessTime => Source.LastAccessTime;
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Controllable
+        /// Source
         ///
         /// <summary>
         /// Gets the inner object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected EntityControllable Controllable { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Controller
-        ///
-        /// <summary>
-        /// Gets the controller object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected EntityController Controller { get; }
-
-        #endregion
+        protected EntitySource Source { get; }
 
         #endregion
 
@@ -240,11 +215,28 @@ namespace Cube.FileSystem
         /// Refresh
         ///
         /// <summary>
-        /// Refreshes file or directory information.
+        /// Refreshes the file or directory information.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public void Refresh() => Controller.Refresh(Controllable);
+        public void Refresh() => Source.Refresh();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) => Source?.Dispose();
 
         #endregion
     }

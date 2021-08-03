@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Alphaleonis.Win32.Filesystem;
+using Cube.Logging;
+using Cube.Mixin.Collections;
 
 namespace Cube.FileSystem.AlphaFS
 {
@@ -34,36 +36,28 @@ namespace Cube.FileSystem.AlphaFS
     /* --------------------------------------------------------------------- */
     public class IoController : FileSystem.IoController
     {
-        #region Constructors
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// IoController
+        /// GetEntitySource
         ///
         /// <summary>
-        /// Initializes a new instance of the IoController class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IoController() : this(new()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IoController
-        ///
-        /// <summary>
-        /// Initializes a new instance of the IoController class with the
+        /// Gets the Cube.FileSystem.AlphaFS.EntitySource object with the
         /// specified arguments.
         /// </summary>
         ///
-        /// <param name="ec">Controller for an Entity object.</param>
+        /// <param name="src">Source path.</param>
+        /// <param name="options">Optional argumentss.</param>
+        ///
+        /// <returns>EntitySource object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public IoController(EntityController ec) : base(ec) { }
-
-        #endregion
-
-        #region Methods
+        public override FileSystem.EntitySource GetEntitySource(string src, params object[] options)
+        {
+            GetType().LogWarn($"[ {options.Select(e => e.ToString()).Join(" ")} ] not used.");
+            return new EntitySource(src);
+        }
 
         /* ----------------------------------------------------------------- */
         ///

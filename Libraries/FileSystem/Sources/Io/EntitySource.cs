@@ -17,38 +17,57 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.IO;
+using Cube.Mixin.Generics;
 
 namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EntityControllable
+    /// EntitySource
     ///
     /// <summary>
-    /// Represents the controllable file or directory information.
+    /// Represents the file or directory information that is editable.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class EntityControllable
+    public class EntitySource : DisposableBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// EntityControllable
+        /// EntitySource
         ///
         /// <summary>
-        /// Initializes a new instance of the EntityControllable class
-        /// with the specified path.
+        /// Initializes a new instance of the EntitySource class with the
+        /// specified path.
         /// </summary>
         ///
         /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected internal EntityControllable(string src)
+        public EntitySource(string src) : this(src, true) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EntitySource
+        ///
+        /// <summary>
+        /// Initializes a new instance of the EntitySource class with the
+        /// specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Path of the file or directory.</param>
+        /// <param name="refresh">
+        /// Value indicating whether to invoke the Refresh method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected EntitySource(string src, bool refresh)
         {
-            Source = src;
+            RawName = src;
+            if (refresh) Refresh();
         }
 
         #endregion
@@ -57,14 +76,14 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Source
+        /// RawName
         ///
         /// <summary>
         /// Gets the original path.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Source { get; }
+        public string RawName { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -198,6 +217,82 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         public DateTime LastAccessTime { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Refresh
+        ///
+        /// <summary>
+        /// Refreshes the file or directory information.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Refresh() => OnRefresh();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnRefresh
+        ///
+        /// <summary>
+        /// Refreshes the file or directory information.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual void OnRefresh()
+        {
+            var obj = Create();
+
+            Exists         = obj.Exists;
+            Name           = obj.Name;
+            Extension      = obj.Extension;
+            FullName       = obj.FullName;
+            Attributes     = obj.Attributes;
+            CreationTime   = obj.CreationTime;
+            LastAccessTime = obj.LastAccessTime;
+            LastWriteTime  = obj.LastWriteTime;
+            Length         = Exists ? (obj.TryCast<FileInfo>()?.Length ?? 0) : 0;
+            IsDirectory    = obj is DirectoryInfo;
+            BaseName       = Path.GetFileNameWithoutExtension(RawName);
+            DirectoryName  = obj.TryCast<FileInfo>()?.DirectoryName ??
+                             Path.GetDirectoryName(RawName);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing) { }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CreateCore
+        ///
+        /// <summary>
+        /// Creates a new instance of the FileSystemInfo class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private FileSystemInfo Create() =>
+            Directory.Exists(RawName) ? new DirectoryInfo(RawName) : new FileInfo(RawName);
 
         #endregion
     }

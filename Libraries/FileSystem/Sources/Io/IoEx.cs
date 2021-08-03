@@ -282,21 +282,24 @@ namespace Cube.FileSystem
 
         #endregion
 
-        #region GetEntityController
+        #region GetEntitySource
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetEntityController
+        /// GetEntitySource
         ///
         /// <summary>
-        /// Gets the controller for an Entity object.
+        /// Gets the EntitySource object with the specified arguments.
         /// </summary>
         ///
-        /// <returns>EntityController object.</returns>
+        /// <param name="src">Source path.</param>
+        /// <param name="options">Optional argumentss.</param>
+        ///
+        /// <returns>EntitySource object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static EntityController GetEntityController() =>
-            Io.GetController().GetEntityController();
+        public static EntitySource GetEntitySource(string src, params object[] options) =>
+            Io.GetController().GetEntitySource(src, options);
 
         #endregion
     }
