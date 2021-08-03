@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Cube.Logging;
+using Cube.Mixin.Collections;
 
 namespace Cube.FileSystem
 {
@@ -33,49 +35,27 @@ namespace Cube.FileSystem
     /* --------------------------------------------------------------------- */
     public class IoController
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IoController
-        ///
-        /// <summary>
-        /// Initializes a new instance of the IoController class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IoController() : this(new()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IoController
-        ///
-        /// <summary>
-        /// Initializes a new instance of the IoController class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="ec">Controller for an Entity object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IoController(EntityController ec) { _ec = ec; }
-
-        #endregion
-
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetEntityController
+        /// GetEntitySource
         ///
         /// <summary>
-        /// Gets the controller for an Entity object.
+        /// Gets the EntitySource object with the specified arguments.
         /// </summary>
         ///
-        /// <returns>EntityController object.</returns>
+        /// <param name="src">Source path.</param>
+        /// <param name="options">Optional argumentss.</param>
+        ///
+        /// <returns>EntitySource object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public EntityController GetEntityController() => _ec;
+        public virtual EntitySource GetEntitySource(string src, params object[] options)
+        {
+            GetType().LogWarn($"[ {options.Select(e => e.ToString()).Join(" ")} ] not used.");
+            return new(src);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -366,10 +346,6 @@ namespace Cube.FileSystem
         public virtual void Copy(string src, string dest, bool overwrite) =>
             File.Copy(src, dest, overwrite);
 
-        #endregion
-
-        #region Fields
-        private readonly EntityController _ec;
         #endregion
     }
 }

@@ -50,6 +50,7 @@ namespace Cube.Tests
             var src   = typeof(SoftwareVersionTest).Assembly;
             var major = src.GetVersion().Major;
             var minor = src.GetVersion().Minor;
+            var build = src.GetVersion().Build;
             var pf    = src.GetArchitecture();
             var dest  = new SoftwareVersion(src.GetVersion())
             {
@@ -60,7 +61,7 @@ namespace Cube.Tests
             Assert.That(dest.Architecture,       Is.EqualTo(pf));
             Assert.That(dest.ToString(1, true),  Is.EqualTo($"begin-{major}-end ({pf})"));
             Assert.That(dest.ToString(2, true),  Is.EqualTo($"begin-{major}.{minor}-end ({pf})"));
-            Assert.That(dest.ToString(4, false), Is.EqualTo($"begin-{major}.{minor}.0.0-end"));
+            Assert.That(dest.ToString(4, false), Is.EqualTo($"begin-{major}.{minor}.{build}.0-end"));
             Assert.That(dest.ToString(),         Is.EqualTo(dest.ToString(3, false)));
         }
 

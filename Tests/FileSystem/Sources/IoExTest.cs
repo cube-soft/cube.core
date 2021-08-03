@@ -200,22 +200,22 @@ namespace Cube.FileSystem.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetEntityController
+        /// GetEntitySource
         ///
         /// <summary>
-        /// Tests the GetEntityController method.
+        /// Tests the GetEntitySource method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void GetEntityController()
+        public void GetEntitySource()
         {
             var src  = GetSource("Sample.txt");
-            var dest = new Entity(src, IoEx.GetEntityController());
+            var dest = new Entity(IoEx.GetEntitySource(src, "dumy"));
             var cmp  = new DateTime(2017, 6, 5);
 
-            Assert.That(dest.Source,         Is.EqualTo(GetSource("Sample.txt")));
-            Assert.That(dest.FullName,       Is.EqualTo(dest.Source));
+            Assert.That(dest.RawName,        Is.EqualTo(GetSource("Sample.txt")));
+            Assert.That(dest.FullName,       Is.EqualTo(dest.RawName));
             Assert.That(dest.Name,           Is.EqualTo("Sample.txt"));
             Assert.That(dest.BaseName,       Is.EqualTo("Sample"));
             Assert.That(dest.Extension,      Is.EqualTo(".txt"));
