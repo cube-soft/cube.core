@@ -71,6 +71,7 @@ namespace Cube.Forms.Demo
             {
                 Icon = _icon,
                 Text = _text,
+                Uri  = new("https://www.cube-soft.jp"),
             };
             _ = view.ShowDialog();
         }

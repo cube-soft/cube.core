@@ -337,7 +337,7 @@ namespace Cube.Forms.Controls
             _copyright.LinkClicked += (s, e) =>
             {
                 if (Uri == null) return;
-                try { _ = System.Diagnostics.Process.Start(Uri.ToString()); }
+                try { _ = UriProcess.Start(Uri); }
                 catch (Exception err) { GetType().LogWarn(err); }
             };
 

@@ -16,32 +16,39 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Diagnostics;
 
-namespace Cube.Forms.Behaviors
+namespace Cube.Forms
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriBehavior
+    /// UriProcess
     ///
     /// <summary>
-    /// Represents the behavior when an Uri message is received.
+    /// Provides functionality to start a new process with the provided
+    /// Uri object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UriBehavior : MessageBehavior<Uri>
+    internal static class UriProcess
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
-        /// UriBehavior
+        /// Start
         ///
         /// <summary>
-        /// Initializes a new instance of the UriBehavior class
-        /// with the specified arguments.
+        /// Starts a new process with the specified Uri object.
         /// </summary>
         ///
-        /// <param name="aggregator">Aggregator object.</param>
+        /// <param name="src">URL.</param>
+        ///
+        /// <returns>Process object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public UriBehavior(IAggregator aggregator) : base(aggregator, e => UriProcess.Start(e)) { }
+        public static Process Start(Uri src) => Process.Start(src.ToString());
+
+        #endregion
     }
 }
