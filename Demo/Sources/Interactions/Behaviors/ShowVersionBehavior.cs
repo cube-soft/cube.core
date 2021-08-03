@@ -15,8 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.Drawing;
+using System.Globalization;
 using Cube.Forms.Behaviors;
+using Cube.Mixin.Assembly;
+using Cube.Mixin.Uri;
 
 namespace Cube.Forms.Demo
 {
@@ -71,7 +75,9 @@ namespace Cube.Forms.Demo
             {
                 Icon = _icon,
                 Text = _text,
-                Uri  = new("https://www.cube-soft.jp"),
+                Uri  = new Uri("https://www.cube-soft.jp")
+                       .With(GetType().Assembly)
+                       .With("lang", CultureInfo.CurrentCulture.Name),
             };
             _ = view.ShowDialog();
         }
