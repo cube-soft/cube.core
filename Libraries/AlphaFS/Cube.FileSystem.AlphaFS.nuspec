@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
         <id>Cube.FileSystem.AlphaFS</id>
         <title>Cube.FileSystem.AlphaFS</title>
         <authors>clown,cube-soft</authors>
@@ -15,11 +15,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net45">
-                <dependency id="Cube.FileSystem" version="4.0.0" />
+                <dependency id="Cube.FileSystem" version="4.0.1" />
                 <dependency id="AlphaFS" version="2.2.6" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.FileSystem" version="4.0.0" />
+                <dependency id="Cube.FileSystem" version="4.0.1" />
                 <dependency id="AlphaFS" version="2.2.6" />
             </group>
         </dependencies>
