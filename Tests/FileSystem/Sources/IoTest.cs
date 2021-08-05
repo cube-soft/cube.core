@@ -71,9 +71,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(dir.BaseName,        Is.EqualTo("Examples"));
             Assert.That(dir.Extension,       Is.Empty);
             Assert.That(dir.DirectoryName,   Is.Not.Null.And.Not.Empty);
-
-            file.Refresh(); // Assert.DoesNotThrow
-            dir.Refresh();  // Assert.DoesNotThrow
         }
 
         /* ----------------------------------------------------------------- */
@@ -308,29 +305,23 @@ namespace Cube.FileSystem.Tests
             Io.Configure(controller);
 
             var name = "SampleDirectory";
-            var src  = Io.Get(Io.Combine(Results, name));
-            var dest = Io.Get(Io.Combine(Results, $"{name}-{nameof(Move)}-{id}"));
+            var src  = Io.Combine(Results, name);
+            var dest = Io.Combine(Results, $"{name}-{nameof(Move)}-{id}");
 
-            Io.Copy(GetSource(name), src.FullName, false);
-            src.Refresh();
-            Assert.That(src.Exists, Is.True);
+            Io.Copy(GetSource(name), src, false);
+            Assert.That(Io.Exists(src),  Is.True);
 
-            Io.Copy(src.FullName, dest.FullName, false);
-            Io.Move(src.FullName, dest.FullName, true);
-            src.Refresh();
-            dest.Refresh();
-            Assert.That(src.Exists, Is.False);
-            Assert.That(dest.Exists, Is.True);
+            Io.Copy(src, dest, false);
+            Io.Move(src, dest, true);
+            Assert.That(Io.Exists(src),  Is.False);
+            Assert.That(Io.Exists(dest), Is.True);
 
-            Io.Move(dest.FullName, src.FullName, false);
-            src.Refresh();
-            dest.Refresh();
-            Assert.That(src.Exists, Is.True);
-            Assert.That(dest.Exists, Is.False);
+            Io.Move(dest, src, false);
+            Assert.That(Io.Exists(src),  Is.True);
+            Assert.That(Io.Exists(dest), Is.False);
 
-            Io.Delete(src.FullName);
-            src.Refresh();
-            Assert.That(src.Exists, Is.False);
+            Io.Delete(src);
+            Assert.That(Io.Exists(src),  Is.False);
         }
 
         /* ----------------------------------------------------------------- */

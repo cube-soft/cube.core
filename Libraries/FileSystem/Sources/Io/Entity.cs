@@ -212,17 +212,6 @@ namespace Cube.FileSystem
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Refresh
-        ///
-        /// <summary>
-        /// Refreshes the file or directory information.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Refresh() => Source.Refresh();
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Dispose
         ///
         /// <summary>
