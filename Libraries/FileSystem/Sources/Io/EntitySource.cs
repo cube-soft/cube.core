@@ -244,7 +244,9 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected virtual void OnRefresh()
         {
-            var obj = Create();
+            FileSystemInfo obj = Directory.Exists(RawName) ?
+                                 new DirectoryInfo(RawName) :
+                                 new FileInfo(RawName);
 
             Exists         = obj.Exists;
             Name           = obj.Name;
@@ -277,22 +279,6 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing) { }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateCore
-        ///
-        /// <summary>
-        /// Creates a new instance of the FileSystemInfo class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private FileSystemInfo Create() =>
-            Directory.Exists(RawName) ? new DirectoryInfo(RawName) : new FileInfo(RawName);
 
         #endregion
     }

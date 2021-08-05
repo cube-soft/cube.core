@@ -23,10 +23,10 @@ namespace Cube.FileSystem.AlphaFS
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EntityController
+    /// EntitySource
     ///
     /// <summary>
-    /// Provides functionality to refresh properties of a EntityControllable
+    /// Provides functionality to refresh properties of a EntitySource
     /// object by using the AlphaFS module.
     /// </summary>
     ///
@@ -41,14 +41,31 @@ namespace Cube.FileSystem.AlphaFS
         /// EntitySource
         ///
         /// <summary>
-        /// Initializes a new instance of the EntitySource class with the
-        /// specified path.
+        /// Initializes a new instance of the AlphaFS.EntitySource class
+        /// with the specified path.
         /// </summary>
         ///
         /// <param name="src">Path of the file or directory.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public EntitySource(string src) : base(src, true) { }
+        public EntitySource(string src) : this(src, true) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// EntitySource
+        ///
+        /// <summary>
+        /// Initializes a new instance of the AlphaFS.EntitySource class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Path of the file or directory.</param>
+        /// <param name="refresh">
+        /// Value indicating whether to invoke the Refresh method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected EntitySource(string src, bool refresh) : base(src, refresh) { }
 
         #endregion
 
@@ -65,9 +82,11 @@ namespace Cube.FileSystem.AlphaFS
         /* ----------------------------------------------------------------- */
         protected override void OnRefresh()
         {
-            var obj = Create();
+            FileSystemInfo obj = Directory.Exists(RawName) ?
+                                 new DirectoryInfo(RawName) :
+                                 new FileInfo(RawName);
 
-            Exists         = obj.Exists;
+            Exists = obj.Exists;
             Name           = obj.Name;
             Extension      = obj.Extension;
             FullName       = obj.FullName;
@@ -81,22 +100,6 @@ namespace Cube.FileSystem.AlphaFS
             DirectoryName  = obj.TryCast<FileInfo>()?.DirectoryName ??
                              Path.GetDirectoryName(RawName);
         }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the FileSystemInfo inherited class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private FileSystemInfo Create() =>
-            Directory.Exists(RawName) ? new DirectoryInfo(RawName) : new FileInfo(RawName);
 
         #endregion
     }
