@@ -94,7 +94,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists { get; set; }
+        public bool Exists { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -106,7 +106,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory { get; set; }
+        public bool IsDirectory { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -117,7 +117,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -128,7 +128,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string BaseName { get; set; }
+        public string BaseName { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -139,7 +139,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Extension { get; set; }
+        public string Extension { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -150,7 +150,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string FullName { get; set; }
+        public string FullName { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -161,7 +161,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName { get; set; }
+        public string DirectoryName { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -172,7 +172,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public long Length { get; set; }
+        public long Length { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -183,7 +183,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes { get; set; }
+        public FileAttributes Attributes { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -194,7 +194,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime CreationTime { get; set; }
+        public DateTime CreationTime { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -205,7 +205,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime { get; set; }
+        public DateTime LastWriteTime { get; protected set; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -216,7 +216,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime { get; set; }
+        public DateTime LastAccessTime { get; protected set; }
 
         #endregion
 
@@ -244,7 +244,9 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         protected virtual void OnRefresh()
         {
-            var obj = Create();
+            FileSystemInfo obj = Directory.Exists(RawName) ?
+                                 new DirectoryInfo(RawName) :
+                                 new FileInfo(RawName);
 
             Exists         = obj.Exists;
             Name           = obj.Name;
@@ -277,22 +279,6 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing) { }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateCore
-        ///
-        /// <summary>
-        /// Creates a new instance of the FileSystemInfo class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private FileSystemInfo Create() =>
-            Directory.Exists(RawName) ? new DirectoryInfo(RawName) : new FileInfo(RawName);
 
         #endregion
     }
