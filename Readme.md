@@ -1,9 +1,9 @@
 Cube.Core
 ====
 
-[![NuGet](https://badgen.net/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
-[![NuGet](https://badgen.net/nuget/v/cube.filesystem?label=filesystem)](https://www.nuget.org/packages/cube.filesystem/)
-[![NuGet](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
+[![Package](https://badgen.net/nuget/v/cube.core?label=core)](https://www.fuget.org/packages/cube.core/)
+[![Package](https://badgen.net/nuget/v/cube.filesystem?label=filesystem)](https://www.fuget.org/packages/cube.filesystem/)
+[![Package](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.fuget.org/packages/cube.filesystem.alphafs/)
 [![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
