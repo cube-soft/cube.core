@@ -1,11 +1,11 @@
 Cube.Core
 ====
 
-[![NuGet](https://img.shields.io/nuget/v/Cube.Core.svg?label=core)](https://www.nuget.org/packages/Cube.Core/)
-[![NuGet](https://img.shields.io/nuget/v/Cube.FileSystem.svg?label=filesystem)](https://www.nuget.org/packages/Cube.FileSystem/)
-[![NuGet](https://img.shields.io/nuget/v/Cube.FileSystem.AlphaFS.svg?label=alphafs)](https://www.nuget.org/packages/Cube.FileSystem.AlphaFS/)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/romqhgh1ben6eedn?svg=true)](https://ci.appveyor.com/project/clown/cube-core)
-[![Codecov](https://codecov.io/gh/cube-soft/Cube.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/cube-soft/Cube.Core)
+[![NuGet](https://badgen.net/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
+[![NuGet](https://badgen.net/nuget/v/cube.filesystem?label=filesystem)](https://www.nuget.org/packages/cube.filesystem/)
+[![NuGet](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
+[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
+[![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
 The Cube.Core package provides support the MVVM pattern in WPF or WinForms applications,
 and the repository has some more utility packages.
