@@ -17,11 +17,9 @@ Note that Cube.FileSystem.AlphaFS package supports only .NET Framework.
 You can install the library through the NuGet package.
 Add dependencies, as you need, in your project file using the following syntax:
 
-    <ItemGroup>
-        <PackageReference Include="Cube.Core" Version="4.0.1" />
-        <PackageReference Include="Cube.FileSystem" Version="4.0.1" />
-        <PackageReference Include="Cube.FileSystem.AlphaFS" Version="4.0.1" />
-    </ItemGroup>
+    <PackageReference Include="Cube.Core" Version="4.0.1" />
+    <PackageReference Include="Cube.FileSystem" Version="4.0.1" />
+    <PackageReference Include="Cube.FileSystem.AlphaFS" Version="4.0.1" />
 
 Or select it from the NuGet packages UI on Visual Studio.
 
