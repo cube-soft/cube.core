@@ -1,8 +1,8 @@
 Cube.Forms
 ====
 
-[![NuGet](https://img.shields.io/nuget/v/Cube.Forms.svg)](https://www.nuget.org/packages/Cube.Forms/)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/k5a3hpx8q788dpq2?svg=true)](https://ci.appveyor.com/project/clown/cube-forms)
+[![Package](https://badgen.net/nuget/v/cube.forms)](https://www.fuget.org/packages/cube.forms/)
+[![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-forms)](https://ci.appveyor.com/project/clown/cube-forms)
 
 The Cube.Forms packages provides GUI components available for .NET Framework 3.5, 4.5, .NET Core 3.1, or later.
 The package also provides the functionality to support the MVVM pattern in WinForms applications.
@@ -14,9 +14,7 @@ Note that basic functionality for the MVVM pattern is implemented in the [Cube.C
 You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
-    <ItemGroup>
-        <PackageReference Include="Cube.Forms" Version="4.0.1" />
-    </ItemGroup>
+    <PackageReference Include="Cube.Forms" Version="4.0.1" />
 
 Or select it from the NuGet packages UI on Visual Studio.
 
