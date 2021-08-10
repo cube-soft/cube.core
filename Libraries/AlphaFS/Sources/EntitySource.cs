@@ -31,7 +31,6 @@ namespace Cube.FileSystem.AlphaFS
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Serializable]
     public class EntitySource : FileSystem.EntitySource
     {
         #region Constructors

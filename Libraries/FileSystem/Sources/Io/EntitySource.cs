@@ -30,7 +30,6 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Serializable]
     public class EntitySource
     {
         #region Constructors
