@@ -48,16 +48,11 @@ namespace Cube.FileSystem.AlphaFS
         /// </summary>
         ///
         /// <param name="src">Source path.</param>
-        /// <param name="options">Optional argumentss.</param>
         ///
         /// <returns>EntitySource object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public override FileSystem.EntitySource GetEntitySource(string src, params object[] options)
-        {
-            GetType().LogWarn($"[ {options.Select(e => e.ToString()).Join(" ")} ] not used.");
-            return new EntitySource(src);
-        }
+        public override FileSystem.EntitySource GetEntitySource(string src) => new EntitySource(src);
 
         /* ----------------------------------------------------------------- */
         ///
