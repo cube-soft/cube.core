@@ -30,7 +30,7 @@ namespace Cube.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class Entity : DisposableBase
+    public class Entity
     {
         #region Constructors
 
@@ -205,27 +205,6 @@ namespace Cube.FileSystem
         ///
         /* ----------------------------------------------------------------- */
         protected EntitySource Source { get; }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) => Source?.Dispose();
 
         #endregion
     }

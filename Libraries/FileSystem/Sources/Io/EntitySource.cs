@@ -31,7 +31,7 @@ namespace Cube.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class EntitySource : DisposableBase
+    public class EntitySource
     {
         #region Constructors
 
@@ -262,23 +262,6 @@ namespace Cube.FileSystem
             DirectoryName  = obj.TryCast<FileInfo>()?.DirectoryName ??
                              Path.GetDirectoryName(RawName);
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) { }
 
         #endregion
     }
