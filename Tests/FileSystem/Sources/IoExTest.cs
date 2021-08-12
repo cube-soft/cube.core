@@ -223,7 +223,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.CreationTime,   Is.GreaterThan(cmp));
             Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
             Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
-
         }
 
         #endregion

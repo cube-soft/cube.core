@@ -75,21 +75,43 @@ namespace Cube.FileSystem
         /// <param name="src">Source object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Entity(EntitySource src)
+        public Entity(EntitySource src) : this(src, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Entity
+        ///
+        /// <summary>
+        /// Creates a new instance of the Entity class with the specified
+        /// arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Source object.</param>
+        /// <param name="dispose">
+        /// Value indicating whether to dispose the specified src object
+        /// after initialization.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Entity(EntitySource src, bool dispose)
         {
-            RawName        = src.RawName;
-            Exists         = src.Exists;
-            IsDirectory    = src.IsDirectory;
-            Name           = src.Name;
-            BaseName       = src.BaseName;
-            Extension      = src.Extension;
-            FullName       = src.FullName;
-            DirectoryName  = src.DirectoryName;
-            Length         = src.Length;
-            Attributes     = src.Attributes;
-            CreationTime   = src.CreationTime;
-            LastWriteTime  = src.LastWriteTime;
-            LastAccessTime = src.LastAccessTime;
+            try
+            {
+                RawName        = src.RawName;
+                Exists         = src.Exists;
+                IsDirectory    = src.IsDirectory;
+                Name           = src.Name;
+                BaseName       = src.BaseName;
+                Extension      = src.Extension;
+                FullName       = src.FullName;
+                DirectoryName  = src.DirectoryName;
+                Length         = src.Length;
+                Attributes     = src.Attributes;
+                CreationTime   = src.CreationTime;
+                LastWriteTime  = src.LastWriteTime;
+                LastAccessTime = src.LastAccessTime;
+            }
+            finally { if (dispose) src.Dispose(); }
         }
 
         #endregion
