@@ -48,7 +48,37 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase() : this(Dispatcher.Vanilla) { }
+        protected ObservableBase() : this(0) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ObservableBase
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ObservableBasee class
+        /// with the specified capacity.
+        /// </summary>
+        ///
+        /// <param name="capacity">
+        /// Capacity of the internal hash table. If zero is specified,
+        /// the initial capacity of the Hashtable class will be used.
+        /// </param>
+        ///
+        /// <remarks>
+        /// Due to the specification of the Hashtable class, the actual
+        /// capacity will be as follows:
+        ///
+        /// [0,   3] to  2.16 ( 3 * 0.72),
+        /// [4,   7] to  5.04 ( 7 * 0.72),
+        /// [8,  11] to  7.92 (11 * 0.72),
+        /// [12, 17] to 12.24 (17 * 0.72),
+        /// [18, 23] to 16.56 (23 * 0.72),
+        /// [24, 29] to 20.88 (29 * 0.72),
+        /// [30, 37] to 26.64 (37 * 0.72).
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ObservableBase(int capacity) : this(capacity, Dispatcher.Vanilla) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -62,7 +92,30 @@ namespace Cube
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected ObservableBase(Dispatcher dispatcher) : base() { Dispatcher = dispatcher; }
+        protected ObservableBase(Dispatcher dispatcher) : this(0, dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ObservableBase
+        ///
+        /// <summary>
+        /// Initializes a new instance of the ObservableBasee class
+        /// with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="capacity">
+        /// Capacity of the internal hash table. If zero is specified,
+        /// the initial capacity of the Hashtable class will be used.
+        /// </param>
+        ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected ObservableBase(int capacity, Dispatcher dispatcher) : base()
+        {
+            Dispatcher = dispatcher;
+            _fields    = new(capacity);
+        }
 
         #endregion
 
@@ -285,7 +338,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly Hashtable _fields = new();
+        private readonly Hashtable _fields;
         #endregion
     }
 }

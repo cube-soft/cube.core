@@ -69,6 +69,51 @@ namespace Cube
     /* --------------------------------------------------------------------- */
     public sealed class Aggregator : IAggregator
     {
+        #region Constructors
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Aggregator
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Aggregator class.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Aggregator() : this(0) { }
+
+        /* --------------------------------------------------------------------- */
+        ///
+        /// Aggregator
+        ///
+        /// <summary>
+        /// Initializes a new instance of the Aggregator class with the specified
+        /// capacity.
+        /// </summary>
+        ///
+        /// <param name="capacity">
+        /// Capacity of the internal hash table. If zero is specified,
+        /// the initial capacity of the Hashtable class will be used.
+        /// </param>
+        ///
+        /// <remarks>
+        /// Due to the specification of the Hashtable class, the actual
+        /// capacity will be as follows:
+        ///
+        /// [0,   3] to  2.16 ( 3 * 0.72),
+        /// [4,   7] to  5.04 ( 7 * 0.72),
+        /// [8,  11] to  7.92 (11 * 0.72),
+        /// [12, 17] to 12.24 (17 * 0.72),
+        /// [18, 23] to 16.56 (23 * 0.72),
+        /// [24, 29] to 20.88 (29 * 0.72),
+        /// [30, 37] to 26.64 (37 * 0.72).
+        /// </remarks>
+        ///
+        /* --------------------------------------------------------------------- */
+        public Aggregator(int capacity) => _subscription = new(capacity);
+
+        #endregion
+
         #region Methods
 
         /* --------------------------------------------------------------------- */
@@ -150,7 +195,7 @@ namespace Cube
         #endregion
 
         #region Fields
-        private readonly Hashtable _subscription = new();
+        private readonly Hashtable _subscription;
         #endregion
     }
 
