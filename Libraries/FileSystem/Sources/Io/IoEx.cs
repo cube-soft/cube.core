@@ -246,13 +246,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <param name="src">Source path.</param>
-        /// <param name="options">Optional argumentss.</param>
         ///
         /// <returns>EntitySource object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static EntitySource GetEntitySource(string src, params object[] options) =>
-            Io.GetController().GetEntitySource(src, options);
+        public static EntitySource GetEntitySource(string src) => Io.GetController().GetEntitySource(src);
 
         #endregion
     }

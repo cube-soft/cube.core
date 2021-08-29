@@ -211,7 +211,7 @@ namespace Cube.FileSystem.Tests
         public void GetEntitySource()
         {
             var src  = GetSource("Sample.txt");
-            var dest = new Entity(IoEx.GetEntitySource(src, "dumy"));
+            var dest = new Entity(IoEx.GetEntitySource(src));
             var cmp  = new DateTime(2017, 6, 5);
 
             Assert.That(dest.RawName,        Is.EqualTo(GetSource("Sample.txt")));
@@ -223,7 +223,6 @@ namespace Cube.FileSystem.Tests
             Assert.That(dest.CreationTime,   Is.GreaterThan(cmp));
             Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
             Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
-
         }
 
         #endregion

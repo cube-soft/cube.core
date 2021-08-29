@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Cube.Tests;
 using NUnit.Framework;
 
@@ -51,26 +52,62 @@ namespace Cube.FileSystem.Tests
         {
             Io.Configure(controller);
 
-            var file = Io.Get(GetSource("Sample.txt"));
-            Assert.That(file, Is.Not.Null, $"{id}");
+            var dest = Io.Get(GetSource("Sample.txt"));
+            Assert.That(dest, Is.Not.Null, $"{id}");
 
             var cmp = new DateTime(2017, 6, 5);
-            Assert.That(file.RawName,        Is.EqualTo(GetSource("Sample.txt")));
-            Assert.That(file.FullName,       Is.EqualTo(file.RawName));
-            Assert.That(file.Name,           Is.EqualTo("Sample.txt"));
-            Assert.That(file.BaseName,       Is.EqualTo("Sample"));
-            Assert.That(file.Extension,      Is.EqualTo(".txt"));
-            Assert.That(file.DirectoryName,  Is.EqualTo(Examples));
-            Assert.That(file.CreationTime,   Is.GreaterThan(cmp));
-            Assert.That(file.LastWriteTime,  Is.GreaterThan(cmp));
-            Assert.That(file.LastAccessTime, Is.GreaterThan(cmp));
+            Assert.That(dest.RawName,        Is.EqualTo(GetSource("Sample.txt")));
+            Assert.That(dest.FullName,       Is.EqualTo(dest.RawName));
+            Assert.That(dest.Name,           Is.EqualTo("Sample.txt"));
+            Assert.That(dest.BaseName,       Is.EqualTo("Sample"));
+            Assert.That(dest.Extension,      Is.EqualTo(".txt"));
+            Assert.That(dest.DirectoryName,  Is.EqualTo(Examples));
+            Assert.That(dest.CreationTime,   Is.GreaterThan(cmp));
+            Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
+            Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
 
-            var dir = Io.Get(file.DirectoryName);
+            var dir = Io.Get(dest.DirectoryName);
             Assert.That(dir.FullName,        Is.EqualTo(Examples));
             Assert.That(dir.Name,            Is.EqualTo("Examples"));
             Assert.That(dir.BaseName,        Is.EqualTo("Examples"));
             Assert.That(dir.Extension,       Is.Empty);
             Assert.That(dir.DirectoryName,   Is.Not.Null.And.Not.Empty);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Serialize
+        ///
+        /// <summary>
+        /// Tests to serialize and deserialize an Entity object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCaseSource(nameof(TestCases))]
+        public void Serialize(int id, IoController controller)
+        {
+            Io.Configure(controller);
+
+            var src = Io.Get(GetSource("Sample.txt"));
+            var bin = Get($"{nameof(Serialize)}-{id}.bin");
+            var fmt = new BinaryFormatter();
+
+            using (var fs = Io.Create(bin)) fmt.Serialize(fs, src);
+            using (var fs = Io.Open(bin))
+            {
+                var dest = (Entity)fmt.Deserialize(fs);
+                var cmp  = new DateTime(2017, 6, 5);
+
+                Assert.That(dest.RawName,        Is.EqualTo(GetSource("Sample.txt")));
+                Assert.That(dest.FullName,       Is.EqualTo(dest.RawName));
+                Assert.That(dest.Name,           Is.EqualTo("Sample.txt"));
+                Assert.That(dest.BaseName,       Is.EqualTo("Sample"));
+                Assert.That(dest.Extension,      Is.EqualTo(".txt"));
+                Assert.That(dest.DirectoryName,  Is.EqualTo(Examples));
+                Assert.That(dest.CreationTime,   Is.GreaterThan(cmp));
+                Assert.That(dest.LastWriteTime,  Is.GreaterThan(cmp));
+                Assert.That(dest.LastAccessTime, Is.GreaterThan(cmp));
+            }
         }
 
         /* ----------------------------------------------------------------- */

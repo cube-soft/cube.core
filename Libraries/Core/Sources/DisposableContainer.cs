@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Cube.Mixin.Collections;
 
 namespace Cube
 {
@@ -53,18 +52,28 @@ namespace Cube
         ///
         /// <summary>
         /// Initializes a new instance of the DisposableContainer class with
-        /// the specified IDisposable objects.
+        /// the specified IDisposable object.
+        /// </summary>
+        ///
+        /// <param name="src">IDisposable object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DisposableContainer(IDisposable src) => Add(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DisposableContainer
+        ///
+        /// <summary>
+        /// Initializes a new instance of the DisposableContainer class with
+        /// the specified one or more IDisposable objects.
         /// </summary>
         ///
         /// <param name="src">IDisposable object.</param>
         /// <param name="latter">IDisposable objects.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public DisposableContainer(IDisposable src, params IDisposable[] latter)
-        {
-            Add(src);
-            Add(latter);
-        }
+        public DisposableContainer(IDisposable src, params IDisposable[] latter) => Add(src, latter);
 
         #endregion
 
@@ -90,7 +99,7 @@ namespace Cube
         /// Add
         ///
         /// <summary>
-        /// Adds the specified one or more disposable objects.
+        /// Adds the specified disposable object.
         /// </summary>
         ///
         /// <param name="src">IDisposable objects.</param>
@@ -101,13 +110,33 @@ namespace Cube
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
-        public void Add(params IDisposable[] src)
+        public void Add(IDisposable src)
         {
-            foreach (var e in src.Compact())
-            {
-                if (Disposed) e.Dispose();
-                else _core.Enqueue(e);
-            }
+            if (Disposed) src.Dispose();
+            else _core.Enqueue(src);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Add
+        ///
+        /// <summary>
+        /// Adds the specified one or more disposable objects.
+        /// </summary>
+        ///
+        /// <param name="src">IDisposable objects.</param>
+        /// <param name="latter">IDisposable objects.</param>
+        ///
+        /// <remarks>
+        /// If the object has already been disposed when called, the Dispose
+        /// method of the specified object will be invoked immediately.
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Add(IDisposable src, params IDisposable[] latter)
+        {
+            Add(src);
+            foreach (var e in latter) Add(e);
         }
 
         /* ----------------------------------------------------------------- */

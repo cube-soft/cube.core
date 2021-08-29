@@ -30,7 +30,7 @@ namespace Cube.FileSystem
     ///
     /* --------------------------------------------------------------------- */
     [Serializable]
-    public class Entity : DisposableBase
+    public class Entity
     {
         #region Constructors
 
@@ -39,14 +39,80 @@ namespace Cube.FileSystem
         /// Entity
         ///
         /// <summary>
-        /// Creates a new instance of the Information class with the
-        /// specified source object.
+        /// Creates a new instance of the Entity class with the specified
+        /// source object.
         /// </summary>
         ///
-        /// <param name="src">EntitySource object.</param>
+        /// <param name="src">Source object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Entity(EntitySource src) { Source = src; }
+        public Entity(Entity src)
+        {
+            RawName        = src.RawName;
+            Exists         = src.Exists;
+            IsDirectory    = src.IsDirectory;
+            Name           = src.Name;
+            BaseName       = src.BaseName;
+            Extension      = src.Extension;
+            FullName       = src.FullName;
+            DirectoryName  = src.DirectoryName;
+            Length         = src.Length;
+            Attributes     = src.Attributes;
+            CreationTime   = src.CreationTime;
+            LastWriteTime  = src.LastWriteTime;
+            LastAccessTime = src.LastAccessTime;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Entity
+        ///
+        /// <summary>
+        /// Creates a new instance of the Entity class with the specified
+        /// source object.
+        /// </summary>
+        ///
+        /// <param name="src">Source object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Entity(EntitySource src) : this(src, false) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Entity
+        ///
+        /// <summary>
+        /// Creates a new instance of the Entity class with the specified
+        /// arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Source object.</param>
+        /// <param name="dispose">
+        /// Value indicating whether to dispose the specified src object
+        /// after initialization.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Entity(EntitySource src, bool dispose)
+        {
+            try
+            {
+                RawName        = src.RawName;
+                Exists         = src.Exists;
+                IsDirectory    = src.IsDirectory;
+                Name           = src.Name;
+                BaseName       = src.BaseName;
+                Extension      = src.Extension;
+                FullName       = src.FullName;
+                DirectoryName  = src.DirectoryName;
+                Length         = src.Length;
+                Attributes     = src.Attributes;
+                CreationTime   = src.CreationTime;
+                LastWriteTime  = src.LastWriteTime;
+                LastAccessTime = src.LastAccessTime;
+            }
+            finally { if (dispose) src.Dispose(); }
+        }
 
         #endregion
 
@@ -61,7 +127,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string RawName => Source.RawName;
+        public string RawName { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -72,7 +138,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool Exists => Source.Exists;
+        public bool Exists { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -83,7 +149,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool IsDirectory => Source.IsDirectory;
+        public bool IsDirectory { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,7 +160,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name => Source.Name;
+        public string Name { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -105,7 +171,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string BaseName => Source.BaseName;
+        public string BaseName { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -116,7 +182,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Extension => Source.Extension;
+        public string Extension { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -127,7 +193,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string FullName => Source.FullName;
+        public string FullName { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -138,7 +204,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string DirectoryName => Source.DirectoryName;
+        public string DirectoryName { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -149,7 +215,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public long Length => Source.Length;
+        public long Length { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -160,7 +226,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes => Source.Attributes;
+        public FileAttributes Attributes { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -171,7 +237,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime CreationTime => Source.CreationTime;
+        public DateTime CreationTime { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -182,7 +248,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime => Source.LastWriteTime;
+        public DateTime LastWriteTime { get; }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -193,39 +259,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime => Source.LastAccessTime;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Source
-        ///
-        /// <summary>
-        /// Gets the inner object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected EntitySource Source { get; }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) => Source?.Dispose();
+        public DateTime LastAccessTime { get; }
 
         #endregion
     }
