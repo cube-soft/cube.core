@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>4.0.1</Version>
+        <Version>4.0.2</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Provides support the MVVM pattern in WPF or WinForms applications.</Description>
@@ -24,7 +24,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NLog" Version="4.7.10" />
+        <PackageReference Include="NLog" Version="4.7.11" />
         <PackageReference Include="AsyncBridge" Version="0.3.1" />
         <Reference Include="WindowsBase" />
     </ItemGroup>

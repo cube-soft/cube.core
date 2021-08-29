@@ -76,7 +76,7 @@ namespace Cube.FileSystem
         /// <returns>Entity object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static Entity Get(string path) => new(_core.GetEntitySource(path));
+        public static Entity Get(string path) => new(_core.GetEntitySource(path), true);
 
         /* ----------------------------------------------------------------- */
         ///

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>4.0.1</version>
+        <version>4.0.2</version>
         <id>Cube.Core</id>
         <title>Cube.Core</title>
         <authors>clown,cube-soft</authors>
@@ -15,15 +15,15 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="netstandard2.0">
-                <dependency id="NLog" version="4.7.10" />
+                <dependency id="NLog" version="4.7.11" />
                 <dependency id="Microsoft.Win32.Registry" version="5.0.0" />
                 <dependency id="Microsoft.Win32.SystemEvents" version="5.0.0" />
             </group>
             <group targetFramework="net45">
-                <dependency id="NLog" version="4.7.10" />
+                <dependency id="NLog" version="4.7.11" />
             </group>
             <group targetFramework="net35">
-                <dependency id="NLog" version="4.7.10" />
+                <dependency id="NLog" version="4.7.11" />
                 <dependency id="AsyncBridge" version="0.3.1" />
             </group>
         </dependencies>

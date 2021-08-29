@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cube.Logging;
-using Cube.Mixin.Collections;
 
 namespace Cube.FileSystem
 {
@@ -46,16 +44,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <param name="src">Source path.</param>
-        /// <param name="options">Optional argumentss.</param>
         ///
         /// <returns>EntitySource object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public virtual EntitySource GetEntitySource(string src, params object[] options)
-        {
-            GetType().LogWarn($"[ {options.Select(e => e.ToString()).Join(" ")} ] not used.");
-            return new(src);
-        }
+        public virtual EntitySource GetEntitySource(string src) => new(src);
 
         /* ----------------------------------------------------------------- */
         ///
