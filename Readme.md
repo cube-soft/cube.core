@@ -13,7 +13,7 @@ to provide support the MVVM pattern in WPF applications. The package is availabl
 You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
-    <PackageReference Include="Cube.Xui" Version="4.0.1" />
+    <PackageReference Include="Cube.Xui" Version="4.0.2" />
 
 Or select it from the NuGet packages UI on Visual Studio.
 
