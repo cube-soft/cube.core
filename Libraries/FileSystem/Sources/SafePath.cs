@@ -25,30 +25,31 @@ namespace Cube.FileSystem
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PathFilter
+    /// SafePath
     ///
     /// <summary>
-    /// Provides functionality to escape the path string. The class escapes
-    /// characters that cannot be used on Windows.
+    /// Provides functionality to escape or remove the part of the provided
+    /// path. The class escapes characters that cannot be used on Windows.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PathFilter
+    public sealed class SafePath
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PathFilter
+        /// SafePath
         ///
         /// <summary>
-        /// Initializes a new instance with the specified string.
+        /// Initializes a new instance of the SafePath class with the
+        /// specified path.
         /// </summary>
         ///
-        /// <param name="src">Source string.</param>
+        /// <param name="src">Original path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathFilter(string src) { Source = src; }
+        public SafePath(string src) { Source = src; }
 
         #endregion
 
@@ -74,18 +75,20 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Value => Inner.Value;
+        public string Value => EscapeOnce().Value;
 
-        /* ----------------------------------------------------------------- */
+        /* ------------------------------------------------------------- */
         ///
-        /// Inner
+        /// Parts
         ///
         /// <summary>
-        /// Gets the inner object to escape.
+        /// Get a sequence of file or directory names separated by the
+        /// path separator. Each file or directory name is escaped by
+        /// the provided condition.
         /// </summary>
         ///
-        /* ----------------------------------------------------------------- */
-        protected EscapedObject Inner => EscapeOnce();
+        /* ------------------------------------------------------------- */
+        public IEnumerable<string> Parts => EscapeOnce().Parts;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -112,8 +115,8 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// false に設定した場合、ドライブ文字に続く ":"（コロン）も
-        /// エスケープ処理の対象となります。
+        /// If set to false, the ":" (colon) following the drive letter will
+        /// also be escaped.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -134,8 +137,9 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// false に設定した場合、"." 部分のディレクトリを取り除きます。
-        /// 例えば、"foo\.\bar" は "foo\bar" となります。
+        /// If set to false, the "." character and the following path
+        /// separator will simply be removed.
+        /// For example, "foo\.\bar" would become "foo\bar".
         /// </remarks>
         ///
         /// <see cref="AllowInactivation"/>
@@ -158,8 +162,9 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// false に設定した場合、".." 部分のディレクトリを取り除きます。
-        /// 例えば、"foo\..\bar" は "foo\bar" となります。
+        /// If set to false, the ".." character and the following path
+        /// separator will simply be removed.
+        /// For example, "foo\..\bar" would become "foo\bar".
         /// </remarks>
         ///
         /// <see cref="AllowInactivation"/>
@@ -181,10 +186,11 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// サービス機能の不活性化では "." および ".." は禁止されるため、
-        /// true 設定時には AllowCurrentDirectory, AllowParentDirectory の
-        /// 設定に関わらず、これらの文字列は除去されます。また、実装上の
-        /// 都合で、true 設定時には AllowUnc の設定も無視されます。
+        /// In deactivating a service function, ". and "..." are prohibited,
+        /// so when set to true, these strings will be removed regardless of
+        /// the AllowCurrentDirectory and AllowParentDirectory settings.
+        /// Also, for implementation reasons, the AllowUnc setting is also
+        /// ignored when set to true.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -314,84 +320,6 @@ namespace Cube.FileSystem
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Match
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the specified name is part of
-        /// the provided path.
-        /// </summary>
-        ///
-        /// <param name="name">File or directory name.</param>
-        ///
-        /// <returns>true if contained.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Match(string name) => Match(name, true);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Match
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the specified name is part of
-        /// the provided path.
-        /// </summary>
-        ///
-        /// <param name="name">File or directory name.</param>
-        /// <param name="ignoreCase">Case sensitive or not.</param>
-        ///
-        /// <returns>true if contained.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Match(string name, bool ignoreCase) =>
-            Inner.Parts.Any(s => string.Compare(s, name, ignoreCase) == 0);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MatchAny
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the whether any one of the
-        /// specified file or directory names is part of the provided path.
-        /// </summary>
-        ///
-        /// <param name="names">Collection of file or directory names.</param>
-        ///
-        /// <returns>true if contained.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool MatchAny(IEnumerable<string> names) => MatchAny(names, true);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MatchAny
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the whether any one of the
-        /// specified file or directory names is part of the provided path.
-        /// </summary>
-        ///
-        /// <param name="names">Collection of file or directory names.</param>
-        /// <param name="ignoreCase">Case sensitive or not.</param>
-        ///
-        /// <returns>true if contained.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool MatchAny(IEnumerable<string> names, bool ignoreCase)
-        {
-            foreach (var name in names)
-            {
-                if (Match(name, ignoreCase)) return true;
-            }
-            return false;
-        }
-
-        #endregion
-
         #region Implementations
 
         /* ----------------------------------------------------------------- */
@@ -407,7 +335,7 @@ namespace Cube.FileSystem
         {
             if (EqualityComparer<T>.Default.Equals(field, value)) return false;
             field = value;
-            _result = null;
+            _obj = null;
             return true;
         }
 
@@ -422,7 +350,7 @@ namespace Cube.FileSystem
         /* ----------------------------------------------------------------- */
         private EscapedObject EscapeOnce()
         {
-            if (_result == null)
+            if (_obj == null)
             {
                 var k = !Source.HasValue()                         ? PathKind.Normal :
                         Source.FuzzyStartsWith(InactivationSymbol) ? PathKind.Inactivation :
@@ -437,9 +365,9 @@ namespace Cube.FileSystem
                               .Select((s, i) => Escape(s, i))
                               .ToArray();
 
-                _result = new EscapedObject(k, v, Combine(k, v));
+                _obj = new EscapedObject(k, v, Combine(k, v));
             }
-            return _result;
+            return _obj;
         }
 
         /* ----------------------------------------------------------------- */
@@ -527,7 +455,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// AllowInactivation 有効時は無効化されます。
+        /// When AllowInactivation is enabled, it is disabled.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -543,7 +471,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// AllowInactivation 有効時は無効化されます。
+        /// When AllowInactivation is enabled, it is disabled.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -558,7 +486,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /// <remarks>
-        /// AllowInactivation 有効時は無効化されます。
+        /// When AllowInactivation is enabled, it is disabled.
         /// </remarks>
         ///
         /* ----------------------------------------------------------------- */
@@ -573,7 +501,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected enum PathKind
+        private enum PathKind
         {
             /// <summary>Normal path.</summary>
             Normal,
@@ -596,7 +524,7 @@ namespace Cube.FileSystem
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected class EscapedObject
+        private class EscapedObject
         {
             /* ------------------------------------------------------------- */
             ///
@@ -650,8 +578,8 @@ namespace Cube.FileSystem
             /// </summary>
             ///
             /// <remarks>
-            /// 最終結果は、Parts プロパティを単純に連結した結果と
-            /// Kind に応じた接頭辞を結合したものになります。
+            /// The value will be a simple concatenation of the Parts
+            /// property and the prefix according to Kind.
             /// </remarks>
             ///
             /* ------------------------------------------------------------- */
@@ -661,7 +589,7 @@ namespace Cube.FileSystem
         #endregion
 
         #region Fields
-        private EscapedObject _result;
+        private EscapedObject _obj;
         private char _escapeChar = '_';
         private bool _allowDriveLetter = true;
         private bool _allowCurrentDirectory = true;
