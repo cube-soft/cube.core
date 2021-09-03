@@ -15,9 +15,9 @@ and the repository has some more utility packages. These packages are basically 
 You can install the library through the NuGet package.
 Add dependencies, as you need, in your project file using the following syntax:
 
-    <PackageReference Include="Cube.Core" Version="4.0.2" />
-    <PackageReference Include="Cube.FileSystem" Version="4.0.2" />
-    <PackageReference Include="Cube.FileSystem.AlphaFS" Version="4.0.2" />
+    <PackageReference Include="Cube.Core" Version="5.0.0" />
+    <PackageReference Include="Cube.FileSystem" Version="5.0.0" />
+    <PackageReference Include="Cube.FileSystem.AlphaFS" Version="5.0.0" />
 
 Or select it from the NuGet packages UI on Visual Studio.
 
