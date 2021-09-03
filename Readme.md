@@ -12,7 +12,7 @@ The Cube.Forms packages provides GUI components available for .NET Framework 3.5
 You can install the library through the NuGet package.
 Add a dependency in your project file using the following syntax:
 
-    <PackageReference Include="Cube.Forms" Version="4.0.2" />
+    <PackageReference Include="Cube.Forms" Version="5.0.0" />
 
 Or select it from the NuGet packages UI on Visual Studio.
 

@@ -1,4 +1,4 @@
-version: 4.0.2.{build}
+version: 5.0.0.{build}
 environment:
     PROJECT_NAME: 'Cube.Forms'
 clone_folder: 'C:\Cube\%PROJECT_NAME%'

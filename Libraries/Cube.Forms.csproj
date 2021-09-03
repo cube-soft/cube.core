@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
     <PropertyGroup>
-        <Version>4.0.2</Version>
+        <Version>5.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Provides GUI components and support the MVVM pattern in WinForms applications.</Description>
@@ -24,7 +24,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Cube.Core" Version="4.0.2" />
+        <PackageReference Include="Cube.Core" Version="5.0.0" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\Icon.png" Pack="true" PackagePath="images" />
