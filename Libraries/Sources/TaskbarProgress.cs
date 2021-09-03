@@ -78,7 +78,7 @@ namespace Cube.Forms
         public TaskbarProgressState State
         {
             get => Get(() => TaskbarProgressState.None);
-            set => Set(value);
+            set { if (Set(value)) Refresh(); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -93,7 +93,7 @@ namespace Cube.Forms
         public int Value
         {
             get => Get(() => 0);
-            set => Set(value);
+            set { if (Set(value)) Refresh(); }
         }
 
         /* ----------------------------------------------------------------- */
@@ -108,7 +108,7 @@ namespace Cube.Forms
         public int Maximum
         {
             get => Get(() => 100);
-            set => Set(value);
+            set { if (Set(value)) Refresh(); }
         }
 
         /* ----------------------------------------------------------------- */
