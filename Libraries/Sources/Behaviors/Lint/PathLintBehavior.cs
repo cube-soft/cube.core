@@ -37,11 +37,11 @@ namespace Cube.Forms.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PathBehavior
+        /// PathLintBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the PathBehavior class with the
-        /// specified control.
+        /// Initializes a new instance of the PathLintBehavior class with
+        /// the specified control.
         /// </summary>
         ///
         /// <param name="src">Textbox control.</param>
@@ -61,8 +61,8 @@ namespace Cube.Forms.Behaviors
         /// PathBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the PathBehavior class with the
-        /// specified controls.
+        /// Initializes a new instance of the PathLintBehavior class with
+        /// the specified control.
         /// </summary>
         ///
         /// <param name="src">Textbox control.</param>

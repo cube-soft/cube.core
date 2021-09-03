@@ -24,39 +24,39 @@ namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PasswordBehavior
+    /// PasswordLintBehavior
     ///
     /// <summary>
     /// Represents the behavior of a textbox for entering a password.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PasswordBehavior : DisposableBase
+    public class PasswordLintBehavior : DisposableBase
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PasswordBehavior
+        /// PasswordLintBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the PasswordBehavior with the
-        /// specified arguments.
+        /// Initializes a new instance of the PasswordLintBehavior class
+        /// with the specified arguments.
         /// </summary>
         ///
         /// <param name="master">Textbox to input a password.</param>
         /// <param name="confirm">Textbox to confirm the password.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PasswordBehavior(TextBox master, TextBox confirm) : this(master, confirm, null) { }
+        public PasswordLintBehavior(TextBox master, TextBox confirm) : this(master, confirm, null) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// PasswordBehavior
+        /// PasswordLintBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the PasswordBehavior with the
-        /// specified arguments.
+        /// Initializes a new instance of the PasswordLintBehavior class
+        /// with the specified arguments.
         /// </summary>
         ///
         /// <param name="master">Textbox to input a password.</param>
@@ -66,7 +66,7 @@ namespace Cube.Forms.Behaviors
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public PasswordBehavior(TextBox master, TextBox confirm, CheckBox showPassword)
+        public PasswordLintBehavior(TextBox master, TextBox confirm, CheckBox showPassword)
         {
             _master  = master  ?? throw new ArgumentNullException();
             _confirm = confirm ?? throw new ArgumentNullException();
