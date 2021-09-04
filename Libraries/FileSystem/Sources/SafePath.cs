@@ -29,7 +29,8 @@ namespace Cube.FileSystem
     ///
     /// <summary>
     /// Provides functionality to escape or remove the part of the provided
-    /// path. The class escapes characters that cannot be used on Windows.
+    /// path according to the provided condition. The class also escapes
+    /// characters that cannot be used on Windows.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -131,7 +132,7 @@ namespace Cube.FileSystem
         /// AllowCurrentDirectory
         ///
         /// <summary>
-        /// Gets or sets a value indicating whether the letter
+        /// Gets or sets a value indicating whether the character
         /// "." (single-dot), which indicates the current directory, is
         /// allowed.
         /// </summary>
@@ -156,7 +157,7 @@ namespace Cube.FileSystem
         /// AllowParentDirectory
         ///
         /// <summary>
-        /// Gets or sets a value indicating whether the letter
+        /// Gets or sets a value indicating whether the character
         /// ".." (double-dot), which indicates the parent directory, is
         /// allowed.
         /// </summary>
@@ -181,7 +182,7 @@ namespace Cube.FileSystem
         /// AllowInactivation
         ///
         /// <summary>
-        /// Gets or sets a value indicating whether the letter "\\?\",
+        /// Gets or sets a value indicating whether the character "\\?\",
         /// which indicates the service inactivation, is allowed.
         /// </summary>
         ///
@@ -205,7 +206,7 @@ namespace Cube.FileSystem
         /// AllowUnc
         ///
         /// <summary>
-        /// Gets or sets a value indicating whether the letter "\\",
+        /// Gets or sets a value indicating whether the character "\\",
         /// which indicates the UNC path, is allowed.
         /// </summary>
         ///

@@ -174,7 +174,7 @@ namespace Cube.FileSystem
 
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDialogFilterExtension
+    /// FileDialogFilterConverter
     ///
     /// <summary>
     /// Provides functionality to convert the FileDialogFilter objects
@@ -182,7 +182,7 @@ namespace Cube.FileSystem
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class FileDialogFilterExtension
+    public static class FileDialogFilterConverter
     {
         #region Methods
 
