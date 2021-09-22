@@ -25,15 +25,15 @@ namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ExtensionFilterTest
+    /// FileDialogFilterTest
     ///
     /// <summary>
-    /// Provides a test fixture for the ExtensionFilterTest class.
+    /// Tests the FileDialogFilter class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ExtensionFilterTest
+    class FileDialogFilterTest
     {
         #region Tests
 
@@ -48,7 +48,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
         public string ToString(string descr, bool ignore, string[] exts) =>
-            new ExtensionFilter(descr, ignore, exts).ToString();
+            new FileDialogFilter(descr, ignore, exts).ToString();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -61,7 +61,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void ToString_Null() => Assert.That(
-            () => new ExtensionFilter(null, null).ToString(),
+            () => new FileDialogFilter(null, null).ToString(),
             Throws.TypeOf<ArgumentNullException>()
         );
 
@@ -93,7 +93,7 @@ namespace Cube.FileSystem.Tests
         /* ----------------------------------------------------------------- */
         [Test]
         public void GetFilter_Throws() => Assert.That(
-            () => new List<ExtensionFilter>().GetFilter(),
+            () => new List<FileDialogFilter>().GetFilter(),
             Throws.TypeOf<InvalidOperationException>()
         );
 
@@ -173,8 +173,8 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static IEnumerable<ExtensionFilter> TestCollection =>
-            TestCases.Select(e => new ExtensionFilter(
+        private static IEnumerable<FileDialogFilter> TestCollection =>
+            TestCases.Select(e => new FileDialogFilter(
                 e.Arguments[0] as string,
                 e.Arguments[1].TryCast<bool>(),
                 e.Arguments[2] as string[]
