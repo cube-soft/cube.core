@@ -15,21 +15,22 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Linq;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PathFilterTest
+    /// SafePathTest
     ///
     /// <summary>
-    /// Provides a test fixture for the PathFilter class.
+    /// Tests the SafePath class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class PathFilterTest
+    class SafePathTest
     {
         #region Tests
 
@@ -42,22 +43,23 @@ namespace Cube.FileSystem.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\windows\dir\file.txt",       '_', ExpectedResult = @"C:\windows\dir\file.txt")]
-        [TestCase(@"C:\windows\dir\file*?<>|.txt",  '_', ExpectedResult = @"C:\windows\dir\file_____.txt")]
-        [TestCase(@"C:\windows\dir\file:.txt",      '+', ExpectedResult = @"C:\windows\dir\file+.txt")]
-        [TestCase(@"C:\windows\dir:\file.txt",      '+', ExpectedResult = @"C:\windows\dir+\file.txt")]
-        [TestCase(@"C:\windows\dir\\file.txt.",     '+', ExpectedResult = @"C:\windows\dir\file.txt")]
-        [TestCase(@"C:\windows\dir\file.txt.",      '+', ExpectedResult = @"C:\windows\dir\file.txt")]
-        [TestCase(@"C:\windows\dir\file.txt. ... ", '+', ExpectedResult = @"C:\windows\dir\file.txt")]
-        [TestCase(@"C:\CON\PRN\AUX.txt",            '_', ExpectedResult = @"C:\_CON\_PRN\_AUX.txt")]
-        [TestCase(@"C:\COM0\com1\Com2.txt",         '_', ExpectedResult = @"C:\_COM0\_com1\_Com2.txt")]
-        [TestCase(@"C:\LPT1\LPT10\LPT5.txt",        '_', ExpectedResult = @"C:\_LPT1\LPT10\_LPT5.txt")]
-        [TestCase(@"C:\LPT2\:LPT3:\LPT4.txt",       '_', ExpectedResult = @"C:\_LPT2\_LPT3_\_LPT4.txt")]
-        [TestCase(@"/unix/foo/bar.txt",             '_', ExpectedResult = @"unix\foo\bar.txt")]
-        [TestCase(@"",                              '_', ExpectedResult = @"")]
-        [TestCase(null,                             '_', ExpectedResult = @"")]
-        public string Escape(string src, char replaced) =>
-            new PathFilter(src)
+        [TestCase(@"C:\windows\dir\file.txt",       '_', 4, ExpectedResult = @"C:\windows\dir\file.txt")]
+        [TestCase(@"C:\windows\dir\file*?<>|.txt",  '_', 4, ExpectedResult = @"C:\windows\dir\file_____.txt")]
+        [TestCase(@"C:\windows\dir\file:.txt",      '+', 4, ExpectedResult = @"C:\windows\dir\file+.txt")]
+        [TestCase(@"C:\windows\dir:\file.txt",      '+', 4, ExpectedResult = @"C:\windows\dir+\file.txt")]
+        [TestCase(@"C:\windows\dir\\file.txt.",     '+', 4, ExpectedResult = @"C:\windows\dir\file.txt")]
+        [TestCase(@"C:\windows\dir\file.txt.",      '+', 4, ExpectedResult = @"C:\windows\dir\file.txt")]
+        [TestCase(@"C:\windows\dir\file.txt. ... ", '+', 4, ExpectedResult = @"C:\windows\dir\file.txt")]
+        [TestCase(@"C:\CON\PRN\AUX.txt",            '_', 4, ExpectedResult = @"C:\_CON\_PRN\_AUX.txt")]
+        [TestCase(@"C:\COM0\com1\Com2.txt",         '_', 4, ExpectedResult = @"C:\_COM0\_com1\_Com2.txt")]
+        [TestCase(@"C:\LPT1\LPT10\LPT5.txt",        '_', 4, ExpectedResult = @"C:\_LPT1\LPT10\_LPT5.txt")]
+        [TestCase(@"C:\LPT2\:LPT3:\LPT4.txt",       '_', 4, ExpectedResult = @"C:\_LPT2\_LPT3_\_LPT4.txt")]
+        [TestCase(@"/unix/foo/bar.txt",             '_', 3, ExpectedResult = @"unix\foo\bar.txt")]
+        [TestCase(@"",                              '_', 0, ExpectedResult = @"")]
+        [TestCase(null,                             '_', 0, ExpectedResult = @"")]
+        public string Escape(string src, char replaced, int count)
+        {
+            var dest = new SafePath(src)
             {
                 AllowDriveLetter      = true,
                 AllowParentDirectory  = false,
@@ -65,7 +67,11 @@ namespace Cube.FileSystem.Tests
                 AllowInactivation     = false,
                 AllowUnc              = false,
                 EscapeChar            = replaced,
-            }.Value;
+            };
+
+            Assert.That(dest.Parts.Count(), Is.EqualTo(count));
+            return dest.Value;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -81,7 +87,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"C:\windows\dir\deny.txt",     false, ExpectedResult = @"C_\windows\dir\deny.txt")]
         [TestCase(@"C:\C:\windows\dir\deny.txt",  false, ExpectedResult = @"C_\C_\windows\dir\deny.txt")]
         public string Escape_DriveLetter(string src, bool drive) =>
-            new PathFilter(src) { AllowDriveLetter = drive }.Value;
+            new SafePath(src) { AllowDriveLetter = drive }.Value;
 
         /* ----------------------------------------------------------------- */
         ///
@@ -95,7 +101,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"C:\windows\dir\.\allow.txt", true, ExpectedResult = @"C:\windows\dir\.\allow.txt")]
         [TestCase(@"C:\windows\dir\.\deny.txt", false, ExpectedResult = @"C:\windows\dir\deny.txt")]
         public string Escape_CurrentDirectory(string src, bool allow) =>
-            new PathFilter(src)
+            new SafePath(src)
             {
                 AllowInactivation     = false,
                 AllowCurrentDirectory = allow,
@@ -113,7 +119,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"C:\windows\dir\..\allow.txt", true, ExpectedResult = @"C:\windows\dir\..\allow.txt")]
         [TestCase(@"C:\windows\dir\..\deny.txt", false, ExpectedResult = @"C:\windows\dir\deny.txt")]
         public string Escape_ParentDirectory(string src, bool allow) =>
-            new PathFilter(src)
+            new SafePath(src)
             {
                 AllowInactivation    = false,
                 AllowParentDirectory = allow,
@@ -132,7 +138,7 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"\\?\C:\windows\dir\allow.txt",  true, ExpectedResult = @"\\?\C:\windows\dir\allow.txt")]
         [TestCase(@"\\?\C:\windows\.\..\allow.txt", true, ExpectedResult = @"\\?\C:\windows\allow.txt")]
         public string Escape_Inactivation(string src, bool allow) =>
-            new PathFilter(src)
+            new SafePath(src)
             {
                 AllowInactivation     = allow,
                 AllowDriveLetter      = true,
@@ -154,62 +160,11 @@ namespace Cube.FileSystem.Tests
         [TestCase(@"\\domain\dir\allow.txt", true,  true, ExpectedResult = @"domain\dir\allow.txt")]
         [TestCase(@"\\domain\dir\deny.txt", false, false, ExpectedResult = @"domain\dir\deny.txt")]
         public string Escape_Unc(string src, bool unc, bool inactivation) =>
-            new PathFilter(src)
+            new SafePath(src)
             {
                 AllowInactivation = inactivation,
                 AllowUnc          = unc
             }.Value;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Match
-        ///
-        /// <summary>
-        /// Testss the Match method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\windows\dir\file.txt", "file.txt", ExpectedResult = true)]
-        [TestCase(@"C:\windows\dir\FILE.txt", "file.txt", ExpectedResult = true)]
-        [TestCase(@"C:\windows\dir\file.txt", "file",     ExpectedResult = false)]
-        public bool Match(string src, string cmp) => new PathFilter(src).Match(cmp);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MatchAny
-        ///
-        /// <summary>
-        /// Testss the MatchAny method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\windows\dir\Thumbs.db",       ExpectedResult = true)]
-        [TestCase(@"C:\windows\__MACOSX\file.txt",   ExpectedResult = true)]
-        [TestCase(@"C:\windows\__MACOSX__\file.txt", ExpectedResult = false)]
-        [TestCase(@"",                               ExpectedResult = false)]
-        [TestCase(null,                              ExpectedResult = false)]
-        public bool MatchAny(string src) =>
-            new PathFilter(src).MatchAny(new[]
-            {
-                ".DS_Store", "Thumbs.db", "__MACOSX", "desktop.ini"
-            });
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Match_IgnoreCase
-        ///
-        /// <summary>
-        /// Confirms the results according to the case sensitive settings.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(@"C:\windows\.ds_store\file.txt", true,  ExpectedResult = true)]
-        [TestCase(@"C:\windows\.ds_store\file.txt", false, ExpectedResult = false)]
-        public bool MatchAny_IgnoreCase(string src, bool ignore) =>
-            new PathFilter(src).MatchAny(new[]
-            {
-                ".DS_Store", "Thumbs.db", "__MACOSX", "desktop.ini"
-            }, ignore);
 
         #endregion
     }

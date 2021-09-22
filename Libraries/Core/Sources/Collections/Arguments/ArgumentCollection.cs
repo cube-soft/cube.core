@@ -71,7 +71,7 @@ namespace Cube.Collections
         ///
         /* --------------------------------------------------------------------- */
         public ArgumentCollection(IEnumerable<string> src, Argument kind) :
-            this(src, kind, false) { }
+            this(src, kind, true) { }
 
         /* --------------------------------------------------------------------- */
         ///

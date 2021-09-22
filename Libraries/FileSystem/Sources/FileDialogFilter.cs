@@ -24,28 +24,28 @@ using Cube.Mixin.String;
 
 namespace Cube.FileSystem
 {
-    #region ExtensionFilter
+    #region FileDialogFilter
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ExtensionFilter
+    /// FileDialogFilter
     ///
     /// <summary>
-    /// Provides functionality to create a string value that is used
-    /// as a filter of either the OpenFileDialog or SaveFileDialog.
+    /// Provides functionality to create a filter description for the
+    /// OpenFileDialog or SaveFileDialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ExtensionFilter
+    public class FileDialogFilter
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ExtensionFilter
+        /// FileDialogFilter
         ///
         /// <summary>
-        /// Initializes a new instance of the ExtensionFilter class
+        /// Initializes a new instance of the FileDialogFilter class
         /// with the specified parameters
         /// </summary>
         ///
@@ -55,15 +55,15 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public ExtensionFilter(string description, params string[] extensions) :
+        public FileDialogFilter(string description, params string[] extensions) :
             this(description, true, extensions) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ExtensionFilter
+        /// FileDialogFilter
         ///
         /// <summary>
-        /// Initializes a new instance of the ExtensionFilter class
+        /// Initializes a new instance of the FileDialogFilter class
         /// with the specified parameters
         /// </summary>
         ///
@@ -74,7 +74,7 @@ namespace Cube.FileSystem
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public ExtensionFilter(string text, bool ignoreCase, params string[] extensions)
+        public FileDialogFilter(string text, bool ignoreCase, params string[] extensions)
         {
             Text       = text;
             IgnoreCase = ignoreCase;
@@ -170,19 +170,19 @@ namespace Cube.FileSystem
 
     #endregion
 
-    #region ExtensionFilterConverter
+    #region FileDialogFilterExtension
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ExtensionFilterConverter
+    /// FileDialogFilterConverter
     ///
     /// <summary>
-    /// Provides functionality to convert the ExtensionFilter objects
+    /// Provides functionality to convert the FileDialogFilter objects
     /// to system required arguments.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class ExtensionFilterConverter
+    public static class FileDialogFilterConverter
     {
         #region Methods
 
@@ -198,7 +198,7 @@ namespace Cube.FileSystem
         /// <param name="src">DisplayFilter collection.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static string GetFilter(this IEnumerable<ExtensionFilter> src) =>
+        public static string GetFilter(this IEnumerable<FileDialogFilter> src) =>
             src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
 
         /* ----------------------------------------------------------------- */
@@ -214,7 +214,7 @@ namespace Cube.FileSystem
         /// <param name="path">File path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static int GetFilterIndex(this IEnumerable<ExtensionFilter> src, string path)
+        public static int GetFilterIndex(this IEnumerable<FileDialogFilter> src, string path)
         {
             if (!path.HasValue()) return 0;
 
