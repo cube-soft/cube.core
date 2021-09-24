@@ -42,10 +42,9 @@ namespace Cube.Xui.Converters
         /* ----------------------------------------------------------------- */
         public ImageConverter() : base(e =>
         {
-            var src = e is System.Drawing.Image image ? image :
-                      e is System.Drawing.Icon  icon  ? icon.ToBitmap() :
-                      null;
-            return src.ToBitmapImage();
+            if (e is System.Drawing.Image i0) return i0.ToBitmapImage(false);
+            if (e is System.Drawing.Icon  i1) return i1.ToBitmap().ToBitmapImage(true);
+            return null;
         }) { }
     }
 }
