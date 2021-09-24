@@ -15,8 +15,11 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Cube.Logging;
+using Source = System.Drawing.Image;
 
 namespace Cube.Mixin.Drawing
 {
@@ -46,7 +49,7 @@ namespace Cube.Mixin.Drawing
         /// <returns>BitmapImage object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this System.Drawing.Image src) =>
+        public static BitmapImage ToBitmapImage(this Source src) =>
             src.ToBitmapImage(false);
 
         /* ----------------------------------------------------------------- */
@@ -63,22 +66,57 @@ namespace Cube.Mixin.Drawing
         /// <returns>BitmapImage object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this System.Drawing.Image src, bool dispose)
+        public static BitmapImage ToBitmapImage(this Source src, bool dispose)
         {
             if (src == null) return default;
-
-            using (var ss = new StreamProxy(new MemoryStream()))
+            try
             {
+                if (TryGetObject(src, true,  out var e0)) return e0;
+                if (TryGetObject(src, false, out var e1)) return e1;
+                return default;
+            }
+            finally { if (dispose) src.Dispose(); }
+        }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// TryGetObject
+        ///
+        /// <summary>
+        /// Tries to get a new BitmapImage object.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static bool TryGetObject(Source src, bool icp, out BitmapImage dest)
+        {
+            try
+            {
+                using var ss = new StreamProxy(new MemoryStream());
                 src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
-                var dest = new BitmapImage();
+
+                var opts = icp ?
+                           BitmapCreateOptions.IgnoreColorProfile :
+                           BitmapCreateOptions.None;
+
+                dest = new BitmapImage();
                 dest.BeginInit();
-                dest.CacheOption = BitmapCacheOption.OnLoad;
-                dest.CreateOptions = BitmapCreateOptions.None;
-                dest.StreamSource = ss;
+                dest.CacheOption   = BitmapCacheOption.OnLoad;
+                dest.CreateOptions = opts;
+                dest.StreamSource  = ss;
                 dest.EndInit();
+
                 if (dest.CanFreeze) dest.Freeze();
-                if (dispose) src.Dispose();
-                return dest;
+                return true;
+            }
+            catch (Exception e)
+            {
+                typeof(XuiExtension).LogWarn(e.Message, $"IgnoreColorProfile:{icp}");
+                dest = default;
+                return false;
             }
         }
 

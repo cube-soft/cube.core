@@ -26,7 +26,7 @@ namespace Cube.Xui.Tests.Converters
     /// ImageConverterTest
     ///
     /// <summary>
-    /// Image オブジェクトに関する Converter のテスト用クラスです。
+    /// Tests the ImageConverter class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
@@ -40,7 +40,7 @@ namespace Cube.Xui.Tests.Converters
         /// ImageConverter
         ///
         /// <summary>
-        /// ImageConverter.Convert のテストを実行します。
+        /// Tests the Convert method with a Bitmap object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -55,8 +55,7 @@ namespace Cube.Xui.Tests.Converters
         /// ImageConverter_Icon
         ///
         /// <summary>
-        /// アイコンを指定して ImageConverter.Convert を実行した時の挙動を
-        /// 確認します。
+        /// Tests the Convert method with an Icon object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -71,8 +70,7 @@ namespace Cube.Xui.Tests.Converters
         /// ImageConverter_Null
         ///
         /// <summary>
-        /// null を指定して ImageConverter.Convert を実行した時の挙動を
-        /// 確認します。
+        /// Tests the Convert method with null.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
