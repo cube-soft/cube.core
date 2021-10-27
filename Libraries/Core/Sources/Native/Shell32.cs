@@ -18,7 +18,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.FileSystem.Shell32
+namespace Cube.Shell32
 {
     /* ----------------------------------------------------------------- */
     ///

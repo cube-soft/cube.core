@@ -19,7 +19,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Cube.FileSystem
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
