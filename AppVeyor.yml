@@ -1,10 +1,9 @@
-version: 5.0.0.{build}
+version: 6.0.0.{build}
 environment:
     PROJECT_NAME:  'Cube.Core'
     TEST_TOOL:     '..\packages\OpenCover\4.7.1221\tools\OpenCover.Console.exe'
-    TEST_ARGS:     'test --no-restore --no-build --logger:Appveyor'
     TEST_FILTERS:  '+[Cube*]* -[*]*NativeMethods -[*]*Properties.* -[*]*.Program'
-    TEST_COVERAGE: 'CoverResults.xml'
+    TEST_COVERAGE: 'Coverage.xml'
     TEST_RESULTS:  'TestResults'
 clone_folder: 'C:\Cube\%PROJECT_NAME%'
 image: Visual Studio 2019
@@ -30,7 +29,7 @@ test_script:
       -log:Error
       -register:appveyor
       -target:dotnet.exe
-      -targetargs:"%TEST_ARGS% %PROJECT_NAME%.sln"
+      -targetargs:"test --no-restore --no-build --logger:Appveyor %PROJECT_NAME%.sln"
       -returntargetcode
       -hideskipped:All
       -mergeoutput
