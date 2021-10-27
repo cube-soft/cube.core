@@ -25,7 +25,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\FileSystem\Cube.FileSystem.csproj" />
+        <ProjectReference Include="..\Core\Cube.Core.csproj" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
     </ItemGroup>
     <ItemGroup>

@@ -131,7 +131,7 @@ namespace Cube.FileSystem.Tests
         public void Delete()
         {
             var src  = Get("DeleteTest");
-            var dest = GetTargetPath("Cube.FileSystem.dll");
+            var dest = GetTargetPath("Cube.Core.dll");
             var sc   = new Shortcut
             {
                 FullName     = src,
@@ -161,7 +161,7 @@ namespace Cube.FileSystem.Tests
         public void Resolve()
         {
             var link = Get("ResolveTest");
-            var path = GetTargetPath("Cube.FileSystem.dll");
+            var path = GetTargetPath("Cube.Core.dll");
             var args = "/foo bar /bas";
 
             new Shortcut
@@ -209,13 +209,13 @@ namespace Cube.FileSystem.Tests
         {
             get
             {
-                yield return new TestCaseData("ScNormal", "Cube.FileSystem.dll", 0, "/foo bar /bas").Returns(true);
-                yield return new TestCaseData("ScNullArgs", "Cube.FileSystem.dll", 0, null).Returns(true);
-                yield return new TestCaseData("ScEmptyArgs", "Cube.FileSystem.dll", 0, "").Returns(true);
-                yield return new TestCaseData("ScWrongIconIndex", "Cube.FileSystem.dll", 3, "/foo").Returns(true);
+                yield return new TestCaseData("ScNormal", "Cube.Core.dll", 0, "/foo bar /bas").Returns(true);
+                yield return new TestCaseData("ScNullArgs", "Cube.Core.dll", 0, null).Returns(true);
+                yield return new TestCaseData("ScEmptyArgs", "Cube.Core.dll", 0, "").Returns(true);
+                yield return new TestCaseData("ScWrongIconIndex", "Cube.Core.dll", 3, "/foo").Returns(true);
                 yield return new TestCaseData("ScWrongLink", "dummy.exe", 0, "/foo").Returns(false);
-                yield return new TestCaseData("ScWithLnk.lnk", "Cube.FileSystem.dll", 0, "args").Returns(true);
-                yield return new TestCaseData("日本語ショートカット", "Cube.FileSystem.dll", 0, "args").Returns(true);
+                yield return new TestCaseData("ScWithLnk.lnk", "Cube.Core.dll", 0, "args").Returns(true);
+                yield return new TestCaseData("日本語ショートカット", "Cube.Core.dll", 0, "args").Returns(true);
             }
         }
 

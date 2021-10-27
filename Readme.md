@@ -2,7 +2,6 @@ Cube.Core
 ====
 
 [![Core](https://badgen.net/nuget/v/cube.core?label=core)](https://www.nuget.org/packages/cube.core/)
-[![FileSystem](https://badgen.net/nuget/v/cube.filesystem?label=filesystem)](https://www.nuget.org/packages/cube.filesystem/)
 [![Forms](https://badgen.net/nuget/v/cube.forms?label=forms)](https://www.nuget.org/packages/cube.forms/)
 [![Xui](https://badgen.net/nuget/v/cube.xui?label=xui)](https://www.nuget.org/packages/cube.xui/)
 [![AlphaFS](https://badgen.net/nuget/v/cube.filesystem.alphafs?label=alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
