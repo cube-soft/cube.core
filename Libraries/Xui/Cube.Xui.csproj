@@ -3,35 +3,32 @@
         <Version>5.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
+        <Description>Bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications.</Description>
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
-        <StartupObject>Cube.Xui.Tests.Program</StartupObject>
-        <OutputType>Exe</OutputType>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
+        <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
         <UseWpf>true</UseWpf>
         <UseWindowsForms>true</UseWindowsForms>
-        <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
         <LangVersion>latest</LangVersion>
-        <IsPackable>false</IsPackable>
+        <Optimize>true</Optimize>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\Cube.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-        <Prefer32Bit>true</Prefer32Bit>
         <OutputPath>bin\Any CPU\$(Configuration)\</OutputPath>
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Libraries\Cube.Xui.csproj" />
-        <PackageReference Include="Cube.Tests" Version="5.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
-        <PackageReference Include="NUnit3TestAdapter" Version="*" />
-        <PackageReference Include="Appveyor.TestLogger" Version="*" />
+        <PackageReference Include="Cube.FileSystem" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     </ItemGroup>
     <ItemGroup>
-        <Resource Include="Assets\**\*" />
-        <Page Update="Views\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
-        <Compile Update="Views\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
-        <None Include="App.config" />
+        <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
     </ItemGroup>
 </Project>
