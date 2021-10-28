@@ -56,7 +56,7 @@ namespace Cube.FileSystem
         /// Target
         ///
         /// <summary>
-        /// Gets or sets the target path of the shrotcut.
+        /// Gets or sets the target path of the shortcut.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
