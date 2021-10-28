@@ -21,7 +21,7 @@ using System.Linq;
 using Cube.Mixin.Generics;
 using NUnit.Framework;
 
-namespace Cube.FileSystem.Tests
+namespace Cube.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
