@@ -214,14 +214,14 @@ namespace Cube.FileSystem
         ///
         /// <param name="src">Path of the source file.</param>
         ///
-        /// <returns>Typename of the file.</returns>
+        /// <returns>Type name of the file.</returns>
         ///
         /* ----------------------------------------------------------------- */
         public static string GetTypeName(string src)
         {
             if (!src.HasValue()) return string.Empty;
 
-            var dest   = new Shell32.SHFILEINFO();
+            var dest   = new ShFileIinfo();
             var status = Shell32.NativeMethods.SHGetFileInfo(
                 src,
                 0x0080, // FILE_ATTRIBUTE_NORMAL

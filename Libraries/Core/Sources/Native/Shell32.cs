@@ -20,27 +20,6 @@ using System.Runtime.InteropServices;
 
 namespace Cube.Shell32
 {
-    /* ----------------------------------------------------------------- */
-    ///
-    /// SHFILEINFO
-    ///
-    /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759792.aspx
-    /// </summary>
-    ///
-    /* ----------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct SHFILEINFO
-    {
-        public IntPtr hIcon;
-        public int iIcon;
-        public uint dwAttributes;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public string szDisplayName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-        public string szTypeName;
-    }
-
     /* --------------------------------------------------------------------- */
     ///
     /// Shell32.NativeMethods
@@ -52,6 +31,8 @@ namespace Cube.Shell32
     /* --------------------------------------------------------------------- */
     internal static class NativeMethods
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// SHGetFileInfo
@@ -65,13 +46,47 @@ namespace Cube.Shell32
         public static extern IntPtr SHGetFileInfo(
             string pszPath,
             uint dwFileAttributes,
-            ref SHFILEINFO psfi,
+            ref ShFileIinfo psfi,
             uint cbFileInfo,
             uint uFlags
         );
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SHGetStockIconInfo
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762205.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
+        public static extern void SHGetStockIconInfo(
+            uint siid,
+            uint uFlags,
+            ref ShStockIconInfo sii
+        );
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// SHGetImageList
+        ///
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762185.aspx
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [DllImport(LibName, CharSet = CharSet.Unicode)]
+        public static extern int SHGetImageList(
+            uint iImageList,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            out IImageList ppv
+        );
+
+        #endregion
+
         #region Fields
-        private const string LibName = "shell32.dll";
+        private const string LibName = "shell32";
         #endregion
     }
 }

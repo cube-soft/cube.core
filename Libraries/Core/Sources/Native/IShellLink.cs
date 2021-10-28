@@ -53,6 +53,5 @@ namespace Cube
         void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, int dwReserved);
         void Resolve(IntPtr hwnd, int fFlags);
         void SetPath([MarshalAs(UnmanagedType.LPWStr)] string pszFile);
-
     }
 }
