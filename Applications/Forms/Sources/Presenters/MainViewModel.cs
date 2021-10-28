@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Windows.Forms;
-using Cube.Logging;
 
 namespace Cube.Forms.Demo
 {

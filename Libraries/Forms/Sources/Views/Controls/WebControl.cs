@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using System.Text;
-using Cube.Logging;
 using Cube.Mixin.String;
 using WF = System.Windows.Forms;
 

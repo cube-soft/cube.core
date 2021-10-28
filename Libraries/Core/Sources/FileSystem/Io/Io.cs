@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Cube.Logging;
 
 namespace Cube.FileSystem
 {
