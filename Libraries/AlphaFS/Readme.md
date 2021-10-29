@@ -1,11 +1,20 @@
-Cube.Forms
+Cube.FileSystem.AlphaFS
 ====
 
-[![Package](https://badgen.net/nuget/v/cube.forms)](https://www.nuget.org/packages/cube.forms/)
+[![Package](https://badgen.net/nuget/v/cube.filesystem.alphafs)](https://www.nuget.org/packages/cube.filesystem.alphafs/)
 [![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
-The Cube.Forms package provides GUI components, behaviors, binding support, and other components to provide support the MVVM pattern in WinForms applications. The package is available for .NET Framework 3.5, 4.5, .NET Core 3.1, or later. Note that basic functionality for the MVVM pattern is implemented in the [Cube.Core](https://www.nuget.org/packages/cube.core/) package, and the WPF part is in the [Cube.Xui](https://www.nuget.org/packages/cube.xui/) package.
+The Cube.FileSystem.AlphaFS package uses the [AlphaFS](https://alphafs.alphaleonis.com/) library to provide I/O operations such as move, copy, and delete. These functions are available via the Cube.FileSystem.Io class. When you use the AlphaFS for I/O operations, describe the following statement at first.
+
+```cs
+// using Cube.FileSystem;
+Io.Configure(new Cube.FileSystem.AlphaFS.IoController());
+```
+
+All I/O operations of the Cube.* projects also are performed via the Cube.FileSystem.Io class and therefore affected by its configuration.
+
+The package is available for .NET Framework 3.5, 4.5, or later. 
 
 ## Installation
 
