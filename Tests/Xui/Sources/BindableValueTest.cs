@@ -113,14 +113,14 @@ namespace Cube.Xui.Tests
         [Test]
         public void Observe()
         {
-            var count = 0;
-            var obj   = new Person();
+            var n   = 0;
+            var obj = new Person();
 
             using (var src = new BindableValue<int>(Dispatcher.Vanilla))
             {
-                src.PropertyChanged += (s, e) => ++count;
-                src.Associate(obj)
-                   .Associate(obj, nameof(Person.Name));
+                src.PropertyChanged += (s, e) => ++n;
+                src.Hook(obj)
+                   .Observe(obj, nameof(Person.Name));
 
                 obj.Name = "Mike"; // 2 times
                 obj.Name = "Jack"; // 2 times
@@ -129,7 +129,7 @@ namespace Cube.Xui.Tests
                 obj.Age  = 10;     // ignore
             }
 
-            Assert.That(count, Is.EqualTo(5));
+            Assert.That(n, Is.EqualTo(5));
         }
 
         #endregion

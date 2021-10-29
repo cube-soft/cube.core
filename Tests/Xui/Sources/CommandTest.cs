@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System.Windows.Input;
 using Cube.Mixin.Commands;
-using Cube.Mixin.Observing;
 using NUnit.Framework;
 
 namespace Cube.Xui.Tests
@@ -68,28 +67,29 @@ namespace Cube.Xui.Tests
         [Test]
         public void Execute()
         {
+            var n = 0;
             var src = new Person();
-            using (var dest = new DelegateCommand(
+
+            using var dest = new DelegateCommand(
                 () => src.Name = "Done",
                 () => src.Age > 0
-            )) {
-                var count = 0;
-                dest.Refresh();
-                dest.CanExecuteChanged += (s, e) => ++count;
-                dest.Associate(src);
-                Assert.That(dest.CanExecute(), Is.False);
-                Assert.That(count,             Is.EqualTo(0));
-                src.Age = 10;
-                Assert.That(dest.CanExecute(), Is.True);
-                Assert.That(count,             Is.EqualTo(1));
-                src.Age = -20;
-                Assert.That(dest.CanExecute(), Is.False);
-                Assert.That(count,             Is.EqualTo(2));
-                dest.Refresh();
-                dest.Execute();
-                Assert.That(src.Name,          Is.EqualTo("Done"));
-                Assert.That(count,             Is.EqualTo(4));
-            }
+            );
+
+            dest.Refresh();
+            dest.CanExecuteChanged += (s, e) => ++n;
+            dest.Observe(src);
+            Assert.That(dest.CanExecute(), Is.False);
+            Assert.That(n, Is.EqualTo(0));
+            src.Age = 10;
+            Assert.That(dest.CanExecute(), Is.True);
+            Assert.That(n, Is.EqualTo(1));
+            src.Age = -20;
+            Assert.That(dest.CanExecute(), Is.False);
+            Assert.That(n, Is.EqualTo(2));
+            dest.Refresh();
+            dest.Execute();
+            Assert.That(src.Name, Is.EqualTo("Done"));
+            Assert.That(n, Is.EqualTo(4));
         }
 
         /* ----------------------------------------------------------------- */
@@ -104,31 +104,32 @@ namespace Cube.Xui.Tests
         [Test]
         public void Execute_Generic()
         {
+            var n = 0;
             var src = new Person();
-            using (var dest = new DelegateCommand<int>(
+
+            using var dest = new DelegateCommand<int>(
                 e => src.Name = $"Done:{e}",
                 e => e > 0 && src.Age > 0
-            )) {
-                var count = 0;
-                dest.Refresh();
-                dest.CanExecuteChanged += (s, e) => ++count;
-                dest.Associate(src);
-                Assert.That(dest.CanExecute(-10), Is.False);
-                Assert.That(dest.CanExecute(10),  Is.False);
-                Assert.That(count,                Is.EqualTo(0));
-                src.Age = 10;
-                Assert.That(dest.CanExecute(-20), Is.False);
-                Assert.That(dest.CanExecute(20),  Is.True);
-                Assert.That(count,                Is.EqualTo(1));
-                src.Age = -20;
-                Assert.That(dest.CanExecute(-30), Is.False);
-                Assert.That(dest.CanExecute(30),  Is.False);
-                Assert.That(count,                Is.EqualTo(2));
-                dest.Refresh();
-                dest.Execute(40);
-                Assert.That(src.Name,             Is.EqualTo("Done:40"));
-                Assert.That(count,                Is.EqualTo(4));
-            }
+            );
+
+            dest.Refresh();
+            dest.CanExecuteChanged += (s, e) => ++n;
+            dest.Observe(src);
+            Assert.That(dest.CanExecute(-10), Is.False);
+            Assert.That(dest.CanExecute(10),  Is.False);
+            Assert.That(n, Is.EqualTo(0));
+            src.Age = 10;
+            Assert.That(dest.CanExecute(-20), Is.False);
+            Assert.That(dest.CanExecute(20),  Is.True);
+            Assert.That(n, Is.EqualTo(1));
+            src.Age = -20;
+            Assert.That(dest.CanExecute(-30), Is.False);
+            Assert.That(dest.CanExecute(30),  Is.False);
+            Assert.That(n, Is.EqualTo(2));
+            dest.Refresh();
+            dest.Execute(40);
+            Assert.That(src.Name, Is.EqualTo("Done:40"));
+            Assert.That(n, Is.EqualTo(4));
         }
 
         #endregion
