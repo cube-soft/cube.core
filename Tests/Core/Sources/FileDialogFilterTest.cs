@@ -39,7 +39,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToString
+        /// GetString
         ///
         /// <summary>
         /// Tests to convert to a filter string.
@@ -47,12 +47,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public string ToString(string descr, bool ignore, string[] exts) =>
+        public string GetString(string descr, bool ignore, string[] exts) =>
             new FileDialogFilter(descr, ignore, exts).ToString();
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToString_Null
+        /// GetString_Null
         ///
         /// <summary>
         /// Tests to initialize a new instance with null parameters.
@@ -60,7 +60,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ToString_Null() => Assert.That(
+        public void GetString_Null() => Assert.That(
             () => new FileDialogFilter(null, null).ToString(),
             Throws.TypeOf<ArgumentNullException>()
         );
@@ -79,7 +79,7 @@ namespace Cube.Tests
         {
             var dest = TestCollection.GetFilter();
             Assert.That(dest, Does.StartWith("All files (*.*)|*.*"));
-            Assert.That(dest, Does.EndWith("Text or customized files (*.txt, *.1)|*.txt;*.1"));
+            Assert.That(dest, Does.EndWith("Customized files (*.cAb, *.1Ab)|*.cAb;*.1Ab"));
         }
 
         /* ----------------------------------------------------------------- */
@@ -99,10 +99,10 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetFilter_Throws
+        /// GetFilterIndex
         ///
         /// <summary>
-        /// Tests to get the filter index.
+        /// Tests the GetFilterIndex extended method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -126,43 +126,48 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static IEnumerable<TestCaseData> TestCases
+        public static IEnumerable<TestCaseData> TestCases { get
         {
-            get
-            {
-                yield return new TestCaseData("All files", true,
-                    new[] {".*" }
-                ).Returns("All files (*.*)|*.*");
+            yield return new TestCaseData("All files", true,
+                new[] {".*" }
+            ).Returns("All files (*.*)|*.*");
 
-                yield return new TestCaseData("All files", false,
-                    new[] { ".*" }
-                ).Returns("All files (*.*)|*.*");
+            yield return new TestCaseData("All files", false,
+                new[] { ".*" }
+            ).Returns("All files (*.*)|*.*");
 
-                yield return new TestCaseData("Text files", true,
-                    new[] { ".txt" }
-                ).Returns("Text files (*.txt)|*.txt;*.TXT");
+            yield return new TestCaseData("Text files", true,
+                new[] { ".txt" }
+            ).Returns("Text files (*.txt)|*.txt;*.TXT;*.Txt");
 
-                yield return new TestCaseData("Text files", false,
-                    new[] { ".txt" }
-                ).Returns("Text files (*.txt)|*.txt");
+            yield return new TestCaseData("Text files", false,
+                new[] { ".txt" }
+            ).Returns("Text files (*.txt)|*.txt");
 
-                yield return new TestCaseData("Image files", true,
-                    new[] { ".Jpg", ".Jpeg", ".Png",}
-                ).Returns("Image files (*.Jpg, *.Jpeg, *.Png)|*.jpg;*.JPG;*.jpeg;*.JPEG;*.png;*.PNG");
+            yield return new TestCaseData("Image files", true,
+                new[] { ".Jpg", ".Jpeg", ".Png",}
+            ).Returns("Image files (*.Jpg, *.Jpeg, *.Png)|*.Jpg;*.jpg;*.JPG;*.Jpeg;*.jpeg;*.JPEG;*.Png;*.png;*.PNG");
 
-                yield return new TestCaseData("Image files", false,
-                    new[] { ".Jpg", ".Jpeg", ".Png",}
-                ).Returns("Image files (*.Jpg, *.Jpeg, *.Png)|*.Jpg;*.Jpeg;*.Png");
+            yield return new TestCaseData("Image files", false,
+                new[] { ".Jpg", ".Jpeg", ".Png",}
+            ).Returns("Image files (*.Jpg, *.Jpeg, *.Png)|*.Jpg;*.Jpeg;*.Png");
 
-                yield return new TestCaseData("Text or customized files", true,
-                    new[] { ".txt", ".1" }
-                ).Returns("Text or customized files (*.txt, *.1)|*.txt;*.TXT;*.1");
+            yield return new TestCaseData("Text or customized files", true,
+                new[] { ".txt", ".7z" }
+            ).Returns("Text or customized files (*.txt, *.7z)|*.txt;*.TXT;*.Txt;*.7z;*.7Z");
 
-                yield return new TestCaseData("Text or customized files", false,
-                    new[] { ".txt", ".1" }
-                ).Returns("Text or customized files (*.txt, *.1)|*.txt;*.1");
-            }
-        }
+            yield return new TestCaseData("Text or customized files", false,
+                new[] { ".txt", ".7z" }
+            ).Returns("Text or customized files (*.txt, *.7z)|*.txt;*.7z");
+
+            yield return new TestCaseData("Customized files", true,
+                new[] { ".cAb", ".1Ab" }
+            ).Returns("Customized files (*.cAb, *.1Ab)|*.cAb;*.cab;*.CAB;*.Cab;*.1Ab;*.1ab;*.1AB");
+
+            yield return new TestCaseData("Customized files", false,
+                new[] { ".cAb", ".1Ab" }
+            ).Returns("Customized files (*.cAb, *.1Ab)|*.cAb;*.1Ab");
+        }}
 
         /* ----------------------------------------------------------------- */
         ///

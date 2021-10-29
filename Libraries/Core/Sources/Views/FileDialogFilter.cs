@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Cube.Mixin.Collections;
 
@@ -154,10 +155,14 @@ namespace Cube
         {
             if (!IgnoreCase) return src;
 
-            var x = src.ToLower();
-            var y = src.ToUpper();
+            var cvt = CultureInfo.InvariantCulture.TextInfo;
 
-            return x.Equals(y) ? x : $"{x};{y}";
+            return new[] {
+                src,
+                cvt.ToLower(src),
+                cvt.ToUpper(src),
+                cvt.ToTitleCase(src),
+            }.Distinct().Join(";");
         }
 
         #endregion
