@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Cube.Mixin.Collections;
+using Cube.Mixin.String;
 
 namespace Cube
 {
@@ -74,7 +75,7 @@ namespace Cube
         {
             Text       = text;
             IgnoreCase = ignoreCase;
-            Targets    = extensions;
+            Targets    = Normalize(extensions).Where(e => e.HasValue()).ToList();
         }
 
         #endregion
@@ -140,6 +141,22 @@ namespace Cube
         #endregion
 
         #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Normalize
+        ///
+        /// <summary>
+        /// Normalizes the specified extensions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private IEnumerable<string> Normalize(IEnumerable<string> src) => src.Select(e =>
+        {
+            if (!e.HasValue() || e.StartsWith(".")) return e;
+            if (e.StartsWith("*.")) return e.Substring(1);
+            return $".{e}";
+        });
 
         /* ----------------------------------------------------------------- */
         ///

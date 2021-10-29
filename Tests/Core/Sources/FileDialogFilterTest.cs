@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.Generics;
+using Cube.Mixin.String;
 using NUnit.Framework;
 
 namespace Cube.Tests
@@ -47,8 +48,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public string GetString(string descr, bool ignore, string[] exts) =>
-            new FileDialogFilter(descr, ignore, exts).ToString();
+        public string GetString(string descr, bool ignore, string[] exts)
+        {
+            var src = new FileDialogFilter(descr, ignore, exts);
+            Assert.That(!src.Targets.Any(e => !e.HasValue()), "Empty");
+            return src.ToString();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,7 +138,7 @@ namespace Cube.Tests
             ).Returns("All files (*.*)|*.*");
 
             yield return new TestCaseData("All files", false,
-                new[] { ".*" }
+                new[] { "*" }
             ).Returns("All files (*.*)|*.*");
 
             yield return new TestCaseData("Text files", true,
@@ -141,15 +146,15 @@ namespace Cube.Tests
             ).Returns("Text files (*.txt)|*.txt;*.TXT;*.Txt");
 
             yield return new TestCaseData("Text files", false,
-                new[] { ".txt" }
+                new[] { "*.txt" }
             ).Returns("Text files (*.txt)|*.txt");
 
             yield return new TestCaseData("Image files", true,
-                new[] { ".Jpg", ".Jpeg", ".Png",}
+                new[] { ".Jpg", ".Jpeg", ".Png" }
             ).Returns("Image files (*.Jpg, *.Jpeg, *.Png)|*.Jpg;*.jpg;*.JPG;*.Jpeg;*.jpeg;*.JPEG;*.Png;*.png;*.PNG");
 
             yield return new TestCaseData("Image files", false,
-                new[] { ".Jpg", ".Jpeg", ".Png",}
+                new[] { "Jpg", "Jpeg", "Png" }
             ).Returns("Image files (*.Jpg, *.Jpeg, *.Png)|*.Jpg;*.Jpeg;*.Png");
 
             yield return new TestCaseData("Text or customized files", true,
@@ -157,7 +162,7 @@ namespace Cube.Tests
             ).Returns("Text or customized files (*.txt, *.7z)|*.txt;*.TXT;*.Txt;*.7z;*.7Z");
 
             yield return new TestCaseData("Text or customized files", false,
-                new[] { ".txt", ".7z" }
+                new[] { ".txt", ".7z", "" }
             ).Returns("Text or customized files (*.txt, *.7z)|*.txt;*.7z");
 
             yield return new TestCaseData("Customized files", true,
@@ -165,7 +170,7 @@ namespace Cube.Tests
             ).Returns("Customized files (*.cAb, *.1Ab)|*.cAb;*.cab;*.CAB;*.Cab;*.1Ab;*.1ab;*.1AB");
 
             yield return new TestCaseData("Customized files", false,
-                new[] { ".cAb", ".1Ab" }
+                new[] { ".cAb", ".1Ab", null }
             ).Returns("Customized files (*.cAb, *.1Ab)|*.cAb;*.1Ab");
         }}
 
