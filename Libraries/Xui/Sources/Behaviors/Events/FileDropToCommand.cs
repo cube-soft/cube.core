@@ -31,6 +31,8 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElement
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -63,6 +65,10 @@ namespace Cube.Xui.Behaviors
             AssociatedObject.PreviewDrop -= WhenDrop;
             base.OnDetaching();
         }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,5 +115,7 @@ namespace Cube.Xui.Behaviors
             src.GetDataPresent(DataFormats.FileDrop) ?
             src.GetData(DataFormats.FileDrop).TryCast<string[]>() :
             null;
+
+        #endregion
     }
 }

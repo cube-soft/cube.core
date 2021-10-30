@@ -26,19 +26,21 @@ namespace Cube.Xui.Behaviors
     /// WindowsFormsBehavior
     ///
     /// <summary>
-    /// WindowsForms に対して Behavior を適用するためのクラスです。
+    /// Provides functionality to apply behaviors to WinForms components.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     public class WindowsFormsBehavior<TControl> : Behavior<WindowsFormsHost>
         where TControl : Control
     {
+        #region Properties
+
         /* ----------------------------------------------------------------- */
         ///
         /// Source
         ///
         /// <summary>
-        /// 対象となるコントロールオブジェクトを取得します。
+        /// Gets the source control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -46,13 +48,15 @@ namespace Cube.Xui.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Source
+        /// Parent
         ///
         /// <summary>
-        /// 対象となるコントロールの親オブジェクトを取得します。
+        /// Gets the parecont control of the source.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public WindowsFormsHost Parent => AssociatedObject;
+
+        #endregion
     }
 }

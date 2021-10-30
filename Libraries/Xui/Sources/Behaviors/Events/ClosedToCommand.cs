@@ -32,6 +32,8 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class ClosedToCommand : CommandBehavior<Window>
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -63,6 +65,10 @@ namespace Cube.Xui.Behaviors
             base.OnDetaching();
         }
 
+        #endregion
+
+        #region Implementations
+
         /* ----------------------------------------------------------------- */
         ///
         /// WhenClosed
@@ -76,5 +82,7 @@ namespace Cube.Xui.Behaviors
         {
             if (Command?.CanExecute() ?? false) Command.Execute();
         }
+
+        #endregion
     }
 }

@@ -15,75 +15,72 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Threading;
+using System;
 using System.Windows;
-using Cube.Xui.Behaviors;
-using NUnit.Framework;
+using Cube.Mixin.Commands;
 
-namespace Cube.Xui.Tests.Behaviors
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposeBehaviorTest
+    /// ShownToCommand
     ///
     /// <summary>
-    /// Tests the DisposeBehavior class.
+    /// Represents the behavior when the ContentRendered event is fired.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class DisposeBehaviorTest : ViewFixture
+    public class ShownToCommand : CommandBehavior<Window>
     {
-        #region Tests
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// OnAttached
         ///
         /// <summary>
-        /// Tests the create, attach, and detach methods.
+        /// Occurs when the instance is attached to the Window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
+        protected override void OnAttached()
         {
-            var n    = 0;
-            var view = Hack(new Window());
-            var src  = Attach(view, new DisposeBehavior());
-
-            view.DataContext = Disposable.Create(() => ++n);
-            view.Show();
-            view.Close();
-
-            Assert.That(n, Is.EqualTo(1));
-            Assert.That(view.DataContext, Is.Not.Null);
-
-            src.Detach();
+            base.OnAttached();
+            AssociatedObject.ContentRendered -= WhenContentRendered;
+            AssociatedObject.ContentRendered += WhenContentRendered;
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Null
+        /// OnDetaching
         ///
         /// <summary>
-        /// Tests the create, attach, and detach methods in the case when
-        /// DataContext is null.
+        /// Occurs when the instance is detaching from the Window.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Null()
+        protected override void OnDetaching()
         {
-            var view = Hack(new Window());
-            var src  = Attach(view, new DisposeBehavior());
+            AssociatedObject.ContentRendered -= WhenContentRendered;
+            base.OnDetaching();
+        }
 
-            Assert.That(view.DataContext, Is.Null);
+        #endregion
 
-            view.Show();
-            view.Close();
-            src.Detach();
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WhenContentRendered
+        ///
+        /// <summary>
+        /// Occurs when the ContentRendered event is fired.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void WhenContentRendered(object s, EventArgs e)
+        {
+            if (Command?.CanExecute() ?? false) Command.Execute();
         }
 
         #endregion

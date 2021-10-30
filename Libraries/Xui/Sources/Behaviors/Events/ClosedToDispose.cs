@@ -17,21 +17,24 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Windows;
-using Cube.Mixin.Commands;
+using Microsoft.Xaml.Behaviors;
 
 namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShownToCommand
+    /// ClosedToDispose
     ///
     /// <summary>
-    /// Represents the behavior when the ContentRendered event is fired.
+    /// Provides functionality to dispose the DataContext when the
+    /// Closed event is fired.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShownToCommand : CommandBehavior<Window>
+    public class ClosedToDispose : Behavior<Window>
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// OnAttached
@@ -44,8 +47,8 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.ContentRendered -= WhenContentRendered;
-            AssociatedObject.ContentRendered += WhenContentRendered;
+            AssociatedObject.Closed -= OnClosed;
+            AssociatedObject.Closed += OnClosed;
         }
 
         /* ----------------------------------------------------------------- */
@@ -59,22 +62,28 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.ContentRendered -= WhenContentRendered;
+            AssociatedObject.Closed -= OnClosed;
             base.OnDetaching();
         }
 
+        #endregion
+
+        #region Implementations
+
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenContentRendered
+        /// OnClosed
         ///
         /// <summary>
-        /// Occurs when the ContentRendered event is fired.
+        /// Occurs when the Closed event is fired.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenContentRendered(object s, EventArgs e)
+        private void OnClosed(object s, EventArgs e)
         {
-            if (Command?.CanExecute() ?? false) Command.Execute();
+            if (AssociatedObject?.DataContext is IDisposable dc) dc.Dispose();
         }
+
+        #endregion
     }
 }

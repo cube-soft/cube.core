@@ -90,7 +90,7 @@ namespace Cube.Xui.Tests.Behaviors
             {
                 Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) }),
                 Attach(view, new ClosedToCommand  { Command = new DelegateCommand(() => ++closed) }),
-                Attach(view, new DisposeBehavior())
+                Attach(view, new ClosedToDispose())
             };
 
             view.Show();

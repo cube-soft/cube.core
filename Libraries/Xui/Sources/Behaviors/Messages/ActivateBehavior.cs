@@ -30,6 +30,8 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class ActivateBehavior : MessageBehavior<ActivateMessage>
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -49,6 +51,10 @@ namespace Cube.Xui.Behaviors
             }
         }
 
+        #endregion
+
+        #region Implementations
+
         /* ----------------------------------------------------------------- */
         ///
         /// ResetTopMost
@@ -65,5 +71,7 @@ namespace Cube.Xui.Behaviors
             src.Topmost = true;
             src.Topmost = current;
         }
+
+        #endregion
     }
 }

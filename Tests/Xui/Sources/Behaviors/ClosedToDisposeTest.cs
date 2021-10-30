@@ -15,65 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.ComponentModel;
+using System.Threading;
 using System.Windows;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ClosingToCommand
+    /// ClosedToDisposeTest
     ///
     /// <summary>
-    /// Represents the behavior when the Closing event is fired.
+    /// Tests the ClosedToDispose class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ClosingToCommand : CommandBehavior<Window>
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class ClosedToDisposeTest : ViewFixture
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// OnAttached
+        /// Create
         ///
         /// <summary>
-        /// Occurs when the instance is attached to the Window.
+        /// Tests the create, attach, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
+        [Test]
+        public void Create()
         {
-            base.OnAttached();
-            AssociatedObject.Closing -= WhenClosing;
-            AssociatedObject.Closing += WhenClosing;
+            var n    = 0;
+            var view = Hack(new Window());
+            var src  = Attach(view, new ClosedToDispose());
+
+            view.DataContext = Disposable.Create(() => ++n);
+            view.Show();
+            view.Close();
+
+            Assert.That(n, Is.EqualTo(1));
+            Assert.That(view.DataContext, Is.Not.Null);
+
+            src.Detach();
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDetaching
+        /// Create_Null
         ///
         /// <summary>
-        /// Occurs when the instance is detaching from the Window.
+        /// Tests the create, attach, and detach methods in the case when
+        /// DataContext is null.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
+        [Test]
+        public void Create_Null()
         {
-            AssociatedObject.Closing -= WhenClosing;
-            base.OnDetaching();
+            var view = Hack(new Window());
+            var src  = Attach(view, new ClosedToDispose());
+
+            Assert.That(view.DataContext, Is.Null);
+
+            view.Show();
+            view.Close();
+            src.Detach();
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenClosing
-        ///
-        /// <summary>
-        /// Occurs when the Closing event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenClosing(object s, CancelEventArgs e)
-        {
-            if (Command?.CanExecute(e) ?? false) Command.Execute(e);
-        }
+        #endregion
     }
 }

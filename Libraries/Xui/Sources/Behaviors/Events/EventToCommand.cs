@@ -92,7 +92,7 @@ namespace Cube.Xui.Behaviors
 
         #endregion
 
-        #region Implementations
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -123,6 +123,10 @@ namespace Cube.Xui.Behaviors
             if (Event.HasValue()) Exchange(string.Empty);
             base.OnDetaching();
         }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///

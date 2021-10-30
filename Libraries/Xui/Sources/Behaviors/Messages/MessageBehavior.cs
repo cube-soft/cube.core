@@ -53,7 +53,7 @@ namespace Cube.Xui.Behaviors
 
         #endregion
 
-        #region Implementations
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -68,8 +68,8 @@ namespace Cube.Xui.Behaviors
         {
             base.OnAttached();
             Subscribe();
-            AssociatedObject.DataContextChanged -= OnDataContextChanged;
-            AssociatedObject.DataContextChanged += OnDataContextChanged;
+            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
+            AssociatedObject.DataContextChanged += WhenDataContextChanged;
         }
 
         /* ----------------------------------------------------------------- */
@@ -84,10 +84,14 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.DataContextChanged -= OnDataContextChanged;
+            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
             _subscriber?.Dispose();
             base.OnDetaching();
         }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
@@ -109,7 +113,7 @@ namespace Cube.Xui.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDataContextChanged
+        /// WhenDataContextChanged
         ///
         /// <summary>
         /// Occurs when the DataContext property of the AssociatedObject
@@ -117,7 +121,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void OnDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Subscribe();
+        private void WhenDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Subscribe();
 
         #endregion
 

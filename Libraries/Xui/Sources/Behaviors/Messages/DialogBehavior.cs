@@ -31,6 +31,8 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class DialogBehavior : MessageBehavior<DialogMessage>
     {
+        #region Methods
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -49,6 +51,10 @@ namespace Cube.Xui.Behaviors
             e.Value = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
         }
 
+        #endregion
+
+        #region Implementations
+
         /* ----------------------------------------------------------------- */
         ///
         /// Icons
@@ -58,14 +64,13 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogIcon, MessageBoxImage> Icons { get; } =
-            new Dictionary<DialogIcon, MessageBoxImage>
-            {
-                { DialogIcon.None,        MessageBoxImage.None        },
-                { DialogIcon.Error,       MessageBoxImage.Error       },
-                { DialogIcon.Warning,     MessageBoxImage.Warning     },
-                { DialogIcon.Information, MessageBoxImage.Information },
-            };
+        private static Dictionary<DialogIcon, MessageBoxImage> Icons { get; } = new()
+        {
+            { DialogIcon.None,        MessageBoxImage.None        },
+            { DialogIcon.Error,       MessageBoxImage.Error       },
+            { DialogIcon.Warning,     MessageBoxImage.Warning     },
+            { DialogIcon.Information, MessageBoxImage.Information },
+        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -76,14 +81,13 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogButtons, MessageBoxButton> Buttons { get; } =
-            new Dictionary<DialogButtons, MessageBoxButton>
-            {
-                { DialogButtons.Ok,          MessageBoxButton.OK          },
-                { DialogButtons.OkCancel,    MessageBoxButton.OKCancel    },
-                { DialogButtons.YesNo,       MessageBoxButton.YesNo       },
-                { DialogButtons.YesNoCancel, MessageBoxButton.YesNoCancel },
-            };
+        private static Dictionary<DialogButtons, MessageBoxButton> Buttons { get; } = new()
+        {
+            { DialogButtons.Ok,          MessageBoxButton.OK          },
+            { DialogButtons.OkCancel,    MessageBoxButton.OKCancel    },
+            { DialogButtons.YesNo,       MessageBoxButton.YesNo       },
+            { DialogButtons.YesNoCancel, MessageBoxButton.YesNoCancel },
+        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -94,14 +98,15 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<MessageBoxResult, DialogStatus> Results { get; } =
-            new Dictionary<MessageBoxResult, DialogStatus>
-            {
-                { MessageBoxResult.None,   DialogStatus.Empty  },
-                { MessageBoxResult.OK,     DialogStatus.Ok     },
-                { MessageBoxResult.Cancel, DialogStatus.Cancel },
-                { MessageBoxResult.Yes,    DialogStatus.Yes    },
-                { MessageBoxResult.No,     DialogStatus.No     },
-            };
+        private static Dictionary<MessageBoxResult, DialogStatus> Results { get; } = new()
+        {
+            { MessageBoxResult.None,   DialogStatus.Empty  },
+            { MessageBoxResult.OK,     DialogStatus.Ok     },
+            { MessageBoxResult.Cancel, DialogStatus.Cancel },
+            { MessageBoxResult.Yes,    DialogStatus.Yes    },
+            { MessageBoxResult.No,     DialogStatus.No     },
+        };
+
+        #endregion
     }
 }

@@ -68,7 +68,7 @@ namespace Cube.Xui.Behaviors
 
         #endregion
 
-        #region Implementations
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,6 +101,10 @@ namespace Cube.Xui.Behaviors
             AssociatedObject.PasswordChanged -= WhenViewPasswordChanged;
             base.OnDetaching();
         }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///

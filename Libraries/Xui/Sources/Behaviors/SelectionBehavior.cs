@@ -33,7 +33,7 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class SelectionBehavior : Behavior<ListBox>
     {
-        #region Implementations
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
@@ -66,6 +66,10 @@ namespace Cube.Xui.Behaviors
             AssociatedObject.SelectionChanged -= WhenSelectionChanged;
             base.OnDetaching();
         }
+
+        #endregion
+
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
