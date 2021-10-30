@@ -22,33 +22,33 @@ namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ClosingBehavior
+    /// ShownEventBehavior
     ///
     /// <summary>
-    /// Represents the behavior that a Form object is closing.
+    /// Represents the behavior that a Form object is shown.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ClosingBehavior : DisposableProxy
+    public class ShownEventBehavior : DisposableProxy
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ClosingBehavior
+        /// ShownEventBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ClosingBehavior class
+        /// Initializes a new instance of the ShownEventBehavior class
         /// with the specified arguments.
         /// </summary>
         ///
         /// <param name="src">Source view.</param>
-        /// <param name="action">Action when the view is closing.</param>
+        /// <param name="action">Action to be shown.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ClosingBehavior(Form src, Action<FormClosingEventArgs> action) : base(() =>
+        public ShownEventBehavior(Form src, Action action) : base(() =>
         {
-            void invoke(object s, FormClosingEventArgs e) => action(e);
-            src.FormClosing += invoke;
-            return Disposable.Create(() => src.FormClosing -= invoke);
+            void invoke(object s, EventArgs e) => action();
+            src.Shown += invoke;
+            return Disposable.Create(() => src.Shown -= invoke);
         }) { }
     }
 }

@@ -22,21 +22,21 @@ namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ClickBehavior
+    /// ClickEventBehavior
     ///
     /// <summary>
     /// Represents the behavior that a Control object is clicked.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ClickBehavior : DisposableProxy
+    public class ClickEventBehavior : DisposableProxy
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ClickBehavior
+        /// ClickEventBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ClickBehavior class
+        /// Initializes a new instance of the ClickEventBehavior class
         /// with the specified arguments.
         /// </summary>
         ///
@@ -44,7 +44,7 @@ namespace Cube.Forms.Behaviors
         /// <param name="action">Action to click.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ClickBehavior(Control src, Action action) : base(() =>
+        public ClickEventBehavior(Control src, Action action) : base(() =>
         {
             void invoke(object s, EventArgs e) => action();
             src.Click += invoke;
@@ -53,10 +53,10 @@ namespace Cube.Forms.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ClickBehavior
+        /// ClickEventBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ClickBehavior class
+        /// Initializes a new instance of the ClickEventBehavior class
         /// with the specified arguments.
         /// </summary>
         ///
@@ -64,7 +64,7 @@ namespace Cube.Forms.Behaviors
         /// <param name="action">Action to click.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ClickBehavior(ToolStripItem src, Action action) : base(() => {
+        public ClickEventBehavior(ToolStripItem src, Action action) : base(() => {
             void invoke(object s, EventArgs e) => action();
             src.Click += invoke;
             return Disposable.Create(() => src.Click -= invoke);
