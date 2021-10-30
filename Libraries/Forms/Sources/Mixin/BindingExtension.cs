@@ -32,7 +32,47 @@ namespace Cube.Mixin.Forms
     /* --------------------------------------------------------------------- */
     public static class BindingExtension
     {
-        #region Methods
+        #region Bind
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bind
+        ///
+        /// <summary>
+        /// Invokes the binding settings with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Binding source.</param>
+        /// <param name="name">Property name of the binding source.</param>
+        /// <param name="view">View object to bind.</param>
+        /// <param name="viewName">Property name of the view to bind.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Bind(this BindingSource src, string name, Control view, string viewName) =>
+            Bind(src, name, view, viewName, DataSourceUpdateMode.OnPropertyChanged);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Bind
+        ///
+        /// <summary>
+        /// Invokes the binding settings with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="src">Binding source.</param>
+        /// <param name="name">Property name of the binding source.</param>
+        /// <param name="view">View object to bind.</param>
+        /// <param name="viewName">Property name of the view to bind.</param>
+        /// <param name="mode">Update mode.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Bind(this BindingSource src, string name,
+            Control view, string viewName, DataSourceUpdateMode mode) =>
+            view.DataBindings.Add(new(viewName, src, name, false, mode));
+
+        #endregion
+
+        #region ToBindingSource
 
         /* ----------------------------------------------------------------- */
         ///
