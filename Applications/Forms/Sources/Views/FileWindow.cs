@@ -15,45 +15,40 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Forms;
 using Cube.Forms.Behaviors;
+using Cube.Mixin.Forms;
 
 namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainWindow
+    /// FileWindow
     ///
     /// <summary>
-    /// Represents the main window.
+    /// Represents the window to test the OpenFileDialog, SaveFileDialog,
+    /// and SaveDirectoryDialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MainWindow : BorderlessWindow
+    public partial class FileWindow : Window
     {
         #region Constructors
 
         /* --------------------------------------------------------------------- */
         ///
-        /// MainWindow
+        /// FileWindow
         ///
         /// <summary>
-        /// Initializes a new instance of the MainWindow class.
+        /// Initializes a new instance of theFileWindow class.
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            Caption = HeaderCaptionControl;
-            Text    = $"{ProductName} {ProductVersion}";
-
-            Behaviors.Add(new FlowLayoutBehavior(ContentsControl));
-        }
+        public FileWindow() => InitializeComponent();
 
         #endregion
 
-        #region Implementations
+        #region Methods
 
         /* --------------------------------------------------------------------- */
         ///
@@ -67,20 +62,17 @@ namespace Cube.Forms.Demo
         protected override void OnBind(IBindable src)
         {
             base.OnBind(src);
-            if (src is not MainViewModel vm) return;
+            if (src is not FileViewModel vm) return;
 
-            Behaviors.Add(new DialogBehavior(vm));
-            Behaviors.Add(new ClickEventBehavior(DemoButton1, vm.About));
-            Behaviors.Add(new ClickEventBehavior(DemoButton2, vm.Notice));
-            Behaviors.Add(new ClickEventBehavior(DemoButton3, vm.File));
-            Behaviors.Add(new ClickEventBehavior(DemoButton5, vm.Close));
-            Behaviors.Add(new ShowVersionBehavior(this, vm));
-            Behaviors.Add(new NoticeBehavior(new(), vm));
-            Behaviors.Add(new ShowDialogBehavior<FileWindow, FileViewModel>(vm));
-            Behaviors.Add(new ShownEventBehavior(this, vm.Setup));
-            Behaviors.Add(new CloseBehavior(this, vm));
-            Behaviors.Add(new ClosingEventBehavior(this, vm.Confirm));
-            Behaviors.Add(new ClosedEventBehavior(this, vm.Log));
+            var obj = Behaviors.Hook(new BindingSource(vm, ""));
+            obj.Bind(nameof(vm.Value), PathTextBox, nameof(TextBox.Text));
+
+            Behaviors.Add(new ClickEventBehavior(OpenFileButton, vm.ShowOpenFileDialog));
+            Behaviors.Add(new ClickEventBehavior(SaveFileButton, vm.ShowSaveFileDialog));
+            Behaviors.Add(new ClickEventBehavior(OpenDirectoryButton, vm.ShowOpenDirectoryDialog));
+            Behaviors.Add(new OpenFileBehavior(vm));
+            Behaviors.Add(new SaveFileBehavior(vm));
+            Behaviors.Add(new OpenDirectoryBehavior(vm));
         }
 
         #endregion

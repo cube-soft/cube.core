@@ -74,6 +74,18 @@ namespace Cube.Forms.Demo
 
         /* --------------------------------------------------------------------- */
         ///
+        /// File
+        ///
+        /// <summary>
+        /// Invokes the command to show a dialog to test the OpenFileDialog,
+        /// SaveFileDialog, and OpenDirectoryDialog.
+        /// </summary>
+        ///
+        /* --------------------------------------------------------------------- */
+        public void File() => Send(new FileViewModel(Context));
+
+        /* --------------------------------------------------------------------- */
+        ///
         /// About
         ///
         /// <summary>

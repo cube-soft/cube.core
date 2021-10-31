@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.LayoutPanel = new Cube.Forms.Controls.TableLayoutPanel();
-            this.HeaderCaptionControl = new CustomCaptionControl();
+            this.HeaderCaptionControl = new Cube.Forms.Demo.CustomCaptionControl();
             this.ContentsControl = new Cube.Forms.Controls.FlowLayoutPanel();
             this.DemoButton1 = new Cube.Forms.Controls.FlatButton();
             this.DemoButton2 = new Cube.Forms.Controls.FlatButton();
@@ -97,15 +97,15 @@
             this.DemoButton1.Location = new System.Drawing.Point(23, 23);
             this.DemoButton1.Name = "DemoButton1";
             this.DemoButton1.Size = new System.Drawing.Size(310, 30);
+            this.DemoButton1.Style.Default.BackColor = System.Drawing.SystemColors.Control;
+            this.DemoButton1.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DemoButton1.Style.Default.BorderSize = 1;
+            this.DemoButton1.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton1.Style.Disabled.BackColor = System.Drawing.SystemColors.Control;
             this.DemoButton1.Style.Disabled.BorderColor = System.Drawing.SystemColors.InactiveBorder;
             this.DemoButton1.Style.Disabled.ContentColor = System.Drawing.SystemColors.GrayText;
             this.DemoButton1.Style.MouseDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.DemoButton1.Style.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.DemoButton1.Style.Default.BackColor = System.Drawing.SystemColors.Control;
-            this.DemoButton1.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DemoButton1.Style.Default.BorderSize = 1;
-            this.DemoButton1.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton1.TabIndex = 0;
             this.DemoButton1.UseVisualStyleBackColor = false;
             //
@@ -119,21 +119,21 @@
             this.DemoButton2.Location = new System.Drawing.Point(23, 59);
             this.DemoButton2.Name = "DemoButton2";
             this.DemoButton2.Size = new System.Drawing.Size(310, 30);
+            this.DemoButton2.Style.Default.BackColor = System.Drawing.SystemColors.Control;
+            this.DemoButton2.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DemoButton2.Style.Default.BorderSize = 1;
+            this.DemoButton2.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton2.Style.Disabled.BackColor = System.Drawing.SystemColors.Control;
             this.DemoButton2.Style.Disabled.BorderColor = System.Drawing.SystemColors.InactiveBorder;
             this.DemoButton2.Style.Disabled.ContentColor = System.Drawing.SystemColors.GrayText;
             this.DemoButton2.Style.MouseDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.DemoButton2.Style.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.DemoButton2.Style.Default.BackColor = System.Drawing.SystemColors.Control;
-            this.DemoButton2.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DemoButton2.Style.Default.BorderSize = 1;
-            this.DemoButton2.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton2.TabIndex = 1;
             this.DemoButton2.UseVisualStyleBackColor = false;
             //
             // DemoButton3
             //
-            this.DemoButton3.Content = "DemoButton3";
+            this.DemoButton3.Content = "FileDialogs";
             this.DemoButton3.Dock = System.Windows.Forms.DockStyle.Top;
             this.DemoButton3.FlatAppearance.BorderSize = 0;
             this.DemoButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -141,15 +141,15 @@
             this.DemoButton3.Location = new System.Drawing.Point(23, 95);
             this.DemoButton3.Name = "DemoButton3";
             this.DemoButton3.Size = new System.Drawing.Size(310, 30);
+            this.DemoButton3.Style.Default.BackColor = System.Drawing.SystemColors.Control;
+            this.DemoButton3.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DemoButton3.Style.Default.BorderSize = 1;
+            this.DemoButton3.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton3.Style.Disabled.BackColor = System.Drawing.SystemColors.Control;
             this.DemoButton3.Style.Disabled.BorderColor = System.Drawing.SystemColors.InactiveBorder;
             this.DemoButton3.Style.Disabled.ContentColor = System.Drawing.SystemColors.GrayText;
             this.DemoButton3.Style.MouseDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.DemoButton3.Style.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.DemoButton3.Style.Default.BackColor = System.Drawing.SystemColors.Control;
-            this.DemoButton3.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DemoButton3.Style.Default.BorderSize = 1;
-            this.DemoButton3.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton3.TabIndex = 2;
             this.DemoButton3.UseVisualStyleBackColor = false;
             //
@@ -163,15 +163,15 @@
             this.DemoButton4.Location = new System.Drawing.Point(23, 131);
             this.DemoButton4.Name = "DemoButton4";
             this.DemoButton4.Size = new System.Drawing.Size(310, 30);
+            this.DemoButton4.Style.Default.BackColor = System.Drawing.SystemColors.Control;
+            this.DemoButton4.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DemoButton4.Style.Default.BorderSize = 1;
+            this.DemoButton4.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton4.Style.Disabled.BackColor = System.Drawing.SystemColors.Control;
             this.DemoButton4.Style.Disabled.BorderColor = System.Drawing.SystemColors.InactiveBorder;
             this.DemoButton4.Style.Disabled.ContentColor = System.Drawing.SystemColors.GrayText;
             this.DemoButton4.Style.MouseDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.DemoButton4.Style.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.DemoButton4.Style.Default.BackColor = System.Drawing.SystemColors.Control;
-            this.DemoButton4.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DemoButton4.Style.Default.BorderSize = 1;
-            this.DemoButton4.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton4.TabIndex = 3;
             this.DemoButton4.UseVisualStyleBackColor = false;
             //
@@ -185,15 +185,15 @@
             this.DemoButton5.Location = new System.Drawing.Point(23, 167);
             this.DemoButton5.Name = "DemoButton5";
             this.DemoButton5.Size = new System.Drawing.Size(310, 30);
+            this.DemoButton5.Style.Default.BackColor = System.Drawing.SystemColors.Control;
+            this.DemoButton5.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DemoButton5.Style.Default.BorderSize = 1;
+            this.DemoButton5.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton5.Style.Disabled.BackColor = System.Drawing.SystemColors.Control;
             this.DemoButton5.Style.Disabled.BorderColor = System.Drawing.SystemColors.InactiveBorder;
             this.DemoButton5.Style.Disabled.ContentColor = System.Drawing.SystemColors.GrayText;
             this.DemoButton5.Style.MouseDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.DemoButton5.Style.MouseOver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.DemoButton5.Style.Default.BackColor = System.Drawing.SystemColors.Control;
-            this.DemoButton5.Style.Default.BorderColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DemoButton5.Style.Default.BorderSize = 1;
-            this.DemoButton5.Style.Default.ContentColor = System.Drawing.SystemColors.ControlText;
             this.DemoButton5.TabIndex = 4;
             this.DemoButton5.UseVisualStyleBackColor = false;
             //
@@ -204,7 +204,7 @@
             this.FooterControl.Size = new System.Drawing.Size(350, 22);
             this.FooterControl.TabIndex = 3;
             //
-            // MainForm
+            // MainWindow
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(350, 280);
@@ -212,7 +212,7 @@
             this.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(300, 0);
-            this.Name = "MainForm";
+            this.Name = "MainWindow";
             this.Text = "Cube.Forms.Demo";
             this.LayoutPanel.ResumeLayout(false);
             this.LayoutPanel.PerformLayout();
