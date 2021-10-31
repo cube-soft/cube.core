@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Cube.Mixin.Forms.Controls
@@ -45,15 +46,17 @@ namespace Cube.Mixin.Forms.Controls
         /// <param name="data">UserData</param>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Bind<T>(this ComboBox src, IEnumerable<KeyValuePair<string, T>> data)
+        public static void Bind<T>(this ComboBox src, IList<KeyValuePair<string, T>> data)
         {
-            var selected = src.SelectedValue;
+            var obj = src.SelectedValue;
+            var cmp = EqualityComparer<T>.Default;
 
             src.DataSource    = data;
             src.DisplayMember = "Key";
             src.ValueMember   = "Value";
 
-            if (selected is T) src.SelectedValue = selected;
+            if (obj is T v && data.Any(e => cmp.Equals(e.Value, v))) src.SelectedValue = v;
+            else if (data.Count > 0) src.SelectedValue = data[0].Value;
         }
 
         #endregion
