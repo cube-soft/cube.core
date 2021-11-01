@@ -19,7 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Messages
 {
     /* --------------------------------------------------------------------- */
     ///

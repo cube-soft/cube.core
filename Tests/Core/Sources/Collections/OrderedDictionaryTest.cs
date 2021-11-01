@@ -23,7 +23,7 @@ using Cube.Collections;
 using Cube.Mixin.Generics;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
