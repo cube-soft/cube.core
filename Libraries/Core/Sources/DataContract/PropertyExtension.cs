@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Cube.FileSystem.DataContract.Internal
+namespace Cube.DataContract.Internal
 {
     /* --------------------------------------------------------------------- */
     ///

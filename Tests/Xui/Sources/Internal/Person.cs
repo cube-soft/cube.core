@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem;
+using Cube.DataContract;
 
 namespace Cube.Xui.Tests
 {

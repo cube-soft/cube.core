@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.FileSystem.DataContract
+namespace Cube.DataContract
 {
     /* --------------------------------------------------------------------- */
     ///

@@ -23,7 +23,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Cube.Mixin.Generics;
 
-namespace Cube.FileSystem
+namespace Cube.DataContract
 {
     /* --------------------------------------------------------------------- */
     ///

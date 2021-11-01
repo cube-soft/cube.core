@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem.DataContract;
+using Cube.DataContract;
 using Cube.Xui.Converters;
 using NUnit.Framework;
 

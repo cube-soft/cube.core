@@ -20,9 +20,10 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+using Cube.FileSystem;
 using Microsoft.Win32;
 
-namespace Cube.FileSystem.DataContract
+namespace Cube.DataContract
 {
     /* --------------------------------------------------------------------- */
     ///
