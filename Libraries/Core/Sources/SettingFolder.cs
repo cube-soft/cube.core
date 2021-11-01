@@ -21,11 +21,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
 using Cube.DataContract;
+using Cube.FileSystem;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Environment;
 using Cube.Mixin.Tasks;
 
-namespace Cube.FileSystem
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///
