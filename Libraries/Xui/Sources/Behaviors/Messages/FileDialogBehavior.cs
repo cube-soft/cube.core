@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.String;
 using Microsoft.Win32;
@@ -36,8 +35,6 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -53,36 +50,18 @@ namespace Cube.Xui.Behaviors
             {
                 CheckPathExists = e.CheckPathExists,
                 Multiselect     = e.Multiselect,
-                FilterIndex     = e.FilterIndex,
+                Filter          = e.GetFilterText(),
+                FilterIndex     = e.GetFilterIndex(),
             };
 
             if (e.Text.HasValue()) view.Title = e.Text;
             if (e.Value.Any()) view.FileName = e.Value.First();
-            if (e.Filters.Any()) view.Filter = GetText(e.Filters);
             if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
             var ok = view.ShowDialog() ?? false;
             e.Cancel = !ok;
             if (ok) e.Value = view.FileNames;
         }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetText
-        ///
-        /// <summary>
-        /// Gets the filter text with the specified collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static string GetText(IEnumerable<FileDialogFilter> src) =>
-            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
-
-        #endregion
     }
 
     #endregion
@@ -100,8 +79,6 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -117,36 +94,18 @@ namespace Cube.Xui.Behaviors
             {
                 CheckPathExists = e.CheckPathExists,
                 OverwritePrompt = e.OverwritePrompt,
-                FilterIndex     = e.FilterIndex,
+                Filter          = e.GetFilterText(),
+                FilterIndex     = e.GetFilterIndex(),
             };
 
             if (e.Text.HasValue()) view.Title = e.Text;
             if (e.Value.HasValue()) view.FileName = e.Value;
-            if (e.Filters.Any()) view.Filter = GetText(e.Filters);
             if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
             var ok = view.ShowDialog() ?? false;
             e.Cancel = !ok;
             if (ok) e.Value = view.FileName;
         }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetText
-        ///
-        /// <summary>
-        /// Gets the filter text with the specified collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static string GetText(IEnumerable<FileDialogFilter> src) =>
-            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
-
-        #endregion
     }
 
     #endregion
@@ -180,9 +139,8 @@ namespace Cube.Xui.Behaviors
             if (e.Text.HasValue()) view.Description = e.Text;
             if (e.Value.HasValue()) view.SelectedPath = e.Value;
 
-            var ok = view.ShowDialog() == WinForms.DialogResult.OK;
-            e.Cancel = !ok;
-            if (ok) e.Value = view.SelectedPath;
+            e.Cancel = view.ShowDialog() != WinForms.DialogResult.OK;
+            if (!e.Cancel) e.Value = view.SelectedPath;
         }
     }
 

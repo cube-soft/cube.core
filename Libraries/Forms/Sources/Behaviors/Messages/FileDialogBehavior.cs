@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Cube.Mixin.String;
@@ -35,8 +34,6 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// OpenFileBehavior
@@ -51,40 +48,21 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         public OpenFileBehavior(IAggregator aggregator) : base (aggregator, e =>
         {
-            var dialog = new OpenFileDialog
+            var view = new OpenFileDialog
             {
                 CheckPathExists = e.CheckPathExists,
                 Multiselect     = e.Multiselect,
-                FilterIndex     = e.FilterIndex,
+                Filter          = e.GetFilterText(),
+                FilterIndex     = e.GetFilterIndex(),
             };
 
-            if (e.Text.HasValue()) dialog.Title = e.Text;
-            if (e.Value.Any()) dialog.FileName = e.Value.First();
-            if (e.Filters.Any()) dialog.Filter = GetText(e.Filters);
-            if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
+            if (e.Text.HasValue()) view.Title = e.Text;
+            if (e.Value.Any()) view.FileName = e.Value.First();
+            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-            var ok = dialog.ShowDialog() == DialogResult.OK;
-            e.Cancel = !ok;
-            if (ok) e.Value = dialog.FileNames;
+            e.Cancel = view.ShowDialog() != DialogResult.OK;
+            if (!e.Cancel) e.Value = view.FileNames;
         }) { }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetText
-        ///
-        /// <summary>
-        /// Gets the filter text with the specified collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static string GetText(IEnumerable<FileDialogFilter> src) =>
-            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
-
-        #endregion
     }
 
     #endregion
@@ -102,8 +80,6 @@ namespace Cube.Forms.Behaviors
     /* --------------------------------------------------------------------- */
     public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
         /// SaveFileBehavior
@@ -118,40 +94,21 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         public SaveFileBehavior(IAggregator aggregator) : base(aggregator, e =>
         {
-            var dialog = new SaveFileDialog
+            var view = new SaveFileDialog
             {
                 CheckPathExists = e.CheckPathExists,
                 OverwritePrompt = e.OverwritePrompt,
-                FilterIndex     = e.FilterIndex,
+                Filter          = e.GetFilterText(),
+                FilterIndex     = e.GetFilterIndex(),
             };
 
-            if (e.Text.HasValue()) dialog.Title = e.Text;
-            if (e.Value.HasValue()) dialog.FileName = e.Value;
-            if (e.Filters.Any()) dialog.Filter = GetText(e.Filters);
-            if (e.InitialDirectory.HasValue()) dialog.InitialDirectory = e.InitialDirectory;
+            if (e.Text.HasValue()) view.Title = e.Text;
+            if (e.Value.HasValue()) view.FileName = e.Value;
+            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-            var ok = dialog.ShowDialog() == DialogResult.OK;
-            e.Cancel = !ok;
-            if (ok) e.Value = dialog.FileName;
+            e.Cancel = view.ShowDialog() != DialogResult.OK;
+            if (!e.Cancel) e.Value = view.FileName;
         }) { }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetText
-        ///
-        /// <summary>
-        /// Gets the filter text with the specified collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static string GetText(IEnumerable<FileDialogFilter> src) =>
-            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
-
-        #endregion
     }
 
     #endregion
@@ -188,9 +145,8 @@ namespace Cube.Forms.Behaviors
             if (e.Text.HasValue()) dialog.Description = e.Text;
             if (e.Value.HasValue()) dialog.SelectedPath = e.Value;
 
-            var ok = dialog.ShowDialog() == DialogResult.OK;
-            e.Cancel = !ok;
-            if (ok) e.Value = dialog.SelectedPath;
+            e.Cancel = dialog.ShowDialog() != DialogResult.OK;
+            if (!e.Cancel) e.Value = dialog.SelectedPath;
         }) { }
     }
 

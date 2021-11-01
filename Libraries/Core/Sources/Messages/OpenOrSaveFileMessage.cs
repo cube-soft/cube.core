@@ -98,36 +98,44 @@ namespace Cube
         public IEnumerable<FileDialogFilter> Filters { get; set; } =
             new FileDialogFilter("All Files", ".*").ToEnumerable();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FilterIndex
-        ///
-        /// <summary>
-        /// Gets or sets a value to select the initial filter.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int FilterIndex { get; set; }
-
         #endregion
 
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Update
+        /// GetFilterText
         ///
         /// <summary>
-        /// Updates some properties with the current settings.
+        /// Gets the filter text.
         /// </summary>
         ///
-        /// <remarks>
-        /// The method currently may change the value of the FilterIndex
-        /// property.
-        /// </remarks>
+        /// <returns>Filter text.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public void Update() => FilterIndex = GetFilterIndex();
+        public string GetFilterText() => Filters.Select(e => e.ToString()).Join("|");
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilterIndex
+        ///
+        /// <summary>
+        /// Gets the filter index.
+        /// </summary>
+        ///
+        /// <returns>Filter index.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int GetFilterIndex()
+        {
+            var src = GetValue();
+            if (!src.HasValue()) return 0;
+
+            var opt = StringComparison.InvariantCultureIgnoreCase;
+            return Filters.Select((e, i) => KeyValuePair.Create(i + 1, e.Targets))
+                          .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
+                          .Key;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -141,30 +149,6 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected abstract string GetValue();
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilterIndex
-        ///
-        /// <summary>
-        /// Gets the filter index with the current settings.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private int GetFilterIndex()
-        {
-            var src = GetValue();
-            if (!src.HasValue()) return 0;
-
-            var opt = StringComparison.InvariantCultureIgnoreCase;
-            return Filters.Select((e, i) => KeyValuePair.Create(i + 1, e.Targets))
-                          .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
-                          .Key;
-        }
 
         #endregion
     }

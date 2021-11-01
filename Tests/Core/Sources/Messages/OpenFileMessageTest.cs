@@ -52,7 +52,6 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Value.Count(),    Is.EqualTo(0));
             Assert.That(dest.InitialDirectory, Is.Empty);
             Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-            Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.True);
             Assert.That(dest.Multiselect,      Is.False);
             Assert.That(dest.Cancel,           Is.False);
@@ -77,7 +76,6 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Value.Count(),    Is.EqualTo(0));
             Assert.That(dest.InitialDirectory, Is.Empty);
             Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-            Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.True);
             Assert.That(dest.Multiselect,      Is.False);
             Assert.That(dest.Cancel,           Is.False);
@@ -121,6 +119,29 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Value.Count(),    Is.EqualTo(0));
             Assert.That(dest.InitialDirectory, Is.EqualTo(Results));
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FilterIndex
+        ///
+        /// <summary>
+        /// Tests the Filters and FilterIndex properties.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Sample.txt", ExpectedResult = 1)]
+        [TestCase("Sample.Jpg", ExpectedResult = 2)]
+        [TestCase("Sample",     ExpectedResult = 0)]
+        public int GetFilterIndex(string filename) => new OpenFileMessage(Get(filename))
+        {
+            Filters = new FileDialogFilter[]
+            {
+                new("Texts", ".txt"),
+                new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
+                new("Archives", "zip", "tar.gz"),
+                new("All files", "*"),
+            }
+        }.GetFilterIndex();
 
         #endregion
     }

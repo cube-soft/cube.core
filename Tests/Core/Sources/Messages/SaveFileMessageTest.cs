@@ -52,7 +52,6 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Value,            Is.Empty);
             Assert.That(dest.InitialDirectory, Is.Empty);
             Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-            Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.False);
             Assert.That(dest.OverwritePrompt,  Is.True);
             Assert.That(dest.Cancel,           Is.False);
@@ -77,7 +76,6 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Value,            Is.Empty);
             Assert.That(dest.InitialDirectory, Is.Empty);
             Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-            Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.False);
             Assert.That(dest.OverwritePrompt,  Is.True);
             Assert.That(dest.Cancel,           Is.False);
@@ -132,23 +130,17 @@ namespace Cube.Tests.Messages
         /* ----------------------------------------------------------------- */
         [TestCase("Sample.txt", ExpectedResult = 1)]
         [TestCase("Sample.Jpg", ExpectedResult = 2)]
-        [TestCase("Sample", ExpectedResult = 0)]
-        public int FilterIndex(string filename)
+        [TestCase("Sample",     ExpectedResult = 0)]
+        public int GetFilterIndex(string filename) => new SaveFileMessage(Get(filename))
         {
-            var dest =new SaveFileMessage(Get(filename))
+            Filters = new FileDialogFilter[]
             {
-                Filters = new FileDialogFilter[]
-                {
-                    new("Texts", ".txt"),
-                    new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
-                    new("Archives", "zip", "tar.gz"),
-                    new("All files", "*"),
-                }
-            };
-
-            dest.Update();
-            return dest.FilterIndex;
-        }
+                new("Texts", ".txt"),
+                new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
+                new("Archives", "zip", "tar.gz"),
+                new("All files", "*"),
+            }
+        }.GetFilterIndex();
 
         #endregion
     }
