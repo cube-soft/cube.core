@@ -51,7 +51,7 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Text,             Is.Empty);
             Assert.That(dest.Value.Count(),    Is.EqualTo(0));
             Assert.That(dest.InitialDirectory, Is.Empty);
-            Assert.That(dest.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
             Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.True);
             Assert.That(dest.Multiselect,      Is.False);
@@ -76,7 +76,7 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Text,             Is.Empty);
             Assert.That(dest.Value.Count(),    Is.EqualTo(0));
             Assert.That(dest.InitialDirectory, Is.Empty);
-            Assert.That(dest.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
             Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.True);
             Assert.That(dest.Multiselect,      Is.False);

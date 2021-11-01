@@ -94,5 +94,22 @@ namespace Cube
         public bool OverwritePrompt { get; set; } = true;
 
         #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValue
+        ///
+        /// <summary>
+        /// Gets the value of Value property.
+        /// </summary>
+        ///
+        /// <returns>String value.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override string GetValue() => Value;
+
+        #endregion
     }
 }

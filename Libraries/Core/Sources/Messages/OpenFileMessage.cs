@@ -97,5 +97,22 @@ namespace Cube
         public bool Multiselect { get; set; }
 
         #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValue
+        ///
+        /// <summary>
+        /// Gets the first element of the Value property.
+        /// </summary>
+        ///
+        /// <returns>String value.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override string GetValue() => Value.FirstOrDefault();
+
+        #endregion
     }
 }

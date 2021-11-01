@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.String;
 using Microsoft.Win32;
@@ -35,6 +36,8 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -55,13 +58,31 @@ namespace Cube.Xui.Behaviors
 
             if (e.Text.HasValue()) view.Title = e.Text;
             if (e.Value.Any()) view.FileName = e.Value.First();
-            if (e.Filter.HasValue()) view.Filter = e.Filter;
+            if (e.Filters.Any()) view.Filter = GetText(e.Filters);
             if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
             var ok = view.ShowDialog() ?? false;
             e.Cancel = !ok;
             if (ok) e.Value = view.FileNames;
         }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetText
+        ///
+        /// <summary>
+        /// Gets the filter text with the specified collection.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetText(IEnumerable<FileDialogFilter> src) =>
+            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
+
+        #endregion
     }
 
     #endregion
@@ -79,6 +100,8 @@ namespace Cube.Xui.Behaviors
     /* --------------------------------------------------------------------- */
     public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
@@ -99,13 +122,31 @@ namespace Cube.Xui.Behaviors
 
             if (e.Text.HasValue()) view.Title = e.Text;
             if (e.Value.HasValue()) view.FileName = e.Value;
-            if (e.Filter.HasValue()) view.Filter = e.Filter;
+            if (e.Filters.Any()) view.Filter = GetText(e.Filters);
             if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
             var ok = view.ShowDialog() ?? false;
             e.Cancel = !ok;
             if (ok) e.Value = view.FileName;
         }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetText
+        ///
+        /// <summary>
+        /// Gets the filter text with the specified collection.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private static string GetText(IEnumerable<FileDialogFilter> src) =>
+            src.Select(e => e.ToString()).Aggregate((x, y) => $"{x}|{y}");
+
+        #endregion
     }
 
     #endregion

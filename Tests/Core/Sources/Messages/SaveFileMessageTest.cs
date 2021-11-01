@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Linq;
 using NUnit.Framework;
 
 namespace Cube.Tests.Messages
@@ -50,7 +51,7 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Text,             Is.Empty);
             Assert.That(dest.Value,            Is.Empty);
             Assert.That(dest.InitialDirectory, Is.Empty);
-            Assert.That(dest.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
             Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.False);
             Assert.That(dest.OverwritePrompt,  Is.True);
@@ -75,7 +76,7 @@ namespace Cube.Tests.Messages
             Assert.That(dest.Text,             Is.Empty);
             Assert.That(dest.Value,            Is.Empty);
             Assert.That(dest.InitialDirectory, Is.Empty);
-            Assert.That(dest.Filter,           Is.EqualTo("All Files (*.*)|*.*"));
+            Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
             Assert.That(dest.FilterIndex,      Is.EqualTo(0));
             Assert.That(dest.CheckPathExists,  Is.False);
             Assert.That(dest.OverwritePrompt,  Is.True);
@@ -118,6 +119,35 @@ namespace Cube.Tests.Messages
 
             Assert.That(dest.Value, Is.Empty);
             Assert.That(dest.InitialDirectory, Is.EqualTo(Results));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// FilterIndex
+        ///
+        /// <summary>
+        /// Tests the Filters and FilterIndex properties.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [TestCase("Sample.txt", ExpectedResult = 1)]
+        [TestCase("Sample.Jpg", ExpectedResult = 2)]
+        [TestCase("Sample", ExpectedResult = 0)]
+        public int FilterIndex(string filename)
+        {
+            var dest =new SaveFileMessage(Get(filename))
+            {
+                Filters = new FileDialogFilter[]
+                {
+                    new("Texts", ".txt"),
+                    new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
+                    new("Archives", "zip", "tar.gz"),
+                    new("All files", "*"),
+                }
+            };
+
+            dest.Update();
+            return dest.FilterIndex;
         }
 
         #endregion

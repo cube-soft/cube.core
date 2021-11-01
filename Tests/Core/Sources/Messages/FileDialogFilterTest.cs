@@ -15,14 +15,12 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cube.Mixin.Generics;
 using Cube.Mixin.String;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Messages
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -40,7 +38,7 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// GetString
+        /// GetValue
         ///
         /// <summary>
         /// Tests to convert to a filter string.
@@ -48,75 +46,12 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [TestCaseSource(nameof(TestCases))]
-        public string GetString(string descr, bool ignore, string[] exts)
+        public string GetValue(string descr, bool ignore, string[] exts)
         {
             var src = new FileDialogFilter(descr, ignore, exts);
             Assert.That(!src.Targets.Any(e => !e.HasValue()), "Empty");
             return src.ToString();
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetString_Null
-        ///
-        /// <summary>
-        /// Tests to initialize a new instance with null parameters.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetString_Null() => Assert.That(
-            () => new FileDialogFilter(null, null).ToString(),
-            Throws.TypeOf<ArgumentNullException>()
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilter
-        ///
-        /// <summary>
-        /// Tests to get the filter string from a DisplayFilter collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetFilter()
-        {
-            var dest = TestCollection.GetFilter();
-            Assert.That(dest, Does.StartWith("All files (*.*)|*.*"));
-            Assert.That(dest, Does.EndWith("Customized files (*.cAb, *.1Ab)|*.cAb;*.1Ab"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilter_Throws
-        ///
-        /// <summary>
-        /// Tests to get the filter string from an empty collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetFilter_Throws() => Assert.That(
-            () => new List<FileDialogFilter>().GetFilter(),
-            Throws.TypeOf<InvalidOperationException>()
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilterIndex
-        ///
-        /// <summary>
-        /// Tests the GetFilterIndex extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Test.txt", ExpectedResult = 3)]
-        [TestCase("Test.PNG", ExpectedResult = 5)]
-        [TestCase("Test.pdf", ExpectedResult = 0)]
-        [TestCase("Test",     ExpectedResult = 0)]
-        [TestCase("",         ExpectedResult = 0)]
-        public int GetFilterIndex(string path) => TestCollection.GetFilterIndex(path);
 
         #endregion
 
@@ -173,22 +108,6 @@ namespace Cube.Tests
                 new[] { ".cAb", ".1Ab", null }
             ).Returns("Customized files (*.cAb, *.1Ab)|*.cAb;*.1Ab");
         }}
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TestCollection
-        ///
-        /// <summary>
-        /// Gets a list of DisplayFilter objects.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static IEnumerable<FileDialogFilter> TestCollection =>
-            TestCases.Select(e => new FileDialogFilter(
-                e.Arguments[0] as string,
-                e.Arguments[1].TryCast<bool>(),
-                e.Arguments[2] as string[]
-            ));
 
         #endregion
     }

@@ -15,7 +15,13 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Cube.Collections;
 using Cube.FileSystem;
+using Cube.Mixin.Collections;
+using Cube.Mixin.String;
 
 namespace Cube
 {
@@ -89,7 +95,8 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Filter { get; set; } = "All Files (*.*)|*.*";
+        public IEnumerable<FileDialogFilter> Filters { get; set; } =
+            new FileDialogFilter("All Files", ".*").ToEnumerable();
 
         /* ----------------------------------------------------------------- */
         ///
@@ -101,6 +108,63 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         public int FilterIndex { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Update
+        ///
+        /// <summary>
+        /// Updates some properties with the current settings.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// The method currently may change the value of the FilterIndex
+        /// property.
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Update() => FilterIndex = GetFilterIndex();
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetValue
+        ///
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        ///
+        /// <returns>String value.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected abstract string GetValue();
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetFilterIndex
+        ///
+        /// <summary>
+        /// Gets the filter index with the current settings.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private int GetFilterIndex()
+        {
+            var src = GetValue();
+            if (!src.HasValue()) return 0;
+
+            var opt = StringComparison.InvariantCultureIgnoreCase;
+            return Filters.Select((e, i) => KeyValuePair.Create(i + 1, e.Targets))
+                          .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
+                          .Key;
+        }
 
         #endregion
     }
