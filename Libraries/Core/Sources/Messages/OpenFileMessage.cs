@@ -73,15 +73,11 @@ namespace Cube
         /// <param name="src">Entity for the initial path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileMessage(Entity src)
+        public OpenFileMessage(Entity src) : base(src)
         {
             CheckPathExists = true;
-            if (src != null)
-            {
-                Value = src.Name.ToEnumerable();
-                InitialDirectory = src.DirectoryName;
-            }
-            else Value = Enumerable.Empty<string>();
+            var empty = src?.IsDirectory ?? true;
+            Value = empty ? Enumerable.Empty<string>() : src.Name.ToEnumerable();
         }
 
         #endregion

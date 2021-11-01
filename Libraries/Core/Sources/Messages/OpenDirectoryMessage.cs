@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.FileSystem;
 using Cube.Mixin.String;
 
 namespace Cube
@@ -55,7 +56,24 @@ namespace Cube
         /// <param name="src">Initial path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenDirectoryMessage(string src) => Value = src.Unify();
+        public OpenDirectoryMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OpenDirectoryMessage
+        ///
+        /// <summary>
+        /// Initializes a new instance of the OpenDirectoryMessage class
+        /// with the specified path.
+        /// </summary>
+        ///
+        /// <param name="src">Entity of the initial path.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public OpenDirectoryMessage(Entity src) => Value =
+            src is null     ? string.Empty :
+            src.IsDirectory ? src.FullName :
+            src.DirectoryName;
 
         #endregion
 

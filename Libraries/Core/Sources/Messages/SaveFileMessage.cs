@@ -70,14 +70,10 @@ namespace Cube
         /// <param name="src">Entity for the initial path.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileMessage(Entity src)
+        public SaveFileMessage(Entity src) : base(src)
         {
-            if (src != null)
-            {
-                Value = src.Name;
-                InitialDirectory = src.DirectoryName;
-            }
-            else Value = string.Empty;
+            var empty = src?.IsDirectory ?? true;
+            Value = empty ? string.Empty : src.Name;
         }
 
         #endregion

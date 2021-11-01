@@ -15,92 +15,98 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.FileSystem;
+using NUnit.Framework;
 
-namespace Cube
+namespace Cube.Tests.Messages
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenOrSaveFileMessage(TValue)
+    /// OpenDirectoryMessageTest
     ///
     /// <summary>
-    /// Represents shared information to show either the OpenFileDialog
-    /// or SaveFileDialog.
+    /// Tests the OpenDirectoryMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
+    [TestFixture]
+    class OpenDirectoryMessageTest : FileFixture
     {
-        #region Constructors
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OpenOrSaveFileMessage
+        /// Init
         ///
         /// <summary>
-        /// Initializes a new instance of the OpenOrSaveFileMessage class
-        /// with the specified arguments.
+        /// Tests the constructor and confirms values of some properties.
         /// </summary>
         ///
-        /// <param name="src">Entity of the initial path.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        protected OpenOrSaveFileMessage(Entity src)
+        [Test]
+        public void Init()
         {
-            if (src != null) InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+            var dest = new OpenDirectoryMessage();
+
+            Assert.That(dest.Text,      Is.Empty);
+            Assert.That(dest.Value,     Is.Empty);
+            Assert.That(dest.NewButton, Is.True);
+            Assert.That(dest.Cancel,    Is.False);
         }
 
-        #endregion
-
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
-        /// CheckPathExists
+        /// Init_WithNullOrEmpty
         ///
         /// <summary>
-        /// Gets or sets a value indicating whether a file dialog
-        /// displays a warning if the user specifies a file name that
-        /// does not exist.
+        /// Tests the constructor and confirms values of some properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public bool CheckPathExists { get; set; }
+        [TestCase("")]
+        [TestCase(null)]
+        public void Init_WithNullOrEmpty(string src)
+        {
+            var dest = new OpenDirectoryMessage(src);
+
+            Assert.That(dest.Text,      Is.Empty);
+            Assert.That(dest.Value,     Is.Empty);
+            Assert.That(dest.NewButton, Is.True);
+            Assert.That(dest.Cancel,    Is.False);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// InitialDirectory
+        /// Init_WithFile
         ///
         /// <summary>
-        /// Gets or sets the initial directory that is displayed by a file
-        /// dialog.
+        /// Tests the constructor and confirms values of some properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string InitialDirectory { get; set; } = string.Empty;
+        [TestCase("Sample.txt")]
+        [TestCase("InExistent.dat")]
+        public void Init_WithFile(string filename)
+        {
+            var src  = GetSource(filename);
+            var dest = new OpenDirectoryMessage(src);
+
+            Assert.That(dest.Value, Is.EqualTo(Examples));
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Filter
+        /// Init_WithDirectory
         ///
         /// <summary>
-        /// Gets or sets the filter string that determines what types of
-        /// files are displayed from a from dialog.
+        /// Tests the constructor and confirms values of some properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Filter { get; set; } = "All Files (*.*)|*.*";
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FilterIndex
-        ///
-        /// <summary>
-        /// Gets or sets a value to select the initial filter.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int FilterIndex { get; set; }
+        [Test]
+        public void Init_WithDirectory() => Assert.That(
+            new OpenDirectoryMessage(Results).Value,
+            Is.EqualTo(Results)
+        );
 
         #endregion
     }
