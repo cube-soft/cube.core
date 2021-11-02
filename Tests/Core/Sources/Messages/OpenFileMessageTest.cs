@@ -129,19 +129,28 @@ namespace Cube.Tests.Messages
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Sample.txt", ExpectedResult = 1)]
-        [TestCase("Sample.Jpg", ExpectedResult = 2)]
-        [TestCase("Sample",     ExpectedResult = 0)]
-        public int GetFilterIndex(string filename) => new OpenFileMessage(Get(filename))
+        [TestCase("Sample.txt",    ExpectedResult = 1)]
+        [TestCase("Sample.Jpg",    ExpectedResult = 2)]
+        [TestCase("Sample.tar.gz", ExpectedResult = 3)]
+        [TestCase("Sample",        ExpectedResult = 0)]
+        public int GetFilterIndex(string filename)
         {
-            Filters = new FileDialogFilter[]
+            var dest = new OpenFileMessage(Get(filename))
             {
-                new("Texts", ".txt"),
-                new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
-                new("Archives", "zip", "tar.gz"),
-                new("All files", "*"),
-            }
-        }.GetFilterIndex();
+                Filters = new FileDialogFilter[]
+                {
+                    new("Texts", ".txt"),
+                    new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
+                    new("Archives", "zip", "tar.gz"),
+                    new("All", "*"),
+                }
+            };
+
+            var s = dest.GetFilterText();
+            Assert.That(s, Does.StartWith("Texts (*.txt)|*.txt;*.TXT;*.Txt|"));
+            Assert.That(s, Does.EndWith("|All (*.*)|*.*"));
+            return dest.GetFilterIndex();
+        }
 
         #endregion
     }
