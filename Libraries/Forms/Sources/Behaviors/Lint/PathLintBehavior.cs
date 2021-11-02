@@ -47,42 +47,52 @@ namespace Cube.Forms.Behaviors
         /// <param name="src">Textbox control.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathLintBehavior(TextBox src) : this(src, new ToolTip
+        public PathLintBehavior(TextBox src)
         {
-            ToolTipTitle = Properties.Resources.MessageInvalidPath,
-            IsBalloon    = false,
-            InitialDelay =  500,
-            ReshowDelay  =  100,
-            AutoPopDelay = 1000,
-        }) { }
+            _tips.ToolTipTitle = "Path cannot contain any of the following characters";
+            _tips.IsBalloon    = false;
+            _tips.InitialDelay = 100;
+            _tips.ReshowDelay  = 100;
+            _tips.AutoPopDelay = 1000;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PathBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the PathLintBehavior class with
-        /// the specified control.
-        /// </summary>
-        ///
-        /// <param name="src">Textbox control.</param>
-        /// <param name="tips">Tooltip control.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public PathLintBehavior(TextBox src, ToolTip tips)
-        {
-            _chars   = new[] { '/', '*', '"', '<', '>', '|', '?', ':' };
-            _tips    = tips;
-            _source  = src;
-            _message = _chars.Select(e => e.ToString()).Aggregate((x, y) => $"{x} {y}");
-
+            _source = src;
             _source.TextChanged -= WhenTextChanged;
             _source.TextChanged += WhenTextChanged;
-            _source.Click       -= WhenClick;
-            _source.Click       += WhenClick;
-            _source.Leave       -= WhenLeave;
-            _source.Leave       += WhenLeave;
+            _source.Click -= WhenClick;
+            _source.Click += WhenClick;
+            _source.Leave -= WhenLeave;
+            _source.Leave += WhenLeave;
         }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Message
+        ///
+        /// <summary>
+        /// Get or set the message when entering an invalid character.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Message
+        {
+            get => _tips.ToolTipTitle;
+            set => _tips.ToolTipTitle = value;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InvalidChars
+        ///
+        /// <summary>
+        /// Get a list of characters that cannot be included in a path.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public char[] InvalidChars { get; } = new[] { '/', '*', '"', '<', '>', '|', '?', ':' };
 
         #endregion
 
@@ -124,16 +134,15 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         private void WhenTextChanged(object s, EventArgs e)
         {
-            _tips.Hide(_source);
-
-            var index = _source.Text.IndexOfAny(_chars);
-            if (index == 1 && _source.Text[1] == ':') index = _source.Text.IndexOfAny(_chars, 2);
+            var index = _source.Text.IndexOfAny(InvalidChars);
+            if (index == 1 && _source.Text[1] == ':') index = _source.Text.IndexOfAny(InvalidChars, 2);
             if (index >= 0)
             {
                 var pos = _source.SelectionStart;
+                var str = InvalidChars.Select(e => e.ToString()).Aggregate((x, y) => $"{x} {y}");
                 _source.Text = _source.Text.Remove(index, 1);
                 _source.SelectionStart = Math.Max(pos - 1, 0);
-                _tips.Show(_message, _source, 3000);
+                _tips.Show(str, _source, 3000);
             }
         }
 
@@ -173,9 +182,7 @@ namespace Cube.Forms.Behaviors
 
         #region Fields
         private readonly TextBox _source;
-        private readonly ToolTip _tips;
-        private readonly char[]  _chars;
-        private readonly string  _message;
+        private readonly ToolTip _tips = new();
         private bool _focus = false;
         #endregion
     }

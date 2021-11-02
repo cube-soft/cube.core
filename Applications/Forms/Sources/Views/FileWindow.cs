@@ -44,7 +44,11 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public FileWindow() => InitializeComponent();
+        public FileWindow()
+        {
+            InitializeComponent();
+            ActiveControl = PathTextBox;
+        }
 
         #endregion
 
@@ -73,6 +77,7 @@ namespace Cube.Forms.Demo
             Behaviors.Add(new OpenFileBehavior(vm));
             Behaviors.Add(new SaveFileBehavior(vm));
             Behaviors.Add(new OpenDirectoryBehavior(vm));
+            Behaviors.Add(new PathLintBehavior(PathTextBox));
         }
 
         #endregion

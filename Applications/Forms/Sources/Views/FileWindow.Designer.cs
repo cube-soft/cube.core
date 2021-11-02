@@ -56,7 +56,7 @@ namespace Cube.Forms.Demo
             this.RootPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.RootPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.RootPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
-            this.RootPanel.Size = new System.Drawing.Size(484, 121);
+            this.RootPanel.Size = new System.Drawing.Size(534, 121);
             this.RootPanel.TabIndex = 0;
             //
             // ButtonsPanel
@@ -80,13 +80,13 @@ namespace Cube.Forms.Demo
             this.ButtonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
             this.ButtonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.ButtonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
-            this.ButtonsPanel.Size = new System.Drawing.Size(484, 54);
+            this.ButtonsPanel.Size = new System.Drawing.Size(534, 54);
             this.ButtonsPanel.TabIndex = 0;
             //
             // OpenFileButton
             //
             this.OpenFileButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OpenFileButton.Location = new System.Drawing.Point(28, 12);
+            this.OpenFileButton.Location = new System.Drawing.Point(78, 12);
             this.OpenFileButton.Name = "OpenFileButton";
             this.OpenFileButton.Size = new System.Drawing.Size(144, 30);
             this.OpenFileButton.TabIndex = 0;
@@ -96,7 +96,7 @@ namespace Cube.Forms.Demo
             // SaveFileButton
             //
             this.SaveFileButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SaveFileButton.Location = new System.Drawing.Point(178, 12);
+            this.SaveFileButton.Location = new System.Drawing.Point(228, 12);
             this.SaveFileButton.Name = "SaveFileButton";
             this.SaveFileButton.Size = new System.Drawing.Size(144, 30);
             this.SaveFileButton.TabIndex = 1;
@@ -106,7 +106,7 @@ namespace Cube.Forms.Demo
             // OpenDirectoryButton
             //
             this.OpenDirectoryButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OpenDirectoryButton.Location = new System.Drawing.Point(328, 12);
+            this.OpenDirectoryButton.Location = new System.Drawing.Point(378, 12);
             this.OpenDirectoryButton.Name = "OpenDirectoryButton";
             this.OpenDirectoryButton.Size = new System.Drawing.Size(144, 30);
             this.OpenDirectoryButton.TabIndex = 2;
@@ -118,14 +118,14 @@ namespace Cube.Forms.Demo
             this.PathTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PathTextBox.Location = new System.Drawing.Point(23, 23);
             this.PathTextBox.Name = "PathTextBox";
-            this.PathTextBox.Size = new System.Drawing.Size(438, 23);
-            this.PathTextBox.TabIndex = 1;
+            this.PathTextBox.Size = new System.Drawing.Size(488, 23);
+            this.PathTextBox.TabIndex = 0;
             //
             // FileWindow
             //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(484, 121);
+            this.ClientSize = new System.Drawing.Size(534, 121);
             this.Controls.Add(this.RootPanel);
             this.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
