@@ -84,7 +84,7 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) _subscriber.Dispose();
+            if (disposing) _subscriber?.Dispose();
         }
 
         #endregion

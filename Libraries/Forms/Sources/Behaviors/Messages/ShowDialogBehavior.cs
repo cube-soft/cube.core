@@ -28,7 +28,8 @@ namespace Cube.Forms.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> :
+        MessageBehavior<CancelMessage<TViewModel>>
         where TView : Form, new()
         where TViewModel : IBindable
     {
@@ -47,8 +48,8 @@ namespace Cube.Forms.Behaviors
         public ShowDialogBehavior(IBindable vm) : base(vm, e =>
         {
             using var view = new TView();
-            if (view is IBinder binder) binder.Bind(e);
-            _ = view.ShowDialog();
+            if (view is IBinder binder) binder.Bind(e.Value);
+            e.Cancel = view.ShowDialog() == DialogResult.Cancel;
         }) { }
     }
 }

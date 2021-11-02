@@ -29,7 +29,8 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> :
+        MessageBehavior<CancelMessage<TViewModel>>
         where TView : Window, new()
     {
         /* ----------------------------------------------------------------- */
@@ -41,11 +42,11 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e)
+        protected override void Invoke(CancelMessage<TViewModel> e)
         {
-            var dest = new TView { DataContext = e };
+            var dest = new TView { DataContext = e.Value };
             if (AssociatedObject is Window wnd) dest.Owner = wnd;
-            _ = dest.ShowDialog();
+            e.Cancel = !dest.ShowDialog() ?? true;
         }
     }
 }
