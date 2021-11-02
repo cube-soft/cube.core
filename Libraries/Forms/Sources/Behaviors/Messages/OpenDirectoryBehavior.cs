@@ -16,39 +16,42 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Windows.Forms;
+using Cube.Mixin.String;
 
 namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior
+    /// OpenDirectoryBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a window.
+    /// Provides functionality to show a directory dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Form, new()
-        where TViewModel : IBindable
+    public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowBehavior
+        /// OpenDirectoryBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowBehavior class with the
-        /// specified arguments.
+        /// Initializes a new instance of the OpenDirectoryBehavior class
+        /// with the specified presentable object.
         /// </summary>
         ///
-        /// <param name="vm">Bindable object.</param>
+        /// <param name="aggregator">Presentable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IBindable vm) : base(vm, e =>
+        public OpenDirectoryBehavior(IAggregator aggregator) : base(aggregator, e =>
         {
-            var view = new TView();
-            if (view is IBinder binder) binder.Bind(e);
-            view.Show();
+            var view = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+
+            if (e.Text.HasValue()) view.Description = e.Text;
+            if (e.Value.HasValue()) view.SelectedPath = e.Value;
+
+            e.Cancel = view.ShowDialog() != DialogResult.OK;
+            if (!e.Cancel) e.Value = view.SelectedPath;
         }) { }
     }
 }

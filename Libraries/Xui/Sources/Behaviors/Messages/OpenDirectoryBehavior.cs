@@ -15,40 +15,40 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows.Forms;
+using Cube.Mixin.String;
+using Forms = System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior
+    /// OpenDirectoryBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a window.
+    /// Represents the behavior to show a dialog using an OpenDirectoryMessage.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Form, new()
-        where TViewModel : IBindable
+    public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowBehavior
+        /// Invoke
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowBehavior class with the
-        /// specified arguments.
+        /// Invokes the action.
         /// </summary>
         ///
-        /// <param name="vm">Bindable object.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IBindable vm) : base(vm, e =>
+        protected override void Invoke(OpenDirectoryMessage e)
         {
-            var view = new TView();
-            if (view is IBinder binder) binder.Bind(e);
-            view.Show();
-        }) { }
+            var view = new Forms.FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+
+            if (e.Text.HasValue()) view.Description = e.Text;
+            if (e.Value.HasValue()) view.SelectedPath = e.Value;
+
+            e.Cancel = view.ShowDialog() != Forms.DialogResult.OK;
+            if (!e.Cancel) e.Value = view.SelectedPath;
+        }
     }
 }

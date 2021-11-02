@@ -21,34 +21,34 @@ namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior
+    /// ShowDialogBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a window.
+    /// Provides functionality to show a window as a modal dialog.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Form, new()
         where TViewModel : IBindable
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowBehavior
+        /// ShowDialogBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowBehavior class with the
-        /// specified arguments.
+        /// Initializes a new instance of the ShowDialogBehavior class
+        /// with the specified arguments.
         /// </summary>
         ///
         /// <param name="vm">Bindable object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IBindable vm) : base(vm, e =>
+        public ShowDialogBehavior(IBindable vm) : base(vm, e =>
         {
-            var view = new TView();
+            using var view = new TView();
             if (view is IBinder binder) binder.Bind(e);
-            view.Show();
+            _ = view.ShowDialog();
         }) { }
     }
 }

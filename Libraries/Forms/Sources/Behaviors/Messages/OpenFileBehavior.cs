@@ -15,67 +15,51 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+using System.Linq;
+using System.Windows.Forms;
+using Cube.Mixin.String;
 
 namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageBehavior(TMessage)
+    /// OpenFileBehavior
     ///
     /// <summary>
-    /// Provides functionality to invoke the provided action when the
-    /// message is received.
+    /// Provides functionality to show a open-file dialog.
     /// </summary>
     ///
-    /// <typeparam name="TMessage">Message type.</typeparam>
-    ///
     /* --------------------------------------------------------------------- */
-    public class MessageBehavior<TMessage> : MessageBehaviorBase<TMessage>
+    public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
     {
-        #region Constructors
-
         /* ----------------------------------------------------------------- */
         ///
-        /// MessageBehavior
+        /// OpenFileBehavior
         ///
         /// <summary>
-        /// Initializes a new instance of the MessageBehavior class
-        /// with the specified arguments.
+        /// Initializes a new instance of the OpenFileBehavior class
+        /// with the specified presentable object.
         /// </summary>
         ///
         /// <param name="aggregator">Aggregator object.</param>
-        /// <param name="action">
-        /// Action to be invoked when a message is received.
-        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBehavior(IAggregator aggregator, Action<TMessage> action) : base(aggregator)
+        public OpenFileBehavior(IAggregator aggregator) : base(aggregator, e =>
         {
-            _action = action;
-        }
+            var view = new OpenFileDialog
+            {
+                CheckPathExists = e.CheckPathExists,
+                Multiselect     = e.Multiselect,
+                Filter          = e.GetFilterText(),
+                FilterIndex     = e.GetFilterIndex(),
+            };
 
-        #endregion
+            if (e.Text.HasValue()) view.Title = e.Text;
+            if (e.Value.Any()) view.FileName = e.Value.First();
+            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the user action.
-        /// </summary>
-        ///
-        /// <param name="message">Message object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(TMessage message) => _action(message);
-
-        #endregion
-
-        #region Fields
-        private readonly Action<TMessage> _action;
-        #endregion
+            e.Cancel = view.ShowDialog() != DialogResult.OK;
+            if (!e.Cancel) e.Value = view.FileNames;
+        }) { }
     }
 }

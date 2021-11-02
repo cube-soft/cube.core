@@ -21,17 +21,17 @@ namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageBehavior(TMessage)
+    /// MessageBehaviorBase(TMessage)
     ///
     /// <summary>
-    /// Provides functionality to invoke the provided action when the
-    /// message is received.
+    /// Represents the behavior that communicates with a presentable
+    /// object via a message.
     /// </summary>
     ///
     /// <typeparam name="TMessage">Message type.</typeparam>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessageBehavior<TMessage> : MessageBehaviorBase<TMessage>
+    public abstract class MessageBehaviorBase<TMessage> : DisposableBase
     {
         #region Constructors
 
@@ -41,19 +41,14 @@ namespace Cube.Forms.Behaviors
         ///
         /// <summary>
         /// Initializes a new instance of the MessageBehavior class
-        /// with the specified arguments.
+        /// with the specified presentable object.
         /// </summary>
         ///
         /// <param name="aggregator">Aggregator object.</param>
-        /// <param name="action">
-        /// Action to be invoked when a message is received.
-        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        public MessageBehavior(IAggregator aggregator, Action<TMessage> action) : base(aggregator)
-        {
-            _action = action;
-        }
+        protected MessageBehaviorBase(IAggregator aggregator) =>
+            _subscriber = aggregator.Subscribe<TMessage>(Invoke);
 
         #endregion
 
@@ -70,12 +65,32 @@ namespace Cube.Forms.Behaviors
         /// <param name="message">Message object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(TMessage message) => _action(message);
+        protected abstract void Invoke(TMessage message);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Dispose
+        ///
+        /// <summary>
+        /// Releases the unmanaged resources used by the object and
+        /// optionally releases the managed resources.
+        /// </summary>
+        ///
+        /// <param name="disposing">
+        /// true to release both managed and unmanaged resources;
+        /// false to release only unmanaged resources.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) _subscriber.Dispose();
+        }
 
         #endregion
 
         #region Fields
-        private readonly Action<TMessage> _action;
+        private readonly IDisposable _subscriber;
         #endregion
     }
 }

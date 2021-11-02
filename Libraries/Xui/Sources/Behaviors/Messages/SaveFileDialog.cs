@@ -15,40 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows.Forms;
+using Cube.Mixin.String;
+using Microsoft.Win32;
 
-namespace Cube.Forms.Behaviors
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior
+    /// SaveFileBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a window.
+    /// Represents the behavior to show a dialog using a SaveFileMessage.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Form, new()
-        where TViewModel : IBindable
+    public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// ShowBehavior
+        /// Invoke
         ///
         /// <summary>
-        /// Initializes a new instance of the ShowBehavior class with the
-        /// specified arguments.
+        /// Invokes the action.
         /// </summary>
         ///
-        /// <param name="vm">Bindable object.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public ShowBehavior(IBindable vm) : base(vm, e =>
+        protected override void Invoke(SaveFileMessage e)
         {
-            var view = new TView();
-            if (view is IBinder binder) binder.Bind(e);
-            view.Show();
-        }) { }
+            var view = new SaveFileDialog
+            {
+                CheckPathExists = e.CheckPathExists,
+                OverwritePrompt = e.OverwritePrompt,
+                Filter          = e.GetFilterText(),
+                FilterIndex     = e.GetFilterIndex(),
+            };
+
+            if (e.Text.HasValue()) view.Title = e.Text;
+            if (e.Value.HasValue()) view.FileName = e.Value;
+            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
+
+            e.Cancel = !view.ShowDialog() ?? true;
+            if (!e.Cancel) e.Value = view.FileName;
+        }
     }
 }
