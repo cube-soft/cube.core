@@ -16,13 +16,10 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Cube
 {
-    #region PresentableBase
-
     /* --------------------------------------------------------------------- */
     ///
     /// PresentableBase
@@ -157,8 +154,6 @@ namespace Cube
             if (disposing) Assets.Dispose();
         }
 
-        #region Send
-
         /* ----------------------------------------------------------------- */
         ///
         /// Send
@@ -174,23 +169,6 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Send
-        ///
-        /// <summary>
-        /// Sends a default message of type T.
-        /// </summary>
-        ///
-        /// <typeparam name="T">Message type.</typeparam>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Send<T>() where T : new() => Send(new T());
-
-        #endregion
-
-        #region Post
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Post
         ///
         /// <summary>
@@ -202,21 +180,6 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected void Post<T>(T message) => _post.Invoke(() => Aggregator.Publish(message));
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Post
-        ///
-        /// <summary>
-        /// Posts a default message of type T.
-        /// </summary>
-        ///
-        /// <typeparam name="T">Message type.</typeparam>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Post<T>() where T : new() => Post(new T());
-
-        #endregion
-
         #endregion
 
         #region Fields
@@ -224,6 +187,4 @@ namespace Cube
         private readonly Dispatcher _post;
         #endregion
     }
-
-    #endregion
 }

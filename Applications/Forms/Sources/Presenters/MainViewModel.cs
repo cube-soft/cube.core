@@ -104,7 +104,7 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void Close() => Send<CloseMessage>();
+        public void Close() => Send(new CloseMessage());
 
         /* --------------------------------------------------------------------- */
         ///

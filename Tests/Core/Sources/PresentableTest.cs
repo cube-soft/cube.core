@@ -291,8 +291,8 @@ namespace Cube.Tests
                 Assert.That(Context, Is.Not.Null);
                 Observe();
             }
-            public void PostMessage<T>() where T : new() => Post<T>();
-            public void SendMessage<T>() where T : new() => Send<T>();
+            public void PostMessage<T>() where T : new() => Post(new T());
+            public void SendMessage<T>() where T : new() => Send(new T());
             public void SendMessage<T>(T m) => Send(m);
             public void TrackSync(Action e) => Track(e, true);
             public void TrackAsync(params Action[] e) => Track(e);
