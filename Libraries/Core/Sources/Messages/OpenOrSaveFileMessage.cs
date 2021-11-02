@@ -132,7 +132,7 @@ namespace Cube
             if (!src.HasValue()) return 0;
 
             var opt = StringComparison.InvariantCultureIgnoreCase;
-            return Filters.Select((e, i) => KeyValuePair.Create(i + 1, e.Targets))
+            return Filters.Select((e, i) => KeyValue.Make(i + 1, e.Targets))
                           .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
                           .Key;
         }

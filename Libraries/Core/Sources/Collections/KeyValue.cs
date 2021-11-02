@@ -21,20 +21,20 @@ namespace Cube.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// KeyValuePair
+    /// KeyValue
     ///
     /// <summary>
     /// Provides factory methods of the KeyValuePair(T, U) class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class KeyValuePair
+    public static class KeyValue
     {
         #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Make
         ///
         /// <summary>
         /// Creates a new instance of the KeyValuePair(T, U) class with the
@@ -47,7 +47,7 @@ namespace Cube.Collections
         /// <returns>KeyValuePair(T, U) object.</returns>
         ///
         /* ----------------------------------------------------------------- */
-        public static KeyValuePair<T, U> Create<T, U>(T key, U value) => new(key, value);
+        public static KeyValuePair<T, U> Make<T, U>(T key, U value) => new(key, value);
 
         #endregion
     }
