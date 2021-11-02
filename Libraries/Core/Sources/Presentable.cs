@@ -281,9 +281,9 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         private void RunCore(IEnumerable<Action> actions, bool synchronous)
         {
-            void invoke() { foreach (var e in actions) e(); }
-            if (synchronous) RunCore(invoke);
-            else Task.Run(() => RunCore(invoke)).Forget();
+            void invoke() { foreach (var e in actions) RunCore(e); }
+            if (synchronous) invoke();
+            else Task.Run(invoke).Forget();
         }
 
         /* ----------------------------------------------------------------- */
