@@ -15,8 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-
 namespace Cube.Forms.Behaviors
 {
     /* --------------------------------------------------------------------- */
@@ -48,7 +46,22 @@ namespace Cube.Forms.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         protected MessageBehaviorBase(IAggregator aggregator) =>
-            _subscriber = aggregator.Subscribe<TMessage>(Invoke);
+            Assets.Add(aggregator.Subscribe<TMessage>(Invoke));
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Assets
+        ///
+        /// <summary>
+        /// Gets the collection to dispose.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected DisposableContainer Assets { get; } = new();
 
         #endregion
 
@@ -84,13 +97,9 @@ namespace Cube.Forms.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void Dispose(bool disposing)
         {
-            if (disposing) _subscriber?.Dispose();
+            if (disposing) Assets.Dispose();
         }
 
-        #endregion
-
-        #region Fields
-        private readonly IDisposable _subscriber;
         #endregion
     }
 }

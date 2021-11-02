@@ -51,9 +51,21 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected abstract void Invoke(TMessage e);
 
-        #endregion
-
-        #region Methods
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnSubscribe
+        ///
+        /// <summary>
+        /// Subscribes the action defined by inherited classes.
+        /// </summary>
+        ///
+        /// <param name="src">Source aggregator.</param>
+        ///
+        /// <returns>Object to dispose.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual IDisposable OnSubscribe(IAggregator src) =>
+            src?.Subscribe<TMessage>(Invoke);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -67,9 +79,9 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            Subscribe();
-            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
-            AssociatedObject.DataContextChanged += WhenDataContextChanged;
+            Reset();
+            AssociatedObject.DataContextChanged -= WhenContextChanged;
+            AssociatedObject.DataContextChanged += WhenContextChanged;
         }
 
         /* ----------------------------------------------------------------- */
@@ -84,7 +96,7 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            AssociatedObject.DataContextChanged -= WhenDataContextChanged;
+            AssociatedObject.DataContextChanged -= WhenContextChanged;
             _subscriber?.Dispose();
             base.OnDetaching();
         }
@@ -98,22 +110,19 @@ namespace Cube.Xui.Behaviors
         /// Subscribe
         ///
         /// <summary>
-        /// Subscribes the action that is defined by inherited classes.
+        /// Resets the subscriptions.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void Subscribe()
+        private void Reset()
         {
             _subscriber?.Dispose();
-            _subscriber = AssociatedObject
-                ?.DataContext
-                ?.TryCast<IAggregator>()
-                ?.Subscribe<TMessage>(Invoke);
+            _subscriber = OnSubscribe(AssociatedObject?.DataContext?.TryCast<IAggregator>());
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// WhenDataContextChanged
+        /// WhenContextChanged
         ///
         /// <summary>
         /// Occurs when the DataContext property of the AssociatedObject
@@ -121,7 +130,7 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void WhenDataContextChanged(object s, DependencyPropertyChangedEventArgs e) => Subscribe();
+        private void WhenContextChanged(object s, DependencyPropertyChangedEventArgs e) => Reset();
 
         #endregion
 
