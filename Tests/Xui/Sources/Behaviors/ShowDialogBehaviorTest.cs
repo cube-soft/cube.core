@@ -15,37 +15,44 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows;
+using System.Threading;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior(TView, TViewModel)
+    /// ShowBehaviorTest
     ///
     /// <summary>
-    /// Represents the behavior to show a TView window using a TViewModel
-    /// message.
+    /// Tests the ShowBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Window, new()
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class ShowDialogBehaviorTest : ViewFixture
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Test
         ///
         /// <summary>
-        /// Invokes the action.
+        /// Tests the create, attach, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e)
+        [Test]
+        public void Test()
         {
-            var dest = new TView { DataContext = e };
-            if (AssociatedObject is Window wnd) dest.Owner = wnd;
-            dest.Show();
+            var view = Hack(new MockWindow());
+            var src  = Attach(view, new ShowDialogBehavior<MockWindow, MockViewModel>());
+            src.Detach();
         }
+
+        #endregion
     }
 }

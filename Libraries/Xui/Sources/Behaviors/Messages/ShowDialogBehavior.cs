@@ -21,7 +21,7 @@ namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior(TView, TViewModel)
+    /// ShowDialogBehavior(TView, TViewModel)
     ///
     /// <summary>
     /// Represents the behavior to show a TView window using a TViewModel
@@ -29,7 +29,7 @@ namespace Cube.Xui.Behaviors
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
+    public class ShowDialogBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
         where TView : Window, new()
     {
         /* ----------------------------------------------------------------- */
@@ -45,7 +45,7 @@ namespace Cube.Xui.Behaviors
         {
             var dest = new TView { DataContext = e };
             if (AssociatedObject is Window wnd) dest.Owner = wnd;
-            dest.Show();
+            _ = dest.ShowDialog();
         }
     }
 }

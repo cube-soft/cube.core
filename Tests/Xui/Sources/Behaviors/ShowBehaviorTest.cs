@@ -38,7 +38,7 @@ namespace Cube.Xui.Tests.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Test
         ///
         /// <summary>
         /// Tests the create, attach, and detach methods.
@@ -46,16 +46,10 @@ namespace Cube.Xui.Tests.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create()
+        public void Test()
         {
             var view = Hack(new MockWindow());
             var src  = Attach(view, new ShowBehavior<MockWindow, MockViewModel>());
-
-            Assert.That(src.Modal, Is.False);
-            src.Modal = true;
-            src.Modal = true;
-            Assert.That(src.Modal, Is.True);
-
             src.Detach();
         }
 
