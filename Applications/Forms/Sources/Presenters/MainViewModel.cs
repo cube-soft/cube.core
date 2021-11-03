@@ -28,7 +28,7 @@ namespace Cube.Forms.Demo
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MainViewModel : Presentable<MainFacade>
+    public class MainViewModel : PresentableBase<MainFacade>
     {
         #region Constructors
 

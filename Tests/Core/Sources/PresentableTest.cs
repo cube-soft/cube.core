@@ -282,7 +282,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private class Presenter : Presentable<Person>
+        private class Presenter : PresentableBase<Person>
         {
             public Presenter() : base(new()) { Observe(); }
             public Presenter(SynchronizationContext ctx) : base(new(), new(), ctx) {

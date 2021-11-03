@@ -30,7 +30,7 @@ namespace Cube.Xui.Tests
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    class MockViewModel : Presentable<Person>
+    class MockViewModel : PresentableBase<Person>
     {
         /* ----------------------------------------------------------------- */
         ///
