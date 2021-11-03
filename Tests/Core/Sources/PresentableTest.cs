@@ -40,23 +40,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Init_Throws
-        ///
-        /// <summary>
-        /// Tests to create a new instance of the PresentableBase inherited
-        /// class when the SynchronizationContext.Current is null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init_Throws()
-        {
-            Assert.That(SynchronizationContext.Current, Is.Null);
-            Assert.That(() => new Presenter(), Throws.ArgumentNullException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Subscribe
         ///
         /// <summary>
@@ -108,56 +91,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Run
-        ///
-        /// <summary>
-        /// Tests the Run method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Run()
-        {
-            var dest = default(DialogMessage);
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => dest = e))
-            {
-                src.RunAsync(() => { /* OK */ });
-                src.RunSync(() => throw new OperationCanceledException("Ignore"));
-                src.RunSync(() => throw new ArgumentException(nameof(Run)));
-            }
-
-            Assert.That(dest.Text,    Does.StartWith(nameof(Run)));
-            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Run_WithParams
-        ///
-        /// <summary>
-        /// Tests the Run method with multiple actions.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Run_WithParams()
-        {
-            var n = 0;
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => n++))
-            {
-                src.RunAsync(() => throw new ArgumentException(), () => n++);
-                Task.Delay(200).Wait();
-            }
-            Assert.That(n, Is.EqualTo(2));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Send_WithCancelMessage
         ///
         /// <summary>
@@ -194,6 +127,92 @@ namespace Cube.Tests
         {
             using var src = new Presenter(new());
             Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Run
+        ///
+        /// <summary>
+        /// Tests the Run method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Run()
+        {
+            var dest = default(DialogMessage);
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => dest = e))
+            {
+                src.RunSync(() => throw new OperationCanceledException("Ignore"));
+                src.RunSync(() => throw new ArgumentException(nameof(Run)));
+            }
+
+            Assert.That(dest.Text, Does.StartWith(nameof(Run)));
+            Assert.That(dest.Title, Is.Not.Null.And.Not.Empty);
+            Assert.That(dest.Icon, Is.EqualTo(DialogIcon.Error));
+            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(dest.Value, Is.EqualTo(DialogStatus.Ok));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Run2
+        ///
+        /// <summary>
+        /// Tests the Run method with two actions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Run2()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => n++))
+            {
+                src.RunSync(() => throw new ArgumentException(), () => n *= 10);
+            }
+            Assert.That(n, Is.EqualTo(10));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Close
+        ///
+        /// <summary>
+        /// Tests the Close method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Close()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<CloseMessage>(e => n *= 10))
+            {
+                src.RunClose(() => n++);
+            }
+            Assert.That(n, Is.EqualTo(10));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Init_Throws
+        ///
+        /// <summary>
+        /// Tests to create a new instance of the PresentableBase inherited
+        /// class when the SynchronizationContext.Current is null.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Init_Throws()
+        {
+            Assert.That(SynchronizationContext.Current, Is.Null);
+            Assert.That(() => new Presenter(), Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -273,9 +292,10 @@ namespace Cube.Tests
             public void PostMessage<T>() where T : new() => Post(new T());
             public void SendMessage<T>() where T : new() => Send(new T());
             public void SendMessage<T>(T m) => Send(m);
-            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e);
+            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e, true);
             public void RunSync(Action e) => Run(e, true);
-            public void RunAsync(params Action[] e) => Run(e);
+            public void RunSync(Action e0, Action e1) => Run(e0, e1, true);
+            public void RunClose(Action e) => Close(e, true);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
             public string Value { get => Get<string>(); set => Set(value); }

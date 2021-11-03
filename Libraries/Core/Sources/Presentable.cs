@@ -158,16 +158,22 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="message">Message to be sent.</param>
+        ///
         /// <param name="next">
         /// Action to be invoked if the Cancel property of the message is
         /// set to false.
         /// </param>
         ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(CancelMessage<T> message, Action<T> next)
+        protected void Send<T>(CancelMessage<T> message, Action<T> next, bool synchronous)
         {
-            Send(message);
-            if (!message.Cancel) next(message.Value);
+            RunCore(() => Send(message));
+            if (!message?.Cancel ?? false) Run(() => next(message.Value), synchronous);
         }
 
         /* ----------------------------------------------------------------- */
@@ -181,37 +187,23 @@ namespace Cube
         /// </summary>
         ///
         /// <param name="src">Source bindable object.</param>
+        ///
         /// <param name="next">
         /// Action to be invoked if the Cancel property is set to false.
         /// </param>
         ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>(T src, Action<T> next) where T : IBindable =>
-            Send(new CancelMessage<T>() { Value = src }, next);
+        protected void Send<T>(T src, Action<T> next, bool synchronous) where T : IBindable =>
+            Send(new CancelMessage<T>() { Value = src }, next, synchronous);
 
         #endregion
 
         #region Run
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Run
-        ///
-        /// <summary>
-        /// Invokes the specified actions as an asynchronous method, and
-        /// will send the error message if any exceptions are thrown.
-        /// All the specified actions will always be invoked.
-        /// If an action throws an exception, the method will send a
-        /// DialogMessage object corresponding to the exception, and then
-        /// invoke the next action.
-        /// </summary>
-        ///
-        /// <param name="actions">Sequence of actions to be invoked.</param>
-        ///
-        /// <returns>Task object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void Run(params Action[] actions) => RunCore(actions, false);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -234,6 +226,33 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected void Run(Action action, bool synchronous) =>
             RunCore(action.ToEnumerable(), synchronous);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Run
+        ///
+        /// <summary>
+        /// Invokes the specified actions, and will send the error message
+        /// if any exceptions are thrown. The next action will always be
+        /// invoked even if the first specified action throws an exception.
+        /// </summary>
+        ///
+        /// <param name="first">Action to be invoked.</param>
+        ///
+        /// <param name="next">
+        /// Action to be invoked afetr the first specified action has finished.
+        /// The action will always be invoked even if the first specified
+        /// action throws an exception.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke both of the specified actions
+        /// as synchronous methods.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Run(Action first, Action next, bool synchronous) =>
+            RunCore(new[] { first, next }, synchronous);
 
         #endregion
 
