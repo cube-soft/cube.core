@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using Cube.Mixin.Generics;
+using Cube.Mixin.Generic;
 
 namespace Cube.DataContract
 {

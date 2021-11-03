@@ -21,6 +21,7 @@ using System.Linq;
 using Cube.Collections;
 using Cube.FileSystem;
 using Cube.Mixin.Collections;
+using Cube.Mixin.Collections.Generic;
 using Cube.Mixin.String;
 
 namespace Cube

@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Mixin.Generics;
+using Cube.Mixin.Generic;
 using Microsoft.Win32;
 
 namespace Cube.Mixin.Registry

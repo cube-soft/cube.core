@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.Collections;
+using Cube.Mixin.Collections.Generic;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 

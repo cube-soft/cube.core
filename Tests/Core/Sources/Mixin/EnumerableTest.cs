@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.Collections;
+using Cube.Mixin.Collections.Generic;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Syntax;
 using NUnit.Framework;
@@ -317,6 +318,7 @@ namespace Cube.Tests.Mixin
             Assert.That(src.Concat(10, 20).Count(), Is.EqualTo(12));
             Assert.That(src.Concat(30).Count(),     Is.EqualTo(11));
             Assert.That(src.Concat().Count(),       Is.EqualTo(10));
+            Assert.That(1.Concat(2, 3, 4).Count(),  Is.EqualTo(4));
         }
 
         #endregion

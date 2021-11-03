@@ -20,7 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
-using Cube.Mixin.Generics;
+using Cube.Mixin.Generic;
 using NUnit.Framework;
 
 namespace Cube.Tests.Collections

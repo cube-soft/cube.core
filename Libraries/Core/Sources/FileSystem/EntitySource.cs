@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.IO;
-using Cube.Mixin.Generics;
+using Cube.Mixin.Generic;
 
 namespace Cube.FileSystem
 {
