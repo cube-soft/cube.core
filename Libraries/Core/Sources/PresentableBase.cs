@@ -16,10 +16,8 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Collections;
 using Cube.Mixin.Tasks;
 
 namespace Cube
@@ -231,7 +229,7 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         protected void Send<T>(CancelMessage<T> message, Action<T> next, bool synchronous)
         {
-            RunCore(() => Send(message));
+            Run(true, () => Send(message));
             if (!message?.Cancel ?? false) Run(() => next(message.Value), synchronous);
         }
 
@@ -283,8 +281,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Run(Action action, bool synchronous) =>
-            RunCore(action.ToEnumerable(), synchronous);
+        protected void Run(Action action, bool synchronous) => Run(synchronous, action);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -311,7 +308,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected void Run(Action first, Action next, bool synchronous) =>
-            RunCore(new[] { first, next }, synchronous);
+            Run(synchronous, first, next);
 
         #endregion
 
@@ -336,7 +333,7 @@ namespace Cube
         ///
         /* ----------------------------------------------------------------- */
         protected void Close(Action action, bool synchronous) =>
-            RunCore(new[] { action, () => Send(new CloseMessage()) }, synchronous);
+            Run(synchronous, action, () => Send(new CloseMessage()));
 
         #endregion
 
@@ -346,7 +343,7 @@ namespace Cube
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RunCore
+        /// Run
         ///
         /// <summary>
         /// Invokes the specified actions and will send the error message
@@ -357,31 +354,23 @@ namespace Cube
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private void RunCore(IEnumerable<Action> actions, bool synchronous)
+        private void Run(bool synchronous, params Action[] actions)
         {
-            void invoke() { foreach (var e in actions) RunCore(e); }
+            void invoke()
+            {
+                foreach (var action in actions)
+                {
+                    try { action(); }
+                    catch (Exception e)
+                    {
+                        GetType().LogWarn(e);
+                        if (OnMessage(e) is DialogMessage msg) Send(msg);
+                    }
+                }
+            }
+
             if (synchronous) invoke();
             else Task.Run(invoke).Forget();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RunCore
-        ///
-        /// <summary>
-        /// Invokes the specified action, and will send the error message
-        /// if any exceptions are thrown.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void RunCore(Action action)
-        {
-            try { action(); }
-            catch (Exception e)
-            {
-                GetType().LogWarn(e);
-                if (OnMessage(e) is DialogMessage msg) Send(msg);
-            }
         }
 
         #endregion
