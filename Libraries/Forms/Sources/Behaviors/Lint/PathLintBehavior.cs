@@ -44,18 +44,36 @@ namespace Cube.Forms.Behaviors
         /// the specified control.
         /// </summary>
         ///
-        /// <param name="src">Textbox control.</param>
+        /// <param name="src">TextBox control.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public PathLintBehavior(TextBox src)
+        public PathLintBehavior(TextBox src) : this(src, new()
         {
-            _tips.ToolTipTitle = "Path cannot contain any of the following characters";
-            _tips.IsBalloon    = false;
-            _tips.InitialDelay = 100;
-            _tips.ReshowDelay  = 100;
-            _tips.AutoPopDelay = 1000;
+            ToolTipTitle = "Path cannot contain any of the following characters",
+            IsBalloon    = false,
+            InitialDelay = 100,
+            ReshowDelay  = 100,
+            AutoPopDelay = 1000,
+        }) { }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// PathLintBehavior
+        ///
+        /// <summary>
+        /// Initializes a new instance of the PathLintBehavior class with
+        /// the specified controls.
+        /// </summary>
+        ///
+        /// <param name="src">TextBox control.</param>
+        /// <param name="tips">ToolTip control.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public PathLintBehavior(TextBox src, ToolTip tips)
+        {
             _source = src;
+            _tips   = tips;
+
             _source.TextChanged -= WhenTextChanged;
             _source.TextChanged += WhenTextChanged;
             _source.Click -= WhenClick;
@@ -70,14 +88,14 @@ namespace Cube.Forms.Behaviors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Message
+        /// Text
         ///
         /// <summary>
         /// Get or set the message when entering an invalid character.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Message
+        public string Text
         {
             get => _tips.ToolTipTitle;
             set => _tips.ToolTipTitle = value;
@@ -182,7 +200,7 @@ namespace Cube.Forms.Behaviors
 
         #region Fields
         private readonly TextBox _source;
-        private readonly ToolTip _tips = new();
+        private readonly ToolTip _tips;
         private bool _focus = false;
         #endregion
     }
