@@ -374,7 +374,7 @@ namespace Cube.Collections
         /* --------------------------------------------------------------------- */
         public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => ((IEnumerable)_core)
             .Cast<DictionaryEntry>()
-            .Select(e => KeyValue.Make((TKey)e.Key, (TValue)e.Value))
+            .Select(e => new KeyValuePair<TKey, TValue>((TKey)e.Key, (TValue)e.Value))
             .GetEnumerator();
 
         #endregion

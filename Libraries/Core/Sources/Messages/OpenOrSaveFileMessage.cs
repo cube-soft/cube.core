@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cube.Collections;
 using Cube.FileSystem;
 using Cube.Mixin.Collections;
 using Cube.Mixin.Collections.Generic;
@@ -133,7 +132,7 @@ namespace Cube
             if (!src.HasValue()) return 0;
 
             var opt = StringComparison.InvariantCultureIgnoreCase;
-            return Filters.Select((e, i) => KeyValue.Make(i + 1, e.Targets))
+            return Filters.Select((e, i) => new KeyValuePair<int, IEnumerable<string>>(i + 1, e.Targets))
                           .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
                           .Key;
         }

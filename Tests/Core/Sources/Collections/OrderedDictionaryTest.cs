@@ -153,7 +153,7 @@ namespace Cube.Tests.Collections
         [TestCase("",      "Torvalds", ExpectedResult = false)]
         [TestCase(null,   null,        ExpectedResult = false)]
         public bool Remove(string key, string value) =>
-            Create().Remove(KeyValue.Make(key, value));
+            Create().Remove(new KeyValuePair<string, string>(key, value));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -242,7 +242,7 @@ namespace Cube.Tests.Collections
             Assert.That(() => values.Add("a"), Throws.TypeOf<NotSupportedException>());
 
             src.Add("Bjarne", "Stroustrup");
-            src.Add(KeyValue.Make("Anders", "Hejlsberg"));
+            src.Add(new("Anders", "Hejlsberg"));
             Assert.That(src.Count,    Is.EqualTo(7));
             Assert.That(keys.Count,   Is.EqualTo(5));
             Assert.That(values.Count, Is.EqualTo(5));
