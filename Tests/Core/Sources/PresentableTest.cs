@@ -295,7 +295,7 @@ namespace Cube.Tests
             public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e, true);
             public void RunSync(Action e) => Run(e, true);
             public void RunSync(Action e0, Action e1) => Run(e0, e1, true);
-            public void RunClose(Action e) => Close(e, true);
+            public void RunClose(Action e) => Quit(e, true);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
             public string Value { get => Get<string>(); set => Set(value); }

@@ -312,11 +312,11 @@ namespace Cube
 
         #endregion
 
-        #region Close
+        #region Quit
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Close
+        /// Quit
         ///
         /// <summary>
         /// Invokes the specified action, and finally sends the close message.
@@ -332,7 +332,7 @@ namespace Cube
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Close(Action action, bool synchronous) =>
+        protected void Quit(Action action, bool synchronous) =>
             Run(synchronous, action, () => Send(new CloseMessage()));
 
         #endregion
