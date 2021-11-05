@@ -15,8 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Linq;
 using NUnit.Framework;
 
 namespace Cube.Tests.Messages
@@ -37,64 +35,7 @@ namespace Cube.Tests.Messages
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Match
-        ///
-        /// <summary>
-        /// Tests the Any extended method of the DialogStatus class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Match()
-        {
-            Assert.That(DialogStatus.Ok.Any(DialogStatus.Ok, DialogStatus.Cancel), Is.True);
-            Assert.That(DialogStatus.Ok.Any(DialogStatus.No, DialogStatus.Cancel), Is.False);
-            Assert.That(DialogStatus.Empty.Any(DialogStatus.Empty), Is.True);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_DialogMessage
-        ///
-        /// <summary>
-        /// Tests properties of the DialogMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_DialogMessage()
-        {
-            var src = new DialogMessage();
-            Assert.That(src.Text,    Is.Empty);
-            Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_ErrorMessage
-        ///
-        /// <summary>
-        /// Tests the Create method of the DialogMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_ErrorMessage()
-        {
-            var src = DialogMessage.From(new ArgumentException("TEST"));
-            Assert.That(src.Text,    Is.EqualTo("TEST (ArgumentException)"));
-            Assert.That(src.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(src.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(src.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(src.Value,   Is.EqualTo(DialogStatus.Ok));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_EmptyMessages
+        /// Init
         ///
         /// <summary>
         /// Tests to create messages that have no properties.
@@ -102,7 +43,7 @@ namespace Cube.Tests.Messages
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_EmptyMessages()
+        public void Init()
         {
             Assert.That(new CloseMessage(),    Is.Not.Null);
             Assert.That(new ActivateMessage(), Is.Not.Null);

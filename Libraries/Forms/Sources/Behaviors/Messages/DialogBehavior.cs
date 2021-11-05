@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Cube.Forms.Behaviors
@@ -51,7 +52,8 @@ namespace Cube.Forms.Behaviors
             var buttons = Buttons[e.Buttons];
             var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
 
-            e.Value = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
+            e.Value  = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
+            e.Cancel = e.CancelCandidates.Any(z => z == e.Value);
         }) { }
 
         #endregion
@@ -67,14 +69,13 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogIcon, MessageBoxIcon> Icons { get; } =
-            new Dictionary<DialogIcon, MessageBoxIcon>
-            {
-                { DialogIcon.None,        MessageBoxIcon.None        },
-                { DialogIcon.Error,       MessageBoxIcon.Error       },
-                { DialogIcon.Warning,     MessageBoxIcon.Warning     },
-                { DialogIcon.Information, MessageBoxIcon.Information },
-            };
+        private static Dictionary<DialogIcon, MessageBoxIcon> Icons { get; } = new()
+        {
+            { DialogIcon.None,        MessageBoxIcon.None        },
+            { DialogIcon.Error,       MessageBoxIcon.Error       },
+            { DialogIcon.Warning,     MessageBoxIcon.Warning     },
+            { DialogIcon.Information, MessageBoxIcon.Information },
+        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -85,14 +86,13 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogButtons, MessageBoxButtons> Buttons { get; } =
-            new Dictionary<DialogButtons, MessageBoxButtons>
-            {
-                { DialogButtons.Ok,          MessageBoxButtons.OK          },
-                { DialogButtons.OkCancel,    MessageBoxButtons.OKCancel    },
-                { DialogButtons.YesNo,       MessageBoxButtons.YesNo       },
-                { DialogButtons.YesNoCancel, MessageBoxButtons.YesNoCancel },
-            };
+        private static Dictionary<DialogButtons, MessageBoxButtons> Buttons { get; } = new()
+        {
+            { DialogButtons.Ok,          MessageBoxButtons.OK          },
+            { DialogButtons.OkCancel,    MessageBoxButtons.OKCancel    },
+            { DialogButtons.YesNo,       MessageBoxButtons.YesNo       },
+            { DialogButtons.YesNoCancel, MessageBoxButtons.YesNoCancel },
+        };
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,15 +103,14 @@ namespace Cube.Forms.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogResult, DialogStatus> Results { get; } =
-            new Dictionary<DialogResult, DialogStatus>
-            {
-                { DialogResult.None,   DialogStatus.Empty  },
-                { DialogResult.OK,     DialogStatus.Ok     },
-                { DialogResult.Cancel, DialogStatus.Cancel },
-                { DialogResult.Yes,    DialogStatus.Yes    },
-                { DialogResult.No,     DialogStatus.No     },
-            };
+        private static Dictionary<DialogResult, DialogStatus> Results { get; } = new()
+        {
+            { DialogResult.None,   DialogStatus.Empty  },
+            { DialogResult.OK,     DialogStatus.Ok     },
+            { DialogResult.Cancel, DialogStatus.Cancel },
+            { DialogResult.Yes,    DialogStatus.Yes    },
+            { DialogResult.No,     DialogStatus.No     },
+        };
 
         #endregion
     }

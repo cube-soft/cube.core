@@ -16,6 +16,7 @@
 //
 /* ------------------------------------------------------------------------- */
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace Cube.Xui.Behaviors
@@ -48,7 +49,8 @@ namespace Cube.Xui.Behaviors
             var buttons = Buttons[e.Buttons];
             var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
 
-            e.Value = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
+            e.Value  = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
+            e.Cancel = e.CancelCandidates.Any(z => z == e.Value);
         }
 
         #endregion

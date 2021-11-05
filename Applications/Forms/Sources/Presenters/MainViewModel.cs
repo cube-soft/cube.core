@@ -82,7 +82,11 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void File() => Send(new FileViewModel(Context));
+        public void File() => Send(
+            new FileViewModel(Context),
+            e => GetType().LogDebug(e.Value),
+            true
+        );
 
         /* --------------------------------------------------------------------- */
         ///

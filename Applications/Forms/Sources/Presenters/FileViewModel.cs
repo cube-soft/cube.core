@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Linq;
 using System.Threading;
 
 namespace Cube.Forms.Demo
@@ -60,7 +61,11 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public string Value { get; set; }
+        public string Value
+        {
+            get => Get(() => string.Empty);
+            set => Set(value);
+        }
 
         #endregion
 
@@ -75,7 +80,11 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void ShowOpenFileDialog() => Send(new OpenFileMessage(Value));
+        public void ShowOpenFileDialog() => Send(
+            new OpenFileMessage(Value),
+            e => Value = e.First(),
+            true
+        );
 
         /* --------------------------------------------------------------------- */
         ///
@@ -86,7 +95,11 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void ShowSaveFileDialog() => Send(new SaveFileMessage(Value));
+        public void ShowSaveFileDialog() => Send(
+            new SaveFileMessage(Value),
+            e => Value = e,
+            true
+        );
 
         /* --------------------------------------------------------------------- */
         ///
@@ -97,7 +110,11 @@ namespace Cube.Forms.Demo
         /// </summary>
         ///
         /* --------------------------------------------------------------------- */
-        public void ShowOpenDirectoryDialog() => Send(new OpenDirectoryMessage(Value));
+        public void ShowOpenDirectoryDialog() => Send(
+            new OpenDirectoryMessage(Value),
+            e => Value = e,
+            true
+        );
 
         #endregion
     }
