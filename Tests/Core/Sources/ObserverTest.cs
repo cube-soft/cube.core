@@ -51,9 +51,9 @@ namespace Cube.Tests
             var src = new Person();
 
             using (new Mock(n)
-                .Associate(src) // All
-                .Associate(src, nameof(src.Name))
-                .Associate(default) // Ignore
+                .Hook(src) // All
+                .Hook(src, nameof(src.Name))
+                .Hook(default) // Ignore
             ) {
                 Assert.That(src.Age,  Is.EqualTo(0));
                 src.Age = 10;

@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.ComponentModel;
-using Cube.Mixin.Generics;
+using Cube.Mixin.Generic;
 using NUnit.Framework;
 
 namespace Cube.Tests.Mixin

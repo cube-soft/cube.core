@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Collections;
 
-namespace Cube.Logging
+namespace Cube
 {
     /* --------------------------------------------------------------------- */
     ///

@@ -25,8 +25,9 @@ PROJECT   = "Cube.Core"
 BRANCHES  = ["net45", "net50", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/Core/Cube.Core",
-             "Libraries/FileSystem/Cube.FileSystem",
-             "Libraries/AlphaFS/Cube.FileSystem.AlphaFS",
+             "Libraries/Forms/Cube.Forms",
+             "Libraries/Xui/Cube.Xui",
+             "Libraries/AlphaFS/Cube.AlphaFS",
              "Libraries/Tests/Cube.Tests"]
 
 # --------------------------------------------------------------------------- #

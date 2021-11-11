@@ -92,6 +92,25 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Hook
+        ///
+        /// <summary>
+        /// Tests the Hook extended method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Hook()
+        {
+            var n    = 0;
+            var src  = new DisposableContainer();
+            var dest = src.Hook(Disposable.Create(() => n++));
+
+            Assert.That(src.Contains(dest), Is.True);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Make_Empty
         ///
         /// <summary>
@@ -101,10 +120,7 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Make_Empty()
-        {
-            Assert.DoesNotThrow(() => { using (new DisposableContainer()) { } });
-        }
+        public void Make_Empty() => Assert.DoesNotThrow(() => { using (new DisposableContainer()) { } });
 
         #endregion
     }

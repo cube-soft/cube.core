@@ -20,10 +20,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Collections;
-using Cube.Mixin.Generics;
+using Cube.Mixin.Generic;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Collections
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -133,12 +133,10 @@ namespace Cube.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Add_Throws()
-        {
-            Assert.That(() => Create().Add(null, null),
-                Throws.TypeOf<ArgumentNullException>().And
-                      .Property("ParamName").EqualTo("key"));
-        }
+        public void Add_Throws() => Assert.That(
+            () => Create().Add(null, null),
+            Throws.TypeOf<ArgumentNullException>().And.Property("ParamName").EqualTo("key")
+        );
 
         /* ----------------------------------------------------------------- */
         ///
@@ -155,7 +153,7 @@ namespace Cube.Tests
         [TestCase("",      "Torvalds", ExpectedResult = false)]
         [TestCase(null,   null,        ExpectedResult = false)]
         public bool Remove(string key, string value) =>
-            Create().Remove(Cube.Collections.KeyValuePair.Create(key, value));
+            Create().Remove(new KeyValuePair<string, string>(key, value));
 
         /* ----------------------------------------------------------------- */
         ///
@@ -244,7 +242,7 @@ namespace Cube.Tests
             Assert.That(() => values.Add("a"), Throws.TypeOf<NotSupportedException>());
 
             src.Add("Bjarne", "Stroustrup");
-            src.Add(Cube.Collections.KeyValuePair.Create("Anders", "Hejlsberg"));
+            src.Add(new("Anders", "Hejlsberg"));
             Assert.That(src.Count,    Is.EqualTo(7));
             Assert.That(keys.Count,   Is.EqualTo(5));
             Assert.That(values.Count, Is.EqualTo(5));
@@ -326,7 +324,7 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private OrderedDictionary<string, string> Create() => new OrderedDictionary<string, string>
+        private OrderedDictionary<string, string> Create() => new()
         {
             { "Dennis",  "Ritchie"   },
             { "Brian",   "Kernighan" },

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Cube.Collections;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Collections
 {
     /* --------------------------------------------------------------------- */
     ///

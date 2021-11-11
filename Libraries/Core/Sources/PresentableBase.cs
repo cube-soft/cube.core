@@ -16,13 +16,12 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
+using Cube.Mixin.Tasks;
 
 namespace Cube
 {
-    #region PresentableBase
-
     /* --------------------------------------------------------------------- */
     ///
     /// PresentableBase
@@ -157,6 +156,40 @@ namespace Cube
             if (disposing) Assets.Dispose();
         }
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// OnMessage
+        ///
+        /// <summary>
+        /// Converts the specified exception to a new instance of the
+        /// DialogMessage class.
+        /// </summary>
+        ///
+        /// <param name="src">Source exception.</param>
+        ///
+        /// <returns>DialogMessage object.</returns>
+        ///
+        /// <remarks>
+        /// The Method is called from the Track methods.
+        /// </remarks>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected virtual DialogMessage OnMessage(Exception src) =>
+            src is OperationCanceledException ? null : DialogMessage.From(src);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Post
+        ///
+        /// <summary>
+        /// Posts the specified message.
+        /// </summary>
+        ///
+        /// <param name="message">Message to be posted.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Post<T>(T message) => _post.Invoke(() => Aggregator.Publish(message));
+
         #region Send
 
         /* ----------------------------------------------------------------- */
@@ -177,45 +210,168 @@ namespace Cube
         /// Send
         ///
         /// <summary>
-        /// Sends a default message of type T.
+        /// Sends the specified message, and then invokes the specified
+        /// action if the Cancel property is set to false.
         /// </summary>
         ///
-        /// <typeparam name="T">Message type.</typeparam>
+        /// <param name="message">Message to be sent.</param>
+        ///
+        /// <param name="next">
+        /// Action to be invoked if the Cancel property of the message is
+        /// set to false.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Send<T>() where T : new() => Send(new T());
+        protected void Send<T>(CancelMessage<T> message, Action<T> next, bool synchronous)
+        {
+            Run(true, () => Send(message));
+            if (!message?.Cancel ?? false) Run(() => next(message.Value), synchronous);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Send
+        ///
+        /// <summary>
+        /// Sends a CancelMessage(T) object with the specified source wrapped,
+        /// and then invokes the specified action if the Cancel property is
+        /// set to false.
+        /// </summary>
+        ///
+        /// <param name="src">Source bindable object.</param>
+        ///
+        /// <param name="next">
+        /// Action to be invoked if the Cancel property is set to false.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Send<T>(T src, Action<T> next, bool synchronous) where T : IBindable =>
+            Send(new CancelMessage<T>() { Value = src }, next, synchronous);
 
         #endregion
 
-        #region Post
+        #region Run
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Post
+        /// Run
         ///
         /// <summary>
-        /// Posts the specified message.
+        /// Invokes the specified action, and will send the error message
+        /// if any exceptions are thrown.
         /// </summary>
         ///
-        /// <param name="message">Message to be posted.</param>
+        /// <param name="action">
+        /// Action to be invoked.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>(T message) => _post.Invoke(() => Aggregator.Publish(message));
+        protected void Run(Action action, bool synchronous) => Run(synchronous, action);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Post
+        /// Run
         ///
         /// <summary>
-        /// Posts a default message of type T.
+        /// Invokes the specified actions, and will send the error message
+        /// if any exceptions are thrown. The next action will always be
+        /// invoked even if the first specified action throws an exception.
         /// </summary>
         ///
-        /// <typeparam name="T">Message type.</typeparam>
+        /// <param name="first">Action to be invoked.</param>
+        ///
+        /// <param name="next">
+        /// Action to be invoked afetr the first specified action has finished.
+        /// The action will always be invoked even if the first specified
+        /// action throws an exception.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke both of the specified actions
+        /// as synchronous methods.
+        /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected void Post<T>() where T : new() => Post(new T());
+        protected void Run(Action first, Action next, bool synchronous) =>
+            Run(synchronous, first, next);
 
         #endregion
+
+        #region Quit
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Quit
+        ///
+        /// <summary>
+        /// Invokes the specified action, and finally sends the close message.
+        /// </summary>
+        ///
+        /// <param name="action">
+        /// Action to be invoked.
+        /// </param>
+        ///
+        /// <param name="synchronous">
+        /// Value indicating whether to invoke the specified action as a
+        /// synchronous method.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected void Quit(Action action, bool synchronous) =>
+            Run(synchronous, action, () => Send(new CloseMessage()));
+
+        #endregion
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Run
+        ///
+        /// <summary>
+        /// Invokes the specified actions and will send the error message
+        /// if any exceptions are thrown. All the specified actions will
+        /// always be invoked. If an action throws an exception, the method
+        /// will send a DialogMessage object corresponding to the exception,
+        /// and then invoke the next action.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private void Run(bool synchronous, params Action[] actions)
+        {
+            void invoke()
+            {
+                foreach (var action in actions)
+                {
+                    try { action(); }
+                    catch (Exception e)
+                    {
+                        GetType().LogWarn(e);
+                        if (OnMessage(e) is DialogMessage msg) Send(msg);
+                    }
+                }
+            }
+
+            if (synchronous) invoke();
+            else Task.Run(invoke).Forget();
+        }
 
         #endregion
 
@@ -224,6 +380,4 @@ namespace Cube
         private readonly Dispatcher _post;
         #endregion
     }
-
-    #endregion
 }

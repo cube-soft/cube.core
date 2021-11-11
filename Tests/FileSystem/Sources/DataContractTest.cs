@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cube.FileSystem.DataContract;
+using Cube.DataContract;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Registry;
 using Microsoft.Win32;

@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace Cube.Mixin.Observing
@@ -34,28 +33,6 @@ namespace Cube.Mixin.Observing
     public static class Extension
     {
         #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Associate
-        ///
-        /// <summary>
-        /// Associates the specified observer and the specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Source observer.</param>
-        /// <param name="obj">Object to be observed.</param>
-        /// <param name="names">Target property names.</param>
-        ///
-        /// <returns>Source observer.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Associate<T>(this T src, INotifyPropertyChanged obj, params string[] names)
-            where T : IObservePropertyChanged
-        {
-            src.Observe(obj, names);
-            return src;
-        }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -81,6 +58,28 @@ namespace Cube.Mixin.Observing
             void handler(object s, PropertyChangedEventArgs e) => callback(e.PropertyName);
             src.PropertyChanged += handler;
             return Disposable.Create(() => src.PropertyChanged -= handler);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Hook
+        ///
+        /// <summary>
+        /// Observes the specified observer and the specified object.
+        /// </summary>
+        ///
+        /// <param name="src">Source observer.</param>
+        /// <param name="obj">Object to be observed.</param>
+        /// <param name="names">Target property names.</param>
+        ///
+        /// <returns>Source observer.</returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static T Hook<T>(this T src, INotifyPropertyChanged obj, params string[] names)
+            where T : IObservePropertyChanged
+        {
+            src.Observe(obj, names);
+            return src;
         }
 
         #endregion
