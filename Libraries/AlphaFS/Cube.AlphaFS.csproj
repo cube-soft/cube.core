@@ -7,6 +7,7 @@
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageTags>Cube;IO;AlphaFS</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
         <AssemblyName>Cube.FileSystem.AlphaFS</AssemblyName>
@@ -29,6 +30,7 @@
         <PackageReference Include="AlphaFS" Version="2.2.6" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="Readme.md" Pack="true" PackagePath="docs" />
         <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
     </ItemGroup>
 </Project>

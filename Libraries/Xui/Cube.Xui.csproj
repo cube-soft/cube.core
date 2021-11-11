@@ -8,6 +8,7 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
+        <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
         <UseWpf>true</UseWpf>
@@ -29,6 +30,7 @@
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="Readme.md" Pack="true" PackagePath="docs" />
         <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
     </ItemGroup>
 </Project>
