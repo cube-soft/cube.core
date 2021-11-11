@@ -8,6 +8,7 @@
         <PackageTags>Cube;WinForms;MVVM</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
+        <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net35</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
@@ -28,6 +29,7 @@
         <Reference Include="WindowsBase" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="Readme.md" Pack="true" PackagePath="docs" />
         <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
         <None Include="Assets\**\*" />
     </ItemGroup>
