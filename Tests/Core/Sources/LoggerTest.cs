@@ -18,7 +18,6 @@
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Cube.Logging;
 using NUnit.Framework;
 
 namespace Cube.Tests

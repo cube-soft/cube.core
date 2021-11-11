@@ -18,7 +18,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Events
 {
     /* --------------------------------------------------------------------- */
     ///

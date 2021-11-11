@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System.Reflection;
 using Cube.Backports;
-using Cube.FileSystem.DataContract;
+using Cube.DataContract;
 using Cube.Mixin.Registry;
 using Cube.Tests;
 using Microsoft.Win32;

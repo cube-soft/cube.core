@@ -40,23 +40,6 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_Throws
-        ///
-        /// <summary>
-        /// Tests to create a new instance of the PresentableBase inherited
-        /// class when the SynchronizationContext.Current is null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Throws()
-        {
-            Assert.That(SynchronizationContext.Current, Is.Null);
-            Assert.That(() => new Presenter(), Throws.ArgumentNullException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
         /// Subscribe
         ///
         /// <summary>
@@ -108,94 +91,23 @@ namespace Cube.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Track
+        /// Send_WithCancelMessage
         ///
         /// <summary>
-        /// Tests the Track method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Track()
-        {
-            var dest = default(DialogMessage);
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => dest = e))
-            {
-                src.TrackAsync(() => { /* OK */ });
-                src.TrackSync(() => throw new OperationCanceledException("Ignore"));
-                src.TrackSync(() => throw new ArgumentException(nameof(Track)));
-            }
-
-            Assert.That(dest.Text,    Does.StartWith(nameof(Track)));
-            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track_Sequence
-        ///
-        /// <summary>
-        /// Tests the Track method with multiple actions.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Track_Sequence()
-        {
-            var n = 0;
-            using (var src = new Presenter(new()))
-            using (src.Subscribe<DialogMessage>(e => n++))
-            {
-                src.TrackAsync(() => throw new ArgumentException(), () => n++);
-                TaskEx.Delay(200).Wait();
-            }
-            Assert.That(n, Is.EqualTo(2));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track_Message
-        ///
-        /// <summary>
-        /// Tests the Track method with objects of Message inherited class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Track_Message()
-        {
-            var n = 0;
-            using (var src = new Presenter(new()))
-            {
-                3.Times(i => src.TrackAsync(new DialogMessage(), e => n++));
-                TaskEx.Delay(300).Wait();
-            }
-            Assert.That(n, Is.EqualTo(3));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Track_CancelMessage
-        ///
-        /// <summary>
-        /// Tests the Track method with objects of CancelMessage inherited
+        /// Tests the Send method with objects of CancelMessage inherited
         /// class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [TestCase(true,  ExpectedResult = 0)]
         [TestCase(false, ExpectedResult = 2)]
-        public int Track_CancelMessage(bool cancel)
+        public int Send_WithCancelMessage(bool cancel)
         {
             var n = 0;
             using (var src = new Presenter(new()))
             using (src.Subscribe<OpenFileMessage>(e => e.Cancel = cancel))
             {
-                2.Times(i => src.TrackAsync(new OpenFileMessage(), e => n++));
+                2.Times(i => src.SendMessage(new OpenFileMessage(), e => n++));
                 TaskEx.Delay(200).Wait();
             }
             return n;
@@ -215,6 +127,92 @@ namespace Cube.Tests
         {
             using var src = new Presenter(new());
             Assert.That(() => src.SendMessage(default(object)), Throws.ArgumentNullException);
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Run
+        ///
+        /// <summary>
+        /// Tests the Run method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Run()
+        {
+            var dest = default(DialogMessage);
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => dest = e))
+            {
+                src.RunSync(() => throw new OperationCanceledException("Ignore"));
+                src.RunSync(() => throw new ArgumentException(nameof(Run)));
+            }
+
+            Assert.That(dest.Text, Does.StartWith(nameof(Run)));
+            Assert.That(dest.Title, Is.Not.Null.And.Not.Empty);
+            Assert.That(dest.Icon, Is.EqualTo(DialogIcon.Error));
+            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+            Assert.That(dest.Value, Is.EqualTo(DialogStatus.Ok));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Run2
+        ///
+        /// <summary>
+        /// Tests the Run method with two actions.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Run2()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<DialogMessage>(e => n++))
+            {
+                src.RunSync(() => throw new ArgumentException(), () => n *= 10);
+            }
+            Assert.That(n, Is.EqualTo(10));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Close
+        ///
+        /// <summary>
+        /// Tests the Close method.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Close()
+        {
+            var n = 0;
+            using (var src = new Presenter(new()))
+            using (src.Subscribe<CloseMessage>(e => n *= 10))
+            {
+                src.RunClose(() => n++);
+            }
+            Assert.That(n, Is.EqualTo(10));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Init_Throws
+        ///
+        /// <summary>
+        /// Tests to create a new instance of the PresentableBase inherited
+        /// class when the SynchronizationContext.Current is null.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        [Test]
+        public void Init_Throws()
+        {
+            Assert.That(SynchronizationContext.Current, Is.Null);
+            Assert.That(() => new Presenter(), Throws.ArgumentNullException);
         }
 
         /* ----------------------------------------------------------------- */
@@ -284,20 +282,20 @@ namespace Cube.Tests
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        private class Presenter : Presentable<Person>
+        private class Presenter : PresentableBase<Person>
         {
             public Presenter() : base(new()) { Observe(); }
             public Presenter(SynchronizationContext ctx) : base(new(), new(), ctx) {
                 Assert.That(Context, Is.Not.Null);
                 Observe();
             }
-            public void PostMessage<T>() where T : new() => Post<T>();
-            public void SendMessage<T>() where T : new() => Send<T>();
+            public void PostMessage<T>() where T : new() => Post(new T());
+            public void SendMessage<T>() where T : new() => Send(new T());
             public void SendMessage<T>(T m) => Send(m);
-            public void TrackSync(Action e) => Track(e, true);
-            public void TrackAsync(params Action[] e) => Track(e);
-            public void TrackAsync<T>(Message<T> m, Action<T> e) => Track(m, e);
-            public void TrackAsync<T>(CancelMessage<T> m, Action<T> e) => Track(m, e);
+            public void SendMessage<T>(CancelMessage<T> m, Action<T> e) => Send(m, e, true);
+            public void RunSync(Action e) => Run(e, true);
+            public void RunSync(Action e0, Action e1) => Run(e0, e1, true);
+            public void RunClose(Action e) => Quit(e, true);
             public Dispatcher GetDispatcher() => GetDispatcher(false);
             private void Observe() { Assets.Add(Facade.Subscribe(e => { })); }
             public string Value { get => Get<string>(); set => Set(value); }

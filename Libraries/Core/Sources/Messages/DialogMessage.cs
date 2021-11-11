@@ -16,9 +16,11 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cube.Mixin.Assembly;
+using Cube.Mixin.Collections.Generic;
 
 namespace Cube
 {
@@ -33,7 +35,7 @@ namespace Cube
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogMessage : Message<DialogStatus>
+    public class DialogMessage : CancelMessage<DialogStatus>
     {
         #region Constructors
 
@@ -91,6 +93,19 @@ namespace Cube
         /* ----------------------------------------------------------------- */
         public DialogButtons Buttons { get; set; } = DialogButtons.Ok;
 
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CancelCandidates
+        ///
+        /// <summary>
+        /// Gets or sets the collection of dialog status that represent
+        /// the cancel. If the Value property is set to the value of one of
+        /// these properties, the Cancel property will be set to true.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public IEnumerable<DialogStatus> CancelCandidates { get; set; } = DialogStatus.Cancel.ToEnumerable();
+
         #endregion
 
         #region Methods
@@ -113,6 +128,7 @@ namespace Cube
             Icon    = DialogIcon.Error,
             Buttons = DialogButtons.Ok,
             Value   = DialogStatus.Ok,
+            Cancel  = false,
         };
 
         #endregion

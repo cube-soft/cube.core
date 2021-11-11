@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading.Tasks;
-using Cube.Logging;
 
 namespace Cube.Mixin.Tasks
 {

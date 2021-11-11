@@ -20,7 +20,7 @@ using System.Linq;
 using Cube.Mixin.Iteration;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests.Events
 {
     /* --------------------------------------------------------------------- */
     ///

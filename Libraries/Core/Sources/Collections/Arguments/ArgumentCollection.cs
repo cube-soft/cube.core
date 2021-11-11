@@ -32,10 +32,10 @@ namespace Cube.Collections
     /// </summary>
     ///
     /// <remarks>
-    /// このクラスでは、各オプションは最大 1 つの引数しか指定できないと言う
-    /// 制約を設けています。それ以外の引数は全て自身のシーケンスに格納され
-    /// ます。また、同じオプションが複数回指定された場合、後に指定された
-    /// 内容で上書きされます。
+    /// The class imposes the restriction that each option can only have
+    /// at most one argument, and all other arguments are stored in their
+    /// own sequence. If the same option is specified more than once,
+    /// it will be overwritten by the content specified later.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
@@ -70,8 +70,7 @@ namespace Cube.Collections
         /// <param name="kind">Prefix kind of optional parameters.</param>
         ///
         /* --------------------------------------------------------------------- */
-        public ArgumentCollection(IEnumerable<string> src, Argument kind) :
-            this(src, kind, true) { }
+        public ArgumentCollection(IEnumerable<string> src, Argument kind) : this(src, kind, true) { }
 
         /* --------------------------------------------------------------------- */
         ///
@@ -112,7 +111,7 @@ namespace Cube.Collections
         /// </param>
         ///
         /* --------------------------------------------------------------------- */
-        internal ArgumentCollection(IEnumerable<string> src, IArgumentPreprocessor preprocessor, bool ignoreCase)
+        public ArgumentCollection(IEnumerable<string> src, IArgumentPreprocessor preprocessor, bool ignoreCase)
         {
             Preprocessor = preprocessor;
             IgnoreCase   = ignoreCase;

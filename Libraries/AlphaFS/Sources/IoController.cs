@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Alphaleonis.Win32.Filesystem;
-using Cube.Logging;
-using Cube.Mixin.Collections;
 
 namespace Cube.FileSystem.AlphaFS
 {

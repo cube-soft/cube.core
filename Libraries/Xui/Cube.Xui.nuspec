@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <version>6.0.0</version>
+        <id>Cube.Xui</id>
+        <title>Cube.Xui</title>
+        <authors>clown,cube-soft</authors>
+        <owners>clown,cube-soft</owners>
+        <description>Bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications.</description>
+        <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
+        <tags>Cube WPF MVVM Binding Behavior</tags>
+        <readme>docs\Readme.md</readme>
+        <icon>images\Icon.png</icon>
+        <license type="expression">Apache-2.0</license>
+        <projectUrl>https://github.com/cube-soft/Cube.Xui</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <dependencies>
+            <group targetFramework="netcoreapp3.1">
+                <dependency id="Cube.Core" version="6.0.0" />
+                <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.37" />
+            </group>
+            <group targetFramework="net45">
+                <dependency id="Cube.Core" version="6.0.0" />
+                <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.37" />
+            </group>
+            <group targetFramework="net35">
+                <dependency id="Cube.Core" version="6.0.0" />
+                <dependency id="Expression.Blend.Sdk3" version="1.0.1340.1" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="Readme.md" target="docs" />
+        <file src="..\Icon.png" target="images" />
+        <file src="bin\Any CPU\Release\netcoreapp3.1\Cube.Xui.*" target="lib\netcoreapp3.1" />
+        <file src="bin\Any CPU\Release\net45\Cube.Xui.*" target="lib\net45" />
+        <file src="bin\Any CPU\Release\net35\Cube.Xui.*" target="lib\net35" />
+    </files>
+</package>

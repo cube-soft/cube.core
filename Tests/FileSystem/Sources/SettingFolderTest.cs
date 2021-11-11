@@ -17,7 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Threading.Tasks;
-using Cube.FileSystem.DataContract;
+using Cube.DataContract;
 using NUnit.Framework;
 
 namespace Cube.FileSystem.Tests
