@@ -11,7 +11,7 @@
         <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
         <RootNamespace>Cube</RootNamespace>
-        <TargetFramework>net45</TargetFramework>
+        <TargetFramework>net47</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>

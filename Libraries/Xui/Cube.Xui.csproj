@@ -10,7 +10,7 @@
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
         <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
-        <TargetFramework>net45</TargetFramework>
+        <TargetFramework>net47</TargetFramework>
         <UseWpf>true</UseWpf>
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>latest</LangVersion>

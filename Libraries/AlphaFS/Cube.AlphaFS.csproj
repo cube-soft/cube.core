@@ -12,7 +12,7 @@
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
         <AssemblyName>Cube.FileSystem.AlphaFS</AssemblyName>
         <RootNamespace>Cube.FileSystem.AlphaFS</RootNamespace>
-        <TargetFramework>net45</TargetFramework>
+        <TargetFramework>net47</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
