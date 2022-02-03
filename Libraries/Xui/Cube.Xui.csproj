@@ -27,7 +27,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Readme.md" Pack="true" PackagePath="docs" />
