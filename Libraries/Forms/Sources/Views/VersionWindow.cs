@@ -45,25 +45,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionWindow() : this(Assembly.GetExecutingAssembly()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VersionForm
-        ///
-        /// <summary>
-        /// Initializes a new instance of the VersionWindow class with the
-        /// specified assembly.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public VersionWindow(Assembly assembly)
-        {
-            _control = new(assembly);
-            InitializeLayout();
-        }
+        public VersionWindow() => InitializeLayout();
 
         #endregion
 
@@ -238,7 +220,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private readonly Controls.VersionControl _control;
+        private readonly Controls.VersionControl _control = new();
         private readonly Controls.TableLayoutPanel _panel = new();
         private readonly Controls.Button _button = new();
         #endregion

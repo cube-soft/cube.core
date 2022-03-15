@@ -71,7 +71,7 @@ namespace Cube.Forms.Demo
         /* --------------------------------------------------------------------- */
         protected override void Invoke(AboutMessage message)
         {
-            using var view = new VersionWindow(message.Value)
+            using var view = new VersionWindow()
             {
                 Icon = _icon,
                 Text = _text,
