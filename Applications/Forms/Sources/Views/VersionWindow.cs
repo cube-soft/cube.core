@@ -21,7 +21,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Cube.Forms
+namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -150,24 +150,6 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Update
-        ///
-        /// <summary>
-        /// Updates the display contents based on the specified assembly
-        /// information.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Update(Assembly assembly) => _control.Update(assembly);
-
-        #endregion
-
         #region Implementations
 
         /* ----------------------------------------------------------------- */
@@ -181,7 +163,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void InitializeLayout()
         {
-            Size = new Size(400, 270);
+            Size = new Size(400, 240);
             SuspendLayout();
 
             _panel.Dock = DockStyle.Fill;
@@ -206,7 +188,6 @@ namespace Cube.Forms
             _panel.Controls.Add(_control, 0, 0);
             _panel.Controls.Add(_button, 0, 1);
 
-            Font = FontFactory.Create(9, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;

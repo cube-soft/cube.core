@@ -53,8 +53,8 @@ namespace Cube.Forms.Controls
 
             Copyright = asm.GetCopyright();
             Product   = asm.GetProduct();
-            Version   = $"Version {asm.GetVersion()}";
-            Size      = new(340, 120);
+            Version   = asm.GetVersionString(3, true);
+            Size      = new(340, 100);
 
             InitializeLayout();
         }
@@ -203,30 +203,6 @@ namespace Cube.Forms.Controls
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Update
-        ///
-        /// <summary>
-        /// Update the display contents with the assembly information.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly information.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Update(Assembly assembly)
-        {
-            if (assembly == null) return;
-
-            Product   = assembly.GetProduct();
-            Version   = $"Version {assembly.GetVersion()}";
-            Copyright = assembly.GetCopyright();
-        }
-
-        #endregion
-
         #region Implementations
 
         /* ----------------------------------------------------------------- */
@@ -359,7 +335,7 @@ namespace Cube.Forms.Controls
         private readonly System.Windows.Forms.LinkLabel _copyright = new();
         private string _product;
         private string _version;
-        private bool _oneline = false;
+        private bool _oneline = true;
         private const int Space = 16;
         #endregion
     }
