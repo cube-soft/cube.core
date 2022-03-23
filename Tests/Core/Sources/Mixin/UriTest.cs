@@ -158,7 +158,7 @@ namespace Cube.Tests.Mixin
         [Test]
         public void With_Assembly()
         {
-            var dest = $"{Create()}?ver=6.0.0";
+            var dest = $"{Create()}?ver=7.0.0";
             var src = Create().With(GetType().Assembly);
 
             Assert.That(src.ToString(), Is.EqualTo(dest));
@@ -177,7 +177,7 @@ namespace Cube.Tests.Mixin
         public void With_SoftwareVersion()
         {
             var asm  = GetType().Assembly;
-            var dest = $"{Create()}?ver=6.0.0-beta";
+            var dest = $"{Create()}?ver=7.0.0-beta";
             var src  = Create().With(new SoftwareVersion(asm.GetVersion()) { Suffix = "-beta" });
 
             Assert.That(src.ToString(), Is.EqualTo(dest));
