@@ -47,8 +47,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         public ICommand Command
         {
-            get => GetValue(CommandProperty) as ICommand;
-            set => SetValue(CommandProperty, value);
+            get;// => GetValue(CommandProperty) as ICommand;
+            set;// => SetValue(CommandProperty, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -93,8 +93,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         public TParameter CommandParameter
         {
-            get => GetValue(CommandParameterProperty).TryCast<TParameter>();
-            set => SetValue(CommandParameterProperty, value);
+            get;// => GetValue(CommandParameterProperty).TryCast<TParameter>();
+            set;// => SetValue(CommandParameterProperty, value);
         }
 
         /* ----------------------------------------------------------------- */
