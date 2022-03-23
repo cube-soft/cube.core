@@ -24,7 +24,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="OpenCover" Version="4.7.1221" />
     </ItemGroup>
     <ItemGroup>
