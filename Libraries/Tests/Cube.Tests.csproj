@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>6.0.0</Version>
+        <Version>7.0.0</Version>
         <Authors>clown;cube-soft</Authors>
         <Company>CubeSoft</Company>
         <Description>Private package to test Cube.* projects.</Description>
@@ -24,7 +24,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
-        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="OpenCover" Version="4.7.1221" />
     </ItemGroup>
     <ItemGroup>

@@ -47,25 +47,16 @@ namespace Cube.Forms.Controls
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionControl() : this(Assembly.GetExecutingAssembly()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VersionControl
-        ///
-        /// <summary>
-        /// Initializes a new instance of the VersionControl class with the
-        /// specified assembly information.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly information.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public VersionControl(Assembly assembly)
+        public VersionControl()
         {
-            Size = new(340, 120);
+            var asm = Assembly.GetEntryAssembly() ?? GetType().Assembly;
+
+            Copyright = asm.GetCopyright();
+            Product   = asm.GetProduct();
+            Version   = asm.GetVersionString(3, true);
+            Size      = new(340, 100);
+
             InitializeLayout();
-            Update(assembly);
         }
 
         #endregion
@@ -212,30 +203,6 @@ namespace Cube.Forms.Controls
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Update
-        ///
-        /// <summary>
-        /// Update the display contents with the assembly information.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly information.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Update(Assembly assembly)
-        {
-            if (assembly == null) return;
-
-            Product   = assembly.GetProduct();
-            Version   = $"Version {assembly.GetVersion()}";
-            Copyright = assembly.GetCopyright();
-        }
-
-        #endregion
-
         #region Implementations
 
         /* ----------------------------------------------------------------- */
@@ -306,7 +273,7 @@ namespace Cube.Forms.Controls
             _image.Margin = new System.Windows.Forms.Padding(0);
 
             _contents.Dock = System.Windows.Forms.DockStyle.Fill;
-            _contents.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
+            _contents.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             _contents.Margin = new System.Windows.Forms.Padding(0);
             _contents.SuspendLayout();
 
@@ -341,13 +308,9 @@ namespace Cube.Forms.Controls
             };
 
             _contents.Controls.Add(_info);
-            _contents.SetFlowBreak(_info, true);
             _contents.Controls.Add(_platform);
-            _contents.SetFlowBreak(_platform, true);
             _contents.Controls.Add(_others);
-            _contents.SetFlowBreak(_others, true);
             _contents.Controls.Add(_copyright);
-            _contents.SetFlowBreak(_copyright, true);
 
             _panel.Panel1.Controls.Add(_image);
             _panel.Panel2.Controls.Add(_contents);
@@ -372,7 +335,7 @@ namespace Cube.Forms.Controls
         private readonly System.Windows.Forms.LinkLabel _copyright = new();
         private string _product;
         private string _version;
-        private bool _oneline = false;
+        private bool _oneline = true;
         private const int Space = 16;
         #endregion
     }

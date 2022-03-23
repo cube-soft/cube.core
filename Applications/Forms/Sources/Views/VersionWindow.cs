@@ -21,7 +21,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Cube.Forms
+namespace Cube.Forms.Demo
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -45,25 +45,7 @@ namespace Cube.Forms
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public VersionWindow() : this(Assembly.GetExecutingAssembly()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// VersionForm
-        ///
-        /// <summary>
-        /// Initializes a new instance of the VersionWindow class with the
-        /// specified assembly.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public VersionWindow(Assembly assembly)
-        {
-            _control = new(assembly);
-            InitializeLayout();
-        }
+        public VersionWindow() => InitializeLayout();
 
         #endregion
 
@@ -168,24 +150,6 @@ namespace Cube.Forms
 
         #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Update
-        ///
-        /// <summary>
-        /// Updates the display contents based on the specified assembly
-        /// information.
-        /// </summary>
-        ///
-        /// <param name="assembly">Assembly object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Update(Assembly assembly) => _control.Update(assembly);
-
-        #endregion
-
         #region Implementations
 
         /* ----------------------------------------------------------------- */
@@ -199,7 +163,7 @@ namespace Cube.Forms
         /* ----------------------------------------------------------------- */
         private void InitializeLayout()
         {
-            Size = new Size(400, 270);
+            Size = new Size(400, 240);
             SuspendLayout();
 
             _panel.Dock = DockStyle.Fill;
@@ -224,7 +188,6 @@ namespace Cube.Forms
             _panel.Controls.Add(_control, 0, 0);
             _panel.Controls.Add(_button, 0, 1);
 
-            Font = FontFactory.Create(9, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -238,7 +201,7 @@ namespace Cube.Forms
         #endregion
 
         #region Fields
-        private readonly Controls.VersionControl _control;
+        private readonly Controls.VersionControl _control = new();
         private readonly Controls.TableLayoutPanel _panel = new();
         private readonly Controls.Button _button = new();
         #endregion
