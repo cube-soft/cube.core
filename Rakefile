@@ -22,7 +22,7 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Core"
-BRANCHES  = ["net45", "net50", "net35"]
+BRANCHES  = ["net47", "net50", "net35"]
 PLATFORMS = ["Any CPU"]
 PACKAGES  = ["Libraries/Core/Cube.Core",
              "Libraries/Forms/Cube.Forms",
