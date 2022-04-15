@@ -25,7 +25,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NLog" Version="4.7.14" />
+        <PackageReference Include="NLog" Version="4.7.15" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\Readme.md" Pack="true" PackagePath="docs" />
