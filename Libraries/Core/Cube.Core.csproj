@@ -25,7 +25,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NLog" Version="4.7.14" />
+        <PackageReference Include="NLog" Version="4.7.15" />
         <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
         <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
         <PackageReference Include="Microsoft.Win32.SystemEvents" Version="6.0.0" />
