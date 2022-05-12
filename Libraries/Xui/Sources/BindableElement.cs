@@ -46,10 +46,28 @@ namespace Cube.Xui
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext, Dispatcher dispatcher) : base(dispatcher)
+        public BindableElement(Getter<string> gettext, Dispatcher dispatcher) :
+            this(gettext, default, dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement
+        ///
+        /// <summary>
+        /// Initializes a new instance of the BindableElement
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="gettext">Function to get text.</param>
+        /// <param name="command">Command object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<string> gettext, ICommand command, Dispatcher dispatcher) : base(dispatcher)
         {
             _gettext = gettext;
             _locale  = Locale.Subscribe(e => React());
+            if (command is not null) Command = command;
         }
 
         #endregion
