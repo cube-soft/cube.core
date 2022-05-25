@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Windows.Input;
+
 namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
@@ -40,12 +42,63 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<string> gettext, Dispatcher dispatcher) :
+            this(gettext, default(ICommand), dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="gettext">Function to get text.</param>
+        /// <param name="command">Command object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<string> gettext, ICommand command, Dispatcher dispatcher) :
+            this(gettext, new Accessor<T>(), command, dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="gettext">Function to get text.</param>
         /// <param name="getvalue">Function to get value.</param>
         /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
         public BindableElement(Getter<string> gettext, Getter<T> getvalue, Dispatcher dispatcher) :
-            this(gettext, new Accessor<T>(getvalue), dispatcher) { }
+            this(gettext, getvalue, default(ICommand), dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="gettext">Function to get text.</param>
+        /// <param name="getvalue">Function to get value.</param>
+        /// <param name="command">Command object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<string> gettext, Getter<T> getvalue, ICommand command, Dispatcher dispatcher) :
+            this(gettext, new Accessor<T>(getvalue), command, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -63,7 +116,26 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, Dispatcher dispatcher) :
-            this(gettext, new Accessor<T>(getvalue, setvalue), dispatcher) { }
+            this(gettext, getvalue, setvalue, default, dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="gettext">Function to get text.</param>
+        /// <param name="getvalue">Function to get value.</param>
+        /// <param name="setvalue">Function to set value.</param>
+        /// <param name="command">Command object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<string> gettext, Getter<T> getvalue, Setter<T> setvalue, ICommand command, Dispatcher dispatcher) :
+            this(gettext, new Accessor<T>(getvalue, setvalue), command, dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -80,7 +152,25 @@ namespace Cube.Xui
         ///
         /* ----------------------------------------------------------------- */
         public BindableElement(Getter<string> gettext, Accessor<T> accessor, Dispatcher dispatcher) :
-            base(gettext, dispatcher) { _accessor = accessor; }
+            this(gettext, accessor, default, dispatcher) { }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BindableElement(T)
+        ///
+        /// <summary>
+        /// Initializes a new instance of the <c>BindableElement</c>
+        /// class with the specified arguments.
+        /// </summary>
+        ///
+        /// <param name="gettext">Function to get text.</param>
+        /// <param name="accessor">Function to get and set value.</param>
+        /// <param name="command">Command object.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public BindableElement(Getter<string> gettext, Accessor<T> accessor, ICommand command, Dispatcher dispatcher) :
+            base(gettext, command, dispatcher) { _accessor = accessor; }
 
         #endregion
 
