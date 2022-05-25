@@ -98,6 +98,32 @@ namespace Cube.Mixin.Generic
 
         /* ----------------------------------------------------------------- */
         ///
+        /// Assign
+        ///
+        /// <summary>
+        /// Assigns the public properties and fields of the specified source
+        /// object to the destination object.
+        /// </summary>
+        ///
+        /// <param name="dest">Object to be assigned.</param>
+        /// <param name="src">Object to assign.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public static void Assign<T>(this T dest, T src)
+        {
+            var t = src.GetType();
+
+            foreach (var p in t.GetProperties())
+            {
+                if (p.GetGetMethod() == null || p.GetSetMethod() == null) continue;
+                p.SetValue(dest, p.GetValue(src, null), null);
+            }
+
+            foreach (var f in t.GetFields()) f.SetValue(dest, f.GetValue(src));
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
         /// Set
         ///
         /// <summary>
@@ -126,28 +152,6 @@ namespace Cube.Mixin.Generic
         #endregion
 
         #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Assign
-        ///
-        /// <summary>
-        /// Copies the public properties and fields.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void Assign<T>(this T dest, T src)
-        {
-            var t = src.GetType();
-
-            foreach (var p in t.GetProperties())
-            {
-                if (p.GetGetMethod() == null || p.GetSetMethod() == null) continue;
-                p.SetValue(dest, p.GetValue(src, null), null);
-            }
-
-            foreach (var f in t.GetFields()) f.SetValue(dest, f.GetValue(src));
-        }
 
         /* ----------------------------------------------------------------- */
         ///
