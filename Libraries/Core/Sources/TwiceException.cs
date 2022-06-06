@@ -15,31 +15,30 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// TwiceException
+///
+/// <summary>
+/// Represents the exception of executing twice.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[Serializable]
+public class TwiceException : InvalidOperationException
 {
     /* --------------------------------------------------------------------- */
     ///
     /// TwiceException
     ///
     /// <summary>
-    /// Represents the exception of executing twice.
+    /// Initializes a new instance of the TwiceException class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Serializable]
-    public class TwiceException : InvalidOperationException
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// TwiceException
-        ///
-        /// <summary>
-        /// Initializes a new instance of the TwiceException class.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public TwiceException() : base("Invoke twice") { }
-    }
+    public TwiceException() : base("Invoke twice") { }
 }

@@ -15,78 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Shell32;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Shell32
+/* ------------------------------------------------------------------------- */
+///
+/// Shell32.NativeMethods
+///
+/// <summary>
+/// Provides native methods defined in the shell32.dll.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class NativeMethods
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Shell32.NativeMethods
+    /// SHGetFileInfo
     ///
     /// <summary>
-    /// Provides native methods defined in the shell32.dll.
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762179.aspx
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
-    {
-        #region Methods
+    [DllImport(LibName, CharSet = CharSet.Unicode)]
+    public static extern IntPtr SHGetFileInfo(
+        string pszPath,
+        uint dwFileAttributes,
+        ref ShFileIinfo psfi,
+        uint cbFileInfo,
+        uint uFlags
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SHGetFileInfo
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762179.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(
-            string pszPath,
-            uint dwFileAttributes,
-            ref ShFileIinfo psfi,
-            uint cbFileInfo,
-            uint uFlags
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SHGetStockIconInfo
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762205.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName, CharSet = CharSet.Unicode)]
+    public static extern void SHGetStockIconInfo(
+        uint siid,
+        uint uFlags,
+        ref ShStockIconInfo sii
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SHGetStockIconInfo
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762205.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern void SHGetStockIconInfo(
-            uint siid,
-            uint uFlags,
-            ref ShStockIconInfo sii
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SHGetImageList
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762185.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName, CharSet = CharSet.Unicode)]
+    public static extern int SHGetImageList(
+        uint iImageList,
+        [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+        out IImageList ppv
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SHGetImageList
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762185.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern int SHGetImageList(
-            uint iImageList,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            out IImageList ppv
-        );
+    #endregion
 
-        #endregion
-
-        #region Fields
-        private const string LibName = "shell32";
-        #endregion
-    }
+    #region Fields
+    private const string LibName = "shell32";
+    #endregion
 }

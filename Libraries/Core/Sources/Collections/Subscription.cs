@@ -15,106 +15,101 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Collections;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Cube.Collections
+/* ------------------------------------------------------------------------- */
+///
+/// Subscription
+///
+/// <summary>
+/// Provides functionality to add or remove subscribers.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public sealed class Subscription<T> : EnumerableBase<T>
 {
+    #region Properties
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Subscription
+    /// Count
     ///
     /// <summary>
-    /// Provides functionality to add or remove subscribers.
+    /// Gets the number of registered callbacks.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class Subscription<T> : EnumerableBase<T>
+    public int Count => _subscribers.Count;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Subscribe
+    ///
+    /// <summary>
+    /// Add the specified subscriber to the subscription.
+    /// </summary>
+    ///
+    /// <param name="subscriber">Subscriber object.</param>
+    ///
+    /// <returns>
+    /// Object to remove the specified subscriber.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public IDisposable Subscribe(T subscriber)
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Count
-        ///
-        /// <summary>
-        /// Gets the number of registered callbacks.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int Count => _subscribers.Count;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Add the specified subscriber to the subscription.
-        /// </summary>
-        ///
-        /// <param name="subscriber">Subscriber object.</param>
-        ///
-        /// <returns>
-        /// Object to remove the specified subscriber.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IDisposable Subscribe(T subscriber)
-        {
-            var key = Guid.NewGuid();
-            return _subscribers.TryAdd(key, subscriber) ?
-                   Disposable.Create(() => _subscribers.TryRemove(key, out _)) :
-                   Subscribe(subscriber); // Retry due to GUID confliction.
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        ///
-        /// <returns>
-        /// Enumerator that can be used to iterate through the collection.
-        /// </returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public override IEnumerator<T> GetEnumerator() => _subscribers.Values.GetEnumerator();
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the SubscriptionReader
-        /// and optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _subscribers.Clear();
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly ConcurrentDictionary<Guid, T> _subscribers = new();
-        #endregion
+        var key = Guid.NewGuid();
+        return _subscribers.TryAdd(key, subscriber) ?
+               Disposable.Create(() => _subscribers.TryRemove(key, out _)) :
+               Subscribe(subscriber); // Retry due to GUID confliction.
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetEnumerator
+    ///
+    /// <summary>
+    /// Returns an enumerator that iterates through a collection.
+    /// </summary>
+    ///
+    /// <returns>
+    /// Enumerator that can be used to iterate through the collection.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public override IEnumerator<T> GetEnumerator() => _subscribers.Values.GetEnumerator();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the SubscriptionReader
+    /// and optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing) _subscribers.Clear();
+    }
+
+    #endregion
+
+    #region Fields
+    private readonly ConcurrentDictionary<Guid, T> _subscribers = new();
+    #endregion
 }

@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Uri;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,198 +26,186 @@ using Cube.Mixin.String;
 using Cube.Mixin.Time;
 using Source = System.Uri;
 
-namespace Cube.Mixin.Uri
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods of th Uri class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region ToUri
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// ToUri
     ///
     /// <summary>
-    /// Provides extended methods of th Uri class.
+    /// Creates a new instance of the Uri class with the specified
+    /// string.
     /// </summary>
     ///
+    /// <param name="src">String that represents a URL.</param>
+    ///
+    /// <returns>Uri object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static Source ToUri(this string src) =>
+       !src.HasValue()       ? default :
+        src.Contains("://")  ? new(src) :
+        src.StartsWith("//") ? new("http:" + src) :
+        src.StartsWith("/")  ? new("http://localhost" + src) :
+                               new("http://" + src);
+
+    #endregion
+
+    #region With
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// With
+    ///
+    /// <summary>
+    /// Combines the specified Uri object and queries.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="query">Queries to be combined.</param>
+    ///
+    /// <returns>Combined Uri object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source With(this Source src, IDictionary<string, string> query)
     {
-        #region Methods
+        if (src == null || query == null || query.Count <= 0) return src;
 
-        #region ToUri
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToUri
-        ///
-        /// <summary>
-        /// Creates a new instance of the Uri class with the specified
-        /// string.
-        /// </summary>
-        ///
-        /// <param name="src">String that represents a URL.</param>
-        ///
-        /// <returns>Uri object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source ToUri(this string src) =>
-           !src.HasValue()       ? default :
-            src.Contains("://")  ? new(src) :
-            src.StartsWith("//") ? new("http:" + src) :
-            src.StartsWith("/")  ? new("http://localhost" + src) :
-                                   new("http://" + src);
-
-        #endregion
-
-        #region With
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        ///
-        /// <summary>
-        /// Combines the specified Uri object and queries.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        /// <param name="query">Queries to be combined.</param>
-        ///
-        /// <returns>Combined Uri object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source With(this Source src, IDictionary<string, string> query)
-        {
-            if (src == null || query == null || query.Count <= 0) return src;
-
-            var dest = new UriBuilder(src);
-            var str  = query.Join("&", e => $"{e.Key}={e.Value}");
-            dest.Query = dest.Query.Length > 1 ?
-                         $"{dest.Query.Substring(1)}&{str}" :
-                         str;
-            return dest.Uri;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        ///
-        /// <summary>
-        /// Combines the specified Uri object and key-value query.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        /// <param name="key">Key of the query.</param>
-        /// <param name="value">Value of the query.</param>
-        ///
-        /// <returns>Combined Uri object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source With<T>(this Source src, string key, T value) =>
-            With(src, new Dictionary<string, string> {{ key, value.ToString() }});
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        ///
-        /// <summary>
-        /// Combines the specified Uri object and date time.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        /// <param name="time">Date time value.</param>
-        ///
-        /// <returns>Combined Uri object.</returns>
-        ///
-        /// <remarks>
-        /// 時刻は UnixTime に変換した上で、ts=(unix) と言う形で
-        /// Uri オブジェクトに付与されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source With(this Source src, DateTime time) =>
-            With(src, "ts", time.ToUnixTime());
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        ///
-        /// <summary>
-        /// Combines the specified Uri object and version information.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        /// <param name="version">Version information.</param>
-        ///
-        /// <returns>Combined Uri object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source With(this Source src, SoftwareVersion version) =>
-            With(src, "ver", version.ToString(3, false));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        ///
-        /// <summary>
-        /// Combines the specified Uri object and version information of
-        /// the specified assembly.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        /// <param name="asm">Assembly object.</param>
-        ///
-        /// <returns>Combined Uri object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source With(this Source src, System.Reflection.Assembly asm) =>
-            With(src, asm.GetSoftwareVersion());
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// With
-        ///
-        /// <summary>
-        /// Combines the specified Uri object and UTM queries.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        /// <param name="utm">UTM queries.</param>
-        ///
-        /// <returns>Combined Uri object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source With(this Source src, Utm utm)
-        {
-            if (utm == null) return src;
-            var query = new Dictionary<string, string>();
-            if (utm.Source.HasValue())   query.Add("utm_source", utm.Source);
-            if (utm.Medium.HasValue())   query.Add("utm_medium", utm.Medium);
-            if (utm.Campaign.HasValue()) query.Add("utm_campaign", utm.Campaign);
-            if (utm.Term.HasValue())     query.Add("utm_term", utm.Term);
-            if (utm.Content.HasValue())  query.Add("utm_content", utm.Content);
-            return With(src, query);
-        }
-
-        #endregion
-
-        #region WithoutQuery
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WithoutQuery
-        ///
-        /// <summary>
-        /// Gets the Uri object that is removed queries from the specified
-        /// one.
-        /// </summary>
-        ///
-        /// <param name="src">Source URL.</param>
-        ///
-        /// <returns>Uri object that is removed queries.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Source WithoutQuery(this Source src) =>
-            new(src.GetLeftPart(UriPartial.Path));
-
-        #endregion
-
-        #endregion
+        var dest = new UriBuilder(src);
+        var str  = query.Join("&", e => $"{e.Key}={e.Value}");
+        dest.Query = dest.Query.Length > 1 ?
+                     $"{dest.Query.Substring(1)}&{str}" :
+                     str;
+        return dest.Uri;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// With
+    ///
+    /// <summary>
+    /// Combines the specified Uri object and key-value query.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="key">Key of the query.</param>
+    /// <param name="value">Value of the query.</param>
+    ///
+    /// <returns>Combined Uri object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source With<T>(this Source src, string key, T value) =>
+        With(src, new Dictionary<string, string> {{ key, value.ToString() }});
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// With
+    ///
+    /// <summary>
+    /// Combines the specified Uri object and date time.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="time">Date time value.</param>
+    ///
+    /// <returns>Combined Uri object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source With(this Source src, DateTime time) =>
+        With(src, "ts", time.ToUnixTime());
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// With
+    ///
+    /// <summary>
+    /// Combines the specified Uri object and version information.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="version">Version information.</param>
+    ///
+    /// <returns>Combined Uri object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source With(this Source src, SoftwareVersion version) =>
+        With(src, "ver", version.ToString(3, false));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// With
+    ///
+    /// <summary>
+    /// Combines the specified Uri object and version information of
+    /// the specified assembly.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="asm">Assembly object.</param>
+    ///
+    /// <returns>Combined Uri object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source With(this Source src, System.Reflection.Assembly asm) =>
+        With(src, asm.GetSoftwareVersion());
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// With
+    ///
+    /// <summary>
+    /// Combines the specified Uri object and UTM queries.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="utm">UTM queries.</param>
+    ///
+    /// <returns>Combined Uri object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source With(this Source src, Utm utm)
+    {
+        if (utm == null) return src;
+        var query = new Dictionary<string, string>();
+        if (utm.Source.HasValue())   query.Add("utm_source", utm.Source);
+        if (utm.Medium.HasValue())   query.Add("utm_medium", utm.Medium);
+        if (utm.Campaign.HasValue()) query.Add("utm_campaign", utm.Campaign);
+        if (utm.Term.HasValue())     query.Add("utm_term", utm.Term);
+        if (utm.Content.HasValue())  query.Add("utm_content", utm.Content);
+        return With(src, query);
+    }
+
+    #endregion
+
+    #region WithoutQuery
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WithoutQuery
+    ///
+    /// <summary>
+    /// Gets the Uri object that is removed queries from the specified
+    /// one.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    ///
+    /// <returns>Uri object that is removed queries.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Source WithoutQuery(this Source src) =>
+        new(src.GetLeftPart(UriPartial.Path));
+
+    #endregion
 }

@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,133 +25,130 @@ using Cube.Mixin.Collections;
 using Cube.Mixin.Collections.Generic;
 using Cube.Mixin.String;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// OpenOrSaveFileMessage(TValue)
+///
+/// <summary>
+/// Represents shared information to show either the OpenFileDialog
+/// or SaveFileDialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenOrSaveFileMessage(TValue)
+    /// OpenOrSaveFileMessage
     ///
     /// <summary>
-    /// Represents shared information to show either the OpenFileDialog
-    /// or SaveFileDialog.
+    /// Initializes a new instance of the OpenOrSaveFileMessage class
+    /// with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Entity of the initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected OpenOrSaveFileMessage(Entity src)
+    {
+        if (src != null) InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+    }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CheckPathExists
+    ///
+    /// <summary>
+    /// Gets or sets a value indicating whether a file dialog
+    /// displays a warning if the user specifies a file name that
+    /// does not exist.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class OpenOrSaveFileMessage<TValue> : CancelMessage<TValue>
+    public bool CheckPathExists { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// InitialDirectory
+    ///
+    /// <summary>
+    /// Gets or sets the initial directory that is displayed by a file
+    /// dialog.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string InitialDirectory { get; set; } = string.Empty;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Filter
+    ///
+    /// <summary>
+    /// Gets or sets the filter string that determines what types of
+    /// files are displayed from a from dialog.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public IEnumerable<FileDialogFilter> Filters { get; set; } =
+        new FileDialogFilter("All Files", ".*").ToEnumerable();
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetFilterText
+    ///
+    /// <summary>
+    /// Gets the filter text.
+    /// </summary>
+    ///
+    /// <returns>Filter text.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string GetFilterText() => Filters.Select(e => e.ToString()).Join("|");
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetFilterIndex
+    ///
+    /// <summary>
+    /// Gets the filter index.
+    /// </summary>
+    ///
+    /// <returns>Filter index.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public int GetFilterIndex()
     {
-        #region Constructors
+        var src = GetValue();
+        if (!src.HasValue()) return 0;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenOrSaveFileMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenOrSaveFileMessage class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Entity of the initial path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected OpenOrSaveFileMessage(Entity src)
-        {
-            if (src != null) InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CheckPathExists
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether a file dialog
-        /// displays a warning if the user specifies a file name that
-        /// does not exist.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool CheckPathExists { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InitialDirectory
-        ///
-        /// <summary>
-        /// Gets or sets the initial directory that is displayed by a file
-        /// dialog.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string InitialDirectory { get; set; } = string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Filter
-        ///
-        /// <summary>
-        /// Gets or sets the filter string that determines what types of
-        /// files are displayed from a from dialog.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<FileDialogFilter> Filters { get; set; } =
-            new FileDialogFilter("All Files", ".*").ToEnumerable();
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilterText
-        ///
-        /// <summary>
-        /// Gets the filter text.
-        /// </summary>
-        ///
-        /// <returns>Filter text.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string GetFilterText() => Filters.Select(e => e.ToString()).Join("|");
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetFilterIndex
-        ///
-        /// <summary>
-        /// Gets the filter index.
-        /// </summary>
-        ///
-        /// <returns>Filter index.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int GetFilterIndex()
-        {
-            var src = GetValue();
-            if (!src.HasValue()) return 0;
-
-            var opt = StringComparison.InvariantCultureIgnoreCase;
-            return Filters.Select((e, i) => new KeyValuePair<int, IEnumerable<string>>(i + 1, e.Targets))
-                          .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
-                          .Key;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue
-        ///
-        /// <summary>
-        /// Gets the value.
-        /// </summary>
-        ///
-        /// <returns>String value.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected abstract string GetValue();
-
-        #endregion
+        var opt = StringComparison.InvariantCultureIgnoreCase;
+        return Filters.Select((e, i) => new KeyValuePair<int, IEnumerable<string>>(i + 1, e.Targets))
+                      .FirstOrDefault(e => e.Value.Any(e2 => src.EndsWith(e2, opt)))
+                      .Key;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetValue
+    ///
+    /// <summary>
+    /// Gets the value.
+    /// </summary>
+    ///
+    /// <returns>String value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected abstract string GetValue();
+
+    #endregion
 }

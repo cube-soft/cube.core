@@ -15,44 +15,43 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Synchronous;
+
 using System;
 using System.Threading.Tasks;
 
-namespace Cube.Synchronous
+/* ------------------------------------------------------------------------- */
+///
+/// WakeableTimerExtension
+///
+/// <summary>
+/// Provides extended methods of the WakeableTimer class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class WakeableTimerExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// WakeableTimerExtension
+    /// SubscribeSync
     ///
     /// <summary>
-    /// Provides extended methods of the WakeableTimer class.
+    /// Sets the specified action to the timer.
     /// </summary>
     ///
+    /// <param name="src">WakeableTimer object.</param>
+    /// <param name="callback">User action.</param>
+    ///
+    /// <returns>Object to remove from the subscription.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class WakeableTimerExtension
+    public static IDisposable SubscribeSync(this WakeableTimer src, Action callback) => src.Subscribe(() =>
     {
-        #region Methods
+        callback();
+        return Task.FromResult(0);
+    });
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Sets the specified action to the timer.
-        /// </summary>
-        ///
-        /// <param name="src">WakeableTimer object.</param>
-        /// <param name="callback">User action.</param>
-        ///
-        /// <returns>Object to remove from the subscription.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable SubscribeSync(this WakeableTimer src, Action callback) => src.Subscribe(() =>
-        {
-            callback();
-            return Task.FromResult(0);
-        });
-
-        #endregion
-    }
+    #endregion
 }

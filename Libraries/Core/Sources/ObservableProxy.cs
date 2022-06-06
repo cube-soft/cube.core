@@ -15,136 +15,135 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Cube.Mixin.Observing;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// ObservableProxy
+///
+/// <summary>
+/// Provides functionality to forward the PropertyChanged event to
+/// another object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ObservableProxy : DisposableBase
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// ObservableProxy
     ///
     /// <summary>
-    /// Provides functionality to forward the PropertyChanged event to
-    /// another object.
+    /// Creates a new instance of the ObservableProxy class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Source object to forward.</param>
+    /// <param name="dest">Target object to forward.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest) :
+        this(src, dest, new()) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ObservableProxy
+    ///
+    /// <summary>
+    /// Creates a new instance of the ObservableProxy class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Source object to forward.</param>
+    /// <param name="dest">Target object to forward.</param>
+    /// <param name="rules">Forwarding rules.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest, RuleDictionary rules)
+    {
+        Rules = rules;
+        _disposable = src.Subscribe(e => {
+            if (Rules.TryGetValue(e, out var v)) dest.Refresh(v);
+            else if (!MatchOnly) dest.Refresh(e);
+        });
+    }
+
+    #endregion
+
+    #region Classes
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// RuleDictionary
+    ///
+    /// <summary>
+    /// Represents the forwarding rules at the ObservableProxy class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ObservableProxy : DisposableBase
+    public class RuleDictionary : Dictionary<string, IEnumerable<string>> { }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Rules
+    ///
+    /// <summary>
+    /// Get the forwarding rules.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public RuleDictionary Rules { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MatchOnly
+    ///
+    /// <summary>
+    /// Gets or sets a value indicating whether to forward property names
+    /// that do not match the provided rules.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool MatchOnly { get; set; } = false;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObservableProxy
-        ///
-        /// <summary>
-        /// Creates a new instance of the ObservableProxy class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source object to forward.</param>
-        /// <param name="dest">Target object to forward.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest) :
-            this(src, dest, new()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObservableProxy
-        ///
-        /// <summary>
-        /// Creates a new instance of the ObservableProxy class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source object to forward.</param>
-        /// <param name="dest">Target object to forward.</param>
-        /// <param name="rules">Forwarding rules.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ObservableProxy(INotifyPropertyChanged src, ObservableBase dest, RuleDictionary rules)
-        {
-            Rules = rules;
-            _disposable = src.Subscribe(e => {
-                if (Rules.TryGetValue(e, out var v)) dest.Refresh(v);
-                else if (!MatchOnly) dest.Refresh(e);
-            });
-        }
-
-        #endregion
-
-        #region Classes
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// RuleDictionary
-        ///
-        /// <summary>
-        /// Represents the forwarding rules at the ObservableProxy class.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public class RuleDictionary : Dictionary<string, IEnumerable<string>> { }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Rules
-        ///
-        /// <summary>
-        /// Get the forwarding rules.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public RuleDictionary Rules { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MatchOnly
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether to forward property names
-        /// that do not match the provided rules.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool MatchOnly { get; set; } = false;
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _disposable.Dispose();
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly IDisposable _disposable;
-        #endregion
+        if (disposing) _disposable.Dispose();
     }
+
+    #endregion
+
+    #region Fields
+    private readonly IDisposable _disposable;
+    #endregion
 }

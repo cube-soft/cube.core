@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -22,279 +24,276 @@ using System.Threading.Tasks;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Collections;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// Logger
+///
+/// <summary>
+/// Provides settings and methods for logging.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Logger
 {
+    #region Properties
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Logger
+    /// Separator
     ///
     /// <summary>
-    /// Provides settings and methods for logging.
+    /// Gets or sets values to separate words.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Logger
+    public static string Separator { get; set; } = "\t";
+
+    #endregion
+
+    #region Debug
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogDebug
+    ///
+    /// <summary>
+    /// Outputs log as DEBUG level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="values">User messages.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogDebug(this Type type, params string[] values) =>
+        GetCore(type).Debug(GetMessage(values));
+
+    #endregion
+
+    #region Info
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogInfo
+    ///
+    /// <summary>
+    /// Outputs log as INFO level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="values">User messages.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogInfo(this Type type, params string[] values) =>
+        GetCore(type).Info(GetMessage(values));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogInfo
+    ///
+    /// <summary>
+    /// Outputs system information as INFO level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="assembly">Assembly object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogInfo(this Type type, System.Reflection.Assembly assembly)
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Separator
-        ///
-        /// <summary>
-        /// Gets or sets values to separate words.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Separator { get; set; } = "\t";
-
-        #endregion
-
-        #region Debug
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogDebug
-        ///
-        /// <summary>
-        /// Outputs log as DEBUG level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="values">User messages.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogDebug(this Type type, params string[] values) =>
-            GetCore(type).Debug(GetMessage(values));
-
-        #endregion
-
-        #region Info
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogInfo
-        ///
-        /// <summary>
-        /// Outputs log as INFO level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="values">User messages.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogInfo(this Type type, params string[] values) =>
-            GetCore(type).Info(GetMessage(values));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogInfo
-        ///
-        /// <summary>
-        /// Outputs system information as INFO level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="assembly">Assembly object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogInfo(this Type type, System.Reflection.Assembly assembly)
-        {
-            LogInfo(type, $"{assembly.GetProduct()} {assembly.GetVersionString(4, true)}");
-            LogInfo(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
-            LogInfo(type, $"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})");
-        }
-
-        #endregion
-
-        #region Warn
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogWarn
-        ///
-        /// <summary>
-        /// Outputs log as WARN level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="values">User messages.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogWarn(this Type type, params string[] values) =>
-            GetCore(type).Warn(GetMessage(values));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogWarn
-        ///
-        /// <summary>
-        /// Outputs log as WARN level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="error">Exception object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogWarn(this Type type, Exception error) =>
-            GetCore(type).Warn(GetErrorMessage(error));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogWarn
-        ///
-        /// <summary>
-        /// Outputs log as WARN level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="action">Function to monitor.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogWarn(this Type type, Action action) =>
-            Invoke(action, e => LogWarn(type, e));
-
-        #endregion
-
-        #region Error
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogError
-        ///
-        /// <summary>
-        /// Outputs log as ERROR level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="values">User messages.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogError(this Type type, params string[] values) =>
-            GetCore(type).Error(GetMessage(values));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogError
-        ///
-        /// <summary>
-        /// Outputs log as ERROR level.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="error">Exception object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogError(this Type type, Exception error) =>
-            GetCore(type).Error(GetErrorMessage(error));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LogError
-        ///
-        /// <summary>
-        /// Outputs log as ERROR level when an exception occurs.
-        /// </summary>
-        ///
-        /// <param name="type">Target type information.</param>
-        /// <param name="action">Function to monitor.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void LogError(this Type type, Action action) =>
-            Invoke(action, e => LogError(type, e));
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObserveTaskException
-        ///
-        /// <summary>
-        /// Observes UnobservedTaskException exceptions and outputs to the
-        /// log file.
-        /// </summary>
-        ///
-        /// <returns>Disposable object to stop to monitor.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable ObserveTaskException()
-        {
-            TaskScheduler.UnobservedTaskException -= WhenTaskError;
-            TaskScheduler.UnobservedTaskException += WhenTaskError;
-            return Disposable.Create(() => TaskScheduler.UnobservedTaskException -= WhenTaskError);
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetCore
-        ///
-        /// <summary>
-        /// Gets the logger object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static NLog.Logger GetCore(Type type) => NLog.LogManager.GetLogger(type.FullName);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetMessage
-        ///
-        /// <summary>
-        /// Gets the message from the specified arguments.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static string GetMessage(string[] values) =>
-            values.Length == 1 ? values[0] :
-            values.Length  > 1 ? values.Join(Separator) : string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetErrorMessage
-        ///
-        /// <summary>
-        /// Gets the error message from the specified exception.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static string GetErrorMessage(Exception src) =>
-            src is Win32Exception we ?
-            $"{we.Message} (0x{we.NativeErrorCode:X8}){Environment.NewLine}{we.StackTrace}" :
-            src.ToString();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the specified action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void Invoke(Action action, Action<Exception> error)
-        {
-            try { action(); }
-            catch (Exception err) { error(err); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenTaskError
-        ///
-        /// <summary>
-        /// Occurs when the UnobservedTaskException is raised.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
-            typeof(TaskScheduler).LogError(e.Exception);
-
-        #endregion
+        LogInfo(type, $"{assembly.GetProduct()} {assembly.GetVersionString(4, true)}");
+        LogInfo(type, $"CLR {Environment.Version} ({Environment.OSVersion})");
+        LogInfo(type, $"{Environment.UserName}@{Environment.MachineName} ({CultureInfo.CurrentCulture})");
     }
+
+    #endregion
+
+    #region Warn
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogWarn
+    ///
+    /// <summary>
+    /// Outputs log as WARN level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="values">User messages.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogWarn(this Type type, params string[] values) =>
+        GetCore(type).Warn(GetMessage(values));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogWarn
+    ///
+    /// <summary>
+    /// Outputs log as WARN level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="error">Exception object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogWarn(this Type type, Exception error) =>
+        GetCore(type).Warn(GetErrorMessage(error));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogWarn
+    ///
+    /// <summary>
+    /// Outputs log as WARN level when an exception occurs.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="action">Function to monitor.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogWarn(this Type type, Action action) =>
+        Invoke(action, e => LogWarn(type, e));
+
+    #endregion
+
+    #region Error
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogError
+    ///
+    /// <summary>
+    /// Outputs log as ERROR level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="values">User messages.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogError(this Type type, params string[] values) =>
+        GetCore(type).Error(GetMessage(values));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogError
+    ///
+    /// <summary>
+    /// Outputs log as ERROR level.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="error">Exception object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogError(this Type type, Exception error) =>
+        GetCore(type).Error(GetErrorMessage(error));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LogError
+    ///
+    /// <summary>
+    /// Outputs log as ERROR level when an exception occurs.
+    /// </summary>
+    ///
+    /// <param name="type">Target type information.</param>
+    /// <param name="action">Function to monitor.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void LogError(this Type type, Action action) =>
+        Invoke(action, e => LogError(type, e));
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ObserveTaskException
+    ///
+    /// <summary>
+    /// Observes UnobservedTaskException exceptions and outputs to the
+    /// log file.
+    /// </summary>
+    ///
+    /// <returns>Disposable object to stop to monitor.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IDisposable ObserveTaskException()
+    {
+        TaskScheduler.UnobservedTaskException -= WhenTaskError;
+        TaskScheduler.UnobservedTaskException += WhenTaskError;
+        return Disposable.Create(() => TaskScheduler.UnobservedTaskException -= WhenTaskError);
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetCore
+    ///
+    /// <summary>
+    /// Gets the logger object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static NLog.Logger GetCore(Type type) => NLog.LogManager.GetLogger(type.FullName);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetMessage
+    ///
+    /// <summary>
+    /// Gets the message from the specified arguments.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static string GetMessage(string[] values) =>
+        values.Length == 1 ? values[0] :
+        values.Length  > 1 ? values.Join(Separator) : string.Empty;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetErrorMessage
+    ///
+    /// <summary>
+    /// Gets the error message from the specified exception.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static string GetErrorMessage(Exception src) =>
+        src is Win32Exception we ?
+        $"{we.Message} (0x{we.NativeErrorCode:X8}){Environment.NewLine}{we.StackTrace}" :
+        src.ToString();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke
+    ///
+    /// <summary>
+    /// Invokes the specified action.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void Invoke(Action action, Action<Exception> error)
+    {
+        try { action(); }
+        catch (Exception err) { error(err); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenTaskError
+    ///
+    /// <summary>
+    /// Occurs when the UnobservedTaskException is raised.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
+        typeof(TaskScheduler).LogError(e.Exception);
+
+    #endregion
 }

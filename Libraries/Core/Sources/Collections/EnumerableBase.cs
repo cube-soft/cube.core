@@ -15,56 +15,55 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Collections;
+
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cube.Collections
+/* ------------------------------------------------------------------------- */
+///
+/// EnumerableBase
+///
+/// <summary>
+/// Represents the simplest implementation of the IEnumerable(T)
+/// interface.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class EnumerableBase<T> : DisposableBase, IEnumerable<T>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// EnumerableBase
+    /// GetEnumerator
     ///
     /// <summary>
-    /// Represents the simplest implementation of the IEnumerable(T)
-    /// interface.
+    /// Returns an enumerator that iterates through a collection.
     /// </summary>
     ///
+    /// <returns>
+    /// Enumerator that can be used to iterate through the collection.
+    /// </returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public abstract class EnumerableBase<T> : DisposableBase, IEnumerable<T>
-    {
-        #region Methods
+    public abstract IEnumerator<T> GetEnumerator();
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        ///
-        /// <returns>
-        /// Enumerator that can be used to iterate through the collection.
-        /// </returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public abstract IEnumerator<T> GetEnumerator();
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetEnumerator
+    ///
+    /// <summary>
+    /// Returns an enumerator that iterates through a collection.
+    /// </summary>
+    ///
+    /// <returns>
+    /// IEnumerator object that can be used to iterate through the
+    /// collection.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetEnumerator
-        ///
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        ///
-        /// <returns>
-        /// IEnumerator object that can be used to iterate through the
-        /// collection.
-        /// </returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        #endregion
-    }
+    #endregion
 }

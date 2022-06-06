@@ -15,100 +15,99 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// DisposableBase
+///
+/// <summary>
+/// Represents an implementation of the IDisposable interface.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class DisposableBase : IDisposable
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// DisposableBase
     ///
     /// <summary>
-    /// Represents an implementation of the IDisposable interface.
+    /// Creates a new instance of the DisposableBase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class DisposableBase : IDisposable
+    protected DisposableBase() => _dispose = new(Dispose);
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Disposed
+    ///
+    /// <summary>
+    /// Gets the value indicating whether the object is disposed.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool Disposed => _dispose.Invoked;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ~DisposableBase
+    ///
+    /// <summary>
+    /// Finalizes the DisposableBase.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    ~DisposableBase() => _dispose?.Invoke(false);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases all resources used by the object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Dispose()
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisposableBase
-        ///
-        /// <summary>
-        /// Creates a new instance of the DisposableBase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DisposableBase() { _dispose = new(Dispose); }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Disposed
-        ///
-        /// <summary>
-        /// Gets the value indicating whether the object is disposed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Disposed => _dispose.Invoked;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ~DisposableBase
-        ///
-        /// <summary>
-        /// Finalizes the DisposableBase.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        ~DisposableBase() { _dispose?.Invoke(false); }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases all resources used by the object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Dispose()
-        {
-            _dispose.Invoke(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected abstract void Dispose(bool disposing);
-
-        #endregion
-
-        #region Fields
-        private readonly OnceAction<bool> _dispose;
-        #endregion
+        _dispose.Invoke(true);
+        GC.SuppressFinalize(this);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected abstract void Dispose(bool disposing);
+
+    #endregion
+
+    #region Fields
+    private readonly OnceAction<bool> _dispose;
+    #endregion
 }

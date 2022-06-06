@@ -15,154 +15,153 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Collections;
+
 using System;
 using System.Collections.Generic;
 using Cube.Collections;
 using Cube.Collections.Differences;
 
-namespace Cube.Mixin.Collections
+/* ------------------------------------------------------------------------- */
+///
+/// DifferenceExtension
+///
+/// <summary>
+/// Provides extended methods to get diff between the two sequences.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class DifferenceExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DifferenceExtension
+    /// Diff(T)
     ///
     /// <summary>
-    /// Provides extended methods to get diff between the two sequences.
+    /// Returns diff between the two sequences.
     /// </summary>
     ///
+    /// <param name="newer">Newer sequence.</param>
+    /// <param name="older">Older sequence.</param>
+    ///
+    /// <returns>Diff result.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class DifferenceExtension
-    {
-        #region Methods
+    public static IEnumerable<Result<T>> Diff<T>(
+        this IEnumerable<T> newer,
+        IEnumerable<T> older) =>
+        Diff(newer, older, Condition.DiffOnly);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Diff(T)
-        ///
-        /// <summary>
-        /// Returns diff between the two sequences.
-        /// </summary>
-        ///
-        /// <param name="newer">Newer sequence.</param>
-        /// <param name="older">Older sequence.</param>
-        ///
-        /// <returns>Diff result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Result<T>> Diff<T>(
-            this IEnumerable<T> newer,
-            IEnumerable<T> older) =>
-            Diff(newer, older, Condition.DiffOnly);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Diff(T)
+    ///
+    /// <summary>
+    /// Returns diff between the two sequences.
+    /// </summary>
+    ///
+    /// <param name="newer">Newer sequence.</param>
+    /// <param name="older">Older sequence.</param>
+    /// <param name="mask">Mask to filter the results.</param>
+    ///
+    /// <returns>Diff result.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<Result<T>> Diff<T>(
+        this IEnumerable<T> newer,
+        IEnumerable<T> older,
+        Condition mask) =>
+        new OnpAlgorithm<T>().Compare(older, newer, mask);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Diff(T)
-        ///
-        /// <summary>
-        /// Returns diff between the two sequences.
-        /// </summary>
-        ///
-        /// <param name="newer">Newer sequence.</param>
-        /// <param name="older">Older sequence.</param>
-        /// <param name="mask">Mask to filter the results.</param>
-        ///
-        /// <returns>Diff result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Result<T>> Diff<T>(
-            this IEnumerable<T> newer,
-            IEnumerable<T> older,
-            Condition mask) =>
-            new OnpAlgorithm<T>().Compare(older, newer, mask);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Diff(T)
+    ///
+    /// <summary>
+    /// Returns diff between the two sequences.
+    /// </summary>
+    ///
+    /// <param name="newer">Newer sequence.</param>
+    /// <param name="older">Older sequence.</param>
+    /// <param name="comparer">Comparer object.</param>
+    ///
+    /// <returns>Diff result.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<Result<T>> Diff<T>(
+        this IEnumerable<T> newer,
+        IEnumerable<T> older,
+        IEqualityComparer<T> comparer) =>
+        Diff(newer, older, comparer, Condition.DiffOnly);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Diff(T)
-        ///
-        /// <summary>
-        /// Returns diff between the two sequences.
-        /// </summary>
-        ///
-        /// <param name="newer">Newer sequence.</param>
-        /// <param name="older">Older sequence.</param>
-        /// <param name="comparer">Comparer object.</param>
-        ///
-        /// <returns>Diff result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Result<T>> Diff<T>(
-            this IEnumerable<T> newer,
-            IEnumerable<T> older,
-            IEqualityComparer<T> comparer) =>
-            Diff(newer, older, comparer, Condition.DiffOnly);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Diff(T)
+    ///
+    /// <summary>
+    /// Returns diff between the two sequences.
+    /// </summary>
+    ///
+    /// <param name="newer">Newer sequence.</param>
+    /// <param name="older">Older sequence.</param>
+    /// <param name="comparer">Comparer object.</param>
+    /// <param name="mask">Mask to filter the results.</param>
+    ///
+    /// <returns>Diff result.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<Result<T>> Diff<T>(
+        this IEnumerable<T> newer,
+        IEnumerable<T> older,
+        IEqualityComparer<T> comparer,
+        Condition mask) =>
+        new OnpAlgorithm<T>(comparer).Compare(older, newer, mask);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Diff(T)
-        ///
-        /// <summary>
-        /// Returns diff between the two sequences.
-        /// </summary>
-        ///
-        /// <param name="newer">Newer sequence.</param>
-        /// <param name="older">Older sequence.</param>
-        /// <param name="comparer">Comparer object.</param>
-        /// <param name="mask">Mask to filter the results.</param>
-        ///
-        /// <returns>Diff result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Result<T>> Diff<T>(
-            this IEnumerable<T> newer,
-            IEnumerable<T> older,
-            IEqualityComparer<T> comparer,
-            Condition mask) =>
-            new OnpAlgorithm<T>(comparer).Compare(older, newer, mask);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Diff(T)
+    ///
+    /// <summary>
+    /// Returns diff between the two sequences.
+    /// </summary>
+    ///
+    /// <param name="newer">Newer sequence.</param>
+    /// <param name="older">Older sequence.</param>
+    /// <param name="compare">Function to compare each element.</param>
+    ///
+    /// <returns>Diff result.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<Result<T>> Diff<T>(
+        this IEnumerable<T> newer,
+        IEnumerable<T> older,
+        Func<T, T, bool> compare) =>
+        Diff(newer, older, compare, Condition.DiffOnly);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Diff(T)
-        ///
-        /// <summary>
-        /// Returns diff between the two sequences.
-        /// </summary>
-        ///
-        /// <param name="newer">Newer sequence.</param>
-        /// <param name="older">Older sequence.</param>
-        /// <param name="compare">Function to compare each element.</param>
-        ///
-        /// <returns>Diff result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Result<T>> Diff<T>(
-            this IEnumerable<T> newer,
-            IEnumerable<T> older,
-            Func<T, T, bool> compare) =>
-            Diff(newer, older, compare, Condition.DiffOnly);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Diff(T)
+    ///
+    /// <summary>
+    /// Returns diff between the two sequences.
+    /// </summary>
+    ///
+    /// <param name="newer">Newer sequence.</param>
+    /// <param name="older">Older sequence.</param>
+    /// <param name="compare">Function to compare each element.</param>
+    /// <param name="mask">Mask to filter the results.</param>
+    ///
+    /// <returns>Diff result.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<Result<T>> Diff<T>(
+        this IEnumerable<T> newer,
+        IEnumerable<T> older,
+        Func<T, T, bool> compare,
+        Condition mask) =>
+        Diff(older, newer, new LambdaEqualityComparer<T>(compare), mask);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Diff(T)
-        ///
-        /// <summary>
-        /// Returns diff between the two sequences.
-        /// </summary>
-        ///
-        /// <param name="newer">Newer sequence.</param>
-        /// <param name="older">Older sequence.</param>
-        /// <param name="compare">Function to compare each element.</param>
-        /// <param name="mask">Mask to filter the results.</param>
-        ///
-        /// <returns>Diff result.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<Result<T>> Diff<T>(
-            this IEnumerable<T> newer,
-            IEnumerable<T> older,
-            Func<T, T, bool> compare,
-            Condition mask) =>
-            Diff(older, newer, new LambdaEqualityComparer<T>(compare), mask);
-
-        #endregion
-    }
+    #endregion
 }

@@ -15,189 +15,188 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Collections;
 using Cube.Collections;
 
-namespace Cube
-{
-    #region IAggregator
+#region IAggregator
 
+/* ------------------------------------------------------------------------- */
+///
+/// IAggregator
+///
+/// <summary>
+/// Represents the interface of the aggregator.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public interface IAggregator
+{
     /* --------------------------------------------------------------------- */
     ///
-    /// IAggregator
+    /// Subscribe
     ///
     /// <summary>
-    /// Represents the interface of the aggregator.
+    /// Subscribes the message of type T.
     /// </summary>
     ///
+    /// <typeparam name="T">Message type.</typeparam>
+    ///
+    /// <param name="callback">
+    /// Callback function for the message of type T.
+    /// </param>
+    ///
+    /// <returns>Object to clear the subscription.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public interface IAggregator
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Subscribes the message of type T.
-        /// </summary>
-        ///
-        /// <typeparam name="T">Message type.</typeparam>
-        ///
-        /// <param name="callback">
-        /// Callback function for the message of type T.
-        /// </param>
-        ///
-        /// <returns>Object to clear the subscription.</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public IDisposable Subscribe<T>(Action<T> callback);
-    }
+    public IDisposable Subscribe<T>(Action<T> callback);
+}
 
-    #endregion
+#endregion
 
-    #region Aggregator
+#region Aggregator
+
+/* ------------------------------------------------------------------------- */
+///
+/// Aggregator
+///
+/// <summary>
+/// Represents the type based message aggregator.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public sealed class Aggregator : IAggregator
+{
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
     /// Aggregator
     ///
     /// <summary>
-    /// Represents the type based message aggregator.
+    /// Initializes a new instance of the Aggregator class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public sealed class Aggregator : IAggregator
+    public Aggregator() : this(0) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Aggregator
+    ///
+    /// <summary>
+    /// Initializes a new instance of the Aggregator class with the specified
+    /// capacity.
+    /// </summary>
+    ///
+    /// <param name="capacity">
+    /// Capacity of the internal hash table. If zero is specified,
+    /// the initial capacity of the Hashtable class will be used.
+    /// </param>
+    ///
+    /// <remarks>
+    /// Due to the specification of the Hashtable class, the actual
+    /// capacity will be as follows:
+    ///
+    /// [0,   3] to  2.16 ( 3 * 0.72),
+    /// [4,   7] to  5.04 ( 7 * 0.72),
+    /// [8,  11] to  7.92 (11 * 0.72),
+    /// [12, 17] to 12.24 (17 * 0.72),
+    /// [18, 23] to 16.56 (23 * 0.72),
+    /// [24, 29] to 20.88 (29 * 0.72),
+    /// [30, 37] to 26.64 (37 * 0.72).
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Aggregator(int capacity) => _subscription = new(capacity);
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Publish
+    ///
+    /// <summary>
+    /// Publishes the specified message.
+    /// </summary>
+    ///
+    /// <param name="message">Message to be published.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Publish<T>(T message)
     {
-        #region Constructors
+        if (message == null) throw new ArgumentNullException(nameof(message));
+        var dest = Get(message.GetType());
+        if (dest is null) return;
+        foreach (var e in dest) e(message);
+    }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Aggregator class.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Aggregator() : this(0) { }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Subscribe
+    ///
+    /// <summary>
+    /// Subscribes the message of type T.
+    /// </summary>
+    ///
+    /// <typeparam name="T">Message type.</typeparam>
+    ///
+    /// <param name="callback">
+    /// Callback function for the message of type T.
+    /// </param>
+    ///
+    /// <returns>Object to clear the subscription.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public IDisposable Subscribe<T>(Action<T> callback) =>
+        GetOrAdd(typeof(T)).Subscribe(e => callback((T)e));
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Aggregator
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Aggregator class with the specified
-        /// capacity.
-        /// </summary>
-        ///
-        /// <param name="capacity">
-        /// Capacity of the internal hash table. If zero is specified,
-        /// the initial capacity of the Hashtable class will be used.
-        /// </param>
-        ///
-        /// <remarks>
-        /// Due to the specification of the Hashtable class, the actual
-        /// capacity will be as follows:
-        ///
-        /// [0,   3] to  2.16 ( 3 * 0.72),
-        /// [4,   7] to  5.04 ( 7 * 0.72),
-        /// [8,  11] to  7.92 (11 * 0.72),
-        /// [12, 17] to 12.24 (17 * 0.72),
-        /// [18, 23] to 16.56 (23 * 0.72),
-        /// [24, 29] to 20.88 (29 * 0.72),
-        /// [30, 37] to 26.64 (37 * 0.72).
-        /// </remarks>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Aggregator(int capacity) => _subscription = new(capacity);
+    #endregion
 
-        #endregion
+    #region Implementations
 
-        #region Methods
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Get
+    ///
+    /// <summary>
+    /// Gets the object of the specified key.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private Subscription<Action<object>> Get(Type key) =>
+        _subscription[key] as Subscription<Action<object>>;
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Publish
-        ///
-        /// <summary>
-        /// Publishes the specified message.
-        /// </summary>
-        ///
-        /// <param name="message">Message to be published.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public void Publish<T>(T message)
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetOrAdd
+    ///
+    /// <summary>
+    /// Gets the object of the specified key.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private Subscription<Action<object>> GetOrAdd(Type key)
+    {
+        if (!_subscription.ContainsKey(key))
         {
-            if (message == null) throw new ArgumentNullException(nameof(message));
-            var dest = Get(message.GetType());
-            if (dest is null) return;
-            foreach (var e in dest) e(message);
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Subscribes the message of type T.
-        /// </summary>
-        ///
-        /// <typeparam name="T">Message type.</typeparam>
-        ///
-        /// <param name="callback">
-        /// Callback function for the message of type T.
-        /// </param>
-        ///
-        /// <returns>Object to clear the subscription.</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public IDisposable Subscribe<T>(Action<T> callback) =>
-            GetOrAdd(typeof(T)).Subscribe(e => callback((T)e));
-
-        #endregion
-
-        #region Implementations
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// Gets the object of the specified key.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private Subscription<Action<object>> Get(Type key) =>
-            _subscription[key] as Subscription<Action<object>>;
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// GetOrAdd
-        ///
-        /// <summary>
-        /// Gets the object of the specified key.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        private Subscription<Action<object>> GetOrAdd(Type key)
-        {
-            if (!_subscription.ContainsKey(key))
+            lock (_subscription.SyncRoot)
             {
-                lock (_subscription.SyncRoot)
-                {
-                    _subscription[key] = new Subscription<Action<object>>();
-                }
+                _subscription[key] = new Subscription<Action<object>>();
             }
-            return Get(key);
         }
-
-        #endregion
-
-        #region Fields
-        private readonly Hashtable _subscription;
-        #endregion
+        return Get(key);
     }
 
     #endregion
+
+    #region Fields
+    private readonly Hashtable _subscription;
+    #endregion
 }
+
+#endregion

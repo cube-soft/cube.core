@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.FileSystem;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,194 +25,191 @@ using Cube.Mixin.Collections.Generic;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 
-namespace Cube.FileSystem
+/* ------------------------------------------------------------------------- */
+///
+/// Startup
+///
+/// <summary>
+/// Provides functionality to register and delete startup settings.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Startup : ObservableBase
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// Startup
     ///
     /// <summary>
-    /// Provides functionality to register and delete startup settings.
+    /// Initializes a new instance of the Startup class with the
+    /// specified name.
+    /// </summary>
+    ///
+    /// <param name="name">Name to register.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Startup(string name)
+    {
+        bool exists(string s) { using var k = Open(false); return k?.GetValue(s) != null; }
+
+        if (!name.HasValue()) throw new ArgumentException(nameof(name));
+        Name    = name;
+        Enabled = exists(name);
+    }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Name
+    ///
+    /// <summary>
+    /// Gets the name registered in startup programs.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Startup : ObservableBase
+    public string Name { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Enabled
+    ///
+    /// <summary>
+    /// Gets or sets the value indicating whether the startup
+    /// settings is enabled.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool Enabled
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Startup
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Startup class with the
-        /// specified name.
-        /// </summary>
-        ///
-        /// <param name="name">Name to register.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Startup(string name)
-        {
-            bool exists(string s) { using var k = Open(false); return k?.GetValue(s) != null; }
-
-            if (!name.HasValue()) throw new ArgumentException(nameof(name));
-            Name    = name;
-            Enabled = exists(name);
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Name
-        ///
-        /// <summary>
-        /// Gets the name registered in startup programs.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Name { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Enabled
-        ///
-        /// <summary>
-        /// Gets or sets the value indicating whether the startup
-        /// settings is enabled.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Enabled
-        {
-            get => Get<bool>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Source
-        ///
-        /// <summary>
-        /// Gets or sets the source (filename, etc) that executes when
-        /// startup.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Source
-        {
-            get => Get(() => string.Empty);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Arguments
-        ///
-        /// <summary>
-        /// Gets or sets the arguments of the Source property.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ICollection<string> Arguments { get; } = new List<string>();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Command
-        ///
-        /// <summary>
-        /// Gets the registered command.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Command =>
-            Source.HasValue() ?
-            Source.ToEnumerable().Concat(Arguments).Join(" ", e => e.Quote()) :
-            string.Empty;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save
-        ///
-        /// <summary>
-        /// Saves settings to the registry.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Save() => Save(false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Save
-        ///
-        /// <summary>
-        /// Saves settings to the registry with the specified settings.
-        /// </summary>
-        ///
-        /// <param name="checkExists">
-        /// Value indicating whether to check for the existence of the
-        /// provided source. If the value is set to true and the provided
-        /// source does not exist, the provided name will be removed from
-        /// the registry regardless of the Enabled property.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Save(bool checkExists)
-        {
-            bool isadd()
-            {
-                if (!Enabled) return false;
-                if (!checkExists) return true;
-                if (!Source.HasValue()) return false;
-                return Io.Exists(Source);
-            }
-
-            using var sk = Open(true);
-            if (isadd()) sk.SetValue(Name, Command);
-            else sk.DeleteValue(Name, false);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) { }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Open
-        ///
-        /// <summary>
-        /// Gets the RegistryKey object for startup programs.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private RegistryKey Open(bool writable) => Registry.CurrentUser.OpenSubKey(
-            @"Software\Microsoft\Windows\CurrentVersion\Run", writable
-        );
-
-        #endregion
+        get => Get<bool>();
+        set => Set(value);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Source
+    ///
+    /// <summary>
+    /// Gets or sets the source (filename, etc) that executes when
+    /// startup.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Source
+    {
+        get => Get(() => string.Empty);
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Arguments
+    ///
+    /// <summary>
+    /// Gets or sets the arguments of the Source property.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ICollection<string> Arguments { get; } = new List<string>();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Command
+    ///
+    /// <summary>
+    /// Gets the registered command.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Command =>
+        Source.HasValue() ?
+        Source.ToEnumerable().Concat(Arguments).Join(" ", e => e.Quote()) :
+        string.Empty;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Save
+    ///
+    /// <summary>
+    /// Saves settings to the registry.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Save() => Save(false);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Save
+    ///
+    /// <summary>
+    /// Saves settings to the registry with the specified settings.
+    /// </summary>
+    ///
+    /// <param name="checkExists">
+    /// Value indicating whether to check for the existence of the
+    /// provided source. If the value is set to true and the provided
+    /// source does not exist, the provided name will be removed from
+    /// the registry regardless of the Enabled property.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Save(bool checkExists)
+    {
+        bool isadd()
+        {
+            if (!Enabled) return false;
+            if (!checkExists) return true;
+            if (!Source.HasValue()) return false;
+            return Io.Exists(Source);
+        }
+
+        using var sk = Open(true);
+        if (isadd()) sk.SetValue(Name, Command);
+        else sk.DeleteValue(Name, false);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing) { }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Open
+    ///
+    /// <summary>
+    /// Gets the RegistryKey object for startup programs.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private RegistryKey Open(bool writable) => Registry.CurrentUser.OpenSubKey(
+        @"Software\Microsoft\Windows\CurrentVersion\Run", writable
+    );
+
+    #endregion
 }

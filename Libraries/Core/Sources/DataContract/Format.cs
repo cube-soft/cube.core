@@ -15,25 +15,24 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.DataContract
+namespace Cube.DataContract;
+
+/* ------------------------------------------------------------------------- */
+///
+/// Format
+///
+/// <summary>
+/// Specifies formats that can be serialized and deserialized by the
+/// DataContract module.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public enum Format
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Format
-    ///
-    /// <summary>
-    /// Specifies formats that can be serialized and deserialized by the
-    /// DataContract module.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum Format
-    {
-        /// <summary>Registry</summary>
-        Registry,
-        /// <summary>XML</summary>
-        Xml,
-        /// <summary>JSON</summary>
-        Json,
-    }
+    /// <summary>Registry</summary>
+    Registry,
+    /// <summary>XML</summary>
+    Xml,
+    /// <summary>JSON</summary>
+    Json,
 }

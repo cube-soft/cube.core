@@ -15,82 +15,81 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube
+namespace Cube;
+
+/* ------------------------------------------------------------------------- */
+///
+/// Utm
+///
+/// <summary>
+/// Represents the properties that are used in the Google Analytics
+/// service.
+/// </summary>
+///
+/// <seealso href="https://support.google.com/analytics/answer/1033863" />
+///
+/* ------------------------------------------------------------------------- */
+public class Utm
 {
+    #region Properties
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Utm
+    /// Source
     ///
     /// <summary>
-    /// Represents the properties that are used in the Google Analytics
-    /// service.
+    /// Gets or sets a value to identify the advertiser, site,
+    /// publication, etc. that is sending traffic to your property.
     /// </summary>
     ///
-    /// <seealso href="https://support.google.com/analytics/answer/1033863" />
+    /* --------------------------------------------------------------------- */
+    public string Source { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Medium
+    ///
+    /// <summary>
+    /// Gets or sets a value of the advertising or marketing medium.
+    /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Utm
-    {
-        #region Properties
+    public string Medium { get; set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Source
-        ///
-        /// <summary>
-        /// Gets or sets a value to identify the advertiser, site,
-        /// publication, etc. that is sending traffic to your property.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Source { get; set; }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Campaign
+    ///
+    /// <summary>
+    /// Gets or sets a value of the individual campaign name, slogan,
+    /// promo code, etc. for a product.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Campaign { get; set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Medium
-        ///
-        /// <summary>
-        /// Gets or sets a value of the advertising or marketing medium.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Medium { get; set; }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Term
+    ///
+    /// <summary>
+    /// Gets or sets a value to identify paid search keywords.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Term { get; set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Campaign
-        ///
-        /// <summary>
-        /// Gets or sets a value of the individual campaign name, slogan,
-        /// promo code, etc. for a product.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Campaign { get; set; }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Content
+    ///
+    /// <summary>
+    /// Gets or sets a value that is used to differentiate similar
+    /// content, or links within the same ad.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Content { get; set; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Term
-        ///
-        /// <summary>
-        /// Gets or sets a value to identify paid search keywords.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Term { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Content
-        ///
-        /// <summary>
-        /// Gets or sets a value that is used to differentiate similar
-        /// content, or links within the same ad.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Content { get; set; }
-
-        #endregion
-    }
+    #endregion
 }

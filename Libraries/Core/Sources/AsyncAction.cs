@@ -15,18 +15,17 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System.Threading.Tasks;
 
-namespace Cube
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// AsyncAction
-    ///
-    /// <summary>
-    /// Represents the method to invoke as an asynchronous method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public delegate Task AsyncAction();
-}
+/* ------------------------------------------------------------------------- */
+///
+/// AsyncAction
+///
+/// <summary>
+/// Represents the method to invoke as an asynchronous method.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public delegate Task AsyncAction();

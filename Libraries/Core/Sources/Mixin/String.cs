@@ -15,122 +15,121 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.String;
+
 using System;
 
-namespace Cube.Mixin.String
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods for the string class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// HasValue
     ///
     /// <summary>
-    /// Provides extended methods for the string class.
+    /// Gets a value indicating whether the specified string contains
+    /// one or more character.
     /// </summary>
     ///
+    /// <param name="src">Source string.</param>
+    ///
+    /// <returns>true for containing one or more character.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
-    {
-        #region Methods
+    public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// HasValue
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the specified string contains
-        /// one or more character.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>true for containing one or more character.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool HasValue(this string src) => !string.IsNullOrEmpty(src);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Unify
+    ///
+    /// <summary>
+    /// Converts a null or empty string to the empty one.
+    /// </summary>
+    ///
+    /// <param name="src">Source string.</param>
+    ///
+    /// <returns>Converted string.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string Unify(this string src) => src ?? string.Empty;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Unify
-        ///
-        /// <summary>
-        /// Converts a null or empty string to the empty one.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Converted string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Unify(this string src) => src ?? string.Empty;
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Quote
+    ///
+    /// <summary>
+    /// Quotes the specified string.
+    /// </summary>
+    ///
+    /// <param name="src">Source string.</param>
+    ///
+    /// <returns>Quoted string.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string Quote(this string src) => $"\"{src}\"";
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Quote
-        ///
-        /// <summary>
-        /// Quotes the specified string.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        ///
-        /// <returns>Quoted string.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string Quote(this string src) => $"\"{src}\"";
+    /* --------------------------------------------------------------------- */
+    ///
+    /// FuzzyEquals
+    ///
+    /// <summary>
+    /// Compares the specified string objects in ignoring case.
+    /// </summary>
+    ///
+    /// <param name="src">Source string.</param>
+    /// <param name="cmp">String to compare.</param>
+    ///
+    /// <returns>true for equal; otherwise false.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool FuzzyEquals(this string src, string cmp) =>
+        src.Equals(cmp, StringComparison.OrdinalIgnoreCase);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FuzzyEquals
-        ///
-        /// <summary>
-        /// Compares the specified string objects in ignoring case.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        /// <param name="cmp">String to compare.</param>
-        ///
-        /// <returns>true for equal; otherwise false.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool FuzzyEquals(this string src, string cmp) =>
-            src.Equals(cmp, StringComparison.OrdinalIgnoreCase);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// FuzzyStartsWith
+    ///
+    /// <summary>
+    /// Determines whether the beginning of this string instance
+    /// matches the specified string in ignoring case.
+    /// </summary>
+    ///
+    /// <param name="src">Source string.</param>
+    /// <param name="cmp">String to compare.</param>
+    ///
+    /// <returns>true for match; otherwise, false.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool FuzzyStartsWith(this string src, string cmp) =>
+        src.StartsWith(cmp, StringComparison.OrdinalIgnoreCase);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FuzzyStartsWith
-        ///
-        /// <summary>
-        /// Determines whether the beginning of this string instance
-        /// matches the specified string in ignoring case.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        /// <param name="cmp">String to compare.</param>
-        ///
-        /// <returns>true for match; otherwise, false.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool FuzzyStartsWith(this string src, string cmp) =>
-            src.StartsWith(cmp, StringComparison.OrdinalIgnoreCase);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// FuzzyStartsWith
+    ///
+    /// <summary>
+    /// Determines whether the end of this string instance matches the
+    /// specified string in ignoring case.
+    /// </summary>
+    ///
+    /// <param name="src">Source string.</param>
+    /// <param name="cmp">String to compare.</param>
+    ///
+    /// <returns>true for match; otherwise, false.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool FuzzyEndsWith(this string src, string cmp) =>
+        src.EndsWith(cmp, StringComparison.OrdinalIgnoreCase);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FuzzyStartsWith
-        ///
-        /// <summary>
-        /// Determines whether the end of this string instance matches the
-        /// specified string in ignoring case.
-        /// </summary>
-        ///
-        /// <param name="src">Source string.</param>
-        /// <param name="cmp">String to compare.</param>
-        ///
-        /// <returns>true for match; otherwise, false.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool FuzzyEndsWith(this string src, string cmp) =>
-            src.EndsWith(cmp, StringComparison.OrdinalIgnoreCase);
-
-        #endregion
-    }
+    #endregion
 }

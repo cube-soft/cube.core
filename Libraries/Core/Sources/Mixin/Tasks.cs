@@ -15,79 +15,78 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Tasks;
+
 using System;
 using System.Threading.Tasks;
 
-namespace Cube.Mixin.Tasks
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods of the Task and related classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// Forget
     ///
     /// <summary>
-    /// Provides extended methods of the Task and related classes.
+    /// Executes the specified task in the Fire&amp;Forget pattern.
     /// </summary>
     ///
+    /// <param name="src">Source object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static void Forget(this Task src) =>
+        src.ContinueWith(e => e.GetType().LogWarn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Timeout
+    ///
+    /// <summary>
+    /// Sets a timeout of executing the specified task.
+    /// </summary>
+    ///
+    /// <param name="src">Source object.</param>
+    /// <param name="value">Timeout value.</param>
+    ///
+    /// <returns>Task object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static async Task Timeout(this Task src, TimeSpan value)
     {
-        #region Methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Forget
-        ///
-        /// <summary>
-        /// Executes the specified task in the Fire&amp;Forget pattern.
-        /// </summary>
-        ///
-        /// <param name="src">Source object.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public static void Forget(this Task src) =>
-            src.ContinueWith(e => e.GetType().LogWarn(e.Exception), TaskContinuationOptions.OnlyOnFaulted);
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Timeout
-        ///
-        /// <summary>
-        /// Sets a timeout of executing the specified task.
-        /// </summary>
-        ///
-        /// <param name="src">Source object.</param>
-        /// <param name="value">Timeout value.</param>
-        ///
-        /// <returns>Task object.</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public static async Task Timeout(this Task src, TimeSpan value)
-        {
-            var timeout = Task.Delay(value);
-            var dest = await Task.WhenAny(src, timeout).ConfigureAwait(false);
-            if (dest == timeout) throw new TimeoutException();
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Timeout
-        ///
-        /// <summary>
-        /// Sets a timeout of executing the specified task.
-        /// </summary>
-        ///
-        /// <param name="src">Source object.</param>
-        /// <param name="value">Timeout value.</param>
-        ///
-        /// <returns>Task(T) object.</returns>
-        ///
-        /* --------------------------------------------------------------------- */
-        public static async Task<T> Timeout<T>(this Task<T> src, TimeSpan value)
-        {
-            await ((Task)src).Timeout(value).ConfigureAwait(false);
-            return await src.ConfigureAwait(false);
-        }
-
-        #endregion
+        var timeout = Task.Delay(value);
+        var dest = await Task.WhenAny(src, timeout).ConfigureAwait(false);
+        if (dest == timeout) throw new TimeoutException();
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Timeout
+    ///
+    /// <summary>
+    /// Sets a timeout of executing the specified task.
+    /// </summary>
+    ///
+    /// <param name="src">Source object.</param>
+    /// <param name="value">Timeout value.</param>
+    ///
+    /// <returns>Task(T) object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static async Task<T> Timeout<T>(this Task<T> src, TimeSpan value)
+    {
+        await ((Task)src).Timeout(value).ConfigureAwait(false);
+        return await src.ConfigureAwait(false);
+    }
+
+    #endregion
 }

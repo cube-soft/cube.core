@@ -15,73 +15,72 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Collections
+namespace Cube.Collections;
+
+/* ------------------------------------------------------------------------- */
+///
+/// ArgumentToken
+///
+/// <summary>
+/// Represents an item of arguments. The class is mainly used in the
+/// IArgumentPreprocessor implemented classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ArgumentToken
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ArgumentToken
     ///
     /// <summary>
-    /// Represents an item of arguments. The class is mainly used in the
-    /// IArgumentPreprocessor implemented classes.
+    /// Initializes a new instance of the ArgumentToken class with the
+    /// specified value.
+    /// </summary>
+    ///
+    /// <param name="value">Value of the argument.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ArgumentToken(string value) : this(value, string.Empty) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ArgumentToken
+    ///
+    /// <summary>
+    /// Initializes a new instance of the ArgumentToken class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="value">Value of the argument.</param>
+    /// <param name="prefix">Prefix of the argument.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ArgumentToken(string value, string prefix)
+    {
+        Value  = value;
+        Prefix = prefix;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Value
+    ///
+    /// <summary>
+    /// Gets the value of the token.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ArgumentToken
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ArgumentToken
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ArgumentToken class with the
-        /// specified value.
-        /// </summary>
-        ///
-        /// <param name="value">Value of the argument.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ArgumentToken(string value) : this(value, string.Empty) { }
+    public string Value { get; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ArgumentToken
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ArgumentToken class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="value">Value of the argument.</param>
-        /// <param name="prefix">Prefix of the argument.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ArgumentToken(string value, string prefix)
-        {
-            Value  = value;
-            Prefix = prefix;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets the value of the token.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Value { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Prefix
-        ///
-        /// <summary>
-        /// Gets the prefix value of the token.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Prefix { get; }
-    }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Prefix
+    ///
+    /// <summary>
+    /// Gets the prefix value of the token.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Prefix { get; }
 }

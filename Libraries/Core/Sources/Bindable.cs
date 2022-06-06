@@ -15,19 +15,18 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.ComponentModel;
 
-namespace Cube
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IBindable
-    ///
-    /// <summary>
-    /// Represents the interface of bindable components.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public interface IBindable : IAggregator, INotifyPropertyChanged, IDisposable { }
-}
+/* ------------------------------------------------------------------------- */
+///
+/// IBindable
+///
+/// <summary>
+/// Represents the interface of bindable components.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public interface IBindable : IAggregator, INotifyPropertyChanged, IDisposable { }

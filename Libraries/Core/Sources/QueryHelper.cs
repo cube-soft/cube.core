@@ -15,83 +15,82 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube
+namespace Cube;
+
+/* ------------------------------------------------------------------------- */
+///
+/// Query
+///
+/// <summary>
+/// Provides functionality to create a new instance of the Query(T, U)
+/// or related classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Query
 {
+    #region NewMessage
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Query
+    /// NewMessage
     ///
     /// <summary>
-    /// Provides functionality to create a new instance of the Query(T, U)
-    /// or related classes.
+    /// Creates a new instance of the QueryMessage(T, T) class with
+    /// the specified query.
     /// </summary>
     ///
+    /// <typeparam name="T">type of source and result.</typeparam>
+    ///
+    /// <param name="src">Source information.</param>
+    ///
+    /// <returns>QueryMessage(T, T) object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Query
+    public static QueryMessage<T, T> NewMessage<T>(T src) => NewMessage<T, T>(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NewMessage
+    ///
+    /// <summary>
+    /// Creates a new instance of the QueryMessage(T, U) class with
+    /// the specified query.
+    /// </summary>
+    ///
+    /// <typeparam name="T">type of query source.</typeparam>
+    /// <typeparam name="U">type of result value.</typeparam>
+    ///
+    /// <param name="src">Source information.</param>
+    ///
+    /// <returns>QueryMessage(T, U) object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static QueryMessage<T, U> NewMessage<T, U>(T src) => NewMessage(src, default(U));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NewMessage
+    ///
+    /// <summary>
+    /// Creates a new instance of the QueryMessage(T, U) class with
+    /// the specified query and default value.
+    /// </summary>
+    ///
+    /// <typeparam name="T">type of query source.</typeparam>
+    /// <typeparam name="U">type of result value.</typeparam>
+    ///
+    /// <param name="src">Source information.</param>
+    /// <param name="value">Default value of the message.</param>
+    ///
+    /// <returns>QueryMessage(T, U) object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new()
     {
-        #region NewMessage
+        Source = src,
+        Value  = value,
+    };
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewMessage
-        ///
-        /// <summary>
-        /// Creates a new instance of the QueryMessage(T, T) class with
-        /// the specified query.
-        /// </summary>
-        ///
-        /// <typeparam name="T">type of source and result.</typeparam>
-        ///
-        /// <param name="src">Source information.</param>
-        ///
-        /// <returns>QueryMessage(T, T) object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, T> NewMessage<T>(T src) => NewMessage<T, T>(src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewMessage
-        ///
-        /// <summary>
-        /// Creates a new instance of the QueryMessage(T, U) class with
-        /// the specified query.
-        /// </summary>
-        ///
-        /// <typeparam name="T">type of query source.</typeparam>
-        /// <typeparam name="U">type of result value.</typeparam>
-        ///
-        /// <param name="src">Source information.</param>
-        ///
-        /// <returns>QueryMessage(T, U) object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T src) => NewMessage(src, default(U));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewMessage
-        ///
-        /// <summary>
-        /// Creates a new instance of the QueryMessage(T, U) class with
-        /// the specified query and default value.
-        /// </summary>
-        ///
-        /// <typeparam name="T">type of query source.</typeparam>
-        /// <typeparam name="U">type of result value.</typeparam>
-        ///
-        /// <param name="src">Source information.</param>
-        /// <param name="value">Default value of the message.</param>
-        ///
-        /// <returns>QueryMessage(T, U) object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static QueryMessage<T, U> NewMessage<T, U>(T src, U value) => new()
-        {
-            Source = src,
-            Value  = value,
-        };
-
-        #endregion
-    }
+    #endregion
 }

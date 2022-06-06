@@ -15,78 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Collections;
+
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Collections
+#region Argument
+
+/* ------------------------------------------------------------------------- */
+///
+/// Argument
+///
+/// <summary>
+/// Specifies prefix kinds of optional parameters.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public enum Argument
 {
-    #region Argument
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Argument
-    ///
-    /// <summary>
-    /// Specifies prefix kinds of optional parameters.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum Argument
-    {
-        /// <summary>Allows only the '-' prefix, and option names are all one character.</summary>
-        Posix,
-        /// <summary>Allows '-' and '--' prefix, the latter is known as long-named options.</summary>
-        Gnu,
-        /// <summary>Allows only the '/' prefix, and treated as long-named options.</summary>
-        Dos,
-        /// <summary>Allows '/', '-', and '--' prefix, and all of them are treated as long-named options.</summary>
-        Windows,
-    }
-
-    #endregion
-
-    #region ArgumentExtension
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ArgumentExtension
-    ///
-    /// <summary>
-    /// Provides extended methods of the Argument enumeration.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    internal static class ArgumentExtension
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Map
-        ///
-        /// <summary>
-        /// Gets the map of Argument values and preprocessors.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static Dictionary<Argument, IArgumentPreprocessor> Map { get; } = new()
-        {
-            { Argument.Posix,   new PosixArgumentPreprocessor()   },
-            { Argument.Gnu,     new GnuArgumentPreprocessor()     },
-            { Argument.Dos,     new DosArgumentPreprocessor()     },
-            { Argument.Windows, new WindowsArgumentPreprocessor() },
-        };
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// Gets the preprocessor from the specified kind.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IArgumentPreprocessor Get(this Argument src) =>
-            Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
-    }
-
-    #endregion
+    /// <summary>Allows only the '-' prefix, and option names are all one character.</summary>
+    Posix,
+    /// <summary>Allows '-' and '--' prefix, the latter is known as long-named options.</summary>
+    Gnu,
+    /// <summary>Allows only the '/' prefix, and treated as long-named options.</summary>
+    Dos,
+    /// <summary>Allows '/', '-', and '--' prefix, and all of them are treated as long-named options.</summary>
+    Windows,
 }
+
+#endregion
+
+#region ArgumentExtension
+
+/* ------------------------------------------------------------------------- */
+///
+/// ArgumentExtension
+///
+/// <summary>
+/// Provides extended methods of the Argument enumeration.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class ArgumentExtension
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Map
+    ///
+    /// <summary>
+    /// Gets the map of Argument values and preprocessors.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static Dictionary<Argument, IArgumentPreprocessor> Map { get; } = new()
+    {
+        { Argument.Posix,   new PosixArgumentPreprocessor()   },
+        { Argument.Gnu,     new GnuArgumentPreprocessor()     },
+        { Argument.Dos,     new DosArgumentPreprocessor()     },
+        { Argument.Windows, new WindowsArgumentPreprocessor() },
+    };
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Get
+    ///
+    /// <summary>
+    /// Gets the preprocessor from the specified kind.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IArgumentPreprocessor Get(this Argument src) =>
+        Map.TryGetValue(src, out var dest) ? dest : throw new ArgumentException();
+}
+
+#endregion

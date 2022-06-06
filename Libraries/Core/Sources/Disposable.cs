@@ -15,63 +15,62 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// Disposable
+///
+/// <summary>
+/// Provides functionality to create a IDisposable object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Disposable
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Disposable
+    /// Create
     ///
     /// <summary>
-    /// Provides functionality to create a IDisposable object.
+    /// Creates a IDisposable object from the specified action.
+    /// </summary>
+    ///
+    /// <param name="dispose">Invoke when disposed.</param>
+    ///
+    /// <returns>IDisposable object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IDisposable Create(Action dispose)
+    {
+        if (dispose == null) throw new ArgumentNullException(nameof(dispose));
+        return new DisposableCore(dispose);
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DisposableCore
+    ///
+    /// <summary>
+    /// Represents an implementation to execute the provided action
+    /// as an IDisposable manner.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Disposable
+    private class DisposableCore : IDisposable
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a IDisposable object from the specified action.
-        /// </summary>
-        ///
-        /// <param name="dispose">Invoke when disposed.</param>
-        ///
-        /// <returns>IDisposable object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable Create(Action dispose)
-        {
-            if (dispose == null) throw new ArgumentNullException(nameof(dispose));
-            return new DisposableCore(dispose);
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisposableCore
-        ///
-        /// <summary>
-        /// Represents an implementation to execute the provided action
-        /// as an IDisposable manner.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private class DisposableCore : IDisposable
-        {
-            public DisposableCore(Action src) { _dispose = new(src); }
-            public void Dispose() => _dispose.Invoke();
-            private readonly OnceAction _dispose;
-        }
-
-        #endregion
+        public DisposableCore(Action src) => _dispose = new(src);
+        public void Dispose() => _dispose.Invoke();
+        private readonly OnceAction _dispose;
     }
+
+    #endregion
 }
