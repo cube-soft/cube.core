@@ -15,107 +15,106 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Windows;
 using Cube.Mixin.Generic;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// FileDropToCommand
+///
+/// <summary>
+/// Represents the behavior of Drag&amp;Drop files.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElement
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDropToCommand
+    /// OnAttached
     ///
     /// <summary>
-    /// Represents the behavior of Drag&amp;Drop files.
+    /// Called after the action is attached to an AssociatedObject.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class FileDropToCommand<T> : CommandBehavior<T> where T : FrameworkElement
+    protected override void OnAttached()
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Called after the action is attached to an AssociatedObject.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.PreviewDragOver += WhenDragOver;
-            AssociatedObject.PreviewDrop += WhenDrop;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Called when the action is being detached from its
-        /// AssociatedObject, but before it has actually occurred.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.PreviewDragOver -= WhenDragOver;
-            AssociatedObject.PreviewDrop -= WhenDrop;
-            base.OnDetaching();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenDrop
-        ///
-        /// <summary>
-        /// Occurs when the PreviewDrop event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenDrop(object s, DragEventArgs e)
-        {
-            var dest = GetData(e.Data);
-            e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
-            if (e.Handled) Command.Execute(dest);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenDragOver
-        ///
-        /// <summary>
-        /// Occurs when the PreviewDragOver event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenDragOver(object s, DragEventArgs e)
-        {
-            var dest = GetData(e.Data);
-            e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
-            e.Effects = e.Handled ? DragDropEffects.Copy : DragDropEffects.None;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetData
-        ///
-        /// <summary>
-        /// Gets the collection of dropped files.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private string[] GetData(IDataObject src) =>
-            src.GetDataPresent(DataFormats.FileDrop) ?
-            src.GetData(DataFormats.FileDrop).TryCast<string[]>() :
-            null;
-
-        #endregion
+        base.OnAttached();
+        AssociatedObject.PreviewDragOver += WhenDragOver;
+        AssociatedObject.PreviewDrop += WhenDrop;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDetaching
+    ///
+    /// <summary>
+    /// Called when the action is being detached from its
+    /// AssociatedObject, but before it has actually occurred.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDetaching()
+    {
+        AssociatedObject.PreviewDragOver -= WhenDragOver;
+        AssociatedObject.PreviewDrop -= WhenDrop;
+        base.OnDetaching();
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenDrop
+    ///
+    /// <summary>
+    /// Occurs when the PreviewDrop event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void WhenDrop(object s, DragEventArgs e)
+    {
+        var dest = GetData(e.Data);
+        e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
+        if (e.Handled) Command.Execute(dest);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenDragOver
+    ///
+    /// <summary>
+    /// Occurs when the PreviewDragOver event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void WhenDragOver(object s, DragEventArgs e)
+    {
+        var dest = GetData(e.Data);
+        e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
+        e.Effects = e.Handled ? DragDropEffects.Copy : DragDropEffects.None;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetData
+    ///
+    /// <summary>
+    /// Gets the collection of dropped files.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private string[] GetData(IDataObject src) =>
+        src.GetDataPresent(DataFormats.FileDrop) ?
+        src.GetData(DataFormats.FileDrop).TryCast<string[]>() :
+        null;
+
+    #endregion
 }

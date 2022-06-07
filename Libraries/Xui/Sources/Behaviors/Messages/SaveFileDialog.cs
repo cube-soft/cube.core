@@ -15,47 +15,46 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using Cube.Mixin.String;
 using Microsoft.Win32;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// SaveFileBehavior
+///
+/// <summary>
+/// Represents the behavior to show a dialog using a SaveFileMessage.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SaveFileBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior to show a dialog using a SaveFileMessage.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
+    protected override void Invoke(SaveFileMessage e)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(SaveFileMessage e)
+        var view = new SaveFileDialog
         {
-            var view = new SaveFileDialog
-            {
-                CheckPathExists = e.CheckPathExists,
-                OverwritePrompt = e.OverwritePrompt,
-                Filter          = e.GetFilterText(),
-                FilterIndex     = e.GetFilterIndex(),
-            };
+            CheckPathExists = e.CheckPathExists,
+            OverwritePrompt = e.OverwritePrompt,
+            Filter          = e.GetFilterText(),
+            FilterIndex     = e.GetFilterIndex(),
+        };
 
-            if (e.Text.HasValue()) view.Title = e.Text;
-            if (e.Value.HasValue()) view.FileName = e.Value;
-            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
+        if (e.Text.HasValue()) view.Title = e.Text;
+        if (e.Value.HasValue()) view.FileName = e.Value;
+        if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-            e.Cancel = !view.ShowDialog() ?? true;
-            if (!e.Cancel) e.Value = view.FileName;
-        }
+        e.Cancel = !view.ShowDialog() ?? true;
+        if (!e.Cancel) e.Value = view.FileName;
     }
 }

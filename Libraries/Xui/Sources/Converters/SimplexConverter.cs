@@ -15,102 +15,98 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Converters;
+
 using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Cube.Xui.Converters
+/* ------------------------------------------------------------------------- */
+///
+/// SimplexConverter
+///
+/// <summary>
+/// Provides functionality to convert from the provided arguments.
+/// The class throws the NotSupportedException if the ConvertBack
+/// method is invoked.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class SimplexConverter : MarkupExtension, IValueConverter
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// SimplexConverter
     ///
     /// <summary>
-    /// Provides functionality to convert from the provided arguments.
-    /// The class throws the NotSupportedException if the ConvertBack
-    /// method is invoked.
+    /// Initializes a new instance of the SimplexConverter class with
+    /// the specified function.
+    /// </summary>
+    ///
+    /// <param name="func">Function to convert.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected SimplexConverter(Func<object, object> func) : this((e, t, p, c) => func(e)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SimplexConverter
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SimplexConverter with the
+    /// specified function.
+    /// </summary>
+    ///
+    /// <param name="func">Function to convert.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected SimplexConverter(Func<object, Type, object, CultureInfo, object> func) => _func = func;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Convert
+    ///
+    /// <summary>
+    /// Invokes the conversion.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class SimplexConverter : MarkupExtension, IValueConverter
-    {
-        #region Constructors
+    public object Convert(object value, Type target, object parameter, CultureInfo culture) =>
+        _func(value, target, parameter, culture);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SimplexConverter
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SimplexConverter class with
-        /// the specified function.
-        /// </summary>
-        ///
-        /// <param name="func">Function to convert.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected SimplexConverter(Func<object, object> func) : this((e, t, p, c) => func(e)) { }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ConvertBack
+    ///
+    /// <summary>
+    /// The class does not support the method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public object ConvertBack(object value, Type target, object parameter, CultureInfo culture) =>
+        throw new NotSupportedException();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SimplexConverter
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SimplexConverter with the
-        /// specified function.
-        /// </summary>
-        ///
-        /// <param name="func">Function to convert.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected SimplexConverter(Func<object, Type, object, CultureInfo, object> func)
-        {
-            _func = func;
-        }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProvideValue
+    ///
+    /// <summary>
+    /// Returns the self object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public override object ProvideValue(IServiceProvider serviceProvider) => this;
 
-        #endregion
+    #endregion
 
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Convert
-        ///
-        /// <summary>
-        /// Invokes the conversion.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object Convert(object value, Type target, object parameter, CultureInfo culture) =>
-            _func(value, target, parameter, culture);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ConvertBack
-        ///
-        /// <summary>
-        /// The class does not support the method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public object ConvertBack(object value, Type target, object parameter, CultureInfo culture) =>
-            throw new NotSupportedException();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ProvideValue
-        ///
-        /// <summary>
-        /// Returns the self object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override object ProvideValue(IServiceProvider serviceProvider) => this;
-
-        #endregion
-
-        #region Fields
-        private readonly Func<object, Type, object, CultureInfo, object> _func;
-        #endregion
-    }
+    #region Fields
+    private readonly Func<object, Type, object, CultureInfo, object> _func;
+    #endregion
 }

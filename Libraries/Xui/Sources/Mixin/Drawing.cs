@@ -15,111 +15,109 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Drawing;
+
 using System;
 using System.IO;
 using System.Windows.Media.Imaging;
-using Cube.Logging;
 using Source = System.Drawing.Image;
 
-namespace Cube.Mixin.Drawing
+/* ------------------------------------------------------------------------- */
+///
+/// XuiExtension
+///
+/// <summary>
+/// Provides the extended method of the Image class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class XuiExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// XuiExtension
+    /// ToBitmapImage
     ///
     /// <summary>
-    /// Provides the extended method of the Image class.
+    /// Converts to the BitmapImage object.
+    /// </summary>
+    ///
+    /// <param name="src">Image object.</param>
+    ///
+    /// <returns>BitmapImage object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static BitmapImage ToBitmapImage(this Source src) =>
+        src.ToBitmapImage(false);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ToBitmapImage
+    ///
+    /// <summary>
+    /// Converts to the BitmapImage object.
+    /// </summary>
+    ///
+    /// <param name="src">Image object.</param>
+    /// <param name="dispose">Whether disposing the source.</param>
+    ///
+    /// <returns>BitmapImage object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static BitmapImage ToBitmapImage(this Source src, bool dispose)
+    {
+        if (src == null) return default;
+        try
+        {
+            if (TryGetObject(src, true,  out var e0)) return e0;
+            if (TryGetObject(src, false, out var e1)) return e1;
+            return default;
+        }
+        finally { if (dispose) src.Dispose(); }
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TryGetObject
+    ///
+    /// <summary>
+    /// Tries to get a new BitmapImage object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class XuiExtension
+    private static bool TryGetObject(Source src, bool icp, out BitmapImage dest)
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBitmapImage
-        ///
-        /// <summary>
-        /// Converts to the BitmapImage object.
-        /// </summary>
-        ///
-        /// <param name="src">Image object.</param>
-        ///
-        /// <returns>BitmapImage object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this Source src) =>
-            src.ToBitmapImage(false);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToBitmapImage
-        ///
-        /// <summary>
-        /// Converts to the BitmapImage object.
-        /// </summary>
-        ///
-        /// <param name="src">Image object.</param>
-        /// <param name="dispose">Whether disposing the source.</param>
-        ///
-        /// <returns>BitmapImage object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static BitmapImage ToBitmapImage(this Source src, bool dispose)
+        try
         {
-            if (src == null) return default;
-            try
-            {
-                if (TryGetObject(src, true,  out var e0)) return e0;
-                if (TryGetObject(src, false, out var e1)) return e1;
-                return default;
-            }
-            finally { if (dispose) src.Dispose(); }
+            using var ss = new StreamProxy(new MemoryStream());
+            src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
+
+            var opts = icp ?
+                       BitmapCreateOptions.IgnoreColorProfile :
+                       BitmapCreateOptions.None;
+
+            dest = new BitmapImage();
+            dest.BeginInit();
+            dest.CacheOption   = BitmapCacheOption.OnLoad;
+            dest.CreateOptions = opts;
+            dest.StreamSource  = ss;
+            dest.EndInit();
+
+            if (dest.CanFreeze) dest.Freeze();
+            return true;
         }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TryGetObject
-        ///
-        /// <summary>
-        /// Tries to get a new BitmapImage object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static bool TryGetObject(Source src, bool icp, out BitmapImage dest)
+        catch (Exception e)
         {
-            try
-            {
-                using var ss = new StreamProxy(new MemoryStream());
-                src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
-
-                var opts = icp ?
-                           BitmapCreateOptions.IgnoreColorProfile :
-                           BitmapCreateOptions.None;
-
-                dest = new BitmapImage();
-                dest.BeginInit();
-                dest.CacheOption   = BitmapCacheOption.OnLoad;
-                dest.CreateOptions = opts;
-                dest.StreamSource  = ss;
-                dest.EndInit();
-
-                if (dest.CanFreeze) dest.Freeze();
-                return true;
-            }
-            catch (Exception e)
-            {
-                typeof(XuiExtension).LogWarn(e.Message, $"IgnoreColorProfile:{icp}");
-                dest = default;
-                return false;
-            }
+            typeof(XuiExtension).LogWarn(e.Message, $"IgnoreColorProfile:{icp}");
+            dest = default;
+            return false;
         }
-
-        #endregion
     }
+
+    #endregion
 }

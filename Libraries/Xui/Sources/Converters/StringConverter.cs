@@ -15,59 +15,59 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Converters
-{
-    #region UpperCase
+namespace Cube.Xui.Converters;
 
+
+#region UpperCase
+
+/* ------------------------------------------------------------------------- */
+///
+/// UpperCase
+///
+/// <summary>
+/// Provides functionality to convert to upper case.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class UpperCase : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// UpperCase
     ///
     /// <summary>
-    /// Provides functionality to convert to upper case.
+    /// Initializes a new instance of the UpperCase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpperCase : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpperCase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the UpperCase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public UpperCase() : base((e, t, p, c) => e?.ToString()?.ToUpper(c) ?? string.Empty) { }
-    }
+    public UpperCase() : base((e, t, p, c) => e?.ToString()?.ToUpper(c) ?? string.Empty) { }
+}
 
-    #endregion
+#endregion
 
-    #region LowerCase
+#region LowerCase
 
+/* ------------------------------------------------------------------------- */
+///
+/// LowerCase
+///
+/// <summary>
+/// Provides functionality to convert to lower case.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class LowerCase : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// LowerCase
     ///
     /// <summary>
-    /// Provides functionality to convert to lower case.
+    /// Initializes a new instance of the LowerCase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class LowerCase : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LowerCase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the LowerCase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public LowerCase() : base((e, t, p, c) => e?.ToString()?.ToLower(c) ?? string.Empty) { }
-    }
-
-    #endregion
+    public LowerCase() : base((e, t, p, c) => e?.ToString()?.ToLower(c) ?? string.Empty) { }
 }
+
+#endregion

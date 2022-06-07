@@ -15,48 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Microsoft.Xaml.Behaviors;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// WindowsFormsBehavior
+///
+/// <summary>
+/// Provides functionality to apply behaviors to WinForms components.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class WindowsFormsBehavior<TControl> : Behavior<WindowsFormsHost>
+    where TControl : Control
 {
+    #region Properties
+
     /* --------------------------------------------------------------------- */
     ///
-    /// WindowsFormsBehavior
+    /// Source
     ///
     /// <summary>
-    /// Provides functionality to apply behaviors to WinForms components.
+    /// Gets the source control.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class WindowsFormsBehavior<TControl> : Behavior<WindowsFormsHost>
-        where TControl : Control
-    {
-        #region Properties
+    public TControl Source => AssociatedObject?.Child as TControl;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Source
-        ///
-        /// <summary>
-        /// Gets the source control.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TControl Source => AssociatedObject?.Child as TControl;
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Parent
+    ///
+    /// <summary>
+    /// Gets the parecont control of the source.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public WindowsFormsHost Parent => AssociatedObject;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Parent
-        ///
-        /// <summary>
-        /// Gets the parecont control of the source.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public WindowsFormsHost Parent => AssociatedObject;
-
-        #endregion
-    }
+    #endregion
 }

@@ -15,159 +15,158 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui;
+
 using System;
 using System.Windows.Input;
 
-namespace Cube.Xui
+/* ------------------------------------------------------------------------- */
+///
+/// DelegateCommandBase
+///
+/// <summary>
+/// Provides an implementation of the ICommand.
+/// </summary>
+///
+/// <remarks>
+/// Raises a CanExecuteChanged event when a PropertyChanged event occurs
+/// for the object associated by the Observe method.
+/// </remarks>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class DelegateCommandBase : ObserverBase, ICommand
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// DelegateCommandBase
     ///
     /// <summary>
-    /// Provides an implementation of the ICommand.
+    /// Initializes a new instance of the BindableCommandBase.
     /// </summary>
     ///
-    /// <remarks>
-    /// Observe メソッドによって関連付けられたオブジェクトの PropertyChanged
-    /// イベント発生時に CanExecuteChanged イベントを発生させます。
-    /// </remarks>
+    /* --------------------------------------------------------------------- */
+    protected DelegateCommandBase() { }
+
+    #endregion
+
+    #region Events
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnCanExecuteChanged
+    ///
+    /// <summary>
+    /// Occurs when changes occur that affect whether or not the
+    /// command should execute.
+    /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class DelegateCommandBase : ObserverBase, ICommand
-    {
-        #region Constructors
+    public event EventHandler CanExecuteChanged;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DelegateCommandBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BindableCommandBase.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DelegateCommandBase() { }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnCanExecuteChanged
+    ///
+    /// <summary>
+    /// Raises the CanExecuteChanged event.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected virtual void OnCanExecuteChanged(EventArgs e) =>
+        CanExecuteChanged?.Invoke(this, e);
 
-        #endregion
+    #endregion
 
-        #region Events
+    #region Methods
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnCanExecuteChanged
-        ///
-        /// <summary>
-        /// Occurs when changes occur that affect whether or not the
-        /// command should execute.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event EventHandler CanExecuteChanged;
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Refresh
+    ///
+    /// <summary>
+    /// Raises the CanExecuteChanged event.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Refresh() => OnCanExecuteChanged(EventArgs.Empty);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnCanExecuteChanged
-        ///
-        /// <summary>
-        /// Raises the CanExecuteChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnCanExecuteChanged(EventArgs e) =>
-            CanExecuteChanged?.Invoke(this, e);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Execute
+    ///
+    /// <summary>
+    /// Defines the method to be called when the command is invoked.
+    /// </summary>
+    ///
+    /// <param name="parameter">
+    /// Data used by the command. If the command does not require data
+    /// to be passed, this object can be set to null.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Execute(object parameter) => OnExecute(parameter);
 
-        #endregion
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CanExecute
+    ///
+    /// <summary>
+    /// Defines the method that determines whether the command can
+    /// execute in its current state.
+    /// </summary>
+    ///
+    /// <param name="parameter">
+    /// Data used by the command. If the command does not require data
+    /// to be passed, this object can be set to null.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool CanExecute(object parameter) => OnCanExecute(parameter);
 
-        #region Methods
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnExecute
+    ///
+    /// <summary>
+    /// Executes the command.
+    /// </summary>
+    ///
+    /// <param name="parameter">
+    /// Data used by the command. If the command does not require data
+    /// to be passed, this object can be set to null.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected abstract void OnExecute(object parameter);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Refresh
-        ///
-        /// <summary>
-        /// Raises the CanExecuteChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Refresh() => OnCanExecuteChanged(EventArgs.Empty);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnCanExecute
+    ///
+    /// <summary>
+    /// Determines whether the command can execute in its current state.
+    /// </summary>
+    ///
+    /// <param name="parameter">
+    /// Data used by the command. If the command does not require data
+    /// to be passed, this object can be set to null.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected abstract bool OnCanExecute(object parameter);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
-        ///
-        /// <summary>
-        /// Defines the method to be called when the command is invoked.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Execute(object parameter) => OnExecute(parameter);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Receive
+    ///
+    /// <summary>
+    /// Invokes when any states are changed.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Receive(Type type, string name) => Refresh();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CanExecute
-        ///
-        /// <summary>
-        /// Defines the method that determines whether the command can
-        /// execute in its current state.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool CanExecute(object parameter) => OnCanExecute(parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnExecute
-        ///
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected abstract void OnExecute(object parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnCanExecute
-        ///
-        /// <summary>
-        /// Determines whether the command can execute in its current state.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected abstract bool OnCanExecute(object parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Receive
-        ///
-        /// <summary>
-        /// Invokes when any states are changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Receive(Type type, string name) => Refresh();
-
-        #endregion
-    }
+    #endregion
 }

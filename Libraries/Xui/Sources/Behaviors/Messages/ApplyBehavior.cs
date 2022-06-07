@@ -15,33 +15,32 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Windows;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ApplyBehavior
+///
+/// <summary>
+/// Represents the behavior when an ApplyMessage is received.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ApplyBehavior : MessageBehavior<ApplyMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ApplyBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior when an ApplyMessage is received.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ApplyBehavior : MessageBehavior<ApplyMessage>
+    protected override void Invoke(ApplyMessage e)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(ApplyMessage e)
-        {
-            if (AssociatedObject is Window w) _ = w.BindingGroup.UpdateSources();
-        }
+        if (AssociatedObject is Window w) _ = w.BindingGroup.UpdateSources();
     }
 }
