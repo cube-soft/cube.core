@@ -15,40 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ShowBehavior
+///
+/// <summary>
+/// Provides functionality to show a window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
+    where TView : Form, new()
+    where TViewModel : IBindable
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ShowBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a window.
+    /// Initializes a new instance of the ShowBehavior class with the
+    /// specified arguments.
     /// </summary>
     ///
+    /// <param name="vm">Bindable object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Form, new()
-        where TViewModel : IBindable
+    public ShowBehavior(IBindable vm) : base(vm, e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ShowBehavior class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="vm">Bindable object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ShowBehavior(IBindable vm) : base(vm, e =>
-        {
-            var view = new TView();
-            if (view is IBinder binder) binder.Bind(e);
-            view.Show();
-        }) { }
-    }
+        var view = new TView();
+        if (view is IBinder binder) binder.Bind(e);
+        view.Show();
+    }) { }
 }

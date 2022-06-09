@@ -15,78 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.UrlMon;
+
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Cube.Forms.UrlMon
+/* ------------------------------------------------------------------------- */
+///
+/// UrlMon.NativeMethods
+///
+/// <summary>
+/// Provides functions defined in urlmon.dll.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class NativeMethods
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// UrlMon.NativeMethods
+    /// UrlMkSetSessionOption
     ///
     /// <summary>
-    /// Provides functions defined in urlmon.dll.
+    /// https://msdn.microsoft.com/ja-jp/library/ms775125.aspx
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
-    {
-        #region Methods
+    [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    public static extern int UrlMkSetSessionOption(int dwOption, string pBuffer,
+        int dwBufferLength, int dwReserved);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UrlMkSetSessionOption
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/ms775125.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
-        public static extern int UrlMkSetSessionOption(int dwOption, string pBuffer,
-            int dwBufferLength, int dwReserved);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// UrlMkGetSessionOption
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/ja-jp/library/ms775124.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+    public static extern int UrlMkGetSessionOption(int dwOption, StringBuilder pBuffer,
+        int dwBufferLength, ref int pdwBufferLength, int dwReserved);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UrlMkGetSessionOption
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/ms775124.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
-        public static extern int UrlMkGetSessionOption(int dwOption, StringBuilder pBuffer,
-            int dwBufferLength, ref int pdwBufferLength, int dwReserved);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CoInternetIsFeatureEnabled
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/ja-jp/library/ms537164.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern int CoInternetIsFeatureEnabled(int featureEntry, int dwFlags);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CoInternetIsFeatureEnabled
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/ms537164.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern int CoInternetIsFeatureEnabled(int featureEntry, int dwFlags);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CoInternetSetFeatureEnabled
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/ja-jp/library/ms537168.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CoInternetSetFeatureEnabled
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/ms537168.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern int CoInternetSetFeatureEnabled(int FeatureEntry, int dwFlags, bool fEnable);
+    #endregion
 
-        #endregion
-
-        #region Fields
-        const string LibName = "urlmon.dll";
-        #endregion
-    }
+    #region Fields
+    const string LibName = "urlmon.dll";
+    #endregion
 }

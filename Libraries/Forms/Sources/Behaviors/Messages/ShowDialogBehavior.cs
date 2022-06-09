@@ -15,41 +15,40 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ShowDialogBehavior
+///
+/// <summary>
+/// Provides functionality to show a window as a modal dialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ShowDialogBehavior<TView, TViewModel> :
+    MessageBehavior<CancelMessage<TViewModel>>
+    where TView : Form, new()
+    where TViewModel : IBindable
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ShowDialogBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a window as a modal dialog.
+    /// Initializes a new instance of the ShowDialogBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="vm">Bindable object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class ShowDialogBehavior<TView, TViewModel> :
-        MessageBehavior<CancelMessage<TViewModel>>
-        where TView : Form, new()
-        where TViewModel : IBindable
+    public ShowDialogBehavior(IBindable vm) : base(vm, e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowDialogBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ShowDialogBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="vm">Bindable object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ShowDialogBehavior(IBindable vm) : base(vm, e =>
-        {
-            using var view = new TView();
-            if (view is IBinder binder) binder.Bind(e.Value);
-            e.Cancel = view.ShowDialog() == DialogResult.Cancel;
-        }) => Assets.Add(vm.Subscribe<TViewModel>(e => Invoke(new() { Value = e })));
-    }
+        using var view = new TView();
+        if (view is IBinder binder) binder.Bind(e.Value);
+        e.Cancel = view.ShowDialog() == DialogResult.Cancel;
+    }) => Assets.Add(vm.Subscribe<TViewModel>(e => Invoke(new() { Value = e })));
 }

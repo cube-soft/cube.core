@@ -15,46 +15,41 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Forms;
+
 using System;
 using System.Diagnostics;
 
-namespace Cube.Mixin.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// ProcessExtension
+///
+/// <summary>
+/// Provides extended methods of the Process class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class ProcessExtension
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ProcessExtension
+    /// Activate
     ///
     /// <summary>
-    /// Provides extended methods of the Process class.
+    /// Activates the main window of the specified process.
     /// </summary>
     ///
+    /// <param name="src">Source process.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class ProcessExtension
+    public static void Activate(this Process src)
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Activate
-        ///
-        /// <summary>
-        /// Activates the main window of the specified process.
-        /// </summary>
-        ///
-        /// <param name="src">Source process.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Activate(this Process src)
+        var h = src?.MainWindowHandle ?? IntPtr.Zero;
+        if (h == IntPtr.Zero) return;
+        if (Cube.Forms.User32.NativeMethods.IsIconic(h))
         {
-            var h = src?.MainWindowHandle ?? IntPtr.Zero;
-            if (h == IntPtr.Zero) return;
-            if (Cube.Forms.User32.NativeMethods.IsIconic(h))
-            {
-                _ = Cube.Forms.User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
-            }
-            _ = Cube.Forms.User32.NativeMethods.SetForegroundWindow(h);
+            _ = Cube.Forms.User32.NativeMethods.ShowWindowAsync(h, 9); // SW_RESTORE
         }
-
-        #endregion
+        _ = Cube.Forms.User32.NativeMethods.SetForegroundWindow(h);
     }
 }

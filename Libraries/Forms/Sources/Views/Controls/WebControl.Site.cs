@@ -15,143 +15,139 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Controls;
+
 using System;
 
-namespace Cube.Forms.Controls
+partial class WebControl
 {
-    partial class WebControl
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ShowUIWebBrowserSite
+    ///
+    /// <summary>
+    /// Provides functionality to show message dialogs.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// ShowUIWebBrowserSite
         ///
         /// <summary>
-        /// Provides functionality to show message dialogs.
+        /// Initializes a new instance of the ShowUIWebBrowserSite class
+        /// with the specified host control.
+        /// </summary>
+        ///
+        /// <param name="host">Host control.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ShowUIWebBrowserSite(WebControl host) : base(host) => Host = host;
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Host
+        ///
+        /// <summary>
+        /// Gets the host control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected class ShowUIWebBrowserSite : WebBrowserSite, IDocHostShowUI
+        public WebControl Host { get; private set; }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowMessage
+        ///
+        /// <summary>
+        /// Shows a message dialog with the specified arguments.
+        /// </summary>
+        ///
+        /// <returns>
+        /// 0 (S_OK) for handled; otherwise pass through.
+        /// </returns>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int ShowMessage(IntPtr hwnd, string text, string caption,
+            int type, string file, int context, out int result)
         {
-            #region Constructors
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// ShowUIWebBrowserSite
-            ///
-            /// <summary>
-            /// Initializes a new instance of the ShowUIWebBrowserSite class
-            /// with the specified host control.
-            /// </summary>
-            ///
-            /// <param name="host">Host control.</param>
-            ///
-            /* ------------------------------------------------------------- */
-            public ShowUIWebBrowserSite(WebControl host) : base(host)
+            var args = new DialogMessage
             {
-                Host = host;
-            }
-
-            #endregion
-
-            #region Properties
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// Host
-            ///
-            /// <summary>
-            /// Gets the host control.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            public WebControl Host { get; private set; }
-
-            #endregion
-
-            #region Methods
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// ShowMessage
-            ///
-            /// <summary>
-            /// Shows a message dialog with the specified arguments.
-            /// </summary>
-            ///
-            /// <returns>
-            /// 0 (S_OK) for handled; otherwise pass through.
-            /// </returns>
-            ///
-            /* ------------------------------------------------------------- */
-            public int ShowMessage(IntPtr hwnd, string text, string caption,
-                int type, string file, int context, out int result)
-            {
-                var args = new DialogMessage
-                {
-                    Text    = text,
-                    Title   = caption,
-                    Buttons = GetButtons(type & 0x0f),
-                    Icon    = GetIcon(type & 0xf0),
-                    Value   = DialogStatus.Empty,
-                };
-                Host.OnMessageShowing(args);
-                result = (int)args.Value;
-                return (args.Value != DialogStatus.Empty) ? 0 : 1;
-            }
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// ShowHelp
-            ///
-            /// <summary>
-            /// Shows a help dialog with the specified arguments.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            public int ShowHelp(IntPtr hwnd, string file, int command, int data,
-                IntPtr /* POINT */ mouse, object hit) => 1;
-
-            #endregion
-
-            #region Implementations
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// GetButtons
-            ///
-            /// <summary>
-            /// Gets the buttons.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            private DialogButtons GetButtons(int src)
-            {
-                foreach (DialogButtons mb in Enum.GetValues(typeof(DialogButtons)))
-                {
-                    if (src == (int)mb) return mb;
-                }
-                return DialogButtons.Ok;
-            }
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// GetIcon
-            ///
-            /// <summary>
-            /// Gets the icons.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            private DialogIcon GetIcon(int src)
-            {
-                foreach (DialogIcon mi in Enum.GetValues(typeof(DialogIcon)))
-                {
-                    if (src == (int)mi) return mi;
-                }
-                return DialogIcon.Error;
-            }
-
-            #endregion
+                Text    = text,
+                Title   = caption,
+                Buttons = GetButtons(type & 0x0f),
+                Icon    = GetIcon(type & 0xf0),
+                Value   = DialogStatus.Empty,
+            };
+            Host.OnMessageShowing(args);
+            result = (int)args.Value;
+            return (args.Value != DialogStatus.Empty) ? 0 : 1;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// ShowHelp
+        ///
+        /// <summary>
+        /// Shows a help dialog with the specified arguments.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public int ShowHelp(IntPtr hwnd, string file, int command, int data,
+            IntPtr /* POINT */ mouse, object hit) => 1;
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetButtons
+        ///
+        /// <summary>
+        /// Gets the buttons.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private DialogButtons GetButtons(int src)
+        {
+            foreach (DialogButtons mb in Enum.GetValues(typeof(DialogButtons)))
+            {
+                if (src == (int)mb) return mb;
+            }
+            return DialogButtons.Ok;
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// GetIcon
+        ///
+        /// <summary>
+        /// Gets the icons.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private DialogIcon GetIcon(int src)
+        {
+            foreach (DialogIcon mi in Enum.GetValues(typeof(DialogIcon)))
+            {
+                if (src == (int)mi) return mi;
+            }
+            return DialogIcon.Error;
+        }
+
+        #endregion
     }
 }

@@ -15,33 +15,32 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// UriBehavior
+///
+/// <summary>
+/// Represents the behavior when an Uri message is received.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class UriBehavior : MessageBehavior<Uri>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// UriBehavior
     ///
     /// <summary>
-    /// Represents the behavior when an Uri message is received.
+    /// Initializes a new instance of the UriBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="aggregator">Aggregator object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class UriBehavior : MessageBehavior<Uri>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UriBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the UriBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Aggregator object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public UriBehavior(IAggregator aggregator) : base(aggregator, e => UriProcess.Start(e)) { }
-    }
+    public UriBehavior(IAggregator aggregator) : base(aggregator, e => UriProcess.Start(e)) { }
 }

@@ -73,29 +73,10 @@ namespace Cube.Forms.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap LogoLarge {
+        internal static System.Drawing.Bitmap Logo {
             get {
-                object obj = ResourceManager.GetObject("LogoLarge", resourceCulture);
+                object obj = ResourceManager.GetObject("Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap LogoSmall {
-            get {
-                object obj = ResourceManager.GetObject("LogoSmall", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Path cannot contain any of the following characters に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string MessageInvalidPath {
-            get {
-                return ResourceManager.GetString("MessageInvalidPath", resourceCulture);
             }
         }
     }

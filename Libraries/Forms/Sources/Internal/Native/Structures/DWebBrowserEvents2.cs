@@ -15,86 +15,85 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// DWebBrowserEvents2
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/aa768283.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[ComImport,
+ Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"),
+ InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
+ TypeLibType(TypeLibTypeFlags.FHidden)]
+internal interface DWebBrowserEvents2
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DWebBrowserEvents2
+    /// BeforeNavigate2
     ///
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/aa768283.aspx
+    /// Fires before navigation occurs in the given object (on either
+    /// a window element or a frameset element).
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [ComImport,
-     Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"),
-     InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
-     TypeLibType(TypeLibTypeFlags.FHidden)]
-    internal interface DWebBrowserEvents2
-    {
-        #region Methods
+    [DispId(250)]
+    void BeforeNavigate2(
+        [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+        [In] ref object URL,
+        [In] ref object flags,
+        [In] ref object targetFrameName,
+        [In] ref object postData,
+        [In] ref object headers,
+        [In, Out] ref bool cancel
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BeforeNavigate2
-        ///
-        /// <summary>
-        /// Fires before navigation occurs in the given object (on either
-        /// a window element or a frameset element).
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DispId(250)]
-        void BeforeNavigate2(
-            [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-            [In] ref object URL,
-            [In] ref object flags,
-            [In] ref object targetFrameName,
-            [In] ref object postData,
-            [In] ref object headers,
-            [In, Out] ref bool cancel
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NewWindow3
+    ///
+    /// <summary>
+    /// Raised when a new window is to be created. Extends NewWindow2
+    /// with additional information about the new window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DispId(273)]
+    void NewWindow3(
+        [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+        [In, Out] ref bool cancel,
+        [In] ref object flags,
+        [In] ref object URLContext,
+        [In] ref object URL
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewWindow3
-        ///
-        /// <summary>
-        /// Raised when a new window is to be created. Extends NewWindow2
-        /// with additional information about the new window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DispId(273)]
-        void NewWindow3(
-            [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-            [In, Out] ref bool cancel,
-            [In] ref object flags,
-            [In] ref object URLContext,
-            [In] ref object URL
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NavigateError
+    ///
+    /// <summary>
+    /// Fires when an error occurs during navigation.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DispId(271)]
+    void NavigateError(
+        [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+        [In] ref object URL,
+        [In] ref object frame,
+        [In] ref object statusCode,
+        [In, Out] ref bool cancel
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NavigateError
-        ///
-        /// <summary>
-        /// Fires when an error occurs during navigation.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DispId(271)]
-        void NavigateError(
-            [In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
-            [In] ref object URL,
-            [In] ref object frame,
-            [In] ref object statusCode,
-            [In, Out] ref bool cancel
-        );
-
-        #endregion
-    }
+    #endregion
 }

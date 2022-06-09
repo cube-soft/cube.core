@@ -15,31 +15,30 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms
+namespace Cube.Forms;
+
+/* ------------------------------------------------------------------------- */
+///
+/// IBinder
+///
+/// <summary>
+/// Represents the interface that a view can be bindable with a
+/// presentable object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public interface IBinder
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IBinder
+    /// Bind
     ///
     /// <summary>
-    /// Represents the interface that a view can be bindable with a
-    /// presentable object.
+    /// Binds the specified object.
     /// </summary>
     ///
+    /// <param name="src">Object to bind.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public interface IBinder
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Bind
-        ///
-        /// <summary>
-        /// Binds the specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Object to bind.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        void Bind(IBindable src);
-    }
+    void Bind(IBindable src);
 }

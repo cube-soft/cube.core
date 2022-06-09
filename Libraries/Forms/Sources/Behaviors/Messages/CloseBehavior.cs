@@ -15,34 +15,33 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// CloseBehavior
+///
+/// <summary>
+/// Provides functionality to close the window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class CloseBehavior : MessageBehavior<CloseMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// CloseBehavior
     ///
     /// <summary>
-    /// Provides functionality to close the window.
+    /// Initializes a new instance of the CloseBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="view">Source view.</param>
+    /// <param name="aggregator">Aggregator object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class CloseBehavior : MessageBehavior<CloseMessage>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CloseBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the CloseBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="view">Source view.</param>
-        /// <param name="aggregator">Aggregator object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public CloseBehavior(Form view, IAggregator aggregator) : base(aggregator, _ => view.Close()) { }
-    }
+    public CloseBehavior(Form view, IAggregator aggregator) : base(aggregator, _ => view.Close()) { }
 }

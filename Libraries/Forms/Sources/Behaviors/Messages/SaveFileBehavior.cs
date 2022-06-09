@@ -15,50 +15,49 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Windows.Forms;
 using Cube.Mixin.String;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// SaveFileBehavior
+///
+/// <summary>
+/// Provides functionality to show a save-file dialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// SaveFileBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a save-file dialog.
+    /// Initializes a new instance of the SaveFileBehavior class
+    /// with the specified presentable object.
     /// </summary>
     ///
+    /// <param name="aggregator">Presentable object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
+    public SaveFileBehavior(IAggregator aggregator) : base(aggregator, e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveFileBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SaveFileBehavior class
-        /// with the specified presentable object.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Presentable object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SaveFileBehavior(IAggregator aggregator) : base(aggregator, e =>
+        var view = new SaveFileDialog
         {
-            var view = new SaveFileDialog
-            {
-                CheckPathExists = e.CheckPathExists,
-                OverwritePrompt = e.OverwritePrompt,
-                Filter          = e.GetFilterText(),
-                FilterIndex     = e.GetFilterIndex(),
-            };
+            CheckPathExists = e.CheckPathExists,
+            OverwritePrompt = e.OverwritePrompt,
+            Filter          = e.GetFilterText(),
+            FilterIndex     = e.GetFilterIndex(),
+        };
 
-            if (e.Text.HasValue()) view.Title = e.Text;
-            if (e.Value.HasValue()) view.FileName = e.Value;
-            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
+        if (e.Text.HasValue()) view.Title = e.Text;
+        if (e.Value.HasValue()) view.FileName = e.Value;
+        if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-            e.Cancel = view.ShowDialog() != DialogResult.OK;
-            if (!e.Cancel) e.Value = view.FileName;
-        }) { }
-    }
+        e.Cancel = view.ShowDialog() != DialogResult.OK;
+        if (!e.Cancel) e.Value = view.FileName;
+    }) { }
 }

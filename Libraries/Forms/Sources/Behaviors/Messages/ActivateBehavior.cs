@@ -15,40 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Windows.Forms;
 using Cube.Mixin.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ActivateBehavior
+///
+/// <summary>
+/// Provides functionality to activate the window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ActivateBehavior : MessageBehavior<ActivateMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ActivateBehavior
     ///
     /// <summary>
-    /// Provides functionality to activate the window.
+    /// Initializes a new instance of the ActivateBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="view">Source view.</param>
+    /// <param name="aggregator">Aggregator object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class ActivateBehavior : MessageBehavior<ActivateMessage>
+    public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ActivateBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ActivateBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="view">Source view.</param>
-        /// <param name="aggregator">Aggregator object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>
-        {
-            if (view.WindowState == FormWindowState.Minimized) view.WindowState = FormWindowState.Normal;
-            view.Activate();
-            view.ResetTopMost();
-        }) { }
-    }
+        if (view.WindowState == FormWindowState.Minimized) view.WindowState = FormWindowState.Normal;
+        view.Activate();
+        view.ResetTopMost();
+    }) { }
 }

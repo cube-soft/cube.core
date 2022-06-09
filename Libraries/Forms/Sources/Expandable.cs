@@ -15,82 +15,80 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// ExpandableOnlyConverter
+///
+/// <summary>
+/// Provides functionality to expand nested properties in the property
+/// editor.
+/// </summary>
+///
+/// <remarks>
+/// This is an ExpandableObjectConverter for nested properties to prevent
+/// editing by string. When editing, it expands the property and forces
+/// the user to edit the individual property.
+/// </remarks>
+///
+/* ------------------------------------------------------------------------- */
+public class ExpandableOnlyConverter : ExpandableObjectConverter
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// OnlyExpandableConverter
+    /// CanConvertTo
     ///
     /// <summary>
-    /// Provides functionality to expand nested properties in the property
-    /// editor.
+    /// Gets a value indicating whether the converter can convert the
+    /// object to the specified type.
     /// </summary>
     ///
-    /// <remarks>
-    /// This is an ExpandableObjectConverter for nested properties to prevent
-    /// editing by string. When editing, it expands the property and forces
-    /// the user to edit the individual property.
-    /// </remarks>
+    /* --------------------------------------------------------------------- */
+    public override bool CanConvertTo(ITypeDescriptorContext context, Type type)
+    {
+        if (type == typeof(string)) return false;
+        return base.CanConvertTo(context, type);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ConvertTo
+    ///
+    /// <summary>
+    /// Converts the specified object to the specified type with the
+    /// specified arguments.
+    /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OnlyExpandableConverter : ExpandableObjectConverter
+    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type type)
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CanConvertTo
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the converter can convert the
-        /// object to the specified type.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            if (destinationType == typeof(string)) return false;
-            return base.CanConvertTo(context, destinationType);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ConvertTo
-        ///
-        /// <summary>
-        /// Converts the specified object to the specified type with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture,
-            object value, Type destinationType)
-        {
-            if (destinationType == typeof(string)) return string.Empty;
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CanConvertFrom
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the converter can convert objects
-        /// of a certain type to the converter's type using the specified
-        /// context.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string)) return false;
-            return base.CanConvertFrom(context, sourceType);
-        }
-
-        #endregion
+        if (type == typeof(string)) return string.Empty;
+        return base.ConvertTo(context, culture, value, type);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CanConvertFrom
+    ///
+    /// <summary>
+    /// Gets a value indicating whether the converter can convert objects
+    /// of a certain type to the converter's type using the specified
+    /// context.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type type)
+    {
+        if (type == typeof(string)) return false;
+        return base.CanConvertFrom(context, type);
+    }
+
+    #endregion
 }

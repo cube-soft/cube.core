@@ -15,101 +15,100 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Controls;
+
 using System;
 using System.Drawing;
 
-namespace Cube.Forms.Controls
+/* ------------------------------------------------------------------------- */
+///
+/// ControlBase
+///
+/// <summary>
+/// Represents the base class of controls.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ControlBase : System.Windows.Forms.UserControl
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// ControlBase
     ///
     /// <summary>
-    /// Represents the base class of controls.
+    /// Initializes a new instance of the ControlBase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ControlBase : System.Windows.Forms.UserControl
+    protected ControlBase() => DoubleBuffered = true;
+
+    #endregion
+
+    #region Events
+
+    #region NcHitTest
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NcHitTest
+    ///
+    /// <summary>
+    /// Occurs when the hit test of the non-client area.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public event QueryEventHandler<Point, Position> NcHitTest;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnNcHitTest
+    ///
+    /// <summary>
+    /// Raises the NcHitTest event.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected virtual void OnNcHitTest(QueryMessage<Point, Position> e) =>
+        NcHitTest?.Invoke(this, e);
+
+    #endregion
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WndProc
+    ///
+    /// <summary>
+    /// Processes the specified window message.
+    /// </summary>
+    ///
+    /// <param name="m">Window message.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void WndProc(ref System.Windows.Forms.Message m)
     {
-        #region Constructors
+        base.WndProc(ref m);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ControlBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ControlBase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected ControlBase() { DoubleBuffered = true; }
-
-        #endregion
-
-        #region Events
-
-        #region NcHitTest
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NcHitTest
-        ///
-        /// <summary>
-        /// Occurs when the hit test of the non-client area.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public event QueryEventHandler<Point, Position> NcHitTest;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnNcHitTest
-        ///
-        /// <summary>
-        /// Raises the NcHitTest event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected virtual void OnNcHitTest(QueryMessage<Point, Position> e) =>
-            NcHitTest?.Invoke(this, e);
-
-        #endregion
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WndProc
-        ///
-        /// <summary>
-        /// Processes the specified window message.
-        /// </summary>
-        ///
-        /// <param name="m">Window message.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        if (m.Msg == 0x0084) // WM_NCHITTEST
         {
-            base.WndProc(ref m);
-
-            if (m.Msg == 0x0084) // WM_NCHITTEST
+            var x = (int)m.LParam & 0xffff;
+            var y = (int)m.LParam >> 16 & 0xffff;
+            var e = new QueryMessage<Point, Position>
             {
-                var x = (int)m.LParam & 0xffff;
-                var y = (int)m.LParam >> 16 & 0xffff;
-                var e = new QueryMessage<Point, Position>
-                {
-                    Source = new Point(x, y),
-                    Cancel = true,
-                };
-                OnNcHitTest(e);
-                var result = e.Cancel ? Position.Transparent : e.Value;
-                if (DesignMode && result == Position.Transparent) return;
-                m.Result = (IntPtr)result;
-            }
+                Source = new Point(x, y),
+                Cancel = true,
+            };
+            OnNcHitTest(e);
+            var result = e.Cancel ? Position.Transparent : e.Value;
+            if (DesignMode && result == Position.Transparent) return;
+            m.Result = (IntPtr)result;
         }
-
-        #endregion
     }
+
+    #endregion
 }

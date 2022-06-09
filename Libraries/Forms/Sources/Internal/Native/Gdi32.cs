@@ -15,41 +15,40 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Gdi32;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms.Gdi32
+/* ------------------------------------------------------------------------- */
+///
+/// Gdi32.NativeMethods
+///
+/// <summary>
+/// Provides functions defined in user32.dll.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class NativeMethods
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Gdi32.NativeMethods
+    /// CreateRoundRectRgn
     ///
     /// <summary>
-    /// Provides functions defined in user32.dll.
+    /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/dd183516.aspx
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
-    {
-        #region Methods
+    [DllImport(LibName)]
+    public static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect,
+        int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateRoundRectRgn
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/dd183516.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect,
-            int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
+    #endregion
 
-        #endregion
-
-        #region Fields
-        const string LibName = "Gdi32.dll";
-        #endregion
-    }
+    #region Fields
+    const string LibName = "Gdi32.dll";
+    #endregion
 }

@@ -15,116 +15,112 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Controls;
+
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms.Controls
+partial class WebControl
 {
-    partial class WebControl
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ActiveXControlEvents
+    ///
+    /// <summary>
+    /// Represents the functionality to propagate the events generated
+    /// by ActiveX controls to the WebBrowser control.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected class ActiveXControlEvents : StandardOleMarshalObject, DWebBrowserEvents2
     {
+        #region Constructors
+
         /* ----------------------------------------------------------------- */
         ///
         /// ActiveXControlEvents
         ///
         /// <summary>
-        /// Represents the functionality to propagate the events generated
-        /// by ActiveX controls to the WebBrowser control.
+        /// Initializes a new instance of the ActiveXControlEvents class
+        /// with the specified host control.
+        /// </summary>
+        ///
+        /// <param name="host">Host control.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public ActiveXControlEvents(WebControl host) => Host = host;
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// WebBrowser
+        ///
+        /// <summary>
+        /// Gets the host control.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected class ActiveXControlEvents : StandardOleMarshalObject, DWebBrowserEvents2
+        public WebControl Host { get; private set; }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// BeforeNavigate2
+        ///
+        /// <summary>
+        /// Occurs before navigating.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void BeforeNavigate2(object pDisp, ref object URL,
+            ref object flags, ref object targetFrameName,
+            ref object postData, ref object headers, ref bool cancel)
         {
-            #region Constructors
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// ActiveXControlEvents
-            ///
-            /// <summary>
-            /// Initializes a new instance of the ActiveXControlEvents class
-            /// with the specified host control.
-            /// </summary>
-            ///
-            /// <param name="host">Host control.</param>
-            ///
-            /* ------------------------------------------------------------- */
-            public ActiveXControlEvents(WebControl host)
-            {
-                Host = host;
-            }
-
-            #endregion
-
-            #region Properties
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// WebBrowser
-            ///
-            /// <summary>
-            /// Gets the host control.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            public WebControl Host { get; private set; }
-
-            #endregion
-
-            #region Methods
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// BeforeNavigate2
-            ///
-            /// <summary>
-            /// Occurs before navigating.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            public void BeforeNavigate2(object pDisp, ref object URL,
-                ref object flags, ref object targetFrameName,
-                ref object postData, ref object headers, ref bool cancel)
-            {
-                var e = new NavigatingEventArgs((string)URL, (string)targetFrameName);
-                Host.OnBeforeNavigating(e);
-                cancel = e.Cancel;
-            }
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// NewWindow3
-            ///
-            /// <summary>
-            /// Occurs before opening in a new window..
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            public void NewWindow3(object pDisp, ref bool cancel,
-                ref object flags, ref object URLContext, ref object URL)
-            {
-                var e = new NavigatingEventArgs((string)URL, string.Empty);
-                Host.OnBeforeNewWindow(e);
-                cancel = e.Cancel;
-
-            }
-
-            /* ------------------------------------------------------------- */
-            ///
-            /// NavigateError
-            ///
-            /// <summary>
-            /// Occurs when an error detects during page transition.
-            /// </summary>
-            ///
-            /* ------------------------------------------------------------- */
-            public void NavigateError(object pDisp, ref object URL,
-                ref object targetFrameName, ref object statusCode, ref bool cancel)
-            {
-                var e = new NavigatingErrorEventArgs((string)URL, (string)targetFrameName, (int)statusCode);
-                Host.OnNavigatingError(e);
-                cancel = e.Cancel;
-            }
-
-            #endregion
+            var e = new NavigatingEventArgs((string)URL, (string)targetFrameName);
+            Host.OnBeforeNavigating(e);
+            cancel = e.Cancel;
         }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NewWindow3
+        ///
+        /// <summary>
+        /// Occurs before opening in a new window..
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void NewWindow3(object pDisp, ref bool cancel,
+            ref object flags, ref object URLContext, ref object URL)
+        {
+            var e = new NavigatingEventArgs((string)URL, string.Empty);
+            Host.OnBeforeNewWindow(e);
+            cancel = e.Cancel;
+
+        }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NavigateError
+        ///
+        /// <summary>
+        /// Occurs when an error detects during page transition.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void NavigateError(object pDisp, ref object URL,
+            ref object targetFrameName, ref object statusCode, ref bool cancel)
+        {
+            var e = new NavigatingErrorEventArgs((string)URL, (string)targetFrameName, (int)statusCode);
+            Host.OnNavigatingError(e);
+            cancel = e.Cancel;
+        }
+
+        #endregion
     }
 }
