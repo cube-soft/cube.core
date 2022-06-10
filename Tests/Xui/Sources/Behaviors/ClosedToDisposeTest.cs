@@ -15,77 +15,76 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ClosedToDisposeTest
+///
+/// <summary>
+/// Tests the ClosedToDispose class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class ClosedToDisposeTest : ViewFixture
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ClosedToDisposeTest
+    /// Test
     ///
     /// <summary>
-    /// Tests the ClosedToDispose class.
+    /// Tests the create, attach, and detach methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class ClosedToDisposeTest : ViewFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var n    = 0;
+        var view = Hack(new Window());
+        var src  = Attach(view, new ClosedToDispose());
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Tests the create, attach, and detach methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
-        {
-            var n    = 0;
-            var view = Hack(new Window());
-            var src  = Attach(view, new ClosedToDispose());
+        view.DataContext = Disposable.Create(() => ++n);
+        view.Show();
+        view.Close();
 
-            view.DataContext = Disposable.Create(() => ++n);
-            view.Show();
-            view.Close();
+        Assert.That(n, Is.EqualTo(1));
+        Assert.That(view.DataContext, Is.Not.Null);
 
-            Assert.That(n, Is.EqualTo(1));
-            Assert.That(view.DataContext, Is.Not.Null);
-
-            src.Detach();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Null
-        ///
-        /// <summary>
-        /// Tests the create, attach, and detach methods in the case when
-        /// DataContext is null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Null()
-        {
-            var view = Hack(new Window());
-            var src  = Attach(view, new ClosedToDispose());
-
-            Assert.That(view.DataContext, Is.Null);
-
-            view.Show();
-            view.Close();
-            src.Detach();
-        }
-
-        #endregion
+        src.Detach();
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithNull
+    ///
+    /// <summary>
+    /// Tests the create, attach, and detach methods in the case when
+    /// DataContext is null.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Test_WithNull()
+    {
+        var view = Hack(new Window());
+        var src  = Attach(view, new ClosedToDispose());
+
+        Assert.That(view.DataContext, Is.Null);
+
+        view.Show();
+        view.Close();
+        src.Detach();
+    }
+
+    #endregion
 }

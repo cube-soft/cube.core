@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
@@ -23,85 +25,82 @@ using Cube.Xui.Behaviors;
 using Microsoft.Xaml.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// EventToCommandTest
+///
+/// <summary>
+/// Tests event to command behaviors.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class EventToCommandTest : ViewFixture
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// EventToCommandTest
+    /// Show
     ///
     /// <summary>
-    /// Tests event to command behaviors.
+    /// Tests the ShownToCommand class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class EventToCommandTest : ViewFixture
+    [Test]
+    public void Show()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Show
-        ///
-        /// <summary>
-        /// Tests the ShownToCommand class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Show()
+        var count = 0;
+        var view  = Hack(new MockWindow());
+        var src   = Attach(view, new ShownToCommand
         {
-            var count = 0;
-            var view  = Hack(new MockWindow());
-            var src   = Attach(view, new ShownToCommand
+            Command = new DelegateCommand(() =>
             {
-                Command = new DelegateCommand(() =>
-                {
-                    ++count;
-                    view.Close();
-                })
-            });
+                ++count;
+                view.Close();
+            })
+        });
 
-            Assert.That(view.ShowDialog().Value, Is.False);
-            src.Detach();
-            Assert.That(count, Is.EqualTo(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Close
-        ///
-        /// <summary>
-        /// Tests the ClosingToCommand, ClosedToCommand, and DisposeBehavior
-        /// classes.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Close()
-        {
-            var closing  = 0;
-            var closed   = 0;
-
-            var view = Hack(new MockWindow());
-            var vm   = (MockViewModel)view.DataContext;
-            var src  = new List<Behavior>
-            {
-                Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) }),
-                Attach(view, new ClosedToCommand  { Command = new DelegateCommand(() => ++closed) }),
-                Attach(view, new ClosedToDispose())
-            };
-
-            view.Show();
-            2.Times(i => view.Close());
-            foreach (var obj in src) obj.Detach();
-
-            Assert.That(closing,     Is.EqualTo(2));
-            Assert.That(closed,      Is.EqualTo(1));
-            Assert.That(vm.Disposed, Is.True);
-        }
-
-        #endregion
+        Assert.That(view.ShowDialog().Value, Is.False);
+        src.Detach();
+        Assert.That(count, Is.EqualTo(1));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Close
+    ///
+    /// <summary>
+    /// Tests the ClosingToCommand, ClosedToCommand, and DisposeBehavior
+    /// classes.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Close()
+    {
+        var closing  = 0;
+        var closed   = 0;
+
+        var view = Hack(new MockWindow());
+        var vm   = (MockViewModel)view.DataContext;
+        var src  = new List<Behavior>
+        {
+            Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) }),
+            Attach(view, new ClosedToCommand  { Command = new DelegateCommand(() => ++closed) }),
+            Attach(view, new ClosedToDispose())
+        };
+
+        view.Show();
+        2.Times(i => view.Close());
+        foreach (var obj in src) obj.Detach();
+
+        Assert.That(closing,     Is.EqualTo(2));
+        Assert.That(closed,      Is.EqualTo(1));
+        Assert.That(vm.Disposed, Is.True);
+    }
+
+    #endregion
 }

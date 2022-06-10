@@ -15,68 +15,66 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests;
+
 using System.Threading;
 using System.Windows.Input;
-using Cube.Logging;
 
-namespace Cube.Xui.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// MockViewModel
+///
+/// <summary>
+/// Represents the ViewModel of the MockWindow class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+class MockViewModel : PresentableBase<Person>
 {
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
     /// MockViewModel
     ///
     /// <summary>
-    /// Represents the ViewModel of the MockWindow class.
+    /// Initializes a new instance of the MockViewModel class.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    class MockViewModel : PresentableBase<Person>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MockViewModel
-        ///
-        /// <summary>
-        /// Initializes a new instance of the MockViewModel class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public MockViewModel() : base(new Person(), new Aggregator(), new SynchronizationContext()) { }
+    /* --------------------------------------------------------------------- */
+    public MockViewModel() : base(new Person(), new Aggregator(), new SynchronizationContext()) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets the bindable value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Person Value => Facade;
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Value
+    ///
+    /// <summary>
+    /// Gets the bindable value.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Person Value => Facade;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Detect
-        ///
-        /// <summary>
-        /// Gets the Detect command.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ICommand Detect { get; } = new DelegateCommand(
-            () => typeof(MockViewModel).LogDebug("Event is fired"),
-            () => true
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Detect
+    ///
+    /// <summary>
+    /// Gets the Detect command.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ICommand Detect { get; } = new DelegateCommand(
+        () => typeof(MockViewModel).LogDebug("Event is fired"),
+        () => true
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Test
-        ///
-        /// <summary>
-        /// Sends the specified message for testing.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Test<T>(T msg) => Send(msg);
-    }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test
+    ///
+    /// <summary>
+    /// Sends the specified message for testing.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Test<T>(T msg) => Send(msg);
 }

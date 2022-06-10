@@ -15,47 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows.Controls;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// SelectionBehaviorTest
+///
+/// <summary>
+/// Tests for the SelectionBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class SelectionBehaviorTest
 {
-    /* --------------------------------------------------------------------- */
+    /* ----------------------------------------------------------------- */
     ///
-    /// SelectionBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the SelectionBehavior class.
+    /// Executes the test to create, attach, and detach method.
     /// </summary>
     ///
-    /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class SelectionBehaviorTest
+    /* ----------------------------------------------------------------- */
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var view = new ListView();
+        var src  = new SelectionBehavior();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Executes the test to create, attach, and detach method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
-        {
-            var view = new ListView();
-            var src  = new SelectionBehavior();
-
-            src.Attach(view);
-            src.Detach();
-        }
-
-        #endregion
+        src.Attach(view);
+        src.Detach();
     }
 }

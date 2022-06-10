@@ -15,48 +15,43 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// FileDropBehaviorTest
+///
+/// <summary>
+/// Tests for the FileDropBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class FileDropBehaviorTest
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// FileDropBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the FileDropBehavior class.
+    /// Confirms default values of properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class FileDropBehaviorTest
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var view = new Window();
+        var src  = new FileDropToCommand<Window>();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Properties
-        ///
-        /// <summary>
-        /// Confirms default values of properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties()
-        {
-            var view = new Window();
-            var src  = new FileDropToCommand<Window>();
-
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            src.Detach();
-        }
-
-        #endregion
+        src.Attach(view);
+        Assert.That(src.Command, Is.Null);
+        src.Detach();
     }
 }
