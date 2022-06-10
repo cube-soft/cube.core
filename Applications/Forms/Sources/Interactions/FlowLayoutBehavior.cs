@@ -17,39 +17,75 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms.Demo;
 
-using System.Reflection;
+using System;
+using Cube.Forms.Controls;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// MainFacade
+/// FlowLayoutBehavior
 ///
 /// <summary>
-/// Represents the facade model to communicate with the MainViewModel
-/// object.
+/// Provides functionality to adjust the width of components in the
+/// provided control when resizing.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class MainFacade
+public class FlowLayoutBehavior : DisposableBase
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Assembly
-    ///
-    /// <summary>
-    /// Gets the assembly object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Notice
+    /// FlowLayoutHacker
     ///
     /// <summary>
-    /// Gets the model for notice component.
+    /// Initializes a new instance of the FlowLayoutBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="src">View object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public NoticeFacade Notice { get; } = new();
+    public FlowLayoutBehavior(FlowLayoutPanel src)
+    {
+        void resize(object s, EventArgs e)
+        {
+            if (src.Controls.Count <= 0) return;
+            src.Controls[0].Width = src.ClientSize.Width - src.Padding.Left - src.Padding.Right;
+        }
+
+        src.Resize += resize;
+        _disposable.Add(() => src.Resize -= resize);
+    }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
+    {
+        if (!disposing) return;
+        _disposable.Dispose();
+    }
+
+    #endregion
+
+    #region Fields
+    private readonly DisposableContainer _disposable = new();
+    #endregion
 }

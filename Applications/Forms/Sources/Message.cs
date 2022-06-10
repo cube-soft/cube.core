@@ -15,39 +15,34 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms.Demo
+namespace Cube.Forms.Demo;
+
+/* ------------------------------------------------------------------------- */
+///
+/// Message
+///
+/// <summary>
+/// Provides functionality to create messages.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Message
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageFactory
+    /// CreateForConfirm
     ///
     /// <summary>
-    /// Provides functionality to create messages.
+    /// Creates a new instance of the DialogMessage class.
     /// </summary>
     ///
+    /// <returns>DialogMessage object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class MessageFactory
+    public static DialogMessage ForConfirm() => new()
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreateForConfirm
-        ///
-        /// <summary>
-        /// Creates a new instance of the DialogMessage class.
-        /// </summary>
-        ///
-        /// <returns>DialogMessage object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static DialogMessage CreateForConfirm() => new()
-        {
-            Text    = "Closing window... Do you want to continue?",
-            Icon    = DialogIcon.Information,
-            Buttons = DialogButtons.OkCancel,
-        };
-
-        #endregion
-    }
+        Text = "Closing window... Do you want to continue?",
+        Icon = DialogIcon.Information,
+        Buttons = DialogButtons.OkCancel,
+    };
 }

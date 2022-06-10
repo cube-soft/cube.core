@@ -17,39 +17,74 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms.Demo;
 
-using System.Reflection;
+using System;
+using System.Drawing;
+using System.Globalization;
+using Cube.Forms.Behaviors;
+using Cube.Mixin.Uri;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// MainFacade
+/// ShowVersionBehavior
 ///
 /// <summary>
-/// Represents the facade model to communicate with the MainViewModel
-/// object.
+/// Represents the behavior to show a version dialog.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class MainFacade
+public sealed class ShowVersionBehavior : MessageBehaviorBase<AboutMessage>
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Assembly
-    ///
-    /// <summary>
-    /// Gets the assembly object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Notice
+    /// ShowVersionBehavior
     ///
     /// <summary>
-    /// Gets the model for notice component.
+    /// Initializes a new instance of the ShowVersionBehavior class
+    /// with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="view">View object.</param>
+    /// <param name="aggregator">Aggregator object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ShowVersionBehavior(WindowBase view, IAggregator aggregator) : base(aggregator)
+    {
+        _icon = view.Icon;
+        _text = view.Text;
+    }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke
+    ///
+    /// <summary>
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public NoticeFacade Notice { get; } = new();
+    protected override void Invoke(AboutMessage message)
+    {
+        using var view = new VersionWindow()
+        {
+            Icon = _icon,
+            Text = _text,
+            Uri = new Uri("https://www.cube-soft.jp")
+                   .With(GetType().Assembly)
+                   .With("lang", CultureInfo.CurrentCulture.Name),
+        };
+        _ = view.ShowDialog();
+    }
+
+    #endregion
+
+    #region Fields
+    private readonly Icon _icon;
+    private readonly string _text;
+    #endregion
 }

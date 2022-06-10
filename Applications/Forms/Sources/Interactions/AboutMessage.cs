@@ -15,33 +15,32 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Demo;
+
 using System.Reflection;
 
-namespace Cube.Forms.Demo
+/* ------------------------------------------------------------------------- */
+///
+/// AboutMessage
+///
+/// <summary>
+/// Represents the message to show a version dialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class AboutMessage : Message<Assembly>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// AboutMessage
     ///
     /// <summary>
-    /// Represents the message to show a version dialog.
+    /// Initializes a new instance of the AboutMessage class with the
+    /// specified arguments.
     /// </summary>
     ///
+    /// <param name="src">Assembly information.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class AboutMessage : Message<Assembly>
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// AboutMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the AboutMessage class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Assembly information.</param>
-        ///
-        /* --------------------------------------------------------------------- */
-        public AboutMessage(Assembly src) { Value = src; }
-    }
+    public AboutMessage(Assembly src) => Value = src;
 }

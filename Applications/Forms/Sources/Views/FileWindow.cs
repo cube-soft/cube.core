@@ -15,71 +15,70 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Demo;
+
 using System.Windows.Forms;
 using Cube.Forms.Behaviors;
 using Cube.Mixin.Forms;
 
-namespace Cube.Forms.Demo
+/* ------------------------------------------------------------------------- */
+///
+/// FileWindow
+///
+/// <summary>
+/// Represents the window to test the OpenFileDialog, SaveFileDialog,
+/// and SaveDirectoryDialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public partial class FileWindow : Window
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// FileWindow
     ///
     /// <summary>
-    /// Represents the window to test the OpenFileDialog, SaveFileDialog,
-    /// and SaveDirectoryDialog.
+    /// Initializes a new instance of theFileWindow class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class FileWindow : Window
+    public FileWindow()
     {
-        #region Constructors
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// FileWindow
-        ///
-        /// <summary>
-        /// Initializes a new instance of theFileWindow class.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public FileWindow()
-        {
-            InitializeComponent();
-            ActiveControl = PathTextBox;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnBind
-        ///
-        /// <summary>
-        /// Binds the window with the specified presenter.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected override void OnBind(IBindable src)
-        {
-            base.OnBind(src);
-            if (src is not FileViewModel vm) return;
-
-            var obj = Behaviors.Hook(new BindingSource(vm, ""));
-            obj.Bind(nameof(vm.Value), PathTextBox, nameof(TextBox.Text));
-
-            Behaviors.Add(new ClickEventBehavior(OpenFileButton, vm.ShowOpenFileDialog));
-            Behaviors.Add(new ClickEventBehavior(SaveFileButton, vm.ShowSaveFileDialog));
-            Behaviors.Add(new ClickEventBehavior(OpenDirectoryButton, vm.ShowOpenDirectoryDialog));
-            Behaviors.Add(new OpenFileBehavior(vm));
-            Behaviors.Add(new SaveFileBehavior(vm));
-            Behaviors.Add(new OpenDirectoryBehavior(vm));
-            Behaviors.Add(new PathLintBehavior(PathTextBox));
-        }
-
-        #endregion
+        InitializeComponent();
+        ActiveControl = PathTextBox;
     }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnBind
+    ///
+    /// <summary>
+    /// Binds the window with the specified presenter.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnBind(IBindable src)
+    {
+        base.OnBind(src);
+        if (src is not FileViewModel vm) return;
+
+        var obj = Behaviors.Hook(new BindingSource(vm, ""));
+        obj.Bind(nameof(vm.Value), PathTextBox, nameof(TextBox.Text));
+
+        Behaviors.Add(new ClickEventBehavior(OpenFileButton, vm.ShowOpenFileDialog));
+        Behaviors.Add(new ClickEventBehavior(SaveFileButton, vm.ShowSaveFileDialog));
+        Behaviors.Add(new ClickEventBehavior(OpenDirectoryButton, vm.ShowOpenDirectoryDialog));
+        Behaviors.Add(new OpenFileBehavior(vm));
+        Behaviors.Add(new SaveFileBehavior(vm));
+        Behaviors.Add(new OpenDirectoryBehavior(vm));
+        Behaviors.Add(new PathLintBehavior(PathTextBox));
+    }
+
+    #endregion
 }
