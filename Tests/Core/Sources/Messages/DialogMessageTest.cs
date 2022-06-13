@@ -15,89 +15,88 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Messages;
+
 using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace Cube.Tests.Messages
+/* ------------------------------------------------------------------------- */
+///
+/// DialogMessageTest
+///
+/// <summary>
+/// Tests the DialogMessage class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class DialogMessageTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DialogMessageTest
+    /// Init
     ///
     /// <summary>
-    /// Tests the DialogMessage class.
+    /// Tests the constructor and confirms values of some properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class DialogMessageTest
+    [Test]
+    public void Init()
     {
-        #region Tests
+        var dest = new DialogMessage();
+        Assert.That(dest.Text,    Is.Empty);
+        Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
+        Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
+        Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+        Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
+        Assert.That(dest.Cancel,  Is.False);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init()
-        {
-            var dest = new DialogMessage();
-            Assert.That(dest.Text,    Is.Empty);
-            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
-            Assert.That(dest.Cancel,  Is.False);
-
-            var cc = dest.CancelCandidates;
-            Assert.That(cc.Count(),   Is.EqualTo(1));
-            Assert.That(cc.First(),   Is.EqualTo(DialogStatus.Cancel));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithException
-        ///
-        /// <summary>
-        /// Tests the From method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init_WithException()
-        {
-            var dest = DialogMessage.From(new ArgumentException("TEST"));
-            Assert.That(dest.Text,    Is.EqualTo("TEST (ArgumentException)"));
-            Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
-            Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
-            Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
-            Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
-            Assert.That(dest.Cancel,  Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Any
-        ///
-        /// <summary>
-        /// Tests the Any extended method of the DialogStatus class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Any()
-        {
-            Assert.That(DialogStatus.Ok.Any(DialogStatus.Ok, DialogStatus.Cancel), Is.True);
-            Assert.That(DialogStatus.Ok.Any(DialogStatus.No, DialogStatus.Cancel), Is.False);
-            Assert.That(DialogStatus.Empty.Any(DialogStatus.Empty), Is.True);
-        }
-
-        #endregion
+        var cc = dest.CancelCandidates;
+        Assert.That(cc.Count(),   Is.EqualTo(1));
+        Assert.That(cc.First(),   Is.EqualTo(DialogStatus.Cancel));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Init_WithException
+    ///
+    /// <summary>
+    /// Tests the From method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Init_WithException()
+    {
+        var dest = DialogMessage.From(new ArgumentException("TEST"));
+        Assert.That(dest.Text,    Is.EqualTo("TEST (ArgumentException)"));
+        Assert.That(dest.Title,   Is.Not.Null.And.Not.Empty);
+        Assert.That(dest.Icon,    Is.EqualTo(DialogIcon.Error));
+        Assert.That(dest.Buttons, Is.EqualTo(DialogButtons.Ok));
+        Assert.That(dest.Value,   Is.EqualTo(DialogStatus.Ok));
+        Assert.That(dest.Cancel,  Is.False);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Any
+    ///
+    /// <summary>
+    /// Tests the Any extended method of the DialogStatus class.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Any()
+    {
+        Assert.That(DialogStatus.Ok.Any(DialogStatus.Ok, DialogStatus.Cancel), Is.True);
+        Assert.That(DialogStatus.Ok.Any(DialogStatus.No, DialogStatus.Cancel), Is.False);
+        Assert.That(DialogStatus.Empty.Any(DialogStatus.Empty), Is.True);
+    }
+
+    #endregion
 }

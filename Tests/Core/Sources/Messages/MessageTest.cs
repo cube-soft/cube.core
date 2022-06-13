@@ -15,41 +15,36 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Messages;
+
 using NUnit.Framework;
 
-namespace Cube.Tests.Messages
+/* ------------------------------------------------------------------------- */
+///
+/// MessageTest
+///
+/// <summary>
+/// Tests the message classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class MessageTest
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageTest
+    /// Test
     ///
     /// <summary>
-    /// Tests the message classes.
+    /// Tests to create messages that have no properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class MessageTest
+    [Test]
+    public void Test()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init
-        ///
-        /// <summary>
-        /// Tests to create messages that have no properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init()
-        {
-            Assert.That(new CloseMessage(),    Is.Not.Null);
-            Assert.That(new ActivateMessage(), Is.Not.Null);
-            Assert.That(new ApplyMessage(),    Is.Not.Null);
-        }
-
-        #endregion
+        Assert.That(new CloseMessage(),    Is.Not.Null);
+        Assert.That(new ActivateMessage(), Is.Not.Null);
+        Assert.That(new ApplyMessage(),    Is.Not.Null);
     }
 }

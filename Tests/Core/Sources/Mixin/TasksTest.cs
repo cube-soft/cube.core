@@ -15,106 +15,101 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Mixin;
+
 using System;
 using System.Threading.Tasks;
 using Cube.Mixin.Tasks;
 using NUnit.Framework;
 
-namespace Cube.Tests.Mixin
+/* ------------------------------------------------------------------------- */
+///
+/// TasksTest
+///
+/// <summary>
+/// Tests of extended methods of the Task and related classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class TasksTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// TasksTest
+    /// Forget
     ///
     /// <summary>
-    /// Tests of extended methods of the Task and related classes.
+    /// Tests the Forget extended method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class TasksTest
+    [Test]
+    public void Forget()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Forget
-        ///
-        /// <summary>
-        /// Tests the Forget extended method.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// 例外発生時にはログに出力されます。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Forget()
-        {
-            // Assert.DoesNotThrow
-            TaskEx.Run(() => throw new InvalidOperationException()).Forget();
-            TaskEx.Delay(100).Wait();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Timeout
-        ///
-        /// <summary>
-        /// Tests the Timeout extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Timeout()
-        {
-            var n   = 0;
-            var src = TaskEx.Run(() => { while (true) { n = 1; } });
-            Assert.That(
-                () => src.Timeout(TimeSpan.FromMilliseconds(100)).Wait(),
-                Throws.TypeOf<AggregateException>().And.InnerException
-                      .TypeOf<TimeoutException>()
-            );
-            Assert.That(n, Is.EqualTo(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Timeout_NotThrow
-        ///
-        /// <summary>
-        /// Tests the Timeout extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Timeout_NoThrow()
-        {
-            var n = TaskEx.Run(() => Fibonacci(5))
-                        .Timeout(TimeSpan.FromSeconds(100))
-                        .Result;
-            Assert.That(n, Is.EqualTo(5L));
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Fibonacci
-        ///
-        /// <summary>
-        /// Executes the dummy operation for tests.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private long Fibonacci(int n)
-            => n == 0 ? 0 :
-               n == 1 ? 1 :
-               Fibonacci(n - 1) + Fibonacci(n - 2);
-
-        #endregion
+        // Assert.DoesNotThrow
+        TaskEx.Run(() => throw new InvalidOperationException()).Forget();
+        TaskEx.Delay(100).Wait();
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Timeout
+    ///
+    /// <summary>
+    /// Tests the Timeout extended method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Timeout()
+    {
+        var n   = 0;
+        var src = TaskEx.Run(() => { while (true) { n = 1; } });
+        Assert.That(
+            () => src.Timeout(TimeSpan.FromMilliseconds(100)).Wait(),
+            Throws.TypeOf<AggregateException>().And.InnerException
+                  .TypeOf<TimeoutException>()
+        );
+        Assert.That(n, Is.EqualTo(1));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Timeout_NotThrow
+    ///
+    /// <summary>
+    /// Tests the Timeout extended method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Timeout_NoThrow()
+    {
+        var n = TaskEx.Run(() => Fibonacci(5))
+                    .Timeout(TimeSpan.FromSeconds(100))
+                    .Result;
+        Assert.That(n, Is.EqualTo(5L));
+    }
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Fibonacci
+    ///
+    /// <summary>
+    /// Executes the dummy operation for tests.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private long Fibonacci(int n)
+        => n == 0 ? 0 :
+           n == 1 ? 1 :
+           Fibonacci(n - 1) + Fibonacci(n - 2);
+
+    #endregion
 }

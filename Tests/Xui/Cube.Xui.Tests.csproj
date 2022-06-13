@@ -12,6 +12,7 @@
         <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
         <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
+        <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
@@ -29,6 +30,8 @@
         <PackageReference Include="Appveyor.TestLogger" Version="*" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs" DependentUpon="Resources.resx" AutoGen="True" DesignTime="True" />
+        <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
         <Resource Include="Assets\**\*" />
         <Page Update="Views\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
         <Compile Update="Views\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />

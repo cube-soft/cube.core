@@ -15,43 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Windows.Forms;
 using Cube.Mixin.String;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// OpenDirectoryBehavior
+///
+/// <summary>
+/// Provides functionality to show a directory dialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// OpenDirectoryBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a directory dialog.
+    /// Initializes a new instance of the OpenDirectoryBehavior class
+    /// with the specified presentable object.
     /// </summary>
     ///
+    /// <param name="aggregator">Presentable object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
+    public OpenDirectoryBehavior(IAggregator aggregator) : base(aggregator, e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenDirectoryBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenDirectoryBehavior class
-        /// with the specified presentable object.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Presentable object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public OpenDirectoryBehavior(IAggregator aggregator) : base(aggregator, e =>
-        {
-            var view = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+        var view = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
-            if (e.Text.HasValue()) view.Description = e.Text;
-            if (e.Value.HasValue()) view.SelectedPath = e.Value;
+        if (e.Text.HasValue()) view.Description = e.Text;
+        if (e.Value.HasValue()) view.SelectedPath = e.Value;
 
-            e.Cancel = view.ShowDialog() != DialogResult.OK;
-            if (!e.Cancel) e.Value = view.SelectedPath;
-        }) { }
-    }
+        e.Cancel = view.ShowDialog() != DialogResult.OK;
+        if (!e.Cancel) e.Value = view.SelectedPath;
+    }) { }
 }

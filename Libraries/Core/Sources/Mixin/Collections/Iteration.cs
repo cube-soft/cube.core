@@ -15,37 +15,36 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Iteration;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cube.Mixin.Iteration
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods about iteration.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// Make
     ///
     /// <summary>
-    /// Provides extended methods about iteration.
+    /// Makes the specified number of sequence with the specified
+    /// function.
     /// </summary>
     ///
+    /// <param name="n">Number of sequence.</param>
+    /// <param name="func">Function to create an element.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Make
-        ///
-        /// <summary>
-        /// Makes the specified number of sequence with the specified
-        /// function.
-        /// </summary>
-        ///
-        /// <param name="n">Number of sequence.</param>
-        /// <param name="func">Function to create an element.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<T> Make<T>(this int n, Func<int, T> func) =>
-            Enumerable.Range(0, n).Select(i => func(i));
-    }
+    public static IEnumerable<T> Make<T>(this int n, Func<int, T> func) =>
+        Enumerable.Range(0, n).Select(i => func(i));
 }

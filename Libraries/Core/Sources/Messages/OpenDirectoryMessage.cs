@@ -15,82 +15,81 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using Cube.FileSystem;
 using Cube.Mixin.String;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// OpenDirectoryMessage
+///
+/// <summary>
+/// Represents information to show the FolderBrowserDialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class OpenDirectoryMessage : CancelMessage<string>
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// OpenDirectoryMessage
     ///
     /// <summary>
-    /// Represents information to show the FolderBrowserDialog.
+    /// Initializes a new instance of the OpenDirectoryMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenDirectoryMessage : CancelMessage<string>
-    {
-        #region Constructors
+    public OpenDirectoryMessage() : this(string.Empty) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenDirectoryMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenDirectoryMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public OpenDirectoryMessage() : this(string.Empty) { }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenDirectoryMessage class
+    /// with the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenDirectoryMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenDirectoryMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenDirectoryMessage class
-        /// with the specified path.
-        /// </summary>
-        ///
-        /// <param name="src">Initial path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public OpenDirectoryMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenDirectoryMessage class
+    /// with the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Entity of the initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenDirectoryMessage(Entity src) => Value =
+        src is null     ? string.Empty :
+        src.IsDirectory ? src.FullName :
+        src.DirectoryName;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenDirectoryMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenDirectoryMessage class
-        /// with the specified path.
-        /// </summary>
-        ///
-        /// <param name="src">Entity of the initial path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public OpenDirectoryMessage(Entity src) => Value =
-            src is null     ? string.Empty :
-            src.IsDirectory ? src.FullName :
-            src.DirectoryName;
+    #endregion
 
-        #endregion
+    #region Properties
 
-        #region Properties
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NewButton
+    ///
+    /// <summary>
+    /// Gets or sets a value indicating whether the New Folder button
+    /// appears in the FolderBrowserDialog.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool NewButton { get; set; } = true;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NewButton
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether the New Folder button
-        /// appears in the FolderBrowserDialog.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool NewButton { get; set; } = true;
-
-        #endregion
-    }
+    #endregion
 }

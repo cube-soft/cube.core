@@ -15,44 +15,43 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// DisposableExtension
+///
+/// <summary>
+/// Provides extended methods of the DisposableBase and inherited
+/// classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class DisposableExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposableExtension
+    /// Hook
     ///
     /// <summary>
-    /// Provides extended methods of the DisposableBase and inherited
-    /// classes.
+    /// Adds the specified object and returns it.
     /// </summary>
     ///
+    /// <param name="src">Source container.</param>
+    /// <param name="obj">Object to be added.</param>
+    ///
+    /// <returns>Same as the specified object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class DisposableExtension
+    public static T Hook<T>(this DisposableContainer src, T obj) where T : IDisposable
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Hook
-        ///
-        /// <summary>
-        /// Adds the specified object and returns it.
-        /// </summary>
-        ///
-        /// <param name="src">Source container.</param>
-        /// <param name="obj">Object to be added.</param>
-        ///
-        /// <returns>Same as the specified object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Hook<T>(this DisposableContainer src, T obj) where T : IDisposable
-        {
-            src.Add(obj);
-            return obj;
-        }
-
-        #endregion
+        src.Add(obj);
+        return obj;
     }
+
+    #endregion
 }

@@ -15,75 +15,69 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.ByteFormat;
+
 using System;
 
-namespace Cube.Mixin.ByteFormat
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods to convert the byte size to pretty
+/// readable string.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// ToPrettyBytes
     ///
     /// <summary>
-    /// Provides extended methods to convert the byte size to pretty
-    /// readable string.
+    /// Convert the specified byte size to pretty readable string.
     /// </summary>
     ///
+    /// <param name="bytes">Byte size.</param>
+    ///
+    /// <returns>String that represents the byte size.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static string ToPrettyBytes(this long bytes)
     {
-        #region Methods
+        var units = new[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+        var value = (double)bytes;
+        var index = 0;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToPrettyBytes
-        ///
-        /// <summary>
-        /// Convert the specified byte size to pretty readable string.
-        /// </summary>
-        ///
-        /// <param name="bytes">Byte size.</param>
-        ///
-        /// <returns>String that represents the byte size.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string ToPrettyBytes(this long bytes)
+        while (value > 1000.0)
         {
-            var units = new[] { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-            var value = (double)bytes;
-            var index = 0;
-
-            while (value > 1000.0)
-            {
-                value /= 1024.0;
-                ++index;
-                if (index >= units.Length - 1) break;
-            }
-
-            return $"{value:G3} {units[index]}";
+            value /= 1024.0;
+            ++index;
+            if (index >= units.Length - 1) break;
         }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToRoughBytes
-        ///
-        /// <summary>
-        /// Convert the specified byte size to readable string in an
-        /// Explorer manner.
-        /// </summary>
-        ///
-        /// <param name="bytes">Byte size.</param>
-        ///
-        /// <returns>String that represents the byte size.</returns>
-        ///
-        /// <remarks>
-        /// Windows の Explorer 等のように 1024 バイト未満の値を "1 KB" と
-        /// 出力します。
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string ToRoughBytes(this long bytes) =>
-            ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
-
-        #endregion
+        return $"{value:G3} {units[index]}";
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ToRoughBytes
+    ///
+    /// <summary>
+    /// Convert the specified byte size to readable string in an
+    /// Explorer manner.
+    /// </summary>
+    ///
+    /// <param name="bytes">Byte size.</param>
+    ///
+    /// <returns>String that represents the byte size.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string ToRoughBytes(this long bytes) =>
+        ToPrettyBytes(bytes > 0 ? Math.Max(bytes, 1024) : 0);
+
+    #endregion
 }

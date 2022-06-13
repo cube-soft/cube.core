@@ -15,64 +15,63 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System.Drawing;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// FontFactory
+///
+/// <summary>
+/// Provides functionality to create a default Font object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class FontFactory
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// FontFactory
+    /// Create
     ///
     /// <summary>
-    /// Provides functionality to create a default Font object.
+    /// Creates a new instance of the Font class with the specified
+    /// arguments.
     /// </summary>
     ///
+    /// <param name="hint">Hint object.</param>
+    ///
+    /// <returns>Font object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    internal static class FontFactory
+    public static Font Create(Font hint) => Create(hint.Size, hint.Style, hint.Unit);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create
+    ///
+    /// <summary>
+    /// Creates a new instance of the Font class with the specified
+    /// arguments.
+    /// </summary>
+    ///
+    /// <param name="size">Font size.</param>
+    /// <param name="style">Font style.</param>
+    /// <param name="unit">Font size unit.</param>
+    ///
+    /// <returns>Font object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Font Create(float size, FontStyle style, GraphicsUnit unit)
     {
-        #region Methods
+        var f0 = "Meiryo UI";
+        var f1 = SystemFonts.DefaultFont.FontFamily.Name;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the Font class with the specified
-        /// arguments.
-        /// </summary>
-        ///
-        /// <param name="hint">Hint object.</param>
-        ///
-        /// <returns>Font object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Font Create(Font hint) => Create(hint.Size, hint.Style, hint.Unit);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the Font class with the specified
-        /// arguments.
-        /// </summary>
-        ///
-        /// <param name="size">Font size.</param>
-        /// <param name="style">Font style.</param>
-        /// <param name="unit">Font size unit.</param>
-        ///
-        /// <returns>Font object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Font Create(float size, FontStyle style, GraphicsUnit unit)
-        {
-            var f0 = "Meiryo UI";
-            var f1 = SystemFonts.DefaultFont.FontFamily.Name;
-
-            var dest = new Font(f0, size, style, unit);
-            return dest.Name == f0 ? dest : new(f1, size, style, unit);
-        }
-
-        #endregion
+        var dest = new Font(f0, size, style, unit);
+        return dest.Name == f0 ? dest : new(f1, size, style, unit);
     }
+
+    #endregion
 }

@@ -15,68 +15,67 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Collections;
+
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Collections
+/* ------------------------------------------------------------------------- */
+///
+/// LambdaComparer(T)
+///
+/// <summary>
+/// Provides functionality to convert from the Func(T, T, bool) to
+/// the instance of Comparer(T) inherited class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class LambdaComparer<T> : Comparer<T>
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// LambdaComparer(T)
     ///
     /// <summary>
-    /// Provides functionality to convert from the Func(T, T, bool) to
-    /// the instance of Comparer(T) inherited class.
+    /// Initializes a new instance of the LambdaComparer(T) with the
+    /// specified function.
     /// </summary>
     ///
+    /// <param name="src">Function to compare.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class LambdaComparer<T> : Comparer<T>
-    {
-        #region Constructors
+    public LambdaComparer(Func<T, T, int> src) => _comparer = src;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LambdaComparer(T)
-        ///
-        /// <summary>
-        /// Initializes a new instance of the LambdaComparer(T) with the
-        /// specified function.
-        /// </summary>
-        ///
-        /// <param name="src">Function to compare.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public LambdaComparer(Func<T, T, int> src) { _comparer = src; }
+    #endregion
 
-        #endregion
+    #region Methods
 
-        #region Methods
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Compare
+    ///
+    /// <summary>
+    /// Compares two objects of type T and returns an indication of
+    /// their relative sort order.
+    /// </summary>
+    ///
+    /// <param name="x">The first object to compare.</param>
+    /// <param name="y">The second object to compare.</param>
+    ///
+    /// <returns>
+    /// Zero if the specified objects are equal;
+    /// Less than zero if x is less than y;
+    /// otherwise, Greater than zero.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public override int Compare(T x, T y) => _comparer(x, y);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Compare
-        ///
-        /// <summary>
-        /// Compares two objects of type T and returns an indication of
-        /// their relative sort order.
-        /// </summary>
-        ///
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        ///
-        /// <returns>
-        /// Zero if the specified objects are equal;
-        /// Less than zero if x is less than y;
-        /// otherwise, Greater than zero.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public override int Compare(T x, T y) => _comparer(x, y);
+    #endregion
 
-        #endregion
-
-        #region Fields
-        private readonly Func<T, T, int> _comparer;
-        #endregion
-    }
+    #region Fields
+    private readonly Func<T, T, int> _comparer;
+    #endregion
 }

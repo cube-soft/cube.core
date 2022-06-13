@@ -15,135 +15,134 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.DataContract.Internal;
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Cube.DataContract.Internal
+/* ------------------------------------------------------------------------- */
+///
+/// PropertyExtension
+///
+/// <summary>
+/// Provides extended methods of the Type and PropertyInfo classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class PropertyExtension
 {
+    #region Type
+
     /* --------------------------------------------------------------------- */
     ///
-    /// PropertyExtension
+    /// Parse
     ///
     /// <summary>
-    /// Provides extended methods of the Type and PropertyInfo classes.
+    /// Converts the specified value according to the specified type.
     /// </summary>
     ///
+    /// <param name="src">Type of the converted object.</param>
+    /// <param name="value">Object to be converted.</param>
+    ///
+    /// <returns>Converted object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    internal static class PropertyExtension
+    public static object Parse(this Type src, object value) =>
+        value == null ? null :
+        src.IsEnum ? value :
+        src == typeof(DateTime) ? DateTime.Parse(value as string).ToLocalTime() :
+        Convert.ChangeType(value, src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IsObject
+    ///
+    /// <summary>
+    /// Determines whether the specified type is generic object type.
+    /// </summary>
+    ///
+    /// <param name="src">Target type.</param>
+    ///
+    /// <returns>true for generic object type.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool IsObject(this Type src) => Type.GetTypeCode(src) == TypeCode.Object;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IsGenericList
+    ///
+    /// <summary>
+    /// Determines whether the specified type is List(T) or IList(T).
+    /// </summary>
+    ///
+    /// <param name="src">Target type.</param>
+    ///
+    /// <returns>true for generic list.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool IsGenericList(this Type src)
     {
-        #region Type
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Parse
-        ///
-        /// <summary>
-        /// Converts the specified value according to the specified type.
-        /// </summary>
-        ///
-        /// <param name="src">Type of the converted object.</param>
-        /// <param name="value">Object to be converted.</param>
-        ///
-        /// <returns>Converted object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static object Parse(this Type src, object value) =>
-            value == null ? null :
-            src.IsEnum ? value :
-            src == typeof(DateTime) ? DateTime.Parse(value as string).ToLocalTime() :
-            Convert.ChangeType(value, src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsObject
-        ///
-        /// <summary>
-        /// Determines whether the specified type is generic object type.
-        /// </summary>
-        ///
-        /// <param name="src">Target type.</param>
-        ///
-        /// <returns>true for generic object type.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool IsObject(this Type src) => Type.GetTypeCode(src) == TypeCode.Object;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsGenericList
-        ///
-        /// <summary>
-        /// Determines whether the specified type is List(T) or IList(T).
-        /// </summary>
-        ///
-        /// <param name="src">Target type.</param>
-        ///
-        /// <returns>true for generic list.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool IsGenericList(this Type src)
-        {
-            if (!src.IsGenericType) return false;
-            var gtd = src.GetGenericTypeDefinition();
-            return gtd == typeof(List<>) || gtd == typeof(IList<>);
-        }
-
-        #endregion
-
-        #region PropertyInfo
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetPropertyType
-        ///
-        /// <summary>
-        /// Gets the type of specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Property information.</param>
-        ///
-        /// <returns>Type object.</returns>
-        ///
-        /// <remarks>
-        /// Returns the type of T if the specified object represents the
-        /// Nullable(T) type.
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Type GetPropertyType(this PropertyInfo src)
-        {
-            var pt = src.PropertyType;
-            return pt.IsGenericType && pt.GetGenericTypeDefinition() == typeof(Nullable<>) ?
-                   pt.GetGenericArguments()[0] :
-                   pt;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetDataMemberName
-        ///
-        /// <summary>
-        /// Gets the name of property that has the DataMember attribute.
-        /// </summary>
-        ///
-        /// <param name="info">Property information.</param>
-        ///
-        /// <returns>Name of property.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string GetDataMemberName(this PropertyInfo info)
-        {
-            if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return null;
-
-            var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
-            if (obj == null || obj.Length == 0) return info.Name;
-
-            var attr = obj[0] as DataMemberAttribute;
-            return attr?.Name ?? info.Name;
-        }
-
-        #endregion
+        if (!src.IsGenericType) return false;
+        var gtd = src.GetGenericTypeDefinition();
+        return gtd == typeof(List<>) || gtd == typeof(IList<>);
     }
+
+    #endregion
+
+    #region PropertyInfo
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetPropertyType
+    ///
+    /// <summary>
+    /// Gets the type of specified object.
+    /// </summary>
+    ///
+    /// <param name="src">Property information.</param>
+    ///
+    /// <returns>Type object.</returns>
+    ///
+    /// <remarks>
+    /// Returns the type of T if the specified object represents the
+    /// Nullable(T) type.
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Type GetPropertyType(this PropertyInfo src)
+    {
+        var pt = src.PropertyType;
+        return pt.IsGenericType && pt.GetGenericTypeDefinition() == typeof(Nullable<>) ?
+               pt.GetGenericArguments()[0] :
+               pt;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetDataMemberName
+    ///
+    /// <summary>
+    /// Gets the name of property that has the DataMember attribute.
+    /// </summary>
+    ///
+    /// <param name="info">Property information.</param>
+    ///
+    /// <returns>Name of property.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static string GetDataMemberName(this PropertyInfo info)
+    {
+        if (!Attribute.IsDefined(info, typeof(DataMemberAttribute))) return null;
+
+        var obj = info.GetCustomAttributes(typeof(DataMemberAttribute), false);
+        if (obj == null || obj.Length == 0) return info.Name;
+
+        var attr = obj[0] as DataMemberAttribute;
+        return attr?.Name ?? info.Name;
+    }
+
+    #endregion
 }

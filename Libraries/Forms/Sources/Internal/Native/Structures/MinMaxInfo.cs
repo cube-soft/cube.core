@@ -15,26 +15,25 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// MINMAXINFO
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/ms632605.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[StructLayout(LayoutKind.Sequential)]
+internal struct MINMAXINFO
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// MINMAXINFO
-    ///
-    /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms632605.aspx
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct MINMAXINFO
-    {
-        public POINT ptReserved;
-        public POINT ptMaxSize;
-        public POINT ptMaxPosition;
-        public POINT ptMinTrackSize;
-        public POINT ptMaxTrackSize;
-    }
+    public POINT ptReserved;
+    public POINT ptMaxSize;
+    public POINT ptMaxPosition;
+    public POINT ptMinTrackSize;
+    public POINT ptMaxTrackSize;
 }

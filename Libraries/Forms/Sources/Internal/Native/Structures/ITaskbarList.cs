@@ -15,156 +15,155 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// ITaskbarList3
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774652.aspx
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774638.aspx
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/dd391692.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[ComImport()]
+[Guid("ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface ITaskbarList3
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ITaskbarList3
+    /// HrInit
     ///
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774652.aspx
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774638.aspx
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd391692.aspx
+    /// Initializes the taskbar list object. This method must be called
+    /// before any other ITaskbarList methods can be called.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [ComImport()]
-    [Guid("ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface ITaskbarList3
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// HrInit
-        ///
-        /// <summary>
-        /// Initializes the taskbar list object. This method must be called
-        /// before any other ITaskbarList methods can be called.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void HrInit();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// AddTab
-        ///
-        /// <summary>
-        /// Adds an item to the taskbar.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void AddTab(IntPtr hwnd);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DeleteTab
-        ///
-        /// <summary>
-        /// Deletes an item from the taskbar.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void DeleteTab(IntPtr hwnd);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ActivateTab
-        ///
-        /// <summary>
-        /// Activates an item on the taskbar. The window is not actually
-        /// activated; the window's item on the taskbar is merely displayed
-        /// as active.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void ActivateTab(IntPtr hwnd);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetActiveAlt
-        ///
-        /// <summary>
-        /// Marks a taskbar item as active but does not visually activate it.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void SetActiveAlt(IntPtr hwnd);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MarkFullscreenWindow
-        ///
-        /// <summary>
-        /// Marks a window as full-screen.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// ITaskbarList2 interface
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProgressValue
-        ///
-        /// <summary>
-        /// Displays or updates a progress bar hosted in a taskbar button
-        /// to show the specific percentage completed of the full operation.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// ITaskbarList3 interface
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void SetProgressValue(IntPtr hwnd, UInt64 ullCompleted, UInt64 ullTotal);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetProgressState
-        ///
-        /// <summary>
-        /// Sets the type and state of the progress indicator displayed
-        /// on a taskbar button.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// ITaskbarList3 interface
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        [PreserveSig]
-        void SetProgressState(IntPtr hwnd, TaskbarProgressState state);
-
-        #endregion
-    }
+    [PreserveSig]
+    void HrInit();
 
     /* --------------------------------------------------------------------- */
     ///
-    /// TaskbarListInstance
+    /// AddTab
     ///
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774652.aspx
+    /// Adds an item to the taskbar.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [ComImport()]
-    [Guid("56fdf344-fd6d-11d0-958a-006097c9a090")]
-    [ClassInterface(ClassInterfaceType.None)]
-    internal class TaskbarListInstance { }
+    [PreserveSig]
+    void AddTab(IntPtr hwnd);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DeleteTab
+    ///
+    /// <summary>
+    /// Deletes an item from the taskbar.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [PreserveSig]
+    void DeleteTab(IntPtr hwnd);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ActivateTab
+    ///
+    /// <summary>
+    /// Activates an item on the taskbar. The window is not actually
+    /// activated; the window's item on the taskbar is merely displayed
+    /// as active.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [PreserveSig]
+    void ActivateTab(IntPtr hwnd);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetActiveAlt
+    ///
+    /// <summary>
+    /// Marks a taskbar item as active but does not visually activate it.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [PreserveSig]
+    void SetActiveAlt(IntPtr hwnd);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MarkFullscreenWindow
+    ///
+    /// <summary>
+    /// Marks a window as full-screen.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// ITaskbarList2 interface
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    [PreserveSig]
+    void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetProgressValue
+    ///
+    /// <summary>
+    /// Displays or updates a progress bar hosted in a taskbar button
+    /// to show the specific percentage completed of the full operation.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// ITaskbarList3 interface
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    [PreserveSig]
+    void SetProgressValue(IntPtr hwnd, ulong ullCompleted, ulong ullTotal);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetProgressState
+    ///
+    /// <summary>
+    /// Sets the type and state of the progress indicator displayed
+    /// on a taskbar button.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// ITaskbarList3 interface
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    [PreserveSig]
+    void SetProgressState(IntPtr hwnd, TaskbarProgressState state);
+
+    #endregion
 }
+
+/* ------------------------------------------------------------------------- */
+///
+/// TaskbarListInstance
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774652.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[ComImport()]
+[Guid("56fdf344-fd6d-11d0-958a-006097c9a090")]
+[ClassInterface(ClassInterfaceType.None)]
+internal class TaskbarListInstance { }

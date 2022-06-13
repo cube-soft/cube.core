@@ -15,6 +15,8 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.DataContract;
+
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -24,174 +26,171 @@ using Cube.Backports;
 using Cube.FileSystem;
 using Microsoft.Win32;
 
-namespace Cube.DataContract
+/* ------------------------------------------------------------------------- */
+///
+/// Formatter
+///
+/// <summary>
+/// Provides functionality to serialize and deserialize the DataContract
+/// objects.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Formatter
 {
+    #region Properties
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Formatter
+    /// DefaultKey
     ///
     /// <summary>
-    /// Provides functionality to serialize and deserialize the DataContract
-    /// objects.
+    /// Gets or sets the default registry subkey when serializing or
+    /// deserializing the registry.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// If you do not explicitly specify a subkey when serializing or
+    /// deserializing, this subkey will be used.
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static RegistryKey DefaultKey
+    {
+        get => _defaultKey ??= Registry.CurrentUser.OpenSubKey("Software", true);
+        set => _defaultKey = value;
+    }
+
+    #endregion
+
+    #region Serialize
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Serialize
+    ///
+    /// <summary>
+    /// Serializes objects to the specified location.
+    /// </summary>
+    ///
+    /// <param name="format">Serialization format.</param>
+    /// <param name="dest">Saving location.</param>
+    /// <param name="src">Object to be serialized.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Serialize<T>(this Format format, string dest, T src)
+    {
+        switch (format)
+        {
+            case Format.Xml:
+                IoEx.Save(dest, e => SerializeXml(e, src));
+                break;
+            case Format.Json:
+                IoEx.Save(dest, e => SerializeJson(e, src));
+                break;
+            case Format.Registry:
+                using (var e = DefaultKey.CreateSubKey(dest)) Serialize(e, src);
+                break;
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Serialize
+    ///
+    /// <summary>
+    /// Serializes objects to the specified registry subkey.
+    /// </summary>
+    ///
+    /// <param name="dest">Registry subkey</param>
+    /// <param name="src">Object to be serialized.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Serialize<T>(this RegistryKey dest, T src) =>
+        new RegistrySerializer().Invoke(dest, src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SerializeXml
+    ///
+    /// <summary>
+    /// Serializes objects to the specified stream as XML format.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Formatter
+    private static void SerializeXml<T>(Stream dest, T src)
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DefaultKey
-        ///
-        /// <summary>
-        /// Gets or sets the default registry subkey when serializing or
-        /// deserializing the registry.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// If you do not explicitly specify a subkey when serializing or
-        /// deserializing, this subkey will be used.
-        /// </remarks>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static RegistryKey DefaultKey
-        {
-            get => _defaultKey ??= Registry.CurrentUser.OpenSubKey("Software", true);
-            set => _defaultKey = value;
-        }
-
-        #endregion
-
-        #region Serialize
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Serialize
-        ///
-        /// <summary>
-        /// Serializes objects to the specified location.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="dest">Saving location.</param>
-        /// <param name="src">Object to be serialized.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Serialize<T>(this Format format, string dest, T src)
-        {
-            switch (format)
-            {
-                case Format.Xml:
-                    IoEx.Save(dest, e => SerializeXml(e, src));
-                    break;
-                case Format.Json:
-                    IoEx.Save(dest, e => SerializeJson(e, src));
-                    break;
-                case Format.Registry:
-                    using (var e = DefaultKey.CreateSubKey(dest)) Serialize(e, src);
-                    break;
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Serialize
-        ///
-        /// <summary>
-        /// Serializes objects to the specified registry subkey.
-        /// </summary>
-        ///
-        /// <param name="dest">Registry subkey</param>
-        /// <param name="src">Object to be serialized.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Serialize<T>(this RegistryKey dest, T src) =>
-            new RegistrySerializer().Invoke(dest, src);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SerializeXml
-        ///
-        /// <summary>
-        /// Serializes objects to the specified stream as XML format.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void SerializeXml<T>(Stream dest, T src)
-        {
-            var settings = new XmlWriterSettings { Indent = true };
-            using var obj = XmlWriter.Create(dest, settings);
-            new DataContractSerializer(typeof(T)).WriteObject(obj, src);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SerializeJson
-        ///
-        /// <summary>
-        /// Serializes objects to the specified stream as JSON format.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void SerializeJson<T>(Stream dest, T src)
-        {
-            using var obj = JsonReaderWriterFactory.CreateJsonWriter(dest, Encoding.UTF8, false);
-            new DataContractJsonSerializer(typeof(T)).WriteObject(obj, src);
-        }
-
-        #endregion
-
-        #region Deserialize
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Deserialize
-        ///
-        /// <summary>
-        /// Deserializes contents of the specified location.
-        /// </summary>
-        ///
-        /// <param name="format">Serialization format.</param>
-        /// <param name="src">Location to be loaded.</param>
-        ///
-        /// <returns>Deserialized object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Deserialize<T>(this Format format, string src)
-        {
-            switch (format)
-            {
-                case Format.Xml:
-                    return IoEx.Load(src, e => (T)new DataContractSerializer(typeof(T)).ReadObject(e));
-                case Format.Json:
-                    return IoEx.Load(src, e => (T)new DataContractJsonSerializer(typeof(T)).ReadObject(e));
-                case Format.Registry:
-                    using (var e = DefaultKey.OpenSubKey(src, false)) return Deserialize<T>(e);
-            }
-            return default;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Deserialize
-        ///
-        /// <summary>
-        /// Deserializes contents of the specified subkey.
-        /// </summary>
-        ///
-        /// <param name="src">Registry subkey to be loaded.</param>
-        ///
-        /// <returns>Deserialized object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Deserialize<T>(this RegistryKey src) =>
-            new RegistryDeserializer().Invoke<T>(src);
-
-        #endregion
-
-        #region Fields
-        private static RegistryKey _defaultKey;
-        #endregion
+        var settings = new XmlWriterSettings { Indent = true };
+        using var obj = XmlWriter.Create(dest, settings);
+        new DataContractSerializer(typeof(T)).WriteObject(obj, src);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SerializeJson
+    ///
+    /// <summary>
+    /// Serializes objects to the specified stream as JSON format.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void SerializeJson<T>(Stream dest, T src)
+    {
+        using var obj = JsonReaderWriterFactory.CreateJsonWriter(dest, Encoding.UTF8, false);
+        new DataContractJsonSerializer(typeof(T)).WriteObject(obj, src);
+    }
+
+    #endregion
+
+    #region Deserialize
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Deserialize
+    ///
+    /// <summary>
+    /// Deserializes contents of the specified location.
+    /// </summary>
+    ///
+    /// <param name="format">Serialization format.</param>
+    /// <param name="src">Location to be loaded.</param>
+    ///
+    /// <returns>Deserialized object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static T Deserialize<T>(this Format format, string src)
+    {
+        switch (format)
+        {
+            case Format.Xml:
+                return IoEx.Load(src, e => (T)new DataContractSerializer(typeof(T)).ReadObject(e));
+            case Format.Json:
+                return IoEx.Load(src, e => (T)new DataContractJsonSerializer(typeof(T)).ReadObject(e));
+            case Format.Registry:
+                using (var e = DefaultKey.OpenSubKey(src, false)) return Deserialize<T>(e);
+        }
+        return default;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Deserialize
+    ///
+    /// <summary>
+    /// Deserializes contents of the specified subkey.
+    /// </summary>
+    ///
+    /// <param name="src">Registry subkey to be loaded.</param>
+    ///
+    /// <returns>Deserialized object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static T Deserialize<T>(this RegistryKey src) =>
+        new RegistryDeserializer().Invoke<T>(src);
+
+    #endregion
+
+    #region Fields
+    private static RegistryKey _defaultKey;
+    #endregion
 }

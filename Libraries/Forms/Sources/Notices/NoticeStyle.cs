@@ -15,143 +15,142 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System.Drawing;
 
-namespace Cube
+#region NoticeStyle
+
+/* ------------------------------------------------------------------------- */
+///
+/// NoticeStyle
+///
+/// <summary>
+/// Represents the styles of the notice window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class NoticeStyle
 {
-    #region NoticeStyle
-
     /* --------------------------------------------------------------------- */
     ///
-    /// NoticeStyle
+    /// Color
     ///
     /// <summary>
-    /// Represents the styles of the notice window.
+    /// Gets or sets the background color.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NoticeStyle
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Color
-        ///
-        /// <summary>
-        /// Gets or sets the background color.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Color Color { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Image
-        ///
-        /// <summary>
-        /// Gets or sets the style of the image part.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NoticeImageStyle Image { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Title
-        ///
-        /// <summary>
-        /// Gets or sets the style of the title part.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NoticeTextStyle Title { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Text
-        ///
-        /// <summary>
-        /// Gets or sets the style of the message part.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NoticeTextStyle Text { get; set; }
-    }
-
-    #endregion
-
-    #region NoticeTextStyle
+    public Color Color { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// NoticeTextStyle
+    /// Image
     ///
     /// <summary>
-    /// Represents the styles of a text part of the notice window.
+    /// Gets or sets the style of the image part.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NoticeTextStyle
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Color
-        ///
-        /// <summary>
-        /// Gets or sets the content/foreground color of the component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Color Color { get; set; }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Font
-        ///
-        /// <summary>
-        /// Gets or sets the font object of the component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Font Font { get; set; }
-    }
-
-    #endregion
-
-    #region NoticeImageStyle
+    public NoticeImageStyle Image { get; set; }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// NoticeImageStyle
+    /// Title
     ///
     /// <summary>
-    /// Represents the styles of an image part of the notice window.
+    /// Gets or sets the style of the title part.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NoticeImageStyle
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Color
-        ///
-        /// <summary>
-        /// Gets or sets the background color of the component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Color Color { get; set; }
+    public NoticeTextStyle Title { get; set; }
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets or sets the image object of the component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Image Value { get; set; }
-    }
-
-    #endregion
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Text
+    ///
+    /// <summary>
+    /// Gets or sets the style of the message part.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public NoticeTextStyle Text { get; set; }
 }
+
+#endregion
+
+#region NoticeTextStyle
+
+/* ------------------------------------------------------------------------- */
+///
+/// NoticeTextStyle
+///
+/// <summary>
+/// Represents the styles of a text part of the notice window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class NoticeTextStyle
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Color
+    ///
+    /// <summary>
+    /// Gets or sets the content/foreground color of the component.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Color Color { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Font
+    ///
+    /// <summary>
+    /// Gets or sets the font object of the component.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Font Font { get; set; }
+}
+
+#endregion
+
+#region NoticeImageStyle
+
+/* ------------------------------------------------------------------------- */
+///
+/// NoticeImageStyle
+///
+/// <summary>
+/// Represents the styles of an image part of the notice window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class NoticeImageStyle
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Color
+    ///
+    /// <summary>
+    /// Gets or sets the background color of the component.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Color Color { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Value
+    ///
+    /// <summary>
+    /// Gets or sets the image object of the component.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Image Value { get; set; }
+}
+
+#endregion

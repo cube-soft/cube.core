@@ -15,40 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Environment;
+
 using Source = System.Environment;
 
-namespace Cube.Mixin.Environment
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods of the Environment class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// GetName
     ///
     /// <summary>
-    /// Provides extended methods of the Environment class.
+    /// Gets the directory name corresponding to the specified value.
     /// </summary>
     ///
+    /// <param name="src">
+    /// Value that represents the special folder.
+    /// </param>
+    ///
+    /// <returns>Directory name.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
-    {
-        #region Methods
+    public static string GetName(this Source.SpecialFolder src) => Source.GetFolderPath(src);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetName
-        ///
-        /// <summary>
-        /// Gets the directory name corresponding to the specified value.
-        /// </summary>
-        ///
-        /// <param name="src">
-        /// Value that represents the special folder.
-        /// </param>
-        ///
-        /// <returns>Directory name.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static string GetName(this Source.SpecialFolder src) => Source.GetFolderPath(src);
-
-        #endregion
-    }
+    #endregion
 }

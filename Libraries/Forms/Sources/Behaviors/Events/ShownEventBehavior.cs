@@ -15,40 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ShownEventBehavior
+///
+/// <summary>
+/// Represents the behavior that a Form object is shown.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ShownEventBehavior : DisposableProxy
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ShownEventBehavior
     ///
     /// <summary>
-    /// Represents the behavior that a Form object is shown.
+    /// Initializes a new instance of the ShownEventBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="src">Source view.</param>
+    /// <param name="action">Action to be shown.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class ShownEventBehavior : DisposableProxy
+    public ShownEventBehavior(Form src, Action action) : base(() =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShownEventBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ShownEventBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source view.</param>
-        /// <param name="action">Action to be shown.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ShownEventBehavior(Form src, Action action) : base(() =>
-        {
-            void invoke(object s, EventArgs e) => action();
-            src.Shown += invoke;
-            return Disposable.Create(() => src.Shown -= invoke);
-        }) { }
-    }
+        void invoke(object s, EventArgs e) => action();
+        src.Shown += invoke;
+        return Disposable.Create(() => src.Shown -= invoke);
+    }) { }
 }

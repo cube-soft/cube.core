@@ -15,91 +15,89 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+namespace Cube.FileSystem.AlphaFS;
+
 using Alphaleonis.Win32.Filesystem;
 using Cube.Mixin.Generic;
 
-namespace Cube.FileSystem.AlphaFS
+/* ------------------------------------------------------------------------- */
+///
+/// EntitySource
+///
+/// <summary>
+/// Provides functionality to refresh properties of a EntitySource
+/// object by using the AlphaFS module.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class EntitySource : FileSystem.EntitySource
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// EntitySource
     ///
     /// <summary>
-    /// Provides functionality to refresh properties of a EntitySource
-    /// object by using the AlphaFS module.
+    /// Initializes a new instance of the AlphaFS.EntitySource class
+    /// with the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public EntitySource(string src) : this(src, true) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// EntitySource
+    ///
+    /// <summary>
+    /// Initializes a new instance of the AlphaFS.EntitySource class
+    /// with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Path of the file or directory.</param>
+    /// <param name="refresh">
+    /// Value indicating whether to invoke the Refresh method.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected EntitySource(string src, bool refresh) : base(src, refresh) { }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnRefresh
+    ///
+    /// <summary>
+    /// Refreshes the file or directory information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class EntitySource : FileSystem.EntitySource
+    protected override void OnRefresh()
     {
-        #region Constructors
+        FileSystemInfo obj = Directory.Exists(RawName) ?
+                             new DirectoryInfo(RawName) :
+                             new FileInfo(RawName);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EntitySource
-        ///
-        /// <summary>
-        /// Initializes a new instance of the AlphaFS.EntitySource class
-        /// with the specified path.
-        /// </summary>
-        ///
-        /// <param name="src">Path of the file or directory.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public EntitySource(string src) : this(src, true) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EntitySource
-        ///
-        /// <summary>
-        /// Initializes a new instance of the AlphaFS.EntitySource class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Path of the file or directory.</param>
-        /// <param name="refresh">
-        /// Value indicating whether to invoke the Refresh method.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected EntitySource(string src, bool refresh) : base(src, refresh) { }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnRefresh
-        ///
-        /// <summary>
-        /// Refreshes the file or directory information.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnRefresh()
-        {
-            FileSystemInfo obj = Directory.Exists(RawName) ?
-                                 new DirectoryInfo(RawName) :
-                                 new FileInfo(RawName);
-
-            Exists = obj.Exists;
-            Name           = obj.Name;
-            Extension      = obj.Extension;
-            FullName       = obj.FullName;
-            Attributes     = obj.Attributes;
-            CreationTime   = obj.CreationTime;
-            LastAccessTime = obj.LastAccessTime;
-            LastWriteTime  = obj.LastWriteTime;
-            Length         = Exists ? (obj.TryCast<FileInfo>()?.Length ?? 0) : 0;
-            IsDirectory    = obj is DirectoryInfo;
-            BaseName       = Path.GetFileNameWithoutExtension(RawName);
-            DirectoryName  = obj.TryCast<FileInfo>()?.DirectoryName ??
-                             Path.GetDirectoryName(RawName);
-        }
-
-        #endregion
+        Exists = obj.Exists;
+        Name           = obj.Name;
+        Extension      = obj.Extension;
+        FullName       = obj.FullName;
+        Attributes     = obj.Attributes;
+        CreationTime   = obj.CreationTime;
+        LastAccessTime = obj.LastAccessTime;
+        LastWriteTime  = obj.LastWriteTime;
+        Length         = Exists ? (obj.TryCast<FileInfo>()?.Length ?? 0) : 0;
+        IsDirectory    = obj is DirectoryInfo;
+        BaseName       = Path.GetFileNameWithoutExtension(RawName);
+        DirectoryName  = obj.TryCast<FileInfo>()?.DirectoryName ??
+                         Path.GetDirectoryName(RawName);
     }
+
+    #endregion
 }

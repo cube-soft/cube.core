@@ -15,29 +15,28 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// ShFileIinfo
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759792.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+internal struct ShFileIinfo
 {
-    /* ----------------------------------------------------------------- */
-    ///
-    /// ShFileIinfo
-    ///
-    /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759792.aspx
-    /// </summary>
-    ///
-    /* ----------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct ShFileIinfo
-    {
-        public IntPtr hIcon;
-        public int iIcon;
-        public uint dwAttributes;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public string szDisplayName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-        public string szTypeName;
-    }
+    public IntPtr hIcon;
+    public int iIcon;
+    public uint dwAttributes;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+    public string szDisplayName;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+    public string szTypeName;
 }

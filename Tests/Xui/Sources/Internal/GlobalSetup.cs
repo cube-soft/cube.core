@@ -15,41 +15,40 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests;
+
 using System.Reflection;
 using System.Windows;
 using Cube.Logging;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// GlobalSetup
+///
+/// <summary>
+/// Provides functionality to run at the beginning of the NUnit.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[SetUpFixture]
+public class GlobalSetup
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// OneTimeSetup
     ///
     /// <summary>
-    /// Provides functionality to run at the beginning of the NUnit.
+    /// Invokes the setup only once.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
+    [OneTimeSetUp]
+    public void OneTimeSetup()
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OneTimeSetup
-        ///
-        /// <summary>
-        /// Invokes the setup only once.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-            BindingLogger.Setup();
-            _ = Logger.ObserveTaskException();
-            _ = Application.Current.ObserveUiException();
-            typeof(GlobalSetup).LogInfo(Assembly.GetExecutingAssembly());
-        }
+        BindingLogger.Setup();
+        _ = Logger.ObserveTaskException();
+        _ = Application.Current.ObserveUiException();
+        typeof(GlobalSetup).LogInfo(Assembly.GetExecutingAssembly());
     }
 }

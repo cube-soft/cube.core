@@ -15,59 +15,58 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ClickEventBehavior
+///
+/// <summary>
+/// Represents the behavior that a Control object is clicked.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ClickEventBehavior : DisposableProxy
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ClickEventBehavior
     ///
     /// <summary>
-    /// Represents the behavior that a Control object is clicked.
+    /// Initializes a new instance of the ClickEventBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="src">Source view.</param>
+    /// <param name="action">Action to click.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class ClickEventBehavior : DisposableProxy
+    public ClickEventBehavior(Control src, Action action) : base(() =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ClickEventBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ClickEventBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source view.</param>
-        /// <param name="action">Action to click.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ClickEventBehavior(Control src, Action action) : base(() =>
-        {
-            void invoke(object s, EventArgs e) => action();
-            src.Click += invoke;
-            return Disposable.Create(() => src.Click -= invoke);
-        }) { }
+        void invoke(object s, EventArgs e) => action();
+        src.Click += invoke;
+        return Disposable.Create(() => src.Click -= invoke);
+    }) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ClickEventBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ClickEventBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source view.</param>
-        /// <param name="action">Action to click.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ClickEventBehavior(ToolStripItem src, Action action) : base(() => {
-            void invoke(object s, EventArgs e) => action();
-            src.Click += invoke;
-            return Disposable.Create(() => src.Click -= invoke);
-        }) { }
-    }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ClickEventBehavior
+    ///
+    /// <summary>
+    /// Initializes a new instance of the ClickEventBehavior class
+    /// with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Source view.</param>
+    /// <param name="action">Action to click.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ClickEventBehavior(ToolStripItem src, Action action) : base(() => {
+        void invoke(object s, EventArgs e) => action();
+        src.Click += invoke;
+        return Disposable.Create(() => src.Click -= invoke);
+    }) { }
 }

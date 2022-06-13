@@ -15,52 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows.Controls;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// PasswordBehaviorTest
+///
+/// <summary>
+/// Tests the PasswordBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class PasswordBehaviorTest
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// PasswordBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the PasswordBehavior class.
+    /// Executes the test to create, attach, and detach method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class PasswordBehaviorTest
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var view = new PasswordBox();
+        var src  = new PasswordBehavior();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Executes the test to create, attach, and detach method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
-        {
-            var view = new PasswordBox();
-            var src  = new PasswordBehavior();
+        src.Attach(view);
+        src.Password = "Behavior";
+        Assert.That(view.Password, Is.EqualTo(src.Password).And.EqualTo("Behavior"));
 
-            src.Attach(view);
-            src.Password = "Behavior";
-            Assert.That(view.Password, Is.EqualTo(src.Password).And.EqualTo("Behavior"));
-
-            view.Password = "View";
-            Assert.That(src.Password, Is.EqualTo(view.Password).And.EqualTo("View"));
-            src.Detach();
-        }
-
-        #endregion
+        view.Password = "View";
+        Assert.That(src.Password, Is.EqualTo(view.Password).And.EqualTo("View"));
+        src.Detach();
     }
 }

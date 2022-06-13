@@ -15,73 +15,72 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Observing;
+
 using System;
 using System.ComponentModel;
 
-namespace Cube.Mixin.Observing
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods of IObservePropertyChanged and its
+/// implemented classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// Subscribe
     ///
     /// <summary>
-    /// Provides extended methods of IObservePropertyChanged and its
-    /// implemented classes.
+    /// Associates the specified callback to the PropertyChanged event.
     /// </summary>
     ///
+    /// <param name="src">Observable source.</param>
+    /// <param name="callback">
+    /// Action to invoked when the PropertyChanged event is fired.
+    /// </param>
+    ///
+    /// <returns>
+    /// Object to remove the callback from the PropertyChanged event
+    /// handler.
+    /// </returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static IDisposable Subscribe(this INotifyPropertyChanged src, Action<string> callback)
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Associates the specified callback to the PropertyChanged event.
-        /// </summary>
-        ///
-        /// <param name="src">Observable source.</param>
-        /// <param name="callback">
-        /// Action to invoked when the PropertyChanged event is fired.
-        /// </param>
-        ///
-        /// <returns>
-        /// Object to remove the callback from the PropertyChanged event
-        /// handler.
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable Subscribe(this INotifyPropertyChanged src, Action<string> callback)
-        {
-            void handler(object s, PropertyChangedEventArgs e) => callback(e.PropertyName);
-            src.PropertyChanged += handler;
-            return Disposable.Create(() => src.PropertyChanged -= handler);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Hook
-        ///
-        /// <summary>
-        /// Observes the specified observer and the specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Source observer.</param>
-        /// <param name="obj">Object to be observed.</param>
-        /// <param name="names">Target property names.</param>
-        ///
-        /// <returns>Source observer.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static T Hook<T>(this T src, INotifyPropertyChanged obj, params string[] names)
-            where T : IObservePropertyChanged
-        {
-            src.Observe(obj, names);
-            return src;
-        }
-
-        #endregion
+        void handler(object s, PropertyChangedEventArgs e) => callback(e.PropertyName);
+        src.PropertyChanged += handler;
+        return Disposable.Create(() => src.PropertyChanged -= handler);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Hook
+    ///
+    /// <summary>
+    /// Observes the specified observer and the specified object.
+    /// </summary>
+    ///
+    /// <param name="src">Source observer.</param>
+    /// <param name="obj">Object to be observed.</param>
+    /// <param name="names">Target property names.</param>
+    ///
+    /// <returns>Source observer.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static T Hook<T>(this T src, INotifyPropertyChanged obj, params string[] names)
+        where T : IObservePropertyChanged
+    {
+        src.Observe(obj, names);
+        return src;
+    }
+
+    #endregion
 }

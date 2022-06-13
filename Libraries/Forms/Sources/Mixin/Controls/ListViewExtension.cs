@@ -15,55 +15,54 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Forms.Controls;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Cube.Mixin.Forms.Controls
+/* ------------------------------------------------------------------------- */
+///
+/// ListViewExtension
+///
+/// <summary>
+/// Provides extended methods of the ListView class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class ListViewExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ListViewExtension
+    /// Ascend
     ///
     /// <summary>
-    /// Provides extended methods of the ListView class.
+    /// Sorts the specified SelectedIndexCollection object in ascending
+    /// order.
     /// </summary>
     ///
+    /// <param name="src">Source collection.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class ListViewExtension
-    {
-        #region Methods
+    public static IEnumerable<int> Ascend(this ListView.SelectedIndexCollection src) =>
+        src.Cast<int>().OrderBy(i => i);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Ascend
-        ///
-        /// <summary>
-        /// Sorts the specified SelectedIndexCollection object in ascending
-        /// order.
-        /// </summary>
-        ///
-        /// <param name="src">Source collection.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Ascend(this ListView.SelectedIndexCollection src) =>
-            src.Cast<int>().OrderBy(i => i);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Descend
+    ///
+    /// <summary>
+    /// Sorts the specified SelectedIndexCollection object in
+    /// descending order.
+    /// </summary>
+    ///
+    /// <param name="src">Source collection.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IEnumerable<int> Descend(ListView.SelectedIndexCollection src) =>
+        src.Cast<int>().OrderByDescending(i => i);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Descend
-        ///
-        /// <summary>
-        /// Sorts the specified SelectedIndexCollection object in
-        /// descending order.
-        /// </summary>
-        ///
-        /// <param name="src">Source collection.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IEnumerable<int> Descend(ListView.SelectedIndexCollection src) =>
-            src.Cast<int>().OrderByDescending(i => i);
-
-        #endregion
-    }
+    #endregion
 }

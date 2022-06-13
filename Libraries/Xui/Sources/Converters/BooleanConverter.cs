@@ -15,366 +15,365 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Converters;
+
 using System;
 using System.Globalization;
 using System.Windows;
 
-namespace Cube.Xui.Converters
-{
-    #region Positive
+#region Positive
 
+/* ------------------------------------------------------------------------- */
+///
+/// Positive
+///
+/// <summary>
+/// Provides functionality to determine whether the provided number is
+/// positive.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Positive : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// Positive
     ///
     /// <summary>
-    /// Provides functionality to determine whether the provided number is
-    /// positive.
+    /// Initializes a new instance of the Positive class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Positive : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Positive
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Positive class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Positive() : base(e => System.Convert.ToInt32(e) > 0) { }
-    }
+    public Positive() : base(e => System.Convert.ToInt32(e) > 0) { }
+}
 
-    #endregion
+#endregion
 
-    #region PositiveOrZero
+#region PositiveOrZero
 
+/* ------------------------------------------------------------------------- */
+///
+/// PositiveOrZero
+///
+/// <summary>
+/// Provides functionality to determine whether the provided number is
+/// positive or zero.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class PositiveOrZero : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// PositiveOrZero
     ///
     /// <summary>
-    /// Provides functionality to determine whether the provided number is
-    /// positive or zero.
+    /// Initializes a new instance of the PositiveOrZero class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class PositiveOrZero : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PositiveOrZero
-        ///
-        /// <summary>
-        /// Initializes a new instance of the PositiveOrZero class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public PositiveOrZero() : base(e => System.Convert.ToInt32(e) >= 0) { }
-    }
+    public PositiveOrZero() : base(e => System.Convert.ToInt32(e) >= 0) { }
+}
 
-    #endregion
+#endregion
 
-    #region Negative
+#region Negative
 
+/* ------------------------------------------------------------------------- */
+///
+/// Negative
+///
+/// <summary>
+/// Provides functionality to determine whether the provided number is
+/// negative.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Negative : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// Negative
     ///
     /// <summary>
-    /// Provides functionality to determine whether the provided number is
-    /// negative.
+    /// Initializes a new instance of the Negative class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Negative : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Negative
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Negative class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Negative() : base(e => System.Convert.ToInt32(e) < 0) { }
-    }
+    public Negative() : base(e => System.Convert.ToInt32(e) < 0) { }
+}
 
-    #endregion
+#endregion
 
-    #region NegativeOrZero
+#region NegativeOrZero
 
+/* ------------------------------------------------------------------------- */
+///
+/// NegativeOrZero
+///
+/// <summary>
+/// Provides functionality to determine whether the provided number is
+/// negative or zero.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class NegativeOrZero : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// NegativeOrZero
     ///
     /// <summary>
-    /// Provides functionality to determine whether the provided number is
-    /// negative or zero.
+    /// Initializes a new instance of the NegativeOrZero class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class NegativeOrZero : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// NegativeOrZero
-        ///
-        /// <summary>
-        /// Initializes a new instance of the NegativeOrZero class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public NegativeOrZero() : base(e => System.Convert.ToInt32(e) <= 0) { }
-    }
+    public NegativeOrZero() : base(e => System.Convert.ToInt32(e) <= 0) { }
+}
 
-    #endregion
+#endregion
 
-    #region Inverse
+#region Inverse
 
+/* ------------------------------------------------------------------------- */
+///
+/// Inverse
+///
+/// <summary>
+/// Provides functionality to inverse a boolean value.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Inverse : DuplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
     /// Inverse
     ///
     /// <summary>
-    /// Provides functionality to inverse a boolean value.
+    /// Initializes a new instance of the Inverse class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Inverse : DuplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Inverse
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Inverse class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Inverse() : base(e => !(bool)e, e => !(bool)e) { }
-    }
+    public Inverse() : base(e => !(bool)e, e => !(bool)e) { }
+}
 
-    #endregion
+#endregion
 
-    #region BooleanToValue<T>
+#region BooleanToValue<T>
 
+/* ------------------------------------------------------------------------- */
+///
+/// BooleanToValue(T)
+///
+/// <summary>
+/// Provides functionality to convert a boolean to the value of T.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class BooleanToValue<T> : SimplexConverter
+{
     /* --------------------------------------------------------------------- */
     ///
-    /// BooleanToValue(T)
+    /// BooleanToValue
     ///
     /// <summary>
-    /// Provides functionality to convert a boolean to the value of T.
+    /// Initializes a new instance of the BooleanToValue class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToValue(T positive, T negative) :
+        this(positive, negative, (e, __, ___, ____) => (bool)e) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToGeneric
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToValue class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    /// <param name="predicate">
+    /// Function object that determines whether the source is true.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToValue(T positive, T negative, Func<object, bool> predicate) :
+        this(positive, negative, (e, __, ___, ____) => predicate(e)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToGeneric
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToValue class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    /// <param name="func">
+    /// Function object that determines whether the source is true.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToValue(T positive, T negative,
+        Func<object, object, bool> func) :
+        this(positive, negative, (e, __, p, ___) => func(e, p)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToGeneric
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToValue class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    /// <param name="predicate">
+    /// Function object that determines whether the source is true.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToValue(T positive, T negative,
+        Func<object, Type, object, CultureInfo, bool> predicate) :
+        base ((e, t, p, c) => predicate(e, t, p, c) ? positive : negative) { }
+}
+
+#endregion
+
+#region BooleanToInteger
+
+/* ------------------------------------------------------------------------- */
+///
+/// BooleanToInteger
+///
+/// <summary>
+/// Provides functionality to convert a boolean to the integer value.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class BooleanToInteger : BooleanToValue<int>
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToInteger
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToInteger class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BooleanToValue<T> : SimplexConverter
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToValue
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToValue class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToValue(T positive, T negative) :
-            this(positive, negative, (e, __, ___, ____) => (bool)e) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToGeneric
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToValue class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        /// <param name="predicate">
-        /// Function object that determines whether the source is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToValue(T positive, T negative, Func<object, bool> predicate) :
-            this(positive, negative, (e, __, ___, ____) => predicate(e)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToGeneric
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToValue class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        /// <param name="func">
-        /// Function object that determines whether the source is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToValue(T positive, T negative,
-            Func<object, object, bool> func) :
-            this(positive, negative, (e, __, p, ___) => func(e, p)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToGeneric
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToValue class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        /// <param name="predicate">
-        /// Function object that determines whether the source is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToValue(T positive, T negative,
-            Func<object, Type, object, CultureInfo, bool> predicate) :
-            base ((e, t, p, c) => predicate(e, t, p, c) ? positive : negative) { }
-    }
-
-    #endregion
-
-    #region BooleanToInteger
+    public BooleanToInteger() : this(1, 0) { }
 
     /* --------------------------------------------------------------------- */
     ///
     /// BooleanToInteger
     ///
     /// <summary>
-    /// Provides functionality to convert a boolean to the integer value.
+    /// Initializes a new instance of the BooleanToInteger class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToInteger(int positive, int negative) :
+        base(positive, negative) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToInteger
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToInteger class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    /// <param name="predicate">
+    /// Function object that determines whether the source is true.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToInteger(int negative, int positive, Func<object, bool> predicate) :
+        base(positive, negative, predicate) { }
+}
+
+#endregion
+
+#region BooleanToVisibility
+
+/* ------------------------------------------------------------------------- */
+///
+/// BooleanToVisibility
+///
+/// <summary>
+/// Provides functionality to convert a boolean to the Visibility
+/// value.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class BooleanToVisibility : BooleanToValue<Visibility>
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToVisibility
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToVisibility class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BooleanToInteger : BooleanToValue<int>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToInteger
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToInteger class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToInteger() : this(1, 0) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToInteger
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToInteger class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToInteger(int positive, int negative) :
-            base(positive, negative) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToInteger
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToInteger class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        /// <param name="predicate">
-        /// Function object that determines whether the source is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToInteger(int negative, int positive, Func<object, bool> predicate) :
-            base(positive, negative, predicate) { }
-    }
-
-    #endregion
-
-    #region BooleanToVisibility
+    public BooleanToVisibility() : base(Visibility.Visible, Visibility.Collapsed) { }
 
     /* --------------------------------------------------------------------- */
     ///
     /// BooleanToVisibility
     ///
     /// <summary>
-    /// Provides functionality to convert a boolean to the Visibility
-    /// value.
+    /// Initializes a new instance of the BooleanToVisibility class
+    /// with the specified parameters.
     /// </summary>
     ///
+    /// <param name="predicate">
+    /// Function object that determines whether the source is true.
+    /// </param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class BooleanToVisibility : BooleanToValue<Visibility>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToVisibility
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToVisibility class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToVisibility() : base(Visibility.Visible, Visibility.Collapsed) { }
+    public BooleanToVisibility(Func<object, bool> predicate) :
+        this(Visibility.Visible, Visibility.Collapsed, predicate) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToVisibility
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToVisibility class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="predicate">
-        /// Function object that determines whether the source is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToVisibility(Func<object, bool> predicate) :
-            this(Visibility.Visible, Visibility.Collapsed, predicate) { }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BooleanToVisibility
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BooleanToVisibility class
+    /// with the specified parameters.
+    /// </summary>
+    ///
+    /// <param name="positive">Value for true.</param>
+    /// <param name="negative">Value for false.</param>
+    /// <param name="predicate">
+    /// Function object that determines whether the source is true.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public BooleanToVisibility(Visibility positive, Visibility negative, Func<object, bool> predicate) :
+        base(positive, negative, predicate) { }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BooleanToVisibility
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BooleanToVisibility class
-        /// with the specified parameters.
-        /// </summary>
-        ///
-        /// <param name="positive">Value for true.</param>
-        /// <param name="negative">Value for false.</param>
-        /// <param name="predicate">
-        /// Function object that determines whether the source is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public BooleanToVisibility(Visibility positive, Visibility negative, Func<object, bool> predicate) :
-            base(positive, negative, predicate) { }
-
-    }
-
-    #endregion
 }
+
+#endregion

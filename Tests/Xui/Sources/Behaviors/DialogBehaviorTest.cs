@@ -15,54 +15,49 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows;
 using Cube.Xui.Behaviors;
 using System.Windows.Interactivity;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// DialogBehaviorTest
+///
+/// <summary>
+/// Tests for the DialogBehavior, OpenFileBehavior, SaveFileBehavior,
+/// and OpenDirectoryBehavior classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class DialogBehaviorTest : ViewFixture
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DialogBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the DialogBehavior, OpenFileBehavior, SaveFileBehavior,
-    /// and OpenDirectoryBehavior classes.
+    /// Tests to create behaviors.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class DialogBehaviorTest : ViewFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Tests to create behaviors.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
+        var view = new Window();
+        var src  = new Behavior<FrameworkElement>[]
         {
-            var view = new Window();
-            var src  = new Behavior<FrameworkElement>[]
-            {
-                Attach(view, new DialogBehavior()),
-                Attach(view, new OpenDirectoryBehavior()),
-                Attach(view, new OpenFileBehavior()),
-                Attach(view, new SaveFileBehavior())
-            };
+            Attach(view, new DialogBehavior()),
+            Attach(view, new OpenDirectoryBehavior()),
+            Attach(view, new OpenFileBehavior()),
+            Attach(view, new SaveFileBehavior())
+        };
 
-            foreach (var obj in src) obj.Detach();
-        }
-
-        #endregion
+        foreach (var obj in src) obj.Detach();
     }
 }

@@ -15,31 +15,30 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System;
 using System.Diagnostics;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// UriBehavior
+///
+/// <summary>
+/// Represents the behavior when an Uri message is received.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class UriBehavior : MessageBehavior<Uri>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior when an Uri message is received.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UriBehavior : MessageBehavior<Uri>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(Uri e) => Process.Start(e.ToString());
-    }
+    protected override void Invoke(Uri e) => Process.Start(e.ToString());
 }

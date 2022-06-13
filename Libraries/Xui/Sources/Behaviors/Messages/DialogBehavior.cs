@@ -15,100 +15,99 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// DialogBehavior
+///
+/// <summary>
+/// Represents the behavior to show a dialog using a DialogMessage.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class DialogBehavior : MessageBehavior<DialogMessage>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DialogBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior to show a dialog using a DialogMessage.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DialogBehavior : MessageBehavior<DialogMessage>
+    protected override void Invoke(DialogMessage e)
     {
-        #region Methods
+        var icon    = Icons[e.Icon];
+        var buttons = Buttons[e.Buttons];
+        var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(DialogMessage e)
-        {
-            var icon    = Icons[e.Icon];
-            var buttons = Buttons[e.Buttons];
-            var status  = MessageBox.Show(e.Text, e.Title, buttons, icon);
-
-            e.Value  = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
-            e.Cancel = e.CancelCandidates.Any(z => z == e.Value);
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Icons
-        ///
-        /// <summary>
-        /// Gets the map collection of DialogIcon and MessageBoxImage.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogIcon, MessageBoxImage> Icons { get; } = new()
-        {
-            { DialogIcon.None,        MessageBoxImage.None        },
-            { DialogIcon.Error,       MessageBoxImage.Error       },
-            { DialogIcon.Warning,     MessageBoxImage.Warning     },
-            { DialogIcon.Information, MessageBoxImage.Information },
-        };
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Buttons
-        ///
-        /// <summary>
-        /// Gets the map collection of DialogButtons and MessageBoxButton.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static Dictionary<DialogButtons, MessageBoxButton> Buttons { get; } = new()
-        {
-            { DialogButtons.Ok,          MessageBoxButton.OK          },
-            { DialogButtons.OkCancel,    MessageBoxButton.OKCancel    },
-            { DialogButtons.YesNo,       MessageBoxButton.YesNo       },
-            { DialogButtons.YesNoCancel, MessageBoxButton.YesNoCancel },
-        };
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Results
-        ///
-        /// <summary>
-        /// Gets the map collection of MessageBoxResult and DialogResult.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static Dictionary<MessageBoxResult, DialogStatus> Results { get; } = new()
-        {
-            { MessageBoxResult.None,   DialogStatus.Empty  },
-            { MessageBoxResult.OK,     DialogStatus.Ok     },
-            { MessageBoxResult.Cancel, DialogStatus.Cancel },
-            { MessageBoxResult.Yes,    DialogStatus.Yes    },
-            { MessageBoxResult.No,     DialogStatus.No     },
-        };
-
-        #endregion
+        e.Value  = Results.ContainsKey(status) ? Results[status] : DialogStatus.Empty;
+        e.Cancel = e.CancelCandidates.Any(z => z == e.Value);
     }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Icons
+    ///
+    /// <summary>
+    /// Gets the map collection of DialogIcon and MessageBoxImage.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static Dictionary<DialogIcon, MessageBoxImage> Icons { get; } = new()
+    {
+        { DialogIcon.None,        MessageBoxImage.None        },
+        { DialogIcon.Error,       MessageBoxImage.Error       },
+        { DialogIcon.Warning,     MessageBoxImage.Warning     },
+        { DialogIcon.Information, MessageBoxImage.Information },
+    };
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Buttons
+    ///
+    /// <summary>
+    /// Gets the map collection of DialogButtons and MessageBoxButton.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static Dictionary<DialogButtons, MessageBoxButton> Buttons { get; } = new()
+    {
+        { DialogButtons.Ok,          MessageBoxButton.OK          },
+        { DialogButtons.OkCancel,    MessageBoxButton.OKCancel    },
+        { DialogButtons.YesNo,       MessageBoxButton.YesNo       },
+        { DialogButtons.YesNoCancel, MessageBoxButton.YesNoCancel },
+    };
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Results
+    ///
+    /// <summary>
+    /// Gets the map collection of MessageBoxResult and DialogResult.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static Dictionary<MessageBoxResult, DialogStatus> Results { get; } = new()
+    {
+        { MessageBoxResult.None,   DialogStatus.Empty  },
+        { MessageBoxResult.OK,     DialogStatus.Ok     },
+        { MessageBoxResult.Cancel, DialogStatus.Cancel },
+        { MessageBoxResult.Yes,    DialogStatus.Yes    },
+        { MessageBoxResult.No,     DialogStatus.No     },
+    };
+
+    #endregion
 }

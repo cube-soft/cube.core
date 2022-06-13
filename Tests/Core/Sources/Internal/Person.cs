@@ -15,230 +15,229 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// Sex
+///
+/// <summary>
+/// Specifies the sex.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+enum Sex
 {
-    /* ----------------------------------------------------------------- */
+    Male    =  0,
+    Female  =  1,
+    Unknown = -1
+}
+
+/* ------------------------------------------------------------------------- */
+///
+/// Address
+///
+/// <summary>
+/// Represents the address.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+class Address
+{
+    /* --------------------------------------------------------------------- */
     ///
-    /// Sex
+    /// Type
     ///
     /// <summary>
-    /// Specifies the sex.
+    /// Gets or sets the type of the provided address.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    enum Sex
-    {
-        Male    =  0,
-        Female  =  1,
-        Unknown = -1
-    }
+    /* --------------------------------------------------------------------- */
+    public string Type { get; set; }
 
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
-    /// Address
+    /// Value
     ///
     /// <summary>
-    /// Represents the address.
+    /// Gets or sets the content of the provided address.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    class Address
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Type
-        ///
-        /// <summary>
-        /// Gets or sets the type of the provided address.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Type { get; set; }
+    /* --------------------------------------------------------------------- */
+    public string Value { get; set; }
+}
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets or sets the content of the provided address.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Value { get; set; }
-    }
+/* ------------------------------------------------------------------------- */
+///
+/// Person
+///
+/// <summary>
+/// Represents the example class that is serializable.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+class Person : ObservableBase
+{
+    #region Constructors
 
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
     /// Person
     ///
     /// <summary>
-    /// Represents the example class that is serializable.
+    /// Gets or sets the ID.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    class Person : ObservableBase
+    /* --------------------------------------------------------------------- */
+    public Person() => _age = new(0);
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ID
+    ///
+    /// <summary>
+    /// Gets or sets the ID.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public int ID
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Person
-        ///
-        /// <summary>
-        /// Gets or sets the ID.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Person() { _age = new(0); }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ID
-        ///
-        /// <summary>
-        /// Gets or sets the ID.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int ID
-        {
-            get => Get(() => -1);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Name
-        ///
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Name
-        {
-            get => Get(() => string.Empty);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Sex
-        ///
-        /// <summary>
-        /// Gets or sets the sex.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Sex Sex
-        {
-            get => Get(() => Sex.Unknown);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Age
-        ///
-        /// <summary>
-        /// Gets or sets the age.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int Age
-        {
-            get => _age.Get();
-            set { if (_age.Set(value)) Refresh(nameof(Age)); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Creation
-        ///
-        /// <summary>
-        /// Gets or sets the creation time.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DateTime? Creation
-        {
-            get => Get<DateTime?>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Contact
-        ///
-        /// <summary>
-        /// Gets or sets the address to contact.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Address Contact
-        {
-            get => Get(() => new Address { Type = "Phone", Value = string.Empty });
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Secret
-        ///
-        /// <summary>
-        /// Gets or sets the non-datamember value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Secret
-        {
-            get => _secret;
-            set => Set(ref _secret, value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Guid
-        ///
-        /// <summary>
-        /// Gets the GUID of the object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Guid Guid { get; } = Guid.NewGuid();
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing) { }
-
-        #endregion
-
-        #region Fields
-        private Accessor<int> _age;
-        private string _secret;
-        #endregion
+        get => Get(() => -1);
+        set => Set(value);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Name
+    ///
+    /// <summary>
+    /// Gets or sets the name.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Name
+    {
+        get => Get(() => string.Empty);
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Sex
+    ///
+    /// <summary>
+    /// Gets or sets the sex.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Sex Sex
+    {
+        get => Get(() => Sex.Unknown);
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Age
+    ///
+    /// <summary>
+    /// Gets or sets the age.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public int Age
+    {
+        get => _age.Get();
+        set { if (_age.Set(value)) Refresh(nameof(Age)); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Creation
+    ///
+    /// <summary>
+    /// Gets or sets the creation time.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public DateTime? Creation
+    {
+        get => Get<DateTime?>();
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Contact
+    ///
+    /// <summary>
+    /// Gets or sets the address to contact.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Address Contact
+    {
+        get => Get(() => new Address { Type = "Phone", Value = string.Empty });
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Secret
+    ///
+    /// <summary>
+    /// Gets or sets the non-datamember value.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Secret
+    {
+        get => _secret;
+        set => Set(ref _secret, value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Guid
+    ///
+    /// <summary>
+    /// Gets the GUID of the object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Guid Guid { get; } = Guid.NewGuid();
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing) { }
+
+    #endregion
+
+    #region Fields
+    private Accessor<int> _age;
+    private string _secret;
+    #endregion
 }

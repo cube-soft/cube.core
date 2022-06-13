@@ -15,74 +15,73 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System;
 using System.Windows;
 using Cube.Mixin.Commands;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ShownToCommand
+///
+/// <summary>
+/// Represents the behavior when the ContentRendered event is fired.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ShownToCommand : CommandBehavior<Window>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ShownToCommand
+    /// OnAttached
     ///
     /// <summary>
-    /// Represents the behavior when the ContentRendered event is fired.
+    /// Occurs when the instance is attached to the Window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShownToCommand : CommandBehavior<Window>
+    protected override void OnAttached()
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Occurs when the instance is attached to the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.ContentRendered -= WhenContentRendered;
-            AssociatedObject.ContentRendered += WhenContentRendered;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Occurs when the instance is detaching from the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.ContentRendered -= WhenContentRendered;
-            base.OnDetaching();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenContentRendered
-        ///
-        /// <summary>
-        /// Occurs when the ContentRendered event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenContentRendered(object s, EventArgs e)
-        {
-            if (Command?.CanExecute() ?? false) Command.Execute();
-        }
-
-        #endregion
+        base.OnAttached();
+        AssociatedObject.ContentRendered -= WhenContentRendered;
+        AssociatedObject.ContentRendered += WhenContentRendered;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDetaching
+    ///
+    /// <summary>
+    /// Occurs when the instance is detaching from the Window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDetaching()
+    {
+        AssociatedObject.ContentRendered -= WhenContentRendered;
+        base.OnDetaching();
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenContentRendered
+    ///
+    /// <summary>
+    /// Occurs when the ContentRendered event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void WhenContentRendered(object s, EventArgs e)
+    {
+        if (Command?.CanExecute() ?? false) Command.Execute();
+    }
+
+    #endregion
 }

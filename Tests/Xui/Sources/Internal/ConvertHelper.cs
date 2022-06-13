@@ -15,58 +15,57 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests;
+
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Cube.Xui.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// ConvertHelper
+///
+/// <summary>
+/// Provides support functions to test converters.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+class ConvertHelper
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ConvertHelper
+    /// Convert
     ///
     /// <summary>
-    /// Provides support functions to test converters.
+    /// Invokes the IValueConverter.Convert method.
     /// </summary>
     ///
+    /// <param name="src">Object to invoke the Convert method.</param>
+    /// <param name="value">Source value.</param>
+    ///
+    /// <returns>Result value.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    class ConvertHelper
-    {
-        #region Methods
+    public T Convert<T>(IValueConverter src, object value) =>
+        (T)src.Convert(value, typeof(T), null, CultureInfo.CurrentCulture);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Convert
-        ///
-        /// <summary>
-        /// Invokes the IValueConverter.Convert method.
-        /// </summary>
-        ///
-        /// <param name="src">Object to invoke the Convert method.</param>
-        /// <param name="value">Source value.</param>
-        ///
-        /// <returns>Result value.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T Convert<T>(IValueConverter src, object value) =>
-            (T)src.Convert(value, typeof(T), null, CultureInfo.CurrentCulture);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ConvertBack
+    ///
+    /// <summary>
+    /// Invokes the IValueConverter.ConvertBack method.
+    /// </summary>
+    ///
+    /// <param name="src">Object to invoke the ConvertBack method.</param>
+    /// <param name="value">Source value.</param>
+    ///
+    /// <returns>Result value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public T ConvertBack<T>(IValueConverter src, object value) =>
+        (T)src.ConvertBack(value, typeof(T), null, CultureInfo.CurrentCulture);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
-        ///
-        /// <summary>
-        /// Invokes the IValueConverter.ConvertBack method.
-        /// </summary>
-        ///
-        /// <param name="src">Object to invoke the ConvertBack method.</param>
-        /// <param name="value">Source value.</param>
-        ///
-        /// <returns>Result value.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public T ConvertBack<T>(IValueConverter src, object value) =>
-            (T)src.ConvertBack(value, typeof(T), null, CultureInfo.CurrentCulture);
-
-        #endregion
-    }
+    #endregion
 }

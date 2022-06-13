@@ -15,71 +15,70 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Converters;
+
 using System.Windows.Media.Imaging;
 using Cube.Xui.Converters;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Converters
+/* ------------------------------------------------------------------------- */
+///
+/// ImageConverterTest
+///
+/// <summary>
+/// Tests the ImageConverter class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class ImageConverterTest : ConvertHelper
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ImageConverterTest
+    /// ImageConverter
     ///
     /// <summary>
-    /// Tests the ImageConverter class.
+    /// Tests the Convert method with a Bitmap object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class ImageConverterTest : ConvertHelper
-    {
-        #region Tests
+    [Test]
+    public void ImageConverter() => Assert.That(
+        Convert<BitmapImage>(new ImageConverter(), Properties.Resources.Logo),
+        Is.Not.Null
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ImageConverter
-        ///
-        /// <summary>
-        /// Tests the Convert method with a Bitmap object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ImageConverter() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), Properties.Resources.Logo),
-            Is.Not.Null
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ImageConverter_Icon
+    ///
+    /// <summary>
+    /// Tests the Convert method with an Icon object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void ImageConverter_Icon() => Assert.That(
+        Convert<BitmapImage>(new ImageConverter(), Properties.Resources.App),
+        Is.Not.Null
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ImageConverter_Icon
-        ///
-        /// <summary>
-        /// Tests the Convert method with an Icon object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ImageConverter_Icon() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), Properties.Resources.App),
-            Is.Not.Null
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ImageConverter_Null
+    ///
+    /// <summary>
+    /// Tests the Convert method with null.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void ImageConverter_Null() => Assert.That(
+        Convert<BitmapImage>(new ImageConverter(), null),
+        Is.Null
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ImageConverter_Null
-        ///
-        /// <summary>
-        /// Tests the Convert method with null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ImageConverter_Null() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), null),
-            Is.Null
-        );
-
-        #endregion
-    }
+    #endregion
 }

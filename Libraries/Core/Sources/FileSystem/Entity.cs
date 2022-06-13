@@ -15,38 +15,87 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.FileSystem;
+
 using System;
 using System.IO;
 
-namespace Cube.FileSystem
+/* ------------------------------------------------------------------------- */
+///
+/// Entity
+///
+/// <summary>
+/// Represents the file or directory information.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[Serializable]
+public class Entity
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// Entity
     ///
     /// <summary>
-    /// Represents the file or directory information.
+    /// Creates a new instance of the Entity class with the specified
+    /// source object.
     /// </summary>
     ///
+    /// <param name="src">Source object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    [Serializable]
-    public class Entity
+    public Entity(Entity src)
     {
-        #region Constructors
+        RawName        = src.RawName;
+        Exists         = src.Exists;
+        IsDirectory    = src.IsDirectory;
+        Name           = src.Name;
+        BaseName       = src.BaseName;
+        Extension      = src.Extension;
+        FullName       = src.FullName;
+        DirectoryName  = src.DirectoryName;
+        Length         = src.Length;
+        Attributes     = src.Attributes;
+        CreationTime   = src.CreationTime;
+        LastWriteTime  = src.LastWriteTime;
+        LastAccessTime = src.LastAccessTime;
+    }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Entity
-        ///
-        /// <summary>
-        /// Creates a new instance of the Entity class with the specified
-        /// source object.
-        /// </summary>
-        ///
-        /// <param name="src">Source object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Entity(Entity src)
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Entity
+    ///
+    /// <summary>
+    /// Creates a new instance of the Entity class with the specified
+    /// source object.
+    /// </summary>
+    ///
+    /// <param name="src">Source object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Entity(EntitySource src) : this(src, false) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Entity
+    ///
+    /// <summary>
+    /// Creates a new instance of the Entity class with the specified
+    /// arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Source object.</param>
+    /// <param name="dispose">
+    /// Value indicating whether to dispose the specified src object
+    /// after initialization.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Entity(EntitySource src, bool dispose)
+    {
+        try
         {
             RawName        = src.RawName;
             Exists         = src.Exists;
@@ -62,205 +111,155 @@ namespace Cube.FileSystem
             LastWriteTime  = src.LastWriteTime;
             LastAccessTime = src.LastAccessTime;
         }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Entity
-        ///
-        /// <summary>
-        /// Creates a new instance of the Entity class with the specified
-        /// source object.
-        /// </summary>
-        ///
-        /// <param name="src">Source object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Entity(EntitySource src) : this(src, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Entity
-        ///
-        /// <summary>
-        /// Creates a new instance of the Entity class with the specified
-        /// arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source object.</param>
-        /// <param name="dispose">
-        /// Value indicating whether to dispose the specified src object
-        /// after initialization.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Entity(EntitySource src, bool dispose)
-        {
-            try
-            {
-                RawName        = src.RawName;
-                Exists         = src.Exists;
-                IsDirectory    = src.IsDirectory;
-                Name           = src.Name;
-                BaseName       = src.BaseName;
-                Extension      = src.Extension;
-                FullName       = src.FullName;
-                DirectoryName  = src.DirectoryName;
-                Length         = src.Length;
-                Attributes     = src.Attributes;
-                CreationTime   = src.CreationTime;
-                LastWriteTime  = src.LastWriteTime;
-                LastAccessTime = src.LastAccessTime;
-            }
-            finally { if (dispose) src.Dispose(); }
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// RawName
-        ///
-        /// <summary>
-        /// Gets the original path.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string RawName { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Exists
-        ///
-        /// <summary>
-        /// Gets the value indicating whether the Source exists.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Exists { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsDirectory
-        ///
-        /// <summary>
-        /// Gets a value indicating whether the provided path is a directory.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool IsDirectory { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Name
-        ///
-        /// <summary>
-        /// Gets the filename.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Name { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BaseName
-        ///
-        /// <summary>
-        /// Gets the filename without extension.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string BaseName { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Extension
-        ///
-        /// <summary>
-        /// Gets the extension part of the filename.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Extension { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FullName
-        ///
-        /// <summary>
-        /// Gets the full path.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string FullName { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DirectoryName
-        ///
-        /// <summary>
-        /// Gets the directory name.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string DirectoryName { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Length
-        ///
-        /// <summary>
-        /// Gets the file-size.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public long Length { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Attributes
-        ///
-        /// <summary>
-        /// Gets the attributes of the file or directory.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public FileAttributes Attributes { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CreationTime
-        ///
-        /// <summary>
-        /// Gets the creation time of the file or directory.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DateTime CreationTime { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastWriteTime
-        ///
-        /// <summary>
-        /// Gets the last written time of the file or directory.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DateTime LastWriteTime { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LastAccessTime
-        ///
-        /// <summary>
-        /// Gets the last accessed time of the file or directory.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DateTime LastAccessTime { get; }
-
-        #endregion
+        finally { if (dispose) src.Dispose(); }
     }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// RawName
+    ///
+    /// <summary>
+    /// Gets the original path.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string RawName { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Exists
+    ///
+    /// <summary>
+    /// Gets the value indicating whether the Source exists.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool Exists { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IsDirectory
+    ///
+    /// <summary>
+    /// Gets a value indicating whether the provided path is a directory.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool IsDirectory { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Name
+    ///
+    /// <summary>
+    /// Gets the filename.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Name { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// BaseName
+    ///
+    /// <summary>
+    /// Gets the filename without extension.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string BaseName { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Extension
+    ///
+    /// <summary>
+    /// Gets the extension part of the filename.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Extension { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// FullName
+    ///
+    /// <summary>
+    /// Gets the full path.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string FullName { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DirectoryName
+    ///
+    /// <summary>
+    /// Gets the directory name.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string DirectoryName { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Length
+    ///
+    /// <summary>
+    /// Gets the file-size.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public long Length { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Attributes
+    ///
+    /// <summary>
+    /// Gets the attributes of the file or directory.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public FileAttributes Attributes { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CreationTime
+    ///
+    /// <summary>
+    /// Gets the creation time of the file or directory.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public DateTime CreationTime { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LastWriteTime
+    ///
+    /// <summary>
+    /// Gets the last written time of the file or directory.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public DateTime LastWriteTime { get; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LastAccessTime
+    ///
+    /// <summary>
+    /// Gets the last accessed time of the file or directory.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public DateTime LastAccessTime { get; }
+
+    #endregion
 }

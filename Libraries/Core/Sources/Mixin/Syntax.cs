@@ -15,125 +15,124 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Syntax;
+
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Mixin.Syntax
+/* ------------------------------------------------------------------------- */
+///
+/// Extension
+///
+/// <summary>
+/// Provides extended methods to describe basic syntax (if, for, and
+/// more) as an expression.
+/// </summary>
+///
+/// <remarks>
+/// We assume that these extended methods are mainly used for the
+/// expression body definition.
+/// </remarks>
+///
+/* ------------------------------------------------------------------------- */
+public static class Extension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// Extension
+    /// Then
     ///
     /// <summary>
-    /// Provides extended methods to describe basic syntax (if, for, and
-    /// more) as an expression.
+    /// Executes the specified action if the specified value is true.
     /// </summary>
     ///
-    /// <remarks>
-    /// We assume that these extended methods are mainly used for the
-    /// expression body definition.
-    /// </remarks>
+    /// <param name="value">true of false.</param>
+    /// <param name="action">
+    /// Action to be invoked if the value is true.
+    /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public static class Extension
+    public static void Then(this bool value, Action action)
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Then
-        ///
-        /// <summary>
-        /// Executes the specified action if the specified value is true.
-        /// </summary>
-        ///
-        /// <param name="value">true of false.</param>
-        /// <param name="action">
-        /// Action to be invoked if the value is true.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Then(this bool value, Action action)
-        {
-            if (value) action();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Times
-        ///
-        /// <summary>
-        /// Executes the specified action in the specified number of times.
-        /// </summary>
-        ///
-        /// <param name="n">Number of times.</param>
-        /// <param name="action">User action.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Times(this int n, Action<int> action)
-        {
-            for (var i = 0; i < n; ++i) action(i);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Each
-        ///
-        /// <summary>
-        /// Executes the specified action on each item of the specified
-        /// sequence.
-        /// </summary>
-        ///
-        /// <param name="src">Source sequence.</param>
-        /// <param name="action">User action.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Each<T>(this IEnumerable<T> src, Action<T> action)
-        {
-            foreach (var item in src) action(item);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Try
-        ///
-        /// <summary>
-        /// Tries the specified action up to the specified number of times
-        /// until the action succeeds.
-        /// </summary>
-        ///
-        /// <param name="n">Number of trials.</param>
-        /// <param name="action">User action.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool Try(this int n, Action<int> action) => n.Try(action, default);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Try
-        ///
-        /// <summary>
-        /// Tries the specified action up to the specified number of times
-        /// until the action succeeds.
-        /// </summary>
-        ///
-        /// <param name="n">Number of trials.</param>
-        /// <param name="action">User action.</param>
-        /// <param name="error">
-        /// Action to be invoked when an exception occurs.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool Try(this int n, Action<int> action, Action<int, Exception> error)
-        {
-            for (var i = 0; i < n; ++i)
-            {
-                try { action(i); return true; }
-                catch (Exception err) { error?.Invoke(i, err); }
-            }
-            return false;
-        }
-
-        #endregion
+        if (value) action();
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Times
+    ///
+    /// <summary>
+    /// Executes the specified action in the specified number of times.
+    /// </summary>
+    ///
+    /// <param name="n">Number of times.</param>
+    /// <param name="action">User action.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Times(this int n, Action<int> action)
+    {
+        for (var i = 0; i < n; ++i) action(i);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Each
+    ///
+    /// <summary>
+    /// Executes the specified action on each item of the specified
+    /// sequence.
+    /// </summary>
+    ///
+    /// <param name="src">Source sequence.</param>
+    /// <param name="action">User action.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Each<T>(this IEnumerable<T> src, Action<T> action)
+    {
+        foreach (var item in src) action(item);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Try
+    ///
+    /// <summary>
+    /// Tries the specified action up to the specified number of times
+    /// until the action succeeds.
+    /// </summary>
+    ///
+    /// <param name="n">Number of trials.</param>
+    /// <param name="action">User action.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool Try(this int n, Action<int> action) => n.Try(action, default);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Try
+    ///
+    /// <summary>
+    /// Tries the specified action up to the specified number of times
+    /// until the action succeeds.
+    /// </summary>
+    ///
+    /// <param name="n">Number of trials.</param>
+    /// <param name="action">User action.</param>
+    /// <param name="error">
+    /// Action to be invoked when an exception occurs.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool Try(this int n, Action<int> action, Action<int, Exception> error)
+    {
+        for (var i = 0; i < n; ++i)
+        {
+            try { action(i); return true; }
+            catch (Exception err) { error?.Invoke(i, err); }
+        }
+        return false;
+    }
+
+    #endregion
 }

@@ -15,59 +15,58 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Mixin;
+
 using Cube.Mixin.ByteFormat;
 using NUnit.Framework;
 
-namespace Cube.Tests.Mixin
+/* ------------------------------------------------------------------------- */
+///
+/// ByteFormatTest
+///
+/// <summary>
+/// Tests the extended methods defined in the Cube.Mixin.ByteFormat
+/// namespace.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class ByteFormatTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ByteFormatTest
+    /// ToPrettyBytes
     ///
     /// <summary>
-    /// Tests the extended methods defined in the Cube.Mixin.ByteFormat
-    /// namespace.
+    /// Tests the ToPrettyBytes extended method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class ByteFormatTest
-    {
-        #region Tests
+    [TestCase(1L,                   ExpectedResult = "1 Bytes")]
+    [TestCase(1234L,                ExpectedResult = "1.21 KB")]
+    [TestCase(12345L,               ExpectedResult = "12.1 KB")]
+    [TestCase(123456L,              ExpectedResult = "121 KB")]
+    [TestCase(1234567L,             ExpectedResult = "1.18 MB")]
+    [TestCase(1234567890L,          ExpectedResult = "1.15 GB")]
+    [TestCase(1234567890123L,       ExpectedResult = "1.12 TB")]
+    [TestCase(1234567890123456L,    ExpectedResult = "1.1 PB")]
+    [TestCase(1234567890123456789L, ExpectedResult = "1.07 EB")]
+    public string ToPrettyBytes(long src) => src.ToPrettyBytes();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToPrettyBytes
-        ///
-        /// <summary>
-        /// Tests the ToPrettyBytes extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(1L,                   ExpectedResult = "1 Bytes")]
-        [TestCase(1234L,                ExpectedResult = "1.21 KB")]
-        [TestCase(12345L,               ExpectedResult = "12.1 KB")]
-        [TestCase(123456L,              ExpectedResult = "121 KB")]
-        [TestCase(1234567L,             ExpectedResult = "1.18 MB")]
-        [TestCase(1234567890L,          ExpectedResult = "1.15 GB")]
-        [TestCase(1234567890123L,       ExpectedResult = "1.12 TB")]
-        [TestCase(1234567890123456L,    ExpectedResult = "1.1 PB")]
-        [TestCase(1234567890123456789L, ExpectedResult = "1.07 EB")]
-        public string ToPrettyBytes(long src) => src.ToPrettyBytes();
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ToRoughBytes
+    ///
+    /// <summary>
+    /// Tests the ToRoughBytes extended method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase(0L,    ExpectedResult = "0 Bytes")]
+    [TestCase(1023L, ExpectedResult = "1 KB")]
+    public string ToRoughBytes(long src) => src.ToRoughBytes();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ToRoughBytes
-        ///
-        /// <summary>
-        /// Tests the ToRoughBytes extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(0L,    ExpectedResult = "0 Bytes")]
-        [TestCase(1023L, ExpectedResult = "1 KB")]
-        public string ToRoughBytes(long src) => src.ToRoughBytes();
-
-        #endregion
-    }
+    #endregion
 }

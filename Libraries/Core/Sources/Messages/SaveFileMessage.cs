@@ -15,101 +15,100 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using Cube.FileSystem;
 using Cube.Mixin.String;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// SaveFileMessage
+///
+/// <summary>
+/// Represents information to show the SaveFileDialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class SaveFileMessage : OpenOrSaveFileMessage<string>
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// SaveFileMessage
     ///
     /// <summary>
-    /// Represents information to show the SaveFileDialog.
+    /// Initializes a new instance of the SaveFileMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SaveFileMessage : OpenOrSaveFileMessage<string>
+    public SaveFileMessage() : this(string.Empty) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SaveFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SaveFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public SaveFileMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SaveFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SaveFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Entity for the initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public SaveFileMessage(Entity src) : base(src)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveFileMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SaveFileMessage class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SaveFileMessage() : this(string.Empty) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveFileMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SaveFileMessage class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Initial path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SaveFileMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SaveFileMessage
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SaveFileMessage class with
-        /// the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Entity for the initial path.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public SaveFileMessage(Entity src) : base(src)
-        {
-            var empty = src?.IsDirectory ?? true;
-            Value = empty ? string.Empty : src.Name;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OverwritePrompt
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether SaveFileDialog displays
-        /// a warning if the user specifies the name of a file that already
-        /// exists.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool OverwritePrompt { get; set; } = true;
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue
-        ///
-        /// <summary>
-        /// Gets the value of Value property.
-        /// </summary>
-        ///
-        /// <returns>String value.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override string GetValue() => Value;
-
-        #endregion
+        var empty = src?.IsDirectory ?? true;
+        Value = empty ? string.Empty : src.Name;
     }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OverwritePrompt
+    ///
+    /// <summary>
+    /// Gets or sets a value indicating whether SaveFileDialog displays
+    /// a warning if the user specifies the name of a file that already
+    /// exists.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public bool OverwritePrompt { get; set; } = true;
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetValue
+    ///
+    /// <summary>
+    /// Gets the value of Value property.
+    /// </summary>
+    ///
+    /// <returns>String value.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override string GetValue() => Value;
+
+    #endregion
 }

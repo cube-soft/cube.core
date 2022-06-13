@@ -15,151 +15,150 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.FileSystem.Tests;
+
 using System;
 using System.Threading.Tasks;
 using Cube.DataContract;
 using NUnit.Framework;
 
-namespace Cube.FileSystem.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// SettingFolderTest
+///
+/// <summary>
+/// Tests the SettingFolder class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class SettingFolderTest : RegistryFixture
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// SettingFolderTest
+    /// Load
     ///
     /// <summary>
-    /// Tests the SettingFolder class.
+    /// Executes the test for loading from registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class SettingFolderTest : RegistryFixture
+    [Test]
+    public void Load()
     {
-        #region Tests
+        var fmt  = Format.Registry;
+        var name = GetKeyName(Default);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load
-        ///
-        /// <summary>
-        /// Executes the test for loading from registry.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Load()
-        {
-            var fmt  = Format.Registry;
-            var name = GetKeyName(Default);
+        using var src = new SettingFolder<Person>(fmt, name, new()) { AutoSave = false };
+        src.Load();
+        Assert.That(src.Format,   Is.EqualTo(fmt));
+        Assert.That(src.Location, Is.EqualTo(name));
+        Assert.That(src.Value,    Is.Not.Null);
+        Assert.That(src.Version.ToString(), Is.EqualTo("1.0.0"));
 
-            using var src = new SettingFolder<Person>(fmt, name, new()) { AutoSave = false };
-            src.Load();
-            Assert.That(src.Format,   Is.EqualTo(fmt));
-            Assert.That(src.Location, Is.EqualTo(name));
-            Assert.That(src.Value,    Is.Not.Null);
-            Assert.That(src.Version.ToString(), Is.EqualTo("1.0.0"));
-
-            var dest = src.Value;
-            Assert.That(dest.Name,            Is.EqualTo("山田太郎"));
-            Assert.That(dest.Age,             Is.EqualTo(52));
-            Assert.That(dest.Sex,             Is.EqualTo(Sex.Male));
-            Assert.That(dest.Reserved,        Is.EqualTo(true));
-            Assert.That(dest.Creation,        Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
-            Assert.That(dest.Identification,  Is.EqualTo(1357));
-            Assert.That(dest.Secret,          Is.EqualTo("secret message"));
-            Assert.That(dest.Contact.Type,    Is.EqualTo("Phone"));
-            Assert.That(dest.Contact.Value,   Is.EqualTo("090-1234-5678"));
-            Assert.That(dest.Others.Count,    Is.EqualTo(2));
-            Assert.That(dest.Others[0].Type,  Is.EqualTo("PC"));
-            Assert.That(dest.Others[0].Value, Is.EqualTo("pc@example.com"));
-            Assert.That(dest.Others[1].Type,  Is.EqualTo("Mobile"));
-            Assert.That(dest.Others[1].Value, Is.EqualTo("mobile@example.com"));
-            Assert.That(dest.Messages.Length, Is.EqualTo(3));
-            Assert.That(dest.Messages[0],     Is.EqualTo("1st message"));
-            Assert.That(dest.Messages[1],     Is.EqualTo("2nd message"));
-            Assert.That(dest.Messages[2],     Is.EqualTo("3rd message"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Load_Throws
-        ///
-        /// <summary>
-        /// Tests the behavior when the specified file does not exist.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(Format.Json)]
-        [TestCase(Format.Xml)]
-        public void Load_NotFound(Format format)
-        {
-            var src = new SettingFolder<Person>(format, Assembly);
-            src.Load();
-            Assert.That(src.Value, Is.Not.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ReLoad
-        ///
-        /// <summary>
-        /// Executes the test for loading twice.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ReLoad()
-        {
-            var name = GetKeyName(Default);
-
-            using var src = new SettingFolder<Person>(Format.Registry, name, new());
-            src.AutoSave = false;
-            src.Load();
-            src.Value.Name = "Before ReLoad";
-            src.Load();
-
-            Assert.That(src.Value.Name, Is.EqualTo("山田太郎"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// AutoSave
-        ///
-        /// <summary>
-        /// Executes the test for automatically saving the settings.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void AutoSave()
-        {
-            var key  = nameof(AutoSave);
-            var name = GetKeyName(key);
-            var ts   = TimeSpan.FromMilliseconds(100);
-
-            using (var src = new SettingFolder<Person>(Format.Registry, name, new()))
-            {
-                src.AutoSave         = true;
-                src.AutoSaveDelay    = ts;
-                src.Value.Dispatcher = Dispatcher.Vanilla;
-                src.Value.Name       = "AutoSave";
-                src.Value.Age        = 77;
-                src.Value.Sex        = Sex.Female;
-                src.Value.Secret     = "SecretChanged";
-                src.Value.Reserved   = true;
-                src.Value.Reserved   = false;
-                src.Value.Reserved   = false;
-
-                TaskEx.Delay(TimeSpan.FromTicks(ts.Ticks * 2)).Wait();
-            }
-
-            using var dest = OpenSubKey(key);
-            Assert.That(dest.GetValue("Name"),     Is.EqualTo("AutoSave"));
-            Assert.That(dest.GetValue("Age"),      Is.EqualTo(77));
-            Assert.That(dest.GetValue("Sex"),      Is.EqualTo(1));
-            Assert.That(dest.GetValue("Reserved"), Is.EqualTo(0));
-            Assert.That(dest.GetValue("Secret"),   Is.Null);
-        }
-
-        #endregion
+        var dest = src.Value;
+        Assert.That(dest.Name,            Is.EqualTo("山田太郎"));
+        Assert.That(dest.Age,             Is.EqualTo(52));
+        Assert.That(dest.Sex,             Is.EqualTo(Sex.Male));
+        Assert.That(dest.Reserved,        Is.EqualTo(true));
+        Assert.That(dest.Creation,        Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
+        Assert.That(dest.Identification,  Is.EqualTo(1357));
+        Assert.That(dest.Secret,          Is.EqualTo("secret message"));
+        Assert.That(dest.Contact.Type,    Is.EqualTo("Phone"));
+        Assert.That(dest.Contact.Value,   Is.EqualTo("090-1234-5678"));
+        Assert.That(dest.Others.Count,    Is.EqualTo(2));
+        Assert.That(dest.Others[0].Type,  Is.EqualTo("PC"));
+        Assert.That(dest.Others[0].Value, Is.EqualTo("pc@example.com"));
+        Assert.That(dest.Others[1].Type,  Is.EqualTo("Mobile"));
+        Assert.That(dest.Others[1].Value, Is.EqualTo("mobile@example.com"));
+        Assert.That(dest.Messages.Length, Is.EqualTo(3));
+        Assert.That(dest.Messages[0],     Is.EqualTo("1st message"));
+        Assert.That(dest.Messages[1],     Is.EqualTo("2nd message"));
+        Assert.That(dest.Messages[2],     Is.EqualTo("3rd message"));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Load_Throws
+    ///
+    /// <summary>
+    /// Tests the behavior when the specified file does not exist.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase(Format.Json)]
+    [TestCase(Format.Xml)]
+    public void Load_NotFound(Format format)
+    {
+        var src = new SettingFolder<Person>(format, Assembly);
+        src.Load();
+        Assert.That(src.Value, Is.Not.Null);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ReLoad
+    ///
+    /// <summary>
+    /// Executes the test for loading twice.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void ReLoad()
+    {
+        var name = GetKeyName(Default);
+
+        using var src = new SettingFolder<Person>(Format.Registry, name, new());
+        src.AutoSave = false;
+        src.Load();
+        src.Value.Name = "Before ReLoad";
+        src.Load();
+
+        Assert.That(src.Value.Name, Is.EqualTo("山田太郎"));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// AutoSave
+    ///
+    /// <summary>
+    /// Executes the test for automatically saving the settings.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void AutoSave()
+    {
+        var key  = nameof(AutoSave);
+        var name = GetKeyName(key);
+        var ts   = TimeSpan.FromMilliseconds(100);
+
+        using (var src = new SettingFolder<Person>(Format.Registry, name, new()))
+        {
+            src.AutoSave         = true;
+            src.AutoSaveDelay    = ts;
+            src.Value.Dispatcher = Dispatcher.Vanilla;
+            src.Value.Name       = "AutoSave";
+            src.Value.Age        = 77;
+            src.Value.Sex        = Sex.Female;
+            src.Value.Secret     = "SecretChanged";
+            src.Value.Reserved   = true;
+            src.Value.Reserved   = false;
+            src.Value.Reserved   = false;
+
+            TaskEx.Delay(TimeSpan.FromTicks(ts.Ticks * 2)).Wait();
+        }
+
+        using var dest = OpenSubKey(key);
+        Assert.That(dest.GetValue("Name"),     Is.EqualTo("AutoSave"));
+        Assert.That(dest.GetValue("Age"),      Is.EqualTo(77));
+        Assert.That(dest.GetValue("Sex"),      Is.EqualTo(1));
+        Assert.That(dest.GetValue("Reserved"), Is.EqualTo(0));
+        Assert.That(dest.GetValue("Secret"),   Is.Null);
+    }
+
+    #endregion
 }

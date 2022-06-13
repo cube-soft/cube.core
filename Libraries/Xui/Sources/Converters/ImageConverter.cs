@@ -15,36 +15,35 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Converters;
+
 using Cube.Mixin.Drawing;
 
-namespace Cube.Xui.Converters
+/* ------------------------------------------------------------------------- */
+///
+/// ImageConverter
+///
+/// <summary>
+/// Provides functionality to convert from an Image object to
+/// a BitmapImage object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ImageConverter : SimplexConverter
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ImageConverter
+    /// ImageValueConverter
     ///
     /// <summary>
-    /// Provides functionality to convert from an Image object to
-    /// a BitmapImage object.
+    /// Initializes a new instance of the ImageConverter class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ImageConverter : SimplexConverter
+    public ImageConverter() : base(e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ImageValueConverter
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ImageConverter class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ImageConverter() : base(e =>
-        {
-            if (e is System.Drawing.Image i0) return i0.ToBitmapImage(false);
-            if (e is System.Drawing.Icon  i1) return i1.ToBitmap().ToBitmapImage(true);
-            return null;
-        }) { }
-    }
+        if (e is System.Drawing.Image i0) return i0.ToBitmapImage(false);
+        if (e is System.Drawing.Icon  i1) return i1.ToBitmap().ToBitmapImage(true);
+        return null;
+    }) { }
 }

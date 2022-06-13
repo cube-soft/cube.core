@@ -15,101 +15,100 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.FileSystem.Tests;
+
 using System.Threading;
 using System.Threading.Tasks;
 using Cube.Tests;
 using NUnit.Framework;
 
-namespace Cube.FileSystem.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// WaitTest
+///
+/// <summary>
+/// Tests the Wait class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class WaitTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// WaitTest
+    /// WaitFor
     ///
     /// <summary>
-    /// Tests the Wait class.
+    /// Tests to wait for the specified predicate to be true.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class WaitTest
+    [Test]
+    public void WaitFor()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WaitFor
-        ///
-        /// <summary>
-        /// Tests to wait for the specified predicate to be true.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void WaitFor()
-        {
-            var count = 0;
-            TaskEx.Run(() => { for (var i = 0; i < 10; ++i) ++count; });
-            Assert.That(Wait.For(() => count == 10), Is.True);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WaitFor_Timeout
-        ///
-        /// <summary>
-        /// Tests for timeout.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void WaitFor_Timeout()
-        {
-            var count = 0;
-            TaskEx.Run(() => { for (var i = 0; i < 5; ++i) ++count; });
-            Assert.That(Wait.For(() => count == 10, 1000), Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WaitFor_Cancel
-        ///
-        /// <summary>
-        /// Tests for cancellation.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void WaitFor_Cancel()
-        {
-            var count = 0;
-            var cts   = new CancellationTokenSource();
-            TaskEx.Run(() =>
-            {
-                for (var i = 0; i < 100; ++i) ++count;
-                cts.Cancel();
-            });
-            Assert.That(Wait.For(cts.Token), Is.True);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WaitFor_Cancel_Timeout
-        ///
-        /// <summary>
-        /// Tests for timeout.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void WaitFor_Cancel_Timeout()
-        {
-            var count = 0;
-            var cts = new CancellationTokenSource();
-            TaskEx.Run(() => { for (var i = 0; i < 100; ++i) ++count; });
-            Assert.That(Wait.For(cts.Token, 1000), Is.False);
-        }
-
-        #endregion
+        var count = 0;
+        _ = TaskEx.Run(() => { for (var i = 0; i < 10; ++i) ++count; });
+        Assert.That(Wait.For(() => count == 10), Is.True);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WaitFor_Timeout
+    ///
+    /// <summary>
+    /// Tests for timeout.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void WaitFor_Timeout()
+    {
+        var count = 0;
+        _ = TaskEx.Run(() => { for (var i = 0; i < 5; ++i) ++count; });
+        Assert.That(Wait.For(() => count == 10, 1000), Is.False);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WaitFor_Cancel
+    ///
+    /// <summary>
+    /// Tests for cancellation.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void WaitFor_Cancel()
+    {
+        var count = 0;
+        var cts   = new CancellationTokenSource();
+        _ = TaskEx.Run(() =>
+        {
+            for (var i = 0; i < 100; ++i) ++count;
+            cts.Cancel();
+        });
+        Assert.That(Wait.For(cts.Token), Is.True);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WaitFor_Cancel_Timeout
+    ///
+    /// <summary>
+    /// Tests for timeout.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void WaitFor_Cancel_Timeout()
+    {
+        var count = 0;
+        var cts = new CancellationTokenSource();
+        _ = TaskEx.Run(() => { for (var i = 0; i < 100; ++i) ++count; });
+        Assert.That(Wait.For(cts.Token, 1000), Is.False);
+    }
+
+    #endregion
 }

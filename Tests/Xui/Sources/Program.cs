@@ -15,31 +15,30 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests;
+
 using System;
 
-namespace Cube.Xui.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// Program
+///
+/// <summary>
+/// Represetns the main program.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+static class Program
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Program
+    /// Main
     ///
     /// <summary>
-    /// Represetns the main program.
+    /// Represents the main method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class Program
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Main
-        ///
-        /// <summary>
-        /// Represents the main method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [STAThread]
-        static void Main(string[] args) { }
-    }
+    [STAThread]
+    static void Main(string[] args) { }
 }

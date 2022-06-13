@@ -15,78 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// SelectionBehavior
+///
+/// <summary>
+/// Provides functionality to bind a ViewModel to either the
+/// ListBoxItem or the ListViewItem.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class SelectionBehavior : Behavior<ListBox>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// SelectionBehavior
+    /// OnAttached
     ///
     /// <summary>
-    /// Provides functionality to bind a ViewModel to either the
-    /// ListBoxItem or the ListViewItem.
+    /// Called after the action is attached to an AssociatedObject.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class SelectionBehavior : Behavior<ListBox>
+    protected override void OnAttached()
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Called after the action is attached to an AssociatedObject.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.SelectionChanged -= WhenSelectionChanged;
-            AssociatedObject.SelectionChanged += WhenSelectionChanged;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Called when the action is being detached from its
-        /// AssociatedObject, but before it has actually occurred.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.SelectionChanged -= WhenSelectionChanged;
-            base.OnDetaching();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenSelectionChanged
-        ///
-        /// <summary>
-        /// Called after the selected items of the AssociatedObject is
-        /// changed.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenSelectionChanged(object s, SelectionChangedEventArgs e)
-        {
-            foreach (var ri in e.RemovedItems.OfType<IListItem>()) ri.Selected = false;
-            foreach (var ai in e.AddedItems.OfType<IListItem>()) ai.Selected = true;
-        }
-
-        #endregion
+        base.OnAttached();
+        AssociatedObject.SelectionChanged -= WhenSelectionChanged;
+        AssociatedObject.SelectionChanged += WhenSelectionChanged;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDetaching
+    ///
+    /// <summary>
+    /// Called when the action is being detached from its
+    /// AssociatedObject, but before it has actually occurred.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDetaching()
+    {
+        AssociatedObject.SelectionChanged -= WhenSelectionChanged;
+        base.OnDetaching();
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenSelectionChanged
+    ///
+    /// <summary>
+    /// Called after the selected items of the AssociatedObject is
+    /// changed.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void WhenSelectionChanged(object s, SelectionChangedEventArgs e)
+    {
+        foreach (var ri in e.RemovedItems.OfType<IListItem>()) ri.Selected = false;
+        foreach (var ai in e.AddedItems.OfType<IListItem>()) ai.Selected = true;
+    }
+
+    #endregion
 }

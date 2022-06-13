@@ -15,143 +15,142 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Threading;
 using System.Windows;
 using Cube.Mixin.Commands;
 using Cube.Mixin.String;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// EventToCommand
+///
+/// <summary>
+/// Provides functionality to invoke the specified command when the
+/// specified event is fired.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class EventToCommand : CommandBehavior<FrameworkElement>
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// EventToCommand
     ///
     /// <summary>
-    /// Provides functionality to invoke the specified command when the
-    /// specified event is fired.
+    /// Initializes a new instance of the EventToCommand class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class EventToCommand : CommandBehavior<FrameworkElement>
+    public EventToCommand()
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EventToCommand
-        ///
-        /// <summary>
-        /// Initializes a new instance of the EventToCommand class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public EventToCommand()
-        {
-            _handler = new RoutedEventHandler((s, e) => {
-                if (Command?.CanExecute() ?? false) Command.Execute();
-            });
-        }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Event
-        ///
-        /// <summary>
-        /// Gets or sets the target event name.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Event
-        {
-            get => GetValue(EventProperty) as string;
-            set
-            {
-                var e = GetValue(EventProperty) as string;
-                if (e == value) return;
-                SetValue(EventProperty, value);
-                Exchange(value);
-            }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EventProperty
-        ///
-        /// <summary>
-        /// Gets the DependencyProperty object for the Event property.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static readonly DependencyProperty EventProperty =
-            DependencyFactory.Create<EventToCommand, string>(
-                nameof(Event), (s, e) => s.Event = e);
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Occurs when the instance is attached to the FrameworkElement.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            if (Event.HasValue() && _behavior is null) Exchange(Event);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Occurs when the instance is detaching from the FrameworkElement.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            if (Event.HasValue()) Exchange(string.Empty);
-            base.OnDetaching();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Exchange
-        ///
-        /// <summary>
-        /// Updates the inner field with the specified object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void Exchange(string name)
-        {
-            if (AssociatedObject is null) return;
-
-            var src = name.HasValue() ?
-                      new EventBehavior(AssociatedObject, name, _handler) :
-                      default;
-            Interlocked.Exchange(ref _behavior, src)?.Dispose();
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly RoutedEventHandler _handler;
-        private EventBehavior _behavior;
-        #endregion
+        _handler = new RoutedEventHandler((s, e) => {
+            if (Command?.CanExecute() ?? false) Command.Execute();
+        });
     }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Event
+    ///
+    /// <summary>
+    /// Gets or sets the target event name.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Event
+    {
+        get => GetValue(EventProperty) as string;
+        set
+        {
+            var e = GetValue(EventProperty) as string;
+            if (e == value) return;
+            SetValue(EventProperty, value);
+            Exchange(value);
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// EventProperty
+    ///
+    /// <summary>
+    /// Gets the DependencyProperty object for the Event property.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static readonly DependencyProperty EventProperty =
+        DependencyFactory.Create<EventToCommand, string>(
+            nameof(Event), (s, e) => s.Event = e);
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnAttached
+    ///
+    /// <summary>
+    /// Occurs when the instance is attached to the FrameworkElement.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnAttached()
+    {
+        base.OnAttached();
+        if (Event.HasValue() && _behavior is null) Exchange(Event);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDetaching
+    ///
+    /// <summary>
+    /// Occurs when the instance is detaching from the FrameworkElement.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDetaching()
+    {
+        if (Event.HasValue()) Exchange(string.Empty);
+        base.OnDetaching();
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Exchange
+    ///
+    /// <summary>
+    /// Updates the inner field with the specified object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void Exchange(string name)
+    {
+        if (AssociatedObject is null) return;
+
+        var src = name.HasValue() ?
+                  new EventBehavior(AssociatedObject, name, _handler) :
+                  default;
+        Interlocked.Exchange(ref _behavior, src)?.Dispose();
+    }
+
+    #endregion
+
+    #region Fields
+    private readonly RoutedEventHandler _handler;
+    private EventBehavior _behavior;
+    #endregion
 }

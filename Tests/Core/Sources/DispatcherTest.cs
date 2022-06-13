@@ -15,62 +15,61 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// DispatcherTest
+///
+/// <summary>
+/// Tests the Dispatcher class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class DispatcherTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DispatcherTest
+    /// Create_Throws
     ///
     /// <summary>
-    /// Tests the Dispatcher class.
+    /// Confirms the behavior when creating a new instance.
+    /// Note that SynchronizationContext.Current is null.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class DispatcherTest
+    [Test]
+    public void Create_Throws()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Throws
-        ///
-        /// <summary>
-        /// Confirms the behavior when creating a new instance.
-        /// Note that SynchronizationContext.Current is null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Throws()
-        {
-            Assert.That(SynchronizationContext.Current, Is.Null);
-            Assert.That(() => new ContextDispatcher(true), Throws.ArgumentNullException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Post
-        ///
-        /// <summary>
-        /// Tests the Invoke method with the non-synchronous option.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Post()
-        {
-            var dest = 0;
-            var src  = new ContextDispatcher(new(), false);
-            src.Invoke(() => dest++);
-            TaskEx.Delay(100).Wait();
-            Assert.That(dest, Is.EqualTo(1));
-        }
-
-        #endregion
+        Assert.That(SynchronizationContext.Current, Is.Null);
+        Assert.That(() => new ContextDispatcher(true), Throws.ArgumentNullException);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Post
+    ///
+    /// <summary>
+    /// Tests the Invoke method with the non-synchronous option.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Post()
+    {
+        var dest = 0;
+        var src  = new ContextDispatcher(new(), false);
+        src.Invoke(() => dest++);
+        TaskEx.Delay(100).Wait();
+        Assert.That(dest, Is.EqualTo(1));
+    }
+
+    #endregion
 }

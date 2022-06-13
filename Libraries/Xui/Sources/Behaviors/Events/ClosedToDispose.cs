@@ -15,75 +15,74 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System;
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ClosedToDispose
+///
+/// <summary>
+/// Provides functionality to dispose the DataContext when the
+/// Closed event is fired.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ClosedToDispose : Behavior<Window>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ClosedToDispose
+    /// OnAttached
     ///
     /// <summary>
-    /// Provides functionality to dispose the DataContext when the
-    /// Closed event is fired.
+    /// Occurs when the instance is attached to the Window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ClosedToDispose : Behavior<Window>
+    protected override void OnAttached()
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Occurs when the instance is attached to the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.Closed -= OnClosed;
-            AssociatedObject.Closed += OnClosed;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Occurs when the instance is detaching from the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.Closed -= OnClosed;
-            base.OnDetaching();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnClosed
-        ///
-        /// <summary>
-        /// Occurs when the Closed event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void OnClosed(object s, EventArgs e)
-        {
-            if (AssociatedObject?.DataContext is IDisposable dc) dc.Dispose();
-        }
-
-        #endregion
+        base.OnAttached();
+        AssociatedObject.Closed -= OnClosed;
+        AssociatedObject.Closed += OnClosed;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDetaching
+    ///
+    /// <summary>
+    /// Occurs when the instance is detaching from the Window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDetaching()
+    {
+        AssociatedObject.Closed -= OnClosed;
+        base.OnDetaching();
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnClosed
+    ///
+    /// <summary>
+    /// Occurs when the Closed event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void OnClosed(object s, EventArgs e)
+    {
+        if (AssociatedObject?.DataContext is IDisposable dc) dc.Dispose();
+    }
+
+    #endregion
 }

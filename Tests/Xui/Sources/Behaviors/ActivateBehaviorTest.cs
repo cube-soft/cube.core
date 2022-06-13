@@ -15,47 +15,41 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
-using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ActivateBehaviorTest
+///
+/// <summary>
+/// Tests the ActivateBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class ActivateBehaviorTest : ViewFixture
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ActivateBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests the ActivateBehavior class.
+    /// Tests the create, attach, send, and detach methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class ActivateBehaviorTest : ViewFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var view = Hack(new MockWindow());
+        var vm   = (MockViewModel)view.DataContext;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Tests the create, attach, send, and detach methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke()
-        {
-            var view = Hack(new MockWindow());
-            var vm   = (MockViewModel)view.DataContext;
-
-            view.Show();
-            vm.Test(new ActivateMessage());
-            view.Close();
-        }
-
-        #endregion
+        view.Show();
+        vm.Test(new ActivateMessage());
+        view.Close();
     }
 }

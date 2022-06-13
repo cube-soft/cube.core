@@ -15,16 +15,15 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// QueryEventHandler
-    ///
-    /// <summary>
-    /// Represents the event handler with a QueryMessage(T, U) object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public delegate void QueryEventHandler<T, U>(object sender, QueryMessage<T, U> e);
-}
+namespace Cube.Forms;
+
+/* ------------------------------------------------------------------------- */
+///
+/// QueryEventHandler
+///
+/// <summary>
+/// Represents the event handler with a QueryMessage(T, U) object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public delegate void QueryEventHandler<T, U>(object sender, QueryMessage<T, U> e);

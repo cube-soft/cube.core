@@ -15,135 +15,134 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Cube.Mixin.Iteration;
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// OnceActionTest
+///
+/// <summary>
+/// Tests the OnceAction class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class OnceActionTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// OnceActionTest
+    /// Invoke
     ///
     /// <summary>
-    /// Tests the OnceAction class.
+    /// Tests the Invoke method multiple times.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class OnceActionTest
+    [Test]
+    public void Invoke()
     {
-        #region Tests
+        var dest  = 0;
+        var once  = new OnceAction(() => dest++);
+        var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke()));
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Tests the Invoke method multiple times.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke()
-        {
-            var dest  = 0;
-            var once  = new OnceAction(() => dest++);
-            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke()));
-
-            Task.WaitAll(tasks.ToArray());
-            Assert.That(once.Invoked, Is.True);
-            Assert.That(dest, Is.EqualTo(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Twice
-        ///
-        /// <summary>
-        /// Tests the Invoke method multiple times with the value of
-        /// IgnoreTwice property is set to false.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke_Twice()
-        {
-            var dest  = 0;
-            var once  = new OnceAction(() => dest++) { IgnoreTwice = false };
-            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke()));
-
-            Assert.That(() => Task.WaitAll(tasks.ToArray()),
-                Throws.TypeOf<AggregateException>().And.InnerException
-                      .TypeOf<TwiceException>());
-            Assert.That(dest, Is.EqualTo(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Generics
-        ///
-        /// <summary>
-        /// Tests the Invoke method multiple times.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke_Generics()
-        {
-            var src   = "once";
-            var dest  = "";
-            var once  = new OnceAction<string>(s => dest += s);
-            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke(src)));
-
-            Task.WaitAll(tasks.ToArray());
-            Assert.That(once.Invoked, Is.True);
-            Assert.That(dest, Is.EqualTo(src));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke_Generics_Twice
-        ///
-        /// <summary>
-        /// Tests the Invoke method multiple times with the value of
-        /// IgnoreTwice property is set to false.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke_Generics_Twice()
-        {
-            var src   = "twice";
-            var dest  = "";
-            var once  = new OnceAction<string>(s => dest += s) { IgnoreTwice = false };
-            var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke(src)));
-
-            Assert.That(() => Task.WaitAll(tasks.ToArray()),
-                Throws.TypeOf<AggregateException>().And.InnerException
-                      .TypeOf<TwiceException>());
-            Assert.That(dest, Is.EqualTo(src));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Null_Throws
-        ///
-        /// <summary>
-        /// Confirms exceptions when creating a new instance of the
-        /// OnceAction class with a null object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Null_Throws()
-        {
-            Assert.That(() => new OnceAction(null),      Throws.ArgumentNullException);
-            Assert.That(() => new OnceAction<int>(null), Throws.ArgumentNullException);
-        }
-
-        #endregion
+        Task.WaitAll(tasks.ToArray());
+        Assert.That(once.Invoked, Is.True);
+        Assert.That(dest, Is.EqualTo(1));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke_Twice
+    ///
+    /// <summary>
+    /// Tests the Invoke method multiple times with the value of
+    /// IgnoreTwice property is set to false.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Invoke_Twice()
+    {
+        var dest  = 0;
+        var once  = new OnceAction(() => dest++) { IgnoreTwice = false };
+        var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke()));
+
+        Assert.That(() => Task.WaitAll(tasks.ToArray()),
+            Throws.TypeOf<AggregateException>().And.InnerException
+                  .TypeOf<TwiceException>());
+        Assert.That(dest, Is.EqualTo(1));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke_Generics
+    ///
+    /// <summary>
+    /// Tests the Invoke method multiple times.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Invoke_Generics()
+    {
+        var src   = "once";
+        var dest  = "";
+        var once  = new OnceAction<string>(s => dest += s);
+        var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke(src)));
+
+        Task.WaitAll(tasks.ToArray());
+        Assert.That(once.Invoked, Is.True);
+        Assert.That(dest, Is.EqualTo(src));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke_Generics_Twice
+    ///
+    /// <summary>
+    /// Tests the Invoke method multiple times with the value of
+    /// IgnoreTwice property is set to false.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Invoke_Generics_Twice()
+    {
+        var src   = "twice";
+        var dest  = "";
+        var once  = new OnceAction<string>(s => dest += s) { IgnoreTwice = false };
+        var tasks = 5.Make(i => TaskEx.Run(() => once.Invoke(src)));
+
+        Assert.That(() => Task.WaitAll(tasks.ToArray()),
+            Throws.TypeOf<AggregateException>().And.InnerException
+                  .TypeOf<TwiceException>());
+        Assert.That(dest, Is.EqualTo(src));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create_Null_Throws
+    ///
+    /// <summary>
+    /// Confirms exceptions when creating a new instance of the
+    /// OnceAction class with a null object.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Create_Null_Throws()
+    {
+        Assert.That(() => new OnceAction(null),      Throws.ArgumentNullException);
+        Assert.That(() => new OnceAction<int>(null), Throws.ArgumentNullException);
+    }
+
+    #endregion
 }

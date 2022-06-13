@@ -15,44 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Mixin;
+
 using System.Collections.Generic;
 using Cube.Mixin.Collections;
 using NUnit.Framework;
 
-namespace Cube.Tests.Mixin
+/* ------------------------------------------------------------------------- */
+///
+/// DictionaryTest
+///
+/// <summary>
+/// Tests extended methods of the IDictionary(T, U) class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class DictionaryTest
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DictionaryTest
+    /// AddOrSet
     ///
     /// <summary>
-    /// Tests extended methods of the IDictionary(T, U) class.
+    /// Tests to add or set values to a dictionary collection.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class DictionaryTest
+    [Test]
+    public void AddOrSet()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// AddOrSet
-        ///
-        /// <summary>
-        /// Tests to add or set values to a dictionary collection.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void AddOrSet()
-        {
-            var src = new Dictionary<string, int>();
-            var key = nameof(AddOrSet);
-            for (var i = 0; i < 10; ++i) src.AddOrSet(key, i);
-            Assert.That(src[key], Is.EqualTo(9));
-        }
-
-        #endregion
+        var src = new Dictionary<string, int>();
+        var key = nameof(AddOrSet);
+        for (var i = 0; i < 10; ++i) src.AddOrSet(key, i);
+        Assert.That(src[key], Is.EqualTo(9));
     }
 }

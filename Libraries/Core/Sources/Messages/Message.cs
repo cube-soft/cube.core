@@ -15,150 +15,147 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
+namespace Cube;
 
-namespace Cube
+#region Message<TValue>
+
+/* ------------------------------------------------------------------------- */
+///
+/// Message(TValue)
+///
+/// <summary>
+/// Represents the common message.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Message<TValue> : System.EventArgs
 {
-    #region Message<TValue>
-
     /* --------------------------------------------------------------------- */
     ///
-    /// Message(TValue)
+    /// Text
     ///
     /// <summary>
-    /// Represents the common message.
+    /// Gets or sets a text for the message.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Message<TValue> : EventArgs
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Text
-        ///
-        /// <summary>
-        /// Gets or sets a text for the message.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Text { get; set; } = string.Empty;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets or sets the user defined value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TValue Value { get; set; }
-    }
-
-    #endregion
-
-    #region CancelMessage<TValue>
+    public string Text { get; set; } = string.Empty;
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CancelMessage
+    /// Value
     ///
     /// <summary>
-    /// Represents the message with Cancel property.
+    /// Gets or sets the user defined value.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CancelMessage<TValue> : Message<TValue>
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Cancel
-        ///
-        /// <summary>
-        /// Gets or sets a value indicating whether to cancel the operation.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool Cancel { get; set; }
-    }
+    public TValue Value { get; set; }
+}
 
-    #endregion
+#endregion
 
-    #region QueryMessage<TSource, TValue>
+#region CancelMessage<TValue>
 
+/* ------------------------------------------------------------------------- */
+///
+/// CancelMessage
+///
+/// <summary>
+/// Represents the message with Cancel property.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class CancelMessage<TValue> : Message<TValue>
+{
     /* --------------------------------------------------------------------- */
     ///
-    /// QueryMessage(TSource, TValue)
+    /// Cancel
     ///
     /// <summary>
-    /// Represents the message that has Query, Value (result), and Cancel
-    /// properties.
+    /// Gets or sets a value indicating whether to cancel the operation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class QueryMessage<TSource, TValue> : CancelMessage<TValue>
-    {
-        #region Properties
+    public bool Cancel { get; set; }
+}
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Source
-        ///
-        /// <summary>
-        /// Gets or sets the source information at the time of query.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public TSource Source { get; set; }
+#endregion
 
-        #endregion
-    }
+#region QueryMessage<TSource, TValue>
 
-    #endregion
-
-    #region CloseMessage
+/* ------------------------------------------------------------------------- */
+///
+/// QueryMessage(TSource, TValue)
+///
+/// <summary>
+/// Represents the message that has Query, Value (result), and Cancel
+/// properties.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class QueryMessage<TSource, TValue> : CancelMessage<TValue>
+{
+    #region Properties
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseMessage
+    /// Source
     ///
     /// <summary>
-    /// Represents the message to close the displayed window.
+    /// Gets or sets the source information at the time of query.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseMessage { }
-
-    #endregion
-
-    #region ActivateMessage
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ActivateMessage
-    ///
-    /// <summary>
-    /// Represents the message to activate the target window.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ActivateMessage { }
-
-    #endregion
-
-    #region ApplyMessage
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ApplyMessage
-    ///
-    /// <summary>
-    /// Represents the message that is sent when setting the current
-    /// values to the associated model objects.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public class ApplyMessage { }
+    public TSource Source { get; set; }
 
     #endregion
 }
+
+#endregion
+
+#region CloseMessage
+
+/* ------------------------------------------------------------------------- */
+///
+/// CloseMessage
+///
+/// <summary>
+/// Represents the message to close the displayed window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class CloseMessage { }
+
+#endregion
+
+#region ActivateMessage
+
+/* ------------------------------------------------------------------------- */
+///
+/// ActivateMessage
+///
+/// <summary>
+/// Represents the message to activate the target window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ActivateMessage { }
+
+#endregion
+
+#region ApplyMessage
+
+/* ------------------------------------------------------------------------- */
+///
+/// ApplyMessage
+///
+/// <summary>
+/// Represents the message that is sent when setting the current
+/// values to the associated model objects.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ApplyMessage { }
+
+#endregion

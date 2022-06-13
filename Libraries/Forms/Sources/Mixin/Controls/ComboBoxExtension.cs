@@ -15,50 +15,45 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Forms.Controls;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Cube.Mixin.Forms.Controls
+/* ------------------------------------------------------------------------- */
+///
+/// ComboBoxExtension
+///
+/// <summary>
+/// Provides the extended methods of the ComboBox class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class ComboBoxExtension
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ComboBoxExtension
+    /// Bind
     ///
     /// <summary>
-    /// Provides the extended methods of the ComboBox class.
+    /// Binds the specified ComboBox object with the specified data.
     /// </summary>
     ///
+    /// <param name="src">ComboBox object.</param>
+    /// <param name="data">UserData</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class ComboBoxExtension
+    public static void Bind<T>(this ComboBox src, IList<KeyValuePair<string, T>> data)
     {
-        #region Methods
+        var obj = src.SelectedValue;
+        var cmp = EqualityComparer<T>.Default;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Bind
-        ///
-        /// <summary>
-        /// Binds the specified ComboBox object with the specified data.
-        /// </summary>
-        ///
-        /// <param name="src">ComboBox object.</param>
-        /// <param name="data">UserData</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Bind<T>(this ComboBox src, IList<KeyValuePair<string, T>> data)
-        {
-            var obj = src.SelectedValue;
-            var cmp = EqualityComparer<T>.Default;
+        src.DataSource    = data;
+        src.DisplayMember = "Key";
+        src.ValueMember   = "Value";
 
-            src.DataSource    = data;
-            src.DisplayMember = "Key";
-            src.ValueMember   = "Value";
-
-            if (obj is T v && data.Any(e => cmp.Equals(e.Value, v))) src.SelectedValue = v;
-            else if (data.Count > 0) src.SelectedValue = data[0].Value;
-        }
-
-        #endregion
+        if (obj is T v && data.Any(e => cmp.Equals(e.Value, v))) src.SelectedValue = v;
+        else if (data.Count > 0) src.SelectedValue = data[0].Value;
     }
 }

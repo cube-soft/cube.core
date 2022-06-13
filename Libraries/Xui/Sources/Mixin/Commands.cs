@@ -15,55 +15,54 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Mixin.Commands;
+
 using System.Windows.Input;
 
-namespace Cube.Mixin.Commands
+/* ------------------------------------------------------------------------- */
+///
+/// XuiExtension
+///
+/// <summary>
+/// Provides extended methods of the ICommand interface.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class XuiExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// XuiExtension
+    /// Execute
     ///
     /// <summary>
-    /// Provides extended methods of the ICommand interface.
+    /// Execute the command without any parameters.
     /// </summary>
     ///
+    /// <param name="src">Command object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class XuiExtension
-    {
-        #region Methods
+    public static void Execute(this ICommand src) => src?.Execute(null);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
-        ///
-        /// <summary>
-        /// Execute the command without any parameters.
-        /// </summary>
-        ///
-        /// <param name="src">Command object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static void Execute(this ICommand src) => src?.Execute(null);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CanExecute
+    ///
+    /// <summary>
+    /// Returns a value that determines the specified command
+    /// can be executed with any parameters.
+    /// </summary>
+    ///
+    /// <param name="src">Command object.</param>
+    ///
+    /// <returns>
+    /// false for the specified object is null; otherwise, returns the
+    /// result of ICommand.CanExecute(null).
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool CanExecute(this ICommand src) => src?.CanExecute(null) ?? false;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CanExecute
-        ///
-        /// <summary>
-        /// Returns a value that determines the specified command
-        /// can be executed with any parameters.
-        /// </summary>
-        ///
-        /// <param name="src">Command object.</param>
-        ///
-        /// <returns>
-        /// false for the specified object is null; otherwise, returns the
-        /// result of ICommand.CanExecute(null).
-        /// </returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static bool CanExecute(this ICommand src) => src?.CanExecute(null) ?? false;
-
-        #endregion
-    }
+    #endregion
 }
