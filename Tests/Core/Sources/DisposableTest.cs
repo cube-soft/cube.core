@@ -18,95 +18,94 @@
 using System;
 using NUnit.Framework;
 
-namespace Cube.Tests
+namespace Cube.Tests;
+
+/* ------------------------------------------------------------------------- */
+///
+/// DisposableTest
+///
+/// <summary>
+/// Test the Disposable class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class DisposableTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposableTest
+    /// Make_Disposable
     ///
     /// <summary>
-    /// Test the Disposable class.
+    /// Tests the Disposable.Create method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class DisposableTest
+    [Test]
+    public void Make_Disposable()
     {
-        #region Tests
+        var n   = 0;
+        var src = Disposable.Create(() => n++);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Make_Disposable
-        ///
-        /// <summary>
-        /// Tests the Disposable.Create method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make_Disposable()
-        {
-            var n   = 0;
-            var src = Disposable.Create(() => n++);
-
-            src.Dispose();
-            Assert.That(n, Is.EqualTo(1));
-            src.Dispose(); // ignore
-            Assert.That(n, Is.EqualTo(1));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Make_DisposableProxy
-        ///
-        /// <summary>
-        /// Tests the DisposableProxy class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make_DisposableProxy()
-        {
-            var n = 0;
-            using (var src = new MockDisposableProxy(() => Disposable.Create(() => n++))) { }
-
-            Assert.That(n, Is.EqualTo(1));
-            Assert.That(() => new MockDisposableProxy(() => default), Throws.ArgumentNullException);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Make_Throws
-        ///
-        /// <summary>
-        /// Tests the creating methods with the null actions.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make_Throws()
-        {
-            Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MockDisposableProxy
-        ///
-        /// <summary>
-        /// Represents the mock class to test the DisposableProxy class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        class MockDisposableProxy : DisposableProxy
-        {
-            public MockDisposableProxy(Func<IDisposable> func) : base(func) { }
-        }
-
-        #endregion
+        src.Dispose();
+        Assert.That(n, Is.EqualTo(1));
+        src.Dispose(); // ignore
+        Assert.That(n, Is.EqualTo(1));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Make_DisposableProxy
+    ///
+    /// <summary>
+    /// Tests the DisposableProxy class.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Make_DisposableProxy()
+    {
+        var n = 0;
+        using (var src = new MockDisposableProxy(() => Disposable.Create(() => n++))) { }
+
+        Assert.That(n, Is.EqualTo(1));
+        Assert.That(() => new MockDisposableProxy(() => default), Throws.ArgumentNullException);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Make_Throws
+    ///
+    /// <summary>
+    /// Tests the creating methods with the null actions.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Make_Throws()
+    {
+        Assert.That(() => Disposable.Create(null), Throws.ArgumentNullException);
+    }
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// MockDisposableProxy
+    ///
+    /// <summary>
+    /// Represents the mock class to test the DisposableProxy class.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    class MockDisposableProxy : DisposableProxy
+    {
+        public MockDisposableProxy(Func<IDisposable> func) : base(func) { }
+    }
+
+    #endregion
 }

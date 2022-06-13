@@ -15,51 +15,50 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Icons;
+
 using System.Drawing;
 using System.Drawing.Imaging;
 using Cube.Icons;
 using NUnit.Framework;
 
-namespace Cube.Tests.Icons
+/* ------------------------------------------------------------------------- */
+///
+/// StockIconTest
+///
+/// <summary>
+/// Tests the StockIcon class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class StockIconTest : FileFixture
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// StockIconTest
+    /// Get
     ///
     /// <summary>
-    /// Tests the StockIcon class.
+    /// Tests of the GetImage extended method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class StockIconTest : FileFixture
+    [TestCase(StockIcon.Information,     IconSize.ExtraLarge, ExpectedResult =  48)]
+    [TestCase(StockIcon.Warning,         IconSize.ExtraLarge, ExpectedResult =  48)]
+    [TestCase(StockIcon.Error,           IconSize.ExtraLarge, ExpectedResult =  48)]
+    [TestCase(StockIcon.Shield,          IconSize.Large,      ExpectedResult =  32)]
+    [TestCase(StockIcon.World,           IconSize.Small,      ExpectedResult =  16)]
+    [TestCase(StockIcon.Internet,        IconSize.Small,      ExpectedResult =  16)]
+    [TestCase(StockIcon.EnhancedCdMedia, IconSize.Jumbo,      ExpectedResult = 256)]
+    [TestCase(StockIcon.CdRMedia,        IconSize.Jumbo,      ExpectedResult = 256)]
+    public int Get(StockIcon src, IconSize size)
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// Tests of the GetImage extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(StockIcon.Information,     IconSize.ExtraLarge, ExpectedResult =  48)]
-        [TestCase(StockIcon.Warning,         IconSize.ExtraLarge, ExpectedResult =  48)]
-        [TestCase(StockIcon.Error,           IconSize.ExtraLarge, ExpectedResult =  48)]
-        [TestCase(StockIcon.Shield,          IconSize.Large,      ExpectedResult =  32)]
-        [TestCase(StockIcon.World,           IconSize.Small,      ExpectedResult =  16)]
-        [TestCase(StockIcon.Internet,        IconSize.Small,      ExpectedResult =  16)]
-        [TestCase(StockIcon.EnhancedCdMedia, IconSize.Jumbo,      ExpectedResult = 256)]
-        [TestCase(StockIcon.CdRMedia,        IconSize.Jumbo,      ExpectedResult = 256)]
-        public int Get(StockIcon src, IconSize size)
-        {
-            var dest = Get($"{src}-{size}.png");
-            using (var e = src.GetImage(size)) e.Save(dest, ImageFormat.Png);
-            using (var e = Image.FromFile(dest)) return e.Width;
-        }
-
-        #endregion
+        var dest = Get($"{src}-{size}.png");
+        using (var e = src.GetImage(size)) e.Save(dest, ImageFormat.Png);
+        using (var e = Image.FromFile(dest)) return e.Width;
     }
+
+    #endregion
 }

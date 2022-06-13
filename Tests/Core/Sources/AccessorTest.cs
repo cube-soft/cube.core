@@ -15,126 +15,125 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System;
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// AccessorTest
+///
+/// <summary>
+/// Tests the AssemblyReader class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class AccessorTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// AssemblyReaderTest
+    /// Create_Integer
     ///
     /// <summary>
-    /// Tests for the AssemblyReader class.
+    /// Tests the default constructor with int type.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class AccessorTest
+    [Test]
+    public void Create_Integer()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Integer
-        ///
-        /// <summary>
-        /// Tests the default constructor with int type.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Integer()
-        {
-            var src = new Accessor<int>();
-            Assert.That(src.Get(), Is.EqualTo(0));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_String
-        ///
-        /// <summary>
-        /// Tests the default constructor with string type.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_String()
-        {
-            var src = new Accessor<string>();
-            Assert.That(src.Get(), Is.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_DateTime
-        ///
-        /// <summary>
-        /// Tests the default constructor with DateTime type.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_DateTime()
-        {
-            var src = new Accessor<DateTime>();
-            Assert.That(src.Get(), Is.EqualTo(DateTime.MinValue));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Nullable
-        ///
-        /// <summary>
-        /// Tests the default constructor with Nullable type.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Nullable()
-        {
-            var src = new Accessor<DateTime?>();
-            Assert.That(src.Get(), Is.Null);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Delegate
-        ///
-        /// <summary>
-        /// Tests the constructor with setter and getter delegates.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Delegate()
-        {
-            var n   = 100;
-            var src = new Accessor<int>(() => n, e => n = e);
-
-            Assert.That(src.Get(), Is.EqualTo(100));
-            src.Set(200);
-            Assert.That(src.Get(), Is.EqualTo(200));
-            Assert.That(src.Get(), Is.EqualTo(n));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Set_InvalidOperationException
-        ///
-        /// <summary>
-        /// Tests the Set method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Set_InvalidOperationException()
-        {
-            var src = new Accessor<int>(() => 10);
-            Assert.That(() => src.Set(1000), Throws.InvalidOperationException);
-        }
-
-        #endregion
+        var src = new Accessor<int>();
+        Assert.That(src.Get(), Is.EqualTo(0));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create_String
+    ///
+    /// <summary>
+    /// Tests the default constructor with string type.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Create_String()
+    {
+        var src = new Accessor<string>();
+        Assert.That(src.Get(), Is.Null);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create_DateTime
+    ///
+    /// <summary>
+    /// Tests the default constructor with DateTime type.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Create_DateTime()
+    {
+        var src = new Accessor<DateTime>();
+        Assert.That(src.Get(), Is.EqualTo(DateTime.MinValue));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create_Nullable
+    ///
+    /// <summary>
+    /// Tests the default constructor with Nullable type.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Create_Nullable()
+    {
+        var src = new Accessor<DateTime?>();
+        Assert.That(src.Get(), Is.Null);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create_Delegate
+    ///
+    /// <summary>
+    /// Tests the constructor with setter and getter delegates.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Create_Delegate()
+    {
+        var n   = 100;
+        var src = new Accessor<int>(() => n, e => n = e);
+
+        Assert.That(src.Get(), Is.EqualTo(100));
+        src.Set(200);
+        Assert.That(src.Get(), Is.EqualTo(200));
+        Assert.That(src.Get(), Is.EqualTo(n));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Set_InvalidOperationException
+    ///
+    /// <summary>
+    /// Tests the Set method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Set_InvalidOperationException()
+    {
+        var src = new Accessor<int>(() => 10);
+        Assert.That(() => src.Set(1000), Throws.InvalidOperationException);
+    }
+
+    #endregion
 }

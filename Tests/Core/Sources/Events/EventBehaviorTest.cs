@@ -15,76 +15,75 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Events;
+
 using System;
 using NUnit.Framework;
 
-namespace Cube.Tests.Events
+/* ------------------------------------------------------------------------- */
+///
+/// EventBehaviorTest
+///
+/// <summary>
+/// Tests methods of the EventBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class EventBehaviorTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// EventBehaviorTest
+    /// Subscribe
     ///
     /// <summary>
-    /// Tests methods of the EventBehavior class.
+    /// Tests the EventBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class EventBehaviorTest
+    [Test]
+    public void Subscribe()
     {
-        #region Tests
+        var n   = 0;
+        var foo = new Foo();
+        var src = new EventBehavior(foo, nameof(Foo.Fired), () => ++n);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Tests the EventBehavior class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Subscribe()
-        {
-            var n   = 0;
-            var foo = new Foo();
-            var src = new EventBehavior(foo, nameof(Foo.Fired), () => ++n);
+        foo.Fire();
+        foo.Fire();
+        Assert.That(n, Is.EqualTo(2));
 
-            foo.Fire();
-            foo.Fire();
-            Assert.That(n, Is.EqualTo(2));
-
-            src.Dispose();
-            foo.Fire();
-            Assert.That(n, Is.EqualTo(2));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe_Throws
-        ///
-        /// <summary>
-        /// Tests the EventBehavior class with null arguments.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Subscribe_Throws()
-        {
-            Assert.That(() => new EventBehavior(null, null, () => { }), Throws.ArgumentNullException);
-            Assert.That(() => new EventBehavior(new Foo(), "dummy", () => { }), Throws.ArgumentNullException);
-        }
-
-        #endregion
-
-        #region Others
-
-        class Foo
-        {
-            public event EventHandler Fired;
-            public void Fire() => Fired?.Invoke(this, EventArgs.Empty);
-        }
-
-        #endregion
+        src.Dispose();
+        foo.Fire();
+        Assert.That(n, Is.EqualTo(2));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Subscribe_Throws
+    ///
+    /// <summary>
+    /// Tests the EventBehavior class with null arguments.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Subscribe_Throws()
+    {
+        Assert.That(() => new EventBehavior(null, null, () => { }), Throws.ArgumentNullException);
+        Assert.That(() => new EventBehavior(new Foo(), "dummy", () => { }), Throws.ArgumentNullException);
+    }
+
+    #endregion
+
+    #region Others
+
+    private class Foo
+    {
+        public event EventHandler Fired;
+        public void Fire() => Fired?.Invoke(this, EventArgs.Empty);
+    }
+
+    #endregion
 }

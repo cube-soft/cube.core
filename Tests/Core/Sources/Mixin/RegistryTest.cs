@@ -15,120 +15,119 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Mixin;
+
 using Cube.Mixin.Registry;
 using Microsoft.Win32;
 using NUnit.Framework;
 
-namespace Cube.Tests.Mixin
+/* ------------------------------------------------------------------------- */
+///
+/// RegistryTest
+///
+/// <summary>
+/// Represents tests of extended methods for the RegistryKey class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class RegistryTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// RegistryTest
+    /// GetValue
     ///
     /// <summary>
-    /// Represents tests of extended methods for the RegistryKey class.
+    /// Executes the test to get the value of the registry.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class RegistryTest
-    {
-        #region Tests
+    [Test]
+    public void GetValue() => Assert.That(
+        Registry.LocalMachine.GetValue<string>(
+            @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            "ProductName"
+        ),
+        Does.StartWith("Windows")
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue
-        ///
-        /// <summary>
-        /// Executes the test to get the value of the registry.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetValue() => Assert.That(
-            Registry.LocalMachine.GetValue<string>(
-                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "ProductName"
-            ),
-            Does.StartWith("Windows")
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetValue_Unmatched
+    ///
+    /// <summary>
+    /// Confirms the behavior when the specified type is not matched.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void GetValue_Unmatched() => Assert.That(
+        Registry.LocalMachine.GetValue<int>(
+            @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            "ProductName",
+            100
+        ),
+        Is.EqualTo(100)
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue_Unmatched
-        ///
-        /// <summary>
-        /// Confirms the behavior when the specified type is not matched.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetValue_Unmatched() => Assert.That(
-            Registry.LocalMachine.GetValue<int>(
-                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "ProductName",
-                100
-            ),
-            Is.EqualTo(100)
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetValue_NotFound_Subkey
+    ///
+    /// <summary>
+    /// Confirms the behavior when the specified subkey does not
+    /// exist.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void GetValue_NotFound_Subkey() => Assert.That(
+        Registry.LocalMachine.GetValue<string>(
+            @"Dummy\NotFound\SubKey",
+            "Dummy"
+        ),
+        Is.Null
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue_NotFound_Subkey
-        ///
-        /// <summary>
-        /// Confirms the behavior when the specified subkey does not
-        /// exist.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetValue_NotFound_Subkey() => Assert.That(
-            Registry.LocalMachine.GetValue<string>(
-                @"Dummy\NotFound\SubKey",
-                "Dummy"
-            ),
-            Is.Null
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetValue_NotFound_Number
+    ///
+    /// <summary>
+    /// Confirms the behavior when the specified name does not
+    /// exist.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void GetValue_NotFound_Number() => Assert.That(
+        Registry.LocalMachine.GetValue<int>(
+            @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            "DummyValue"
+        ),
+        Is.EqualTo(0)
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue_NotFound_Number
-        ///
-        /// <summary>
-        /// Confirms the behavior when the specified name does not
-        /// exist.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetValue_NotFound_Number() => Assert.That(
-            Registry.LocalMachine.GetValue<int>(
-                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "DummyValue"
-            ),
-            Is.EqualTo(0)
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetValue_NotFound_String
+    ///
+    /// <summary>
+    /// Confirms the behavior when the specified name does not
+    /// exist.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void GetValue_NotFound_String() => Assert.That(
+        Registry.LocalMachine.GetValue<string>(
+            @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+            "DummyValue"
+        ),
+        Is.Null
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetValue_NotFound_String
-        ///
-        /// <summary>
-        /// Confirms the behavior when the specified name does not
-        /// exist.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void GetValue_NotFound_String() => Assert.That(
-            Registry.LocalMachine.GetValue<string>(
-                @"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
-                "DummyValue"
-            ),
-            Is.Null
-        );
-
-        #endregion
-    }
+    #endregion
 }

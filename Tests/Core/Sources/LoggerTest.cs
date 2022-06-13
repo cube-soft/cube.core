@@ -15,150 +15,149 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// LoggerTest
+///
+/// <summary>
+/// Represents tests for the Logger class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class LoggerTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// LoggerTest
+    /// Debug
     ///
     /// <summary>
-    /// Represents tests for the Logger class.
+    /// Executes the test of the LogDebug extended methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class LoggerTest
+    [Test]
+    public void Debug()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Debug
-        ///
-        /// <summary>
-        /// Executes the test of the LogDebug extended methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Debug()
-        {
-            Logger.Separator = ",";
-            var src = GetType();
-            src.LogDebug();
-            src.LogDebug("Debug");
-            src.LogDebug("Debug", "multiple", "messages");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Info
-        ///
-        /// <summary>
-        /// Executes the test of the LogInfo extended methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Info()
-        {
-            Logger.Separator = "\t";
-            var src = GetType();
-            src.LogInfo();
-            src.LogInfo("Info");
-            src.LogInfo("Info", "multiple", "messages");
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Warn
-        ///
-        /// <summary>
-        /// Executes the test of the LogWarn extended methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Warn()
-        {
-            Logger.Separator = ":";
-            var src = GetType();
-            src.LogWarn();
-            src.LogWarn("Warn");
-            src.LogWarn("Warn", "multiple", "messages");
-
-            var error = new ArgumentException("Warn (throw)");
-            src.LogWarn(() => throw error);
-
-            try { throw error; }
-            catch (ArgumentException err) { src.LogWarn(err); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Error
-        ///
-        /// <summary>
-        /// Executes the test of the LogError extended methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Error()
-        {
-            var src = GetType();
-            src.LogError();
-            src.LogError("Error");
-            src.LogError("Error", "multiple", "messages");
-
-            var error = new Win32Exception(0);
-            src.LogError(() => throw error);
-
-            try { throw error; }
-            catch (Win32Exception err) { src.LogError(err); }
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObserveTaskException
-        ///
-        /// <summary>
-        /// Executes the test of the ObserveTaskException method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ObserveTaskException()
-        {
-            using (Logger.ObserveTaskException())
-            {
-                // Assert.DoesNotThrow
-                _ = Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
-                Task.Delay(100).Wait();
-            }
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TearDown
-        ///
-        /// <summary>
-        /// Invokes when each test terminates.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TearDown]
-        public void TearDown() => Logger.Separator = "\t";
-
-        #endregion
+        Logger.Separator = ",";
+        var src = GetType();
+        src.LogDebug();
+        src.LogDebug("Debug");
+        src.LogDebug("Debug", "multiple", "messages");
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Info
+    ///
+    /// <summary>
+    /// Executes the test of the LogInfo extended methods.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Info()
+    {
+        Logger.Separator = "\t";
+        var src = GetType();
+        src.LogInfo();
+        src.LogInfo("Info");
+        src.LogInfo("Info", "multiple", "messages");
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Warn
+    ///
+    /// <summary>
+    /// Executes the test of the LogWarn extended methods.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Warn()
+    {
+        Logger.Separator = ":";
+        var src = GetType();
+        src.LogWarn();
+        src.LogWarn("Warn");
+        src.LogWarn("Warn", "multiple", "messages");
+
+        var error = new ArgumentException("Warn (throw)");
+        src.LogWarn(() => throw error);
+
+        try { throw error; }
+        catch (ArgumentException err) { src.LogWarn(err); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Error
+    ///
+    /// <summary>
+    /// Executes the test of the LogError extended methods.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Error()
+    {
+        var src = GetType();
+        src.LogError();
+        src.LogError("Error");
+        src.LogError("Error", "multiple", "messages");
+
+        var error = new Win32Exception(0);
+        src.LogError(() => throw error);
+
+        try { throw error; }
+        catch (Win32Exception err) { src.LogError(err); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ObserveTaskException
+    ///
+    /// <summary>
+    /// Executes the test of the ObserveTaskException method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void ObserveTaskException()
+    {
+        using (Logger.ObserveTaskException())
+        {
+            // Assert.DoesNotThrow
+            _ = Task.Run(() => throw new ArgumentException("Test for ObserveTaskException"));
+            Task.Delay(100).Wait();
+        }
+    }
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TearDown
+    ///
+    /// <summary>
+    /// Invokes when each test terminates.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TearDown]
+    public void TearDown() => Logger.Separator = "\t";
+
+    #endregion
 }

@@ -15,52 +15,51 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Collections;
+
 using System;
 using System.Threading.Tasks;
 using Cube.Collections;
 using NUnit.Framework;
 
-namespace Cube.Tests.Collections
+/* ------------------------------------------------------------------------- */
+///
+/// SubscriptionTest
+///
+/// <summary>
+/// Tests for the Subscription class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class SubscriptionTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// SubscriptionTest
+    /// Subscribe
     ///
     /// <summary>
-    /// Tests for the Subscription class.
+    /// Tests to subscribe and clear the subscription.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class SubscriptionTest
+    [Test]
+    public void Subscribe()
     {
-        #region Tests
+        var n = 0;
+        using var src = new Subscription<Action>();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Tests to subscribe and clear the subscription.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Subscribe()
+        _ = Parallel.For(0, 10, i =>
         {
-            var n = 0;
-            using var src = new Subscription<Action>();
+            var dispose = src.Subscribe(() => ++n);
+            dispose.Dispose();
+        });
 
-            Parallel.For(0, 10, i =>
-            {
-                var dispose = src.Subscribe(() => ++n);
-                dispose.Dispose();
-            });
-
-            Assert.That(src.Disposed, Is.False);
-            Assert.That(src.Count, Is.EqualTo(0));
-        }
-
-        #endregion
+        Assert.That(src.Disposed, Is.False);
+        Assert.That(src.Count, Is.EqualTo(0));
     }
+
+    #endregion
 }

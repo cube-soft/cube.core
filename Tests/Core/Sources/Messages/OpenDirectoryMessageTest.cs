@@ -15,99 +15,98 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Messages;
+
 using NUnit.Framework;
 
-namespace Cube.Tests.Messages
+/* ------------------------------------------------------------------------- */
+///
+/// OpenDirectoryMessageTest
+///
+/// <summary>
+/// Tests the OpenDirectoryMessage class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class OpenDirectoryMessageTest : FileFixture
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenDirectoryMessageTest
+    /// Test
     ///
     /// <summary>
-    /// Tests the OpenDirectoryMessage class.
+    /// Tests the constructor and confirms values of some properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class OpenDirectoryMessageTest : FileFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var dest = new OpenDirectoryMessage();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init()
-        {
-            var dest = new OpenDirectoryMessage();
-
-            Assert.That(dest.Text,      Is.Empty);
-            Assert.That(dest.Value,     Is.Empty);
-            Assert.That(dest.NewButton, Is.True);
-            Assert.That(dest.Cancel,    Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithNullOrEmpty
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("")]
-        [TestCase(null)]
-        public void Init_WithNullOrEmpty(string src)
-        {
-            var dest = new OpenDirectoryMessage(src);
-
-            Assert.That(dest.Text,      Is.Empty);
-            Assert.That(dest.Value,     Is.Empty);
-            Assert.That(dest.NewButton, Is.True);
-            Assert.That(dest.Cancel,    Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithFile
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Sample.txt")]
-        [TestCase("InExistent.dat")]
-        public void Init_WithFile(string filename)
-        {
-            var src  = GetSource(filename);
-            var dest = new OpenDirectoryMessage(src);
-
-            Assert.That(dest.Value, Is.EqualTo(Examples));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithDirectory
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init_WithDirectory() => Assert.That(
-            new OpenDirectoryMessage(Results).Value,
-            Is.EqualTo(Results)
-        );
-
-        #endregion
+        Assert.That(dest.Text,      Is.Empty);
+        Assert.That(dest.Value,     Is.Empty);
+        Assert.That(dest.NewButton, Is.True);
+        Assert.That(dest.Cancel,    Is.False);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithNullOrEmpty
+    ///
+    /// <summary>
+    /// Tests the constructor and confirms values of some properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("")]
+    [TestCase(null)]
+    public void Test_WithNullOrEmpty(string src)
+    {
+        var dest = new OpenDirectoryMessage(src);
+
+        Assert.That(dest.Text,      Is.Empty);
+        Assert.That(dest.Value,     Is.Empty);
+        Assert.That(dest.NewButton, Is.True);
+        Assert.That(dest.Cancel,    Is.False);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithFile
+    ///
+    /// <summary>
+    /// Tests the constructor and confirms values of some properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("Sample.txt")]
+    [TestCase("InExistent.dat")]
+    public void Test_WithFile(string filename)
+    {
+        var src  = GetSource(filename);
+        var dest = new OpenDirectoryMessage(src);
+
+        Assert.That(dest.Value, Is.EqualTo(Examples));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithDirectory
+    ///
+    /// <summary>
+    /// Tests the constructor and confirms values of some properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Test_WithDirectory() => Assert.That(
+        new OpenDirectoryMessage(Results).Value,
+        Is.EqualTo(Results)
+    );
+
+    #endregion
 }

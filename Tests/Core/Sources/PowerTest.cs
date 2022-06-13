@@ -15,79 +15,78 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System;
 using Microsoft.Win32;
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// PowerTest
+///
+/// <summary>
+/// Tests for the Power class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class PowerTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// PowerTest
+    /// Configure_Throws
     ///
     /// <summary>
-    /// Tests for the Power class.
+    /// Tests the Configure method with a null object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class PowerTest
+    [Test]
+    public void Configure_Throws()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Configure_Throws
-        ///
-        /// <summary>
-        /// Tests the Configure method with a null object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Configure_Throws()
-        {
-            var src = default(PowerModeContext);
-            Assert.That(() => Power.Configure(src),
-                Throws.TypeOf<ArgumentNullException>().And
-                      .Property("ParamName").EqualTo("context"));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Subscribe
-        ///
-        /// <summary>
-        /// Tests the Subscribe method and PowerModeChanged event.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(true,  ExpectedResult = 2)]
-        [TestCase(false, ExpectedResult = 4)]
-        public int Subscribe(bool ignore)
-        {
-            var mock = new PowerModeContext(Power.Mode);
-            Power.Configure(mock);
-            mock.IgnoreStatusChanged = ignore;
-
-            var count  = 0;
-            var powewr = Power.Subscribe(() => ++count);
-
-            mock.Mode = PowerModes.Resume;       // Resume -> Resume
-            mock.Mode = PowerModes.StatusChange; // Resume -> StatusChange
-            mock.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
-            mock.Mode = PowerModes.Suspend;      // Suspend -> Suspend
-            mock.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
-            mock.Mode = PowerModes.Resume;       // StatusChange -> Resume
-
-            powewr.Dispose();
-
-            mock.Mode = PowerModes.Suspend;
-            mock.Mode = PowerModes.Resume;
-
-            return count;
-        }
-
-        #endregion
+        var src = default(PowerModeContext);
+        Assert.That(() => Power.Configure(src),
+            Throws.TypeOf<ArgumentNullException>().And
+                  .Property("ParamName").EqualTo("context"));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Subscribe
+    ///
+    /// <summary>
+    /// Tests the Subscribe method and PowerModeChanged event.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase(true,  ExpectedResult = 2)]
+    [TestCase(false, ExpectedResult = 4)]
+    public int Subscribe(bool ignore)
+    {
+        var mock = new PowerModeContext(Power.Mode);
+        Power.Configure(mock);
+        mock.IgnoreStatusChanged = ignore;
+
+        var count  = 0;
+        var powewr = Power.Subscribe(() => ++count);
+
+        mock.Mode = PowerModes.Resume;       // Resume -> Resume
+        mock.Mode = PowerModes.StatusChange; // Resume -> StatusChange
+        mock.Mode = PowerModes.Suspend;      // StatusChange -> Suspend
+        mock.Mode = PowerModes.Suspend;      // Suspend -> Suspend
+        mock.Mode = PowerModes.StatusChange; // Suspend -> StatusChange
+        mock.Mode = PowerModes.Resume;       // StatusChange -> Resume
+
+        powewr.Dispose();
+
+        mock.Mode = PowerModes.Suspend;
+        mock.Mode = PowerModes.Resume;
+
+        return count;
+    }
+
+    #endregion
 }

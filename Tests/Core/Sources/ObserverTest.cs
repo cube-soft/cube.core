@@ -15,92 +15,91 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using System;
 using Cube.Mixin.Observing;
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// ObserverTest
+///
+/// <summary>
+/// Test the IObservePropertyChanged implemented class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class ObserverTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ObserverTest
+    /// Observe
     ///
     /// <summary>
-    /// Test the IObservePropertyChanged implemented class.
+    /// Tests Observe and related methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class ObserverTest
+    [Test]
+    public void Observe()
     {
-        #region Tests
+        var n   = new Accessor<int>();
+        var src = new Person();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Observe
-        ///
-        /// <summary>
-        /// Tests Observe and related methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Observe()
-        {
-            var n   = new Accessor<int>();
-            var src = new Person();
+        using (new Mock(n)
+            .Hook(src) // All
+            .Hook(src, nameof(src.Name))
+            .Hook(default) // Ignore
+        ) {
+            Assert.That(src.Age,  Is.EqualTo(0));
+            src.Age = 10;
+            Assert.That(n.Get(),  Is.EqualTo(1));
+            Assert.That(src.Age,  Is.EqualTo(10));
+            src.Age = 10;
+            Assert.That(n.Get(),  Is.EqualTo(1));
+            Assert.That(src.Age,  Is.EqualTo(10));
 
-            using (new Mock(n)
-                .Hook(src) // All
-                .Hook(src, nameof(src.Name))
-                .Hook(default) // Ignore
-            ) {
-                Assert.That(src.Age,  Is.EqualTo(0));
-                src.Age = 10;
-                Assert.That(n.Get(),  Is.EqualTo(1));
-                Assert.That(src.Age,  Is.EqualTo(10));
-                src.Age = 10;
-                Assert.That(n.Get(),  Is.EqualTo(1));
-                Assert.That(src.Age,  Is.EqualTo(10));
-
-                Assert.That(src.Name, Is.Empty);
-                src.Name = "Test";
-                Assert.That(n.Get(),  Is.EqualTo(3));
-                Assert.That(src.Name, Is.EqualTo("Test"));
-                src.Name = "Test";
-                Assert.That(n.Get(),  Is.EqualTo(3));
-                Assert.That(src.Name, Is.EqualTo("Test"));
-            }
-
-            src.Age = 20;
-            Assert.That(n.Get(),  Is.EqualTo(3));
-            Assert.That(src.Age,  Is.EqualTo(20));
-
-            src.Name = "";
-            Assert.That(n.Get(),  Is.EqualTo(3));
             Assert.That(src.Name, Is.Empty);
+            src.Name = "Test";
+            Assert.That(n.Get(),  Is.EqualTo(3));
+            Assert.That(src.Name, Is.EqualTo("Test"));
+            src.Name = "Test";
+            Assert.That(n.Get(),  Is.EqualTo(3));
+            Assert.That(src.Name, Is.EqualTo("Test"));
         }
 
-        #endregion
+        src.Age = 20;
+        Assert.That(n.Get(),  Is.EqualTo(3));
+        Assert.That(src.Age,  Is.EqualTo(20));
 
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Mock
-        ///
-        /// <summary>
-        /// Represents an ObserverBase inherited class for testing.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private class Mock : ObserverBase
-        {
-            public Mock(Accessor<int> count) { _count = count; }
-            protected override void Receive(Type s, string e) => _count.Set(_count.Get() + 1);
-            private readonly Accessor<int> _count;
-        }
-
-        #endregion
+        src.Name = "";
+        Assert.That(n.Get(),  Is.EqualTo(3));
+        Assert.That(src.Name, Is.Empty);
     }
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Mock
+    ///
+    /// <summary>
+    /// Represents an ObserverBase inherited class for testing.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private class Mock : ObserverBase
+    {
+        public Mock(Accessor<int> count) { _count = count; }
+        protected override void Receive(Type s, string e) => _count.Set(_count.Get() + 1);
+        private readonly Accessor<int> _count;
+    }
+
+    #endregion
 }
