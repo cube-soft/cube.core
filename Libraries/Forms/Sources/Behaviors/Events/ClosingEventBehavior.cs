@@ -15,40 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System;
 using System.Windows.Forms;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ClosingEventBehavior
+///
+/// <summary>
+/// Represents the behavior that a Form object is closing.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ClosingEventBehavior : DisposableProxy
 {
     /* --------------------------------------------------------------------- */
     ///
     /// ClosingEventBehavior
     ///
     /// <summary>
-    /// Represents the behavior that a Form object is closing.
+    /// Initializes a new instance of the ClosingEventBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="src">Source view.</param>
+    /// <param name="action">Action when the view is closing.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class ClosingEventBehavior : DisposableProxy
+    public ClosingEventBehavior(Form src, Action<FormClosingEventArgs> action) : base(() =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ClosingEventBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the ClosingEventBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="src">Source view.</param>
-        /// <param name="action">Action when the view is closing.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public ClosingEventBehavior(Form src, Action<FormClosingEventArgs> action) : base(() =>
-        {
-            void invoke(object s, FormClosingEventArgs e) => action(e);
-            src.FormClosing += invoke;
-            return Disposable.Create(() => src.FormClosing -= invoke);
-        }) { }
-    }
+        void invoke(object s, FormClosingEventArgs e) => action(e);
+        src.FormClosing += invoke;
+        return Disposable.Create(() => src.FormClosing -= invoke);
+    }) { }
 }

@@ -15,114 +15,108 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Collections.Differences;
+
 using System;
 using System.Collections.Generic;
 
-namespace Cube.Collections.Differences
+/* ------------------------------------------------------------------------- */
+///
+/// Condition
+///
+/// <summary>
+/// Specifies the diff condition.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[Flags]
+public enum Condition
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Condition
-    ///
-    /// <summary>
-    /// Specifies the diff condition.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// DiffOnly および Any は、主に処理実行時に指定する Mask として
-    /// 使用されます。
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Flags]
-    public enum Condition
-    {
-        /// <summary>No diff.</summary>
-        None = 0x01,
-        /// <summary>Older results are empty.</summary>
-        Inserted = 0x02,
-        /// <summary>Newer results are empty.</summary>
-        Deleted = 0x04,
-        /// <summary>Changed content.</summary>
-        Changed = 0x08,
+    /// <summary>No diff.</summary>
+    None = 0x01,
+    /// <summary>Older results are empty.</summary>
+    Inserted = 0x02,
+    /// <summary>Newer results are empty.</summary>
+    Deleted = 0x04,
+    /// <summary>Changed content.</summary>
+    Changed = 0x08,
 
-        /// <summary>Mask that indicates that there has been some change.</summary>
-        DiffOnly = Inserted | Deleted | Changed,
-        /// <summary>Mask of all defined elements.</summary>
-        Any = None | DiffOnly,
-    }
+    /// <summary>Mask that indicates that there has been some change.</summary>
+    DiffOnly = Inserted | Deleted | Changed,
+    /// <summary>Mask of all defined elements.</summary>
+    Any = None | DiffOnly,
+}
+
+/* ------------------------------------------------------------------------- */
+///
+/// Result
+///
+/// <summary>
+/// Represents a part of the diff results.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class Result<T>
+{
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
     /// Result
     ///
     /// <summary>
-    /// Represents a part of the diff results.
+    /// Initializes a new instance of the Result class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="condition">Diff condition.</param>
+    /// <param name="older">Target part of the older sequence.</param>
+    /// <param name="newer">Target part of the newer sequence.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
+    {
+        Condition = condition;
+        Older     = older;
+        Newer     = newer;
+    }
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Condition
+    ///
+    /// <summary>
+    /// Gets the diff condition.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class Result<T>
-    {
-        #region Constructors
+    public Condition Condition { get; }
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Result
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Result class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="condition">Diff condition.</param>
-        /// <param name="older">Target part of the older sequence.</param>
-        /// <param name="newer">Target part of the newer sequence.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Result(Condition condition, IEnumerable<T> older, IEnumerable<T> newer)
-        {
-            Condition = condition;
-            Older     = older;
-            Newer     = newer;
-        }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Older
+    ///
+    /// <summary>
+    /// Gets the target part of the older sequence.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public IEnumerable<T> Older { get; }
 
-        #endregion
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Newer
+    ///
+    /// <summary>
+    /// Gets the target part of the newer sequence.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public IEnumerable<T> Newer { get; }
 
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Condition
-        ///
-        /// <summary>
-        /// Gets the diff condition.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public Condition Condition { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Older
-        ///
-        /// <summary>
-        /// Gets the target part of the older sequence.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<T> Older { get; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Newer
-        ///
-        /// <summary>
-        /// Gets the target part of the newer sequence.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public IEnumerable<T> Newer { get; }
-
-        #endregion
-    }
+    #endregion
 }

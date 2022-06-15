@@ -15,78 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Icons;
+
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace Cube.Icons
+/* ------------------------------------------------------------------------- */
+///
+/// StockIconExtension
+///
+/// <summary>
+/// Provides extended methods of the StockIcon enum.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class StockIconExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// StockIconExtension
+    /// Get
     ///
     /// <summary>
-    /// Provides extended methods of the StockIcon enum.
+    /// Gets a new instance of the Icon class with the specified
+    /// arguments.
     /// </summary>
     ///
+    /// <param name="src">ID of the stock icons.</param>
+    /// <param name="size">Icon size.</param>
+    ///
+    /// <returns>Icon object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class StockIconExtension
+    public static Icon Get(this StockIcon src, IconSize size)
     {
-        #region Methods
+        var s0 = new ShStockIconInfo();
+        var f0 = 0x4000u; // SHGFI_SYSICONINDEX
+        s0.cbSize = Marshal.SizeOf(s0);
+        Shell32.NativeMethods.SHGetStockIconInfo((uint)src, f0, ref s0);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Get
-        ///
-        /// <summary>
-        /// Gets a new instance of the Icon class with the specified
-        /// arguments.
-        /// </summary>
-        ///
-        /// <param name="src">ID of the stock icons.</param>
-        /// <param name="size">Icon size.</param>
-        ///
-        /// <returns>Icon object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Icon Get(this StockIcon src, IconSize size)
-        {
-            var s0 = new ShStockIconInfo();
-            var f0 = 0x4000u; // SHGFI_SYSICONINDEX
-            s0.cbSize = Marshal.SizeOf(s0);
-            Shell32.NativeMethods.SHGetStockIconInfo((uint)src, f0, ref s0);
+        var s1 = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950"); // IID_IImageList
+        var r1 = Shell32.NativeMethods.SHGetImageList((uint)size, s1, out var images);
+        if (r1 != 0 || images == null) return default;
 
-            var s1 = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950"); // IID_IImageList
-            var r1 = Shell32.NativeMethods.SHGetImageList((uint)size, s1, out var images);
-            if (r1 != 0 || images == null) return default;
-
-            var s2 = IntPtr.Zero;
-            var f2 = 0x01; // ILD_TRANSPARENT
-            var r2 = images.GetIcon(s0.iSysImageIndex, f2, ref s2);
-            return (r2 == 0 && s2 != IntPtr.Zero) ? Icon.FromHandle(s2) : default;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetImage
-        ///
-        /// <summary>
-        /// Gets a new instance of the Image instance with the specified
-        /// arguments.
-        /// </summary>
-        ///
-        /// <param name="src">ID of the stock icons.</param>
-        /// <param name="size">Icon size.</param>
-        ///
-        /// <returns>Image object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Image GetImage(this StockIcon src, IconSize size)
-        {
-            using var icon = Get(src, size);
-            return icon?.ToBitmap() ?? default;
-        }
-
-        #endregion
+        var s2 = IntPtr.Zero;
+        var f2 = 0x01; // ILD_TRANSPARENT
+        var r2 = images.GetIcon(s0.iSysImageIndex, f2, ref s2);
+        return (r2 == 0 && s2 != IntPtr.Zero) ? Icon.FromHandle(s2) : default;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetImage
+    ///
+    /// <summary>
+    /// Gets a new instance of the Image instance with the specified
+    /// arguments.
+    /// </summary>
+    ///
+    /// <param name="src">ID of the stock icons.</param>
+    /// <param name="size">Icon size.</param>
+    ///
+    /// <returns>Image object.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Image GetImage(this StockIcon src, IconSize size)
+    {
+        using var icon = Get(src, size);
+        return icon?.ToBitmap();
+    }
+
+    #endregion
 }

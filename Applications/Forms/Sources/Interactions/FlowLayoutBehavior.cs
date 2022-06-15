@@ -15,76 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Tests.Behaviors;
+namespace Cube.Forms.Demo;
 
-using System.Threading;
-using System.Windows;
-using Cube.Xui.Behaviors;
-using NUnit.Framework;
+using System;
+using Cube.Forms.Controls;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// ClosedToDisposeTest
+/// FlowLayoutBehavior
 ///
 /// <summary>
-/// Tests the ClosedToDispose class.
+/// Provides functionality to adjust the width of components in the
+/// provided control when resizing.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-[TestFixture]
-[Apartment(ApartmentState.STA)]
-class ClosedToDisposeTest : ViewFixture
+public class FlowLayoutBehavior : DisposableBase
 {
-    #region Tests
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Test
+    /// FlowLayoutHacker
     ///
     /// <summary>
-    /// Tests the create, attach, and detach methods.
+    /// Initializes a new instance of the FlowLayoutBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="src">View object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test()
+    public FlowLayoutBehavior(FlowLayoutPanel src)
     {
-        var n    = 0;
-        var view = Hack(new Window());
-        var src  = Attach(view, new ClosedToDispose());
+        void resize(object s, EventArgs e)
+        {
+            if (src.Controls.Count <= 0) return;
+            src.Controls[0].Width = src.ClientSize.Width - src.Padding.Left - src.Padding.Right;
+        }
 
-        view.DataContext = Disposable.Create(() => ++n);
-        view.Show();
-        view.Close();
-
-        Assert.That(n, Is.EqualTo(1));
-        Assert.That(view.DataContext, Is.Not.Null);
-
-        src.Detach();
+        src.Resize += resize;
+        _disposable.Add(() => src.Resize -= resize);
     }
+
+    #endregion
+
+    #region Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Test_WithNull
+    /// Dispose
     ///
     /// <summary>
-    /// Tests the create, attach, and detach methods in the case when
-    /// DataContext is null.
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
     /// </summary>
     ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
     /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test_WithNull()
+    protected override void Dispose(bool disposing)
     {
-        var view = Hack(new Window());
-        var src  = Attach(view, new ClosedToDispose());
-
-        Assert.That(view.DataContext, Is.Null);
-
-        view.Show();
-        view.Close();
-        src.Detach();
+        if (!disposing) return;
+        _disposable.Dispose();
     }
 
+    #endregion
+
+    #region Fields
+    private readonly DisposableContainer _disposable = new();
     #endregion
 }

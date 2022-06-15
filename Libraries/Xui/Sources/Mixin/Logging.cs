@@ -15,78 +15,77 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Logging;
+
 using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Cube.Logging
+/* ------------------------------------------------------------------------- */
+///
+/// XuiExtension
+///
+/// <summary>
+/// Provides extended methods of the Logger class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class XuiExtension
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// XuiExtension
+    /// ObserveUiException
     ///
     /// <summary>
-    /// Provides extended methods of the Logger class.
+    /// Monitors UnhandledException and outputs to the log.
+    /// </summary>
+    ///
+    /// <param name="src">Target object.</param>
+    ///
+    /// <returns>Object to dispose.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IDisposable ObserveUiException(this Application src)
+    {
+        if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
+        if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
+
+        return Disposable.Create(() =>
+        {
+            if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
+            if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
+        });
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenDispatcherError
+    ///
+    /// <summary>
+    /// Executes when a DispatcherUnhandledException occurs.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class XuiExtension
-    {
-        #region Methods
+    private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
+        s.GetType().LogError(e.Exception);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ObserveUiException
-        ///
-        /// <summary>
-        /// Monitors UnhandledException and outputs to the log.
-        /// </summary>
-        ///
-        /// <param name="src">Target object.</param>
-        ///
-        /// <returns>Object to dispose.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static IDisposable ObserveUiException(this Application src)
-        {
-            if (src != null) src.DispatcherUnhandledException += WhenDispatcherError;
-            if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException += WhenDomainError;
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenDomainError
+    ///
+    /// <summary>
+    /// Executes when an UnhandledException occurs.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
+        typeof(AppDomain).LogError(e.ExceptionObject as Exception);
 
-            return Disposable.Create(() =>
-            {
-                if (src != null) src.DispatcherUnhandledException -= WhenDispatcherError;
-                if (AppDomain.CurrentDomain != null) AppDomain.CurrentDomain.UnhandledException -= WhenDomainError;
-            });
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenDispatcherError
-        ///
-        /// <summary>
-        /// Executes when a DispatcherUnhandledException occurs.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
-            s.GetType().LogError(e.Exception);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenDomainError
-        ///
-        /// <summary>
-        /// Executes when an UnhandledException occurs.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-            typeof(AppDomain).LogError(e.ExceptionObject as Exception);
-
-        #endregion
-    }
+    #endregion
 }

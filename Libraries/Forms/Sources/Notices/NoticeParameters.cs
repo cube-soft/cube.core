@@ -15,84 +15,83 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube
+namespace Cube;
+
+#region NoticePriority
+
+/* ------------------------------------------------------------------------- */
+///
+/// NoticePriority
+///
+/// <summary>
+/// Specifies the priority of a notice.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public enum NoticePriority
 {
-    #region NoticePriority
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NoticePriority
-    ///
-    /// <summary>
-    /// Specifies the priority of a notice.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum NoticePriority
-    {
-        /// <summary>Highest</summary>
-        Highest = 40,
-        /// <summary>High</summary>
-        High = 30,
-        /// <summary>Normal</summary>
-        Normal = 20,
-        /// <summary>Low</summary>
-        Low = 10,
-        /// <summary>Lowest</summary>
-        Lowest = 0,
-    }
-
-    #endregion
-
-    #region NoticeLocation
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NoticeLocation
-    ///
-    /// <summary>
-    /// Specifies the location to show the notice window.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum NoticeLocation
-    {
-        /// <summary>Top-left corner of the screen.</summary>
-        TopLeft,
-        /// <summary>Top-right corner of the screen.</summary>
-        TopRight,
-        /// <summary>Bottom-left corner of the screen.</summary>
-        BottomLeft,
-        /// <summary>Bottom-right corner of the screen.</summary>
-        BottomRight,
-    }
-
-    #endregion
-
-    #region NoticeResult
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// NoticeResult
-    ///
-    /// <summary>
-    /// Specifies the result of the displayed notice window.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum NoticeResult
-    {
-        /// <summary>Timeout</summary>
-        Timeout,
-        /// <summary>Close</summary>
-        Close,
-        /// <summary>Image</summary>
-        Image,
-        /// <summary>Title</summary>
-        Title,
-        /// <summary>Text</summary>
-        Text,
-    }
-
-    #endregion
+    /// <summary>Highest</summary>
+    Highest = 40,
+    /// <summary>High</summary>
+    High = 30,
+    /// <summary>Normal</summary>
+    Normal = 20,
+    /// <summary>Low</summary>
+    Low = 10,
+    /// <summary>Lowest</summary>
+    Lowest = 0,
 }
+
+#endregion
+
+#region NoticeLocation
+
+/* ------------------------------------------------------------------------- */
+///
+/// NoticeLocation
+///
+/// <summary>
+/// Specifies the location to show the notice window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public enum NoticeLocation
+{
+    /// <summary>Top-left corner of the screen.</summary>
+    TopLeft,
+    /// <summary>Top-right corner of the screen.</summary>
+    TopRight,
+    /// <summary>Bottom-left corner of the screen.</summary>
+    BottomLeft,
+    /// <summary>Bottom-right corner of the screen.</summary>
+    BottomRight,
+}
+
+#endregion
+
+#region NoticeResult
+
+/* ------------------------------------------------------------------------- */
+///
+/// NoticeResult
+///
+/// <summary>
+/// Specifies the result of the displayed notice window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public enum NoticeResult
+{
+    /// <summary>Timeout</summary>
+    Timeout,
+    /// <summary>Close</summary>
+    Close,
+    /// <summary>Image</summary>
+    Image,
+    /// <summary>Title</summary>
+    Title,
+    /// <summary>Text</summary>
+    Text,
+}
+
+#endregion

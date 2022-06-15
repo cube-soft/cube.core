@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Version>7.0.0</Version>
         <Authors>clown;cube-soft</Authors>
@@ -10,10 +10,11 @@
         <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
         <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>
+        <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
         <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">DEBUG;TRACE</DefineConstants>
@@ -28,6 +29,8 @@
         <ProjectReference Include="..\Core\Cube.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Update="Properties\Resources.Designer.cs" DependentUpon="Resources.resx" AutoGen="True" DesignTime="True" />
+        <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
         <None Include="Readme.md" Pack="true" PackagePath="docs" />
         <None Include="..\..\Icon.png" Pack="true" PackagePath="images" />
         <None Include="Assets\**\*" />

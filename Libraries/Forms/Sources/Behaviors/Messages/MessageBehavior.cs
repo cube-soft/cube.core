@@ -15,67 +15,64 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// MessageBehavior(TMessage)
+///
+/// <summary>
+/// Provides functionality to invoke the provided action when the
+/// message is received.
+/// </summary>
+///
+/// <typeparam name="TMessage">Message type.</typeparam>
+///
+/* ------------------------------------------------------------------------- */
+public class MessageBehavior<TMessage> : MessageBehaviorBase<TMessage>
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageBehavior(TMessage)
+    /// MessageBehavior
     ///
     /// <summary>
-    /// Provides functionality to invoke the provided action when the
-    /// message is received.
+    /// Initializes a new instance of the MessageBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
-    /// <typeparam name="TMessage">Message type.</typeparam>
+    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="action">
+    /// Action to be invoked when a message is received.
+    /// </param>
     ///
     /* --------------------------------------------------------------------- */
-    public class MessageBehavior<TMessage> : MessageBehaviorBase<TMessage>
-    {
-        #region Constructors
+    public MessageBehavior(IAggregator aggregator, Action<TMessage> action) :
+        base(aggregator) => _action = action;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MessageBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the MessageBehavior class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Aggregator object.</param>
-        /// <param name="action">
-        /// Action to be invoked when a message is received.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public MessageBehavior(IAggregator aggregator, Action<TMessage> action) : base(aggregator)
-        {
-            _action = action;
-        }
+    #endregion
 
-        #endregion
+    #region Methods
 
-        #region Methods
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke
+    ///
+    /// <summary>
+    /// Invokes the user action.
+    /// </summary>
+    ///
+    /// <param name="message">Message object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Invoke(TMessage message) => _action(message);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the user action.
-        /// </summary>
-        ///
-        /// <param name="message">Message object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(TMessage message) => _action(message);
+    #endregion
 
-        #endregion
-
-        #region Fields
-        private readonly Action<TMessage> _action;
-        #endregion
-    }
+    #region Fields
+    private readonly Action<TMessage> _action;
+    #endregion
 }

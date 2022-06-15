@@ -15,49 +15,44 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using Cube.Tests;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// CloseBehaviorTest
+///
+/// <summary>
+/// Tests for the CloseBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class CloseBehaviorTest : ViewFixture
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the CloseBehavior class.
+    /// Tests the create, attach, send, and detach methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class CloseBehaviorTest : ViewFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var cts  = new CancellationTokenSource();
+        var view = Hack(new MockWindow());
+        var vm   = (MockViewModel)view.DataContext;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Tests the create, attach, send, and detach methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke()
-        {
-            var cts  = new CancellationTokenSource();
-            var view = Hack(new MockWindow());
-            var vm   = (MockViewModel)view.DataContext;
-
-            view.Show();
-            view.Closed += (s, e) => cts.Cancel();
-            vm.Test(new CloseMessage());
-            Assert.That(Wait.For(cts.Token), "Timeout");
-        }
-
-        #endregion
+        view.Show();
+        view.Closed += (s, e) => cts.Cancel();
+        vm.Test(new CloseMessage());
+        Assert.That(Wait.For(cts.Token), "Timeout");
     }
 }

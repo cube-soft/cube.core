@@ -15,151 +15,150 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.User32;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms.User32
+/* ------------------------------------------------------------------------- */
+///
+/// User32.NativeMethods
+///
+/// <summary>
+/// Provides functions defined in user32.dll.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class NativeMethods
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// User32.NativeMethods
+    /// SendMessage
     ///
     /// <summary>
-    /// Provides functions defined in user32.dll.
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950.aspx
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    internal static class NativeMethods
-    {
-        #region Methods
+    [DllImport(LibName, CharSet = CharSet.Unicode)]
+    public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SendMessage
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// PostMessage
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644944.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName, CharSet = CharSet.Unicode)]
+    public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PostMessage
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644944.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, CharSet = CharSet.Unicode)]
-        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ReleaseCapture
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646261.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern bool ReleaseCapture();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ReleaseCapture
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646261.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern bool ReleaseCapture();
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetWindowPos
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
+        int X, int Y, int cx, int cy, uint uFlags);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetWindowPos
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
-            int X, int Y, int cx, int cy, uint uFlags);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetSystemMenu
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms647985.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetSystemMenu
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms647985.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// EnableMenuItem
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms647636.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern bool EnableMenuItem(IntPtr hMenu,
+        uint uIDEnableItem, uint uEnable);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// EnableMenuItem
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms647636.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern bool EnableMenuItem(IntPtr hMenu,
-            uint uIDEnableItem, uint uEnable);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// TrackPopupMenuEx
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648003.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags,
+        int x, int y, IntPtr hwnd, IntPtr lptpm);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// TrackPopupMenuEx
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648003.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags,
-            int x, int y, IntPtr hwnd, IntPtr lptpm);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetForegroundWindow
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName, SetLastError = true)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SetForegroundWindow
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ShowWindowAsync
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName, SetLastError = true)]
+    public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowWindowAsync
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName, SetLastError = true)]
-        public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IsIconic
+    ///
+    /// <summary>
+    /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633527.aspx
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DllImport(LibName)]
+    public static extern bool IsIconic(IntPtr hWnd);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsIconic
-        ///
-        /// <summary>
-        /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633527.aspx
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DllImport(LibName)]
-        public static extern bool IsIconic(IntPtr hWnd);
+    #endregion
 
-        #endregion
-
-        #region Fields
-        const string LibName = "user32.dll";
-        #endregion
-    }
+    #region Fields
+    const string LibName = "user32.dll";
+    #endregion
 }

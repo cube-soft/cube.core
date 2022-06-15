@@ -15,243 +15,242 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.FileSystem.Tests;
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Cube.DataContract;
 
-namespace Cube.FileSystem.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// Sex
+///
+/// <summary>
+/// Specifies the sex.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+enum Sex
 {
-    /* ----------------------------------------------------------------- */
+    Male    =  0,
+    Female  =  1,
+    Unknown = -1
+}
+
+/* ------------------------------------------------------------------------- */
+///
+/// Address
+///
+/// <summary>
+/// Represents the address.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[DataContract]
+class Address
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Type
+    ///
+    /// <summary>
+    /// Gets or sets the type of the provided address.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public string Type { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Value
+    ///
+    /// <summary>
+    /// Gets or sets the content of the provided address.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public string Value { get; set; }
+}
+
+/* ------------------------------------------------------------------------- */
+///
+/// Person
+///
+/// <summary>
+/// Represents the example class that is serializable.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[DataContract]
+class Person : SerializableBase
+{
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Identification
+    ///
+    /// <summary>
+    /// Gets or sets the ID.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember(Name = "ID")]
+    public int Identification
+    {
+        get => Get(() => -1);
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Name
+    ///
+    /// <summary>
+    /// Gets or sets the name.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public string Name
+    {
+        get => Get(() => string.Empty);
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
     ///
     /// Sex
     ///
     /// <summary>
-    /// Specifies the sex.
+    /// Gets or sets the sex.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    enum Sex
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public Sex Sex
     {
-        Male    =  0,
-        Female  =  1,
-        Unknown = -1
+        get => Get(() => Sex.Unknown);
+        set => Set(value);
     }
 
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
-    /// Address
+    /// Age
     ///
     /// <summary>
-    /// Represents the address.
+    /// Gets or sets the age.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    [DataContract]
-    class Address
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public int Age
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Type
-        ///
-        /// <summary>
-        /// Gets or sets the type of the provided address.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string Type { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Value
-        ///
-        /// <summary>
-        /// Gets or sets the content of the provided address.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string Value { get; set; }
+        get => Get(() => -1);
+        set => Set(value);
     }
 
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
-    /// Person
+    /// Creation
     ///
     /// <summary>
-    /// Represents the example class that is serializable.
+    /// Gets or sets the creation time.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    [DataContract]
-    class Person : SerializableBase
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public DateTime? Creation
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Identification
-        ///
-        /// <summary>
-        /// Gets or sets the ID.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember(Name = "ID")]
-        public int Identification
-        {
-            get => Get(() => -1);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Name
-        ///
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string Name
-        {
-            get => Get(() => string.Empty);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Sex
-        ///
-        /// <summary>
-        /// Gets or sets the sex.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public Sex Sex
-        {
-            get => Get(() => Sex.Unknown);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Age
-        ///
-        /// <summary>
-        /// Gets or sets the age.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public int Age
-        {
-            get => Get(() => -1);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Creation
-        ///
-        /// <summary>
-        /// Gets or sets the creation time.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public DateTime? Creation
-        {
-            get => Get<DateTime?>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Contact
-        ///
-        /// <summary>
-        /// Gets or sets the address to contact.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public Address Contact
-        {
-            get => Get(() => new Address { Type = "Phone", Value = string.Empty });
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Others
-        ///
-        /// <summary>
-        /// Gets or sets the other addresses.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public IList<Address> Others
-        {
-            get => Get(() => new List<Address>());
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Messages
-        ///
-        /// <summary>
-        /// Gets or sets the message.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public string[] Messages
-        {
-            get => Get(() => new string[0]);
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Reserved
-        ///
-        /// <summary>
-        /// Gets or sets the reserved value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [DataMember]
-        public bool Reserved
-        {
-            get => _reserved;
-            set => Set(ref _reserved, value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Secret
-        ///
-        /// <summary>
-        /// Gets or sets the non-datamember value.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Secret
-        {
-            get => Get(() => "secret message");
-            set => Set(value);
-        }
-
-        #endregion
-
-        #region Fields
-        private bool _reserved;
-        #endregion
+        get => Get<DateTime?>();
+        set => Set(value);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Contact
+    ///
+    /// <summary>
+    /// Gets or sets the address to contact.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public Address Contact
+    {
+        get => Get(() => new Address { Type = "Phone", Value = string.Empty });
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Others
+    ///
+    /// <summary>
+    /// Gets or sets the other addresses.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public IList<Address> Others
+    {
+        get => Get(() => new List<Address>());
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Messages
+    ///
+    /// <summary>
+    /// Gets or sets the message.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public string[] Messages
+    {
+        get => Get(() => new string[0]);
+        set => Set(value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Reserved
+    ///
+    /// <summary>
+    /// Gets or sets the reserved value.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public bool Reserved
+    {
+        get => _reserved;
+        set => Set(ref _reserved, value);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Secret
+    ///
+    /// <summary>
+    /// Gets or sets the non-datamember value.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Secret
+    {
+        get => Get(() => "secret message");
+        set => Set(value);
+    }
+
+    #endregion
+
+    #region Fields
+    private bool _reserved;
+    #endregion
 }

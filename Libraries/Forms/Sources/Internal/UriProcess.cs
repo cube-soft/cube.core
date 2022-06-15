@@ -15,40 +15,35 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System;
 using System.Diagnostics;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// UriProcess
+///
+/// <summary>
+/// Provides functionality to start a new process with the provided
+/// Uri object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+internal static class UriProcess
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UriProcess
+    /// Start
     ///
     /// <summary>
-    /// Provides functionality to start a new process with the provided
-    /// Uri object.
+    /// Starts a new process with the specified Uri object.
     /// </summary>
     ///
+    /// <param name="src">URL.</param>
+    ///
+    /// <returns>Process object.</returns>
+    ///
     /* --------------------------------------------------------------------- */
-    internal static class UriProcess
-    {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Start
-        ///
-        /// <summary>
-        /// Starts a new process with the specified Uri object.
-        /// </summary>
-        ///
-        /// <param name="src">URL.</param>
-        ///
-        /// <returns>Process object.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static Process Start(Uri src) => Process.Start(src.ToString());
-
-        #endregion
-    }
+    public static Process Start(Uri src) => Process.Start(src.ToString());
 }

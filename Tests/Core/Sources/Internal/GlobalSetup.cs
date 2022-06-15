@@ -15,36 +15,35 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests;
+
 using NUnit.Framework;
 
-namespace Cube.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// GlobalSetup
+///
+/// <summary>
+/// Provides functionality to run at the beginning of the NUnit.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[SetUpFixture]
+public class GlobalSetup
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// OneTimeSetup
     ///
     /// <summary>
-    /// Provides functionality to run at the beginning of the NUnit.
+    /// Invokes the setup only once.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
+    [OneTimeSetUp]
+    public void OneTimeSetup()
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OneTimeSetup
-        ///
-        /// <summary>
-        /// Invokes the setup only once.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-            _ = Logger.ObserveTaskException();
-            typeof(GlobalSetup).LogInfo(typeof(GlobalSetup).Assembly);
-        }
+        _ = Logger.ObserveTaskException();
+        typeof(GlobalSetup).LogInfo(typeof(GlobalSetup).Assembly);
     }
 }

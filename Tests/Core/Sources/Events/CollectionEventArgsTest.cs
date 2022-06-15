@@ -15,98 +15,101 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Events;
+
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.Iteration;
 using NUnit.Framework;
 
-namespace Cube.Tests.Events
+/* --------------------------------------------------------------------- */
+///
+/// CollectionEventArgsTest
+///
+/// <summary>
+/// Tests methods of the CollectionEventArgs class.
+/// </summary>
+///
+/* --------------------------------------------------------------------- */
+[TestFixture]
+class CollectionEventArgsTest
 {
-    /* --------------------------------------------------------------------- */
+    #region Tests
+
+    /* ----------------------------------------------------------------- */
     ///
-    /// CollectionEventArgsTest
+    /// Create_Array
     ///
     /// <summary>
-    /// Tests methods of the CollectionEventArgs class.
+    /// Tests to create a new instance of the CollectionEventArgs(T)
+    /// class with the array object.
     /// </summary>
     ///
-    /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class CollectionEventArgsTest
+    /* ----------------------------------------------------------------- */
+    [Test]
+    public void Create_Array()
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Array
-        ///
-        /// <summary>
-        /// Tests to create a new instance of the CollectionEventArgs(T)
-        /// class with the array object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Array()
-        {
-            var src = CollectionEventArgs.Create(10.Make(i => i));
-            Assert.That(src.Value.Count(), Is.EqualTo(10));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_List
-        ///
-        /// <summary>
-        /// Tests to create a new instance of the CollectionEventArgs(T)
-        /// class with the List(T) object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_List()
-        {
-            var args = CollectionEventArgs.Create(5.Make(i => i), true);
-            Assert.That(args.Value.Count(), Is.EqualTo(5));
-            Assert.That(args.Cancel, Is.True);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Cancel
-        ///
-        /// <summary>
-        /// Tests to create a new instance of the CollectionCancelEventArgs(T)
-        /// class with the provided arguments.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Cancel()
-        {
-            var args = CollectionEventArgs.Create(new List<string>
-            {
-                "Hello", "world", "This", "is", "a", "test", "program",
-            }, true);
-
-            Assert.That(args.Value.Count(), Is.EqualTo(7));
-            Assert.That(args.Cancel, Is.True);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Cancel_Default
-        ///
-        /// <summary>
-        /// Tests to create a new instance of the CollectionCancelEventArgs(T)
-        /// class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Cancel_Default()
-        {
-            var args = new CollectionCancelEventArgs<string>(Enumerable.Empty<string>());
-            Assert.That(args.Value.Count(), Is.EqualTo(0));
-            Assert.That(args.Cancel, Is.False);
-        }
+        var src = CollectionEventArgs.Create(10.Make(i => i));
+        Assert.That(src.Value.Count(), Is.EqualTo(10));
     }
+
+    /* ----------------------------------------------------------------- */
+    ///
+    /// Create_List
+    ///
+    /// <summary>
+    /// Tests to create a new instance of the CollectionEventArgs(T)
+    /// class with the List(T) object.
+    /// </summary>
+    ///
+    /* ----------------------------------------------------------------- */
+    [Test]
+    public void Create_List()
+    {
+        var args = CollectionEventArgs.Create(5.Make(i => i), true);
+        Assert.That(args.Value.Count(), Is.EqualTo(5));
+        Assert.That(args.Cancel, Is.True);
+    }
+
+    /* ----------------------------------------------------------------- */
+    ///
+    /// Create_Cancel
+    ///
+    /// <summary>
+    /// Tests to create a new instance of the CollectionCancelEventArgs(T)
+    /// class with the provided arguments.
+    /// </summary>
+    ///
+    /* ----------------------------------------------------------------- */
+    [Test]
+    public void Create_Cancel()
+    {
+        var args = CollectionEventArgs.Create(new List<string>
+        {
+            "Hello", "world", "This", "is", "a", "test", "program",
+        }, true);
+
+        Assert.That(args.Value.Count(), Is.EqualTo(7));
+        Assert.That(args.Cancel, Is.True);
+    }
+
+    /* ----------------------------------------------------------------- */
+    ///
+    /// Create_Cancel_Default
+    ///
+    /// <summary>
+    /// Tests to create a new instance of the CollectionCancelEventArgs(T)
+    /// class.
+    /// </summary>
+    ///
+    /* ----------------------------------------------------------------- */
+    [Test]
+    public void Create_Cancel_Default()
+    {
+        var args = new CollectionCancelEventArgs<string>(Enumerable.Empty<string>());
+        Assert.That(args.Value.Count(), Is.EqualTo(0));
+        Assert.That(args.Cancel, Is.False);
+    }
+
+    #endregion
 }

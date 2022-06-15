@@ -15,74 +15,73 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// WindowsFormsBehaviorTest
+///
+/// <summary>
+/// Tests for the WindowsFormsBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class WindowsFormsBehaviorTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// WindowsFormsBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the WindowsFormsBehavior class.
+    /// Executes the test to create, attach, and detach method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class WindowsFormsBehaviorTest
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var view = new TextBox();
+        var host = new WindowsFormsHost { Child = view };
+        var src  = new WindowsFormsBehavior<TextBox>();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Executes the test to create, attach, and detach method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
-        {
-            var view = new TextBox();
-            var host = new WindowsFormsHost { Child = view };
-            var src  = new WindowsFormsBehavior<TextBox>();
-
-            Assert.That(src.Source, Is.Null);
-            src.Attach(host);
-            Assert.That(src.Source, Is.EqualTo(view));
-            Assert.That(src.Parent, Is.EqualTo(host));
-            src.Detach();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Empty
-        ///
-        /// <summary>
-        /// Confirms the behavior the specified WindowsFormsHost object
-        /// has no children.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Empty()
-        {
-            var host = new WindowsFormsHost();
-            var src  = new WindowsFormsBehavior<TextBox>();
-
-            src.Attach(host);
-            Assert.That(src.Source, Is.Null);
-            Assert.That(src.Parent, Is.EqualTo(host));
-            src.Detach();
-        }
-
-        #endregion
+        Assert.That(src.Source, Is.Null);
+        src.Attach(host);
+        Assert.That(src.Source, Is.EqualTo(view));
+        Assert.That(src.Parent, Is.EqualTo(host));
+        src.Detach();
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithNull
+    ///
+    /// <summary>
+    /// Confirms the behavior the specified WindowsFormsHost object
+    /// has no children.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Test_WithNull()
+    {
+        var host = new WindowsFormsHost();
+        var src  = new WindowsFormsBehavior<TextBox>();
+
+        src.Attach(host);
+        Assert.That(src.Source, Is.Null);
+        Assert.That(src.Parent, Is.EqualTo(host));
+        src.Detach();
+    }
+
+    #endregion
 }

@@ -15,27 +15,26 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// ImageInfo
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761393.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[StructLayout(LayoutKind.Sequential)]
+internal struct ImageInfo
 {
-    /* ----------------------------------------------------------------- */
-    ///
-    /// ImageInfo
-    ///
-    /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761393.aspx
-    /// </summary>
-    ///
-    /* ----------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct ImageInfo
-    {
-        public IntPtr hbmImage;
-        public IntPtr hbmMask;
-        public int Unused1;
-        public int Unused2;
-        public IntPtr /* RECT */ rcImage;
-    }
+    public IntPtr hbmImage;
+    public IntPtr hbmMask;
+    public int Unused1;
+    public int Unused2;
+    public IntPtr /* RECT */ rcImage;
 }

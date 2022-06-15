@@ -15,63 +15,62 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Windows;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ActivateBehavior
+///
+/// <summary>
+/// Represents the behavior when an ActivateMessage is received.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ActivateBehavior : MessageBehavior<ActivateMessage>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ActivateBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior when an ActivateMessage is received.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ActivateBehavior : MessageBehavior<ActivateMessage>
+    protected override void Invoke(ActivateMessage e)
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(ActivateMessage e)
+        if (AssociatedObject is Window w)
         {
-            if (AssociatedObject is Window w)
-            {
-                if (w.WindowState == WindowState.Minimized) w.WindowState = WindowState.Normal;
-                _ = w.Activate();
-                ResetTopMost(w);
-            }
+            if (w.WindowState == WindowState.Minimized) w.WindowState = WindowState.Normal;
+            _ = w.Activate();
+            ResetTopMost(w);
         }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ResetTopMost
-        ///
-        /// <summary>
-        /// Resets the value of Topmost property.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void ResetTopMost(Window src)
-        {
-            var current = src.Topmost;
-            src.Topmost = false;
-            src.Topmost = true;
-            src.Topmost = current;
-        }
-
-        #endregion
     }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ResetTopMost
+    ///
+    /// <summary>
+    /// Resets the value of Topmost property.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void ResetTopMost(Window src)
+    {
+        var current = src.Topmost;
+        src.Topmost = false;
+        src.Topmost = true;
+        src.Topmost = current;
+    }
+
+    #endregion
 }

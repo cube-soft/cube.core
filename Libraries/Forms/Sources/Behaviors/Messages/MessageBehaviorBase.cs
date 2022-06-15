@@ -15,91 +15,90 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms.Behaviors
+namespace Cube.Forms.Behaviors;
+
+/* ------------------------------------------------------------------------- */
+///
+/// MessageBehaviorBase(TMessage)
+///
+/// <summary>
+/// Represents the behavior that communicates with a presentable
+/// object via a message.
+/// </summary>
+///
+/// <typeparam name="TMessage">Message type.</typeparam>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class MessageBehaviorBase<TMessage> : DisposableBase
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
-    /// MessageBehaviorBase(TMessage)
+    /// MessageBehavior
     ///
     /// <summary>
-    /// Represents the behavior that communicates with a presentable
-    /// object via a message.
+    /// Initializes a new instance of the MessageBehavior class
+    /// with the specified presentable object.
     /// </summary>
     ///
-    /// <typeparam name="TMessage">Message type.</typeparam>
+    /// <param name="aggregator">Aggregator object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessageBehaviorBase<TMessage> : DisposableBase
+    protected MessageBehaviorBase(IAggregator aggregator) =>
+        Assets.Add(aggregator.Subscribe<TMessage>(Invoke));
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Assets
+    ///
+    /// <summary>
+    /// Gets the collection to dispose.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected DisposableContainer Assets { get; } = new();
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke
+    ///
+    /// <summary>
+    /// Invokes the user action.
+    /// </summary>
+    ///
+    /// <param name="message">Message object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected abstract void Invoke(TMessage message);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MessageBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the MessageBehavior class
-        /// with the specified presentable object.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Aggregator object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected MessageBehaviorBase(IAggregator aggregator) =>
-            Assets.Add(aggregator.Subscribe<TMessage>(Invoke));
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Assets
-        ///
-        /// <summary>
-        /// Gets the collection to dispose.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DisposableContainer Assets { get; } = new();
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the user action.
-        /// </summary>
-        ///
-        /// <param name="message">Message object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected abstract void Invoke(TMessage message);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) Assets.Dispose();
-        }
-
-        #endregion
+        if (disposing) Assets.Dispose();
     }
+
+    #endregion
 }

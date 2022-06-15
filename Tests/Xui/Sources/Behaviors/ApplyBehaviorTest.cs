@@ -15,51 +15,46 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using System.Windows.Controls;
 using Cube.Tests;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ApplyBehaviorTest
+///
+/// <summary>
+/// Tests the ApplyBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class ApplyBehaviorTest : ViewFixture
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ApplyBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests the ApplyBehavior class.
+    /// Tests the create, attach, send, and detach methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class ApplyBehaviorTest : ViewFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var view = Hack(new MockWindow());
+        var vm   = (MockViewModel)view.DataContext;
+        var src  = Attach(view, new ApplyBehavior());
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Tests the create, attach, send, and detach methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke()
-        {
-            var view = Hack(new MockWindow());
-            var vm   = (MockViewModel)view.DataContext;
-            var src  = Attach(view, new ApplyBehavior());
-
-            ((TextBox)view.FindName("TestName")).Text = "OK";
-            Assert.That(vm.Value.Name, Is.Null);
-            vm.Test(new ApplyMessage());
-            Assert.That(Wait.For(() => vm.Value.Name.Equals("OK")), "Timeout");
-        }
-
-        #endregion
+        ((TextBox)view.FindName("TestName")).Text = "OK";
+        Assert.That(vm.Value.Name, Is.Null);
+        vm.Test(new ApplyMessage());
+        Assert.That(Wait.For(() => vm.Value.Name.Equals("OK")), "Timeout");
     }
 }

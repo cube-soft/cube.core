@@ -15,76 +15,76 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Tests.Behaviors;
+namespace Cube.Forms.Demo;
 
-using System.Threading;
-using System.Windows;
-using Cube.Xui.Behaviors;
-using NUnit.Framework;
+using System;
+using System.Drawing;
+using System.Globalization;
+using Cube.Forms.Behaviors;
+using Cube.Mixin.Uri;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// ClosedToDisposeTest
+/// ShowVersionBehavior
 ///
 /// <summary>
-/// Tests the ClosedToDispose class.
+/// Represents the behavior to show a version dialog.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-[TestFixture]
-[Apartment(ApartmentState.STA)]
-class ClosedToDisposeTest : ViewFixture
+public sealed class ShowVersionBehavior : MessageBehaviorBase<AboutMessage>
 {
-    #region Tests
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Test
+    /// ShowVersionBehavior
     ///
     /// <summary>
-    /// Tests the create, attach, and detach methods.
+    /// Initializes a new instance of the ShowVersionBehavior class
+    /// with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="view">View object.</param>
+    /// <param name="aggregator">Aggregator object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public ShowVersionBehavior(WindowBase view, IAggregator aggregator) : base(aggregator)
+    {
+        _icon = view.Icon;
+        _text = view.Text;
+    }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Invoke
+    ///
+    /// <summary>
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test()
+    protected override void Invoke(AboutMessage message)
     {
-        var n    = 0;
-        var view = Hack(new Window());
-        var src  = Attach(view, new ClosedToDispose());
-
-        view.DataContext = Disposable.Create(() => ++n);
-        view.Show();
-        view.Close();
-
-        Assert.That(n, Is.EqualTo(1));
-        Assert.That(view.DataContext, Is.Not.Null);
-
-        src.Detach();
+        using var view = new VersionWindow()
+        {
+            Icon = _icon,
+            Text = _text,
+            Uri = new Uri("https://www.cube-soft.jp")
+                   .With(GetType().Assembly)
+                   .With("lang", CultureInfo.CurrentCulture.Name),
+        };
+        _ = view.ShowDialog();
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Test_WithNull
-    ///
-    /// <summary>
-    /// Tests the create, attach, and detach methods in the case when
-    /// DataContext is null.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test_WithNull()
-    {
-        var view = Hack(new Window());
-        var src  = Attach(view, new ClosedToDispose());
+    #endregion
 
-        Assert.That(view.DataContext, Is.Null);
-
-        view.Show();
-        view.Close();
-        src.Detach();
-    }
-
+    #region Fields
+    private readonly Icon _icon;
+    private readonly string _text;
     #endregion
 }

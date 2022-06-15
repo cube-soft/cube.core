@@ -15,102 +15,101 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Demo;
+
 using System;
 using System.Drawing;
 using Cube.Forms.Controls;
 
-namespace Cube.Forms.Demo
+/* ------------------------------------------------------------------------- */
+///
+/// CustomCaptionControl
+///
+/// <summary>
+/// Represents the caption control, aka title bar.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public partial class CustomCaptionControl : CaptionControl
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// CustomCaptionControl
     ///
     /// <summary>
-    /// Represents the caption control, aka title bar.
+    /// Initializes a new instance of the CustomCaptionControl class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class CustomCaptionControl : CaptionControl
+    public CustomCaptionControl()
     {
-        #region Constructors
+        InitializeComponent();
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// CustomCaptionControl
-        ///
-        /// <summary>
-        /// Initializes a new instance of the CustomCaptionControl class.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public CustomCaptionControl()
-        {
-            InitializeComponent();
-
-            MaximizeControl = MaximizeButton;
-            MinimizeControl = MinimizeButton;
-            CloseControl    = ExitButton;
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnControlAdded
-        ///
-        /// <summary>
-        /// Occurs when this control is added to some container.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected override void OnControlAdded(System.Windows.Forms.ControlEventArgs e)
-        {
-            base.OnControlAdded(e);
-            _backColor = BackColor;
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnActivated
-        ///
-        /// <summary>
-        /// Occurs when the control is activated.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected override void OnActivated(EventArgs e)
-        {
-            BackColor = _backColor;
-            MinimizeButton.Style.Default.Image = Properties.Resources.Minimize;
-            MaximizeButton.Style.Default.Image = Properties.Resources.Maximize;
-            ExitButton.Style.Default.Image = Properties.Resources.Close;
-            base.OnActivated(e);
-        }
-
-        /* --------------------------------------------------------------------- */
-        ///
-        /// OnDeactivate
-        ///
-        /// <summary>
-        /// Occurs when the control is deactivate.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        protected override void OnDeactivate(EventArgs e)
-        {
-            BackColor = Color.White;
-            MinimizeButton.Style.Default.Image = Properties.Resources.MinimizeGray;
-            MaximizeButton.Style.Default.Image = Properties.Resources.MaximizeGray;
-            ExitButton.Style.Default.Image = Properties.Resources.CloseGray;
-            base.OnDeactivate(e);
-        }
-
-        #endregion
-
-        #region Fields
-        private Color _backColor = Color.Empty;
-        #endregion
+        MaximizeControl = MaximizeButton;
+        MinimizeControl = MinimizeButton;
+        CloseControl    = ExitButton;
     }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnControlAdded
+    ///
+    /// <summary>
+    /// Occurs when this control is added to some container.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnControlAdded(System.Windows.Forms.ControlEventArgs e)
+    {
+        base.OnControlAdded(e);
+        _backColor = BackColor;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnActivated
+    ///
+    /// <summary>
+    /// Occurs when the control is activated.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnActivated(EventArgs e)
+    {
+        BackColor = _backColor;
+        MinimizeButton.Style.Default.Image = Properties.Resources.Minimize;
+        MaximizeButton.Style.Default.Image = Properties.Resources.Maximize;
+        ExitButton.Style.Default.Image = Properties.Resources.Close;
+        base.OnActivated(e);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDeactivate
+    ///
+    /// <summary>
+    /// Occurs when the control is deactivate.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDeactivate(EventArgs e)
+    {
+        BackColor = Color.White;
+        MinimizeButton.Style.Default.Image = Properties.Resources.MinimizeGray;
+        MaximizeButton.Style.Default.Image = Properties.Resources.MaximizeGray;
+        ExitButton.Style.Default.Image = Properties.Resources.CloseGray;
+        base.OnDeactivate(e);
+    }
+
+    #endregion
+
+    #region Fields
+    private Color _backColor = Color.Empty;
+    #endregion
 }

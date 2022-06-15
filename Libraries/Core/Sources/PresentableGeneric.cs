@@ -15,112 +15,111 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Threading;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// PresentableBase(TModel)
+///
+/// <summary>
+/// Represents the base presentable class with a model object, which is
+/// the facade of other models.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class PresentableBase<TModel> : PresentableBase
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
-    /// PresentableBase(TModel)
+    /// PresentableBase
     ///
     /// <summary>
-    /// Represents the base presentable class with a model object, which is
-    /// the facade of other models.
+    /// Initializes a new instance of the PresentableBase class with
+    /// the specified model.
+    /// </summary>
+    ///
+    /// <param name="facade">Model object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected PresentableBase(TModel facade) : this(facade, new()) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Presentable
+    ///
+    /// <summary>
+    /// Initializes a new instance of the Presentable class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="facade">Model object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected PresentableBase(TModel facade, Aggregator aggregator) :
+        this(facade, aggregator, SynchronizationContext.Current) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Presentable
+    ///
+    /// <summary>
+    /// Initializes a new instance of the Presentable class with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="facade">Model object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
+    /// <param name="context">Synchronization context.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected PresentableBase(TModel facade, Aggregator aggregator, SynchronizationContext context) :
+        base(aggregator, context) => Facade = facade;
+
+    #endregion
+
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Facade
+    ///
+    /// <summary>
+    /// Gets the facade of model objects.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class PresentableBase<TModel> : PresentableBase
+    protected TModel Facade { get; }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// PresentableBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the PresentableBase class with
-        /// the specified model.
-        /// </summary>
-        ///
-        /// <param name="facade">Model object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresentableBase(TModel facade) : this(facade, new()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Presentable
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Presentable class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="facade">Model object.</param>
-        /// <param name="aggregator">Message aggregator.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresentableBase(TModel facade, Aggregator aggregator) :
-            this(facade, aggregator, SynchronizationContext.Current) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Presentable
-        ///
-        /// <summary>
-        /// Initializes a new instance of the Presentable class with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="facade">Model object.</param>
-        /// <param name="aggregator">Message aggregator.</param>
-        /// <param name="context">Synchronization context.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected PresentableBase(TModel facade, Aggregator aggregator, SynchronizationContext context) :
-            base(aggregator, context) { Facade = facade; }
-
-        #endregion
-
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Facade
-        ///
-        /// <summary>
-        /// Gets the facade of model objects.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected TModel Facade { get; }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            try { if (disposing && Facade is IDisposable obj) obj.Dispose(); }
-            finally { base.Dispose(disposing); }
-        }
-
-        #endregion
+        try { if (disposing && Facade is IDisposable obj) obj.Dispose(); }
+        finally { base.Dispose(disposing); }
     }
+
+    #endregion
 }

@@ -15,48 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Linq;
 using Cube.Mixin.String;
 using Microsoft.Win32;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// OpenFileBehavior
+///
+/// <summary>
+/// Represents the behavior to show a dialog using an OpenFileMessage.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenFileBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior to show a dialog using an OpenFileMessage.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
+    protected override void Invoke(OpenFileMessage e)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(OpenFileMessage e)
+        var view = new OpenFileDialog
         {
-            var view = new OpenFileDialog
-            {
-                CheckPathExists = e.CheckPathExists,
-                Multiselect     = e.Multiselect,
-                Filter          = e.GetFilterText(),
-                FilterIndex     = e.GetFilterIndex(),
-            };
+            CheckPathExists = e.CheckPathExists,
+            Multiselect     = e.Multiselect,
+            Filter          = e.GetFilterText(),
+            FilterIndex     = e.GetFilterIndex(),
+        };
 
-            if (e.Text.HasValue()) view.Title = e.Text;
-            if (e.Value.Any()) view.FileName = e.Value.First();
-            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
+        if (e.Text.HasValue()) view.Title = e.Text;
+        if (e.Value.Any()) view.FileName = e.Value.First();
+        if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-            e.Cancel = !view.ShowDialog() ?? true;
-            if (!e.Cancel) e.Value = view.FileNames;
-        }
+        e.Cancel = !view.ShowDialog() ?? true;
+        if (!e.Cancel) e.Value = view.FileNames;
     }
 }

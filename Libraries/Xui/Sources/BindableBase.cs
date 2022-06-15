@@ -15,116 +15,115 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui;
+
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Cube.Xui
+/* ------------------------------------------------------------------------- */
+///
+/// BindableBase
+///
+/// <summary>
+/// Represents the base behavior of Bindable classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class BindableBase : ObservableBase, IObservePropertyChanged
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// BindableBase
     ///
     /// <summary>
-    /// Represents the base behavior of Bindable classes.
+    /// Initializes a new instance of the BindableBase class with the
+    /// specified dispatcher.
+    /// </summary>
+    ///
+    /// <param name="dispatcher">Dispatcher object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected BindableBase(Dispatcher dispatcher) : base(dispatcher) { }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Observe
+    ///
+    /// <summary>
+    /// Observes the PropertyChanged event of the specified object.
+    /// </summary>
+    ///
+    /// <param name="src">Object to be observed.</param>
+    /// <param name="names">Target property names.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Observe(INotifyPropertyChanged src, params string[] names)
+    {
+        var set = new HashSet<string>(names);
+        void handler(object s, PropertyChangedEventArgs e)
+        {
+            if (set.Count <= 0 || set.Contains(e.PropertyName)) React();
+        }
+
+        src.PropertyChanged += handler;
+        _observable.Add(() => src.PropertyChanged -= handler);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// React
+    ///
+    /// <summary>
+    /// Invokes when the PropertyChanged event of an observed object
+    /// is fired.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class BindableBase : ObservableBase, IObservePropertyChanged
+    protected abstract void React();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object
+    /// and optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// BindableBase
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BindableBase class with the
-        /// specified dispatcher.
-        /// </summary>
-        ///
-        /// <param name="dispatcher">Dispatcher object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected BindableBase(Dispatcher dispatcher) : base(dispatcher) { }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Observe
-        ///
-        /// <summary>
-        /// Observes the PropertyChanged event of the specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Object to be observed.</param>
-        /// <param name="names">Target property names.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public void Observe(INotifyPropertyChanged src, params string[] names)
-        {
-            var set = new HashSet<string>(names);
-            void handler(object s, PropertyChangedEventArgs e)
-            {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) React();
-            }
-
-            src.PropertyChanged += handler;
-            _observable.Add(() => src.PropertyChanged -= handler);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// React
-        ///
-        /// <summary>
-        /// Invokes when the PropertyChanged event of an observed object
-        /// is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected abstract void React();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object
-        /// and optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _observable.Dispose();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnPropertyChanged
-        ///
-        /// <summary>
-        /// Occurs when the PropertyChanged event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (!Disposed) base.OnPropertyChanged(e);
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly DisposableContainer _observable = new();
-        #endregion
+        if (disposing) _observable.Dispose();
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnPropertyChanged
+    ///
+    /// <summary>
+    /// Occurs when the PropertyChanged event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        if (!Disposed) base.OnPropertyChanged(e);
+    }
+
+    #endregion
+
+    #region Fields
+    private readonly DisposableContainer _observable = new();
+    #endregion
 }

@@ -15,30 +15,29 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests;
+
 using System.Windows;
 
-namespace Cube.Xui.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// MockWindow
+///
+/// <summary>
+/// Represents a window for testing.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public partial class MockWindow : Window
 {
     /* --------------------------------------------------------------------- */
     ///
     /// MockWindow
     ///
     /// <summary>
-    /// Represents a window for testing.
+    /// Initializes a new instance of the MockWindow class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public partial class MockWindow : Window
-    {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// MockWindow
-        ///
-        /// <summary>
-        /// Initializes a new instance of the MockWindow class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public MockWindow() { InitializeComponent(); }
-    }
+    public MockWindow() => InitializeComponent();
 }

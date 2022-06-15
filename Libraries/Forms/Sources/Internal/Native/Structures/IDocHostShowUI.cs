@@ -15,67 +15,66 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// IDocHostShowUI
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/aa753269.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[ComImport,
+ Guid("C4D244B0-D43E-11CF-893B-00AA00BDCE1A"),
+ InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface IDocHostShowUI
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// IDocHostShowUI
+    /// ShowMessage
     ///
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/aa753269.aspx
+    /// Called by MSHTML to display a message box.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [ComImport,
-     Guid("C4D244B0-D43E-11CF-893B-00AA00BDCE1A"),
-     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IDocHostShowUI
-    {
-        #region Methods
+    [return: MarshalAs(UnmanagedType.U4)]
+    [PreserveSig]
+    int ShowMessage(IntPtr hwnd,
+        [MarshalAs(UnmanagedType.LPWStr)] string lpstrText,
+        [MarshalAs(UnmanagedType.LPWStr)] string lpstrCaption,
+        int dwType,
+        [MarshalAs(UnmanagedType.LPWStr)] string lpstrHelpFile,
+        int dwHelpContext,
+        out int lpResult
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowMessage
-        ///
-        /// <summary>
-        /// Called by MSHTML to display a message box.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [return: MarshalAs(UnmanagedType.U4)]
-        [PreserveSig]
-        int ShowMessage(IntPtr hwnd,
-            [MarshalAs(UnmanagedType.LPWStr)] string lpstrText,
-            [MarshalAs(UnmanagedType.LPWStr)] string lpstrCaption,
-            int dwType,
-            [MarshalAs(UnmanagedType.LPWStr)] string lpstrHelpFile,
-            int dwHelpContext,
-            out int lpResult
-        );
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ShowHelp
+    ///
+    /// <summary>
+    /// Called by MSHTML to display Help.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [return: MarshalAs(UnmanagedType.U4)]
+    [PreserveSig]
+    int ShowHelp(
+        IntPtr hwnd,
+        [MarshalAs(UnmanagedType.LPWStr)] string pszHelpFile,
+        int uCommand,
+        int dwData,
+        IntPtr ptMouse, // POINT
+        [MarshalAs(UnmanagedType.IDispatch)] object pDispatchObjectHit
+    );
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ShowHelp
-        ///
-        /// <summary>
-        /// Called by MSHTML to display Help.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [return: MarshalAs(UnmanagedType.U4)]
-        [PreserveSig]
-        int ShowHelp(
-            IntPtr hwnd,
-            [MarshalAs(UnmanagedType.LPWStr)] string pszHelpFile,
-            int uCommand,
-            int dwData,
-            IntPtr ptMouse, // POINT
-            [MarshalAs(UnmanagedType.IDispatch)] object pDispatchObjectHit
-        );
-
-        #endregion
-    }
+    #endregion
 }

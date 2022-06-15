@@ -15,124 +15,123 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Mixin;
+
 using System;
 using System.Linq;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Syntax;
 using NUnit.Framework;
 
-namespace Cube.Tests.Mixin
+/* ------------------------------------------------------------------------- */
+///
+/// IterationTest
+///
+/// <summary>
+/// Represents tests for the IterateExtension class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class IterationTest
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// IterationTest
+    /// Make
     ///
     /// <summary>
-    /// Represents tests for the IterateExtension class.
+    /// Tests the Make extended method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class IterationTest
+    [Test]
+    public void Make()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Make
-        ///
-        /// <summary>
-        /// Tests the Make extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Make()
-        {
-            var src = 10.Make(i => i * 2);
-            Assert.That(src.Count(), Is.EqualTo(10));
-            Assert.That(src.First(), Is.EqualTo(0));
-            Assert.That(src.Last(),  Is.EqualTo(18));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Times
-        ///
-        /// <summary>
-        /// Tests the Times extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Times()
-        {
-            var dest = 0;
-            10.Times(i => dest += i);
-            Assert.That(dest, Is.EqualTo(45));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Try
-        ///
-        /// <summary>
-        /// Tests the Try extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Try()
-        {
-            var n = 0;
-            Assert.That(10.Try(i => ThrowIfOdd(++n)), Is.True);
-            Assert.That(n, Is.EqualTo(2));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Try_False
-        ///
-        /// <summary>
-        /// Tests the Try extended method with the function that always
-        /// fails.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Try_False()
-        {
-            var errors = 0;
-            Assert.That(10.Try(i => ThrowIfOdd(1), (s, e) => ++errors), Is.False);
-            Assert.That(errors, Is.EqualTo(10));
-        }
-
-        #endregion
-
-        #region Others
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ThrowIfOdd
-        ///
-        /// <summary>
-        /// Throws if the specified value is odd number.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void ThrowIfOdd(int n) => IsOdd(n).Then(() => throw new ArgumentException("Odd number"));
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// IsOdd
-        ///
-        /// <summary>
-        /// Determines whether the specified value is odd number.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private bool IsOdd(int n) => n % 2 != 0;
-
-        #endregion
+        var src = 10.Make(i => i * 2);
+        Assert.That(src.Count(), Is.EqualTo(10));
+        Assert.That(src.First(), Is.EqualTo(0));
+        Assert.That(src.Last(),  Is.EqualTo(18));
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Times
+    ///
+    /// <summary>
+    /// Tests the Times extended method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Times()
+    {
+        var dest = 0;
+        10.Times(i => dest += i);
+        Assert.That(dest, Is.EqualTo(45));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Try
+    ///
+    /// <summary>
+    /// Tests the Try extended method.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Try()
+    {
+        var n = 0;
+        Assert.That(10.Try(i => ThrowIfOdd(++n)), Is.True);
+        Assert.That(n, Is.EqualTo(2));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Try_False
+    ///
+    /// <summary>
+    /// Tests the Try extended method with the function that always
+    /// fails.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Try_False()
+    {
+        var errors = 0;
+        Assert.That(10.Try(i => ThrowIfOdd(1), (s, e) => ++errors), Is.False);
+        Assert.That(errors, Is.EqualTo(10));
+    }
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ThrowIfOdd
+    ///
+    /// <summary>
+    /// Throws if the specified value is odd number.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void ThrowIfOdd(int n) => IsOdd(n).Then(() => throw new ArgumentException("Odd number"));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// IsOdd
+    ///
+    /// <summary>
+    /// Determines whether the specified value is odd number.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private bool IsOdd(int n) => n % 2 != 0;
+
+    #endregion
 }

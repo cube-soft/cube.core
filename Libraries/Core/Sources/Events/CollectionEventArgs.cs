@@ -15,177 +15,176 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 using System.Collections.Generic;
 
-namespace Cube
+#region CollectionEventArgs
+
+/* ------------------------------------------------------------------------- */
+///
+/// CollectionEventArgs
+///
+/// <summary>
+/// Provides methods to create an instance of the CollectionEventArgs(T)
+/// or CollectionEventArgs(T) classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public static class CollectionEventArgs
 {
-    #region CollectionEventArgs
+    #region Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// CollectionEventArgs
+    /// Create
     ///
     /// <summary>
-    /// Provides methods to create an instance of the CollectionEventArgs(T)
-    /// or CollectionEventArgs(T) classes.
+    /// Creates a new instance of the CollectionEventArgs(T) class
+    /// with the specified value.
     /// </summary>
     ///
+    /// <param name="value">Value to use for the event.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public static class CollectionEventArgs
-    {
-        #region Methods
+    public static CollectionEventArgs<T> Create<T>(IEnumerable<T> value) => new(value);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the CollectionEventArgs(T) class
-        /// with the specified value.
-        /// </summary>
-        ///
-        /// <param name="value">Value to use for the event.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static CollectionEventArgs<T> Create<T>(IEnumerable<T> value) => new(value);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a new instance of the CollectionEventArgs(T) class
-        /// with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="value">Value to use for the event.</param>
-        /// <param name="cancel">
-        /// true to cancel the event; otherwise, false.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static CollectionCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
-            new(value, cancel);
-
-        #endregion
-    }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Create
+    ///
+    /// <summary>
+    /// Creates a new instance of the CollectionEventArgs(T) class
+    /// with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="value">Value to use for the event.</param>
+    /// <param name="cancel">
+    /// true to cancel the event; otherwise, false.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static CollectionCancelEventArgs<T> Create<T>(IEnumerable<T> value, bool cancel) =>
+        new(value, cancel);
 
     #endregion
+}
 
-    #region CollectionEventArgs<T>
+#endregion
+
+#region CollectionEventArgs<T>
+
+/* ------------------------------------------------------------------------- */
+///
+/// CollectionEventArgs(T)
+///
+/// <summary>
+/// Provides a value of type IEnumerable(T) to use for events.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class CollectionEventArgs<T> : ValueEventArgs<IEnumerable<T>>
+{
+    #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
     /// CollectionEventArgs(T)
     ///
     /// <summary>
-    /// Provides a value of type IEnumerable(T) to use for events.
+    /// Creates a new instance of the CollectionEventArgs class with
+    /// the specified value.
     /// </summary>
     ///
-    /* --------------------------------------------------------------------- */
-    public class CollectionEventArgs<T> : ValueEventArgs<IEnumerable<T>>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CollectionEventArgs(T)
-        ///
-        /// <summary>
-        /// Creates a new instance of the CollectionEventArgs class with
-        /// the specified value.
-        /// </summary>
-        ///
-        /// <param name="value">Value to use for the event.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public CollectionEventArgs(IEnumerable<T> value) : base(value) { }
-
-        #endregion
-    }
-
-    #endregion
-
-    #region CollectionCancelEventArgs<T>
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CollectionCancelEventArgs(T)
-    ///
-    /// <summary>
-    /// Provides data for a cancelable event with a value of type
-    /// IEnumerable(T).
-    /// </summary>
+    /// <param name="value">Value to use for the event.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public class CollectionCancelEventArgs<T> : ValueCancelEventArgs<IEnumerable<T>>
-    {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CollectionCancelEventArgs
-        ///
-        /// <summary>
-        /// Initializes a new instance of the CollectionCancelEventArgs
-        /// class with the specified value. The Cancel property is set
-        /// to false.
-        /// </summary>
-        ///
-        /// <param name="value">Value to use for the event.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public CollectionCancelEventArgs(IEnumerable<T> value) : this(value, false) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CollectionCancelEventArgs
-        ///
-        /// <summary>
-        /// Initializes a new instance of the CollectionCancelEventArgs
-        /// class with the specified arguments.
-        /// </summary>
-        ///
-        /// <param name="value">Value to use for the event.</param>
-        /// <param name="cancel">
-        /// true to cancel the event; otherwise, false.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) :
-            base(value, cancel) { }
-
-        #endregion
-    }
-
-    #endregion
-
-    #region CollectionEventHandlers
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CollectionEventHandler(T)
-    ///
-    /// <summary>
-    /// Represents the method to invoke an event.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Serializable]
-    public delegate void CollectionEventHandler<T>(object sender, CollectionEventArgs<T> e);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// CollectionCancelEventHandler(T)
-    ///
-    /// <summary>
-    /// Represents the method to invoke an event.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Serializable]
-    public delegate void CollectionCancelEventHandler<T>(object sender, CollectionCancelEventArgs<T> e);
+    public CollectionEventArgs(IEnumerable<T> value) : base(value) { }
 
     #endregion
 }
+
+#endregion
+
+#region CollectionCancelEventArgs<T>
+
+/* ------------------------------------------------------------------------- */
+///
+/// CollectionCancelEventArgs(T)
+///
+/// <summary>
+/// Provides data for a cancelable event with a value of type
+/// IEnumerable(T).
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class CollectionCancelEventArgs<T> : ValueCancelEventArgs<IEnumerable<T>>
+{
+    #region Constructors
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CollectionCancelEventArgs
+    ///
+    /// <summary>
+    /// Initializes a new instance of the CollectionCancelEventArgs
+    /// class with the specified value. The Cancel property is set
+    /// to false.
+    /// </summary>
+    ///
+    /// <param name="value">Value to use for the event.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public CollectionCancelEventArgs(IEnumerable<T> value) : this(value, false) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CollectionCancelEventArgs
+    ///
+    /// <summary>
+    /// Initializes a new instance of the CollectionCancelEventArgs
+    /// class with the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="value">Value to use for the event.</param>
+    /// <param name="cancel">
+    /// true to cancel the event; otherwise, false.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public CollectionCancelEventArgs(IEnumerable<T> value, bool cancel) :
+        base(value, cancel) { }
+
+    #endregion
+}
+
+#endregion
+
+#region CollectionEventHandlers
+
+/* ------------------------------------------------------------------------- */
+///
+/// CollectionEventHandler(T)
+///
+/// <summary>
+/// Represents the method to invoke an event.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[Serializable]
+public delegate void CollectionEventHandler<T>(object sender, CollectionEventArgs<T> e);
+
+/* ------------------------------------------------------------------------- */
+///
+/// CollectionCancelEventHandler(T)
+///
+/// <summary>
+/// Represents the method to invoke an event.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[Serializable]
+public delegate void CollectionCancelEventHandler<T>(object sender, CollectionCancelEventArgs<T> e);
+
+#endregion

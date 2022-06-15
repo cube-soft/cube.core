@@ -15,42 +15,41 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Demo;
+
 using System.Reflection;
 
-namespace Cube.Forms.Demo
+/* ------------------------------------------------------------------------- */
+///
+/// MainFacade
+///
+/// <summary>
+/// Represents the facade model to communicate with the MainViewModel
+/// object.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class MainFacade
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// MainFacade
+    /// Assembly
     ///
     /// <summary>
-    /// Represents the facade model to communicate with the MainViewModel
-    /// object.
+    /// Gets the assembly object.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class MainFacade
-    {
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Assembly
-        ///
-        /// <summary>
-        /// Gets the assembly object.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
+    public Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
-        /* --------------------------------------------------------------------- */
-        ///
-        /// Notice
-        ///
-        /// <summary>
-        /// Gets the model for notice component.
-        /// </summary>
-        ///
-        /* --------------------------------------------------------------------- */
-        public NoticeFacade Notice { get; } = new();
-    }
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Notice
+    ///
+    /// <summary>
+    /// Gets the model for notice component.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public NoticeFacade Notice { get; } = new();
 }

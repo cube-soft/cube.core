@@ -15,50 +15,45 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Windows.Controls;
 using Cube.Mixin.Commands;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// CommandBehaviorTest
+///
+/// <summary>
+/// Tests for the CommandBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class CommandBehaviorTest
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests for the CommandBehavior class.
+    /// Confirms default values of properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class CommandBehaviorTest
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var src = new CommandBehavior<TextBox, int>();
+        Assert.That(src.Command,          Is.Null);
+        Assert.That(src.CommandParameter, Is.EqualTo(0));
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Properties
-        ///
-        /// <summary>
-        /// Confirms default values of properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties()
-        {
-            var src = new CommandBehavior<TextBox, int>();
-            Assert.That(src.Command,          Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
-
-            src.Command = new DelegateCommand(() => { });
-            src.CommandParameter = 10;
-            Assert.That(src.Command,              Is.Not.Null);
-            Assert.That(src.Command.CanExecute(), Is.True);
-            Assert.That(src.CommandParameter,     Is.EqualTo(10));
-        }
-
-        #endregion
+        src.Command = new DelegateCommand(() => { });
+        src.CommandParameter = 10;
+        Assert.That(src.Command,              Is.Not.Null);
+        Assert.That(src.Command.CanExecute(), Is.True);
+        Assert.That(src.CommandParameter,     Is.EqualTo(10));
     }
 }

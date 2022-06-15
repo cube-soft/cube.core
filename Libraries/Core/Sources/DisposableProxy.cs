@@ -15,85 +15,82 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// DisposableProxy
+///
+/// <summary>
+/// Provides functionality to invoke the provided IDisposable object
+/// when disposing.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public abstract class DisposableProxy : DisposableBase
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// DisposableProxy
     ///
     /// <summary>
-    /// Provides functionality to invoke the provided IDisposable object
-    /// when disposing.
+    /// Initializes a new instance of the DisposableProxy with the
+    /// specified arguments.
     /// </summary>
     ///
+    /// <param name="func">
+    /// Function to create an IDisposable object.
+    /// </param>
+    ///
     /* --------------------------------------------------------------------- */
-    public abstract class DisposableProxy : DisposableBase
+    protected DisposableProxy(Func<IDisposable> func) : this(func()) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DisposableProxy
+    ///
+    /// <summary>
+    /// Initializes a new instance of the DisposableProxy with the
+    /// specified arguments.
+    /// </summary>
+    ///
+    /// <param name="disposable">IDisposable object.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected DisposableProxy(IDisposable disposable) =>
+        _disposable = disposable ?? throw new ArgumentNullException();
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object and
+    /// optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisposableProxy
-        ///
-        /// <summary>
-        /// Initializes a new instance of the DisposableProxy with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="func">
-        /// Function to create an IDisposable object.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DisposableProxy(Func<IDisposable> func) : this(func()) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DisposableProxy
-        ///
-        /// <summary>
-        /// Initializes a new instance of the DisposableProxy with the
-        /// specified arguments.
-        /// </summary>
-        ///
-        /// <param name="disposable">IDisposable object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected DisposableProxy(IDisposable disposable)
-        {
-            _disposable = disposable ?? throw new ArgumentNullException();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing) _disposable.Dispose();
-        }
-
-        #endregion
-
-        #region Fields
-        private readonly IDisposable _disposable;
-        #endregion
+        if (disposing) _disposable.Dispose();
     }
+
+    #endregion
+
+    #region Fields
+    private readonly IDisposable _disposable;
+    #endregion
 }

@@ -15,44 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Behaviors;
+
 using System.Threading;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ShowBehaviorTest
+///
+/// <summary>
+/// Tests the ShowBehavior class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+[Apartment(ApartmentState.STA)]
+class ShowDialogBehaviorTest : ViewFixture
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehaviorTest
+    /// Test
     ///
     /// <summary>
-    /// Tests the ShowBehavior class.
+    /// Tests the create, attach, and detach methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class ShowDialogBehaviorTest : ViewFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Test
-        ///
-        /// <summary>
-        /// Tests the create, attach, and detach methods.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Test()
-        {
-            var view = Hack(new MockWindow());
-            var src  = Attach(view, new ShowDialogBehavior<MockWindow, MockViewModel>());
-            src.Detach();
-        }
-
-        #endregion
+        var view = Hack(new MockWindow());
+        var src  = Attach(view, new ShowDialogBehavior<MockWindow, MockViewModel>());
+        src.Detach();
     }
 }

@@ -15,119 +15,118 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui;
+
 using System;
 
-namespace Cube.Xui
+/* ------------------------------------------------------------------------- */
+///
+/// DelegateCommand
+///
+/// <summary>
+/// Represents an ICommand implementation that can be associated with
+/// INotifyPropertyChanged objects.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class DelegateCommand : DelegateCommandBase
 {
+    #region Constructors
+
     /* --------------------------------------------------------------------- */
     ///
     /// DelegateCommand
     ///
     /// <summary>
-    /// Represents an ICommand implementation that can be associated with
-    /// INotifyPropertyChanged objects.
+    /// Initializes a new instance of the BindableCommand class with
+    /// the specified action.
     /// </summary>
     ///
+    /// <param name="execute">Action to execute.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class DelegateCommand : DelegateCommandBase
+    public DelegateCommand(Action execute) : this(execute, () => true) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DelegateCommand
+    ///
+    /// <summary>
+    /// Initializes a new instance of the BindableCommand class with
+    /// the specified action.
+    /// </summary>
+    ///
+    /// <param name="execute">Action to execute.</param>
+    /// <param name="canExecute">
+    /// Function to determine whether the command can be executed.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public DelegateCommand(Action execute, Func<bool> canExecute)
     {
-        #region Constructors
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DelegateCommand
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BindableCommand class with
-        /// the specified action.
-        /// </summary>
-        ///
-        /// <param name="execute">Action to execute.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DelegateCommand(Action execute) : this(execute, () => true) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// DelegateCommand
-        ///
-        /// <summary>
-        /// Initializes a new instance of the BindableCommand class with
-        /// the specified action.
-        /// </summary>
-        ///
-        /// <param name="execute">Action to execute.</param>
-        /// <param name="canExecute">
-        /// Function to determine whether the command can be executed.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DelegateCommand(Action execute, Func<bool> canExecute)
-        {
-            _execute    = execute    ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
-        }
-
-        #endregion
-
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnCanExecute
-        ///
-        /// <summary>
-        /// Determines whether the command can execute in its current state.
-        /// </summary>
-        ///
-        /// <param name="parameter">Not used parameter.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override bool OnCanExecute(object parameter) => _canExecute?.Invoke() ?? false;
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnExecute
-        ///
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        ///
-        /// <param name="parameter">Not used parameter.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnExecute(object parameter) => _execute?.Invoke();
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object
-        /// and optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                _execute    = null;
-                _canExecute = null;
-            }
-            finally { base.Dispose(disposing); }
-        }
-
-        #endregion
-
-        #region Fields
-        private Action _execute;
-        private Func<bool> _canExecute;
-        #endregion
+        _execute    = execute    ?? throw new ArgumentNullException(nameof(execute));
+        _canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
     }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnCanExecute
+    ///
+    /// <summary>
+    /// Determines whether the command can execute in its current state.
+    /// </summary>
+    ///
+    /// <param name="parameter">Not used parameter.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override bool OnCanExecute(object parameter) => _canExecute?.Invoke() ?? false;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnExecute
+    ///
+    /// <summary>
+    /// Executes the command.
+    /// </summary>
+    ///
+    /// <param name="parameter">Not used parameter.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnExecute(object parameter) => _execute?.Invoke();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Dispose
+    ///
+    /// <summary>
+    /// Releases the unmanaged resources used by the object
+    /// and optionally releases the managed resources.
+    /// </summary>
+    ///
+    /// <param name="disposing">
+    /// true to release both managed and unmanaged resources;
+    /// false to release only unmanaged resources.
+    /// </param>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void Dispose(bool disposing)
+    {
+        try
+        {
+            _execute    = null;
+            _canExecute = null;
+        }
+        finally { base.Dispose(disposing); }
+    }
+
+    #endregion
+
+    #region Fields
+    private Action _execute;
+    private Func<bool> _canExecute;
+    #endregion
 }

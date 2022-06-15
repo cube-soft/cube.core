@@ -15,51 +15,50 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Behaviors;
+
 using System.Linq;
 using System.Windows.Forms;
 using Cube.Mixin.String;
 
-namespace Cube.Forms.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// OpenFileBehavior
+///
+/// <summary>
+/// Provides functionality to show a open-file dialog.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
     /// OpenFileBehavior
     ///
     /// <summary>
-    /// Provides functionality to show a open-file dialog.
+    /// Initializes a new instance of the OpenFileBehavior class
+    /// with the specified presentable object.
     /// </summary>
     ///
+    /// <param name="aggregator">Aggregator object.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
+    public OpenFileBehavior(IAggregator aggregator) : base(aggregator, e =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OpenFileBehavior
-        ///
-        /// <summary>
-        /// Initializes a new instance of the OpenFileBehavior class
-        /// with the specified presentable object.
-        /// </summary>
-        ///
-        /// <param name="aggregator">Aggregator object.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public OpenFileBehavior(IAggregator aggregator) : base(aggregator, e =>
+        var view = new OpenFileDialog
         {
-            var view = new OpenFileDialog
-            {
-                CheckPathExists = e.CheckPathExists,
-                Multiselect     = e.Multiselect,
-                Filter          = e.GetFilterText(),
-                FilterIndex     = e.GetFilterIndex(),
-            };
+            CheckPathExists = e.CheckPathExists,
+            Multiselect     = e.Multiselect,
+            Filter          = e.GetFilterText(),
+            FilterIndex     = e.GetFilterIndex(),
+        };
 
-            if (e.Text.HasValue()) view.Title = e.Text;
-            if (e.Value.Any()) view.FileName = e.Value.First();
-            if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
+        if (e.Text.HasValue()) view.Title = e.Text;
+        if (e.Value.Any()) view.FileName = e.Value.First();
+        if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 
-            e.Cancel = view.ShowDialog() != DialogResult.OK;
-            if (!e.Cancel) e.Value = view.FileNames;
-        }) { }
-    }
+        e.Cancel = view.ShowDialog() != DialogResult.OK;
+        if (!e.Cancel) e.Value = view.FileNames;
+    }) { }
 }

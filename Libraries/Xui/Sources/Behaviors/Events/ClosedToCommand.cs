@@ -15,74 +15,73 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System;
 using System.Windows;
 using Cube.Mixin.Commands;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ClosedToCommand
+///
+/// <summary>
+/// Represents the behavior when the Closed event is fired.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ClosedToCommand : CommandBehavior<Window>
 {
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
-    /// ClosedToCommand
+    /// OnAttached
     ///
     /// <summary>
-    /// Represents the behavior when the Closed event is fired.
+    /// Occurs when the instance is attached to the Window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ClosedToCommand : CommandBehavior<Window>
+    protected override void OnAttached()
     {
-        #region Methods
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Occurs when the instance is attached to the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.Closed -= WhenClosed;
-            AssociatedObject.Closed += WhenClosed;
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnDetaching
-        ///
-        /// <summary>
-        /// Occurs when the instance is detaching from the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.Closed -= WhenClosed;
-            base.OnDetaching();
-        }
-
-        #endregion
-
-        #region Implementations
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// WhenClosed
-        ///
-        /// <summary>
-        /// Occurs when the Close event is fired.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        private void WhenClosed(object s, EventArgs e)
-        {
-            if (Command?.CanExecute() ?? false) Command.Execute();
-        }
-
-        #endregion
+        base.OnAttached();
+        AssociatedObject.Closed -= WhenClosed;
+        AssociatedObject.Closed += WhenClosed;
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnDetaching
+    ///
+    /// <summary>
+    /// Occurs when the instance is detaching from the Window.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override void OnDetaching()
+    {
+        AssociatedObject.Closed -= WhenClosed;
+        base.OnDetaching();
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// WhenClosed
+    ///
+    /// <summary>
+    /// Occurs when the Close event is fired.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void WhenClosed(object s, EventArgs e)
+    {
+        if (Command?.CanExecute() ?? false) Command.Execute();
+    }
+
+    #endregion
 }

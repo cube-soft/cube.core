@@ -15,143 +15,142 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Messages;
+
 using System.Linq;
 using NUnit.Framework;
 
-namespace Cube.Tests.Messages
+/* ------------------------------------------------------------------------- */
+///
+/// OpenFileMessage
+///
+/// <summary>
+/// Tests the OpenFileMessage class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class OpenFileMessageTest : FileFixture
 {
+    #region Tests
+
     /* --------------------------------------------------------------------- */
     ///
-    /// OpenFileMessage
+    /// Test
     ///
     /// <summary>
-    /// Tests the OpenFileMessage class.
+    /// Tests the constructor and confirms values of some properties.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class OpenFileMessageTest : FileFixture
+    [Test]
+    public void Test()
     {
-        #region Tests
+        var dest = new OpenFileMessage();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init()
-        {
-            var dest = new OpenFileMessage();
-
-            Assert.That(dest.Text,             Is.Empty);
-            Assert.That(dest.Value.Count(),    Is.EqualTo(0));
-            Assert.That(dest.InitialDirectory, Is.Empty);
-            Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-            Assert.That(dest.CheckPathExists,  Is.True);
-            Assert.That(dest.Multiselect,      Is.False);
-            Assert.That(dest.Cancel,           Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithNullOrEmpty
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("")]
-        [TestCase(null)]
-        public void Init_WithNullOrEmpty(string src)
-        {
-            var dest = new OpenFileMessage(src);
-
-            Assert.That(dest.Text,             Is.Empty);
-            Assert.That(dest.Value.Count(),    Is.EqualTo(0));
-            Assert.That(dest.InitialDirectory, Is.Empty);
-            Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-            Assert.That(dest.CheckPathExists,  Is.True);
-            Assert.That(dest.Multiselect,      Is.False);
-            Assert.That(dest.Cancel,           Is.False);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithFile
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Sample.txt")]
-        [TestCase("InExistent.dat")]
-        public void Init_WithFile(string filename)
-        {
-            var src  = GetSource(filename);
-            var dest = new OpenFileMessage(src);
-
-            Assert.That(dest.Value.Count(),    Is.EqualTo(1));
-            Assert.That(dest.Value.First(),    Is.EqualTo(filename));
-            Assert.That(dest.InitialDirectory, Is.EqualTo(Examples));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Init_WithDirectory
-        ///
-        /// <summary>
-        /// Tests the constructor and confirms values of some properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Init_WithDirectory()
-        {
-            var dest = new OpenFileMessage(Results);
-
-            Assert.That(dest.Value.Count(),    Is.EqualTo(0));
-            Assert.That(dest.InitialDirectory, Is.EqualTo(Results));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// FilterIndex
-        ///
-        /// <summary>
-        /// Tests the Filters and FilterIndex properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Sample.txt",    ExpectedResult = 1)]
-        [TestCase("Sample.Jpg",    ExpectedResult = 2)]
-        [TestCase("Sample.tar.gz", ExpectedResult = 3)]
-        [TestCase("Sample",        ExpectedResult = 0)]
-        public int GetFilterIndex(string filename)
-        {
-            var dest = new OpenFileMessage(Get(filename))
-            {
-                Filters = new FileDialogFilter[]
-                {
-                    new("Texts", ".txt"),
-                    new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
-                    new("Archives", "zip", "tar.gz"),
-                    new("All", "*"),
-                }
-            };
-
-            var s = dest.GetFilterText();
-            Assert.That(s, Does.StartWith("Texts (*.txt)|*.txt;*.TXT;*.Txt|"));
-            Assert.That(s, Does.EndWith("|All (*.*)|*.*"));
-            return dest.GetFilterIndex();
-        }
-
-        #endregion
+        Assert.That(dest.Text,             Is.Empty);
+        Assert.That(dest.Value.Count(),    Is.EqualTo(0));
+        Assert.That(dest.InitialDirectory, Is.Empty);
+        Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
+        Assert.That(dest.CheckPathExists,  Is.True);
+        Assert.That(dest.Multiselect,      Is.False);
+        Assert.That(dest.Cancel,           Is.False);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithNullOrEmpty
+    ///
+    /// <summary>
+    /// Tests the constructor and confirms values of some properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("")]
+    [TestCase(null)]
+    public void Test_WithNullOrEmpty(string src)
+    {
+        var dest = new OpenFileMessage(src);
+
+        Assert.That(dest.Text,             Is.Empty);
+        Assert.That(dest.Value.Count(),    Is.EqualTo(0));
+        Assert.That(dest.InitialDirectory, Is.Empty);
+        Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
+        Assert.That(dest.CheckPathExists,  Is.True);
+        Assert.That(dest.Multiselect,      Is.False);
+        Assert.That(dest.Cancel,           Is.False);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithFile
+    ///
+    /// <summary>
+    /// Tests the constructor and confirms values of some properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("Sample.txt")]
+    [TestCase("InExistent.dat")]
+    public void Test_WithFile(string filename)
+    {
+        var src  = GetSource(filename);
+        var dest = new OpenFileMessage(src);
+
+        Assert.That(dest.Value.Count(),    Is.EqualTo(1));
+        Assert.That(dest.Value.First(),    Is.EqualTo(filename));
+        Assert.That(dest.InitialDirectory, Is.EqualTo(Examples));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Test_WithDirectory
+    ///
+    /// <summary>
+    /// Tests the constructor and confirms values of some properties.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Test_WithDirectory()
+    {
+        var dest = new OpenFileMessage(Results);
+
+        Assert.That(dest.Value.Count(),    Is.EqualTo(0));
+        Assert.That(dest.InitialDirectory, Is.EqualTo(Results));
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetFilterIndex
+    ///
+    /// <summary>
+    /// Tests the GetFilterText and GetFilterIndex methods.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("Sample.txt",    ExpectedResult = 1)]
+    [TestCase("Sample.Jpg",    ExpectedResult = 2)]
+    [TestCase("Sample.tar.gz", ExpectedResult = 3)]
+    [TestCase("Sample",        ExpectedResult = 0)]
+    public int GetFilterIndex(string filename)
+    {
+        var dest = new OpenFileMessage(Get(filename))
+        {
+            Filters = new FileDialogFilter[]
+            {
+                new("Texts", ".txt"),
+                new("Images", "*.png", "*.jpg", "*.jpeg", "*.bmp"),
+                new("Archives", "zip", "tar.gz"),
+                new("All", "*"),
+            }
+        };
+
+        var s = dest.GetFilterText();
+        Assert.That(s, Does.StartWith("Texts (*.txt)|*.txt;*.TXT;*.Txt|"));
+        Assert.That(s, Does.EndWith("|All (*.*)|*.*"));
+        return dest.GetFilterIndex();
+    }
+
+    #endregion
 }

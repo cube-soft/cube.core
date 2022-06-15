@@ -15,42 +15,37 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Tests.Mixin;
+
 using System;
 using Cube.Mixin.Environment;
 using NUnit.Framework;
 
-namespace Cube.Tests.Mixin
+/* ------------------------------------------------------------------------- */
+///
+/// EnvironmentTest
+///
+/// <summary>
+/// Tests extended methods of the Environment class.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class EnvironmentTest
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// EnvironmentTest
+    /// GetName
     ///
     /// <summary>
-    /// Tests extended methods of the Environment class.
+    /// Tests the GetName extended method.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class EnvironmentTest
+    [TestCase(Environment.SpecialFolder.System, @"Windows\System32")]
+    public void GetName(Environment.SpecialFolder src, string value)
     {
-        #region Tests
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// GetName
-        ///
-        /// <summary>
-        /// Tests the GetName extended method.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase(Environment.SpecialFolder.System, @"Windows\System32")]
-        public void GetName(Environment.SpecialFolder src, string value)
-        {
-            var dest = src.GetName().ToLowerInvariant();
-            Assert.That(dest, Does.EndWith(value.ToLowerInvariant()));
-        }
-
-        #endregion
+        var dest = src.GetName().ToLowerInvariant();
+        Assert.That(dest, Does.EndWith(value.ToLowerInvariant()));
     }
 }

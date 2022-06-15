@@ -15,37 +15,36 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Windows;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// ShowBehavior(TView, TViewModel)
+///
+/// <summary>
+/// Represents the behavior to show a TView window using a TViewModel
+/// message.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
+    where TView : Window, new()
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ShowBehavior(TView, TViewModel)
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior to show a TView window using a TViewModel
-    /// message.
+    /// Invokes the action.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class ShowBehavior<TView, TViewModel> : MessageBehavior<TViewModel>
-        where TView : Window, new()
+    protected override void Invoke(TViewModel e)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the action.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(TViewModel e)
-        {
-            var dest = new TView { DataContext = e };
-            if (AssociatedObject is Window wnd) dest.Owner = wnd;
-            dest.Show();
-        }
+        var dest = new TView { DataContext = e };
+        if (AssociatedObject is Window wnd) dest.Owner = wnd;
+        dest.Show();
     }
 }

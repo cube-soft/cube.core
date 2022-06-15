@@ -15,33 +15,32 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Behaviors;
+
 using System.Windows;
 
-namespace Cube.Xui.Behaviors
+/* ------------------------------------------------------------------------- */
+///
+/// CloseBehavior
+///
+/// <summary>
+/// Represents the behavior to close the window.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public class CloseBehavior : MessageBehavior<CloseMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehavior
+    /// Invoke
     ///
     /// <summary>
-    /// Represents the behavior to close the window.
+    /// Invokes the operations.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class CloseBehavior : MessageBehavior<CloseMessage>
+    protected override void Invoke(CloseMessage e)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Invoke
-        ///
-        /// <summary>
-        /// Invokes the operations.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Invoke(CloseMessage e)
-        {
-            if (AssociatedObject is Window w) w.Close();
-        }
+        if (AssociatedObject is Window w) w.Close();
     }
 }

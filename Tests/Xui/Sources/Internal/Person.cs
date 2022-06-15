@@ -15,53 +15,52 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests;
+
 using Cube.DataContract;
 
-namespace Cube.Xui.Tests
+/* ------------------------------------------------------------------------- */
+///
+/// Person
+///
+/// <summary>
+/// Represents the dummy data for testing.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+class Person : SerializableBase
 {
-    /* ----------------------------------------------------------------- */
+    #region Properties
+
+    /* --------------------------------------------------------------------- */
     ///
-    /// Person
+    /// Name
     ///
     /// <summary>
-    /// Represents the dummy data for testing.
+    /// Gets or sets the name.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    class Person : SerializableBase
+    /* --------------------------------------------------------------------- */
+    public string Name
     {
-        #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Name
-        ///
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Name
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Age
-        ///
-        /// <summary>
-        /// Gets or sets the age.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int Age
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
-
-        #endregion
+        get => Get<string>();
+        set => Set(value);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Age
+    ///
+    /// <summary>
+    /// Gets or sets the age.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public int Age
+    {
+        get => Get<int>();
+        set => Set(value);
+    }
+
+    #endregion
 }

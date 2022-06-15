@@ -15,46 +15,45 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms.Demo;
+
 using System;
 using System.Reflection;
 using Cube.Mixin.Collections;
 
-namespace Cube.Forms.Demo
+/* ------------------------------------------------------------------------- */
+///
+/// Program
+///
+/// <summary>
+/// Represents the main program.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+static class Program
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Program
+    /// Main
     ///
     /// <summary>
-    /// Represents the main program.
+    /// Executes the main program of the application.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class Program
+    [STAThread]
+    static void Main(string[] args)
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Main
-        ///
-        /// <summary>
-        /// Executes the main program of the application.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [STAThread]
-        static void Main(string[] args)
-        {
-            var src = typeof(Program);
-            _ = Logger.ObserveTaskException();
-            src.LogInfo(Assembly.GetExecutingAssembly());
-            src.LogInfo($"[ {args.Join(" ")} ]");
+        var src = typeof(Program);
+        _ = Logger.ObserveTaskException();
+        src.LogInfo(Assembly.GetExecutingAssembly());
+        src.LogInfo($"[ {args.Join(" ")} ]");
 
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        System.Windows.Forms.Application.EnableVisualStyles();
+        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
-            var view = new MainWindow();
-            view.Bind(new MainViewModel());
-            System.Windows.Forms.Application.Run(view);
-        }
+        var view = new MainWindow();
+        view.Bind(new MainViewModel());
+        System.Windows.Forms.Application.Run(view);
     }
 }

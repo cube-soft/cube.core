@@ -15,62 +15,61 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Xui.Tests.Converters;
+
 using Cube.DataContract;
 using Cube.Xui.Converters;
 using NUnit.Framework;
 
-namespace Cube.Xui.Tests.Converters
+/* ------------------------------------------------------------------------- */
+///
+/// StringConverterTest
+///
+/// <summary>
+/// Tests the string related converter classes.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[TestFixture]
+class StringConverterTest : ConvertHelper
 {
+    #region UpperCase
+
     /* --------------------------------------------------------------------- */
     ///
-    /// StringConverterTest
+    /// UpperCase
     ///
     /// <summary>
-    /// Tests the string related converter classes.
+    /// Tests the UpperCase class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class StringConverterTest : ConvertHelper
-    {
-        #region UpperCase
+    [TestCase("Hello", ExpectedResult = "HELLO")]
+    [TestCase("Ｂｙｅ", ExpectedResult = "ＢＹＥ")]
+    [TestCase("Hello 日本", ExpectedResult = "HELLO 日本")]
+    [TestCase(Format.Json, ExpectedResult = "JSON")]
+    [TestCase(null, ExpectedResult = "")]
+    public string UpperCase(object src) => Convert<string>(new UpperCase(), src);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// UpperCase
-        ///
-        /// <summary>
-        /// Tests the UpperCase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Hello", ExpectedResult = "HELLO")]
-        [TestCase("Ｂｙｅ", ExpectedResult = "ＢＹＥ")]
-        [TestCase("Hello 日本", ExpectedResult = "HELLO 日本")]
-        [TestCase(Format.Json, ExpectedResult = "JSON")]
-        [TestCase(null, ExpectedResult = "")]
-        public string UpperCase(object src) => Convert<string>(new UpperCase(), src);
+    #endregion
 
-        #endregion
+    #region LowerCase
 
-        #region LowerCase
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LowerCase
+    ///
+    /// <summary>
+    /// Tests the LowerCase class.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [TestCase("Hello", ExpectedResult = "hello")]
+    [TestCase("Ｂｙｅ", ExpectedResult = "ｂｙｅ")]
+    [TestCase("Hello 日本", ExpectedResult = "hello 日本")]
+    [TestCase(Format.Json, ExpectedResult = "json")]
+    [TestCase(null, ExpectedResult = "")]
+    public string LowerCase(object src) => Convert<string>(new LowerCase(), src);
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// LowerCase
-        ///
-        /// <summary>
-        /// Tests the LowerCase class.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [TestCase("Hello", ExpectedResult = "hello")]
-        [TestCase("Ｂｙｅ", ExpectedResult = "ｂｙｅ")]
-        [TestCase("Hello 日本", ExpectedResult = "hello 日本")]
-        [TestCase(Format.Json, ExpectedResult = "json")]
-        [TestCase(null, ExpectedResult = "")]
-        public string LowerCase(object src) => Convert<string>(new LowerCase(), src);
-
-        #endregion
-    }
+    #endregion
 }

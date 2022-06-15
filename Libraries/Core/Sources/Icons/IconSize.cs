@@ -15,26 +15,25 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Icons
+namespace Cube.Icons;
+
+/* ------------------------------------------------------------------------- */
+///
+/// IconSize
+///
+/// <summary>
+/// Specifies the size of the icons provided by the system.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+public enum IconSize : int
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// IconSize
-    ///
-    /// <summary>
-    /// Specifies the size of the icons provided by the system.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public enum IconSize : int
-    {
-        /// <summary>32x32 pixel.</summary>
-        Large       =  0,
-        /// <summary>16x16 pixel.</summary>
-        Small       =  1,
-        /// <summary>48x48 pixel.</summary>
-        ExtraLarge  =  2,
-        /// <summary>256x256 pixel.</summary>
-        Jumbo       =  4
-    }
+    /// <summary>32x32 pixel.</summary>
+    Large       =  0,
+    /// <summary>16x16 pixel.</summary>
+    Small       =  1,
+    /// <summary>48x48 pixel.</summary>
+    ExtraLarge  =  2,
+    /// <summary>256x256 pixel.</summary>
+    Jumbo       =  4
 }

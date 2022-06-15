@@ -15,47 +15,46 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube;
+
 using System.Linq;
 
-namespace Cube
+/* ------------------------------------------------------------------------- */
+///
+/// HashCode
+///
+/// <summary>
+/// Provides functionality to calculate the value used in the
+/// GetHashCode method.
+/// </summary>
+///
+/// <remarks>
+/// Implementation is referenced System.Numerics.Hashing.HashHelpers
+/// in the .NET CoreRT project.
+/// </remarks>
+///
+/// <seealso href="https://github.com/dotnet/corert" />
+///
+/* ------------------------------------------------------------------------- */
+public static class HashCode
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// HashCode
+    /// Create
     ///
     /// <summary>
-    /// Provides functionality to calculate the value used in the
-    /// GetHashCode method.
+    /// Creates a value used in the GetHashCode method with the
+    /// specified values.
     /// </summary>
     ///
-    /// <remarks>
-    /// Implementation is referenced System.Numerics.Hashing.HashHelpers
-    /// in the .NET CoreRT project.
-    /// </remarks>
+    /// <param name="values">Source values</param>
     ///
-    /// <seealso href="https://github.com/dotnet/corert" />
+    /// <returns>Calculated hash.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static class HashCode
+    public static int Create(params int[] values) => values.Aggregate((hash, e) =>
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create
-        ///
-        /// <summary>
-        /// Creates a value used in the GetHashCode method with the
-        /// specified values.
-        /// </summary>
-        ///
-        /// <param name="values">Source values</param>
-        ///
-        /// <returns>Calculated hash.</returns>
-        ///
-        /* ----------------------------------------------------------------- */
-        public static int Create(params int[] values) => values.Aggregate((hash, e) =>
-        {
-            var rol5 = ((uint)hash << 5) | ((uint)hash >> 27);
-            return ((int)rol5 + hash) ^ e;
-        });
-    }
+        var rol5 = ((uint)hash << 5) | ((uint)hash >> 27);
+        return ((int)rol5 + hash) ^ e;
+    });
 }

@@ -15,23 +15,22 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+namespace Cube.Forms;
+
 using System.Runtime.InteropServices;
 
-namespace Cube.Forms
+/* ------------------------------------------------------------------------- */
+///
+/// POINT
+///
+/// <summary>
+/// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162805.aspx
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[StructLayout(LayoutKind.Sequential)]
+internal struct POINT
 {
-    /* --------------------------------------------------------------------- */
-    ///
-    /// POINT
-    ///
-    /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162805.aspx
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct POINT
-    {
-        public int x;
-        public int y;
-    }
+    public int x;
+    public int y;
 }
