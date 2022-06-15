@@ -16,7 +16,7 @@ The project provides support the MVVM pattern in WinForms or WPF applications. T
 
 The Cube.Core package provides some additional utility functions. One of them is Cube.FileSystem.Io class, which provides functionality to switch between the use of .NET standard methods or other third party libraries for I/O operations such as move, copy, delete, etc. The [Cube.FileSystem.AlphaFS](https://www.nuget.org/packages/cube.filesystem.alphafs/) package is the implementations of those I/O operations by using the [AlphaFS](https://alphafs.alphaleonis.com/) library.
 
-These packages are basically available for .NET Framework 3.5, 4.5, .NET Standard 2.0 (.NET Core 3.1), or later. Note that the Cube.FileSystem.AlphaFS package supports only .NET Framework.
+These packages are basically available for .NET Framework 3.5, 4.7, .NET Standard 2.0, .NET 6, or later. Note that the Cube.FileSystem.AlphaFS package supports only .NET Framework.
 
 The Cube.Core package depends on the [NLog](https://www.nuget.org/packages/NLog/) package. Other packages may depend on more packages. For more information, see the readme of each package.
 
