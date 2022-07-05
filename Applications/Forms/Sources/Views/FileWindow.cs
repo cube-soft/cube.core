@@ -19,7 +19,7 @@ namespace Cube.Forms.Demo;
 
 using System.Windows.Forms;
 using Cube.Forms.Behaviors;
-using Cube.Mixin.Forms;
+using Cube.Forms.Binding;
 
 /* ------------------------------------------------------------------------- */
 ///

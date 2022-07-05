@@ -15,22 +15,24 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Mixin.Forms;
+namespace Cube.Forms.Binding;
 
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// BindingExtension
+/// Extension
 ///
 /// <summary>
 /// Provides extended methods about Binding functions.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class BindingExtension
+public static class Extension
 {
     #region Bind
 
@@ -94,6 +96,31 @@ public static class BindingExtension
         string viewName,
         DataSourceUpdateMode viewMode
     ) => view.DataBindings.Add(new(viewName, src, name, false, viewMode));
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Bind
+    ///
+    /// <summary>
+    /// Binds the specified ComboBox object with the specified data.
+    /// </summary>
+    ///
+    /// <param name="src">ComboBox object.</param>
+    /// <param name="data">Collection of binding data.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Bind<T>(this ComboBox src, ComboListSource<T> data)
+    {
+        var obj = src.SelectedValue;
+        var cmp = EqualityComparer<T>.Default;
+
+        src.DataSource    = data;
+        src.DisplayMember = "Key";
+        src.ValueMember   = "Value";
+
+        if (obj is T v && data.Any(e => cmp.Equals(e.Value, v))) src.SelectedValue = v;
+        else if (data.Any()) src.SelectedValue = data.First().Value;
+    }
 
     #endregion
 
