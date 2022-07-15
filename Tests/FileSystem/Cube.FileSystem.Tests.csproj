@@ -21,7 +21,7 @@
         <DocumentationFile>bin\Any CPU\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Libraries\AlphaFS\Cube.AlphaFS.csproj" />
+        <ProjectReference Include="..\..\Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
         <PackageReference Include="NUnit3TestAdapter" Version="*" />

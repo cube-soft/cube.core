@@ -10,8 +10,6 @@
         <PackageReadmeFile>docs\Readme.md</PackageReadmeFile>
         <PackageIcon>images\Icon.png</PackageIcon>
         <PackageProjectUrl>https://github.com/cube-soft/Cube.Core</PackageProjectUrl>
-        <AssemblyName>Cube.FileSystem.AlphaFS</AssemblyName>
-        <RootNamespace>Cube.FileSystem.AlphaFS</RootNamespace>
         <TargetFramework>net47</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Optimize>true</Optimize>

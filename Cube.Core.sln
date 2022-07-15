@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cube.Forms.Controls", "Libr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Xui", "Libraries\Xui\Cube.Xui.csproj", "{1625EA91-9031-48CE-9D5C-20100B137B2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.AlphaFS", "Libraries\AlphaFS\Cube.AlphaFS.csproj", "{B0C3224E-6BA2-434E-B9F9-8DE45A4095A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.FileSystem.AlphaFS", "Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj", "{B0C3224E-6BA2-434E-B9F9-8DE45A4095A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Tests", "Libraries\Tests\Cube.Tests.csproj", "{8E1FF307-C59B-428D-9769-9A53B4CB81A4}"
 EndProject

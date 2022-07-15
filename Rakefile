@@ -28,7 +28,7 @@ PACKAGES  = ["Libraries/Core/Cube.Core",
              "Libraries/Forms/Core/Cube.Forms",
              "Libraries/Forms/Controls/Cube.Forms.Controls",
              "Libraries/Xui/Cube.Xui",
-             "Libraries/AlphaFS/Cube.AlphaFS",
+             "Libraries/AlphaFS/Cube.FileSystem.AlphaFS",
              "Libraries/Tests/Cube.Tests"]
 
 # --------------------------------------------------------------------------- #
