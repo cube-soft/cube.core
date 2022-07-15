@@ -48,6 +48,8 @@ public class ComboListSource<T> : IEnumerable<KeyValuePair<string, T>>, IListSou
 
     #endregion
 
+    #region Methods
+
     /* --------------------------------------------------------------------- */
     ///
     /// GetList
@@ -56,7 +58,7 @@ public class ComboListSource<T> : IEnumerable<KeyValuePair<string, T>>, IListSou
     /// Returns an IList that can be bound to a data source from an object
     /// that does not implement an IList itself.
     /// </summary>
-    /// 
+    ///
     /// <returns>
     /// An IList that can be bound to a data source from the object.
     /// </returns>
@@ -107,13 +109,15 @@ public class ComboListSource<T> : IEnumerable<KeyValuePair<string, T>>, IListSou
     /// <param name="value">
     /// Value associated with the displayed content of the ComboBox object.
     /// </param>
-    /// 
+    ///
     /// <remarks>
     /// The method is mainly used with the collection initializer.
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
     public void Add(string key, T value) => _inner.Add(new(key, value));
+
+    #endregion
 
     #region Fields
     private readonly List<KeyValuePair<string, T>> _inner = new();

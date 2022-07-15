@@ -31,7 +31,7 @@ using System.Windows.Forms;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class VersionWindow : Window
+public class VersionWindow : CustomWindow
 {
     #region Constructors
 

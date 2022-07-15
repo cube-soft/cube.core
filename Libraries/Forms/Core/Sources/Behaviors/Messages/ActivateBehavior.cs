@@ -15,35 +15,41 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms;
+namespace Cube.Forms.Behaviors;
 
-using System;
-using System.Diagnostics;
+using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// UriProcess
+/// ActivateBehavior
 ///
 /// <summary>
-/// Provides functionality to start a new process with the provided
-/// Uri object.
+/// Provides functionality to activate the window.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-internal static class UriProcess
+public class ActivateBehavior : MessageBehavior<ActivateMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Start
+    /// ActivateBehavior
     ///
     /// <summary>
-    /// Starts a new process with the specified Uri object.
+    /// Initializes a new instance of the ActivateBehavior class
+    /// with the specified arguments.
     /// </summary>
     ///
-    /// <param name="src">URL.</param>
-    ///
-    /// <returns>Process object.</returns>
+    /// <param name="view">Source view.</param>
+    /// <param name="aggregator">Aggregator object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static Process Start(Uri src) => Process.Start(src.ToString());
+    public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>
+    {
+        var tmp = view.TopMost;
+        if (view.WindowState == FormWindowState.Minimized) view.WindowState = FormWindowState.Normal;
+        view.Activate();
+        view.TopMost = false;
+        view.TopMost = true;
+        view.TopMost = tmp;
+    }) { }
 }

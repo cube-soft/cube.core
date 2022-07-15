@@ -18,8 +18,6 @@
 namespace Cube.Mixin.Forms;
 
 using System;
-using System.ComponentModel;
-using System.Threading;
 using System.Windows.Forms;
 using Cube.Mixin.String;
 
@@ -34,51 +32,6 @@ using Cube.Mixin.String;
 /* ------------------------------------------------------------------------- */
 public static class FormExtension
 {
-    #region UpdateCulture
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// UpdateCulture
-    ///
-    /// <summary>
-    /// Updates the culture information of the specified language.
-    /// </summary>
-    ///
-    /// <param name="src">Form object.</param>
-    /// <param name="value">Language to show.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static void UpdateCulture<T>(this T src, Language value) where T : Form
-    {
-        var ci = value.ToCultureInfo();
-        Thread.CurrentThread.CurrentCulture   = ci;
-        Thread.CurrentThread.CurrentUICulture = ci;
-
-        var crm = new ComponentResourceManager(typeof(T));
-        crm.ApplyResources(src, "$this");
-        UpdateCulture(src.Controls, crm);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// UpdateCulture
-    ///
-    /// <summary>
-    /// Updates the culture information.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static void UpdateCulture(Control.ControlCollection src, ComponentResourceManager crm)
-    {
-        foreach (Control e in src)
-        {
-            crm.ApplyResources(e, e.Name);
-            UpdateCulture(e.Controls, crm);
-        }
-    }
-
-    #endregion
-
     #region UpdateText
 
     /* --------------------------------------------------------------------- */

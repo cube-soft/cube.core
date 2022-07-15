@@ -15,69 +15,69 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms.Demo;
+namespace Cube.Forms.Globalization;
 
+using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
-using Cube.Forms.Behaviors;
-using Cube.Forms.Binding;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// FileWindow
+/// Globalization.Extension
 ///
 /// <summary>
-/// Represents the window to test the OpenFileDialog, SaveFileDialog,
-/// and SaveDirectoryDialog.
+/// Provides the extended methods for i18n.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public partial class FileWindow : CustomWindow
+public static class Extension
 {
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// FileWindow
-    ///
-    /// <summary>
-    /// Initializes a new instance of theFileWindow class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public FileWindow()
-    {
-        InitializeComponent();
-        ActiveControl = PathTextBox;
-    }
-
-    #endregion
-
     #region Methods
 
     /* --------------------------------------------------------------------- */
     ///
-    /// OnBind
+    /// Update
     ///
     /// <summary>
-    /// Binds the window with the specified presenter.
+    /// Updates the culture information corresponding to the specified
+    /// language.
+    /// </summary>
+    ///
+    /// <param name="src">Form object.</param>
+    /// <param name="value">Language to show.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Update<TForm>(this TForm src, Language value) where TForm : Form
+    {
+        var ci = value.ToCultureInfo();
+        Thread.CurrentThread.CurrentCulture = ci;
+        Thread.CurrentThread.CurrentUICulture = ci;
+
+        var cm = new ComponentResourceManager(typeof(TForm));
+        cm.ApplyResources(src, "$this");
+        Update(src.Controls, cm);
+    }
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Update
+    ///
+    /// <summary>
+    /// Updates the culture information.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    protected override void OnBind(IBindable src)
+    private static void Update(Control.ControlCollection src, ComponentResourceManager cm)
     {
-        base.OnBind(src);
-        if (src is not FileViewModel vm) return;
-
-        var obj = Behaviors.Hook(new BindingSource(vm, ""));
-        obj.Bind(nameof(vm.Value), PathTextBox, nameof(TextBox.Text));
-
-        Behaviors.Add(new ClickEventBehavior(OpenFileButton, vm.ShowOpenFileDialog));
-        Behaviors.Add(new ClickEventBehavior(SaveFileButton, vm.ShowSaveFileDialog));
-        Behaviors.Add(new ClickEventBehavior(OpenDirectoryButton, vm.ShowOpenDirectoryDialog));
-        Behaviors.Add(new OpenFileBehavior(vm));
-        Behaviors.Add(new SaveFileBehavior(vm));
-        Behaviors.Add(new OpenDirectoryBehavior(vm));
-        Behaviors.Add(new PathLintBehavior(PathTextBox));
+        foreach (Control e in src)
+        {
+            cm.ApplyResources(e, e.Name);
+            Update(e.Controls, cm);
+        }
     }
 
     #endregion

@@ -17,18 +17,20 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms;
 
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// WindowBase
+/// Window
 ///
 /// <summary>
 /// Represents the base class of WinForms-based IBindable implementation.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class WindowBase : Form, IBinder
+public class Window : Form, IBinder
 {
     #region Properties
 
@@ -53,6 +55,22 @@ public class WindowBase : Form, IBinder
     ///
     /* --------------------------------------------------------------------- */
     protected DisposableContainer Behaviors { get; } = new();
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ShortcutKeys
+    ///
+    /// <summary>
+    /// Gets the collection of shortcut keys.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// The action registered in the property will be executed when
+    /// the ProcessCmdKey(Message, Keys) method is invoked.
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected IDictionary<Keys, Action> ShortcutKeys { get; } = new Dictionary<Keys, Action>();
 
     #endregion
 
@@ -118,11 +136,31 @@ public class WindowBase : Form, IBinder
             _disposed = true;
             if (!disposing) return;
 
+            ShortcutKeys.Clear();
             Behaviors.Dispose();
             Bindable?.Dispose();
             Bindable = null;
         }
         finally { base.Dispose(disposing); }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ProcessCmdKey
+    ///
+    /// <summary>
+    /// Processes the specified shortcut keys.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected override bool ProcessCmdKey(ref Message msg, Keys keys)
+    {
+        if (ShortcutKeys.ContainsKey(keys))
+        {
+            ShortcutKeys[keys]();
+            return true;
+        }
+        return base.ProcessCmdKey(ref msg, keys);
     }
 
     #endregion

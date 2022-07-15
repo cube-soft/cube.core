@@ -20,6 +20,7 @@ namespace Cube.Forms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using Cube.Mixin.Assembly;
@@ -303,8 +304,7 @@ public class VersionControl : ControlBase
         _copyright.LinkClicked += (s, e) =>
         {
             if (Uri == null) return;
-            try { _ = UriProcess.Start(Uri); }
-            catch (Exception err) { GetType().LogWarn(err); }
+            GetType().LogWarn(() => Process.Start(Uri.ToString()));
         };
 
         _contents.Controls.Add(_info);

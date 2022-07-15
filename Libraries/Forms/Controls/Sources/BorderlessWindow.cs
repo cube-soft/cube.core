@@ -40,7 +40,7 @@ using Microsoft.Win32;
 /// </remarks>
 ///
 /* ------------------------------------------------------------------------- */
-public class BorderlessWindow : Window
+public class BorderlessWindow : CustomWindow
 {
     #region Constructors
 

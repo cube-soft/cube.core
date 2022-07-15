@@ -18,61 +18,37 @@
 namespace Cube.Forms;
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Window
+/// CustomWindow
 ///
 /// <summary>
-/// Represents a standard Windows form.
+/// Represents a custom Windows form.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Window : WindowBase
+public class CustomWindow : Window
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Window
+    /// CustomWindow
     ///
     /// <summary>
-    /// Initializes a new instance of the Window class.
+    /// Initializes a new instance of the CustomWindow class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Window()
+    public CustomWindow()
     {
-        AutoScaleMode = AutoScaleMode.Dpi;
         DoubleBuffered = true;
         Font = FontFactory.Create(Font);
     }
-
-    #endregion
-
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ShortcutKeys
-    ///
-    /// <summary>
-    /// Gets the collection of shortcut keys.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// The action registered in the property will be executed when
-    /// the ProcessCmdKey(Message, Keys) method is invoked.
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Browsable(false)]
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public IDictionary<Keys, Action> ShortcutKeys { get; } = new Dictionary<Keys, Action>();
 
     #endregion
 
@@ -172,26 +148,6 @@ public class Window : WindowBase
         );
     }
 
-    /* --------------------------------------------------------------------- */
-    ///
-    /// DoShortcutKeys
-    ///
-    /// <summary>
-    /// Invokes the specified shortcut keys.
-    /// </summary>
-    ///
-    /// <param name="keys">Shortcut keys.</param>
-    ///
-    /// <returns>true for executed.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected bool DoShortcutKeys(Keys keys)
-    {
-        if (!ShortcutKeys.ContainsKey(keys)) return false;
-        ShortcutKeys[keys]();
-        return true;
-    }
-
     #endregion
 
     #region Methods
@@ -211,25 +167,6 @@ public class Window : WindowBase
         var args = new CancelEventArgs();
         OnVisibleChanging(args);
         base.SetVisibleCore(args.Cancel ? prev : value);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// ProcessCmdKey
-    ///
-    /// <summary>
-    /// Processes the specified shortcut keys.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected override bool ProcessCmdKey(ref Message msg, Keys keys)
-    {
-        if (ShortcutKeys.ContainsKey(keys))
-        {
-            ShortcutKeys[keys]();
-            return true;
-        }
-        return base.ProcessCmdKey(ref msg, keys);
     }
 
     /* --------------------------------------------------------------------- */

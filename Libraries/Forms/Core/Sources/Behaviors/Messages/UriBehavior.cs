@@ -17,37 +17,31 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Forms.Behaviors;
 
-using System.Windows.Forms;
-using Cube.Mixin.Forms;
+using System;
+using System.Diagnostics;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// ActivateBehavior
+/// UriBehavior
 ///
 /// <summary>
-/// Provides functionality to activate the window.
+/// Represents the behavior when an Uri message is received.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class ActivateBehavior : MessageBehavior<ActivateMessage>
+public class UriBehavior : MessageBehavior<Uri>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ActivateBehavior
+    /// UriBehavior
     ///
     /// <summary>
-    /// Initializes a new instance of the ActivateBehavior class
+    /// Initializes a new instance of the UriBehavior class
     /// with the specified arguments.
     /// </summary>
     ///
-    /// <param name="view">Source view.</param>
     /// <param name="aggregator">Aggregator object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>
-    {
-        if (view.WindowState == FormWindowState.Minimized) view.WindowState = FormWindowState.Normal;
-        view.Activate();
-        view.ResetTopMost();
-    }) { }
+    public UriBehavior(IAggregator aggregator) : base(aggregator, e => Process.Start(e.ToString())) { }
 }
