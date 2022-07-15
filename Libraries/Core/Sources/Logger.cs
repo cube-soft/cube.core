@@ -20,6 +20,7 @@ namespace Cube;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using Cube.Mixin.Assembly;
 using Cube.Mixin.Collections;
@@ -50,6 +51,23 @@ public static class Logger
 
     #endregion
 
+    #region Configure
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Configure
+    ///
+    /// <summary>
+    /// Configures with the specified logger source object.
+    /// </summary>
+    ///
+    /// <param name="src">Logger source.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Configure(ILoggerSource src) => Interlocked.Exchange(ref _source, src);
+
+    #endregion
+
     #region Debug
 
     /* --------------------------------------------------------------------- */
@@ -65,7 +83,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     public static void LogDebug(this Type type, params string[] values) =>
-        GetCore(type).Debug(GetMessage(values));
+        _source.Log(LogLevel.Debug, type, GetMessage(values));
 
     #endregion
 
@@ -84,7 +102,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     public static void LogInfo(this Type type, params string[] values) =>
-        GetCore(type).Info(GetMessage(values));
+        _source.Log(LogLevel.Information, type, GetMessage(values));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -122,7 +140,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     public static void LogWarn(this Type type, params string[] values) =>
-        GetCore(type).Warn(GetMessage(values));
+        _source.Log(LogLevel.Warning, type, GetMessage(values));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -137,7 +155,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     public static void LogWarn(this Type type, Exception error) =>
-        GetCore(type).Warn(GetErrorMessage(error));
+        _source.Log(LogLevel.Warning, type, GetErrorMessage(error));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -171,7 +189,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     public static void LogError(this Type type, params string[] values) =>
-        GetCore(type).Error(GetMessage(values));
+        _source.Log(LogLevel.Error, type, GetMessage(values));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -186,7 +204,7 @@ public static class Logger
     ///
     /* --------------------------------------------------------------------- */
     public static void LogError(this Type type, Exception error) =>
-        GetCore(type).Error(GetErrorMessage(error));
+        _source.Log(LogLevel.Error, type, GetErrorMessage(error));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -229,17 +247,6 @@ public static class Logger
     #endregion
 
     #region Implementations
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetCore
-    ///
-    /// <summary>
-    /// Gets the logger object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private static NLog.Logger GetCore(Type type) => NLog.LogManager.GetLogger(type.FullName);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -295,5 +302,9 @@ public static class Logger
     private static void WhenTaskError(object s, UnobservedTaskExceptionEventArgs e) =>
         typeof(TaskScheduler).LogError(e.Exception);
 
+    #endregion
+
+    #region Fields
+    private static ILoggerSource _source = new NullLoggerSource();
     #endregion
 }
