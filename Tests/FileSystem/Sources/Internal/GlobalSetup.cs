@@ -44,6 +44,7 @@ public class GlobalSetup
     [OneTimeSetUp]
     public void OneTimeSetup()
     {
+        Logger.Configure(new Logging.NLog.LoggerSource());
         typeof(GlobalSetup).LogInfo(Assembly.GetExecutingAssembly());
     }
 }

@@ -1,4 +1,4 @@
-﻿/* ------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 //
 // Copyright (c) 2010 CubeSoft, Inc.
 //
@@ -15,36 +15,44 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests;
+namespace Cube.Logging.NLog;
 
-using NUnit.Framework;
+using System;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// GlobalSetup
+/// LoggerSource
 ///
 /// <summary>
-/// Provides functionality to run at the beginning of the NUnit.
+/// Provides the ILoggerSource implementation by using the NLog package.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-[SetUpFixture]
-public class GlobalSetup
+public sealed class LoggerSource : ILoggerSource
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OneTimeSetup
+    /// Log
     ///
     /// <summary>
-    /// Invokes the setup only once.
+    /// Writes a log entry.
     /// </summary>
     ///
+    /// <param name="level">Log level.</param>
+    /// <param name="type">Type of requested object.</param>
+    /// <param name="message">Logging message.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    [OneTimeSetUp]
-    public void OneTimeSetup()
+    public void Log(LogLevel level, Type type, string message)
     {
-        Logger.Configure(new Logging.NLog.LoggerSource());
-        _ = Logger.ObserveTaskException();
-        typeof(GlobalSetup).LogInfo(typeof(GlobalSetup).Assembly);
+        var e = global::NLog.LogManager.GetLogger(type.FullName);
+        switch (level)
+        {
+            case LogLevel.Trace:       e.Trace(message); break;
+            case LogLevel.Debug:       e.Debug(message); break;
+            case LogLevel.Information: e.Info(message);  break;
+            case LogLevel.Warning:     e.Warn(message);  break;
+            case LogLevel.Error:       e.Error(message); break;
+        }
     }
 }

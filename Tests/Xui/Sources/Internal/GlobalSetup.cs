@@ -46,6 +46,7 @@ public class GlobalSetup
     [OneTimeSetUp]
     public void OneTimeSetup()
     {
+        Logger.Configure(new Logging.NLog.LoggerSource());
         BindingLogger.Setup();
         _ = Logger.ObserveTaskException();
         _ = Application.Current.ObserveUiException();
