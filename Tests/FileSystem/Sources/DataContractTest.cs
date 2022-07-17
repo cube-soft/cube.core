@@ -184,7 +184,6 @@ class DataContractTest : RegistryFixture
     public string Deserialize_File(Format format, string filename)
     {
         var dest = format.Deserialize<Person>(GetSource(filename));
-        Assert.That(dest.Dispatcher, Is.EqualTo(Dispatcher.Vanilla));
         dest.Refresh(nameof(dest.Identification), nameof(dest.Name));
         return dest.Name;
     }
@@ -254,7 +253,6 @@ class DataContractTest : RegistryFixture
         var src  = default(RegistryKey).Deserialize<Person>();
         var dest = new Person();
 
-        Assert.That(src.Dispatcher,     Is.EqualTo(Dispatcher.Vanilla));
         Assert.That(src.Identification, Is.EqualTo(dest.Identification));
         Assert.That(src.Name,           Is.EqualTo(dest.Name));
         Assert.That(src.Age,            Is.EqualTo(dest.Age));

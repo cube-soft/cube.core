@@ -39,55 +39,6 @@ using Cube.Mixin.Generic;
 [DataContract]
 public abstract class SerializableBase : INotifyPropertyChanged
 {
-    #region Constructor
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SerializableBase
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ObservableBase class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected SerializableBase() : this(Dispatcher.Vanilla) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SerializableBase
-    ///
-    /// <summary>
-    /// Initializes a new instance of the ObservableBase class with
-    /// the specified dispatcher.
-    /// </summary>
-    ///
-    /// <param name="dispatcher">Dispatcher object.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected SerializableBase(Dispatcher dispatcher) => Reset(dispatcher);
-
-    #endregion
-
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Dispatcher
-    ///
-    /// <summary>
-    /// Gets or sets the dispatcher object.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [IgnoreDataMember]
-    public Dispatcher Dispatcher
-    {
-        get => _dispatcher;
-        set => _dispatcher = value;
-    }
-
-    #endregion
-
     #region Events
 
     /* --------------------------------------------------------------------- */
@@ -112,11 +63,8 @@ public abstract class SerializableBase : INotifyPropertyChanged
     /// <param name="e">Arguments of the event being raised.</param>
     ///
     /* --------------------------------------------------------------------- */
-    protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        if (PropertyChanged == null) return;
-        Dispatcher.Invoke(() => PropertyChanged(this, e));
-    }
+    protected virtual void OnPropertyChanged(PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
 
     #endregion
 
@@ -286,27 +234,15 @@ public abstract class SerializableBase : INotifyPropertyChanged
     ///
     /* --------------------------------------------------------------------- */
     [OnDeserializing]
-    private void OnDeserializing(StreamingContext context) => Reset(Dispatcher.Vanilla);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Reset
-    ///
-    /// <summary>
-    /// Resets properties and fields.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private void Reset(Dispatcher dispatcher)
+    private void OnDeserializing(StreamingContext context)
     {
-        _dispatcher = dispatcher;
-        _fields     = new();
+        if (_fields is null) _fields = new();
+        else _fields.Clear();
     }
 
     #endregion
 
     #region Fields
-    [NonSerialized] private Dispatcher _dispatcher;
-    private Hashtable _fields;
+    private Hashtable _fields = new();
     #endregion
 }

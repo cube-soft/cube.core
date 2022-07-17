@@ -138,16 +138,15 @@ class SettingFolderTest : RegistryFixture
 
         using (var src = new SettingFolder<Person>(Format.Registry, name, new()))
         {
-            src.AutoSave         = true;
-            src.AutoSaveDelay    = ts;
-            src.Value.Dispatcher = Dispatcher.Vanilla;
-            src.Value.Name       = "AutoSave";
-            src.Value.Age        = 77;
-            src.Value.Sex        = Sex.Female;
-            src.Value.Secret     = "SecretChanged";
-            src.Value.Reserved   = true;
-            src.Value.Reserved   = false;
-            src.Value.Reserved   = false;
+            src.AutoSave       = true;
+            src.AutoSaveDelay  = ts;
+            src.Value.Name     = "AutoSave";
+            src.Value.Age      = 77;
+            src.Value.Sex      = Sex.Female;
+            src.Value.Secret   = "SecretChanged";
+            src.Value.Reserved = true;
+            src.Value.Reserved = false;
+            src.Value.Reserved = false;
 
             Task.Delay(TimeSpan.FromTicks(ts.Ticks * 2)).Wait();
         }
