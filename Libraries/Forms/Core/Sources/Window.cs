@@ -32,6 +32,21 @@ using System.Windows.Forms;
 /* ------------------------------------------------------------------------- */
 public class Window : Form, IBinder
 {
+    #region Constructors
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Window
+    ///
+    /// <summary>
+    /// Initializes a new instance of the Window class.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public Window() => DoubleBuffered = true;
+
+    #endregion
+
     #region Properties
 
     /* --------------------------------------------------------------------- */
@@ -61,7 +76,7 @@ public class Window : Form, IBinder
     /// ShortcutKeys
     ///
     /// <summary>
-    /// Gets the collection of shortcut keys.
+    /// Gets the collection of behaviors for shortcut keys.
     /// </summary>
     ///
     /// <remarks>

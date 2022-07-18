@@ -25,6 +25,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\Forms\Core\Cube.Forms.csproj" />
         <ProjectReference Include="..\..\Libraries\Forms\Controls\Cube.Forms.Controls.csproj" />
+        <ProjectReference Include="..\..\Libraries\NLog\Cube.Logging.NLog.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Resources.Designer.cs" DependentUpon="Resources.resx" AutoGen="True" DesignTime="True" />

@@ -31,7 +31,7 @@ using Cube.Forms.Binding;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public partial class FileWindow : CustomWindow
+public partial class FileWindow : Window
 {
     #region Constructors
 

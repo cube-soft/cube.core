@@ -15,46 +15,52 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Forms.Demo;
+namespace Cube.Forms.Behaviors;
 
 using System;
-using System.Reflection;
-using Cube.Mixin.Collections;
+using System.Windows.Forms;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Program
+/// AdjustWindowBehavior
 ///
 /// <summary>
-/// Represents the main program.
+/// Provides functionality to adjust the window so that it appears within
+/// the desktop area when Shown event is fired.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-static class Program
+public sealed class AdjustWindowBehavior : ShownEventBehavior
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Main
+    /// AdjustWindowBehavio
     ///
     /// <summary>
-    /// Executes the main program of the application.
+    /// Initializes a new instance of the AdjustWindowBehavio class
+    /// with the specified arguments.
     /// </summary>
     ///
+    /// <param name="src">Source view.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    [STAThread]
-    static void Main(string[] args)
+    public AdjustWindowBehavior(Form src) : base(src, () =>
     {
-        var src = typeof(Program);
-        Logger.Configure(new Logging.NLog.LoggerSource());
-        _ = Logger.ObserveTaskException();
-        src.LogInfo(Assembly.GetExecutingAssembly());
-        src.LogInfo($"[ {args.Join(" ")} ]");
+        var screen = Screen.FromPoint(src.DesktopLocation) ?? Screen.PrimaryScreen;
+        var x      = src.DesktopLocation.X;
+        var y      = src.DesktopLocation.Y;
 
-        System.Windows.Forms.Application.EnableVisualStyles();
-        System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+        var left   = screen.WorkingArea.Left;
+        var top    = screen.WorkingArea.Top;
+        var right  = screen.WorkingArea.Right;
+        var bottom = screen.WorkingArea.Bottom;
 
-        var view = new MainWindow();
-        view.Bind(new MainViewModel());
-        System.Windows.Forms.Application.Run(view);
-    }
+        if (x >= left && x +  src.Width <=  right &&
+            y >=  top && y + src.Height <= bottom) return;
+
+        src.SetDesktopLocation(
+            Math.Min(Math.Max(src.DesktopLocation.X, left), right - src.Width),
+            Math.Min(Math.Max(src.DesktopLocation.Y, top), bottom - src.Height)
+        );
+    }) { }
 }

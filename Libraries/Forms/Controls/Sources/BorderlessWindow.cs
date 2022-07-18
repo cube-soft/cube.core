@@ -40,7 +40,7 @@ using Microsoft.Win32;
 /// </remarks>
 ///
 /* ------------------------------------------------------------------------- */
-public class BorderlessWindow : CustomWindow
+public class BorderlessWindow : Window
 {
     #region Constructors
 
@@ -55,6 +55,8 @@ public class BorderlessWindow : CustomWindow
     /* --------------------------------------------------------------------- */
     public BorderlessWindow()
     {
+        DoubleBuffered = true;
+        Font = FontFactory.Create(Font);
         SystemEvents.DisplaySettingsChanged += (s, e) => UpdateMaximumSize();
         SystemEvents.UserPreferenceChanged  += (s, e) => UpdateMaximumSize();
     }
@@ -301,6 +303,49 @@ public class BorderlessWindow : CustomWindow
 
     #endregion
 
+    #region Events
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NcHitTest
+    ///
+    /// <summary>
+    /// Occurs when the hit test of the non-client area.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public event QueryEventHandler<Point, Position> NcHitTest;
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OnNcHitTest
+    ///
+    /// <summary>
+    /// Occurs when the NcHitTest event is fired.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Determines whether to draw the mouse cursor for resizing.
+    /// </remarks>
+    ///
+    /* --------------------------------------------------------------------- */
+    protected virtual void OnNcHitTest(QueryMessage<Point, Position> e)
+    {
+        NcHitTest?.Invoke(this, e);
+        if (!e.Cancel) return;
+
+        var result = this.HitTest(PointToClient(e.Source), Sizable ? SizeGrip : 0);
+        var others = result == Position.NoWhere || result == Position.Client;
+        if (others && IsCaption(e.Source)) result = Position.Caption;
+
+        e.Value  = result;
+        e.Cancel = e.Value == Position.Caption ? false :
+                   e.Value == Position.NoWhere ? true :
+                   WindowState != FormWindowState.Normal;
+    }
+
+    #endregion
+
     #region Methods
 
     /* --------------------------------------------------------------------- */
@@ -348,34 +393,6 @@ public class BorderlessWindow : CustomWindow
         base.OnDeactivate(e);
         if (Caption == null || !CaptionMonitoring) return;
         Caption.Active = false;
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OnNcHitTest
-    ///
-    /// <summary>
-    /// Occurs when the NcHitTest event is fired.
-    /// </summary>
-    ///
-    /// <remarks>
-    /// Determines whether to draw the mouse cursor for resizing.
-    /// </remarks>
-    ///
-    /* --------------------------------------------------------------------- */
-    protected override void OnNcHitTest(QueryMessage<Point, Position> e)
-    {
-        base.OnNcHitTest(e);
-        if (!e.Cancel) return;
-
-        var result = this.HitTest(PointToClient(e.Source), Sizable ? SizeGrip : 0);
-        var others = result == Position.NoWhere || result == Position.Client;
-        if (others && IsCaption(e.Source)) result = Position.Caption;
-
-        e.Value = result;
-        e.Cancel = e.Value == Position.Caption ? false :
-                   e.Value == Position.NoWhere ? true :
-                   WindowState != FormWindowState.Normal;
     }
 
     /* --------------------------------------------------------------------- */
@@ -436,6 +453,11 @@ public class BorderlessWindow : CustomWindow
             case 0x0083: // WM_NCCALCSIZE
                 m.Result = IntPtr.Zero;
                 return;
+            case 0x0084: // WM_NCHITTEST
+                var e = Query.NewMessage<Point, Position>(CreatePoint(m.LParam));
+                OnNcHitTest(e);
+                if (!e.Cancel) m.Result = (IntPtr)e.Value;
+                break;
             case 0x0085: // WM_NCPAINT
                 m.Result = new IntPtr(1);
                 break;
@@ -736,6 +758,23 @@ public class BorderlessWindow : CustomWindow
         caption.MaximizeRequested -= WhenMaximizeRequested;
         caption.MinimizeRequested -= WhenMinimizeRequested;
         caption.CloseRequested    -= WhenCloseRequested;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// CreatePoint
+    ///
+    /// <summary>
+    /// Creates a new instance of the Point class with the specified
+    /// arguments.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private Point CreatePoint(IntPtr lparam)
+    {
+        int x = (short)(lparam.ToInt32() & 0x0000ffff);
+        int y = (short)((lparam.ToInt32() & 0xffff0000) >> 16);
+        return new Point(x, y);
     }
 
     #endregion

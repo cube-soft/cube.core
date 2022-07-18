@@ -237,7 +237,7 @@ public class NoticeWindow : BorderlessWindow
         _image.Margin = new(0);
         _image.Style.Default.BorderSize = 0;
         _image.Style.Default.BackColor = Color.FromArgb(230, 230, 230);
-        _image.Style.Default.Image = Properties.Resources.Logo;
+        _image.Style.Default.Image = Forms.Controls.Properties.Resources.Logo;
         _image.Click += (s, e) => OnSelected(ValueEventArgs.Create(NoticeResult.Image));
         _image.ResumeLayout(false);
 
@@ -273,7 +273,7 @@ public class NoticeWindow : BorderlessWindow
         _close.Margin = new(0);
         _close.Style.Default.BackColor = SystemColors.Window;
         _close.Style.Default.BorderSize = 0;
-        _close.Style.Default.Image = Properties.Resources.CloseButton;
+        _close.Style.Default.Image = Forms.Controls.Properties.Resources.CloseButton;
         _close.Style.MouseOver.BackColor = Color.FromArgb(240, 240, 240);
         _close.Style.MouseOver.BorderColor = Color.FromArgb(230, 230, 230);
         _close.Style.MouseOver.BorderSize = 1;
