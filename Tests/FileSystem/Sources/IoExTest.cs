@@ -151,7 +151,7 @@ class IoExTest : FileFixture
     [TestCase("Sample.txt",     ExpectedResult = true)]
     [TestCase("NotFound.dummy", ExpectedResult = true)]
     public bool GetTypeName(string filename) =>
-        IoEx.GetTypeName(Io.Get(GetSource(filename)).FullName).HasValue();
+        Shell.GetTypeName(Io.Get(GetSource(filename)).FullName).HasValue();
 
     /* --------------------------------------------------------------------- */
     ///
@@ -165,8 +165,8 @@ class IoExTest : FileFixture
     [Test]
     public void GetTypeName_Null()
     {
-        Assert.That(IoEx.GetTypeName(string.Empty), Is.Empty);
-        Assert.That(IoEx.GetTypeName(default),      Is.Empty);
+        Assert.That(Shell.GetTypeName(string.Empty), Is.Empty);
+        Assert.That(Shell.GetTypeName(default),      Is.Empty);
     }
 
     /* --------------------------------------------------------------------- */

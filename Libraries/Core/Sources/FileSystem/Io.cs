@@ -45,7 +45,7 @@ public static class Io
     /// <param name="src">I/O controller.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Configure(IoController src) => _core = src;
+    public static void Configure(IoController src) => _controller = src;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -60,7 +60,7 @@ public static class Io
     /// <returns>true for exists.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static bool Exists(string path) => _core.Exists(path);
+    public static bool Exists(string path) => _controller.Exists(path);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -75,7 +75,7 @@ public static class Io
     /// <returns>Entity object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static Entity Get(string path) => new(_core.GetEntitySource(path), true);
+    public static Entity Get(string path) => new(_controller.GetEntitySource(path), true);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -116,7 +116,7 @@ public static class Io
         string path,
         string pattern = "*",
         SearchOption option = SearchOption.TopDirectoryOnly
-    ) => _core.GetFiles(path, pattern, option);
+    ) => _controller.GetFiles(path, pattern, option);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -158,7 +158,7 @@ public static class Io
         string path,
         string pattern = "*",
         SearchOption option = SearchOption.TopDirectoryOnly
-    ) => _core.GetDirectories(path, pattern, option);
+    ) => _controller.GetDirectories(path, pattern, option);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -173,7 +173,7 @@ public static class Io
     /// <returns>Combined path.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string Combine(params string[] paths) => _core.Combine(paths);
+    public static string Combine(params string[] paths) => _controller.Combine(paths);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -188,7 +188,7 @@ public static class Io
     /// <returns>Read-only stream.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static FileStream Open(string path) => _core.Open(path);
+    public static FileStream Open(string path) => _controller.Open(path);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -206,7 +206,7 @@ public static class Io
     public static FileStream Create(string path)
     {
         CreateParentDirectory(Get(path));
-        return _core.Create(path);
+        return _controller.Create(path);
     }
 
     /* --------------------------------------------------------------------- */
@@ -223,7 +223,7 @@ public static class Io
     /* --------------------------------------------------------------------- */
     public static void CreateDirectory(string path)
     {
-        if (!Exists(path)) _core.CreateDirectory(path);
+        if (!Exists(path)) _controller.CreateDirectory(path);
     }
 
     /* --------------------------------------------------------------------- */
@@ -239,7 +239,7 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetAttributes(string path, FileAttributes attr) =>
-        _core.SetAttributes(path, attr);
+        _controller.SetAttributes(path, attr);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -255,7 +255,7 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetCreationTime(string path, DateTime time) =>
-        _core.SetCreationTime(path, time);
+        _controller.SetCreationTime(path, time);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -271,7 +271,7 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetLastWriteTime(string path, DateTime time) =>
-        _core.SetLastWriteTime(path, time);
+        _controller.SetLastWriteTime(path, time);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -287,7 +287,7 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static void SetLastAccessTime(string path, DateTime time) =>
-        _core.SetLastAccessTime(path, time);
+        _controller.SetLastAccessTime(path, time);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -302,7 +302,7 @@ public static class Io
     /// <param name="path">Path to delete.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static void Delete(string path) => _core.Delete(path);
+    public static void Delete(string path) => _controller.Delete(path);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -360,7 +360,7 @@ public static class Io
     /// <returns>IoController object.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    internal static IoController GetController() => _core;
+    internal static IoController GetController() => _controller;
 
     /* --------------------------------------------------------------------- */
     ///
@@ -435,7 +435,7 @@ public static class Io
     private static void CopyFile(Entity src, Entity dest, bool overwrite)
     {
         CreateParentDirectory(dest);
-        _core.Copy(src.FullName, dest.FullName, overwrite);
+        _controller.Copy(src.FullName, dest.FullName, overwrite);
     }
 
     /* --------------------------------------------------------------------- */
@@ -509,12 +509,12 @@ public static class Io
     private static void MoveFile(Entity src, Entity dest)
     {
         CreateParentDirectory(dest);
-        _core.Move(src.FullName, dest.FullName);
+        _controller.Move(src.FullName, dest.FullName);
     }
 
     #endregion
 
     #region Fields
-    private static IoController _core = new();
+    private static IoController _controller = new();
     #endregion
 }
