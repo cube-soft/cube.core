@@ -20,7 +20,6 @@ namespace Cube.Tests;
 using System.Reflection;
 using Cube.FileSystem;
 using Cube.Mixin.Assembly;
-using Cube.Mixin.Syntax;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -177,8 +176,8 @@ public abstract class FileFixture
     /* --------------------------------------------------------------------- */
     private void Delete(string directory)
     {
-        Io.GetFiles(directory).Each(f => Io.Delete(f));
-        Io.GetDirectories(directory).Each(d => { Delete(d); Io.Delete(d); });
+        foreach (var e in Io.GetFiles(directory)) { Io.Delete(e); }
+        foreach (var e in Io.GetDirectories(directory)) { Delete(e); Io.Delete(e); }
     }
 
     #endregion

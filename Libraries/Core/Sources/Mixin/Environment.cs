@@ -17,8 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Mixin.Environment;
 
-using Source = System.Environment;
-
 /* ------------------------------------------------------------------------- */
 ///
 /// Extension
@@ -47,7 +45,7 @@ public static class Extension
     /// <returns>Directory name.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static string GetName(this Source.SpecialFolder src) => Source.GetFolderPath(src);
+    public static string GetName(this System.Environment.SpecialFolder src) => System.Environment.GetFolderPath(src);
 
     #endregion
 }

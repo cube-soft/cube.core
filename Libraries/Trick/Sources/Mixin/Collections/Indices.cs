@@ -23,107 +23,16 @@ using System.Linq;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// EnumerableExtension
+/// IndicesExtension
 ///
 /// <summary>
-/// Provides extended methods of the IEnumerable(T) class.
+/// Provides extended methods of the IEnumerable(int) class.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class EnumerableExtension
+public static class IndicesExtension
 {
     #region Methods
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetOrEmpty(T)
-    ///
-    /// <summary>
-    /// Returns the specified object or empty IEnumerable(T) object.
-    /// </summary>
-    ///
-    /// <param name="src">Source collection.</param>
-    ///
-    /// <returns>Self or empty collection.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> GetOrEmpty<T>(this IEnumerable<T> src) =>
-        src ?? Enumerable.Empty<T>();
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Compact
-    ///
-    /// <summary>
-    /// Removes null objects in the specified sequence.
-    /// </summary>
-    ///
-    /// <param name="src">Source sequence.</param>
-    ///
-    /// <returns>Removed sequence.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> Compact<T>(this IEnumerable<T> src) => src.OfType<T>();
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Concat
-    ///
-    /// <summary>
-    /// Combines the specified items to the end of the specified source
-    /// sequence.
-    /// </summary>
-    ///
-    /// <param name="src">Source sequence.</param>
-    /// <param name="items">Items to be combined.</param>
-    ///
-    /// <returns>Combined sequence.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> Concat<T>(this IEnumerable<T> src, params T[] items) =>
-        src.Concat(items.AsEnumerable());
-
-    #region Join
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Join
-    ///
-    /// <summary>
-    /// Combines the specified sequence with the specified separator.
-    /// </summary>
-    ///
-    /// <param name="src">Source sequence.</param>
-    /// <param name="separator">Concat separator.</param>
-    /// <param name="formatter">Function to convert to string.</param>
-    ///
-    /// <returns>Combined string.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string Join<T>(this IEnumerable<T> src, string separator, Func<T, string> formatter) =>
-        src.Select(e => formatter(e)).Join(separator);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Join
-    ///
-    /// <summary>
-    /// Combines the specified string sequence with the specified
-    /// separator.
-    /// </summary>
-    ///
-    /// <param name="src">Source sequence.</param>
-    /// <param name="separator">Concat separator.</param>
-    ///
-    /// <returns>Combined string.</returns>
-    ///
-    /* --------------------------------------------------------------------- */
-    public static string Join(this IEnumerable<string> src, string separator) =>
-        src.Any() ? src.Aggregate((x, y) => x + separator + y) : string.Empty;
-
-    #endregion
-
-    #region Index
 
     /* --------------------------------------------------------------------- */
     ///
@@ -217,45 +126,49 @@ public static class EnumerableExtension
     public static int Clamp<T>(this IEnumerable<T> src, int index) =>
         Math.Max(Math.Min(index, src.LastIndex()), 0);
 
-    #endregion
-
-    #region Flatten
-
     /* --------------------------------------------------------------------- */
     ///
-    /// Flatten
+    /// Within
     ///
     /// <summary>
-    /// Convert a tree structure to a one-dimensional sequence with
-    /// breadth first search..
+    /// Gets the elements of a sequence that is within the range of
+    /// [begin, end).
     /// </summary>
     ///
     /// <param name="src">Source sequence.</param>
-    /// <param name="func">Conversion function.</param>
+    /// <param name="begin">Lower limit of the range.</param>
+    /// <param name="end">
+    /// Upper limit of the range (The value is not included).
+    /// </param>
     ///
-    /// <returns>Converted sequence.</returns>
+    /// <returns>
+    /// IEnumerable(int) whose elements are within the [begin, end).
+    /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static IEnumerable<T> Flatten<T>(this IEnumerable<T> src, Func<T, IEnumerable<T>> func) =>
-        src.Flatten((e, s) => func(e));
+    public static IEnumerable<int> Within(this IEnumerable<int> src, int begin, int end) =>
+        src.Where(i => i >= begin && i < end);
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Flatten
+    /// Within
     ///
     /// <summary>
-    /// Convert a tree structure to a one-dimensional sequence with
-    /// breadth first search..
+    /// Gets the elements of a sequence that is within the range of
+    /// [0, n).
     /// </summary>
     ///
+    /// <param name="src">Source sequence.</param>
+    /// <param name="n">
+    /// Upper limit of the range (The value is not included).
+    /// </param>
+    ///
+    /// <returns>
+    /// IEnumerable(int) whose elements are within the [0, n).
+    /// </returns>
+    ///
     /* --------------------------------------------------------------------- */
-    private static IEnumerable<T> Flatten<T>(this IEnumerable<T> src,
-        Func<T, IEnumerable<T>, IEnumerable<T>> func) => src.Concat(
-            src.Where(e => func(e, src) != null)
-               .SelectMany(e => func(e, src).Flatten(func))
-        );
-
-    #endregion
+    public static IEnumerable<int> Within(this IEnumerable<int> src, int n) => src.Within(0, n);
 
     #endregion
 }

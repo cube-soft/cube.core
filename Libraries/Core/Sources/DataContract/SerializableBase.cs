@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using Cube.Mixin.Generic;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -167,7 +166,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     protected bool Set<T>(T value, IEqualityComparer<T> compare, [CallerMemberName] string name = null)
     {
         var src = Get<T>(name);
-        var set = compare.Set(ref src, value);
+        var set = SetCore(ref src, value, compare);
         if (set)
         {
             lock (_fields.SyncRoot) _fields[name] = src;
@@ -215,7 +214,7 @@ public abstract class SerializableBase : INotifyPropertyChanged
     protected bool Set<T>(ref T field, T value, IEqualityComparer<T> compare,
         [CallerMemberName] string name = null)
     {
-        var set = compare.Set(ref field, value);
+        var set = SetCore(ref field, value, compare);
         if (set) Refresh(name);
         return set;
     }
@@ -238,6 +237,23 @@ public abstract class SerializableBase : INotifyPropertyChanged
     {
         if (_fields is null) _fields = new();
         else _fields.Clear();
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SetCore
+    ///
+    /// <summary>
+    /// Sets the specified value to the specified field if they are
+    /// not equal.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private bool SetCore<T>(ref T field, T value, IEqualityComparer<T> compare)
+    {
+        if (compare.Equals(field, value)) return false;
+        field = value;
+        return true;
     }
 
     #endregion

@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cube.Mixin.Assembly;
-using Cube.Mixin.Collections.Generic;
+using Cube.Mixin.Generic;
 
 #region DialogMessage
 

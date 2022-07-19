@@ -20,7 +20,6 @@ namespace Cube.Xui.Tests.Behaviors;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using Cube.Mixin.Syntax;
 using Cube.Xui.Behaviors;
 using Microsoft.Xaml.Behaviors;
 using NUnit.Framework;
@@ -94,7 +93,7 @@ class EventToCommandTest : ViewFixture
         };
 
         view.Show();
-        2.Times(i => view.Close());
+        for (var i = 0; i < 2; ++i) view.Close();
         foreach (var obj in src) obj.Detach();
 
         Assert.That(closing,     Is.EqualTo(2));

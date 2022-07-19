@@ -17,7 +17,6 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube.Tests.Mixin;
 
-using System.Linq;
 using Cube.Mixin.Collections;
 using NUnit.Framework;
 
@@ -34,52 +33,6 @@ using NUnit.Framework;
 class IndicesTest
 {
     #region Tests
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OrderBy
-    ///
-    /// <summary>
-    /// Executes the test of the OrderBy method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void OrderBy()
-    {
-        var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderBy().ToList();
-        Assert.That(src[0], Is.EqualTo(1));
-        Assert.That(src[1], Is.EqualTo(1));
-        Assert.That(src[2], Is.EqualTo(2));
-        Assert.That(src[3], Is.EqualTo(3));
-        Assert.That(src[4], Is.EqualTo(4));
-        Assert.That(src[5], Is.EqualTo(5));
-        Assert.That(src[6], Is.EqualTo(6));
-        Assert.That(src[7], Is.EqualTo(9));
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OrderByDescending
-    ///
-    /// <summary>
-    /// Executes the test of the OrderByDescending method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void OrderByDescending()
-    {
-        var src = new[] { 3, 1, 4, 1, 5, 9, 2, 6 }.OrderByDescending().ToList();
-        Assert.That(src[0], Is.EqualTo(9));
-        Assert.That(src[1], Is.EqualTo(6));
-        Assert.That(src[2], Is.EqualTo(5));
-        Assert.That(src[3], Is.EqualTo(4));
-        Assert.That(src[4], Is.EqualTo(3));
-        Assert.That(src[5], Is.EqualTo(2));
-        Assert.That(src[6], Is.EqualTo(1));
-        Assert.That(src[7], Is.EqualTo(1));
-    }
 
     /* --------------------------------------------------------------------- */
     ///

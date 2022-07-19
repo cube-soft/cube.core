@@ -20,7 +20,7 @@ namespace Cube.Tests.Mixin;
 using System.Collections.Generic;
 using System.Linq;
 using Cube.Mixin.Collections;
-using Cube.Mixin.Collections.Generic;
+using Cube.Mixin.Generic;
 using Cube.Mixin.Iteration;
 using Cube.Mixin.Syntax;
 using NUnit.Framework;
@@ -245,61 +245,6 @@ class EnumerableTest
     {
         var src = default(List<int>);
         Assert.That(src.Clamp(100), Is.EqualTo(0));
-    }
-
-    #endregion
-
-    #region Compact
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Compact
-    ///
-    /// <summary>
-    /// Tests the Compact extended method.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Compact()
-    {
-        var src = new[] { "Hello", "world!", string.Empty, null };
-        Assert.That(src.Length,            Is.EqualTo(4));
-        Assert.That(src.Compact().Count(), Is.EqualTo(3));
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Compact_ValueType
-    ///
-    /// <summary>
-    /// Tests the Compact extended method with the value type collection.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Compact_ValueType()
-    {
-        var src = new[] { 3, 1, 4, 1, 5 };
-        Assert.That(src.Length,            Is.EqualTo(5));
-        Assert.That(src.Compact().Count(), Is.EqualTo(5));
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Compact_Empty
-    ///
-    /// <summary>
-    /// Tests of the Compact extended method with the empty collection.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Compact_Empty()
-    {
-        var src = Enumerable.Empty<int>();
-        Assert.That(src.Count(),           Is.EqualTo(0));
-        Assert.That(src.Compact().Count(), Is.EqualTo(0));
     }
 
     #endregion

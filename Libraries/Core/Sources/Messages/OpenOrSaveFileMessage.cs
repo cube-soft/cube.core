@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cube.FileSystem;
 using Cube.Mixin.Collections;
-using Cube.Mixin.Collections.Generic;
+using Cube.Mixin.Generic;
 using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
