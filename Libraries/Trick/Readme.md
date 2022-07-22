@@ -5,7 +5,7 @@ Cube.Trick
 [![AppVeyor](https://badgen.net/appveyor/ci/clown/cube-core)](https://ci.appveyor.com/project/clown/cube-core)
 [![Codecov](https://badgen.net/codecov/c/github/cube-soft/cube.core)](https://codecov.io/gh/cube-soft/cube.core)
 
-The Cube.Trick package contains experimental and undocumented functions.
+The Cube.Trick package contains experimental and undocumented functions. The package is used by Cube Windows applications.
 
 ## Installation
 

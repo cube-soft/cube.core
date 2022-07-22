@@ -102,7 +102,7 @@ class AssemblyTest
                 FileName      = "Cube.Core.dll",
                 DirectoryName = @"Tests\Core\bin",
                 Title         = "Cube.Core",
-                Description   = "Provides support the MVVM pattern in WPF or WinForms applications.",
+                Description   = "Basic components to practice the MVVM pattern in application development.",
                 Company       = "CubeSoft",
                 Product       = "Cube.Core",
                 Copyright     = "Copyright © 2010 CubeSoft, Inc.",
