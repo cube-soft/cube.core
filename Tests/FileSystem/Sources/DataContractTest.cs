@@ -183,7 +183,10 @@ class DataContractTest : RegistryFixture
     [TestCase(Format.Json, "Settings.ja.json", ExpectedResult = "山田太郎")]
     public string Deserialize_File(Format format, string filename)
     {
-        var dest = format.Deserialize<Person>(GetSource(filename));
+        var src = GetSource(filename);
+        Assert.That(format.Exists(src), Is.True);
+
+        var dest = format.Deserialize<Person>(src);
         dest.Refresh(nameof(dest.Identification), nameof(dest.Name));
         return dest.Name;
     }
@@ -266,6 +269,52 @@ class DataContractTest : RegistryFixture
     }
 
     #endregion
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Delete_Registry
+    ///
+    /// <summary>
+    /// Tests the Delete extended method for the registry.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Delete_Registry()
+    {
+        var fmt = Format.Registry;
+        var src = GetKeyName(nameof(Delete_Registry));
+
+        Assert.That(fmt.Exists(src), Is.False);
+        fmt.Serialize(src, CreateDummy());
+        Assert.That(fmt.Exists(src), Is.True);
+        fmt.Delete(src);
+        fmt.Delete(src); // ignored
+        Assert.That(fmt.Exists(src), Is.False);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Delete_Json
+    ///
+    /// <summary>
+    /// Tests the Delete extended method for the JSON data.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [Test]
+    public void Delete_Json()
+    {
+        var fmt = Format.Json;
+        var src = Get("Settings.json");
+
+        Assert.That(fmt.Exists(src), Is.False);
+        Io.Copy(GetSource("Settings.json"), src, true);
+        Assert.That(fmt.Exists(src), Is.True);
+        fmt.Delete(src);
+        fmt.Delete(src);
+        Assert.That(fmt.Exists(src), Is.False);
+    }
 
     #endregion
 

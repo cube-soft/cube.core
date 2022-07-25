@@ -189,6 +189,60 @@ public static class Formatter
 
     #endregion
 
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Exists
+    ///
+    /// <summary>
+    /// Gets a value indicating whether the specified location exists.
+    /// </summary>
+    ///
+    /// <param name="format">Serialization format.</param>
+    /// <param name="src">Location of serialized data.</param>
+    ///
+    /// <returns>true for exists.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static bool Exists(this Format format, string src)
+    {
+        switch (format)
+        {
+            case Format.Registry:
+                using (var e = DefaultKey.OpenSubKey(src, false)) return e is not null;
+            default:
+                return Io.Exists(src);
+        }
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Delete
+    ///
+    /// <summary>
+    /// Deletes the specified location where serialized data is stored.
+    /// </summary>
+    ///
+    /// <param name="format">Serialization format.</param>
+    /// <param name="src">Location of serialized data.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static void Delete(this Format format, string src)
+    {
+        switch (format)
+        {
+            case Format.Registry:
+                DefaultKey.DeleteSubKeyTree(src, false);
+                break;
+            default:
+                if (Io.Exists(src)) Io.Delete(src);
+                break;
+        }
+    }
+
+    #endregion
+
     #region Fields
     private static RegistryKey _defaultKey;
     #endregion
