@@ -95,7 +95,7 @@ class RegistryFixture : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     protected RegistryKey CreateSubKey(string subkey) =>
-        Proxy.DefaultKey.CreateSubKey(GetKeyName(subkey));
+        Proxy.RootRegistryKey.CreateSubKey(GetKeyName(subkey));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -107,7 +107,7 @@ class RegistryFixture : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     protected RegistryKey OpenSubKey(string subkey) =>
-        Proxy.DefaultKey.OpenSubKey(GetKeyName(subkey), false);
+        Proxy.RootRegistryKey.OpenSubKey(GetKeyName(subkey), false);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -161,7 +161,7 @@ class RegistryFixture : FileFixture
     ///
     /* --------------------------------------------------------------------- */
     [TearDown]
-    protected override void Teardown() => Proxy.DefaultKey.DeleteSubKeyTree(Shared, false);
+    protected override void Teardown() => Proxy.RootRegistryKey.DeleteSubKeyTree(Shared, false);
 
     #endregion
 }

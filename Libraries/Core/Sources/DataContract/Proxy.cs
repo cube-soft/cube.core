@@ -21,6 +21,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using Cube.FileSystem;
 using Microsoft.Win32;
@@ -41,10 +42,10 @@ public static class Proxy
 
     /* --------------------------------------------------------------------- */
     ///
-    /// DefaultKey
+    /// RootRegistryKey
     ///
     /// <summary>
-    /// Gets or sets the default registry subkey when serializing or
+    /// Gets or sets the root registry subkey when serializing or
     /// deserializing the registry.
     /// </summary>
     ///
@@ -54,10 +55,10 @@ public static class Proxy
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public static RegistryKey DefaultKey
+    public static RegistryKey RootRegistryKey
     {
-        get => _defaultKey ??= Registry.CurrentUser.OpenSubKey("Software", true);
-        set => _defaultKey = value;
+        get => _root ??= Registry.CurrentUser.OpenSubKey("Software", true);
+        set => Interlocked.Exchange(ref _root, value)?.Dispose();
     }
 
     #endregion
@@ -88,7 +89,7 @@ public static class Proxy
                 IoEx.Save(dest, e => SerializeJson(e, src));
                 break;
             case Format.Registry:
-                using (var e = DefaultKey.CreateSubKey(dest)) Serialize(e, src);
+                using (var e = RootRegistryKey.CreateSubKey(dest)) Serialize(e, src);
                 break;
         }
     }
@@ -166,7 +167,7 @@ public static class Proxy
             case Format.Json:
                 return IoEx.Load(src, e => (T)new DataContractJsonSerializer(typeof(T)).ReadObject(e));
             case Format.Registry:
-                using (var e = DefaultKey.OpenSubKey(src, false)) return Deserialize<T>(e);
+                using (var e = RootRegistryKey.OpenSubKey(src, false)) return Deserialize<T>(e);
         }
         return default;
     }
@@ -210,7 +211,7 @@ public static class Proxy
         switch (format)
         {
             case Format.Registry:
-                using (var e = DefaultKey.OpenSubKey(src, false)) return e is not null;
+                using (var e = RootRegistryKey.OpenSubKey(src, false)) return e is not null;
             default:
                 return Io.Exists(src);
         }
@@ -233,7 +234,7 @@ public static class Proxy
         switch (format)
         {
             case Format.Registry:
-                DefaultKey.DeleteSubKeyTree(src, false);
+                RootRegistryKey.DeleteSubKeyTree(src, false);
                 break;
             default:
                 if (Io.Exists(src)) Io.Delete(src);
@@ -244,6 +245,6 @@ public static class Proxy
     #endregion
 
     #region Fields
-    private static RegistryKey _defaultKey;
+    private static RegistryKey _root;
     #endregion
 }
