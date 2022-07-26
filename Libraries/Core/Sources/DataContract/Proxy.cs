@@ -27,15 +27,15 @@ using Microsoft.Win32;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Formatter
+/// Proxy
 ///
 /// <summary>
-/// Provides functionality to serialize and deserialize the DataContract
+/// Provides extended methods to serialize and deserialize the DataContract
 /// objects.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public static class Formatter
+public static class Proxy
 {
     #region Properties
 
