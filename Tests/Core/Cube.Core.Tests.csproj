@@ -28,7 +28,6 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\Core\Cube.Core.csproj" />
-        <ProjectReference Include="..\..\Libraries\NLog\Cube.Logging.NLog.csproj" />
         <ProjectReference Include="..\..\Libraries\Trick\Cube.Trick.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />

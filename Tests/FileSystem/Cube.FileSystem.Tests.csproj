@@ -22,7 +22,6 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\AlphaFS\Cube.FileSystem.AlphaFS.csproj" />
-        <ProjectReference Include="..\..\Libraries\NLog\Cube.Logging.NLog.csproj" />
         <ProjectReference Include="..\..\Libraries\Trick\Cube.Trick.csproj" />
         <ProjectReference Include="..\..\Libraries\Tests\Cube.Tests.csproj" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
