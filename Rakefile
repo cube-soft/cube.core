@@ -31,7 +31,7 @@ PACKAGES  = ["Libraries/Core/Cube.Core",
              "Libraries/AlphaFS/Cube.FileSystem.AlphaFS",
              "Libraries/NLog/Cube.Logging.NLog",
              "Libraries/Trick/Cube.Trick",
-             "Libraries/Tests/Cube.Tests"]
+             "Libraries/Tests/Cube.Private.Tests"]
 
 # --------------------------------------------------------------------------- #
 # clean

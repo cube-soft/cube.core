@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Logging.NLog", "Librar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Trick", "Libraries\Trick\Cube.Trick.csproj", "{3569CFCD-5B8F-4E39-8292-33BFC49DE927}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Tests", "Libraries\Tests\Cube.Tests.csproj", "{8E1FF307-C59B-428D-9769-9A53B4CB81A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cube.Private.Tests", "Libraries\Tests\Cube.Private.Tests.csproj", "{8E1FF307-C59B-428D-9769-9A53B4CB81A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B027E4C1-51EA-4907-9A4B-C483824CF3C8}"
 EndProject
