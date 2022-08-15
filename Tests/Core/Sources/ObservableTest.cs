@@ -18,7 +18,7 @@
 namespace Cube.Tests;
 
 using System.Collections.Generic;
-using Cube.Mixin.Observing;
+using Cube.Mixin.Observable;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -132,7 +132,7 @@ class ObservableTest
         var dest = new Mock();
 
         using var dp = dest.Subscribe(e => dic[e]++);
-        using (new ObservableProxy(src, dest))
+        using (src.Forward(dest))
         {
             src.Refresh(nameof(Mock.Value));
             src.Refresh(nameof(Mock.Age));
@@ -174,9 +174,9 @@ class ObservableTest
         var dest = new Mock();
 
         using var dp = dest.Subscribe(e => dic[e]++);
-        using (new ObservableProxy(src, dest, new() {
-            { nameof(Mock.Value), new[] { "Dummy" } }
-        }) { MatchOnly = true })
+        using (src.Subscribe(new() {
+            { nameof(Mock.Value), e => dest.Refresh("Dummy") }
+        }, default))
         {
             src.Refresh(nameof(Mock.Value));
             src.Refresh(nameof(Mock.Age));

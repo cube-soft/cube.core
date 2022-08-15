@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Mixin.Observing;
+namespace Cube.Mixin.Observable;
 
 using System;
 using System.ComponentModel;
@@ -25,8 +25,8 @@ using System.ComponentModel;
 /// Extension
 ///
 /// <summary>
-/// Provides extended methods of IObservePropertyChanged and its
-/// implemented classes.
+/// Provides extended methods of INotifyPropertyChanged,
+/// IObservePropertyChanged, and their related classes.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
@@ -43,7 +43,7 @@ public static class Extension
     /// </summary>
     ///
     /// <param name="src">Observable source.</param>
-    /// <param name="callback">
+    /// <param name="handler">
     /// Action to invoked when the PropertyChanged event is fired.
     /// </param>
     ///
@@ -53,12 +53,70 @@ public static class Extension
     /// </returns>
     ///
     /* --------------------------------------------------------------------- */
-    public static IDisposable Subscribe(this INotifyPropertyChanged src, Action<string> callback)
+    public static IDisposable Subscribe(this INotifyPropertyChanged src, ObservableHandler handler)
     {
-        void handler(object s, PropertyChangedEventArgs e) => callback(e.PropertyName);
-        src.PropertyChanged += handler;
-        return Disposable.Create(() => src.PropertyChanged -= handler);
+        void f(object s, PropertyChangedEventArgs e) => handler(e.PropertyName);
+        src.PropertyChanged += f;
+        return Disposable.Create(() => src.PropertyChanged -= f);
     }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Subscribe
+    ///
+    /// <summary>
+    /// Associates the specified callback to the PropertyChanged event.
+    /// </summary>
+    ///
+    /// <param name="src">Observable source.</param>
+    ///
+    /// <param name="map">
+    /// Object to map PropertyChanged events to actions.
+    /// </param>
+    ///
+    /// <param name="others">
+    /// Handler called when PropertyChanged event does not match any of the
+    /// map items.
+    /// </param>
+    ///
+    /// <returns>
+    /// Object to remove the callback from the PropertyChanged event
+    /// handler.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IDisposable Subscribe(this INotifyPropertyChanged src,
+        ObservableHandlerDictionary map, ObservableHandler others)
+    {
+        void f(object s, PropertyChangedEventArgs e)
+        {
+            if (map.TryGetValue(e.PropertyName, out var h)) h(e.PropertyName);
+            else others?.Invoke(e.PropertyName);
+        }
+        src.PropertyChanged += f;
+        return Disposable.Create(() => src.PropertyChanged -= f);
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Forward
+    ///
+    /// <summary>
+    /// Forwards the PropertyChanged events to the specified ObservableBase
+    /// object.
+    /// </summary>
+    ///
+    /// <param name="src">Observable source.</param>
+    /// <param name="dest">Observable target.</param>
+    ///
+    /// <returns>
+    /// Object to remove the callback from the PropertyChanged event
+    /// handler.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static IDisposable Forward(this INotifyPropertyChanged src, ObservableBase dest) =>
+        src.Subscribe(dest.Refresh);
 
     /* --------------------------------------------------------------------- */
     ///

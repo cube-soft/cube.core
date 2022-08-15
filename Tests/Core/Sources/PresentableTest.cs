@@ -20,7 +20,7 @@ namespace Cube.Tests;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Cube.Mixin.Observing;
+using Cube.Mixin.Observable;
 using Cube.Mixin.Syntax;
 using NUnit.Framework;
 

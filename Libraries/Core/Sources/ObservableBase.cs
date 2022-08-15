@@ -172,17 +172,14 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     /// Refresh
     ///
     /// <summary>
-    /// Notifies the update of the specified properties by raising
+    /// Notifies the update of the specified property by raising
     /// the PropertyChanged event.
     /// </summary>
     ///
-    /// <param name="names">Property names.</param>
+    /// <param name="name">Property name.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public void Refresh(IEnumerable<string> names)
-    {
-        foreach (var s in names) OnPropertyChanged(new(s));
-    }
+    public void Refresh(string name) => OnPropertyChanged(new(name));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -201,6 +198,23 @@ public abstract class ObservableBase : DisposableBase, INotifyPropertyChanged
     {
         OnPropertyChanged(new(name));
         Refresh(more.AsEnumerable());
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Refresh
+    ///
+    /// <summary>
+    /// Notifies the update of the specified properties by raising
+    /// the PropertyChanged event.
+    /// </summary>
+    ///
+    /// <param name="names">Property names.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Refresh(IEnumerable<string> names)
+    {
+        foreach (var s in names) OnPropertyChanged(new(s));
     }
 
     /* --------------------------------------------------------------------- */
