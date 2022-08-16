@@ -47,7 +47,7 @@ class GenericsTest
     [Test]
     public void TryCast()
     {
-        var c0 = new Person { ID = 1 };
+        var c0 = new Person { Number = 1 };
         Assert.That(c0, Is.Not.Null);
         var c1 = c0.TryCast<INotifyPropertyChanged>();
         Assert.That(c1, Is.Not.Null);

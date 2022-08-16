@@ -22,84 +22,33 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Cube.DataContract;
 
-/* ------------------------------------------------------------------------- */
-///
-/// Sex
-///
-/// <summary>
-/// Specifies the sex.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-enum Sex
-{
-    Male    =  0,
-    Female  =  1,
-    Unknown = -1
-}
+#region Person
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Address
+/// Dummy
 ///
 /// <summary>
-/// Represents the address.
+/// Represents the serializable dummy data.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
 [DataContract]
-class Address
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Type
-    ///
-    /// <summary>
-    /// Gets or sets the type of the provided address.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [DataMember]
-    public string Type { get; set; }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Value
-    ///
-    /// <summary>
-    /// Gets or sets the content of the provided address.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [DataMember]
-    public string Value { get; set; }
-}
-
-/* ------------------------------------------------------------------------- */
-///
-/// Person
-///
-/// <summary>
-/// Represents the example class that is serializable.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-[DataContract]
-class Person : SerializableBase
+class Dummy : SerializableBase
 {
     #region Properties
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Identification
+    /// Number
     ///
     /// <summary>
-    /// Gets or sets the ID.
+    /// Gets or sets the ID number.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [DataMember(Name = "ID")]
-    public int Identification
+    public int Number
     {
         get => Get(() => -1);
         set => Set(value);
@@ -254,3 +203,66 @@ class Person : SerializableBase
     private bool _reserved;
     #endregion
 }
+
+#endregion
+
+#region Sex
+
+/* ------------------------------------------------------------------------- */
+///
+/// Sex
+///
+/// <summary>
+/// Specifies the sex.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+enum Sex
+{
+    Male    =  0,
+    Female  =  1,
+    Unknown = -1
+}
+
+#endregion
+
+#region Address
+
+/* ------------------------------------------------------------------------- */
+///
+/// Address
+///
+/// <summary>
+/// Represents the address.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+[DataContract]
+class Address
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Type
+    ///
+    /// <summary>
+    /// Gets or sets the type of the provided address.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public string Type { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Value
+    ///
+    /// <summary>
+    /// Gets or sets the content of the provided address.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [DataMember]
+    public string Value { get; set; }
+}
+
+#endregion

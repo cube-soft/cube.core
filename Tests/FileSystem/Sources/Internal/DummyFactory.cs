@@ -15,36 +15,51 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Tests;
+namespace Cube.FileSystem.Tests;
 
-using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// GlobalSetup
+/// DummyFactory
 ///
 /// <summary>
-/// Provides functionality to run at the beginning of the NUnit.
+/// Provides functionality to create dummy data.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-[SetUpFixture]
-public class GlobalSetup
+static class DummyFactory
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// OneTimeSetup
+    /// Create
     ///
     /// <summary>
-    /// Invokes the setup only once.
+    /// Creates a new instance of the Dummy class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [OneTimeSetUp]
-    public void OneTimeSetup()
+    public static Dummy Create() => new()
     {
-        Logger.Configure(new Logging.NLog.LoggerSource());
-        _ = Logger.ObserveTaskException();
-        typeof(GlobalSetup).LogInfo(typeof(GlobalSetup).Assembly);
-    }
+        Number   = 123,
+        Name     = "山田太郎",
+        Sex      = Sex.Male,
+        Age      = 15,
+        Creation = new DateTime(2014, 12, 31, 23, 25, 30, DateTimeKind.Utc).ToLocalTime(),
+        Contact  = new() { Type = "Phone", Value = "080-9876-5432" },
+        Reserved = true,
+        Secret   = "dummy data",
+        Others   = new List<Address>
+        {
+            new() { Type = "PC",     Value = "pc@example.com" },
+            new() { Type = "Mobile", Value = "mobile@example.com" }
+        },
+        Messages = new[]
+        {
+            "1st message",
+            "2nd message",
+            "3rd message",
+        },
+    };
 }

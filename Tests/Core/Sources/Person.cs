@@ -19,55 +19,7 @@ namespace Cube.Tests;
 
 using System;
 
-/* ------------------------------------------------------------------------- */
-///
-/// Sex
-///
-/// <summary>
-/// Specifies the sex.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-enum Sex
-{
-    Male    =  0,
-    Female  =  1,
-    Unknown = -1
-}
-
-/* ------------------------------------------------------------------------- */
-///
-/// Address
-///
-/// <summary>
-/// Represents the address.
-/// </summary>
-///
-/* ------------------------------------------------------------------------- */
-class Address
-{
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Type
-    ///
-    /// <summary>
-    /// Gets or sets the type of the provided address.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public string Type { get; set; }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Value
-    ///
-    /// <summary>
-    /// Gets or sets the content of the provided address.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public string Value { get; set; }
-}
+#region Person
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -80,33 +32,18 @@ class Address
 /* ------------------------------------------------------------------------- */
 class Person : ObservableBase
 {
-    #region Constructors
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Person
-    ///
-    /// <summary>
-    /// Gets or sets the ID.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public Person() => _age = new(0);
-
-    #endregion
-
     #region Properties
 
     /* --------------------------------------------------------------------- */
     ///
-    /// ID
+    /// Number
     ///
     /// <summary>
-    /// Gets or sets the ID.
+    /// Gets or sets the ID number.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public int ID
+    public int Number
     {
         get => Get(() => -1);
         set => Set(value);
@@ -237,7 +174,67 @@ class Person : ObservableBase
     #endregion
 
     #region Fields
-    private Accessor<int> _age;
+    private readonly Accessor<int> _age = new(0);
     private string _secret;
     #endregion
 }
+
+#endregion
+
+#region Sex
+
+/* ------------------------------------------------------------------------- */
+///
+/// Sex
+///
+/// <summary>
+/// Specifies the sex.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+enum Sex
+{
+    Male    =  0,
+    Female  =  1,
+    Unknown = -1
+}
+
+#endregion
+
+#region Address
+
+/* ------------------------------------------------------------------------- */
+///
+/// Address
+///
+/// <summary>
+/// Represents the address.
+/// </summary>
+///
+/* ------------------------------------------------------------------------- */
+class Address
+{
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Type
+    ///
+    /// <summary>
+    /// Gets or sets the type of the provided address.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Type { get; set; }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Value
+    ///
+    /// <summary>
+    /// Gets or sets the content of the provided address.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public string Value { get; set; }
+}
+
+#endregion

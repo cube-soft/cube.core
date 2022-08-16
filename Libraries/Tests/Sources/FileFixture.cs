@@ -123,8 +123,7 @@ public abstract class FileFixture
     /// <returns>Combined path.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected string Get(params string[] paths) =>
-        Io.Combine(Results, Io.Combine(paths));
+    protected string Get(params string[] paths) => Io.Combine(Results, Io.Combine(paths));
 
     /* --------------------------------------------------------------------- */
     ///
@@ -142,12 +141,7 @@ public abstract class FileFixture
     /// <returns>Combined path.</returns>
     ///
     /* --------------------------------------------------------------------- */
-    protected string GetSource(params string[] paths) =>
-        Io.Combine(Examples, Io.Combine(paths));
-
-    #endregion
-
-    #region Methods
+    protected string GetSource(params string[] paths) => Io.Combine(Examples, Io.Combine(paths));
 
     /* --------------------------------------------------------------------- */
     ///

@@ -20,6 +20,7 @@ namespace Cube.FileSystem.Tests;
 using System;
 using System.Threading.Tasks;
 using Cube.DataContract;
+using Cube.Tests;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -32,7 +33,7 @@ using NUnit.Framework;
 ///
 /* ------------------------------------------------------------------------- */
 [TestFixture]
-class SettingFolderTest : RegistryFixture
+sealed class SettingFolderTest : RegistryFixture
 {
     #region Tests
 
@@ -49,9 +50,9 @@ class SettingFolderTest : RegistryFixture
     public void Load()
     {
         var fmt  = Format.Registry;
-        var name = GetKeyName(Default);
+        var name = MakeKeyName();
 
-        using var src = new SettingFolder<Person>(fmt, name, new()) { AutoSave = false };
+        using var src = new SettingFolder<Dummy>(fmt, name, new()) { AutoSave = false };
         src.Load();
         Assert.That(src.Format,   Is.EqualTo(fmt));
         Assert.That(src.Location, Is.EqualTo(name));
@@ -60,14 +61,14 @@ class SettingFolderTest : RegistryFixture
 
         var dest = src.Value;
         Assert.That(dest.Name,            Is.EqualTo("山田太郎"));
-        Assert.That(dest.Age,             Is.EqualTo(52));
+        Assert.That(dest.Age,             Is.EqualTo(15));
         Assert.That(dest.Sex,             Is.EqualTo(Sex.Male));
         Assert.That(dest.Reserved,        Is.EqualTo(true));
-        Assert.That(dest.Creation,        Is.EqualTo(new DateTime(2015, 3, 16, 2, 32, 26, DateTimeKind.Utc).ToLocalTime()));
-        Assert.That(dest.Identification,  Is.EqualTo(1357));
+        Assert.That(dest.Creation,        Is.EqualTo(new DateTime(2014, 12, 31, 23, 25, 30, DateTimeKind.Utc).ToLocalTime()));
+        Assert.That(dest.Number,          Is.EqualTo(123));
         Assert.That(dest.Secret,          Is.EqualTo("secret message"));
         Assert.That(dest.Contact.Type,    Is.EqualTo("Phone"));
-        Assert.That(dest.Contact.Value,   Is.EqualTo("090-1234-5678"));
+        Assert.That(dest.Contact.Value,   Is.EqualTo("080-9876-5432"));
         Assert.That(dest.Others.Count,    Is.EqualTo(2));
         Assert.That(dest.Others[0].Type,  Is.EqualTo("PC"));
         Assert.That(dest.Others[0].Value, Is.EqualTo("pc@example.com"));
@@ -92,7 +93,7 @@ class SettingFolderTest : RegistryFixture
     [TestCase(Format.Xml)]
     public void Load_NotFound(Format format)
     {
-        var src = new SettingFolder<Person>(format, Assembly);
+        var src = new SettingFolder<Dummy>(format, GetType().Assembly);
         src.Load();
         Assert.That(src.Value, Is.Not.Null);
     }
@@ -109,9 +110,9 @@ class SettingFolderTest : RegistryFixture
     [Test]
     public void ReLoad()
     {
-        var name = GetKeyName(Default);
+        var name = MakeKeyName();
 
-        using var src = new SettingFolder<Person>(Format.Registry, name, new());
+        using var src = new SettingFolder<Dummy>(Format.Registry, name, new());
         src.AutoSave = false;
         src.Load();
         src.Value.Name = "Before ReLoad";
@@ -133,10 +134,10 @@ class SettingFolderTest : RegistryFixture
     public void AutoSave()
     {
         var key  = nameof(AutoSave);
-        var name = GetKeyName(key);
+        var name = MakeKeyName(key);
         var ts   = TimeSpan.FromMilliseconds(100);
 
-        using (var src = new SettingFolder<Person>(Format.Registry, name, new()))
+        using (var src = new SettingFolder<Dummy>(Format.Registry, name, new()))
         {
             src.AutoSave       = true;
             src.AutoSaveDelay  = ts;
@@ -151,13 +152,29 @@ class SettingFolderTest : RegistryFixture
             Task.Delay(TimeSpan.FromTicks(ts.Ticks * 2)).Wait();
         }
 
-        using var dest = OpenSubKey(key);
+        using var dest = OpenKey(key);
         Assert.That(dest.GetValue("Name"),     Is.EqualTo("AutoSave"));
         Assert.That(dest.GetValue("Age"),      Is.EqualTo(77));
         Assert.That(dest.GetValue("Sex"),      Is.EqualTo(1));
         Assert.That(dest.GetValue("Reserved"), Is.EqualTo(0));
         Assert.That(dest.GetValue("Secret"),   Is.Null);
     }
+
+    #endregion
+
+    #region Others
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Setup
+    ///
+    /// <summary>
+    /// Invokes the setup operation.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [SetUp]
+    public void Setup() => Format.Registry.Serialize(MakeKeyName(), DummyFactory.Create());
 
     #endregion
 }

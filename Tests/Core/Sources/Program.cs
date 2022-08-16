@@ -18,6 +18,7 @@
 namespace Cube.Tests;
 
 using System;
+using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -28,8 +29,27 @@ using System;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
+[SetUpFixture]
 static class Program
 {
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OneTimeSetup
+    ///
+    /// <summary>
+    /// Invokes the setup only once.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [OneTimeSetUp]
+    public static void OneTimeSetup()
+    {
+        var src = typeof(Program);
+        Logger.Configure(new Logging.NLog.LoggerSource());
+        _ = Logger.ObserveTaskException();
+        src.LogInfo(src.Assembly);
+    }
+
     /* --------------------------------------------------------------------- */
     ///
     /// Main
@@ -40,5 +60,5 @@ static class Program
     ///
     /* --------------------------------------------------------------------- */
     [STAThread]
-    static void Main(string[] args) { }
+    static void Main() { }
 }

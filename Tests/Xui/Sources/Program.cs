@@ -18,6 +18,9 @@
 namespace Cube.Xui.Tests;
 
 using System;
+using System.Windows;
+using Cube.Logging;
+using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -28,8 +31,29 @@ using System;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
+[SetUpFixture]
 static class Program
 {
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OneTimeSetup
+    ///
+    /// <summary>
+    /// Invokes the setup only once.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    [OneTimeSetUp]
+    public static void OneTimeSetup()
+    {
+        var src = typeof(Program);
+        Logger.Configure(new Logging.NLog.LoggerSource());
+        BindingLogger.Setup();
+        _ = Logger.ObserveTaskException();
+        _ = Application.Current.ObserveUiException();
+        src.LogInfo(src.Assembly);
+    }
+
     /* --------------------------------------------------------------------- */
     ///
     /// Main
@@ -40,5 +64,5 @@ static class Program
     ///
     /* --------------------------------------------------------------------- */
     [STAThread]
-    static void Main(string[] args) { }
+    static void Main() { }
 }
