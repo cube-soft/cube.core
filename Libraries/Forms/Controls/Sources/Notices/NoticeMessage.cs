@@ -43,6 +43,24 @@ public delegate void NoticeCallback(NoticeMessage src, NoticeResult result);
 /* ------------------------------------------------------------------------- */
 public class NoticeMessage : Message<object>
 {
+    #region Constructors
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// NoticeMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the NoticeMessage class with the
+    /// specified text.
+    /// </summary>
+    ///
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public NoticeMessage(string text) : base(text) { }
+
+    #endregion
+
     #region Properties
 
     /* --------------------------------------------------------------------- */

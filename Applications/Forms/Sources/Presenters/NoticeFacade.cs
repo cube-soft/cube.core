@@ -131,10 +131,9 @@ public sealed class NoticeFacade
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    private NoticeMessage Create(NoticeCallback callback) => new()
+    private NoticeMessage Create(NoticeCallback callback) => new($"This is a sample message ({++_count})")
     {
         Title        = "Notice Demo",
-        Text         = $"This is a sample message ({++_count})",
         Value        = "DummyData",
         DisplayTime  = TimeSpan.FromSeconds(60),
         InitialDelay = TimeSpan.FromSeconds(1),

@@ -19,56 +19,24 @@ namespace Cube;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Message(TValue)
+/// ApplyMessage
 ///
 /// <summary>
-/// Represents the common message with a value.
+/// Represents the message that is sent when setting the current
+/// values to the associated model objects.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Message<TValue> : MessageBase
+public sealed class ApplyMessage : MessageBase
 {
-    #region Constructors
-
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// ApplyMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class.
+    /// Initializes a new instance of the ActivateMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Message() : this($"{typeof(TValue).Name} Message") { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Message
-    ///
-    /// <summary>
-    /// Initializes a new instance of the Message class with the specified
-    /// text.
-    /// </summary>
-    ///
-    /// <param name="text">Message text.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public Message(string text) : base(text) { }
-
-    #endregion
-
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Value
-    ///
-    /// <summary>
-    /// Gets or sets the user defined value.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public TValue Value { get; set; }
-
-    #endregion
+    public ApplyMessage() : base(nameof(ApplyMessage)) { }
 }

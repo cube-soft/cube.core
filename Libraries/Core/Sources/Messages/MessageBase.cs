@@ -19,41 +19,30 @@ namespace Cube;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Message(TValue)
+/// MessageBase
 ///
 /// <summary>
-/// Represents the common message with a value.
+/// Represents the base class of messages.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Message<TValue> : MessageBase
+public abstract class MessageBase
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// MessageBase
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public Message() : this($"{typeof(TValue).Name} Message") { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Message
-    ///
-    /// <summary>
-    /// Initializes a new instance of the Message class with the specified
-    /// text.
+    /// Initializes a new instance of the MessageBase class with the
+    /// specified text.
     /// </summary>
     ///
     /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Message(string text) : base(text) { }
+    protected MessageBase(string text) => Text = text;
 
     #endregion
 
@@ -61,14 +50,33 @@ public class Message<TValue> : MessageBase
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Value
+    /// Text
     ///
     /// <summary>
-    /// Gets or sets the user defined value.
+    /// Gets the text for the message.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TValue Value { get; set; }
+    public string Text { get; }
+
+    #endregion
+
+    #region Methods
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// ToString
+    ///
+    /// <summary>
+    /// Returns a string that represents the current object.
+    /// </summary>
+    ///
+    /// <returns>
+    /// A string that represents the current object.
+    /// </returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public override string ToString() => Text;
 
     #endregion
 }

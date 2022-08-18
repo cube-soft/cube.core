@@ -19,56 +19,23 @@ namespace Cube;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Message(TValue)
+/// CloseMessage
 ///
 /// <summary>
-/// Represents the common message with a value.
+/// Represents the message to close the displayed window.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Message<TValue> : MessageBase
+public sealed class CloseMessage : MessageBase
 {
-    #region Constructors
-
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// CloseMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class.
+    /// Initializes a new instance of the CloseMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Message() : this($"{typeof(TValue).Name} Message") { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Message
-    ///
-    /// <summary>
-    /// Initializes a new instance of the Message class with the specified
-    /// text.
-    /// </summary>
-    ///
-    /// <param name="text">Message text.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public Message(string text) : base(text) { }
-
-    #endregion
-
-    #region Properties
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Value
-    ///
-    /// <summary>
-    /// Gets or sets the user defined value.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    public TValue Value { get; set; }
-
-    #endregion
+    public CloseMessage() : base(nameof(CloseMessage)) { }
 }

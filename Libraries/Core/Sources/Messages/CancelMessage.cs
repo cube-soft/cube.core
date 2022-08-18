@@ -19,41 +19,41 @@ namespace Cube;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Message(TValue)
+/// CancelMessage
 ///
 /// <summary>
-/// Represents the common message with a value.
+/// Represents the common message with a value and cancel status.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Message<TValue> : MessageBase
+public class CancelMessage<TValue> : Message<TValue>
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// CancelMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class.
+    /// Initializes a new instance of the CancelMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Message() : this($"{typeof(TValue).Name} Message") { }
+    public CancelMessage() : this($"{typeof(TValue).Name} CancelMessage") { }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// CancelMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class with the specified
-    /// text.
+    /// Initializes a new instance of the CancelMessage class with the
+    /// specified text.
     /// </summary>
     ///
     /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Message(string text) : base(text) { }
+    public CancelMessage(string text) : base(text) { }
 
     #endregion
 
@@ -61,14 +61,14 @@ public class Message<TValue> : MessageBase
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Value
+    /// Cancel
     ///
     /// <summary>
-    /// Gets or sets the user defined value.
+    /// Gets or sets a value indicating whether to cancel the operation.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TValue Value { get; set; }
+    public bool Cancel { get; set; }
 
     #endregion
 }

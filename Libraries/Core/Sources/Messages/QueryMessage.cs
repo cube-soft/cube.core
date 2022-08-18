@@ -19,41 +19,41 @@ namespace Cube;
 
 /* ------------------------------------------------------------------------- */
 ///
-/// Message(TValue)
+/// QueryMessage(TSource, TValue)
 ///
 /// <summary>
-/// Represents the common message with a value.
+/// Represents the common message with a source, value, and cancel status.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class Message<TValue> : MessageBase
+public class QueryMessage<TSource, TValue> : CancelMessage<TValue>
 {
     #region Constructors
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// QueryMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class.
+    /// Initializes a new instance of the QueryMessage class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public Message() : this($"{typeof(TValue).Name} Message") { }
+    public QueryMessage() : this($"{typeof(TSource).Name} and {typeof(TValue).Name} QueryMessage") { }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Message
+    /// QueryMessage
     ///
     /// <summary>
-    /// Initializes a new instance of the Message class with the specified
-    /// text.
+    /// Initializes a new instance of the QueryMessage class with the
+    /// specified text.
     /// </summary>
     ///
     /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public Message(string text) : base(text) { }
+    public QueryMessage(string text) : base(text) { }
 
     #endregion
 
@@ -61,14 +61,14 @@ public class Message<TValue> : MessageBase
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Value
+    /// Source
     ///
     /// <summary>
-    /// Gets or sets the user defined value.
+    /// Gets or sets the source information at the time of query.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TValue Value { get; set; }
+    public TSource Source { get; set; }
 
     #endregion
 }

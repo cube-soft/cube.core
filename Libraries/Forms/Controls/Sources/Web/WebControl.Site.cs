@@ -83,9 +83,8 @@ partial class WebControl
         public int ShowMessage(IntPtr hwnd, string text, string caption,
             int type, string file, int context, out int result)
         {
-            var args = new DialogMessage
+            var args = new DialogMessage(text)
             {
-                Text    = text,
                 Title   = caption,
                 Buttons = GetButtons(type & 0x0f),
                 Icon    = GetIcon(type & 0xf0),

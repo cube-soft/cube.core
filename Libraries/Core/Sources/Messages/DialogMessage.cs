@@ -48,10 +48,9 @@ public class DialogMessage : CancelMessage<DialogStatus>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public DialogMessage()
+    public DialogMessage(string text) : base(text)
     {
         Value = DialogStatus.Ok;
-        Text  = string.Empty;
         Title = (Assembly.GetEntryAssembly() ?? GetType().Assembly).GetTitle();
     }
 
@@ -122,9 +121,8 @@ public class DialogMessage : CancelMessage<DialogStatus>
     /// <param name="src">Exception object.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public static DialogMessage From(Exception src) => new()
+    public static DialogMessage From(Exception src) => new($"{src.Message} ({src.GetType().Name})")
     {
-        Text    = $"{src.Message} ({src.GetType().Name})",
         Icon    = DialogIcon.Error,
         Buttons = DialogButtons.Ok,
         Value   = DialogStatus.Ok,
