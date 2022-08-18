@@ -47,7 +47,7 @@ class OpenDirectoryMessageTest : FileFixture
     {
         var dest = new OpenDirectoryMessage();
 
-        Assert.That(dest.Text,      Is.Empty);
+        Assert.That(dest.Text,      Is.EqualTo(nameof(OpenDirectoryMessage)));
         Assert.That(dest.Value,     Is.Empty);
         Assert.That(dest.NewButton, Is.True);
         Assert.That(dest.Cancel,    Is.False);
@@ -68,7 +68,7 @@ class OpenDirectoryMessageTest : FileFixture
     {
         var dest = new OpenDirectoryMessage(src);
 
-        Assert.That(dest.Text,      Is.Empty);
+        Assert.That(dest.Text,      Is.EqualTo(nameof(OpenDirectoryMessage)));
         Assert.That(dest.Value,     Is.Empty);
         Assert.That(dest.NewButton, Is.True);
         Assert.That(dest.Cancel,    Is.False);

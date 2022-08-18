@@ -20,6 +20,7 @@ namespace Cube.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -76,6 +77,27 @@ public static class Io
     ///
     /* --------------------------------------------------------------------- */
     public static Entity Get(string path) => new(_controller.GetEntitySource(path), true);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// GetOrDefault
+    ///
+    /// <summary>
+    /// Gets the Entity object from the specified path. If the specified
+    /// path is empty or some exception occurs, the method returns null.
+    /// </summary>
+    ///
+    /// <param name="path">Target path.</param>
+    ///
+    /// <returns>Entity object or null.</returns>
+    ///
+    /* --------------------------------------------------------------------- */
+    public static Entity GetOrDefault(string path)
+    {
+        try { return path.HasValue() ? Get(path) : default; }
+        catch (Exception e) { typeof(Io).LogDebug(e.Message); }
+        return default;
+    }
 
     /* --------------------------------------------------------------------- */
     ///

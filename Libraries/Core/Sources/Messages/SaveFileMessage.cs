@@ -18,7 +18,6 @@
 namespace Cube;
 
 using Cube.FileSystem;
-using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -42,21 +41,7 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public SaveFileMessage() : this(string.Empty) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SaveFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public SaveFileMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
+    public SaveFileMessage() : base(nameof(SaveFileMessage)) => Setup(default);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -70,11 +55,51 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     /// <param name="src">Entity for the initial path.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public SaveFileMessage(Entity src) : base(src)
-    {
-        var empty = src?.IsDirectory ?? true;
-        Value = empty ? string.Empty : src.Name;
-    }
+    public SaveFileMessage(Entity src) : base(nameof(SaveFileMessage)) => Setup(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SaveFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SaveFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Entity for the initial path.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public SaveFileMessage(Entity src, string text) : base(text) => Setup(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SaveFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SaveFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public SaveFileMessage(string src) : this(Io.GetOrDefault(src)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// SaveFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the SaveFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public SaveFileMessage(string src, string text) : this(Io.GetOrDefault(src), text) { }
 
     #endregion
 
@@ -109,6 +134,29 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     ///
     /* --------------------------------------------------------------------- */
     protected override string GetValue() => Value;
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Setup
+    ///
+    /// <summary>
+    /// Invokes the initialization.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void Setup(Entity src)
+    {
+        if (src is not null)
+        {
+            Value = src.IsDirectory ? string.Empty : src.Name;
+            InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+        }
+        else Value = string.Empty;
+    }
 
     #endregion
 }

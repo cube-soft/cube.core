@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cube.FileSystem;
 using Cube.Mixin.Generic;
-using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -45,21 +44,7 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenFileMessage() : this(string.Empty) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OpenFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the OpenFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public OpenFileMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
+    public OpenFileMessage() : base(nameof(OpenFileMessage)) => Setup(default);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -73,12 +58,51 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     /// <param name="src">Entity for the initial path.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenFileMessage(Entity src) : base(src)
-    {
-        CheckPathExists = true;
-        var empty = src?.IsDirectory ?? true;
-        Value = empty ? Enumerable.Empty<string>() : src.Name.ToEnumerable();
-    }
+    public OpenFileMessage(Entity src) : base(nameof(OpenFileMessage)) => Setup(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Entity for the initial path.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenFileMessage(Entity src, string text) : base(text) => Setup(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenFileMessage(string src) : this(Io.GetOrDefault(src)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenFileMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenFileMessage class with
+    /// the specified arguments.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenFileMessage(string src, string text) : this(Io.GetOrDefault(src), text) { }
 
     #endregion
 
@@ -112,6 +136,30 @@ public class OpenFileMessage : OpenOrSaveFileMessage<IEnumerable<string>>
     ///
     /* --------------------------------------------------------------------- */
     protected override string GetValue() => Value.FirstOrDefault();
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Setup
+    ///
+    /// <summary>
+    /// Invokes the initialization.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void Setup(Entity src)
+    {
+        CheckPathExists = true;
+        if (src is not null)
+        {
+            Value = src.IsDirectory ? Enumerable.Empty<string>() : src.Name.ToEnumerable();
+            InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+        }
+        else Value = Enumerable.Empty<string>();
+    }
 
     #endregion
 }

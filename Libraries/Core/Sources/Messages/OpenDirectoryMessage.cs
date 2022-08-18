@@ -18,7 +18,6 @@
 namespace Cube;
 
 using Cube.FileSystem;
-using Cube.Mixin.String;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -42,21 +41,7 @@ public class OpenDirectoryMessage : CancelMessage<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenDirectoryMessage() : this(string.Empty) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// OpenDirectoryMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the OpenDirectoryMessage class
-    /// with the specified path.
-    /// </summary>
-    ///
-    /// <param name="src">Initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public OpenDirectoryMessage(string src) : this(src.HasValue() ? Io.Get(src) : default) { }
+    public OpenDirectoryMessage() : base(nameof(OpenDirectoryMessage)) => Setup(default);
 
     /* --------------------------------------------------------------------- */
     ///
@@ -70,10 +55,51 @@ public class OpenDirectoryMessage : CancelMessage<string>
     /// <param name="src">Entity of the initial path.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public OpenDirectoryMessage(Entity src) => Value =
-        src is null     ? string.Empty :
-        src.IsDirectory ? src.FullName :
-        src.DirectoryName;
+    public OpenDirectoryMessage(Entity src) : base(nameof(OpenDirectoryMessage)) => Setup(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenDirectoryMessage class
+    /// with the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Entity of the initial path.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenDirectoryMessage(Entity src, string text) : base(text) => Setup(src);
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenDirectoryMessage class
+    /// with the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenDirectoryMessage(string src) : this(Io.GetOrDefault(src)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// OpenDirectoryMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the OpenDirectoryMessage class
+    /// with the specified path.
+    /// </summary>
+    ///
+    /// <param name="src">Initial path.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public OpenDirectoryMessage(string src, string text) : this(Io.GetOrDefault(src), text) { }
 
     #endregion
 
@@ -90,6 +116,25 @@ public class OpenDirectoryMessage : CancelMessage<string>
     ///
     /* --------------------------------------------------------------------- */
     public bool NewButton { get; set; } = true;
+
+    #endregion
+
+    #region Implementations
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// Setup
+    ///
+    /// <summary>
+    /// Invokes the initialization.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    private void Setup(Entity src) => Value =
+        src is null     ? string.Empty :
+        src.IsDirectory ? src.FullName :
+                          src.DirectoryName;
+
 
     #endregion
 }

@@ -48,7 +48,7 @@ class OpenFileMessageTest : FileFixture
     {
         var dest = new OpenFileMessage();
 
-        Assert.That(dest.Text,             Is.Empty);
+        Assert.That(dest.Text,             Is.EqualTo(nameof(OpenFileMessage)));
         Assert.That(dest.Value.Count(),    Is.EqualTo(0));
         Assert.That(dest.InitialDirectory, Is.Empty);
         Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
@@ -72,7 +72,7 @@ class OpenFileMessageTest : FileFixture
     {
         var dest = new OpenFileMessage(src);
 
-        Assert.That(dest.Text,             Is.Empty);
+        Assert.That(dest.Text,             Is.EqualTo(nameof(OpenFileMessage)));
         Assert.That(dest.Value.Count(),    Is.EqualTo(0));
         Assert.That(dest.InitialDirectory, Is.Empty);
         Assert.That(dest.Filters.Count(),  Is.EqualTo(1));

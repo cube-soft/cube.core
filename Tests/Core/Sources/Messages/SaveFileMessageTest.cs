@@ -48,7 +48,7 @@ class SaveFileMessageTest : FileFixture
     {
         var dest = new SaveFileMessage();
 
-        Assert.That(dest.Text,             Is.Empty);
+        Assert.That(dest.Text,             Is.EqualTo(nameof(SaveFileMessage)));
         Assert.That(dest.Value,            Is.Empty);
         Assert.That(dest.InitialDirectory, Is.Empty);
         Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
@@ -74,7 +74,7 @@ class SaveFileMessageTest : FileFixture
     {
         var dest = new SaveFileMessage(src);
 
-        Assert.That(dest.Text,             Is.Empty);
+        Assert.That(dest.Text,             Is.EqualTo(nameof(SaveFileMessage)));
         Assert.That(dest.Value,            Is.Empty);
         Assert.That(dest.InitialDirectory, Is.Empty);
         Assert.That(dest.Filters.Count(),  Is.EqualTo(1));

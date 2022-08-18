@@ -53,7 +53,7 @@ public class SaveFileBehavior : MessageBehavior<SaveFileMessage>
             FilterIndex     = e.GetFilterIndex(),
         };
 
-        if (e.Text.HasValue()) view.Title = e.Text;
+        if (e.Text.HasValue() && e.Text != nameof(SaveFileMessage)) view.Title = e.Text;
         if (e.Value.HasValue()) view.FileName = e.Value;
         if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 

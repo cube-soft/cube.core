@@ -51,7 +51,7 @@ public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
             FilterIndex     = e.GetFilterIndex(),
         };
 
-        if (e.Text.HasValue()) view.Title = e.Text;
+        if (e.Text.HasValue() && e.Text != nameof(OpenFileMessage)) view.Title = e.Text;
         if (e.Value.Any()) view.FileName = e.Value.First();
         if (e.InitialDirectory.HasValue()) view.InitialDirectory = e.InitialDirectory;
 

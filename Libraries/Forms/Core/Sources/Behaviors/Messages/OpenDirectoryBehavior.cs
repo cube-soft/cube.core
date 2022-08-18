@@ -47,7 +47,7 @@ public class OpenDirectoryBehavior : MessageBehavior<OpenDirectoryMessage>
     {
         var view = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
 
-        if (e.Text.HasValue()) view.Description = e.Text;
+        if (e.Text.HasValue() && e.Text != nameof(OpenDirectoryMessage)) view.Description = e.Text;
         if (e.Value.HasValue()) view.SelectedPath = e.Value;
 
         e.Cancel = view.ShowDialog() != DialogResult.OK;

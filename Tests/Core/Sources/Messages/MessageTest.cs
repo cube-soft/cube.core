@@ -59,8 +59,11 @@ class MessageTest
         yield return new(new Message<object>(), "Object Message");
         yield return new(new CancelMessage<object>(), "Object CancelMessage");
         yield return new(new QueryMessage<string, object>(), "String and Object QueryMessage");
-        yield return new(new CloseMessage(), "CloseMessage");
-        yield return new(new ActivateMessage(), "ActivateMessage");
-        yield return new(new ApplyMessage(), "ApplyMessage");
+        yield return new(new CloseMessage(), nameof(CloseMessage));
+        yield return new(new ActivateMessage(), nameof(ActivateMessage));
+        yield return new(new ApplyMessage(), nameof(ApplyMessage));
+        yield return new(new OpenDirectoryMessage(), nameof(OpenDirectoryMessage));
+        yield return new(new OpenFileMessage(), nameof(OpenFileMessage));
+        yield return new(new SaveFileMessage(), nameof(SaveFileMessage));
     }
 }
