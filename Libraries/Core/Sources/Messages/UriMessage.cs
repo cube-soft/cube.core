@@ -15,42 +15,45 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Behaviors;
+namespace Cube;
 
 using System;
-using System.Diagnostics;
-
 /* ------------------------------------------------------------------------- */
 ///
-/// UriBehavior
+/// MessageBase
 ///
 /// <summary>
-/// Represents the behavior when an Uri message is received.
+/// Represents the message to notify a URL.
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class UriBehavior : MessageBehavior<UriMessage>
+public class UriMessage : CancelMessage<Uri>
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// Invoke
+    /// UriMessage
     ///
     /// <summary>
-    /// Invokes the action.
+    /// Initializes a new instance of the UriMessage class.
     /// </summary>
     ///
+    /// <param name="src">Source URL.</param>
+    ///
     /* --------------------------------------------------------------------- */
-    protected override void Invoke(UriMessage e)
-    {
-        try
-        {
-            var proc = Process.Start(e.ToString());
-            e.Cancel = proc is null;
-        }
-        catch (Exception err)
-        {
-            typeof(UriBehavior).LogDebug(err.Message);
-            e.Cancel = true;
-        }
-    }
+    public UriMessage(Uri src) : this(src, nameof(UriMessage)) { }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// UriMessage
+    ///
+    /// <summary>
+    /// Initializes a new instance of the UriMessage class with the
+    /// specified URL.
+    /// </summary>
+    ///
+    /// <param name="src">Source URL.</param>
+    /// <param name="text">Message text.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public UriMessage(Uri src, string text) : base(text) => Value = src;
 }

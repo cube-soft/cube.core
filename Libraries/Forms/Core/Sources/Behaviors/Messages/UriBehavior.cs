@@ -29,7 +29,7 @@ using System.Diagnostics;
 /// </summary>
 ///
 /* ------------------------------------------------------------------------- */
-public class UriBehavior : MessageBehavior<Uri>
+public class UriBehavior : MessageBehavior<UriMessage>
 {
     /* --------------------------------------------------------------------- */
     ///
@@ -40,8 +40,20 @@ public class UriBehavior : MessageBehavior<Uri>
     /// with the specified arguments.
     /// </summary>
     ///
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public UriBehavior(IAggregator aggregator) : base(aggregator, e => Process.Start(e.ToString())) { }
+    public UriBehavior(IAggregator aggregator) : base(aggregator, e =>
+    {
+        try
+        {
+            var proc = Process.Start(e.ToString());
+            e.Cancel = proc is null;
+        }
+        catch (Exception err)
+        {
+            typeof(UriBehavior).LogDebug(err.Message);
+            e.Cancel = true;
+        }
+    }) { }
 }
