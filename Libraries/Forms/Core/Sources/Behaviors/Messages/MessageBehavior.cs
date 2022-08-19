@@ -24,8 +24,8 @@ using System;
 /// MessageBehavior(TMessage)
 ///
 /// <summary>
-/// Provides functionality to invoke the provided action when the
-/// message is received.
+/// Provides functionality to invoke the provided action when a message
+/// is received.
 /// </summary>
 ///
 /// <typeparam name="TMessage">Message type.</typeparam>
@@ -44,7 +44,7 @@ public class MessageBehavior<TMessage> : MessageBehaviorBase<TMessage>
     /// with the specified arguments.
     /// </summary>
     ///
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     /// <param name="action">
     /// Action to be invoked when a message is received.
     /// </param>

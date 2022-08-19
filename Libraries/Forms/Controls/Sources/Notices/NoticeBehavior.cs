@@ -51,7 +51,7 @@ public class NoticeBehavior : MessageBehaviorBase<NoticeMessage>
     /// the specified arguments.
     /// </summary>
     ///
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public NoticeBehavior(IAggregator aggregator) : this(default, aggregator) { }
@@ -66,7 +66,7 @@ public class NoticeBehavior : MessageBehaviorBase<NoticeMessage>
     /// </summary>
     ///
     /// <param name="view">Shared view object.</param>
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public NoticeBehavior(NoticeWindow view, IAggregator aggregator) :

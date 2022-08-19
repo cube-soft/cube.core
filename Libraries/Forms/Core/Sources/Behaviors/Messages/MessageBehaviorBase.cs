@@ -42,7 +42,7 @@ public abstract class MessageBehaviorBase<TMessage> : DisposableBase
     /// with the specified presentable object.
     /// </summary>
     ///
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     protected MessageBehaviorBase(IAggregator aggregator) =>

@@ -46,7 +46,7 @@ public sealed class ShowVersionBehavior : MessageBehaviorBase<AboutMessage>
     /// </summary>
     ///
     /// <param name="view">View object.</param>
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public ShowVersionBehavior(Window view, IAggregator aggregator) : base(aggregator)

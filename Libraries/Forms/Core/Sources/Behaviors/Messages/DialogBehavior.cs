@@ -43,7 +43,7 @@ public class DialogBehavior : MessageBehavior<DialogMessage>
     /// with the specified presentable object.
     /// </summary>
     ///
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public DialogBehavior(IAggregator aggregator) : base(aggregator, e =>

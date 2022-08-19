@@ -41,7 +41,7 @@ public class OpenFileBehavior : MessageBehavior<OpenFileMessage>
     /// with the specified presentable object.
     /// </summary>
     ///
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public OpenFileBehavior(IAggregator aggregator) : base(aggregator, e =>

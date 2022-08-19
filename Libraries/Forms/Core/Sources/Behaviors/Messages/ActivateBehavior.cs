@@ -40,7 +40,7 @@ public class ActivateBehavior : MessageBehavior<ActivateMessage>
     /// </summary>
     ///
     /// <param name="view">Source view.</param>
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public ActivateBehavior(Form view, IAggregator aggregator) : base(aggregator, e =>

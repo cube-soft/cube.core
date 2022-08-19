@@ -40,7 +40,7 @@ public class CloseBehavior : MessageBehavior<CloseMessage>
     /// </summary>
     ///
     /// <param name="view">Source view.</param>
-    /// <param name="aggregator">Aggregator object.</param>
+    /// <param name="aggregator">Message aggregator.</param>
     ///
     /* --------------------------------------------------------------------- */
     public CloseBehavior(Form view, IAggregator aggregator) : base(aggregator, _ => view.Close()) { }
