@@ -17,7 +17,9 @@
 /* ------------------------------------------------------------------------- */
 namespace Cube;
 
+using System.Linq;
 using Cube.FileSystem;
+using Cube.Mixin.Generic;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -41,7 +43,7 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public SaveFileMessage() : base(nameof(SaveFileMessage)) => Setup(default);
+    public SaveFileMessage() : this(nameof(SaveFileMessage)) { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -49,57 +51,13 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     ///
     /// <summary>
     /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
+    /// the specified text.
     /// </summary>
     ///
-    /// <param name="src">Entity for the initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public SaveFileMessage(Entity src) : base(nameof(SaveFileMessage)) => Setup(src);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SaveFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Entity for the initial path.</param>
     /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public SaveFileMessage(Entity src, string text) : base(text) => Setup(src);
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SaveFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Initial path.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public SaveFileMessage(string src) : this(Io.GetOrDefault(src)) { }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// SaveFileMessage
-    ///
-    /// <summary>
-    /// Initializes a new instance of the SaveFileMessage class with
-    /// the specified arguments.
-    /// </summary>
-    ///
-    /// <param name="src">Initial path.</param>
-    /// <param name="text">Message text.</param>
-    ///
-    /* --------------------------------------------------------------------- */
-    public SaveFileMessage(string src, string text) : this(Io.GetOrDefault(src), text) { }
+    public SaveFileMessage(string text) : base(text) => Value = string.Empty;
 
     #endregion
 
@@ -124,6 +82,25 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
 
     /* --------------------------------------------------------------------- */
     ///
+    /// Set
+    ///
+    /// <summary>
+    /// Sets values to the Value and InitialDirectory properties using the
+    /// specified object.
+    /// </summary>
+    ///
+    /// <param name="src">File or directory path information.</param>
+    ///
+    /* --------------------------------------------------------------------- */
+    public void Set(Entity src)
+    {
+        if (src is null) return;
+        Value = src.IsDirectory ? string.Empty : src.Name;
+        InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// GetValue
     ///
     /// <summary>
@@ -134,29 +111,6 @@ public class SaveFileMessage : OpenOrSaveFileMessage<string>
     ///
     /* --------------------------------------------------------------------- */
     protected override string GetValue() => Value;
-
-    #endregion
-
-    #region Implementations
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Setup
-    ///
-    /// <summary>
-    /// Invokes the initialization.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    private void Setup(Entity src)
-    {
-        if (src is not null)
-        {
-            Value = src.IsDirectory ? string.Empty : src.Name;
-            InitialDirectory = src.IsDirectory ? src.FullName : src.DirectoryName;
-        }
-        else Value = string.Empty;
-    }
 
     #endregion
 }

@@ -19,6 +19,7 @@ namespace Cube.Forms.Demo;
 
 using System.Linq;
 using System.Threading;
+using Cube.Mixin.Generic;
 
 /* ------------------------------------------------------------------------- */
 ///
@@ -81,7 +82,7 @@ public class FileViewModel : PresentableBase
     ///
     /* --------------------------------------------------------------------- */
     public void ShowOpenFileDialog() => Send(
-        new OpenFileMessage(Value),
+        new OpenFileMessage() { Value = Value.ToEnumerable() },
         e => Value = e.First(),
         true
     );
@@ -96,7 +97,7 @@ public class FileViewModel : PresentableBase
     ///
     /* --------------------------------------------------------------------- */
     public void ShowSaveFileDialog() => Send(
-        new SaveFileMessage(Value),
+        new SaveFileMessage() { Value = Value },
         e => Value = e,
         true
     );
@@ -111,7 +112,7 @@ public class FileViewModel : PresentableBase
     ///
     /* --------------------------------------------------------------------- */
     public void ShowOpenDirectoryDialog() => Send(
-        new OpenDirectoryMessage(Value),
+        new OpenDirectoryMessage() { Value = Value },
         e => Value = e,
         true
     );

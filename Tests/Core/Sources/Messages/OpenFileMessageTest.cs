@@ -18,6 +18,8 @@
 namespace Cube.Tests.Messages;
 
 using System.Linq;
+using Cube.FileSystem;
+using Cube.Mixin.Generic;
 using NUnit.Framework;
 
 /* ------------------------------------------------------------------------- */
@@ -36,53 +38,6 @@ class OpenFileMessageTest : FileFixture
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Test
-    ///
-    /// <summary>
-    /// Tests the constructor and confirms values of some properties.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test()
-    {
-        var dest = new OpenFileMessage();
-
-        Assert.That(dest.Text,             Is.EqualTo(nameof(OpenFileMessage)));
-        Assert.That(dest.Value.Count(),    Is.EqualTo(0));
-        Assert.That(dest.InitialDirectory, Is.Empty);
-        Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-        Assert.That(dest.CheckPathExists,  Is.True);
-        Assert.That(dest.Multiselect,      Is.False);
-        Assert.That(dest.Cancel,           Is.False);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// Test_WithNullOrEmpty
-    ///
-    /// <summary>
-    /// Tests the constructor and confirms values of some properties.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [TestCase("")]
-    [TestCase(null)]
-    public void Test_WithNullOrEmpty(string src)
-    {
-        var dest = new OpenFileMessage(src);
-
-        Assert.That(dest.Text,             Is.EqualTo(nameof(OpenFileMessage)));
-        Assert.That(dest.Value.Count(),    Is.EqualTo(0));
-        Assert.That(dest.InitialDirectory, Is.Empty);
-        Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
-        Assert.That(dest.CheckPathExists,  Is.True);
-        Assert.That(dest.Multiselect,      Is.False);
-        Assert.That(dest.Cancel,           Is.False);
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
     /// Test_WithFile
     ///
     /// <summary>
@@ -90,53 +45,43 @@ class OpenFileMessageTest : FileFixture
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestCase("Sample.txt")]
-    [TestCase("InExistent.dat")]
-    public void Test_WithFile(string filename)
+    [TestCase("Sample.txt",     1)]
+    [TestCase("InExistent.dat", 1)]
+    [TestCase("",               0)]
+    public void Test(string filename, int n)
     {
-        var src  = GetSource(filename);
-        var dest = new OpenFileMessage(src);
+        var dest = new OpenFileMessage();
+        dest.Set(Io.GetOrDefault(GetSource(filename)));
 
-        Assert.That(dest.Value.Count(),    Is.EqualTo(1));
-        Assert.That(dest.Value.First(),    Is.EqualTo(filename));
+        Assert.That(dest.Text,             Is.EqualTo(nameof(OpenFileMessage)));
+        Assert.That(dest.Value.Count(),    Is.EqualTo(n));
         Assert.That(dest.InitialDirectory, Is.EqualTo(Examples));
+        Assert.That(dest.Filters.Count(),  Is.EqualTo(1));
+        Assert.That(dest.CheckPathExists,  Is.True,  nameof(dest.CheckPathExists));
+        Assert.That(dest.Multiselect,      Is.False, nameof(dest.Multiselect));
+        Assert.That(dest.Cancel,           Is.False, nameof(dest.Cancel));
+        Assert.That(dest.GetFilterText(),  Is.EqualTo("All Files (*.*)|*.*"));
+        Assert.That(dest.GetFilterIndex(), Is.EqualTo(0));
     }
 
     /* --------------------------------------------------------------------- */
     ///
-    /// Test_WithDirectory
-    ///
-    /// <summary>
-    /// Tests the constructor and confirms values of some properties.
-    /// </summary>
-    ///
-    /* --------------------------------------------------------------------- */
-    [Test]
-    public void Test_WithDirectory()
-    {
-        var dest = new OpenFileMessage(Results);
-
-        Assert.That(dest.Value.Count(),    Is.EqualTo(0));
-        Assert.That(dest.InitialDirectory, Is.EqualTo(Results));
-    }
-
-    /* --------------------------------------------------------------------- */
-    ///
-    /// GetFilterIndex
+    /// TestFilter
     ///
     /// <summary>
     /// Tests the GetFilterText and GetFilterIndex methods.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestCase("Sample.txt",    ExpectedResult = 1)]
-    [TestCase("Sample.Jpg",    ExpectedResult = 2)]
-    [TestCase("Sample.tar.gz", ExpectedResult = 3)]
-    [TestCase("Sample",        ExpectedResult = 0)]
-    public int GetFilterIndex(string filename)
+    [TestCase("Sample.txt",    1)]
+    [TestCase("Sample.Jpg",    2)]
+    [TestCase("Sample.tar.gz", 3)]
+    [TestCase("Sample",        0)]
+    public void TestFilter(string filename, int index)
     {
-        var dest = new OpenFileMessage(Get(filename))
+        var dest = new OpenFileMessage()
         {
+            Value   = Get(filename).ToEnumerable(),
             Filters = new FileDialogFilter[]
             {
                 new("Texts", ".txt"),
@@ -146,10 +91,9 @@ class OpenFileMessageTest : FileFixture
             }
         };
 
-        var s = dest.GetFilterText();
-        Assert.That(s, Does.StartWith("Texts (*.txt)|*.txt;*.TXT;*.Txt|"));
-        Assert.That(s, Does.EndWith("|All (*.*)|*.*"));
-        return dest.GetFilterIndex();
+        Assert.That(dest.GetFilterText(),  Does.StartWith("Texts (*.txt)|*.txt;*.TXT;*.Txt|"));
+        Assert.That(dest.GetFilterText(),  Does.EndWith("|All (*.*)|*.*"));
+        Assert.That(dest.GetFilterIndex(), Is.EqualTo(index));
     }
 
     #endregion
