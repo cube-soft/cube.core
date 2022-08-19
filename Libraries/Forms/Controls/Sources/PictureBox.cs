@@ -83,11 +83,8 @@ public class PictureBox : System.Windows.Forms.PictureBox
         {
             var x = (int)m.LParam & 0xffff;
             var y = (int)m.LParam >> 16 & 0xffff;
-            var e = new QueryMessage<Point, Position>
-            {
-                Source = new Point(x, y),
-                Cancel = true,
-            };
+            var e = new QueryMessage<Point, Position>(new(x, y)) { Cancel = true };
+
             OnNcHitTest(e);
             var result = e.Cancel ? Position.Transparent : e.Value;
             if (DesignMode && result == Position.Transparent) return;

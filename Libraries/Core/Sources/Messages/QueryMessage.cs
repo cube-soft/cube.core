@@ -39,7 +39,7 @@ public class QueryMessage<TSource, TValue> : CancelMessage<TValue>
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public QueryMessage() : this($"{typeof(TSource).Name} and {typeof(TValue).Name} QueryMessage") { }
+    public QueryMessage(TSource src) : this(src, $"{typeof(TSource).Name} and {typeof(TValue).Name} QueryMessage") { }
 
     /* --------------------------------------------------------------------- */
     ///
@@ -50,10 +50,11 @@ public class QueryMessage<TSource, TValue> : CancelMessage<TValue>
     /// specified text.
     /// </summary>
     ///
+    /// <param name="src">Source information at query time.</param>
     /// <param name="text">Message text.</param>
     ///
     /* --------------------------------------------------------------------- */
-    public QueryMessage(string text) : base(text) { }
+    public QueryMessage(TSource src, string text) : base(text) => Source = src;
 
     #endregion
 
@@ -64,11 +65,11 @@ public class QueryMessage<TSource, TValue> : CancelMessage<TValue>
     /// Source
     ///
     /// <summary>
-    /// Gets or sets the source information at the time of query.
+    /// Get or set the source information at query time.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public TSource Source { get; set; }
+    public TSource Source { get; }
 
     #endregion
 }
